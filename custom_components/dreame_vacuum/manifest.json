@@ -3,6 +3,7 @@
   "name": "Dreame Vacuum",
   "config_flow": true,
   "documentation": "https://github.com/tasshack/dreame-vacuum",
+  "issue_tracker": "https://github.com/Tasshack/dreame-vacuum/issues",
   "codeowners": [ "@tasshack" ],
   "requirements": [
     "voluptuous",
