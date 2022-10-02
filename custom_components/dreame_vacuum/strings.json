@@ -1,0 +1,71 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Device is already configured",
+      "cannot_connect": "Failed to connect"
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "unsupported": "Device is not supported",
+      "wrong_token": "Checksum error, wrong token",
+      "2fa_required": "2FA Login required",
+      "credentials_incomplete": "Credentials incomplete, please fill in username, password and country",
+      "login_error": "Could not login to Xiaomi Miio Cloud, check the credentials.",
+      "no_devices": "No supported devices found in this Xiaomi Miio cloud account on selected country."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Configuration Type"
+        },
+        "description": "Map feature requires cloud connection and provides automatic configuration. If you don't want to use the map feature, you can select manual configuration."
+      },
+      "without_map": {
+        "data": {
+          "host": "Host",
+          "token": "Token"
+        },
+        "description": "You will need the 32 character API Token, see https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token for instructions."
+      },
+      "with_map": {
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "country": "Server country"
+        },
+        "description": "Log in to the Xiaomi Miio cloud, see https://www.openhab.org/addons/bindings/miio/#country-servers for the cloud server to use."
+      },
+      "devices": {
+        "data": {
+          "devices": "Supported Devices"
+        },
+        "description": "Please select the Dreame Vacuum device you want to setup."
+      },
+      "options": {
+        "data": {
+          "name": "Name",
+          "color_scheme": "Map color scheme",
+          "notify": "Notification"
+        }
+      },
+      "reauth_confirm": {
+        "description": "Dreame Vacuum integration needs to re-authenticate your account in order to update the tokens or add missing cloud credentials.",
+        "title": "Reauthenticate Integration"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Map color scheme",
+          "notify": "Notification",
+          "configuration_type": "Configuration Type"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Cloud credentials incomplete, please fill in username, password and country"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "domain": "dreame_vacuum",
+  "name": "Dreame Vacuum",
+  "config_flow": true,
+  "documentation": "https://github.com/tasshack/dreame-vacuum",
+  "codeowners": [ "@tasshack" ],
+  "requirements": [
+    "voluptuous",
+    "pillow",
+    "opencv-python-headless",
+    "pybase64",
+    "requests",
+    "pycryptodome"
+  ],
+  "version": "0.3.0",
+  "iot_class": "local_polling"
+}

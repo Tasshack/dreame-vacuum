@@ -1,0 +1,439 @@
+vacuum_clean_zone:
+  description: Start the cleaning operation in the selected area.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    zone:
+      description: Coordinates.
+      example: "[819,-263,4424,2105]"
+      required: true
+      selector:
+        object:
+    repeats:
+      description: Number of cleaning passes for each zone between 1 and 3.
+      example: 1
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 3
+
+vacuum_clean_segment:
+  description: Start the cleaning operation in the selected rooms.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    segments:
+      description: List of rooms to be cleaned. Only room's Character or an array of room's character, repeats, fan speed and mop mode to override the default values per room.
+      example: "[3,2]"
+      required: true
+      selector:
+        object:
+    repeats:
+      description: Number of cleaning passes for every selected room (unless it is overridden by rooms parameter).
+      example: 2
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 3
+    fan_speed:
+      description: Fan speed for every selected room (unless it is overridden by rooms parameter).
+      example: 1
+      required: false
+      selector:
+        number:
+          min: 0
+          max: 4
+    water_level:
+      description: Water level for every selected room (unless it is overridden by rooms parameter).
+      example: 3
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 3
+          
+vacuum_set_water_level:
+  description: Set water level for mopping.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    water_level:
+      description: water level, 1:Low, 2:Medium, 3:High. Numbers are also accepted.
+      default: "Medium"
+      required: true
+      selector:
+        select:
+          options:
+            - "Low"
+            - "Medium"
+            - "High"
+
+vacuum_clear_warning:
+  description: Clears the error state of the vacuum.
+  target:
+    entity:
+      domain: vacuum
+
+vacuum_set_dnd:
+  description: Enable/disable DnD functionallity and/or setting its start and end time.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    dnd_enabled:
+      description: "Enable or disable DnD feature"
+      example: "true"
+      required: true
+      selector:
+        boolean:
+    dnd_start:
+      description: "Start time of DnD feature."
+      example: "22:00"
+      required: false
+      selector:
+        text:
+    dnd_end:
+      description: "End time of DnD feature."
+      example: "6:30"
+      required: false
+      selector:
+        text:
+
+vacuum_remote_control_move_step:
+  description: Remotely control move the bot one step.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    rotation:
+      description: Turn in binary degrees between -128 and 128.
+      example: 64
+      required: true
+      selector:
+        number:
+          min: -128
+          max: 128
+          mode: box
+    velocity:
+      description: Move speed, from 100 (forward) to -300 (backward)
+      example: 100
+      required: true
+      selector:
+        number:
+          min: -300
+          max: 100
+          mode: box
+
+vacuum_install_voice_pack:
+  description: Install official or custom voice pack.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    lang_id:
+      description: "Language ID of this pack"
+      example: "DE"
+      required: true
+      selector:
+        text:
+    url:
+      description: "Url of this pack it should be reachable by the vacuum bot"
+      example: "http://awsde0.fds.api.xiaomi.com/dreame-product/dreame.vacuum.p2009/voices/package/deyu.tar.gz"
+      required: true
+      selector:
+        text:
+    md5:
+      description: "MD5 checksum of the language pack"
+      example: "d25986c1f608c0897475707e77d856f9"
+      required: true
+      selector:
+        text:
+    size:
+      description: "Size of the language pack in bytes"
+      example: 4067845
+      required: true
+      selector:
+        number:
+          mode: box
+
+vacuum_request_map:
+  description: Request map data
+  target:
+    entity:
+      domain: vacuum
+
+vacuum_select_map:
+  description: Select current map. Used when having multiple maps/floors.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    map_id:
+      description: id of the map to be selected.
+      example: 14
+      required: true
+      selector:
+        number:
+          mode: box
+
+vacuum_delete_map:
+  description: Delete a map.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    map_id:
+      description: id of the map to be deleted.
+      example: 14
+      required: false
+      selector:
+        number:
+          mode: box
+
+vacuum_save_temporary_map:
+  description: Save the temporary map
+  target:
+    entity:
+      domain: vacuum
+
+vacuum_discard_temporary_map:
+  description: Discard the temporary map
+  target:
+    entity:
+      domain: vacuum
+
+vacuum_replace_temporary_map:
+  description: Replace the temporary map with another saved map.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    map_id:
+      description: id of the map to be replaced with.
+      example: 14
+      required: false
+      selector:
+        number:
+          mode: box
+
+vacuum_rename_map:
+  description: Rename a map.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    map_id:
+      description: "ID of the map"
+      example: "14"
+      required: true
+      selector:
+        text:
+    map_name:
+      description: "New name of the map"
+      example: "Ground Floor"
+      required: true
+      selector:
+        text:
+
+vacuum_restore_map:
+  description: Restore a map.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    map_id:
+      description: id of the map to be restores.
+      example: 14
+      required: false
+      selector:
+        number:
+          mode: box
+    map_url:
+      description: "File url of the map"
+      required: true
+      selector:
+        text:
+
+vacuum_merge_segments:
+  description: Merge rooms.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    map_id:
+      description: "ID of the map"
+      example: "14"
+      required: true
+      selector:
+        text:
+    segments:
+      description: "Room ids"
+      example: "[3,2]"
+      required: true
+      selector:
+        object:
+
+vacuum_split_segments:
+  description: Split rooms.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    map_id:
+      description: "ID of the map"
+      example: "14"
+      required: true
+      selector:
+        text:
+    segment:
+      description: "Room id"
+      example: "3"
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 62
+          mode: box
+    line:
+      description: "Split line coordinates"  
+      example: "[819,-263,4424,2105]"
+      required: true
+      selector:
+        object:
+
+vacuum_rename_segment:
+  description: Rename a segment.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    segment_id:
+      description: "ID of the segment"
+      example: "3"
+      required: true
+      selector:
+        number:
+          min: 1
+          max: 62
+          mode: box
+    segment_name:
+      description: "New name of the segment"
+      example: "Playroom"
+      required: true
+      selector:
+        text:
+
+vacuum_set_cleaning_order:
+  description: Set room cleaning order.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    cleaning_order:
+      description: Cleaning order.
+      example: "[5,3,2,1,4]"
+      required: true
+      selector:
+        object:
+
+vacuum_set_custom_cleaning:
+  description: Set custom cleaning parameters.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    fan_speed:
+      description: Clean modes for each room.
+      example: "[0,0,2,3,1]"
+      required: true
+      selector:
+        object:
+    water_level:
+      description: Mopping modes for each room.
+      example: "[1,1,2,3,1]"
+      required: true
+      selector:
+        object:
+    repeats:
+      description: Cleaning times for each room.
+      example: "[2,2,1,3,1]"
+      required: true
+      selector:
+        object:
+        
+vacuum_set_restricted_zone:
+  description: Define virtual walls, restricted zones, and/or no mop zones.
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    walls:
+      description: Virtual walls.
+      example: "[819,-263,4424,2105],[-2001,-3050,-542,515]"
+      required: false
+      selector:
+        text:
+    zones:
+      description: No go zones.
+      example: "[819,-263,4424,2105],[-2001,-3050,-542,515]"
+      required: false
+      selector:
+        text:
+    no_mops:
+      description: No mop zones.
+      example: "[819,-263,4424,2105],[-2001,-3050,-542,515]"
+      required: false
+      selector:
+        text:
+
+
+select_select_previous:
+  name: Select Previous
+  description: Select the previous options of an select entity.
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: select
+  fields:
+    cycle:
+      name: Cycle
+      description: If the option should cycle from the first to the last.
+      default: true
+      selector:
+        boolean:
+
+select_select_first:
+  name: Select First
+  description: Select the first option of an select entity.
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: select
+
+select_select_last:
+  name: Select Last
+  description: Select the last option of an select entity.
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: select
+
+select_select_next:
+  name: Select Next
+  description: Select the next options of an select entity.
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: select
+  fields:
+    cycle:
+      name: Cycle
+      description: If the option should cycle from the last to the first.
+      default: true
+      selector:
+        boolean:

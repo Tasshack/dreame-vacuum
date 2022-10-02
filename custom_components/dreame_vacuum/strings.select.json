@@ -1,0 +1,25 @@
+{
+  "state": {
+    "dreame_vacuum__fan_speed": {
+      "silent": "Silent",
+      "standard": "Standard",
+      "strong": "Strong",
+      "turbo": "Turbo"
+    },
+    "dreame_vacuum__water_level": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "dreame_vacuum__cleaning_modee": {
+      "sweeping": "Sweeping",
+      "mopping": "Mopping",
+      "mopping_and_sweeping": "Mopping and sweeping"
+    },
+    "dreame_vacuum__carpet_sensitivity": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    }
+  }
+}
