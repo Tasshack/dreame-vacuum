@@ -439,7 +439,7 @@ class DreameMapVacuumMapManager:
             return
         next_frame_id = 0
 
-        if self._map_data and self._current_map_id == self._latest_map_id:
+        if self._current_map_id is not None and self._current_map_id == self._latest_map_id:
             next_frame_id = self._current_frame_id + 1
 
         if map_data.map_id not in self._map_data_queue:
@@ -453,7 +453,7 @@ class DreameMapVacuumMapManager:
         if self._latest_map_id is None:
             return
 
-        if self._map_data is None:
+        if self._current_frame_id is None:
             return
 
         frame_id = self._current_frame_id
@@ -477,7 +477,7 @@ class DreameMapVacuumMapManager:
     def _unqueue_next_partial_map(self) -> MapData | None:
         if (
             self._latest_map_id is None
-            or self._map_data is None
+            or self._current_frame_id is None
             or self._current_map_id != self._latest_map_id
         ):
             return
@@ -539,7 +539,7 @@ class DreameMapVacuumMapManager:
                 response = self._cloud_connection.get_file(url)
                 if response is not None:
                     return response
-                _LOGGER.error("Request map data from cloud failed %s", url)
+                _LOGGER.warning("Request map data from cloud failed %s", url)
                 if self._file_urls.get(object_name):
                     del self._file_urls[object_name]
 
@@ -615,6 +615,7 @@ class DreameMapVacuumMapManager:
                     self._current_map_id,
                     self._latest_map_id,
                 )
+
                 self._current_frame_id = None
                 self._current_map_id = None
                 self._updated_frame_id = None
