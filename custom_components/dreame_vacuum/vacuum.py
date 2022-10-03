@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import voluptuous as vol
-from typing import Final, Any
+from typing import Final
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity
@@ -19,14 +19,13 @@ from homeassistant.components.vacuum import (
     STATE_IDLE,
     STATE_PAUSED,
     STATE_RETURNING,
-    StateVacuumEntity,
+    VacuumEntity,
     VacuumEntityFeature,
 )
 
 from .dreame import DreameVacuumState, InvalidActionException
 from .const import (
     DOMAIN,
-    LOGGER,
     INPUT_CLEANING_ORDER,
     INPUT_DND_ENABLED,
     INPUT_DND_END,
@@ -86,6 +85,7 @@ SUPPORT_DREAME = (
     | VacuumEntityFeature.STATE
     | VacuumEntityFeature.STATUS
     | VacuumEntityFeature.BATTERY
+    | VacuumEntityFeature.MAP
 )
 
 
@@ -103,7 +103,7 @@ STATE_CODE_TO_STATE: Final = {
     DreameVacuumState.RETURNING_WASHING: STATE_RETURNING,
     DreameVacuumState.BUILDING: STATE_DOCKED,
     DreameVacuumState.SWEEPING_AND_MOPPING: STATE_CLEANING,
-    DreameVacuumState.CHARGING_COMPLETED: STATE_IDLE,
+    DreameVacuumState.CHARGING_COMPLETED: STATE_DOCKED,
     DreameVacuumState.UPGRADING: STATE_IDLE,
 }
 
@@ -375,15 +375,14 @@ async def async_setup_entry(
     async_add_entities([DreameVacuum(coordinator)])
 
 
-class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
+class DreameVacuum(DreameVacuumEntity, VacuumEntity):
     """Representation of a Dreame Vacuum cleaner robot."""
-
-    _supported_features = SUPPORT_DREAME
 
     def __init__(self, coordinator: DreameVacuumDataUpdateCoordinator) -> None:
         """Initialize the button entity."""
         super().__init__(coordinator)
 
+        self._attr_supported_features = SUPPORT_DREAME
         self._attr_device_class = DOMAIN
         self._attr_name = coordinator.data.name
         self._attr_unique_id = f"{coordinator.data.mac}_" + DOMAIN
@@ -409,47 +408,41 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             self._attr_icon = "mdi:robot-vacuum"
 
         if self.device.status.started and (self.device.status.customized_cleaning and not self.device.status.zone_cleaning):
-            self._fan_speed_list = [STATE_UNAVAILABLE.capitalize()]
-            self._fan_speed = STATE_UNAVAILABLE.capitalize()
+            self._attr_fan_speed_list = [STATE_UNAVAILABLE.capitalize()]
+            self._attr_fan_speed = STATE_UNAVAILABLE.capitalize()
         else:
-            self._fan_speed_list = list(
-                {k.capitalize() for k in self.device.status.fan_speed_list})
-            self._fan_speed = self.device.status.fan_speed_name.capitalize()
+            self._attr_fan_speed_list = [k.capitalize() for k in self.device.status.fan_speed_list]
+            self._attr_fan_speed = self.device.status.fan_speed_name.capitalize()
+
+        self._attr_battery_level = self.device.status.battery_level           
+        self._attr_extra_state_attributes = self.device.status.attributes
+        self._attr_state = STATE_CODE_TO_STATE.get(self.device.status.state, STATE_UNKNOWN)
+        self._attr_status = self.device.status.status_name.replace("_", " ").capitalize()
+        
+    @property
+    def state(self) -> str | None:
+        """Return the state of the vacuum cleaner."""
+        return self._attr_state
+
+    @property
+    def status(self) -> str | None:
+        """Return the status of the vacuum cleaner."""
+        return self._attr_status
 
     @property
     def supported_features(self) -> int:
-        """Flag supported features."""
-        return self._supported_features
+        """Flag vacuum cleaner features that are supported."""
+        return self._attr_supported_features
+    
+    @property
+    def extra_state_attributes(self) -> dict[str, str] | None:
+        """Return the extra state attributes of the entity."""
+        return self._attr_extra_state_attributes
 
     @property
     def available(self) -> bool:
         """Return True if entity is available."""
         return self._attr_available and self.device.device_connected
-
-    @property
-    def state(self) -> str:
-        """Return the status of the vacuum cleaner."""
-        return STATE_CODE_TO_STATE.get(self.device.status.state, STATE_UNKNOWN)
-
-    @property
-    def battery_level(self) -> int:
-        """Return the battery level of the vacuum cleaner."""
-        return self.device.status.battery_level
-
-    @property
-    def fan_speed(self) -> str:
-        """Return the fan speed of the vacuum cleaner."""
-        return self._fan_speed
-
-    @property
-    def fan_speed_list(self) -> list[str]:
-        """Get the list of available fan speed steps of the vacuum cleaner."""
-        return self._fan_speed_list
-
-    @property
-    def extra_state_attributes(self) -> dict[str, Any] | None:
-        """Return the extra state attributes of the vacuum cleaner."""
-        return self.device.status.attributes
 
     async def async_locate(self, **kwargs) -> None:
         """Locate the vacuum cleaner."""

@@ -239,7 +239,7 @@ class DreameVacuumDevice:
                         changed = True
                     current_value = self.data.get(did)
                     if current_value is not None:
-                        _LOGGER.debug(
+                        _LOGGER.warn(
                             "%s Changed: %s -> %s", DreameVacuumProperty(did).name, current_value, value)
                     self.data[did] = value
                     if did in self._property_update_callback:
@@ -321,7 +321,7 @@ class DreameVacuumDevice:
                     self._previous_cleaning_mode = self.status.cleaning_mode
                     self.set_property(
                         DreameVacuumProperty.CLEANING_MODE,
-                        DreameVacuumCleaningMode.SWEEPING,
+                        DreameVacuumCleaningMode.SWEEPING.value,
                     )
             elif water_tank is DreameVacuumWaterTank.INSTALLED:
                 new_list.pop(DreameVacuumCleaningMode.SWEEPING)
@@ -333,12 +333,12 @@ class DreameVacuumDevice:
                     ):
                         self.set_property(
                             DreameVacuumProperty.CLEANING_MODE,
-                            self._previous_cleaning_mode,
+                            self._previous_cleaning_mode.value,
                         )
                     else:
                         self.set_property(
                             DreameVacuumProperty.CLEANING_MODE,
-                            DreameVacuumCleaningMode.MOPPING_AND_SWEEPING,
+                            DreameVacuumCleaningMode.MOPPING_AND_SWEEPING.value,
                         )
                     # Store current cleaning mode for future use when water tank is removed
                     self._previous_cleaning_mode = self.status.cleaning_mode
@@ -521,7 +521,7 @@ class DreameVacuumDevice:
     def _property_changed(self) -> None:
         """Call external listener when a property changed"""
         if self._update_callback:
-            _LOGGER.debug("Update Callback")
+            _LOGGER.warn("Update Callback")
             self._update_callback()
 
     def _update_failed(self, ex) -> None:
@@ -550,11 +550,11 @@ class DreameVacuumDevice:
         self.info = DreameVacuumDeviceInfo(self._device_connection.connect())
         if self.mac is None:
             self.mac = self.info.mac_address
-
-        self._request_properties()
-        self._last_update_failed = None
+            
         self._last_settings_request = time.time()
         self._last_map_list_request = self._last_settings_request
+        self._request_properties()
+        self._last_update_failed = None
 
         if self.device_connected and self._cloud_connection is not None and (not self._ready or not self.available):
             if self._map_manager:
@@ -659,10 +659,10 @@ class DreameVacuumDevice:
             self._last_change = time.time()
             self._last_settings_request = 0
 
-            mapping = self.property_mapping[prop.value]
             try:
-                result = self._device_connection.set_property(
-                    mapping["siid"], mapping["piid"], value)
+                mapping = self.property_mapping[prop]
+                result = self._device_connection.set_property(mapping["siid"], mapping["piid"], value)
+
                 if result and result[0]["code"] != 0:
                     _LOGGER.error(
                         "Property not updated: %s: %s -> %s", prop, current_value, value
@@ -671,7 +671,7 @@ class DreameVacuumDevice:
 
                 # Schedule the update for getting the updated property value from the device
                 # If property is actually updated nothing will happen otherwise it will return to previous value and notify its listeners. (Post optimistic approach)
-                self.schedule_update(1)
+                self.schedule_update(3)
                 return True
             except Exception as ex:
                 self._update_property(prop, current_value)
@@ -1012,7 +1012,7 @@ class DreameVacuumDevice:
             raise InvalidActionException(
                 "Cannot set fan speed when customized cleaning is enabled"
             )
-        return self.set_property(DreameVacuumProperty.FAN_SPEED, fan_speed)
+        return self.set_property(DreameVacuumProperty.FAN_SPEED, int(fan_speed))
 
     def set_cleaning_mode(self, cleaning_mode: int) -> bool:
         """Set cleaning mode."""
@@ -1031,7 +1031,7 @@ class DreameVacuumDevice:
                 raise InvalidActionException(
                     "Cannot set mopping while water tank is not installed"
                 )
-        return self.set_property(DreameVacuumProperty.CLEANING_MODE, cleaning_mode)
+        return self.set_property(DreameVacuumProperty.CLEANING_MODE, int(cleaning_mode))
 
     def set_water_level(self, water_level: int) -> bool:
         """Set water level."""
@@ -1040,7 +1040,7 @@ class DreameVacuumDevice:
                 "Cannot set water level when customized cleaning is enabled"
             )
 
-        return self.set_property(DreameVacuumProperty.WATER_LEVEL, water_level)
+        return self.set_property(DreameVacuumProperty.WATER_LEVEL, int(water_level))
 
     def set_dnd_enabled(self, dnd_enabled: bool) -> bool:
         """Set do not disturb function"""
@@ -2065,12 +2065,26 @@ class DreameVacuumDeviceStatus:
         value = self._get_property(DreameVacuumProperty.STATE)
         if value is not None and value in DreameVacuumState._value2member_map_:
             vacuum_state = DreameVacuumState(value)
-            if (
-                (vacuum_state is DreameVacuumState.IDLE and self.started)
-                or self.cleaning_paused
-                or self.fast_mapping_paused
-            ):
-                return DreameVacuumState.PAUSED
+
+            ## Determine state as implemented on the app
+            if vacuum_state is DreameVacuumState.IDLE:
+                if (
+                    self.started
+                    or self.cleaning_paused
+                    or self.fast_mapping_paused
+                ):
+                    return DreameVacuumState.PAUSED
+                elif self.docked:
+                    ## This is for compatibility with various lovelace vacuum cards 
+                    ## Device will report idle when charging is completed and vacuum card will display return to dock icon even when robot is docked
+                    if self.washing:
+                        return DreameVacuumState.WASHING
+                    if self.drying:                        
+                        return DreameVacuumState.DRYING                    
+                    if self.charging:
+                        return DreameVacuumState.CHARGING
+                    if self.charging_status is DreameVacuumChargingStatus.CHARGING_COMPLETED:
+                        return DreameVacuumState.CHARGING_COMPLETED
             return vacuum_state
         _LOGGER.debug("STATE not supported: %s", value)
         return DreameVacuumState.UNKNOWN
@@ -2687,12 +2701,9 @@ class DreameVacuumDeviceStatus:
     def attributes(self) -> dict[str, Any] | None:
         """Return the attributes of the device."""
         properties = [
-            DreameVacuumProperty.STATUS,
             DreameVacuumProperty.ERROR,
             DreameVacuumProperty.CLEANING_TIME,
             DreameVacuumProperty.CLEANED_AREA,
-            DreameVacuumProperty.WATER_LEVEL,
-            DreameVacuumProperty.CLEANING_MODE,
             DreameVacuumProperty.VOICE_PACKET_ID,
             DreameVacuumProperty.TIMEZONE,
             DreameVacuumProperty.MAIN_BRUSH_TIME_LEFT,
@@ -2723,21 +2734,7 @@ class DreameVacuumDeviceStatus:
                 else:
                     prop_name = prop.name.lower()
 
-                if prop is DreameVacuumProperty.WATER_LEVEL:
-                    value = self.water_level_name.replace(
-                        "_", " ").capitalize()
-                    attributes[f"{prop_name}_list"] = list(
-                        {k.capitalize() for k in self.water_level_list}
-                    )
-                elif prop is DreameVacuumProperty.CLEANING_MODE:
-                    value = self.cleaning_mode_name.replace(
-                        "_", " ").capitalize()
-                    attributes[f"{prop_name}_list"] = list(
-                        {k.capitalize() for k in self.cleaning_mode_list}
-                    )
-                elif prop is DreameVacuumProperty.STATUS:
-                    value = self.status_name.replace("_", " ").capitalize()
-                elif prop is DreameVacuumProperty.ERROR:
+                if prop is DreameVacuumProperty.ERROR:
                     value = self.error_name.replace("_", " ").capitalize()
 
                 attributes[prop_name] = value

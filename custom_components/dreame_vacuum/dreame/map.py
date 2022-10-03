@@ -697,7 +697,7 @@ class DreameMapVacuumMapManager:
                     self._current_map_id = map_data.map_id
                     self._current_timestamp_ms = map_data.timestamp_ms
 
-                    _LOGGER.debug(
+                    _LOGGER.warn(
                         "Decode P map %d %d", map_data.map_id, map_data.frame_id
                     )
 
@@ -815,14 +815,14 @@ class DreameMapVacuumMapManager:
                         self._current_timestamp_ms = map_data.timestamp_ms
 
                         if changed:
-                            _LOGGER.debug(
+                            _LOGGER.warn(
                                 "Decode I map %d %d", map_data.map_id, map_data.frame_id
                             )
 
                             self._map_data.last_updated = time.time()
                             self._map_data_changed()
                         else:
-                            _LOGGER.debug(
+                            _LOGGER.warn(
                                 "Decode map %d %d not changed",
                                 map_data.map_id,
                                 map_data.frame_id,
@@ -3144,7 +3144,7 @@ class DreameVacuumMapRenderer:
             and self._image
         ):
             self.render_complete = True
-            _LOGGER.debug("Skip render frame, map data not changed")
+            _LOGGER.warn("Skip render frame, map data not changed")
             return self._to_buffer(self._image)
 
         if (
@@ -3273,7 +3273,7 @@ class DreameVacuumMapRenderer:
         elif map_data.rotation == 270:
             image = image.transpose(Image.ROTATE_270)
 
-        _LOGGER.debug(
+        _LOGGER.warn(
             "Render frame: %s:%s took: %.2f at scale %s",
             map_data.map_id,
             map_data.frame_id,
@@ -3787,8 +3787,12 @@ class DreameVacuumMapRenderer:
                         x = p.x + x_offset
                         y = p.y + y_offset
 
-                    s = scale * 2
-                    arrow = s * scale
+                    if custom:
+                        s = scale * 2
+                        arrow = (s + 2) * scale
+                    else:
+                        s = scale * 3
+                        arrow = 5 * scale
                     padding = s + arrow
                     margin = s if custom else 0
                     if custom:
@@ -3856,7 +3860,10 @@ class DreameVacuumMapRenderer:
                         )
 
                     if custom:
-                        bg_color = (255, 255, 255, 185)
+                        if self.color_scheme is 0:
+                            bg_color = (255, 255, 255, 195)
+                        else:
+                            bg_color = (255, 255, 255, 185)
                         icon_size = size * 1.45
                         s = icon_size * 0.85 * scale
                         ico = DreameVacuumMapRenderer._set_icon_color(

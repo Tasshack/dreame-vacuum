@@ -430,17 +430,17 @@ STATE_CODE_TO_STATE: Final = {
 
 # Dreame Vacuum fan speed names
 FAN_SPEED_CODE_TO_NAME: Final = {
-    DreameVacuumFanSpeed.SILENT: FAN_SPEED_SILENT,
-    DreameVacuumFanSpeed.STANDARD: FAN_SPEED_STANDARD,
-    DreameVacuumFanSpeed.STRONG: FAN_SPEED_STRONG,
     DreameVacuumFanSpeed.TURBO: FAN_SPEED_TURBO,
+    DreameVacuumFanSpeed.STRONG: FAN_SPEED_STRONG,
+    DreameVacuumFanSpeed.STANDARD: FAN_SPEED_STANDARD,
+    DreameVacuumFanSpeed.SILENT: FAN_SPEED_SILENT,
 }
 
 # Dreame Vacuum water level names
 WATER_LEVEL_CODE_TO_NAME: Final = {
-    DreameVacuumWaterLevel.LOW: WATER_LEVEL_LOW,
-    DreameVacuumWaterLevel.MEDIUM: WATER_LEVEL_MEDIUM,
     DreameVacuumWaterLevel.HIGH: WATER_LEVEL_HIGH,
+    DreameVacuumWaterLevel.MEDIUM: WATER_LEVEL_MEDIUM,
+    DreameVacuumWaterLevel.LOW: WATER_LEVEL_LOW,
 }
 
 # Dreame Vacuum cleaning mode names

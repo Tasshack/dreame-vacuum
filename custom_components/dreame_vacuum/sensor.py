@@ -55,13 +55,11 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         property_key=DreameVacuumProperty.STATE,
         device_class=f"{DOMAIN}__state",
         icon="mdi:robot-vacuum",
-        entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.STATUS,
         device_class=f"{DOMAIN}__status",
         icon="mdi:vacuum",
-        entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.RELOCATION_STATUS,
@@ -122,7 +120,6 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         property_key=DreameVacuumProperty.CHARGING_STATUS,
         device_class=f"{DOMAIN}__charging_status",
         icon="mdi:home-lightning-bolt",
-        entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.BATTERY_LEVEL,
