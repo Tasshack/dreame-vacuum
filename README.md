@@ -7,7 +7,7 @@ Complete app replacement for Dreame second generation lidar robot vacuums and a 
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map.png" width="46%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_app.png" width="46%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings.png" width="46%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings_app.png" width="46%">
 
 ## Features
-All features completely reverse engineered from Mi Home app RN plugin for Z10 Pro with latest firmware.
+All features completely reverse engineered from the official Mi Home app RN plugin for Z10 Pro with latest firmware.
 
 - [Auto generated device entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md)
 - [Live and multi floor map support](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md)
