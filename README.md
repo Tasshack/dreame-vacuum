@@ -4,10 +4,10 @@
 
 Complete app replacement for Dreame second generation lidar robot vacuums and a Valetudo alternative for devices above firmware version 1056.
 
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_app_.png" width="48%">  
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map.png" width="48%">  
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_app.png" width="48%">  
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings.png" width="48%">
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings_app_.png" width="48%">
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings_app.png" width="48%">
 
 ## Features
 All features completely reverse engineered from Mi Home app RN plugin for Z10 Pro with latest firmware.
