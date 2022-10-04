@@ -239,7 +239,7 @@ class DreameVacuumDevice:
                         changed = True
                     current_value = self.data.get(did)
                     if current_value is not None:
-                        _LOGGER.warn(
+                        _LOGGER.debug(
                             "%s Changed: %s -> %s", DreameVacuumProperty(did).name, current_value, value)
                     self.data[did] = value
                     if did in self._property_update_callback:
@@ -521,7 +521,7 @@ class DreameVacuumDevice:
     def _property_changed(self) -> None:
         """Call external listener when a property changed"""
         if self._update_callback:
-            _LOGGER.warn("Update Callback")
+            _LOGGER.debug("Update Callback")
             self._update_callback()
 
     def _update_failed(self, ex) -> None:
@@ -537,7 +537,7 @@ class DreameVacuumDevice:
             self.update()
         except Exception as ex:
             if self.available:
-                _LOGGER.warn("Update Failed: %s", ex)
+                _LOGGER.warning("Update Failed: %s", ex)
                 self._last_update_failed = time.time()
                 self.available = False
                 self._update_failed(ex)
@@ -1074,10 +1074,10 @@ class DreameVacuumDevice:
         if self._map_manager and not self.status.started:
             # Update status properties on memory for map renderer to update the image before action is sent to the device
             self._update_property(
-                DreameVacuumProperty.TASK_STATUS, DreameVacuumTaskStatus.AUTO_CLEANING
+                DreameVacuumProperty.TASK_STATUS, DreameVacuumTaskStatus.AUTO_CLEANING.value
             )
             self._update_property(
-                DreameVacuumProperty.STATUS, DreameVacuumStatus.CLEANING
+                DreameVacuumProperty.STATUS, DreameVacuumStatus.CLEANING.value
             )
             self._map_manager.editor.refresh_map()
         return self.call_action(DreameVacuumAction.START)
@@ -1115,10 +1115,10 @@ class DreameVacuumDevice:
                     # Update status properties on memory for map renderer to update the image before action is sent to the device
                     self._update_property(
                         DreameVacuumProperty.TASK_STATUS,
-                        DreameVacuumTaskStatus.COMPLETED,
+                        DreameVacuumTaskStatus.COMPLETED.value,
                     )
                     self._update_property(
-                        DreameVacuumProperty.STATUS, DreameVacuumStatus.STANDBY
+                        DreameVacuumProperty.STATUS, DreameVacuumStatus.STANDBY.value
                     )
                 # Clear active segments on current map data
                 self._map_manager.editor.set_active_segments([])
@@ -1167,10 +1167,10 @@ class DreameVacuumDevice:
         if self._map_manager and not self.status.started:
             # Update status properties on memory for map renderer to update the image before action is sent to the device
             self._update_property(
-                DreameVacuumProperty.TASK_STATUS, DreameVacuumTaskStatus.ZONE_CLEANING
+                DreameVacuumProperty.TASK_STATUS, DreameVacuumTaskStatus.ZONE_CLEANING.value
             )
             self._update_property(
-                DreameVacuumProperty.STATUS, DreameVacuumStatus.ZONE_CLEANING
+                DreameVacuumProperty.STATUS, DreameVacuumStatus.ZONE_CLEANING.value
             )
 
             # Set active areas on current map data is implemented on the app
@@ -1237,10 +1237,10 @@ class DreameVacuumDevice:
             # Update status properties on memory for map renderer to update the image before action is sent to the device
             self._update_property(
                 DreameVacuumProperty.TASK_STATUS,
-                DreameVacuumTaskStatus.SEGMENT_CLEANING,
+                DreameVacuumTaskStatus.SEGMENT_CLEANING.value,
             )
             self._update_property(
-                DreameVacuumProperty.STATUS, DreameVacuumStatus.SEGMENT_CLEANING
+                DreameVacuumProperty.STATUS, DreameVacuumStatus.SEGMENT_CLEANING.value
             )
             # Set active segments on current map data is implemented on the app
             self._map_manager.editor.set_active_segments(selected_segments)
@@ -1270,10 +1270,10 @@ class DreameVacuumDevice:
         if self._map_manager:
             # Update status properties on memory for map renderer to update the image before action is sent to the device
             self._update_property(
-                DreameVacuumProperty.TASK_STATUS, DreameVacuumTaskStatus.FAST_MAPPING
+                DreameVacuumProperty.TASK_STATUS, DreameVacuumTaskStatus.FAST_MAPPING.value
             )
             self._update_property(
-                DreameVacuumProperty.STATUS, DreameVacuumStatus.FAST_MAPPING
+                DreameVacuumProperty.STATUS, DreameVacuumStatus.FAST_MAPPING.value
             )
             self._map_manager.editor.refresh_map()
 
@@ -1284,10 +1284,10 @@ class DreameVacuumDevice:
         if self._map_manager:
             # Update status properties on memory for map renderer to update the image before action is sent to the device
             self._update_property(
-                DreameVacuumProperty.TASK_STATUS, DreameVacuumTaskStatus.AUTO_CLEANING
+                DreameVacuumProperty.TASK_STATUS, DreameVacuumTaskStatus.AUTO_CLEANING.value
             )
             self._update_property(
-                DreameVacuumProperty.STATUS, DreameVacuumStatus.CLEANING
+                DreameVacuumProperty.STATUS, DreameVacuumStatus.CLEANING.value
             )
             self._map_manager.editor.reset_map()
 
@@ -1510,7 +1510,9 @@ class DreameVacuumDevice:
 
         if self._map_manager:
             self._map_manager.request_next_map()
-            self._last_map_list_request = 0
+            self._last_map_list_request = 0            
+
+        self.schedule_update(5)
         return response
 
     def rename_map(self, map_id: int, map_name: str = "") -> dict[str, Any] | None:
@@ -1738,9 +1740,6 @@ class DreameVacuumDevice:
             )
 
         if self._map_manager:
-            if custom_name is not None:
-                # App does not allow you to enter space character on segment name
-                custom_name = custom_name.replace(" ", "-")
             segment_info = self._map_manager.editor.set_segment_name(
                 segment_id, segment_type, custom_name
             )
@@ -2701,6 +2700,8 @@ class DreameVacuumDeviceStatus:
     def attributes(self) -> dict[str, Any] | None:
         """Return the attributes of the device."""
         properties = [
+            DreameVacuumProperty.CLEANING_MODE,
+            DreameVacuumProperty.WATER_LEVEL,
             DreameVacuumProperty.ERROR,
             DreameVacuumProperty.CLEANING_TIME,
             DreameVacuumProperty.CLEANED_AREA,
@@ -2736,6 +2737,10 @@ class DreameVacuumDeviceStatus:
 
                 if prop is DreameVacuumProperty.ERROR:
                     value = self.error_name.replace("_", " ").capitalize()
+                elif prop is DreameVacuumProperty.WATER_LEVEL:
+                    value = self.water_level_name.capitalize()
+                elif prop is DreameVacuumProperty.CLEANING_MODE:
+                    value = self.cleaning_mode_name.replace("_", " ").capitalize()
 
                 attributes[prop_name] = value
 

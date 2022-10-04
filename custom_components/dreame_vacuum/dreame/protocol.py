@@ -669,9 +669,9 @@ class MiIOCloudProtocol:
     def get_file_url(self, object_name: str = "") -> Any:
         url = f"{self.get_api_url()}/home/getfileurl"
         params = json.dumps({"obj_name": object_name}, separators=(",", ":"))
-        _LOGGER.warn("Get file url: %s %s", url, params)
+        _LOGGER.debug("Get file url: %s %s", url, params)
         api_response = self.execute_api_call_encrypted(url, {"data": params})
-        _LOGGER.warn("Get file url result: %s", api_response)
+        _LOGGER.debug("Get file url result: %s", api_response)
         if (
             api_response is None
             or "result" not in api_response

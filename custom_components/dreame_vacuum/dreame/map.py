@@ -686,7 +686,7 @@ class DreameMapVacuumMapManager:
                 current_robot_position = copy.deepcopy(
                     self._map_data.robot_position) if self._map_data.robot_position else None
 
-                map_data = DreameVacuumMapDecoder.decode_P_map_data_from_partial(
+                map_data = DreameVacuumMapDecoder.decode_p_map_data_from_partial(
                     partial_map, self._map_data
                 )
                 if map_data:
@@ -697,7 +697,7 @@ class DreameMapVacuumMapManager:
                     self._current_map_id = map_data.map_id
                     self._current_timestamp_ms = map_data.timestamp_ms
 
-                    _LOGGER.warn(
+                    _LOGGER.debug(
                         "Decode P map %d %d", map_data.map_id, map_data.frame_id
                     )
 
@@ -815,14 +815,14 @@ class DreameMapVacuumMapManager:
                         self._current_timestamp_ms = map_data.timestamp_ms
 
                         if changed:
-                            _LOGGER.warn(
+                            _LOGGER.debug(
                                 "Decode I map %d %d", map_data.map_id, map_data.frame_id
                             )
 
                             self._map_data.last_updated = time.time()
                             self._map_data_changed()
                         else:
-                            _LOGGER.warn(
+                            _LOGGER.debug(
                                 "Decode map %d %d not changed",
                                 map_data.map_id,
                                 map_data.frame_id,
@@ -942,8 +942,8 @@ class DreameMapVacuumMapManager:
 
     def set_update_interval(self, update_interval: float) -> None:
         if self._update_interval != update_interval:
-            self.schedule_update(2)
             self._update_interval = update_interval
+            self.schedule_update()
 
     def set_device_running(self, device_running: bool) -> None:
         if self._device_running != device_running:
@@ -968,7 +968,7 @@ class DreameMapVacuumMapManager:
     def request_next_map(self) -> None:
         self._map_request_count = 0
         self._need_map_request = True
-        self.schedule_update(1.5)
+        self.schedule_update(2)
 
     def request_next_map_list(self) -> None:
         self._need_map_list_request = True
@@ -982,7 +982,7 @@ class DreameMapVacuumMapManager:
                     self._map_list_object_name = object_name
                     if not self._device_running and self._map_list_md5 is not None:
                         self.request_next_map_list()
-                        self.schedule_update(0.5)
+                        self.schedule_update(1)
                     self._map_list_md5 = md5
                     return True
         return False
@@ -1025,14 +1025,13 @@ class DreameMapVacuumMapManager:
 
                     for (map_id, saved_map_data) in sorted(map_list.items()):
                         if map_id in self._saved_map_data:
-                            if self._selected_map_id != map_id:
-                                saved_map_data.cleanset = saved_map_data.cleanset
+                            if self._selected_map_id == map_id and self._map_data:
+                                saved_map_data.cleanset = self._map_data.cleanset
                             else:
-                                saved_map_data.cleanset = self._saved_map_data[
-                                    map_id
-                                ].cleanset
+                                saved_map_data.cleanset = self._saved_map_data[map_id].cleanset
 
                             if self._saved_map_data[map_id] != saved_map_data:
+                                _LOGGER.debug("Saved map changed: %s", map_id)
                                 changed = True
                                 saved_map_data.last_updated = now
                                 if (
@@ -1527,14 +1526,15 @@ class DreameMapVacuumMapEditor:
                 self.refresh_map(self._selected_map_id)
 
                 for (k, v) in map_data.segments.items():
-                    segment_info[str(k)] = {
-                        MAP_REQUEST_PARAMETER_TYPE: map_data.segments[k].type,
-                        MAP_REQUEST_PARAMETER_INDEX: map_data.segments[k].index,
-                    }
                     if map_data.segments[k].custom_name is not None:
-                        segment_info[str(k)][MAP_PARAMETER_NAME] = base64.b64encode(
+                        segment_info[k] = {MAP_PARAMETER_NAME: base64.b64encode(
                             map_data.segments[k].custom_name.encode("utf-8")
-                        ).decode("utf-8")
+                        ).decode("utf-8"), MAP_REQUEST_PARAMETER_TYPE: 0, MAP_REQUEST_PARAMETER_INDEX: 0}
+                    elif map_data.segments[k].type:
+                        segment_info[k] = {MAP_REQUEST_PARAMETER_TYPE: map_data.segments[k].type,
+                                           MAP_REQUEST_PARAMETER_INDEX: map_data.segments[k].index}
+                    else:
+                        segment_info[k] = {}
 
                 self._set_updated_frame_id(map_data.frame_id)
                 self.refresh_map()
@@ -1881,7 +1881,6 @@ class DreameVacuumMapDecoder:
         if (
             (data_json.get("nr") and data_json["nr"])
             or map_data.robot_position.a == 32767
-            or map_data.saved_map
         ):
             map_data.robot_position = None
 
@@ -1901,7 +1900,7 @@ class DreameVacuumMapDecoder:
                 operator = match["operator"]
 
                 # You will only get "l" paths with in a P frame.
-                # It means this path is connected with the path from previous frame and it should be rendered as a line.
+                # It means path is connected with the path from previous frame and it should be rendered as a line.
                 absolute_point = operator == "l"
                 if operator == "S" or absolute_point:
                     if absolute_point:
@@ -1948,7 +1947,7 @@ class DreameVacuumMapDecoder:
         map_data.empty_map = map_data.frame_type == MapFrameType.I.value
         if (width * height) > 0:
             map_data.data = raw[DreameVacuumMapDecoder.HEADER_SIZE:image_size]
-            map_data.empty_map = width == 2 and height == 2
+            map_data.empty_map = bool(width == 2 and height == 2)
             if map_data.empty_map:
                 for y in range(height):
                     for x in range(width):
@@ -2155,7 +2154,7 @@ class DreameVacuumMapDecoder:
         return map_data, saved_map_data
 
     @staticmethod
-    def decode_P_map_data_from_partial(
+    def decode_p_map_data_from_partial(
         partial_map: MapDataPartial, current_map_data: MapData
     ) -> MapData | None:
         if partial_map.frame_type != MapFrameType.P.value:
@@ -2180,8 +2179,8 @@ class DreameVacuumMapDecoder:
         if map_data.charger_position is not None:
             current_map_data.charger_position = map_data.charger_position
 
-        # P map only returns the difference between its previous frame.
-        # Calculate new map size and update the buffer according to the received data.
+        # P map only returns difference between its previous frame.
+        # Calculate new map size and update the buffer according to the received data at received offset.
         if map_data.data:
             current_dimensions = current_map_data.dimensions
             new_dimensions = map_data.dimensions
@@ -2205,6 +2204,7 @@ class DreameVacuumMapDecoder:
             width = int((max_left - left) / grid_size)
             height = int((max_top - top) / grid_size)
 
+            # Create new buffer
             data = np.zeros((width * height), np.uint8)
             pixel_type = np.full(
                 (width, height), MapPixelType.OUTSIDE.value, dtype=np.uint8)
@@ -3144,7 +3144,7 @@ class DreameVacuumMapRenderer:
             and self._image
         ):
             self.render_complete = True
-            _LOGGER.warn("Skip render frame, map data not changed")
+            _LOGGER.debug("Skip render frame, map data not changed")
             return self._to_buffer(self._image)
 
         if (
@@ -3273,7 +3273,7 @@ class DreameVacuumMapRenderer:
         elif map_data.rotation == 270:
             image = image.transpose(Image.ROTATE_270)
 
-        _LOGGER.warn(
+        _LOGGER.debug(
             "Render frame: %s:%s took: %.2f at scale %s",
             map_data.map_id,
             map_data.frame_id,
@@ -3542,7 +3542,7 @@ class DreameVacuumMapRenderer:
             )
             enhancer = ImageEnhance.Brightness(self._robot_icon)
             if self.color_scheme is 0:
-                self._robot_icon = enhancer.enhance(0.8)
+                self._robot_icon = enhancer.enhance(0.9)
             else:
                 self._robot_icon = enhancer.enhance(1.5)
 
@@ -3650,7 +3650,7 @@ class DreameVacuumMapRenderer:
                     text_color = MAP_COLOR_BLACK
                     text_stroke = (0, 0, 0, 200)
                 else:
-                    icon_bg = (0, 0, 0, 128)
+                    icon_bg = (0, 0, 0, 100)
                     text_color = MAP_COLOR_WHITE
                     text_stroke = (255, 255, 255, 200)
 
@@ -3666,7 +3666,7 @@ class DreameVacuumMapRenderer:
                 if text:
                     text_font = ImageFont.truetype(
                         BytesIO(self.font_file),
-                        (scale * 20) if segment.index > 0 else (scale * 12),
+                        (scale * 18) if segment.index > 0 else (scale * 14),
                     )
                 if segment.order:
                     order_font = ImageFont.truetype(
@@ -3678,7 +3678,7 @@ class DreameVacuumMapRenderer:
                 y = p.y
 
                 if segment.type != 0 or text_font:
-                    icon_size = size * 1.45
+                    icon_size = size * 1.3
                     icon = self._segment_icons.get(segment.type, 0)
                     x0 = x - size
                     y0 = y - size
@@ -3694,11 +3694,13 @@ class DreameVacuumMapRenderer:
                             padding = icon_size / 2
                             text_offset = (icon_size / 2) + 2
                             icon_offset = 2
+                            th = scale * 26
                         else:
                             icon_size = size * 1.15
                             padding = icon_size / 4
                             icon_offset = padding - 2
                             text_offset = icon_size / 2
+                            th = scale * 20
 
                         if rotation == 90 or rotation == 270:
                             y0 = y0 - ws - padding
@@ -3706,11 +3708,11 @@ class DreameVacuumMapRenderer:
 
                             if rotation == 90:
                                 ty = (y - ws + text_offset) * scale
-                                tx = (x - (th / 4) + 2) * scale
+                                tx = (x - (th / 4)) * scale
                                 y = y - ws - icon_offset
                             else:
                                 ty = (y - ws - text_offset) * scale
-                                tx = (x - (th / 4) - 2) * scale
+                                tx = (x - (th / 4)) * scale
                                 y = y + ws + icon_offset
                         else:
                             x0 = x0 - ws - padding
@@ -3718,11 +3720,11 @@ class DreameVacuumMapRenderer:
 
                             if rotation == 0:
                                 tx = (x - ws + text_offset) * scale
-                                ty = (y - (th / 4) - 2) * scale
+                                ty = (y - (th / 4)) * scale
                                 x = x - ws - icon_offset
                             else:
                                 tx = (x - ws - text_offset) * scale
-                                ty = (y - (th / 4) + 2) * scale
+                                ty = (y - (th / 4)) * scale
                                 x = x + ws + icon_offset
 
                         draw.rounded_rectangle(
@@ -3861,10 +3863,11 @@ class DreameVacuumMapRenderer:
 
                     if custom:
                         if self.color_scheme is 0:
-                            bg_color = (255, 255, 255, 195)
+                            bg_color = (255, 255, 255, 190)
                         else:
-                            bg_color = (255, 255, 255, 185)
+                            bg_color = (255, 255, 255, 180)
                         icon_size = size * 1.45
+
                         s = icon_size * 0.85 * scale
                         ico = DreameVacuumMapRenderer._set_icon_color(
                             self._fan_speed_icon[segment.fan_speed],
