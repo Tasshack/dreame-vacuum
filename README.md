@@ -4,7 +4,9 @@
 
 Complete app replacement for Dreame second generation lidar robot vacuums and a Valetudo alternative for devices above firmware version 1056.
 
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map.png" width="46%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_app.png" width="46%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings.png" width="46%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings_app.png" width="46%">
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map.png" width="48%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_app.png" width="48%">
+
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings.png" width="48%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings_app.png" width="48%">
 
 ## Features
 All features completely reverse engineered from the official Mi Home app RN plugin for Z10 Pro with latest firmware.
@@ -61,12 +63,12 @@ Assistant root directory, e.g. `git clone https://github.com/tasshack/dreame-vac
   - Select **Dreame Vacuum** from the list
   - Confirm form submission
 - Select configuration type;
-  - **With Map (Automatic):**
-  - **Without Map (Manual):**
+  - **With Map (Automatic):** Cloud and local connection with map support.
+  - **Without Map (Manual):** Local connection to device without map support.
 - Enter your credentials according to the selected configuration
 - Set your device name and integration settings;
-  - **Notification:**
-  - **Map Color Scheme:** 
+  - **Notification:** Enable/Disable persistent notifications.
+  - **Map Color Scheme:** Select from predefined map rendering colors. 
  
 ## How to Use
 
@@ -243,9 +245,10 @@ attributes:
 
 ```
 
-#### Blueprints
+### Blueprints
 
-TODO
+- #### [Disabling obstacle avoidance on selected room](https://github.com/Tasshack/dreame-vacuum/blob/master/blueprints/automation/disable_obstacle_avoidance_on_selected_room.yaml)
+    Line laser based 3D obstacle avoidance is great but it is affected from reflective surfaces can be found on kitchen or corridors. This integration exposes robots current room as entity so it can be used on automations.
 
 ## To Do
 

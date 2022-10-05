@@ -9,8 +9,8 @@ from .types import (
     DreameVacuumCarpetSensitivity,
     DreameVacuumTaskStatus,
     DreameVacuumState,
-    PROPERTY_AVAILABILTY,
-    ACTION_AVAILABILTY,
+    PROPERTY_AVAILABILITY,
+    ACTION_AVAILABILITY,
 )
 from .const import (
     FAN_SPEED_CODE_TO_NAME,

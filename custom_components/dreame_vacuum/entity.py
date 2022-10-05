@@ -23,8 +23,8 @@ from .dreame import (
     InvalidValueException,
     PROPERTY_TO_NAME,
     ACTION_TO_NAME,
-    PROPERTY_AVAILABILTY,
-    ACTION_AVAILABILTY,
+    PROPERTY_AVAILABILITY,
+    ACTION_AVAILABILITY,
 )
 
 
@@ -82,10 +82,10 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
 
             if description.available_fn is None:
                 if description.property_key is not None:
-                    description.available_fn = PROPERTY_AVAILABILTY.get(
+                    description.available_fn = PROPERTY_AVAILABILITY.get(
                         description.property_key)
                 elif description.action_key is not None:
-                    description.available_fn = ACTION_AVAILABILTY.get(
+                    description.available_fn = ACTION_AVAILABILITY.get(
                         description.action_key)
 
         super().__init__(coordinator=coordinator)

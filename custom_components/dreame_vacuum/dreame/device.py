@@ -162,6 +162,10 @@ class DreameVacuumDevice:
             self._cloud_connection = MiIOCloudProtocol(
                 username, password, country)
 
+            self._map_manager = DreameMapVacuumMapManager(
+                self._device_connection, self._cloud_connection
+            )
+
             self.listen(self._map_list_changed, DreameVacuumProperty.MAP_LIST)
             self.listen(self._recovery_map_list_changed,
                         DreameVacuumProperty.RECOVERY_MAP_LIST)
@@ -178,9 +182,6 @@ class DreameVacuumDevice:
                 self._map_property_changed, DreameVacuumProperty.CUSTOMIZED_CLEANING
             )
 
-            self._map_manager = DreameMapVacuumMapManager(
-                self._device_connection, self._cloud_connection
-            )
             self._map_manager.listen(self._property_changed)
             self._map_manager.listen_error(self._update_failed)
 

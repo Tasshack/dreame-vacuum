@@ -551,8 +551,8 @@ DreameVacuumActionMapping = {
     DreameVacuumAction.RESET_MOP: {"siid": 18, "aiid": 1},
 }
 
-PROPERTY_AVAILABILTY: Final = {
-    DreameVacuumProperty.CUSTOMIZED_CLEANING: lambda device: not device.status.started and device.status.has_saved_map,
+PROPERTY_AVAILABILITY: Final = {
+    DreameVacuumProperty.CUSTOMIZED_CLEANING: lambda device: not device.status.started and (device.status.has_saved_map or device.status.current_map is None),
     DreameVacuumProperty.TIGHT_MOPING: lambda device: device.status.water_tank_installed and not device.status.started,
     DreameVacuumProperty.MULTI_FLOOR_MAP: lambda device: not device.status.has_temporary_map,
     DreameVacuumProperty.MOP_CLEANING_REMAINDER: lambda device: device.status.water_tank_installed,
@@ -568,7 +568,7 @@ PROPERTY_AVAILABILTY: Final = {
     DreameVacuumProperty.RELOCATION_STATUS: lambda device: not device.status.fast_mapping,
 }
 
-ACTION_AVAILABILTY: Final = {
+ACTION_AVAILABILITY: Final = {
     DreameVacuumAction.RESET_MAIN_BRUSH: lambda device: bool(device.status.main_brush_life < 100),
     DreameVacuumAction.RESET_SIDE_BRUSH: lambda device: bool(device.status.side_brush_life < 100),
     DreameVacuumAction.RESET_FILTER: lambda device: bool(device.status.filter_life < 100),

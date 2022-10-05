@@ -408,14 +408,13 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
             self._attr_icon = "mdi:robot-vacuum"
 
         if self.device.status.started and (self.device.status.customized_cleaning and not self.device.status.zone_cleaning):
-            self._attr_fan_speed_list = [STATE_UNAVAILABLE.capitalize()]
+            self._attr_fan_speed_list = None
             self._attr_fan_speed = STATE_UNAVAILABLE.capitalize()
         else:
             self._attr_fan_speed_list = list({k.capitalize() for k in self.device.status.fan_speed_list})
-            self._attr_fan_speed_list.reverse()
             self._attr_fan_speed = self.device.status.fan_speed_name.capitalize()
 
-        self._attr_battery_level = self.device.status.battery_level           
+        self._attr_battery_level = self.device.status.battery_level
         self._attr_extra_state_attributes = self.device.status.attributes
         self._attr_state = STATE_CODE_TO_STATE.get(self.device.status.state, STATE_UNKNOWN)
         self._attr_status = self.device.status.status_name.replace("_", " ").capitalize()

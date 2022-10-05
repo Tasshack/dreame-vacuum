@@ -3863,9 +3863,9 @@ class DreameVacuumMapRenderer:
 
                     if custom:
                         if self.color_scheme is 0:
-                            bg_color = (255, 255, 255, 190)
+                            bg_color = (255, 255, 255, 205)
                         else:
-                            bg_color = (255, 255, 255, 180)
+                            bg_color = (255, 255, 255, 185)
                         icon_size = size * 1.45
 
                         s = icon_size * 0.85 * scale

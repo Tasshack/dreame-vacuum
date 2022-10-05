@@ -487,10 +487,11 @@ class DreameVacuumSegmentSelectEntity(DreameVacuumEntity, SelectEntity):
         segment_id: int,
     ) -> None:
         """Initialize Dreame Vacuum Segment Select."""
-        self.segment = None
         self.segment_id = segment_id
         if segment_id in coordinator.data.status.segments:
             self.segment = copy.deepcopy(coordinator.data.status.segments[segment_id])
+        else:
+            self.segment = None
 
         super().__init__(coordinator, description)
         self._attr_unique_id = f"{self.device.mac}_room_{segment_id}_{description.key.lower()}"

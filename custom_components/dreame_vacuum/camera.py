@@ -89,7 +89,6 @@ def async_update_map_cameras(
                 DreameVacuumCameraEntityDescription(
                     entity_category=EntityCategory.CONFIG,
                     icon="mdi:map-search",
-                    entity_registry_enabled_default=False,
                 ),
                 color_scheme,
                 map_index,
@@ -136,7 +135,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         self._frame_id = -1
         self._last_map_request = 0
         self._attr_is_streaming = True
-
+        
         self._available = self.device.device_connected
         if description.map_data_json:
             self._renderer = DreameVacuumMapDataRenderer()
@@ -147,9 +146,14 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         self.map_index = map_index
 
         map_data = self._map_data
-        self._map_id = map_data.map_id
+        if map_data:
+            self._map_id = map_data.map_id
+
         if self.map_index:
-            self._map_name = map_data.custom_name
+            if map_data:
+                self._map_name = map_data.custom_name
+            else:
+                self._map_name = None
             self._set_map_name()
             self._attr_unique_id = f"{self.device.mac}_map_{self.map_index}"
             self.entity_id = f"camera.{self.device.name.lower()}_map_{self.map_index}"
