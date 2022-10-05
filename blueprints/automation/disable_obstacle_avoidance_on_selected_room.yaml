@@ -27,18 +27,18 @@ variables:
 
 trigger:
   - platform: state
-    entity_id: {{ "camera." + vacuum.split('.')[1] + "_map" }}
+    entity_id: {{ 'camera.' + vacuum.split('.')[1] + '_map' }}
     attribute: vacuum_position
 condition: {{ 
     (
-        states["sensor." + vacuum.split('.')[1] + "_current_room"].state != "unavailable" and 
+        states['sensor.' + vacuum.split('.')[1] + '_current_room'].state != 'unavailable' and 
         (
             (
-                states["switch.{{ vacuum.split('.')[1] }}_obstacle_avoidance"].state == "on" and 
-                states["sensor." + vacuum.split('.')[1] + "_current_room"].attributes.room_id == segment_id
+                states['switch.' + vacuum.split('.')[1] + '_obstacle_avoidance'].state == 'on' and 
+                states['sensor.' + vacuum.split('.')[1] + '_current_room'].attributes.room_id == segment_id
             ) or 
             (
-                states["switch.{{ vacuum.split('.')[1] }}_obstacle_avoidance"].state == "off"
+                states['switch.' + vacuum.split('.')[1] + '_obstacle_avoidance'].state == 'off'
             )
         )
     ) 
@@ -46,11 +46,11 @@ condition: {{
 
 action:
     - service: | 
-        {% if states["sensor." + vacuum.split('.')[1] + "_current_room"].attributes.room_id == segment_id %}
+        {% if states['sensor.' + vacuum.split('.')[1] + '_current_room'].attributes.room_id == segment_id %}
             switch.turn_off
         {% else %}  
             switch.turn_on
         {% endif %}
     target:
-        entity_id: {{ "switch." + vacuum.split('.')[1] + "_obstacle_avoidance" }}
+        entity_id: {{ 'switch.' + vacuum.split('.')[1] + '_obstacle_avoidance' }}
     data: {}
