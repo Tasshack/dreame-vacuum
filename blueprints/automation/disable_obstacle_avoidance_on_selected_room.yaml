@@ -33,20 +33,21 @@ trigger:
   - platform: state
     entity_id: "{{ camera_name }}"
     attribute: vacuum_position
-condition: "{{ 
-    (
-        states[sensor_name].state != "unavailable" and 
+condition: |
+    {{ 
         (
+            states[sensor_name].state != 'unavailable' and 
             (
-                states[switch_name].state == "on" and 
-                states[sensor_name].attributes.room_id == segment_id
-            ) or 
-            (
-                states[switch_name].state == "off"
+                (
+                    states[switch_name].state == 'on' and 
+                    states[sensor_name].attributes.room_id == segment_id
+                ) or 
+                (
+                    states[switch_name].state == 'off'
+                )
             )
-        )
-    ) 
-    }}"
+        ) 
+    }}
 
 action:
     - service: | 
