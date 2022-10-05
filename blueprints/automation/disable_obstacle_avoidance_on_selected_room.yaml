@@ -6,7 +6,7 @@ blueprint:
   source_url: https://github.com/Tasshack/dreame-vacuum/blob/master/blueprints/automation/disable_obstacle_avoidance_on_selected_room.yaml
   input:
     vacuum:
-      name: Vacuum device
+      name: Vacuum
       selector:
         entity:
           domain: vacuum
@@ -24,33 +24,37 @@ mode: single
 variables:
   segment_id: !input segment_id
   vacuum: !input vacuum
+  vacuum_name: "{{ vacuum.split('.')[1] }}"
+  sensor_name: "sensor.{{ vacuum_name }}_current_room"
+  switch_name: "switch.{{ vacuum_name }}_obstacle_avoidance"
+  camera_name: "camera.{{ vacuum_name }}_map"
 
 trigger:
   - platform: state
-    entity_id: {{ "camera." + vacuum.split(".")[1] + "_map" }}
+    entity_id: "{{ camera_name }}"
     attribute: vacuum_position
-condition: {{ 
+condition: "{{ 
     (
-        states["sensor." + vacuum.split(".")[1] + "_current_room"].state != "unavailable" and 
+        states[sensor_name].state != "unavailable" and 
         (
             (
-                states["switch." + vacuum.split(".")[1] + "_obstacle_avoidance"].state == "on" and 
-                states["sensor." + vacuum.split(".")[1] + "_current_room"].attributes.room_id == segment_id
+                states[switch_name].state == "on" and 
+                states[sensor_name].attributes.room_id == segment_id
             ) or 
             (
-                states["switch." + vacuum.split(".")[1] + "_obstacle_avoidance"].state == "off"
+                states[switch_name].state == "off"
             )
         )
     ) 
-    }}
+    }}"
 
 action:
     - service: | 
-        {% if states["sensor." + vacuum.split(".")[1] + "_current_room"].attributes.room_id == segment_id %}
+        {% if states[sensor_name].attributes.room_id == segment_id %}
             switch.turn_off
         {% else %}  
             switch.turn_on
         {% endif %}
     target:
-        entity_id: {{ "switch." + vacuum.split(".")[1] + "_obstacle_avoidance" }}
+        entity_id: "{{ switch_name }}"
     data: {}
