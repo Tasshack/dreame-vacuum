@@ -10,7 +10,7 @@ blueprint:
       selector:
         entity:
           domain: vacuum
-    segment_id:
+    room_id:
       name: Selected room id
       selector:
         number:
@@ -22,40 +22,31 @@ blueprint:
 mode: single
 
 variables:
-  segment_id: !input segment_id
+  room_id: !input room_id
   vacuum: !input vacuum
   vacuum_name: "{{ vacuum.split('.')[1] }}"
-  sensor_name: "sensor.{{ vacuum_name }}_current_room"
-  switch_name: "switch.{{ vacuum_name }}_obstacle_avoidance"
-  camera_name: "camera.{{ vacuum_name }}_map"
+  current_room: "sensor.{{ vacuum_name }}_current_room"
+  switch: "switch.{{ vacuum_name }}_obstacle_avoidance"
+  camera: "camera.{{ vacuum_name }}_map"
 
 trigger:
   - platform: state
-    entity_id: "{{ camera_name }}"
+    entity_id: !input vacuum
+  - platform: state
+    entity_id: "{{ camera }}"
     attribute: vacuum_position
-condition: |
-    {{ 
-        (
-            states[sensor_name].state != 'unavailable' and 
-            (
-                (
-                    states[switch_name].state == 'on' and 
-                    states[sensor_name].attributes.room_id == segment_id
-                ) or 
-                (
-                    states[switch_name].state == 'off'
-                )
-            )
-        ) 
-    }}
+  - platform: state
+    entity_id: "{{ current_room }}"
+
+condition: "{{ (not is_state(current_room, 'unavailable') and ((is_state(switch, 'on') and is_state_attr(current_room, 'room_id', room_id)) or is_state(switch, 'off'))) }}"
 
 action:
     - service: | 
-        {% if states[sensor_name].attributes.room_id == segment_id %}
+        {% if is_state_attr(current_room, 'room_id', room_id) %}
             switch.turn_off
         {% else %}  
             switch.turn_on
         {% endif %}
     target:
-        entity_id: "{{ switch_name }}"
+        entity_id: "{{ switch }}"
     data: {}
