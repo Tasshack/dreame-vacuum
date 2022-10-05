@@ -1,24 +1,3 @@
----
-blueprint:
-  name: Disable obstacle avoidance on selected room
-  description: Disable/Enable obstacle avoidance according to the robots current room
-  domain: automation
-  source_url: https://github.com/Tasshack/dreame-vacuum/blob/master/blueprints/automation/disable_obstacle_avoidance_on_selected_room.yaml
-  input:
-    vacuum:
-      name: Vacuum device
-      selector:
-        entity:
-          domain: vacuum
-    segment_id:
-      name: Selected room id
-      selector:
-        number:
-          min: 1
-          max: 62
-          mode: box
-
-
 mode: single
 
 variables:
@@ -27,7 +6,7 @@ variables:
 
 trigger:
   - platform: state
-    entity_id: "camera.{{ vacuum.split('.')[1] }}_map"
+    entity_id: {{ "camera." + vacuum.split('.')[1] + "_map" }}
     attribute: vacuum_position
 condition: {{ 
     (
@@ -52,5 +31,5 @@ action:
             switch.turn_on
         {% endif %}
     target:
-        entity_id: "switch.{{ vacuum.split('.')[1] }}_obstacle_avoidance"
+        entity_id: {{ "switch." + vacuum.split('.')[1] + "_obstacle_avoidance" }}
     data: {}
