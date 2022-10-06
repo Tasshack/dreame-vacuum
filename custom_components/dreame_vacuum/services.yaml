@@ -27,12 +27,12 @@ vacuum_clean_segment:
   fields:
     segments:
       description: List of rooms to be cleaned. Only room's Character or an array of room's character, repeats, fan speed and mop mode to override the default values per room.
-      example: "[3,2]"
+      example: "[3,2] or 3" 
       required: true
       selector:
         object:
     repeats:
-      description: Number of cleaning passes for every selected room (unless it is overridden by rooms parameter).
+      description: Number of cleaning passes for every selected room (unless it is overridden by segments parameter).
       example: 2
       required: false
       selector:
@@ -40,7 +40,7 @@ vacuum_clean_segment:
           min: 1
           max: 3
     fan_speed:
-      description: Fan speed for every selected room (unless it is overridden by rooms parameter).
+      description: Fan speed for every selected room (unless it is overridden by segments parameter).
       example: 1
       required: false
       selector:
@@ -48,36 +48,13 @@ vacuum_clean_segment:
           min: 0
           max: 4
     water_level:
-      description: Water level for every selected room (unless it is overridden by rooms parameter).
+      description: Water level for every selected room (unless it is overridden by segments parameter).
       example: 3
       required: false
       selector:
         number:
           min: 1
           max: 3
-          
-vacuum_set_water_level:
-  description: Set water level for mopping.
-  target:
-    entity:
-      domain: vacuum
-  fields:
-    water_level:
-      description: water level, 1:Low, 2:Medium, 3:High. Numbers are also accepted.
-      default: "Medium"
-      required: true
-      selector:
-        select:
-          options:
-            - "Low"
-            - "Medium"
-            - "High"
-
-vacuum_clear_warning:
-  description: Clears the error state of the vacuum.
-  target:
-    entity:
-      domain: vacuum
 
 vacuum_set_dnd:
   description: Enable/disable DnD functionallity and/or setting its start and end time.
@@ -174,7 +151,7 @@ vacuum_select_map:
       domain: vacuum
   fields:
     map_id:
-      description: id of the map to be selected.
+      description: ID of the map to be selected.
       example: 14
       required: true
       selector:
@@ -188,7 +165,7 @@ vacuum_delete_map:
       domain: vacuum
   fields:
     map_id:
-      description: id of the map to be deleted.
+      description: ID of the map to be deleted.
       example: 14
       required: false
       selector:
@@ -247,7 +224,7 @@ vacuum_restore_map:
       domain: vacuum
   fields:
     map_id:
-      description: id of the map to be restores.
+      description: ID of the map to be restored.
       example: 14
       required: false
       selector:

@@ -532,7 +532,9 @@ class DreameVacuumDevice:
 
     def _update_task(self) -> None:
         """Timer task for updading properties periodically"""
-        self._update_timer = None
+        if self._update_timer is not None:
+            self._update_timer.cancel()
+            self._update_timer = None
 
         try:
             self.update()

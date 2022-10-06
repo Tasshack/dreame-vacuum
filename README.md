@@ -9,13 +9,13 @@ Complete app replacement for Dreame second generation lidar robot vacuums and a 
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings.png" width="48%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings_app.png" width="48%">
 
 ## Features
-All features completely reverse engineered from the official Mi Home app RN plugin for Z10 Pro with latest firmware.
+All features completely reverse engineered from the official Mi Home app RN plugin for Z10 Pro with firmware version 1156.
 
 - [Auto generated device entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md)
-- [Live and multi floor map support](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md)
-- [Customized room cleaning entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md)
-- [Services](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md)
-- [Persistent notifications](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md)
+- [Live and multi floor map support](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md)
+- [Customized room cleaning entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/room_entities.md)
+- [Services for device and map](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/sevices.md)
+- [Persistent notifications and error reporting](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md)
 - [Valetudo map card support](#with-valetudo-map-card)
 
 ## Supported Devices
@@ -38,12 +38,14 @@ All features completely reverse engineered from the official Mi Home app RN plug
 - `dreame.vacuum.p2114o` 
 - `dreame.vacuum.p2149o` 
 - `dreame.vacuum.p2150o`
+- *`More to be added later...`*
+
 
 ## Installation
 
 ### Manually
 
-- Clone the repository to a folder called "custom_components" in your Home
+- Clone the repository to a folder called **custom_components** in your Home
 Assistant root directory, e.g. `git clone https://github.com/tasshack/dreame-vacuum ~/.homeassistant/custom_components/dreame-vacuum`
 - Restart Home Assistant
 
@@ -129,7 +131,7 @@ map_modes:
 
 ```yaml
 type: custom:vacuum-card
-entity: # Vacuum Entity
+entity: # Your vacuum entity
 map: # Map Entity
 map_refresh: 1
 stats:
@@ -157,30 +159,30 @@ shortcuts:
   - name: Clean Room 1
     service: dreame_vacuum.vacuum_clean_segment
     service_data:
-      entity_id: # Vacuum Entity
+      entity_id: # Your vacuum entity
       segments: 1
     icon: mdi:sofa
   - name: Clean Room 2
     service: dreame_vacuum.vacuum_clean_segment
     service_data:
-      entity_id: # Vacuum Entity
+      entity_id: # Your vacuum entity
       segments: 2
     icon: mdi:bed-empty
   - name: Clean Room 3
     service: dreame_vacuum.vacuum_clean_segment
     service_data:
-      entity_id: # Vacuum Entity
+      entity_id: # Your vacuum entity
       segments: 3
     icon: mdi:silverware-fork-knife
 ```
 
 #### With [Valetudo Map Card](https://github.com/Hypfer/lovelace-valetudo-map-card)
- > Enable `camera.[vacuum_name]_map_data` entity. 
+ > Enable **Map Data** camera entity. 
 [![Open your Home Assistant instance and show your entities.](https://my.home-assistant.io/badges/entities.svg)](https://my.home-assistant.io/redirect/entities/)
 
 ```yaml
 type: custom:valetudo-map-card
-vacuum: # Vacuum Entity
+vacuum: # Your vacuum entity
 title: Lovelace Valetudo Map Card
 wall_color: rgb(159, 159, 159)
 floor_color: rgb(221, 221, 221)
@@ -202,11 +204,11 @@ segment_colors:
 #### With [Xiaomi Vacuum Card](https://github.com/benct/lovelace-xiaomi-vacuum-card) and Picture Entity Card
 ```yaml
 type: picture-entity
-entity: # Vacuum Entity
+entity: # Your vacuum entity
+camera_image: # Your camera entity
 show_state: false
 show_name: false
 camera_view: live
-camera_image: # Camera Entity
 tap_action:
   action: none
 hold_action:
@@ -215,7 +217,7 @@ hold_action:
 
 ```yaml
 type: custom:xiaomi-vacuum-card
-entity: # Vacuum Entity
+entity: # Your vacuum entity
 vendor: xiaomi
 attributes:
   main_brush_life:
@@ -247,18 +249,33 @@ attributes:
 
 ### Blueprints
 
-- #### [Disabling obstacle avoidance on selected room](https://github.com/Tasshack/dreame-vacuum/blob/master/blueprints/automation/disable_obstacle_avoidance_on_selected_room.yaml)
+- ##### [Disabling obstacle avoidance on selected room](https://github.com/Tasshack/dreame-vacuum/blob/master/blueprints/automation/disable_obstacle_avoidance_on_selected_room.yaml) 
     Line laser based 3D obstacle avoidance is great but it is affected from reflective surfaces can be found on kitchen or corridors. This integration exposes robots current room as entity so it can be used on automations.
+
+    [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2FTasshack%2Fdreame-vacuum%2Fblob%2Fmaster%2Fblueprints%2Fautomation%2Fdisable_obstacle_avoidance_on_selected_room.yaml)
 
 ## To Do
 
-TODO
+- 2FA Notifications
+- Map recovery support
+- Schedule editing
+- Cleaning history map suport
+- Map streaming optimisations
+- Custom map color support
+- AI Obstacle rendering support
+- Support for non lidar Dreame vacuums
+- Custom lovelace card for map editing
+
+## Known Issues
+
+- Remote control commands not working properly
+- Translations are missing for states and config flow
 
 ## Thanks
 
  - [xiaomi_vacuum](https://github.com/pooyashahidi/xiaomi_vacuum) by [@pooyashahidi](https://github.com/pooyashahidi)
  - [xiaomi_miot_raw](https://github.com/ha0y/xiaomi_miot_raw) by [@ha0y](https://github.com/ha0y)
- - [Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor](https://github.com/iotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor) by [@PiotrMachowski](https://github.com/PiotrMachowski)
+ - [Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor) by [@PiotrMachowski](https://github.com/PiotrMachowski)
  - [Valetudo](https://github.com/Hypfer/Valetudo) by [@Hypfer](https://github.com/Hypfer)
 
 

@@ -6,10 +6,11 @@ blueprint:
     source_url: https://github.com/Tasshack/dreame-vacuum/blob/master/blueprints/automation/disable_obstacle_avoidance_on_selected_room.yaml
     input:
         vacuum:
-            name: Vacuum
+            name: Vacuum Entity
             selector:
                 entity:
                     domain: vacuum
+                    integration: dreame_vacuum
         room_id:
             name: Selected room id
             selector:

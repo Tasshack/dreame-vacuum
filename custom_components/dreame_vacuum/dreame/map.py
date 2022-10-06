@@ -429,7 +429,9 @@ class DreameMapVacuumMapManager:
             self._update_callback()
 
     def _update_task(self) -> None:
-        self._update_timer = None
+        if self._update_timer is not None:
+            self._update_timer.cancel()
+            self._update_timer = None
 
         self.update()
         self.schedule_update(self._update_interval)

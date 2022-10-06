@@ -1,0 +1,1 @@
+# Customized cleaning room entities
