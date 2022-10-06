@@ -14,7 +14,7 @@ All features completely reverse engineered from the official Mi Home app RN plug
 - [Auto generated device entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md)
 - [Live and multi floor map support](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md)
 - [Customized room cleaning entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/room_entities.md)
-- [Services for device and map](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/sevices.md)
+- [Services for device and map](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md)
 - [Persistent notifications and error reporting](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md)
 - [Valetudo map card support](#with-valetudo-map-card)
 

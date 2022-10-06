@@ -1,14 +1,5 @@
 {
   "name": "Dreame Vacuum",
   "render_readme": false,
-  "domains": [
-    "vacuum",
-    "sensor",
-    "switch",
-    "button",
-    "number",
-    "select",
-    "camera"
-  ],
   "homeassistant": "2022.5.0"
 }
