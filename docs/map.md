@@ -1,6 +1,6 @@
 # Map
 
-TODO
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/live_map.jpg" width="600px">
 
 ## Features
 
@@ -8,7 +8,7 @@ TODO
 
 TODO
 
-#### Room and customized cleanining icons
+#### Room and customized cleaning icons
 
 TODO
 

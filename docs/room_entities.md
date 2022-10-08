@@ -11,7 +11,7 @@ Integration exposes rooms from all saved maps and updates their availability sta
 
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_3_map_1.png" width="350px"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_3_map_2.png" width="350px">
 
-This template and with help of two custom cards you can generate a single card to manage all room settings with correct names and icons.
+With help of two custom cards you can generate a single card to manage all room settings with correct names and icons.
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/rooms.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/rooms.gif" width="350px"><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/custom_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/custom_cleaning.gif" width="350px"></a>
 
@@ -91,3 +91,5 @@ entities:
               width: 35px
 {%- endfor %}
 ```
+
+#### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md#select-entities-for-rooms">For more information about room entities.</a>

@@ -91,7 +91,7 @@
 - Entities are dynamically generated from saved maps but only selected map is editable via shared room entities.
 - Entity names and icons are dynamically generated from segment id, custom name or segment type  and can be overridden from entity settings (Not recommended when multi-floor map is enabled).
 - Entities uses segment id system but generated from all saved maps. When multi-floor map is enabled, specific room entity may not be available on currently selected map.
-- *Customized cleaning* and *custom cleaning sequence* settings are not available on devices with older firmware versions.<a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/room_entities.md" target="_blank">(Learn more about customized cleaning feature)</a>
+- *Customized cleaning* and *custom cleaning sequence* settings are not available on devices with older firmware versions.
 - Generated entities have the following naming schema:<br>`select.[vacuum name]_room_[segment id]_[room entity name]`
 
 | Name  | Description  | Notes |
@@ -101,6 +101,8 @@
 | `water_level`   | Water level for the room | Unavailable if customized cleaning is disabled
 | `repeats`   | Cleaning repeats of the room | Unavailable when cleaning job is active or customized cleaning is disabled
 | `order`   | Cleaning order of the room | Unavailable when cleaning job is active or cleaning sequence is disabled
+
+#### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md" target="_blank">For more about customized cleaning feature</a>
 
 ## Number
 
@@ -152,4 +154,5 @@
 - Saved map entities for multi-floor map entities uses indexing system instead of map id. <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md#multiple-map-support" target="_blank">(For more info about multi-floor map support)</a>
 - Live map is not editable and renders saved map after an edit has been made until robot starts cleaning.
 - *map_1* entity always renders saved map of currently selected map when multi-floor map is disabled
-- <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md" target="_blank">Learn more about map feature</a>
+
+#### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md" target="_blank">For more about map feature</a>
