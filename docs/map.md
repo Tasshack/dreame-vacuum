@@ -1,64 +1,50 @@
-# Map Feature
+# Map
 
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/live_map.jpg" width="600px">
-
-## Features
-
-#### Multiple color schemes
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_light.png" width="30%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dark.png" width="30%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" width="30%">
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/live_map.jpg" width="500px">
 
 TODO
 
-#### Room and customized cleaning icons
-
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_icons.gif_" width="600px">
+### Multiple color schemes
 
 TODO
 
-#### High refresh rate with low delay
+<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_light.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_light.png" width="31%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dark.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dark.png" width="31%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" width="31%"></a>
 
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/.gif_" width="600px">
 
-TODO
-
-#### Dynamic object rendering for job type
-
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/.gif_" width="600px">
+### Room and customized cleaning icons
 
 TODO
 
-#### Overlay for robot status
+<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_icons.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_icons.gif" width="500px"></a>
 
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/.gif_" width="600px">
-
-TODO
-
-#### Multiple map support
-
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/.gif_" width="600px">
+### High refresh rate with low delay
 
 TODO
 
-#### Map entities
-
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/.gif_" width="600px">
+### Dynamic object rendering for job type
 
 TODO
 
-#### Dynamic room entities for selected map
-
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/.gif_" width="600px">
+### Overlay for robot status
 
 TODO
 
-#### Map and room editing services
-
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/.gif_" width="600px">
+### Multiple map support
 
 TODO
 
-#### Fast mapping support
+### Map entities
 
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/.gif_" width="600px">
+TODO
+
+### Dynamic room entities for selected map
+
+TODO
+
+### Map and room editing services
+
+TODO
+
+### Fast mapping support
 
 TODO
