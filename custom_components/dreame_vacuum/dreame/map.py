@@ -3365,7 +3365,7 @@ class DreameVacuumMapRenderer:
                     MAP_COLOR_VIRTUAL_WALL[self.color_scheme],
                     layer,
                     map_data.dimensions,
-                    2,
+                    3,
                     scale,
                 )
             layer = Image.alpha_composite(

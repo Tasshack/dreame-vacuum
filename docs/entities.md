@@ -1,7 +1,5 @@
 # Entities
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/device_settings.png" width="30%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/cleaning_settings.png" width="30%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/device_status.png" width="30%">
-
-
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/entities.png">
 
 - Integration exposes *almost* all available settings and states reverse engineered from the official App. 
 - Almost all entities are dynamically exposed for specific device. If the device does not have property that tied to specific entity, integration will not add that entity to the Home Assistant.
@@ -75,35 +73,6 @@
 | `cleaning_history`   | Previous cleaning job details as attributes | Available with map feature
 | `current_room`   | Current room that vacuum currently in | Available with map feature
 
-## Select
-| Name  | Description  | Notes |
-| ----------------------- | -------------------- | -------------------- |
-| `fan_speed`   | Suction level of the vacuum | Unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning
-| `water_level`   | Water level of the vacuum | Unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning. (Only on robots without washing station)
-| `cleaning_mode`   | Cleaning mode of the vacuum. (Sweeping, Mopping, Mopping and Sweeping) | Unavailable during cleaning.<br> (Options are dynamically generated for vacuums with attachable water tank.)<br> *Only available on devices firmware above 1056.* 
-| `carpet_sensitivity`   | Carpet sensitivity of carpet boost feature | Unavailable when carpet boost is disabled
-| `auto_empty_frequency`  | Auto empty frequency | Unavailable when automatic dust collection is disabled or not available
-| `map_rotation`   | Rotation of current map | Available with map feature and unavailable when current map is not one of the selected maps
-| `selected_map`   | Currently selected map | Available with map feature and unavailable when multi-floor map is disabled or not available
-
-### Select Entities for rooms
-- Room select entities are only available with cloud connection. 
-- Entities are dynamically generated from saved maps but only selected map is editable via shared room entities.
-- Entity names and icons are dynamically generated from segment id, custom name or segment type  and can be overridden from entity settings (Not recommended when multi-floor map is enabled).
-- Entities uses segment id system but generated from all saved maps. When multi-floor map is enabled, specific room entity may not be available on currently selected map.
-- *Customized cleaning* and *custom cleaning sequence* settings are not available on devices with older firmware versions.
-- Generated entities have the following naming schema:<br>`select.[vacuum name]_room_[segment id]_[room entity name]`
-
-| Name  | Description  | Notes |
-| ----------------------- | -------------------- | -------------------- |
-| `name`   | Room name from predefined types or current custom name | Unavailable when room does not exists on current map
-| `fan_speed`   | Suction level for the room | Unavailable if customized cleaning is disabled
-| `water_level`   | Water level for the room | Unavailable if customized cleaning is disabled
-| `repeats`   | Cleaning repeats of the room | Unavailable when cleaning job is active or customized cleaning is disabled
-| `order`   | Cleaning order of the room | Unavailable when cleaning job is active or cleaning sequence is disabled
-
-#### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md" target="_blank">For more about customized cleaning feature</a>
-
 ## Number
 
 | Name  | Description  | Notes |
@@ -136,6 +105,35 @@
 | `start_drying`   | Manually start mop drying | Available on vacuums with washing station, unavailable when drying is not possible or already drying mop
 | `stop_drying`   | Stop mop drying | Available on vacuums with washing station, unavailable when robot is not currently drying mop
 
+## Select
+| Name  | Description  | Notes |
+| ----------------------- | -------------------- | -------------------- |
+| `fan_speed`   | Suction level of the vacuum | Unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning
+| `water_level`   | Water level of the vacuum | Unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning. (Only on robots without washing station)
+| `cleaning_mode`   | Cleaning mode of the vacuum. (Sweeping, Mopping, Mopping and Sweeping) | Unavailable during cleaning.<br> (Options are dynamically generated for vacuums with attachable water tank.)<br> *Only available on devices firmware above 1056.* 
+| `carpet_sensitivity`   | Carpet sensitivity of carpet boost feature | Unavailable when carpet boost is disabled
+| `auto_empty_frequency`  | Auto empty frequency | Unavailable when automatic dust collection is disabled or not available
+| `map_rotation`   | Rotation of current map | Available with map feature and unavailable when current map is not one of the selected maps
+| `selected_map`   | Currently selected map | Available with map feature and unavailable when multi-floor map is disabled or not available
+
+### Select Entities for rooms
+- Room select entities are only available with cloud connection. 
+- Entities are dynamically generated from saved maps but only selected map is editable via shared room entities.
+- Entity names and icons are dynamically generated from segment id, custom name or segment type  and can be overridden from entity settings (Not recommended when multi-floor map is enabled).
+- Entities uses segment id system but generated from all saved maps. When multi-floor map is enabled, specific room entity may not be available on currently selected map.
+- *Customized cleaning* and *custom cleaning sequence* settings are not available on devices with older firmware versions.
+- Generated entities have the following naming schema:<br>`select.[vacuum name]_room_[segment id]_[room entity name]`
+
+| Name  | Description  | Notes |
+| ----------------------- | -------------------- | -------------------- |
+| `name`   | Room name from predefined types or current custom name | Unavailable when room does not exists on current map
+| `fan_speed`   | Suction level for the room | Unavailable if customized cleaning is disabled
+| `water_level`   | Water level for the room | Unavailable if customized cleaning is disabled
+| `repeats`   | Cleaning repeats of the room | Unavailable when cleaning job is active or customized cleaning is disabled
+| `order`   | Cleaning order of the room | Unavailable when cleaning job is active or cleaning sequence is disabled
+
+#### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md" target="_blank">For more info about customized cleaning feature</a>
+
 ## Camera
 
 | Name  | Description  | Notes |
@@ -155,4 +153,4 @@
 - Live map is not editable and renders saved map after an edit has been made until robot starts cleaning.
 - *map_1* entity always renders saved map of currently selected map when multi-floor map is disabled
 
-#### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md" target="_blank">For more about map feature</a>
+#### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md" target="_blank">For more info about map feature</a>

@@ -34,7 +34,7 @@ Set customized room cleaning parameters on current map.
 
 #### *`vacuum.send_command`*
 
-*Send command service can be used to send raw api requests that are not available with this integration like updating the schedule settings.**
+Send command service can be used to send raw api requests that are not available with this integration like updating the schedule settings.
 
 ## Map Services
 Map editing services also uses the vacuum domain because all services are available even without cloud connection.
