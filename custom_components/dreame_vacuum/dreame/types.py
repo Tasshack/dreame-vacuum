@@ -73,7 +73,10 @@ ATTR_ACTIVE_AREAS: Final = "active_areas"
 ATTR_ACTIVE_SEGMENTS: Final = "active_segments"
 ATTR_FRAME_ID: Final = "frame_id"
 ATTR_MAP_INDEX: Final = "map_index"
+ATTR_ID: Final = "id"
 ATTR_NAME: Final = "name"
+ATTR_OUTLINE: Final = "outline"
+ATTR_CENTER: Final = "center"
 ATTR_ORDER: Final = "order"
 ATTR_REPEATS: Final = "repeats"
 ATTR_FAN_SPEED: Final = "fan_speed"
@@ -196,7 +199,7 @@ class DreameVacuumState(IntEnum):
     WASHING = 9
     RETURNING_WASHING = 10
     BUILDING = 11
-    SWEEPING_AND_MOPPING = 12
+    MOPPING_AND_SWEEPING = 12
     CHARGING_COMPLETED = 13
     UPGRADING = 14
 
@@ -623,10 +626,7 @@ class Point:
 
     def to_img(self, image_dimensions) -> Point:
         return image_dimensions.to_img(self)
-
-    def to_coord(self, image_dimensions) -> Point:
-        return image_dimensions.to_coord(self)
-
+    
     def rotated(self, image_dimensions, degree) -> Point:
         w = int(
             (
@@ -737,6 +737,14 @@ class Segment(Zone):
         self.color_index = None
         self.set_name()
 
+    @property
+    def outline(self) -> List[List[int]]:
+        return [[self.x0, self.y0], [self.x0, self.y1], [self.x1, self.y1], [self.x1, self.y0]]
+
+    @property
+    def center(self) -> List[int]:
+        return [self.x, self.y]
+
     def set_name(self) -> None:
         if self.custom_name is not None:
             self.name = self.custom_name
@@ -777,32 +785,35 @@ class Segment(Zone):
         return {v: k for k, v in list.items()}
 
     def as_dict(self) -> Dict[str, Any]:
-        super_dict = {**super(Segment, self).as_dict()}
-
+        attributes = {**super(Segment, self).as_dict()}
+        #attributes[ATTR_OUTLINE] = self.outline
+        if self.id:
+            attributes[ATTR_ID] = self.id
         if self.name is not None:
-            super_dict[ATTR_NAME] = self.name
+            attributes[ATTR_NAME] = self.name
         if self.order is not None:
-            super_dict[ATTR_ORDER] = self.order
+            attributes[ATTR_ORDER] = self.order
         if self.repeats is not None:
-            super_dict[ATTR_REPEATS] = self.repeats
+            attributes[ATTR_REPEATS] = self.repeats
         if self.fan_speed is not None:
-            super_dict[ATTR_FAN_SPEED] = self.fan_speed
+            attributes[ATTR_FAN_SPEED] = self.fan_speed
         if self.water_level is not None:
-            super_dict[ATTR_WATER_LEVEL] = self.water_level
+            attributes[ATTR_WATER_LEVEL] = self.water_level
         if self.type is not None:
-            super_dict[ATTR_TYPE] = self.type
+            attributes[ATTR_TYPE] = self.type
         if self.index is not None:
-            super_dict[ATTR_INDEX] = self.index
-        if self.icon is not None:
-            super_dict[ATTR_ICON] = self.icon
+            attributes[ATTR_INDEX] = self.index
+        #if self.icon is not None:
+            #attributes[ATTR_ICON] = self.icon
         if self.color_index is not None:
-            super_dict[ATTR_COLOR_INDEX] = self.color_index
-        if self.x is not None:
-            super_dict[ATTR_X] = self.x
-        if self.y is not None:
-            super_dict[ATTR_Y] = self.y
+            attributes[ATTR_COLOR_INDEX] = self.color_index
+        if self.x is not None and self.y is not None:
+            #attributes[ATTR_CENTER] = self.center
+            attributes[ATTR_X] = self.x
+            attributes[ATTR_Y] = self.y
 
-        return super_dict
+
+        return attributes
 
     def __eq__(self: Segment, other: Segment) -> bool:
         return (
@@ -826,7 +837,7 @@ class Segment(Zone):
         )
 
     def __str__(self) -> str:
-        return f"[id: {self.id}, name: {self.name}, index: {self.index}, type: {self.type}, order: {self.order}, repeats: {self.repeats}, fan_speed: {self.fan_speed}, water_level: {self.water_level}, neighbours: {self.neighbours}, {self.x0}, {self.y0}, {self.x1}, {self.y1}, {self.x}, {self.y}]"
+        return f"{{id: {self.id}, outline: {self.outline}}}"
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -953,23 +964,7 @@ class MapImageDimensions:
             * self.scale
             + (self.padding[2] * self.scale),
         )
-
-    def to_coord(self, point: Point) -> Point:
-        return Point(
-            ((point.x - self.left + (self.grid_size / 2)) / self.grid_size) * self.scale
-            + (self.padding[0] * self.scale),
-            (
-                (
-                    (self.height - 1) * self.grid_size
-                    - (point.y - self.top)
-                    + (self.grid_size / 2)
-                )
-                / self.grid_size
-            )
-            * self.scale
-            + (self.padding[2] * self.scale),
-        )
-
+    
     def __eq__(self: MapImageDimensions, other: MapImageDimensions) -> bool:
         return (
             other is not None
@@ -1130,7 +1125,7 @@ class MapData:
         if self.charger_position is not None:
             attributes_list[ATTR_CHARGER] = self.charger_position
         if self.segments is not None and (self.saved_map or self.saved_map_status == 2):
-            attributes_list[ATTR_ROOMS] = self.segments
+            attributes_list[ATTR_ROOMS] = [v for k, v in sorted(self.segments.items())]
         if not self.saved_map and self.robot_position is not None:
             attributes_list[ATTR_ROBOT_POSITION] = self.robot_position
         if self.map_id:

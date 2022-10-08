@@ -5,8 +5,6 @@ Generated entities have the following naming schema:
 
 E.g. `select.dreame_bot_z10_pro_water_level`
 
-> Some entities are disabled by default
-
 ## Switch
 
 | Name  | Description  | Notes |

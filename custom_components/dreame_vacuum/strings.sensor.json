@@ -3,7 +3,7 @@
     "dreame_vacuum__state": {
       "unknown": "Unknown",
       "sweeping": "Sweeping",
-      "docked": "Docked",
+      "charging": "Charging",
       "error": "Error",
       "idle": "[%key:common::state::idle%]",
       "paused": "[%key:common::state::paused%]",
@@ -13,7 +13,7 @@
       "washing": "Washing",
       "returning_to_washing": "Returning to washing",
       "building": "Building",
-      "sweeping_and_mopping": "Sweeping and mopping",
+      "mopping_and_sweeping": "Mopping and sweeping",
       "charging_completed": "Charging completed",
       "upgrading": "Upgrading"
     },

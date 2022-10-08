@@ -125,6 +125,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_max_value=255,
         native_step=1,
         entity_category=EntityCategory.CONFIG,
+        entity_registry_enabled_default=False,
     ),
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.CARPET_CLEAN,
@@ -134,6 +135,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_max_value=255,
         native_step=1,
         entity_category=EntityCategory.CONFIG,
+        entity_registry_enabled_default=False,
     ),
 )
 

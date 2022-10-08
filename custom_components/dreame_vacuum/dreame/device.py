@@ -256,6 +256,30 @@ class DreameVacuumDevice:
                 self._property_changed()
         return changed
 
+    def _update_status(self, task_status: DreameVacuumTaskStatus, status: DreameVacuumStatus) -> None:
+        """Update status properties on memory for map renderer to update the image before action is sent to the device."""
+        self._update_property(
+            DreameVacuumProperty.TASK_STATUS, task_status.value
+        )
+        self._update_property(
+            DreameVacuumProperty.STATUS, status.value
+        )
+
+        if task_status is not DreameVacuumTaskStatus.COMPLETED:
+            new_state = DreameVacuumState.SWEEPING
+            if self.status.cleaning_mode is DreameVacuumCleaningMode.MOPPING:
+                new_state = DreameVacuumState.MOPPING
+            elif self.status.cleaning_mode is DreameVacuumCleaningMode.MOPPING_AND_SWEEPING:
+                new_state = DreameVacuumState.MOPPING_AND_SWEEPING
+            self._update_property(
+                DreameVacuumProperty.STATE, new_state.value
+            )
+
+        if status is DreameVacuumStatus.STANDBY:
+            self._update_property(
+                DreameVacuumProperty.STATE, status.value
+            )
+
     def _update_property(self, prop: DreameVacuumProperty, value: Any) -> Any:
         """Update device property on memory and notify listeners."""
         if prop in self.property_mapping:
@@ -532,9 +556,7 @@ class DreameVacuumDevice:
 
     def _update_task(self) -> None:
         """Timer task for updading properties periodically"""
-        if self._update_timer is not None:
-            self._update_timer.cancel()
-            self._update_timer = None
+        self._update_timer = None
 
         try:
             self.update()
@@ -718,16 +740,16 @@ class DreameVacuumDevice:
                 map_data.cleanset = None
 
             # Device currently may not be docked but map data can be old and still showing when robot is docked
-            map_data.docked = bool(
-                (map_data.docked or self.status.docked) and self.status.located
-            )
+            map_data.docked = bool(map_data.docked or self.status.docked)
 
             if map_data.saved_map:
-                # App does not render robot and restricted zones on saved map list
+                # App does not render robot position on saved map list
                 map_data.robot_position = None
-                map_data.walls = None
-                map_data.no_go_areas = None
-                map_data.no_mopping_areas = None
+
+                # App does not render restricted zones on saved map list
+                #map_data.walls = None
+                #map_data.no_go_areas = None
+                #map_data.no_mopping_areas = None
 
             elif map_data.charger_position and map_data.docked:
                 # Calculate robot position when it is docked as implemented on the app
@@ -1074,14 +1096,9 @@ class DreameVacuumDevice:
         if self.status.fast_mapping_paused:
             return self.start_custom(DreameVacuumStatus.FAST_MAPPING.value)
 
-        if self._map_manager and not self.status.started:
-            # Update status properties on memory for map renderer to update the image before action is sent to the device
-            self._update_property(
-                DreameVacuumProperty.TASK_STATUS, DreameVacuumTaskStatus.AUTO_CLEANING.value
-            )
-            self._update_property(
-                DreameVacuumProperty.STATUS, DreameVacuumStatus.CLEANING.value
-            )
+        if not self.status.started:
+            self._update_status(DreameVacuumTaskStatus.AUTO_CLEANING, DreameVacuumStatus.CLEANING)
+        if self._map_manager:
             self._map_manager.editor.refresh_map()
         return self.call_action(DreameVacuumAction.START)
 
@@ -1093,7 +1110,7 @@ class DreameVacuumDevice:
 
         payload = [{"piid": PIID(
             DreameVacuumProperty.STATUS, self.property_mapping), "value": status}]
-
+        
         if parameters is not None:
             payload.append(
                 {
@@ -1107,32 +1124,33 @@ class DreameVacuumDevice:
         """Stop the vacuum cleaner."""
         if self.status.fast_mapping:
             return self.return_to_base()
+                
+        if self.status.started:
+            self._update_status(DreameVacuumTaskStatus.COMPLETED, DreameVacuumStatus.STANDBY)
 
-        if self._map_manager:
-            if self.status.started:
-                if (
-                    self.status.segment_cleaning
-                    or self.status.zone_cleaning
-                    or self.status.auto_cleaning
-                ):
-                    # Update status properties on memory for map renderer to update the image before action is sent to the device
-                    self._update_property(
-                        DreameVacuumProperty.TASK_STATUS,
-                        DreameVacuumTaskStatus.COMPLETED.value,
-                    )
-                    self._update_property(
-                        DreameVacuumProperty.STATUS, DreameVacuumStatus.STANDBY.value
-                    )
-                # Clear active segments on current map data
+            # Clear active segments on current map data
+            if self._map_manager:
                 self._map_manager.editor.set_active_segments([])
         return self.call_action(DreameVacuumAction.STOP)
 
     def pause(self) -> dict[str, Any] | None:
         """Pause the cleaning task."""
+        if not self.status.paused and self.status.started:
+            self._update_property(
+                DreameVacuumProperty.STATE, DreameVacuumState.PAUSED.value
+            )
+
         return self.call_action(DreameVacuumAction.PAUSE)
 
     def return_to_base(self) -> dict[str, Any] | None:
         """Set the vacuum cleaner to return to the dock."""
+        if self.status.started:
+            self._update_property(
+                DreameVacuumProperty.STATE, DreameVacuumState.RETURNING.value
+            )
+
+        if self._map_manager:
+            self._map_manager.editor.refresh_map()
         return self.call_action(DreameVacuumAction.CHARGE)
 
     def start_pause(self) -> dict[str, Any] | None:
@@ -1167,17 +1185,12 @@ class DreameVacuumDevice:
                 ]
             )
 
-        if self._map_manager and not self.status.started:
-            # Update status properties on memory for map renderer to update the image before action is sent to the device
-            self._update_property(
-                DreameVacuumProperty.TASK_STATUS, DreameVacuumTaskStatus.ZONE_CLEANING.value
-            )
-            self._update_property(
-                DreameVacuumProperty.STATUS, DreameVacuumStatus.ZONE_CLEANING.value
-            )
+        if not self.status.started:
+            self._update_status(DreameVacuumTaskStatus.ZONE_CLEANING, DreameVacuumStatus.ZONE_CLEANING)
 
-            # Set active areas on current map data is implemented on the app
-            self._map_manager.editor.set_active_areas(zones)
+            if self._map_manager:
+                # Set active areas on current map data is implemented on the app
+                self._map_manager.editor.set_active_areas(zones)
 
         return self.start_custom(
             DreameVacuumStatus.ZONE_CLEANING.value,
@@ -1236,17 +1249,12 @@ class DreameVacuumDevice:
             )
             index = index + 1
 
-        if self._map_manager and not self.status.started:
-            # Update status properties on memory for map renderer to update the image before action is sent to the device
-            self._update_property(
-                DreameVacuumProperty.TASK_STATUS,
-                DreameVacuumTaskStatus.SEGMENT_CLEANING.value,
-            )
-            self._update_property(
-                DreameVacuumProperty.STATUS, DreameVacuumStatus.SEGMENT_CLEANING.value
-            )
-            # Set active segments on current map data is implemented on the app
-            self._map_manager.editor.set_active_segments(selected_segments)
+        if not self.status.started:
+            self._update_status(DreameVacuumTaskStatus.SEGMENT_CLEANING, DreameVacuumStatus.SEGMENT_CLEANING)
+
+            if self._map_manager:
+                # Set active segments on current map data is implemented on the app
+                self._map_manager.editor.set_active_segments(selected_segments)
 
         return self.start_custom(
             DreameVacuumStatus.SEGMENT_CLEANING.value,
@@ -1270,14 +1278,9 @@ class DreameVacuumDevice:
                 "Low battery capacity. Please start the robot for working after it being fully charged."
             )
 
+        self._update_status(DreameVacuumTaskStatus.FAST_MAPPING, DreameVacuumStatus.FAST_MAPPING)
+
         if self._map_manager:
-            # Update status properties on memory for map renderer to update the image before action is sent to the device
-            self._update_property(
-                DreameVacuumProperty.TASK_STATUS, DreameVacuumTaskStatus.FAST_MAPPING.value
-            )
-            self._update_property(
-                DreameVacuumProperty.STATUS, DreameVacuumStatus.FAST_MAPPING.value
-            )
             self._map_manager.editor.refresh_map()
 
         return self.start_custom(DreameVacuumStatus.FAST_MAPPING.value)
@@ -1285,13 +1288,7 @@ class DreameVacuumDevice:
     def start_mapping(self) -> dict[str, Any] | None:
         """Create a new map by cleaning whole floor."""
         if self._map_manager:
-            # Update status properties on memory for map renderer to update the image before action is sent to the device
-            self._update_property(
-                DreameVacuumProperty.TASK_STATUS, DreameVacuumTaskStatus.AUTO_CLEANING.value
-            )
-            self._update_property(
-                DreameVacuumProperty.STATUS, DreameVacuumStatus.CLEANING.value
-            )
+            self._update_status(DreameVacuumTaskStatus.AUTO_CLEANING, DreameVacuumStatus.CLEANING)
             self._map_manager.editor.reset_map()
 
         return self.start_custom(DreameVacuumStatus.CLEANING.value, "3")

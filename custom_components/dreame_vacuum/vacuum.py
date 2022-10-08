@@ -53,6 +53,7 @@ from .const import (
     INPUT_ZONE_ARRAY,
     SERVICE_CLEAN_ZONE,
     SERVICE_CLEAN_SEGMENT,
+    SERVICE_CLEAR_WARNING,
     SERVICE_INSTALL_VOICE_PACK,
     SERVICE_MERGE_SEGMENTS,
     SERVICE_MOVE_REMOTE_CONTROL_STEP,
@@ -101,7 +102,7 @@ STATE_CODE_TO_STATE: Final = {
     DreameVacuumState.WASHING: STATE_DOCKED,
     DreameVacuumState.RETURNING_WASHING: STATE_RETURNING,
     DreameVacuumState.BUILDING: STATE_DOCKED,
-    DreameVacuumState.SWEEPING_AND_MOPPING: STATE_CLEANING,
+    DreameVacuumState.MOPPING_AND_SWEEPING: STATE_CLEANING,
     DreameVacuumState.CHARGING_COMPLETED: STATE_DOCKED,
     DreameVacuumState.UPGRADING: STATE_IDLE,
 }
@@ -121,6 +122,12 @@ async def async_setup_entry(
         SERVICE_REQUEST_MAP,
         {},
         DreameVacuum.async_request_map.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_CLEAR_WARNING,
+        {},
+        DreameVacuum.async_clear_warning.__name__,
     )
 
     platform.async_register_entity_service(
@@ -584,6 +591,12 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
         """Request new map."""
         await self._try_command(
             "Unable to call request_map: %s", self.device.request_map
+        )
+
+    async def async_clear_warning(self) -> None:
+        """Dismiss error code."""
+        await self._try_command(
+            "Unable to call clear_warning: %s", self.device.clear_warning
         )
 
     async def async_rename_map(self, map_id, map_name="") -> None:

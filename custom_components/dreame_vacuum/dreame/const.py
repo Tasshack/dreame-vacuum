@@ -36,14 +36,14 @@ STATE_SWEEPING: Final = "sweeping"
 STATE_IDLE: Final = "idle"
 STATE_PAUSED: Final = "paused"
 STATE_RETURNING: Final = "returning"
-STATE_DOCKED: Final = "docked"
+STATE_CHARGING: Final = "charging"
 STATE_ERROR: Final = "error"
 STATE_MOPPING: Final = "mopping"
 STATE_DRYING: Final = "drying"
 STATE_WASHING: Final = "washing"
 STATE_RETURNING_WASHING: Final = "returning_to_washing"
 STATE_BUILDING: Final = "building"
-STATE_SWEEPING_AND_MOPPING: Final = "sweeping_and_mopping"
+STATE_MOPPING_AND_SWEEPING: Final = "mopping_and_sweeping"
 STATE_CHARGING_COMPLETED: Final = "charging_completed"
 STATE_UPGRADING: Final = "upgrading"
 
@@ -417,13 +417,13 @@ STATE_CODE_TO_STATE: Final = {
     DreameVacuumState.PAUSED: STATE_PAUSED,
     DreameVacuumState.ERROR: STATE_ERROR,
     DreameVacuumState.RETURNING: STATE_RETURNING,
-    DreameVacuumState.CHARGING: STATE_DOCKED,
+    DreameVacuumState.CHARGING: STATE_CHARGING,
     DreameVacuumState.MOPPING: STATE_MOPPING,
     DreameVacuumState.DRYING: STATE_DRYING,
     DreameVacuumState.WASHING: STATE_WASHING,
     DreameVacuumState.RETURNING_WASHING: STATE_RETURNING_WASHING,
     DreameVacuumState.BUILDING: STATE_BUILDING,
-    DreameVacuumState.SWEEPING_AND_MOPPING: STATE_SWEEPING_AND_MOPPING,
+    DreameVacuumState.MOPPING_AND_SWEEPING: STATE_MOPPING_AND_SWEEPING,
     DreameVacuumState.CHARGING_COMPLETED: STATE_CHARGING_COMPLETED,
     DreameVacuumState.UPGRADING: STATE_UPGRADING,
 }

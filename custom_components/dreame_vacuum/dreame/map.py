@@ -2295,7 +2295,6 @@ class DreameVacuumMapDecoder:
                         segments[segment_id].y1 = y
 
         if segments:
-            half_pixel = int(map_data.dimensions.grid_size / 2)
             for (k, v) in segments.items():
                 x = int(math.ceil((v.x1 - v.x0) / 2 + v.x0))
                 y = int(math.ceil((v.y1 - v.y0) / 2 + v.y0))
@@ -2317,28 +2316,26 @@ class DreameVacuumMapDecoder:
                         map_data.dimensions.left
                         + (v.x0 * map_data.dimensions.grid_size)
                     )
-                    - half_pixel
                 )
                 segments[k].y0 = (
                     int(
                         map_data.dimensions.top +
                         (v.y0 * map_data.dimensions.grid_size)
+                        - map_data.dimensions.grid_size
                     )
-                    - half_pixel
                 )
                 segments[k].x1 = (
                     int(
                         map_data.dimensions.left
                         + (v.x1 * map_data.dimensions.grid_size)
+                        + map_data.dimensions.grid_size
                     )
-                    + half_pixel
                 )
                 segments[k].y1 = (
                     int(
                         map_data.dimensions.top +
                         (v.y1 * map_data.dimensions.grid_size)
                     )
-                    + half_pixel
                 )
                 segments[k].x = int(
                     map_data.dimensions.left +
@@ -3031,10 +3028,10 @@ class DreameVacuumMapRenderer:
         for yy in range(ico.size[1]):
             for xx in range(ico.size[0]):
                 if (
-                    pixdata[xx, yy][0] > 100
-                    and pixdata[xx, yy][1] > 100
-                    and pixdata[xx, yy][2] > 100
-                    and pixdata[xx, yy][3] > 100
+                    pixdata[xx, yy][0] > 80
+                    and pixdata[xx, yy][1] > 80
+                    and pixdata[xx, yy][2] > 80
+                    and pixdata[xx, yy][3] > 80
                 ):
                     pixdata[xx, yy] = color
 
@@ -3109,7 +3106,7 @@ class DreameVacuumMapRenderer:
         if (map_data.dimensions.width * map_data.dimensions.height) > 0:
             calibration_points = []
             for point in [Point(0, 0), Point(1000, 0), Point(0, 1000)]:
-                img_point = point.to_coord(map_data.dimensions).rotated(
+                img_point = point.to_img(map_data.dimensions).rotated(
                     map_data.dimensions, map_data.rotation
                 )
                 calibration_points.append(
@@ -3172,7 +3169,7 @@ class DreameVacuumMapRenderer:
         else:
             map_data.dimensions.padding = self._map_data.dimensions.padding
 
-        map_data.dimensions.scale = 4 if map_data.saved_map_status == 2 else 3
+        map_data.dimensions.scale = 4 if map_data.saved_map_status == 2 or map_data.saved_map else 3
 
         if self._map_data is None or (
             self._map_data.dimensions.scale != map_data.dimensions.scale
@@ -3224,16 +3221,14 @@ class DreameVacuumMapRenderer:
                             map_data.dimensions.padding[2]
                             + map_data.dimensions.padding[3]
                         )
-                    )
-                    * map_data.dimensions.scale,
+                    ),
                     (
                         map_data.dimensions.width
                         + (
                             map_data.dimensions.padding[0]
                             + map_data.dimensions.padding[1]
                         )
-                    )
-                    * map_data.dimensions.scale,
+                    ),
                     4,
                 ),
                 area_colors[MapPixelType.OUTSIDE.value],
@@ -3249,15 +3244,14 @@ class DreameVacuumMapRenderer:
                     if px_type != MapPixelType.OUTSIDE.value:
                         xx = (
                             x + map_data.dimensions.padding[0]
-                        ) * map_data.dimensions.scale
+                        ) 
                         yy = (
                             (map_data.dimensions.height - y - 1)
                             + map_data.dimensions.padding[2]
-                        ) * map_data.dimensions.scale
-                        pixels[
-                            yy: yy + map_data.dimensions.scale,
-                            xx: xx + map_data.dimensions.scale,
-                        ] = area_colors[px_type]
+                        ) 
+                        pixels[yy, xx] = area_colors[px_type]
+
+            pixels = pixels.repeat(map_data.dimensions.scale, axis=0).repeat(map_data.dimensions.scale, axis=1)
 
             self._layers[MapRendererLayer.IMAGE] = Image.fromarray(pixels)
 
@@ -3275,7 +3269,7 @@ class DreameVacuumMapRenderer:
         elif map_data.rotation == 270:
             image = image.transpose(Image.ROTATE_270)
 
-        _LOGGER.debug(
+        _LOGGER.warn(
             "Render frame: %s:%s took: %.2f at scale %s",
             map_data.map_id,
             map_data.frame_id,
@@ -3319,7 +3313,7 @@ class DreameVacuumMapRenderer:
                     layer,
                     map_data.dimensions,
                     3,
-                    2,
+                    scale,
                 )
             layer = Image.alpha_composite(
                 layer, self._layers[MapRendererLayer.PATH])
@@ -3336,7 +3330,7 @@ class DreameVacuumMapRenderer:
                     MAP_COLOR_NO_MOP[self.color_scheme],
                     layer,
                     map_data.dimensions,
-                    3,
+                    2,
                     scale,
                 )
             layer = Image.alpha_composite(
@@ -3354,7 +3348,7 @@ class DreameVacuumMapRenderer:
                     MAP_COLOR_NO_GO[self.color_scheme],
                     layer,
                     map_data.dimensions,
-                    3,
+                    2,
                     scale,
                 )
             layer = Image.alpha_composite(
@@ -3371,7 +3365,7 @@ class DreameVacuumMapRenderer:
                     MAP_COLOR_VIRTUAL_WALL[self.color_scheme],
                     layer,
                     map_data.dimensions,
-                    4,
+                    2,
                     scale,
                 )
             layer = Image.alpha_composite(
@@ -3389,7 +3383,7 @@ class DreameVacuumMapRenderer:
                     MAP_COLOR_ACTIVE_AREA[self.color_scheme],
                     layer,
                     map_data.dimensions,
-                    3,
+                    2,
                     scale,
                 )
             layer = Image.alpha_composite(
@@ -3453,15 +3447,19 @@ class DreameVacuumMapRenderer:
             layer = Image.alpha_composite(
                 layer, self._layers[MapRendererLayer.ROBOT])
 
+        if layer.size != map_image.size:
+            #layer.thumbnail(map_image.size, Image.Resampling.BOX, reducing_gap=1.5)
+            layer = Image.fromarray(
+                    cv2.resize(
+                        np.array(layer), map_image.size, interpolation=cv2.INTER_LINEAR
+                    )
+                )
+
         return Image.alpha_composite(
             map_image,
-            Image.fromarray(
-                cv2.resize(
-                    np.array(layer), map_image.size, interpolation=cv2.INTER_AREA
-                )
-            ),
+            layer,
         )
-
+    
     def render_areas(self, areas, color, fill, layer, dimensions, width, scale):
         new_layer = Image.new("RGBA", layer.size, MAP_COLOR_TRANSPARENT)
         draw = ImageDraw.Draw(new_layer, "RGBA")
@@ -3675,7 +3673,7 @@ class DreameVacuumMapRenderer:
                         BytesIO(self.font_file), (scale * 20)
                     )
 
-                p = Point(segment.x, segment.y).to_coord(dimensions)
+                p = Point(segment.x, segment.y).to_img(dimensions)
                 x = p.x
                 y = p.y
 
