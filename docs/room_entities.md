@@ -13,7 +13,7 @@ Integration exposes rooms from all saved maps and updates their availability sta
 
 This template and with help of two custom cards you can generate a single card to manage all room settings with correct names and icons.
 
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/rooms.gif" width="350px"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/custom_cleaning.gif_" width="350px">
+<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/rooms.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/rooms.gif" width="350px"><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/custom_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/custom_cleaning.gif" width="350px"></a>
 
 > <a href="https://github.com/iantrich/config-template-card" target="_blank">config-template-card</a> and <a href="https://github.com/benct/lovelace-multiple-entity-row" target="_blank">multiple-entity-row</a> custom cards are required with this template.
 
@@ -22,23 +22,26 @@ This template and with help of two custom cards you can generate a single card t
 ```yaml
 {# ----------------- PROVIDE YOUR OWN ENTITY IDS HERE ----------------- #}
 {% set vacuum_entity = "vacuum." %}
+{% set max_room_id = 8 %}
 {# ------------------- DO NOT CHANGE ANYTHING BELOW ------------------- #}
 {% set vacuum_name = states[vacuum_entity].entity_id.replace('vacuum.', '') %}
 type: entities
 entities:
-{% for room in states[vacuum_entity].attributes["rooms"] %}
+{# Alternatively room ids can be acquired from vacuum or camera entities #}
+{% for room in range(1, max_room_id) %}
+{% set entity_id = "select." + vacuum_name + "_room_" + room|string %}
   - type: conditional
     conditions:
-      - entity: select.{{ vacuum_name }}_room_{{ room['id'] }}_name
+      - entity: {{ entity_id }}_name
         state_not: unavailable
     row:
       type: custom:config-template-card
       variables:
-        - states['select.{{ vacuum_name }}_room_{{ room['id'] }}_name']
-        - states['select.{{ vacuum_name }}_room_{{ room['id'] }}_fan_speed'].entity_id
-        - states['select.{{ vacuum_name }}_room_{{ room['id'] }}_water_level'].entity_id
-        - states['select.{{ vacuum_name }}_room_{{ room['id'] }}_repeats'].entity_id
-        - states['select.{{ vacuum_name }}_room_{{ room['id'] }}_order'].entity_id
+        - states['{{ entity_id }}_name']
+        - states['{{ entity_id }}_fan_speed'].entity_id
+        - states['{{ entity_id }}_water_level'].entity_id
+        - states['{{ entity_id }}_repeats'].entity_id
+        - states['{{ entity_id }}_order'].entity_id
       entities:
         - ${vars[0].entity_id}
         - ${vars[1]}

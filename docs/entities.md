@@ -1,9 +1,7 @@
 # Entities
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/cleaning_settings.png" width="400px">
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/device_settings.png" width="30%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/cleaning_settings.png" width="30%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/device_status.png" width="30%">
 
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/device_settings.png" width="400px">
 
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/device_status.png" width="400px">
 
 - Integration exposes *almost* all available settings and states reverse engineered from the official App. 
 - Almost all entities are dynamically exposed for specific device. If the device does not have property that tied to specific entity, integration will not add that entity to the Home Assistant.

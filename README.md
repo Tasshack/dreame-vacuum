@@ -269,6 +269,7 @@ attributes:
 
 ## Known Issues
 
+- Current cleaning order is lost when custom cleaning sequence is disabled
 - Remote control commands not working properly
 - Translations are missing for states and config flow
 
