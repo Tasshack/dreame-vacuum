@@ -1,4 +1,4 @@
-# Map
+# Live and saved map support
 
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/live_map.jpg" width="500px">
 
@@ -29,21 +29,29 @@ TODO
 
 TODO
 
-### Multiple map support
+### Multi-floor map support
 
 TODO
+
+<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/multi_map.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/multi_map.gif" width="500px"></a>
 
 ### Map entities
 
 TODO
 
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_entities.png_" width="500px">
+
 ### Dynamic room entities for selected map
 
 TODO
 
+<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/rooms.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/rooms.gif" width="500px"></a>
+
 ### Map and room editing services
 
 TODO
+
+<a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md#map-services" target="_blank">For more info about map services</a>
 
 ### Fast mapping support
 

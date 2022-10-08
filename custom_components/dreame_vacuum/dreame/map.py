@@ -3301,6 +3301,9 @@ class DreameVacuumMapRenderer:
         layer.paste(MAP_COLOR_TRANSPARENT, [
                     0, 0, layer.size[0], layer.size[1]])
 
+        line_width = 3
+        border_width = 2
+
         if map_data.path:
             if (
                 self._map_data is None
@@ -3312,7 +3315,7 @@ class DreameVacuumMapRenderer:
                     MAP_COLOR_PATH[self.color_scheme],
                     layer,
                     map_data.dimensions,
-                    3,
+                    line_width,
                     scale,
                 )
             layer = Image.alpha_composite(
@@ -3330,7 +3333,7 @@ class DreameVacuumMapRenderer:
                     MAP_COLOR_NO_MOP[self.color_scheme],
                     layer,
                     map_data.dimensions,
-                    2,
+                    border_width,
                     scale,
                 )
             layer = Image.alpha_composite(
@@ -3348,7 +3351,7 @@ class DreameVacuumMapRenderer:
                     MAP_COLOR_NO_GO[self.color_scheme],
                     layer,
                     map_data.dimensions,
-                    2,
+                    border_width,
                     scale,
                 )
             layer = Image.alpha_composite(
@@ -3365,7 +3368,7 @@ class DreameVacuumMapRenderer:
                     MAP_COLOR_VIRTUAL_WALL[self.color_scheme],
                     layer,
                     map_data.dimensions,
-                    3,
+                    line_width,
                     scale,
                 )
             layer = Image.alpha_composite(
@@ -3383,7 +3386,7 @@ class DreameVacuumMapRenderer:
                     MAP_COLOR_ACTIVE_AREA[self.color_scheme],
                     layer,
                     map_data.dimensions,
-                    2,
+                    border_width,
                     scale,
                 )
             layer = Image.alpha_composite(
@@ -3409,23 +3412,23 @@ class DreameVacuumMapRenderer:
             layer = Image.alpha_composite(
                 layer, self._layers[MapRendererLayer.SEGMENTS])
 
-        if map_data.charger_position:
-            if (
-                self._map_data is None
-                or self._map_data.charger_position != map_data.charger_position
-                or self._map_data.rotation != map_data.rotation
-                or not self._layers.get(MapRendererLayer.CHARGER)
-            ):
-                self._layers[MapRendererLayer.CHARGER] = self.render_charger(
-                    map_data.charger_position,
-                    layer,
-                    map_data.dimensions,
-                    int((7 * map_data.dimensions.scale * scale) * 1.2),
-                    map_data.rotation,
-                    scale,
-                )
-            layer = Image.alpha_composite(
-                layer, self._layers[MapRendererLayer.CHARGER])
+        #if map_data.charger_position:
+        #    if (
+        #        self._map_data is None
+        #        or self._map_data.charger_position != map_data.charger_position
+        #        or self._map_data.rotation != map_data.rotation
+        #        or not self._layers.get(MapRendererLayer.CHARGER)
+        #    ):
+        #        self._layers[MapRendererLayer.CHARGER] = self.render_charger(
+        #            map_data.charger_position,
+        #            layer,
+        #            map_data.dimensions,
+        #            int((7 * map_data.dimensions.scale * scale) * 1.2),
+        #            map_data.rotation,
+        #            scale,
+        #        )
+        #    layer = Image.alpha_composite(
+        #        layer, self._layers[MapRendererLayer.CHARGER])
 
         if map_data.robot_position:
             if (
