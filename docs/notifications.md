@@ -13,7 +13,7 @@ Added when consumable life is ended.
 
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/notification_consumable_brush.jpg" width="500px">
 
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/notification_consumable_filter.jpg" width="500px">
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/notification_sensor.jpg" width="500px">
 
 ### Error reporting
 Added when there is a fault or warning with the device.
