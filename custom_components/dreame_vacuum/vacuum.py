@@ -53,7 +53,6 @@ from .const import (
     INPUT_ZONE_ARRAY,
     SERVICE_CLEAN_ZONE,
     SERVICE_CLEAN_SEGMENT,
-    SERVICE_CLEAR_WARNING,
     SERVICE_INSTALL_VOICE_PACK,
     SERVICE_MERGE_SEGMENTS,
     SERVICE_MOVE_REMOTE_CONTROL_STEP,
@@ -122,12 +121,6 @@ async def async_setup_entry(
         SERVICE_REQUEST_MAP,
         {},
         DreameVacuum.async_request_map.__name__,
-    )
-
-    platform.async_register_entity_service(
-        SERVICE_CLEAR_WARNING,
-        {},
-        DreameVacuum.async_clear_warning.__name__,
     )
 
     platform.async_register_entity_service(

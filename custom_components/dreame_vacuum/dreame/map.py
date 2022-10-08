@@ -3269,7 +3269,7 @@ class DreameVacuumMapRenderer:
         elif map_data.rotation == 270:
             image = image.transpose(Image.ROTATE_270)
 
-        _LOGGER.warn(
+        _LOGGER.debug(
             "Render frame: %s:%s took: %.2f at scale %s",
             map_data.map_id,
             map_data.frame_id,
