@@ -3,6 +3,7 @@
 - Almost all entities are dynamically exposed for specific device. If the device does not have property that tied to specific entity, integration will not add that entity to the Home Assistant.
 - Some entities may not be available on devices with older firmware versions like *customized_cleaning* and *cleaning_mode* that are also not available on valetudo. 
 - Most of the entities has dynamic icons for their state and can be overridden from entity settings.
+- Most of the sensor and all select entities returns their current raw integer value on `raw_value`, `map_id` or `segment_id` attributes for ease of use on automations and services.
 - All entities has dynamic refresh rate determined by its change range and device state. Integration only inform Home Assistant when a device property has changed trough listeners. This is more like a *local_push* type of approach instead of *local_pull* but please note that it may take time entity to reflect the changes when you edit related setting from the official App.
 - Some entities has custom availability rules for another specific entity or state. E.g. *tight_mopping* entity will become *unavailable* when water tank is not attached but only if robot is not equipped with a washing station. (All off the rules extracted from the official App)
 - Exposed cloud connected entities for all available settings that are stored not on the device but on specific map data itself. E.g. *map_rotation*
@@ -10,6 +11,7 @@
 
     `[domain].[vacuum name]_[entity name]`
 
+> Some entities are disabled by default and some entities can be accessed over vacuum entity attributes.
 
 ## Switch
 
@@ -20,7 +22,7 @@
 | `obstacle_avoidance`   | Enable/Disable 3D obstacle avoidance | Available on vacuums with line laser
 | `customized_cleaning`   | Enable/Disable customized room cleaning | Available on devices with firmware above 1056
 | `child_lock`   | Enable/Disable child lock |
-| `tight_mopping`   | Enable/Disable tight mopping pattern | Unavailable if vacuum does not have washing station and water tank is not installed
+| `tight_mopping`   | Enable/Disable tight mopping pattern | Available on devices with firmware above 1056 and unavailable if vacuum does not have washing station and water tank is not installed. 
 | `dnd`   | Enable/Disable do not disturb |
 | `multi_floor_map`   | Enable/Disable multi-floor map | Available on vacuums can store more than one map
 | `auto_dust_collecting`   | Enable/Disable automatic dust collecting when cleaning completed |  Available on vacuums with auto-empty station
@@ -72,8 +74,8 @@
 ## Select
 | Name  | Description  | Notes |
 | ----------------------- | -------------------- | -------------------- |
-| `fan_speed`   | Suction level of the vacuum | Unavailable if customized cleaning available and current job is not zone cleaning or spot cleaning
-| `water_level`   | Water level of the vacuum | Unavailable if customized cleaning available and current job is not zone cleaning or spot cleaning. (Only on robots without washing station)
+| `fan_speed`   | Suction level of the vacuum | Unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning
+| `water_level`   | Water level of the vacuum | Unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning. (Only on robots without washing station)
 | `cleaning_mode`   | Cleaning mode of the vacuum. (Sweeping, Mopping, Mopping and Sweeping) | Unavailable during cleaning.<br> (Options are dynamically generated for vacuums with attachable water tank.)<br> *Only available on devices firmware above 1056.* 
 | `carpet_sensitivity`   | Carpet sensitivity of carpet boost feature | Unavailable when carpet boost is disabled
 | `auto_empty_frequency`  | Auto empty frequency | Unavailable when automatic dust collection is disabled or not available
@@ -91,10 +93,10 @@
 | Name  | Description  | Notes |
 | ----------------------- | -------------------- | -------------------- |
 | `name`   | Room name from predefined types or current custom name | Unavailable when room does not exists on current map
-| `fan_speed`   | Suction level for the room |
-| `water_level`   | Water level for the room |
-| `repeats`   | Cleaning repeats of the room | Unavailable when cleaning job is active
-| `order`   | Cleaning order of the room | Unavailable when cleaning job is active
+| `fan_speed`   | Suction level for the room | Unavailable if customized cleaning is disabled
+| `water_level`   | Water level for the room | Unavailable if customized cleaning is disabled
+| `repeats`   | Cleaning repeats of the room | Unavailable when cleaning job is active or customized cleaning is disabled
+| `order`   | Cleaning order of the room | Unavailable when cleaning job is active or cleaning sequence is disabled
 
 ## Number
 

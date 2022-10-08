@@ -1,4 +1,4 @@
-# Notifications
+# Notifications with error reporting
 Integration tracks certain device properties and adds persistent notifications on specific events as implemented on official App. Notification feature can be disabled from integration settings.
 > All resources and strings are extracted from the official App with Z10 Pro, some of them will may fit to your device. Resources for other devices may be added on future release.
 
