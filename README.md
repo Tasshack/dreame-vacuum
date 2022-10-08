@@ -51,7 +51,7 @@ Assistant root directory, e.g. `git clone https://github.com/tasshack/dreame-vac
 
 
 ### Via [HACS](https://hacs.xyz/)
-- Use this button: [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Tasshack&repository=dreame-vacuum&category=integration) or;
+- Use this button: <a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=Tasshack&repository=dreame-vacuum&category=integration" target="_blank"><img src="https://my.home-assistant.io/badges/hacs_repository.svg" alt="Open your Home Assistant instance and open a repository inside the Home Assistant Community Store." /></a> or:
   - Navigate to HACS -> Integrations -> Custom repositories -> Add
   - Set *Repository* to **https://github.com/tasshack/dreame-vacuum**
   - Set *Type* to **Integration**
@@ -60,15 +60,15 @@ Assistant root directory, e.g. `git clone https://github.com/tasshack/dreame-vac
 - Restart Home Assistant
 
 ## Configuration
-- Use this button: [![Open your Home Assistant instance and start setting up a new integration.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=dreame_vacuum) or;
+- Use this button: <a href="https://my.home-assistant.io/redirect/config_flow_start/?domain=dreame_vacuum" target="_blank"><img src="https://my.home-assistant.io/badges/config_flow_start.svg" alt="Open your Home Assistant instance and start setting up a new integration." /></a> or:
   - Add the **Dreame Vacuum** integration in Settings -> Devices & Services -> Add Integration
   - Select **Dreame Vacuum** from the list
   - Confirm form submission
-- Select configuration type;
+- Select configuration type:
   - **With Map (Automatic):** Cloud and local connection with map support.
   - **Without Map (Manual):** Local connection to device without map support.
 - Enter your credentials according to the selected configuration
-- Set your device name and integration settings;
+- Set your device name and integration settings:
   - **Notification:** Enable/Disable persistent notifications.
   - **Map Color Scheme:** Select from predefined map rendering colors. 
  
@@ -78,7 +78,7 @@ Integration is compatible with all available Lovelace vacuum cards but if you wa
 
 #### With [Xiaomi Vacuum Map Card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card)
  > Template for room and zone cleaning.
-[![Open your Home Assistant instance and show your template developer tools.](https://my.home-assistant.io/badges/developer_template.svg)](https://my.home-assistant.io/redirect/developer_template/)
+<a href="https://my.home-assistant.io/redirect/developer_template/" target="_blank"><img src="https://my.home-assistant.io/badges/developer_template.svg" alt="Open your Home Assistant instance and show your template developer tools." /></a>
 ```yaml
 {# ----------------- PROVIDE YOUR OWN ENTITY IDS HERE ----------------- #}
 {% set camera_entity = "camera." %}
@@ -176,9 +176,9 @@ shortcuts:
     icon: mdi:silverware-fork-knife
 ```
 
-#### With [Valetudo Map Card](https://github.com/Hypfer/lovelace-valetudo-map-card)
+#### With <a href="https://github.com/Hypfer/lovelace-valetudo-map-card" target="_blank">Valetudo Map Card</a>
  > Enable **Map Data** camera entity. 
-[![Open your Home Assistant instance and show your entities.](https://my.home-assistant.io/badges/entities.svg)](https://my.home-assistant.io/redirect/entities/)
+<a href="https://my.home-assistant.io/redirect/entities/" target="_blank"><img src="https://my.home-assistant.io/badges/entities.svg" alt="Open your Home Assistant instance and show your entities." /></a>
 
 ```yaml
 type: custom:valetudo-map-card
@@ -201,7 +201,7 @@ segment_colors:
   - rgb(184, 217, 141)
 ```
 
-#### With [Xiaomi Vacuum Card](https://github.com/benct/lovelace-xiaomi-vacuum-card) and Picture Entity Card
+#### With <a href="https://github.com/benct/lovelace-xiaomi-vacuum-card" target="_blank">Xiaomi Vacuum Card</a> and Picture Entity Card
 ```yaml
 type: picture-entity
 entity: # Your vacuum entity
@@ -252,15 +252,16 @@ attributes:
 - ##### [Disabling obstacle avoidance on selected room](https://github.com/Tasshack/dreame-vacuum/blob/master/blueprints/automation/disable_obstacle_avoidance_on_selected_room.yaml) 
     Line laser based 3D obstacle avoidance is great but it is affected from reflective surfaces can be found on kitchen or corridors. This integration exposes robots current room as entity so it can be used on automations.
 
-    [![Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled.](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2FTasshack%2Fdreame-vacuum%2Fblob%2Fmaster%2Fblueprints%2Fautomation%2Fdisable_obstacle_avoidance_on_selected_room.yaml)
+    <a href="https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2FTasshack%2Fdreame-vacuum%2Fblob%2Fmaster%2Fblueprints%2Fautomation%2Fdisable_obstacle_avoidance_on_selected_room.yaml" target="_blank"><img src="https://my.home-assistant.io/badges/blueprint_import.svg" alt="Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled." /></a>
 
 ## To Do
 
+- Events
 - 2FA Notifications
 - Map recovery support
 - Schedule editing
-- Cleaning history map suport
-- Map streaming optimisations
+- Cleaning history map support
+- Map rendering and streaming optimizations
 - Custom map color support
 - AI Obstacle rendering support
 - Support for non lidar Dreame vacuums

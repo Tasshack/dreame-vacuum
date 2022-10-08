@@ -14,7 +14,7 @@ Start selected zone cleaning with optional customized cleaning parameters.
 
 #### `dreame_vacuum.vacuum_set_dnd`
 
-Set do not disturb settings. *(This service exists because the lack of **date_time** entity on homeassistant)*
+Set do not disturb settings. *(This service exists because the lack of **date_time** entity on Home Assistant)*
 
 #### `dreame_vacuum.vacuum_remote_control_move_step`
 
@@ -37,9 +37,9 @@ Map editing services also uses the vacuum domain because all services are availa
 
 #### `dreame_vacuum.vacuum_request_map`
 
-Request device to upload a new map to the cloud. *(This service is useful when cloud connection is not used and another interation used for handing the map rendering)*
+Request device to upload a new map to the cloud. *(This service is useful when cloud connection is not used and another integration used for handing the map rendering)*
 
-Device does not responds to this action when;
+Device does not responds to this action when:
 - Spot cleaning
 - Fast mapping
 - Relocating

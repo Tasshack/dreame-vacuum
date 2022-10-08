@@ -563,8 +563,8 @@ class DreameMapVacuumMapManager:
     def _decode_map_partial(self, raw_map, timestamp=None) -> MapDataPartial | None:
         partial_map = DreameVacuumMapDecoder.decode_map_partial(raw_map)
         if partial_map is not None:
-            # After restart or unsuccessfull start robot returns timestamp_ms as uptime and that messes up with the latest map/frame id detection.
-            # I clouldn't figure out how app handles with this issue but i have added this code to update timestamp as request/object time.
+            # After restart or unsuccessful start robot returns timestamp_ms as uptime and that messes up with the latest map/frame id detection.
+            # I could not figure out how app handles with this issue but i have added this code to update time stamp as request/object time.
 
             if timestamp and (
                 partial_map.timestamp_ms is None
@@ -1147,7 +1147,7 @@ class DreameMapVacuumMapManager:
 
 class DreameMapVacuumMapEditor:
     """ Every map change must be handled on memory before actually requesting it to the device because it takes too much time to get the updated map from the cloud.
-    This class handles user edits on stored map data like updating customised cleaning settings or setting active segments on segment cleaning.
+    This class handles user edits on stored map data like updating customized cleaning settings or setting active segments on segment cleaning.
     Original app has a similar class to handle the same issue (Works optimistically) """
 
     def __init__(self, map_manager) -> None:
@@ -1296,9 +1296,9 @@ class DreameMapVacuumMapEditor:
                 and segments[0] in map_data.segments
                 and segments[1] in map_data.segments
             ):
-                if segments[1] not in map_data.segments[segments[0]].neighbours:
+                if segments[1] not in map_data.segments[segments[0]].neighbors:
                     _LOGGER.error(
-                        "Segments are not neighbours with each other: %s", segments
+                        "Segments are not neighbors with each other: %s", segments
                     )
                     return
 
@@ -1322,8 +1322,8 @@ class DreameMapVacuumMapEditor:
                 map_data.segments[segments[0]].y = new_segments[segments[0]].y
 
                 for (k, v) in map_data.segments.items():
-                    if segments[1] in v.neighbours:
-                        map_data.segments[k].neighbours.remove(segments[1])
+                    if segments[1] in v.neighbors:
+                        map_data.segments[k].neighbors.remove(segments[1])
 
                 DreameVacuumMapDecoder.set_segment_color_index(map_data)
                 if self._map_data and map_id == self._selected_map_id:
@@ -1647,13 +1647,13 @@ class DreameVacuumMapDecoder:
         )
 
     @staticmethod
-    def _compare_segment_neighbours(r1: Segment, r2: Segment) -> bool:
+    def _compare_segment_neighbors(r1: Segment, r2: Segment) -> bool:
         alen = 0
         blen = 0
-        if r1.neighbours:
-            alen = len(r1.neighbours)
-        if r2.neighbours:
-            blen = len(r2.neighbours)
+        if r1.neighbors:
+            alen = len(r1.neighbors)
+        if r2.neighbors:
+            blen = len(r2.neighbors)
 
         if alen == blen:
             return r1.id - r2.id
@@ -2020,7 +2020,7 @@ class DreameVacuumMapDecoder:
                             if seg_inf.get(str(k)):
                                 segment_info = seg_inf[str(k)]
                                 if segment_info.get("nei_id"):
-                                    segments[k].neighbours = segment_info["nei_id"]
+                                    segments[k].neighbors = segment_info["nei_id"]
                                 if segment_info.get("type"):
                                     segments[k].type = segment_info["type"]
                                 if segment_info.get("index"):
@@ -2066,7 +2066,7 @@ class DreameVacuumMapDecoder:
                                 map_data.segments[k].custom_name = v.custom_name
                                 map_data.segments[k].type = v.type
                                 map_data.segments[k].index = v.index
-                                map_data.segments[k].neighbours = v.neighbours
+                                map_data.segments[k].neighbors = v.neighbors
                                 if map_data.saved_map_status == 2:
                                     map_data.segments[k].x = v.x
                                     map_data.segments[k].y = v.y
@@ -2400,12 +2400,12 @@ class DreameVacuumMapDecoder:
         area_color_index = {}
         sorted_segments = sorted(
             map_data.segments.values(),
-            key=cmp_to_key(DreameVacuumMapDecoder._compare_segment_neighbours),
+            key=cmp_to_key(DreameVacuumMapDecoder._compare_segment_neighbors),
         )
         for segment in sorted_segments:
             used_ids = []
-            if segment.neighbours is not None:
-                for nid in segment.neighbours:
+            if segment.neighbors is not None:
+                for nid in segment.neighbors:
                     if nid in area_color_index:
                         used_ids.append(area_color_index[nid])
 

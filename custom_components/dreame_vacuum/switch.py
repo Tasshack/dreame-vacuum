@@ -60,7 +60,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        property_key=DreameVacuumProperty.TIGHT_MOPING,
+        property_key=DreameVacuumProperty.TIGHT_MOPPING,
         icon="mdi:set-center",
         entity_category=EntityCategory.CONFIG,
     ),

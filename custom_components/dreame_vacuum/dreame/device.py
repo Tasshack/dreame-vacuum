@@ -115,7 +115,7 @@ class DreameVacuumDevice:
         # Used for easy filtering the device from cloud device list and generating unique ids
         self.mac: str = None
         self.token: str = None  # Local api token
-        self.host: str = None  # Ip adress or hostname of the device
+        self.host: str = None  # IP address or host name of the device
         # Dictionary for storing the current property values
         self.data: dict[DreameVacuumProperty, Any] = {}
         self.available: bool = False  # Last update is successful or not
@@ -136,7 +136,7 @@ class DreameVacuumDevice:
         self._map_manager: DreameMapVacuumMapManager = None
         self._update_callback = None  # External update callback for device
         self._error_callback = None  # External update failed callback
-        # External update callbacks for spesific device property
+        # External update callbacks for specific device property
         self._property_update_callback = {}
         self._update_timer: Timer = None  # Update schedule timer
         # Used for requesting consumable properties after reset action otherwise they will only requested when cleaning completed
@@ -555,7 +555,7 @@ class DreameVacuumDevice:
             self._error_callback(ex)
 
     def _update_task(self) -> None:
-        """Timer task for updading properties periodically"""
+        """Timer task for updating properties periodically"""
         self._update_timer = None
 
         try:
@@ -916,7 +916,7 @@ class DreameVacuumDevice:
                     DreameVacuumProperty.CUSTOMIZED_CLEANING,
                     DreameVacuumProperty.CHILD_LOCK,
                     DreameVacuumProperty.CARPET_SENSITIVITY,
-                    DreameVacuumProperty.TIGHT_MOPING,
+                    DreameVacuumProperty.TIGHT_MOPPING,
                     DreameVacuumProperty.CARPET_DISTINGUISH,
                     DreameVacuumProperty.AUTO_WASH,
                     DreameVacuumProperty.DND,
@@ -1406,7 +1406,7 @@ class DreameVacuumDevice:
             return self._device_connection.set_property(mapping["siid"], mapping["piid"], str(json.dumps(settings, separators=(",", ":"))).replace(" ", ""), 1, 1)
 
     def set_ai_obstacle_detection(self, enabled: bool) -> dict[str, Any] | None:
-        """Enable or disable ai detection feature."""
+        """Enable or disable AI detection feature."""
         if self.status.ai_detection_available:
             current_value = self.status.ai_obstacle_detection
             self.status.ai_obstacle_detection = bool(enabled)
@@ -1430,7 +1430,7 @@ class DreameVacuumDevice:
             return result
 
     def set_pet_detection(self, enabled: bool) -> dict[str, Any] | None:
-        """Enable or disable ai pet detection feature."""
+        """Enable or disable AI pet detection feature."""
         if self.status.ai_detection_available:
             current_value = self.status.pet_detection
             self.status.pet_detection = bool(enabled)
@@ -1442,7 +1442,7 @@ class DreameVacuumDevice:
             return result
 
     def set_human_detection(self, enabled: bool) -> dict[str, Any] | None:
-        """Enable or disable ai human detection feature."""
+        """Enable or disable AI human detection feature."""
         if self.status.ai_detection_available:
             current_value = self.status.human_detection
             self.status.human_detection = bool(enabled)
@@ -1454,7 +1454,7 @@ class DreameVacuumDevice:
             return result
 
     def set_furniture_detection(self, enabled: bool) -> dict[str, Any] | None:
-        """Enable or disable ai furnitue detection feature."""
+        """Enable or disable AI furnitue detection feature."""
         if self.status.ai_detection_available:
             current_value = self.status.furniture_detection
             self.status.furniture_detection = bool(enabled)
@@ -1466,7 +1466,7 @@ class DreameVacuumDevice:
             return result
 
     def set_fluid_detection(self, enabled: bool) -> dict[str, Any] | None:
-        """Enable or disable ai fluid detection feature."""
+        """Enable or disable AI fluid detection feature."""
         if self.status.ai_detection_available:
             current_value = self.status.fluid_detection
             self.status.fluid_detection = bool(enabled)
@@ -1783,7 +1783,7 @@ class DreameVacuumDevice:
 
     @property
     def _update_interval(self) -> float:
-        """Dyanmic update interval of the device for the timer."""
+        """Dynamic update interval of the device for the timer."""
         now = time.time()
         if self._last_update_failed:
             return 5 if now - self._last_update_failed <= 60 else 10 if now - self._last_update_failed <= 300 else 30
@@ -1797,7 +1797,7 @@ class DreameVacuumDevice:
 
     @property
     def _map_update_interval(self) -> float:
-        """Dyanmic map update interval for the map manager."""
+        """Dynamic map update interval for the map manager."""
         if self._map_manager:
             now = time.time()
             if now - self._last_map_request <= 120 or now - self._last_change <= 60:
@@ -1829,7 +1829,7 @@ class DreameVacuumDevice:
 class DreameVacuumDeviceStatus:
     """Helper class for device status and int enum type properties.
     This class is used for determining various states of the device by its properties. 
-    Determined states are used by multiple validation and rendering condition checkes.
+    Determined states are used by multiple validation and rendering condition checks.
     Almost of the rules are extracted from mobile app that has a similar class with same purpose."""
 
     _cleaning_history = None
@@ -2120,7 +2120,7 @@ class DreameVacuumDeviceStatus:
         return ERROR_IMAGE.get(ERROR_CODE_TO_IMAGE_INDEX.get(self.error, 19))
 
     @property
-    def robot_status(self) -> int:  # TODO: Make enum
+    def robot_status(self) -> int:  # TODO: Convert to enum
         """Device status for robot icon rendering."""
         if self.running and not self.returning and not self.fast_mapping:
             return 1
@@ -2144,10 +2144,11 @@ class DreameVacuumDeviceStatus:
     @property
     def has_error(self) -> bool:
         """Returns true when an error is present."""
+        error = self.error
         return bool(
-            self.error.value > 0
+            error.value > 0
             and not self.has_warning
-            and self.error != DreameVacuumErrorCode.BATTERY_LOW
+            and error != DreameVacuumErrorCode.BATTERY_LOW
         )
 
     @property
@@ -2171,7 +2172,7 @@ class DreameVacuumDeviceStatus:
 
     @property
     def dnd_remaining(self) -> bool:
-        """Returns remaining seconds to dnd period to end."""
+        """Returns remaining seconds to DND period to end."""
         if self.dnd_enabled:
             dnd_start = self.dnd_start
             dnd_end = self.dnd_end
@@ -2211,14 +2212,16 @@ class DreameVacuumDeviceStatus:
     @property
     def water_tank_installed(self) -> bool:
         """Returns true when water tank or additional mop is installed to the device."""
-        return bool(self.water_tank is DreameVacuumWaterTank.INSTALLED or self.water_tank is DreameVacuumWaterTank.MOP_INSTALLED)
+        water_tank = self.water_tank
+        return bool(water_tank is DreameVacuumWaterTank.INSTALLED or water_tank is DreameVacuumWaterTank.MOP_INSTALLED or self.wash_station_available)
 
     @property
     def located(self) -> bool:
         """Returns true when robot knows its position on current map."""
+        relocation_status = self.relocation_status
         return bool(
-            self.relocation_status is DreameVacuumRelocationStatus.LOCATED
-            or self.relocation_status is DreameVacuumRelocationStatus.UNKNOWN
+            relocation_status is DreameVacuumRelocationStatus.LOCATED
+            or relocation_status is DreameVacuumRelocationStatus.UNKNOWN
         )
 
     @property
@@ -2411,7 +2414,7 @@ class DreameVacuumDeviceStatus:
 
     @property
     def auto_emptying_not_performed(self) -> bool:
-        """Returns true when auto emptying is not performed due to dnd settings."""
+        """Returns true when auto emptying is not performed due to DND settings."""
         return bool(self.auto_empty_status is DreameVacuumAutoEmptyStatus.NOT_PERFORMED)
 
     @property
@@ -2437,7 +2440,7 @@ class DreameVacuumDeviceStatus:
 
     @property
     def ai_detection_available(self) -> bool:
-        """Returns true when device has ai obstacle detection feature."""
+        """Returns true when device has AI obstacle detection feature."""
         return bool(
             self._get_property(DreameVacuumProperty.AI_DETECTION)
             is not None
@@ -2493,7 +2496,7 @@ class DreameVacuumDeviceStatus:
 
     @property
     def washing_paused(self) -> bool:
-        """Returns true when mop wasing paused."""
+        """Returns true when mop washing paused."""
         return bool(self.wash_station_available and self.wask_station_status is DreameVacuumWashStationStatus.PAUSED)
 
     @property
@@ -2573,17 +2576,17 @@ class DreameVacuumDeviceStatus:
 
     @property
     def dnd_enabled(self) -> bool:
-        """Returns dnd is enabled."""
+        """Returns DND is enabled."""
         return bool(self._get_property(DreameVacuumProperty.DND))
 
     @property
     def dnd_start(self) -> str:
-        """Returns dnd start time."""
+        """Returns DND start time."""
         return self._get_property(DreameVacuumProperty.DND_START)
 
     @property
     def dnd_end(self) -> str:
-        """Returns dnd end time."""
+        """Returns DND end time."""
         return self._get_property(DreameVacuumProperty.DND_END)
 
     @property
@@ -2616,7 +2619,7 @@ class DreameVacuumDeviceStatus:
 
     @property
     def has_temporary_map(self) -> bool:
-        """Returns true when device cannot store the newly created map and waits promp for restoring or discarding it."""
+        """Returns true when device cannot store the newly created map and waits prompt for restoring or discarding it."""
         if not self.map_available:
             return False
 
@@ -2795,7 +2798,7 @@ class DreameVacuumDeviceInfo:
 
     @property
     def accesspoint(self) -> str:
-        """Information about connected wlan accesspoint."""
+        """Information about connected WLAN access point."""
         return self.data["ap"]
 
     @property

@@ -374,7 +374,7 @@ class DreameVacuumProperty(IntEnum):
     CUSTOMIZED_CLEANING = 27,
     CHILD_LOCK = 28,
     CARPET_SENSITIVITY = 29,
-    TIGHT_MOPING = 30,
+    TIGHT_MOPPING = 30,
     CLEANING_CANCEL = 31,
     CARPET_DISTINGUISH = 32,
     AUTO_WASH = 33,
@@ -481,7 +481,7 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.CUSTOMIZED_CLEANING: {"siid": 4, "piid": 26},
     DreameVacuumProperty.CHILD_LOCK: {"siid": 4, "piid": 27},
     DreameVacuumProperty.CARPET_SENSITIVITY: {"siid": 4, "piid": 28},
-    DreameVacuumProperty.TIGHT_MOPING: {"siid": 4, "piid": 29},
+    DreameVacuumProperty.TIGHT_MOPPING: {"siid": 4, "piid": 29},
     DreameVacuumProperty.CLEANING_CANCEL: {"siid": 4, "piid": 30},
     DreameVacuumProperty.CARPET_DISTINGUISH: {"siid": 4, "piid": 33},
     DreameVacuumProperty.AUTO_WASH: {"siid": 4, "piid": 34},
@@ -556,7 +556,7 @@ DreameVacuumActionMapping = {
 
 PROPERTY_AVAILABILITY: Final = {
     DreameVacuumProperty.CUSTOMIZED_CLEANING: lambda device: not device.status.started and (device.status.has_saved_map or device.status.current_map is None),
-    DreameVacuumProperty.TIGHT_MOPING: lambda device: device.status.water_tank_installed and not device.status.started,
+    DreameVacuumProperty.TIGHT_MOPPING: lambda device: device.status.water_tank_installed and not device.status.started,
     DreameVacuumProperty.MULTI_FLOOR_MAP: lambda device: not device.status.has_temporary_map,
     DreameVacuumProperty.MOP_CLEANING_REMAINDER: lambda device: device.status.water_tank_installed,
     DreameVacuumProperty.DND_START: lambda device: device.status.dnd_enabled,
@@ -714,7 +714,7 @@ class Segment(Zone):
         index: int = 0,
         type: int = 0,
         icon: str = None,
-        neighbours: List[int] = [],
+        neighbors: List[int] = [],
         repeats: int = None,
         fan_speed: int = None,
         water_level: int = None,
@@ -729,7 +729,7 @@ class Segment(Zone):
         self.type = type
         self.index = index
         self.icon = icon
-        self.neighbours = neighbours
+        self.neighbors = neighbors
         self.order = order
         self.repeats = repeats
         self.fan_speed = fan_speed
@@ -829,7 +829,7 @@ class Segment(Zone):
             and self.type == other.type
             and self.color_index == other.color_index
             and self.icon == other.icon
-            and self.neighbours == other.neighbours
+            and self.neighbors == other.neighbors
             and self.order == other.order
             and self.repeats == other.repeats
             and self.fan_speed == other.fan_speed

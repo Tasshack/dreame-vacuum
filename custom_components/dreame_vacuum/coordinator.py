@@ -220,7 +220,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 self.device.clear_warning()
 
     async def _async_update_data(self) -> DreameVacuumDevice:
-        """Handle device update. This function is only called once when the integration is added to hass."""
+        """Handle device update. This function is only called once when the integration is added to Home Assistant."""
         try:
             await self.hass.async_add_executor_job(self.device.update)
             self.device.schedule_update()
