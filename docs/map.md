@@ -21,9 +21,11 @@ TODO
 
 TODO
 
-### Dynamic object rendering for job type
+### Dynamic object rendering for current job type
 
 TODO
+
+<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_cleaning.gif" width="350px"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/zone_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/zone_cleaning.gif" width="350px"></a>
 
 ### Overlay for robot status
 
