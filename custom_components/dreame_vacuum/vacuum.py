@@ -66,7 +66,6 @@ from .const import (
     SERVICE_SET_CUSTOM_CLEANING,
     SERVICE_SET_DND,
     SERVICE_SET_RESTRICTED_ZONE,
-    SERVICE_SET_WATER_LEVEL,
     SERVICE_SPLIT_SEGMENTS,
     SERVICE_SAVE_TEMPORARY_MAP,
     SERVICE_DISCARD_TEMPORARY_MAP,
@@ -348,14 +347,6 @@ async def async_setup_entry(
     )
 
     platform.async_register_entity_service(
-        SERVICE_SET_WATER_LEVEL,
-        {
-            vol.Required(INPUT_WATER_LEVEL): cv.string,
-        },
-        DreameVacuum.async_set_water_level.__name__,
-    )
-
-    platform.async_register_entity_service(
         SERVICE_SET_DND,
         {
             vol.Required(INPUT_DND_ENABLED): cv.boolean,
@@ -529,25 +520,6 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
             "Unable to set fan speed: %s", self.device.set_fan_speed, fan_speed
         )
 
-    async def async_set_water_level(self, water_level, **kwargs) -> None:
-        """Set water level."""
-        if isinstance(water_level, str):
-            water_level = water_level.lower().replace(" ", "_")
-        if water_level in self.device.status.water_level_list:
-            water_level = self.device.status.water_level_list[water_level]
-        else:
-            try:
-                water_level = int(water_level)
-            except ValueError as exc:
-                raise HomeAssistantError(
-                    "Water level not recognized (%s). Valid options: %s",
-                    exc,
-                    self._water_level_list,
-                ) from None
-        await self._try_command(
-            "Unable to set water level: %s", self.device.set_water_level, water_level
-        )
-
     async def async_select_map(self, map_id) -> None:
         """Switch selected map."""
         await self._try_command(
@@ -584,12 +556,6 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
         """Request new map."""
         await self._try_command(
             "Unable to call request_map: %s", self.device.request_map
-        )
-
-    async def async_clear_warning(self) -> None:
-        """Dismiss error code."""
-        await self._try_command(
-            "Unable to call clear_warning: %s", self.device.clear_warning
         )
 
     async def async_rename_map(self, map_id, map_name="") -> None:
