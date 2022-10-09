@@ -10,22 +10,23 @@ TODO
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_light.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_light.png" width="31%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dark.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dark.png" width="31%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" width="31%"></a>
 
-
-### Room and customized cleaning icons
-
-TODO
-
-<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_icons.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_icons.gif" width="500px"></a>
-
-### High refresh rate with low delay
+### High refresh rate with low latency
 
 TODO
+
+<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/cleaning.gif" width="500px"></a>
 
 ### Dynamic object rendering for different job types
 
 TODO
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_cleaning.gif" width="400px"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/zone_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/zone_cleaning.gif" width="400px"></a>
+
+### Room and customized cleaning icons
+
+TODO
+
+<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_icons.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_icons.gif" width="500px"></a>
 
 ### Fast mapping and spot cleaning
 
