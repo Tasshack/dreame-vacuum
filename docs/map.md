@@ -27,9 +27,17 @@ TODO
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_cleaning.gif" width="400px"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/zone_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/zone_cleaning.gif" width="400px"></a>
 
-### Overlay for robot status
+### Overlay for robot state
 
 TODO
+
+| Icon  | State  | 
+| ----------------------- | -------------------- | -------------------- |
+| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_sleeping.png" width="50px">   | Sleeping | 
+| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_idle.png" width="50px">   | Idle | 
+| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_active.png" width="50px">   | Active | 
+| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_charging.png" width="50px">   | Charging | 
+| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_error.png" width="50px">   | Error | 
 
 ### Multi-floor map support
 
