@@ -63,6 +63,8 @@ TODO
 
 TODO
 
+<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/merge_segments.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/merge_segments_.gif" width="500px"></a>
+
 <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md#map-services" target="_blank">For more info about map services</a>
 
 ### Fast mapping support

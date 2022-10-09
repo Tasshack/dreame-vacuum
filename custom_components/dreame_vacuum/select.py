@@ -182,7 +182,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         options=lambda device, segment: list(device.status.fan_speed_list),
         available_fn=lambda device: bool(
             device.status.segments
-            and device.status.segments[1].fan_speed is not None
+            and next(iter(device.status.segments.values())).fan_speed is not None
             and device.status.customized_cleaning
             and not device.status.zone_cleaning
             and not device.status.fast_mapping
@@ -206,7 +206,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         options=lambda device, segment: list(device.status.water_level_list),
         available_fn=lambda device: bool(
             device.status.segments
-            and device.status.segments[1].water_level is not None
+            and next(iter(device.status.segments.values())).water_level is not None
             and device.status.customized_cleaning
             and not device.status.zone_cleaning
             and not device.status.fast_mapping
@@ -227,7 +227,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         options=lambda device, segment: [f"{i}{UNIT_TIMES}" for i in range(1, 4)],
         available_fn=lambda device: bool(
             device.status.segments
-            and device.status.segments[1].repeats is not None
+            and next(iter(device.status.segments.values())).repeats is not None
             and device.status.customized_cleaning
             and not device.status.zone_cleaning
             and not device.status.started
@@ -249,7 +249,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
         available_fn=lambda device: bool(
             device.status.segments
-            and device.status.segments[1].order is not None
+            and next(iter(device.status.segments.values())).order is not None
             and not device.status.started
             and device.status.custom_order
             and device.status.has_saved_map
