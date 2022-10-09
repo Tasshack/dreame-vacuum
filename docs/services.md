@@ -6,7 +6,7 @@ Services for actions that are not available via an entity
 
 #### `dreame_vacuum.vacuum_clean_segment`
 
-Start selected room cleaning with optional customized cleaning parameters.
+Start selected room cleaning with optional customized cleaning parameters. Cleaning parameters and cleaning order are ignored by the device when *customized_cleaning* or 'cleaning_sequence' is enabled.
 
 #### `dreame_vacuum.vacuum_clean_zone`
 

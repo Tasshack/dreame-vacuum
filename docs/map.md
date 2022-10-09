@@ -1,42 +1,65 @@
-# Live and saved map support
+# Map Support
 
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/live_map.jpg" width="500px">
+Completely reverse engineered map data handling, decoding and rendering for live and multiple saved map support with all features provided with the official App.
 
-TODO
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/live_map.jpg" width="400px">
 
-### Multiple color schemes
-
-TODO
-
-<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_light.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_light.png" width="31%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dark.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dark.png" width="31%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" width="31%"></a>
+- High resolution image rendering with layer caching for improving performance.
+- All resources with icon position and color index finding algorithms are extracted from the official App for same look and feel.
+- All map operations is handled on memory before it is sent to device for low latency updates.
+- Fully featured highly optimized integrated map manager for map editing and handling partial maps.
+- With dynamic refresh rate determined by map type, device state and last access time.
 
 ### High refresh rate with low latency
 
-TODO
+Partial map (P frame type) decoding for three seconds refresh rate with three seconds delay same as with the official App.
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/cleaning.gif" width="500px"></a>
 
-### Dynamic object rendering for different job types
+> - P type maps are introduced with second generation robots and new devices only sends P frames to the cloud when running.
+> - P maps are only containing the difference between its previous frame therefore handling is much harder than standard I type maps.
+> - Valetudo do not parses P frames suggesting that is hard and instead it sends new map requests to refresh the map but requesting I frames from device is strictly restricted to minimum 5 seconds on the official App source code. 
+> - Documentation for handling P frames is not available and currently there are no other integration, library or app exists that can handle P maps for Dreame vacuums except the official App.
 
-TODO
+### Multiple color schemes
 
-<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_cleaning.gif" width="400px"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/zone_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/zone_cleaning.gif" width="400px"></a>
+There available color schemes for live and saved maps:
+- **Light**: Colors from the official App for light themes.
+- **Dark**: Darkened version of the *Light* map for dark themes.
+- **Grayscale**: Black and white version of the *Dark* map with inverted icon colors for a clean look.
+
+ > Map color scheme can be changed from integration configuration options.
+
+<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_light.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_light.png" width="31%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dark.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dark.png" width="31%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" width="31%"></a>
 
 ### Room and customized cleaning icons
 
-TODO
+Dynamically rendered icons and texts for:
+- Room type
+- Custom name
+- Cleaning order
+- Fan speed
+- Water level
+- Repeats
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_icons.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_icons.gif" width="500px"></a>
 
+
+### Dynamic object rendering for different job types
+
+Custom rendering rules extracted from the official App for specific type of job and robot state.
+
+<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_cleaning.gif" width="400px"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/zone_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/zone_cleaning.gif" width="400px"></a>
+
 ### Fast mapping and spot cleaning
 
-TODO
+Live mapping support with *new map* handling, parsing and rendering.
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/fast_mapping.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/fast_mapping.gif" width="400px"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/spot_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/spot_cleaning.gif" width="400px"></a>
 
-### Overlay for robot state
+### Robot state
 
-TODO
+Vacuum icon overlays for displaying device state same as on the official App.
 
 | Icon  | State  | 
 | ----------------------- | -------------------- | 
@@ -48,13 +71,15 @@ TODO
 
 ### Multi-floor map support
 
-TODO
+Up to three saved maps with auto generated camera and select entities for multiple floor map management.
+
+> Saved maps uses `[original map id][version]` as their `map_id` format (e.g. `46`). Because of that map ids are constantly changing and cannot be used on entity ids. Instead, map camera entities uses indexing system. Map indexes created from map id ordered saved map list and used for naming maps without custom names. Therefore when  `map_2` removed from the list, `map_3` will be deleted instead and `map_3` will become `map_2` (exactly how handled on the official App). If Multi-floor map is disabled when multiple saved maps exists `map_1` always become the selected map instead of other maps being deleted.
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/multi_map.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/multi_map.gif" width="500px"></a>
 
 ### Map entities
 
-TODO
+Automatically generated saved and live map entities for map editing and automations.
 
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_entities.png" width="500px">
 
@@ -62,15 +87,15 @@ TODO
 
 ### Dynamic room entities for selected map
 
-TODO
+Automatically generated room entities for room and customized cleaning settings.
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/rooms.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/rooms.gif" width="500px"></a>
 
-**<a href="https://github.com/Tasshack/dreame-vacuum/blob/master/room_entities/map.md" target="_blank">For more info about room entities</a>**
+**<a href="https://github.com/Tasshack/dreame-vacuum/blob/master/room_entities.md" target="_blank">For more info about room entities</a>**
 
 ### Map and room editing services
 
-TODO
+Services for available map operations provided with the official App.
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/merge_segments.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/merge_segments.gif" width="400px"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/split_segments.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/split_segments.gif" width="400px"></a>
 
@@ -78,4 +103,6 @@ TODO
 
 ### Map Recovery
 
-*Mac recovery support is coming soon*
+*Map recovery support is coming soon.*
+
+### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/README.md#how-to-use" target="_blank">How to use</a>
