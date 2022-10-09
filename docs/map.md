@@ -32,12 +32,12 @@ TODO
 TODO
 
 | Icon  | State  | 
-| ----------------------- | -------------------- | -------------------- |
-| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_sleeping.png" width="50px">   | Sleeping | 
-| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_idle.png" width="50px">   | Idle | 
-| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_active.png" width="50px">   | Active | 
-| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_charging.png" width="50px">   | Charging | 
-| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_error.png" width="50px">   | Error | 
+| ----------------------- | -------------------- | 
+| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_sleeping.png" width="50px">   | Sleeping
+| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_idle.png" width="50px">   | Idle
+| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_active.png" width="50px">   | Active
+| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_charging.png" width="50px">   | Charging
+| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_error.png" width="50px">   | Error
 
 ### Multi-floor map support
 
@@ -63,7 +63,7 @@ TODO
 
 TODO
 
-<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/merge_segments.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/merge_segments_.gif" width="500px"></a>
+<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/merge_segments.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/merge_segments.gif" width="400px"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/split_segments.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/split_segments.gif" width="400px"></a>
 
 <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md#map-services" target="_blank">For more info about map services</a>
 
