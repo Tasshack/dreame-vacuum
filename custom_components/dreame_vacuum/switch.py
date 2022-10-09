@@ -182,7 +182,7 @@ async def async_setup_entry(
     async_add_entities(
         DreameVacuumSwitchEntity(coordinator, description)
         for description in SWITCHES
-        if description.exists_fn(description, coordinator.data)
+        if description.exists_fn(description, coordinator.device)
     )
 
 

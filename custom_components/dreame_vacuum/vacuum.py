@@ -368,8 +368,8 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
 
         self._attr_supported_features = SUPPORT_DREAME
         self._attr_device_class = DOMAIN
-        self._attr_name = coordinator.data.name
-        self._attr_unique_id = f"{coordinator.data.mac}_" + DOMAIN
+        self._attr_name = coordinator.device.name
+        self._attr_unique_id = f"{coordinator.device.mac}_" + DOMAIN
         self._set_attrs()
 
     @callback

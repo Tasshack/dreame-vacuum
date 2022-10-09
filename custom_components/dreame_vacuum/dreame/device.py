@@ -628,16 +628,9 @@ class DreameVacuumDevice:
     def disconnect(self) -> None:
         """Disconnect from device and cancel timers"""
         self.schedule_update(-1)
-        del self._device_connection
-        self._device_connection = None
         if self._cloud_connection:
-            del self._cloud_connection
-            self._cloud_connection = None
-
             if self._map_manager:
                 self._map_manager.schedule_update(-1)
-                del self._map_manager
-                self._map_manager = None
 
     def listen(self, callback, property: DreameVacuumProperty = None) -> None:
         """Set callback functions for external listeners"""

@@ -66,14 +66,11 @@ Assistant root directory, e.g. `git clone https://github.com/tasshack/dreame-vac
   - Confirm form submission
 - Select configuration type:
 
-    <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow.png" width="300px">
+    <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow.png" width="550px">
 
-  - **With Map (Automatic):** Cloud and local connection with map support.
-  - **Without Map (Manual):** Local connection to device without map support.
-- Enter your credentials according to the selected configuration
+- Enter required credentials according to the selected configuration type
 - Set your device name and integration settings:
-  - **Notification:** Enable/Disable persistent notifications.
-  - **Map Color Scheme:** Select from predefined map rendering colors. 
+    <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow_settings.png" width="550px">
  
 ## How to Use
 

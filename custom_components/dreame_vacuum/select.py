@@ -307,7 +307,7 @@ async def async_setup_entry(
     async_add_entities(
         DreameVacuumSelectEntity(coordinator, description)
         for description in SELECTS
-        if description.exists_fn(description, coordinator.data)
+        if description.exists_fn(description, coordinator.device)
     )
     platform = entity_platform.current_platform.get()
     platform.async_register_entity_service(
@@ -341,8 +341,8 @@ def async_update_segment_selects(
     async_add_entities,
 ) -> None:
     new_ids = []
-    if coordinator.data.status.map_list:
-        for (k, v) in coordinator.data.status.map_data_list.items():
+    if coordinator.device and coordinator.device.status.map_list:
+        for (k, v) in coordinator.device.status.map_data_list.items():
             for (j, s) in v.segments.items():
                 if j not in new_ids:
                     new_ids.append(j)
@@ -393,7 +393,7 @@ class DreameVacuumSelectEntity(DreameVacuumEntity, SelectEntity):
             if hasattr(coordinator.device.status, prop):
                 description.value_fn = lambda value, device: getattr(device.status, prop)
 
-        self._attr_options = description.options(coordinator.data, None)
+        self._attr_options = description.options(coordinator.device, None)
         self._attr_current_option = self.native_value
 
     @callback
@@ -488,8 +488,8 @@ class DreameVacuumSegmentSelectEntity(DreameVacuumEntity, SelectEntity):
     ) -> None:
         """Initialize Dreame Vacuum Segment Select."""
         self.segment_id = segment_id
-        if segment_id in coordinator.data.status.segments:
-            self.segment = copy.deepcopy(coordinator.data.status.segments[segment_id])
+        if coordinator.device and segment_id in coordinator.device.status.segments:
+            self.segment = copy.deepcopy(coordinator.device.status.segments[segment_id])
         else:
             self.segment = None
 
@@ -499,7 +499,7 @@ class DreameVacuumSegmentSelectEntity(DreameVacuumEntity, SelectEntity):
         self._attr_options = []
         self._attr_current_option = "unavailable"
         if self.segment:
-            self._attr_options = description.options(coordinator.data, self.segment)
+            self._attr_options = description.options(coordinator.device, self.segment)
             self._attr_current_option = self.native_value
 
     def _set_id(self) -> None:

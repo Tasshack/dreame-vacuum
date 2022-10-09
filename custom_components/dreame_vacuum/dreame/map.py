@@ -1690,7 +1690,7 @@ class DreameVacuumMapDecoder:
                 if map_data.saved_map_status == 1 or map_data.saved_map_status == 0:
                     # as implemented on the app
                     if segment_id == 1:
-                        return MapPixelType.FLOOR.value
+                        return MapPixelType.NEW_SEGMENT.value
                     if segment_id == 2:
                         return MapPixelType.WALL.value
                     return MapPixelType.OUTSIDE.value
@@ -1982,7 +1982,7 @@ class DreameVacuumMapDecoder:
                                         segment_id = pixel & 0b00000011
                                         if segment_id == 1:
                                             map_data.pixel_type[x,
-                                                                y] = MapPixelType.FLOOR.value
+                                                                y] = MapPixelType.NEW_SEGMENT.value
                                         elif segment_id == 2:
                                             map_data.pixel_type[x,
                                                                 y] = MapPixelType.WALL.value
@@ -2005,7 +2005,7 @@ class DreameVacuumMapDecoder:
                                                 # as implemented on the app
                                                 if segment_id == 1:
                                                     map_data.pixel_type[x,
-                                                                        y] = MapPixelType.FLOOR.value
+                                                                        y] = MapPixelType.NEW_SEGMENT.value
                                                 elif segment_id == 2:
                                                     map_data.pixel_type[x,
                                                                         y] = MapPixelType.WALL.value
