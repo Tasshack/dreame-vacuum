@@ -51,6 +51,8 @@ TODO
 
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_entities.png" width="500px">
 
+<a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entites.md#select" target="_blank">For more info about map entities</a>
+
 ### Dynamic room entities for selected map
 
 TODO

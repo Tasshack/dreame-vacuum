@@ -65,6 +65,9 @@ Assistant root directory, e.g. `git clone https://github.com/tasshack/dreame-vac
   - Select **Dreame Vacuum** from the list
   - Confirm form submission
 - Select configuration type:
+
+    <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow.png" width="300px">
+
   - **With Map (Automatic):** Cloud and local connection with map support.
   - **Without Map (Manual):** Local connection to device without map support.
 - Enter your credentials according to the selected configuration
