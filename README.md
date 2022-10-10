@@ -257,6 +257,10 @@ attributes:
 
 ```
 
+#### With Dreame Vacuum Card
+
+*Coming Soon*
+
 ### Blueprints
 
 - ##### [Disabling obstacle avoidance on selected room](https://github.com/Tasshack/dreame-vacuum/blob/master/blueprints/automation/disable_obstacle_avoidance_on_selected_room.yaml) 

@@ -2744,7 +2744,7 @@ class DreameVacuumMapDataRenderer:
 
                     if segment_id == MapPixelType.WALL.value:
                         wall_pixels.append(coords)
-                    elif segment_id == MapPixelType.FLOOR.value or segment_id == MapPixelType.FLOOR.value:
+                    elif segment_id == MapPixelType.FLOOR.value or segment_id == MapPixelType.NEW_SEGMENT.value:
                         floor_pixels.append(coords)
                     elif segment_id > 0 and segment_id < 62:
                         if (
