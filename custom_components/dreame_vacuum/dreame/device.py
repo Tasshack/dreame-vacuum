@@ -2758,7 +2758,7 @@ class DreameVacuumDeviceStatus:
         segments = self.segments
         if self.segments:
             attributes[ATTR_ROOMS] = [
-                {ATTR_ID: v.id, ATTR_NAME: v.name, ATTR_ICON: v.icon}
+                {ATTR_ID: v.room_id, ATTR_NAME: v.name, ATTR_ICON: v.icon}
                 for k, v in sorted(segments.items())
             ]
 

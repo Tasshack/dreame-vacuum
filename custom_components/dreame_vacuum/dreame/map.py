@@ -1656,7 +1656,7 @@ class DreameVacuumMapDecoder:
             blen = len(r2.neighbors)
 
         if alen == blen:
-            return r1.id - r2.id
+            return r1.room_id - r2.room_id
 
         return blen - alen
 
@@ -2424,11 +2424,11 @@ class DreameVacuumMapDecoder:
             for area_color in area_color_num:
                 color = area_color[0]
                 if color not in used_ids:
-                    area_color_index[segment.id] = color
+                    area_color_index[segment.room_id] = color
                     break
 
-            if segment.id not in area_color_index:
-                area_color_index[segment.id] = 0
+            if segment.room_id not in area_color_index:
+                area_color_index[segment.room_id] = 0
 
         for i in area_color_index:
             map_data.segments[i].color_index = area_color_index[i]
@@ -2744,7 +2744,7 @@ class DreameVacuumMapDataRenderer:
 
                     if segment_id == MapPixelType.WALL.value:
                         wall_pixels.append(coords)
-                    elif segment_id == MapPixelType.FLOOR.value or segment_id == MapPixelType.NEW_SEGMENT.value:
+                    elif segment_id == MapPixelType.FLOOR.value or segment_id == MapPixelType.FLOOR.value:
                         floor_pixels.append(coords)
                     elif segment_id > 0 and segment_id < 62:
                         if (
@@ -3269,7 +3269,7 @@ class DreameVacuumMapRenderer:
         elif map_data.rotation == 270:
             image = image.transpose(Image.ROTATE_270)
 
-        _LOGGER.debug(
+        _LOGGER.warn(
             "Render frame: %s:%s took: %.2f at scale %s",
             map_data.map_id,
             map_data.frame_id,

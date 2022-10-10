@@ -702,7 +702,7 @@ class Zone:
 class Segment(Zone):
     def __init__(
         self,
-        id: int,
+        room_id: int,
         x0: Optional[float] = None,
         y0: Optional[float] = None,
         x1: Optional[float] = None,
@@ -721,7 +721,7 @@ class Segment(Zone):
         order: int = None,
     ) -> None:
         super().__init__(x0, y0, x1, y1)
-        self.id = id
+        self.room_id = room_id
         self.x = x
         self.y = y
         self.name = name
@@ -753,17 +753,17 @@ class Segment(Zone):
             if self.index > 0:
                 self.name = f"{self.name} {self.index + 1}"
         else:
-            self.name = f"Room {self.id}"
+            self.name = f"Room {self.room_id}"
         self.icon = SEGMENT_TYPE_CODE_TO_HA_ICON[self.type]
 
     def next_type_index(self, type, segments) -> int:
         index = 0
         if type > 0:
-            for id in sorted(segments, key=lambda id: segments[id].index):
+            for room_id in sorted(segments, key=lambda room_id: segments[room_id].index):
                 if (
-                    id != self.id
-                    and segments[id].type == type
-                    and segments[id].index == index
+                    room_id != self.room_id
+                    and segments[room_id].type == type
+                    and segments[room_id].index == index
                 ):
                     index = index + 1
         return index
@@ -775,7 +775,7 @@ class Segment(Zone):
             if index > 0:
                 list[k] = f"{v} {index + 1}"
 
-        name = f"Room {self.id}"
+        name = f"Room {self.room_id}"
         if self.type == 0:
             name = f"{self.name}"
         list[0] = name
@@ -787,8 +787,8 @@ class Segment(Zone):
     def as_dict(self) -> Dict[str, Any]:
         attributes = {**super(Segment, self).as_dict()}
         #attributes[ATTR_OUTLINE] = self.outline
-        if self.id:
-            attributes[ATTR_ROOM_ID] = self.id
+        if self.room_id:
+            attributes[ATTR_ROOM_ID] = self.room_id
         if self.name is not None:
             attributes[ATTR_NAME] = self.name
         if self.order is not None:
@@ -837,7 +837,7 @@ class Segment(Zone):
         )
 
     def __str__(self) -> str:
-        return f"{{id: {self.id}, outline: {self.outline}}}"
+        return f"{{room_id: {self.room_id}, outline: {self.outline}}}"
 
     def __repr__(self) -> str:
         return self.__str__()
@@ -1125,7 +1125,7 @@ class MapData:
         if self.charger_position is not None:
             attributes_list[ATTR_CHARGER] = self.charger_position
         if self.segments is not None and (self.saved_map or self.saved_map_status == 2):
-            attributes_list[ATTR_ROOMS] = [v.as_dict() for k, v in sorted(self.segments.items())]
+            attributes_list[ATTR_ROOMS] = {k: v.as_dict() for k, v in sorted(self.segments.items())}
         if not self.saved_map and self.robot_position is not None:
             attributes_list[ATTR_ROBOT_POSITION] = self.robot_position
         if self.map_id:

@@ -241,7 +241,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
             device.status.current_room is not None and not device.status.fast_mapping
         ),
         attrs_fn=lambda device: {
-            "room_id": device.status.current_room.id,
+            "room_id": device.status.current_room.room_id,
             "room_icon": device.status.current_room.icon,
         },
     ),
