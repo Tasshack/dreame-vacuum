@@ -317,7 +317,7 @@ PROPERTY_TO_NAME: Final = {
         "carpet_sensitivity",
         "Carpet Sensitivity",
     ],
-    DreameVacuumProperty.TIGHT_MOPPING: ["tight_moping", "Tight Moping"],
+    DreameVacuumProperty.TIGHT_MOPPING: ["tight_mopping", "Tight Mopping"],
     DreameVacuumProperty.CLEANING_CANCEL: ["cleaning_cancel", "Cleaning Cancel"],
     DreameVacuumProperty.CARPET_DISTINGUISH: [
         "carpet_distinguish",

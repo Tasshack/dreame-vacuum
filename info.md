@@ -4,9 +4,9 @@
 
 Complete app replacement for Dreame second generation lidar robot vacuums and a Valetudo alternative for devices above firmware version 1056.
 
-<p align="center">
-    <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map.png" width="20%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_app.png" width="20%"><img width=8%><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings.png" width="20%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings_app.png" width="20%">
-</p>
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map.png" width="48%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_app.png" width="48%">
+
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings.png" width="48%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings_app.png" width="48%">
 
 ## Features
 All features completely reverse engineered from the official Mi Home app RN plugin for Z10 Pro with firmware version 1156.
@@ -14,7 +14,7 @@ All features completely reverse engineered from the official Mi Home app RN plug
 - [Auto generated device entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md)
 - [Live and multi floor map support](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md)
 - [Customized room cleaning entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/room_entities.md)
-- [Services for device and map](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md)
+- [Services for device and map with examples](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md)
 - [Persistent notifications and error reporting](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md)
 - [Valetudo map card support](#with-valetudo-map-card)
 
@@ -39,20 +39,28 @@ All features completely reverse engineered from the official Mi Home app RN plug
 - `dreame.vacuum.p2149o` 
 - `dreame.vacuum.p2150o`
 - *`More to be added later...`*
- 
+
 ## Configuration
-- Use this button: <a href="https://my.home-assistant.io/redirect/config_flow_start/?domain=dreame_vacuum"><img src="https://my.home-assistant.io/badges/config_flow_start.svg" alt="Open your Home Assistant instance and start setting up a new integration." /></a> or:
+- Use this button: <a href="https://my.home-assistant.io/redirect/config_flow_start/?domain=dreame_vacuum" target="_blank"><img src="https://my.home-assistant.io/badges/config_flow_start.svg" alt="Open your Home Assistant instance and start setting up a new integration." /></a> or:
   - Add the **Dreame Vacuum** integration in Settings -> Devices & Services -> Add Integration
   - Select **Dreame Vacuum** from the list
   - Confirm form submission
 - Select configuration type:
-  - **With Map (Automatic):** Cloud and local connection with map support.
-  - **Without Map (Manual):** Local connection to device without map support.
-- Enter your credentials according to the selected configuration
-- Set your device name and integration settings:
-  - **Notification:** Enable/Disable persistent notifications.
-  - **Map Color Scheme:** Select from predefined map rendering colors. 
 
+    <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow.png" width="550px">
+
+    <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md" target="_blank">About map feature</a>
+
+- Enter required credentials according to the selected configuration type.
+- Set your device name and integration settings:
+
+    <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow_settings.png" width="350px">
+
+    <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md" target="_blank">About notifications feature</a><br><a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md#color-schemes" target="_blank">About map color schemes</a>
+- Navigate to device page for disabling or enabling entities that you want to use.
+
+    <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md" target="_blank">About entities</a>
+ 
 ## How to Use
 
 Integration is compatible with all available Lovelace vacuum cards but if you want to use zone cleaning feature you can prefer the Xiaomi Vacuum Card.
@@ -163,8 +171,9 @@ shortcuts:
 
 ```yaml
 type: custom:valetudo-map-card
-vacuum: # Your vacuum entity
-title: Lovelace Valetudo Map Card
+vacuum: # Your vacuum name not the entity id
+rotate: 0 # Map rotation entity does not work on valetudo map card
+vacuum_color: rgb(110, 110, 110)
 wall_color: rgb(159, 159, 159)
 floor_color: rgb(221, 221, 221)
 no_go_area_color: rgb(177, 0, 0)
@@ -232,7 +241,7 @@ attributes:
 
 - ##### [Disabling obstacle avoidance on selected room](https://github.com/Tasshack/dreame-vacuum/blob/master/blueprints/automation/disable_obstacle_avoidance_on_selected_room.yaml) 
     Line laser based 3D obstacle avoidance is great but it is affected from reflective surfaces can be found on kitchen or corridors. This integration exposes robots current room as entity so it can be used on automations.
-e
+
     <a href="https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2FTasshack%2Fdreame-vacuum%2Fblob%2Fmaster%2Fblueprints%2Fautomation%2Fdisable_obstacle_avoidance_on_selected_room.yaml" target="_blank"><img src="https://my.home-assistant.io/badges/blueprint_import.svg" alt="Open your Home Assistant instance and show the blueprint import dialog with a specific blueprint pre-filled." /></a>
 
 ## Thanks

@@ -1020,9 +1020,12 @@ class DreameVacuumDevice:
         """Send a raw command to the device. This is mostly useful when trying out
         commands which are not implemented by a given device instance. (Not likely)"""
 
-        if command is "":
+        if command is "" or parameters is None:
             raise InvalidActionException("Invalid Command: (%s).", command)
-        return self._device_connection.send(command, parameters)
+
+        self.schedule_update(5)
+        self._device_connection.send(command, parameters, 1, 2)
+        self.schedule_update(1)
 
     def set_fan_speed(self, fan_speed: int) -> bool:
         """Set fan speed."""

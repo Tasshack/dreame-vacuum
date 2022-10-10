@@ -14,7 +14,7 @@ All features completely reverse engineered from the official Mi Home app RN plug
 - [Auto generated device entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md)
 - [Live and multi floor map support](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md)
 - [Customized room cleaning entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/room_entities.md)
-- [Services for device and map](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md)
+- [Services for device and map with examples](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md)
 - [Persistent notifications and error reporting](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md)
 - [Valetudo map card support](#with-valetudo-map-card)
 
@@ -68,9 +68,17 @@ Assistant root directory, e.g. `git clone https://github.com/tasshack/dreame-vac
 
     <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow.png" width="550px">
 
-- Enter required credentials according to the selected configuration type
+    <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md" target="_blank">About map feature</a>
+
+- Enter required credentials according to the selected configuration type.
 - Set your device name and integration settings:
-    <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow_settings.png" width="550px">
+
+    <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow_settings.png" width="350px">
+
+    <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md" target="_blank">About notifications feature</a><br><a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md#color-schemes" target="_blank">About map color schemes</a>
+- Navigate to device page for disabling or enabling entities that you want to use.
+
+    <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md" target="_blank">About entities</a>
  
 ## How to Use
 
@@ -182,8 +190,9 @@ shortcuts:
 
 ```yaml
 type: custom:valetudo-map-card
-vacuum: # Your vacuum entity
-title: Lovelace Valetudo Map Card
+vacuum: # Your vacuum name not the entity id
+rotate: 0 # Map rotation entity does not work on valetudo map card
+vacuum_color: rgb(110, 110, 110)
 wall_color: rgb(159, 159, 159)
 floor_color: rgb(221, 221, 221)
 no_go_area_color: rgb(177, 0, 0)

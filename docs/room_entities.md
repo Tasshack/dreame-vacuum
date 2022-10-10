@@ -11,6 +11,8 @@ Integration exposes rooms from all saved maps and updates their availability sta
 
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_3_map_1.png" width="350px"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_3_map_2.png" width="350px">
 
+## Rooms card
+
 With help of two custom cards you can generate a single card to manage all room settings with correct names and icons.
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/rooms.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/rooms.gif" width="350px"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/custom_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/custom_cleaning.gif" width="350px"></a>
@@ -26,6 +28,7 @@ With help of two custom cards you can generate a single card to manage all room 
 {# ------------------- DO NOT CHANGE ANYTHING BELOW ------------------- #}
 {% set vacuum_name = states[vacuum_entity].entity_id.replace('vacuum.', '') %}
 type: entities
+title: Rooms
 entities:
 {# Alternatively room ids can be acquired from vacuum or camera entities #}
 {% for room in range(1, max_room_id) %}

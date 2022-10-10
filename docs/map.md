@@ -21,7 +21,7 @@ Partial map (P frame type) decoding for three seconds refresh rate with three se
 > - Valetudo do not parses P frames suggesting that is hard and instead it sends new map requests to refresh the map but requesting I frames from device is strictly restricted to minimum 5 seconds on the official App source code. 
 > - Documentation for handling P frames is not available and currently there are no other integration, library or app exists that can handle P maps for Dreame vacuums except the official App.
 
-### Multiple color schemes
+### Color schemes
 
 There available color schemes for live and saved maps:
 - **Light**: Colors from the official App for light themes.
@@ -45,7 +45,7 @@ Dynamically rendered icons and texts for:
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_icons.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_icons.gif" width="500px"></a>
 
 
-### Dynamic object rendering for different job types
+### Dynamic object rendering for job types
 
 Custom rendering rules extracted from the official App for specific type of job and robot state.
 
@@ -57,17 +57,21 @@ Live mapping support with *new map* handling, parsing and rendering.
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/fast_mapping.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/fast_mapping.gif" width="400px"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/spot_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/spot_cleaning.gif" width="400px"></a>
 
+> When robot is fast mapping or spot cleaning it creates a new map on its memory and does not responds to local map_request api actions. Newly created map does not have an object name yet so it can only be accessed via cloud map_data property. New map data requires different decoding and rendering rules because of that there are currently no other available map decoder library for this types of maps.
+
 ### Robot state
 
 Vacuum icon overlays for displaying device state same as on the official App.
 
-| Icon  | State  | 
-| ----------------------- | -------------------- | 
-| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_sleeping.png" width="50px">   | Sleeping
-| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_idle.png" width="50px">   | Idle
-| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_active.png" width="50px">   | Active
-| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_charging.png" width="50px">   | Charging
-| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_error.png" width="50px">   | Error
+<div align="center">
+
+| <div style="width:70px">Sleeping</div> | <div style="width:70px">Idle</div> | <div style="width:70px">Active</div> | <div style="width:70px">Charging</div> | <div style="width:70px">Error</div> | 
+|:--------:|:--------:|:--------:|:--------:|:--------:| 
+| <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_sleeping.png" width="50px"> | <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_idle.png" width="50px"> | <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_active.png" width="50px"> | <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_charging.png" width="50px"> | <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_error.png" width="50px"> |
+
+</div>
+
+> Warnings are clearable via notifications or `clear_warning` service for restoring robot state on map.
 
 ### Multi-floor map support
 

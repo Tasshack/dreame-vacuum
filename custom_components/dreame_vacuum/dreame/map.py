@@ -1678,7 +1678,7 @@ class DreameVacuumMapDecoder:
 
             segment_id = pixel & 0b00000011
             if segment_id == 1:
-                return MapPixelType.FLOOR.value
+                return MapPixelType.NEW_SEGMENT.value
             if segment_id == 2:
                 return MapPixelType.WALL.value
         else:

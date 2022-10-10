@@ -113,8 +113,8 @@
 | `cleaning_mode`   | Cleaning mode of the vacuum. (Sweeping, Mopping, Mopping and Sweeping) | Unavailable during cleaning.<br> (Options are dynamically generated for vacuums with attachable water tank.)<br> *Only available on devices firmware above 1056.* 
 | `carpet_sensitivity`   | Carpet sensitivity of carpet boost feature | Unavailable when carpet boost is disabled
 | `auto_empty_frequency`  | Auto empty frequency | Unavailable when automatic dust collection is disabled or not available
-| `map_rotation`   | Sets the rotation of selected map | Available with map feature and unavailable when current map is not one of the selected maps
-| `selected_map`   | Currently selected map | Available with map feature and unavailable when multi-floor map is disabled or not available
+| `map_rotation`   | Sets the rotation of selected map | Available with map feature and unavailable when current map is not one of the selected maps (Different map rotations can be for saved maps but only selected map is editable via this entity)
+| `selected_map`   | Currently selected map | Available with map feature and unavailable when multi-floor map is disabled or not available (Robot will end active job when selected map is changed)
 
 ### Select Entities for rooms
 - Room select entities are only available with cloud connection. 
