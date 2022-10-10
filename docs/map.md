@@ -105,4 +105,8 @@ Services for available map operations provided with the official App.
 
 *Map recovery support is coming soon.*
 
+### Cleaning history map
+
+*Cleanin history map rendering support is coming soon.*
+
 ### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/README.md#how-to-use" target="_blank">How to use</a>

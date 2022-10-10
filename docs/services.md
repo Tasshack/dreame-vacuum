@@ -65,7 +65,7 @@ Start selected room cleaning with optional customized cleaning parameters.
       segments:
         - 3
         - 5
-      fan_speed: 2
+      fan_speed: "high"
     target:
       entity_id: vacuum.vacuum
     ```
@@ -78,8 +78,8 @@ Start selected room cleaning with optional customized cleaning parameters.
         - 3
         - 5
       fan_speed: 
-        - 2
-        - 0
+        - "high"
+        - "silent"
     target:
       entity_id: vacuum.vacuum
     ```

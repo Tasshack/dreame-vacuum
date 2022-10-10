@@ -17,6 +17,7 @@ All features completely reverse engineered from the official Mi Home app RN plug
 - [Services for device and map with examples](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md)
 - [Persistent notifications and error reporting](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md)
 - [Valetudo map card support](#with-valetudo-map-card)
+- Onboard scheduling support *(Coming soon)*
 
 ## Supported Devices
 
