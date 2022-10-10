@@ -73,7 +73,7 @@ ATTR_ACTIVE_AREAS: Final = "active_areas"
 ATTR_ACTIVE_SEGMENTS: Final = "active_segments"
 ATTR_FRAME_ID: Final = "frame_id"
 ATTR_MAP_INDEX: Final = "map_index"
-ATTR_ID: Final = "id"
+ATTR_ROOM_ID: Final = "room_id"
 ATTR_NAME: Final = "name"
 ATTR_OUTLINE: Final = "outline"
 ATTR_CENTER: Final = "center"
@@ -788,7 +788,7 @@ class Segment(Zone):
         attributes = {**super(Segment, self).as_dict()}
         #attributes[ATTR_OUTLINE] = self.outline
         if self.id:
-            attributes[ATTR_ID] = self.id
+            attributes[ATTR_ROOM_ID] = self.id
         if self.name is not None:
             attributes[ATTR_NAME] = self.name
         if self.order is not None:

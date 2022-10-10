@@ -51,6 +51,8 @@ Custom rendering rules extracted from the official App for specific type of job 
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/room_cleaning.gif" width="400px"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/zone_cleaning.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/zone_cleaning.gif" width="400px"></a>
 
+**<a href="https://github.com/Tasshack/dreame-vacuum/blob/master/README.md#with-xiaomi-vacuum-map-card" target="_blank">For more info about Xiaomi Vacuum map card</a>**
+
 ### Fast mapping and spot cleaning
 
 Live mapping support with *new map* handling, parsing and rendering.
