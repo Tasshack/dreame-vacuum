@@ -1125,7 +1125,7 @@ class MapData:
         if self.charger_position is not None:
             attributes_list[ATTR_CHARGER] = self.charger_position
         if self.segments is not None and (self.saved_map or self.saved_map_status == 2):
-            attributes_list[ATTR_ROOMS] = [v for k, v in sorted(self.segments.items())]
+            attributes_list[ATTR_ROOMS] = [v.as_dict() for k, v in sorted(self.segments.items())]
         if not self.saved_map and self.robot_position is not None:
             attributes_list[ATTR_ROBOT_POSITION] = self.robot_position
         if self.map_id:

@@ -121,9 +121,8 @@ map_modes:
         segments: '[[selection]]'
         repeats: '[[repeats]]'
     predefined_selections:
-{%- for room_id in attributes.rooms | default([]) %}
-{%- set room = attributes.rooms[room_id] %}
-      - id: {{room_id}}
+{%- for room in attributes.rooms | default([]) %}
+      - id: {{room["room_id"]}}
         outline:
           - - {{room["x0"]}}
             - {{room["y0"]}}
