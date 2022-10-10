@@ -103,7 +103,11 @@ Services for available map operations provided with the official App.
 
 ### Valetudo map card support
 
+Valetudo map card uses its own color index algorithm and does not renders room icons or names also it ignores the map rotation setting on the map data.
+
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/valetudo_map.png" width="500px">
+
+**<a href="https://github.com/Tasshack/dreame-vacuum/blob/master/README.md#with-valetudo-map-card" target="_blank">For more info about valetudo map card</a>**
 
 ### Map recovery
 
