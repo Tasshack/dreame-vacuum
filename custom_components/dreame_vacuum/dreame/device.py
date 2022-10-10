@@ -1114,6 +1114,7 @@ class DreameVacuumDevice:
                     "value": parameters,
                 }
             )
+
         return self.call_action(DreameVacuumAction.START_CUSTOM, payload)
 
     def stop(self) -> dict[str, Any] | None:
@@ -1145,6 +1146,9 @@ class DreameVacuumDevice:
                 DreameVacuumProperty.STATE, DreameVacuumState.RETURNING.value
             )
 
+            # Clear active segments on current map data
+            if self._map_manager:
+                self._map_manager.editor.set_active_segments([])
         if self._map_manager:
             self._map_manager.editor.refresh_map()
         return self.call_action(DreameVacuumAction.CHARGE)
@@ -1209,7 +1213,7 @@ class DreameVacuumDevice:
         cleanlist = []
         index = 0
         segments = self.status.segments
-        custom_order = self.status.customized_cleaning and self.status.custom_order
+        custom_order = self.get_property(DreameVacuumProperty.CUSTOMIZED_CLEANING) is not None and self.status.custom_order
 
         for segment_id in selected_segments:
             if isinstance(repeats, list):
@@ -1251,7 +1255,7 @@ class DreameVacuumDevice:
             if self._map_manager:
                 # Set active segments on current map data is implemented on the app
                 self._map_manager.editor.set_active_segments(selected_segments)
-
+                
         return self.start_custom(
             DreameVacuumStatus.SEGMENT_CLEANING.value,
             str(json.dumps({"selects": cleanlist}, separators=(",", ":"))).replace(

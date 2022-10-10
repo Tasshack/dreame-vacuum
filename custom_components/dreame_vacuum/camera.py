@@ -177,7 +177,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Fetch state from the device."""
-        self._available = self.device.device_connected
+        self._available = self.device.device_connected and self.device.cloud_connected
         self._last_map_request = 0
         map_data = self._map_data
         if (
@@ -308,7 +308,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     @property
     def available(self) -> bool:
         """Return True if entity is available."""
-        return self._available and self.device.cloud_connected
+        return self._available
 
     @property
     def extra_state_attributes(self) -> Dict[str, Any]:

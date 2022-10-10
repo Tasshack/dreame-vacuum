@@ -8,8 +8,8 @@ Services for actions that are not available via an entity.
 ### `dreame_vacuum.vacuum_clean_segment`
 
 Start selected room cleaning with optional customized cleaning parameters. 
-> - Cleaning parameters and cleaning order are ignored by the device when `customized_cleaning` or `cleaning_sequence` is enabled.
 > - If you are using integration with map feature, you can acquire segment ids from vacuum entity attributes.
+> - Cleaning parameters and cleaning order are ignored by the device when `customized_cleaning` or `cleaning_sequence` is enabled.
 
 **Examples:**
 
@@ -374,7 +374,7 @@ Set invisible walls, no go and no mopping zones on current map.
 > - You can acquire line and zone coordinates with <a href="https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card/blob/master/docs/templates/setup.md#getting-coordinates" target="_blank_">Xiaomi Vacuum Map Card</a>.
 > - All object must be passed at one, you cannot add or remove single wall or no zone. You can acquire current line and zone coordinates from selected map camera entity attributes.
 
-**Examples**
+**Examples:**
 - Define virtual walls, restricted zones, and/or no mop zones
     ```yaml
     service: dreame_vacuum.vacuum_set_restricted_zone
@@ -433,7 +433,7 @@ Merge two rooms from a map.
 > - Deleted segment ids are not used again on new created segments.
 > - When multi-floor map feature is enabled selected map will change to edited map.
 
-**Examples**
+**Examples:**
 
 - Merge rooms 4 with 6 on the map with 63 (Room 6 will be deleted)
     ```yaml
@@ -469,7 +469,7 @@ Split a map room into to different rooms.
 > - Deleted segment ids are not used again and new segment always will be at highest next available index.
 > - When multi-floor map feature is enabled selected map will change to edited map.
 
-**Examples**
+**Example:**
 
 - Split room 4 from line coordinates (A new room will be created and room 4 settings will set to defaults)
     ```yaml
@@ -493,7 +493,7 @@ Set custom name for a room in current map.
 > - You can acquire map and segment ids from saved map camera entity attributes.
 > - Official App does not allow you to enter special characters in room name but this integration does so use this service carefully.
 
-**Example**
+**Example:**
 - Rename room 3 to "Dining Room"
     ```yaml
     service: dreame_vacuum.vacuum_rename_segment

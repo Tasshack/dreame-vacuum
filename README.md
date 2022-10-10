@@ -282,7 +282,12 @@ attributes:
 - Remote control commands not working properly
 - Translations are missing for states and config flow
 
-## Thanks
+## Contributing
+Integrations is currently only available on English language and if want you use it on our language it would be very helpful to you to translate files on *translations* folder and share with us.
+
+To submit your changes please fork this repository and open a pull request. 
+
+## Thanks To
 
  - [xiaomi_vacuum](https://github.com/pooyashahidi/xiaomi_vacuum) by [@pooyashahidi](https://github.com/pooyashahidi)
  - [xiaomi_miot_raw](https://github.com/ha0y/xiaomi_miot_raw) by [@ha0y](https://github.com/ha0y)

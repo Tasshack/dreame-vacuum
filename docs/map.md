@@ -63,13 +63,9 @@ Live mapping support with *new map* handling, parsing and rendering.
 
 Vacuum icon overlays for displaying device state same as on the official App.
 
-<div align="center">
-
 | <div style="width:70px">Sleeping</div> | <div style="width:70px">Idle</div> | <div style="width:70px">Active</div> | <div style="width:70px">Charging</div> | <div style="width:70px">Error</div> | 
 |:--------:|:--------:|:--------:|:--------:|:--------:| 
 | <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_sleeping.png" width="50px"> | <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_idle.png" width="50px"> | <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_active.png" width="50px"> | <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_charging.png" width="50px"> | <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/robot_error.png" width="50px"> |
-
-</div>
 
 > Warnings are clearable via notifications or `clear_warning` service for restoring robot state on map.
 

@@ -22,7 +22,7 @@ With help of two custom cards you can generate a single card to manage all room 
 <a href="https://my.home-assistant.io/redirect/developer_template/" target="_blank"><img src="https://my.home-assistant.io/badges/developer_template.svg" alt="Open your Home Assistant instance and show your template developer tools." /></a>
 
 ```yaml
-{# ----------------- PROVIDE YOUR OWN ENTITY IDS HERE ----------------- #}
+{# ----------------- PROVIDE YOUR OWN ENTITY ID AND ROOM COUNT HERE ----------------- #}
 {% set vacuum_entity = "vacuum." %}
 {% set max_room_id = 8 %}
 {# ------------------- DO NOT CHANGE ANYTHING BELOW ------------------- #}
