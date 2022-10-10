@@ -103,7 +103,9 @@ Services for available map operations provided with the official App.
 
 ### Valetudo map card support
 
-Valetudo map card uses its own color index algorithm and does not renders room icons or names also it ignores the map rotation setting on the map data.
+Reverse engineered Valetudo map data generation with optimization features.
+
+> Valetudo map card uses its own color index algorithm, does not render room icons or names and ignores the map rotation setting from map data. But it can generate images much more quickly since map image rendering actually happens on browser.
 
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/valetudo_map.png" width="500px">
 
