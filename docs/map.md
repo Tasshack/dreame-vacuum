@@ -101,12 +101,16 @@ Services for available map operations provided with the official App.
 
 **<a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md#map-services" target="_blank">For more info about map services</a>**
 
-### Map Recovery
+### Valetudo map card support
+
+<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/valetudo_map.png" width="500px">
+
+### Map recovery
 
 *Map recovery support is coming soon.*
 
 ### Cleaning history map
 
-*Cleanin history map rendering support is coming soon.*
+*Cleaning history map rendering support is coming soon.*
 
 ### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/README.md#how-to-use" target="_blank">How to use</a>
