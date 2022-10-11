@@ -8,12 +8,11 @@
   "requirements": [
     "voluptuous",
     "pillow==9.2.0",
-    "numpy==1.23.2",
-    "opencv-python-headless==4.6.0.66",
+    "opencv-python-headless",
     "pybase64",
     "requests",
     "pycryptodome"
   ],
-  "version": "0.5.1",
+  "version": "0.5.2",
   "iot_class": "local_polling"
 }
