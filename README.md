@@ -2,7 +2,7 @@
 
 # Dreame vacuum integration for Home Assistant
 
-Complete app replacement for Dreame second generation lidar robot vacuums and a Valetudo alternative for devices above firmware version 1056.
+Complete app replacement for Dreame second generation lidar robot vacuums and a Valetudo alternative for integrating your device to Home Assistant.
 
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map.png" width="48%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_app.png" width="48%">
 
@@ -26,7 +26,7 @@ All features completely reverse engineered from the official Mi Home app RN plug
 - `dreame.vacuum.p2029` *(L10 Pro)*
 - `dreame.vacuum.p2027` *(W10)*
 - `dreame.vacuum.r2104` *(W10 Pro)*
-- `dreame.vacuum.r2228` *(S10)*
+- `dreame.vacuum.r2228` *(S10, L10s Ultra)*
 - `dreame.vacuum.r2233` *(S10 Pro)*
 - `dreame.vacuum.r2205` *(D10 Plus)*
 - `dreame.vacuum.p2259` *(D9 Max)*
