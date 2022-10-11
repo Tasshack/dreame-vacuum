@@ -87,6 +87,7 @@ map_modes:
   - template: vacuum_clean_zone
     max_selections: 10
     repeats_type: EXTERNAL
+    max_repeats: 3
     service_call_schema:
       service: dreame_vacuum.vacuum_clean_zone
       service_data:
@@ -95,6 +96,7 @@ map_modes:
         repeats: '[[repeats]]'
   - template: vacuum_clean_segment
     repeats_type: EXTERNAL
+    max_repeats: 3
     service_call_schema:
       service: dreame_vacuum.vacuum_clean_segment
       service_data:

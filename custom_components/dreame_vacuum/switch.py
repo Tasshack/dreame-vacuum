@@ -61,7 +61,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.TIGHT_MOPPING,
-        icon="mdi:set-center",
+        icon="mdi:heating-coil",
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
