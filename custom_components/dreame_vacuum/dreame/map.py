@@ -9,7 +9,6 @@ import re
 import zlib
 import logging
 import copy
-import cv2
 import numpy as np
 from PIL import Image, ImageDraw, ImageOps, ImageFont, ImageEnhance, PngImagePlugin
 from typing import Any
@@ -3269,7 +3268,7 @@ class DreameVacuumMapRenderer:
         elif map_data.rotation == 270:
             image = image.transpose(Image.ROTATE_270)
 
-        _LOGGER.warn(
+        _LOGGER.debug(
             "Render frame: %s:%s took: %.2f at scale %s",
             map_data.map_id,
             map_data.frame_id,
@@ -3451,12 +3450,7 @@ class DreameVacuumMapRenderer:
                 layer, self._layers[MapRendererLayer.ROBOT])
 
         if layer.size != map_image.size:
-            #layer.thumbnail(map_image.size, Image.Resampling.BOX, reducing_gap=1.5)
-            layer = Image.fromarray(
-                    cv2.resize(
-                        np.array(layer), map_image.size, interpolation=cv2.INTER_LINEAR
-                    )
-                )
+            layer.thumbnail(map_image.size, Image.Resampling.BOX, reducing_gap=1.5)
 
         return Image.alpha_composite(
             map_image,
