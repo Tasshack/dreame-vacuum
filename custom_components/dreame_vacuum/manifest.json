@@ -7,7 +7,7 @@
   "codeowners": [ "@tasshack" ],
   "requirements": [
     "voluptuous",
-    "pillow==9.2.0",
+    "pillow",
     "opencv-python-headless",
     "pybase64",
     "requests",
