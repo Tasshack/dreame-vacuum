@@ -39,25 +39,25 @@ from .entity import (
 
 from .dreame import (
     DreameVacuumProperty,
-    DreameVacuumFanSpeed,
+    DreameVacuumSuctionLevel,
     DreameVacuumCleaningMode,
-    DreameVacuumWaterLevel,
+    DreameVacuumWaterVolume,
     DreameVacuumCarpetSensitivity,
-    FAN_SPEED_CODE_TO_NAME,
-    WATER_LEVEL_CODE_TO_NAME,
+    SUCTION_LEVEL_CODE_TO_NAME,
+    WATER_VOLUME_CODE_TO_NAME,
 )
 
-FAN_SPEED_TO_ICON = {
-    DreameVacuumFanSpeed.SILENT: "mdi:fan-speed-1",
-    DreameVacuumFanSpeed.STANDARD: "mdi:fan-speed-2",
-    DreameVacuumFanSpeed.STRONG: "mdi:fan-speed-3",
-    DreameVacuumFanSpeed.TURBO: "mdi:weather-windy",
+SUCTION_LEVEL_TO_ICON = {
+    DreameVacuumSuctionLevel.QUIET: "mdi:fan-speed-1",
+    DreameVacuumSuctionLevel.STANDARD: "mdi:fan-speed-2",
+    DreameVacuumSuctionLevel.STRONG: "mdi:fan-speed-3",
+    DreameVacuumSuctionLevel.TURBO: "mdi:weather-windy",
 }
 
-WATER_LEVEL_TO_ICON = {
-    DreameVacuumWaterLevel.LOW: "mdi:water-minus",
-    DreameVacuumWaterLevel.MEDIUM: "mdi:water",
-    DreameVacuumWaterLevel.HIGH: "mdi:water-plus",
+WATER_VOLUME_TO_ICON = {
+    DreameVacuumWaterVolume.LOW: "mdi:water-minus",
+    DreameVacuumWaterVolume.MEDIUM: "mdi:water",
+    DreameVacuumWaterVolume.HIGH: "mdi:water-plus",
 }
 
 @dataclass
@@ -73,25 +73,25 @@ class DreameVacuumSelectEntityDescription(
 
 SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     DreameVacuumSelectEntityDescription(
-        property_key=DreameVacuumProperty.FAN_SPEED,
-        device_class=f"{DOMAIN}__fan_speed",
+        property_key=DreameVacuumProperty.SUCTION_LEVEL,
+        device_class=f"{DOMAIN}__suction_level",
         icon_fn=lambda value, device: "mdi:fan-off"
         if device.status.cleaning_mode is DreameVacuumCleaningMode.MOPPING
-        else FAN_SPEED_TO_ICON.get(device.status.fan_speed, "mdi:fan"),
-        options=lambda device, segment: list(device.status.fan_speed_list),
-        value_int_fn=lambda value, device: DreameVacuumFanSpeed[value.upper()],
+        else SUCTION_LEVEL_TO_ICON.get(device.status.suction_level, "mdi:fan"),
+        options=lambda device, segment: list(device.status.suction_level_list),
+        value_int_fn=lambda value, device: DreameVacuumSuctionLevel[value.upper()],
     ),
     DreameVacuumSelectEntityDescription(
-        property_key=DreameVacuumProperty.WATER_LEVEL,
-        device_class=f"{DOMAIN}__water_level",
+        property_key=DreameVacuumProperty.WATER_VOLUME,
+        device_class=f"{DOMAIN}__water_volume",
         icon_fn=lambda value, device: "mdi:water-off"
         if (
             not device.status.water_tank_installed
             or device.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING
         )
-        else WATER_LEVEL_TO_ICON.get(device.status.water_level, "mdi:water"),
-        options=lambda device, segment: list(device.status.water_level_list),
-        value_int_fn=lambda value, device: DreameVacuumWaterLevel[value.upper()],
+        else WATER_VOLUME_TO_ICON.get(device.status.water_volume, "mdi:water"),
+        options=lambda device, segment: list(device.status.water_volume_list),
+        value_int_fn=lambda value, device: DreameVacuumWaterVolume[value.upper()],
     ),
     DreameVacuumSelectEntityDescription(
         property_key=DreameVacuumProperty.CLEANING_MODE,
@@ -172,70 +172,70 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
 
 SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     DreameVacuumSelectEntityDescription(
-        key="fan_speed",
-        device_class=f"{DOMAIN}__fan_speed",
-        icon_fn=lambda value, segment: FAN_SPEED_TO_ICON.get(
-            segment.fan_speed, "mdi:fan"
+        key="suction_level",
+        device_class=f"{DOMAIN}__suction_level",
+        icon_fn=lambda value, segment: SUCTION_LEVEL_TO_ICON.get(
+            segment.suction_level, "mdi:fan"
         )
         if segment
         else "mdi:fan",
-        options=lambda device, segment: list(device.status.fan_speed_list),
+        options=lambda device, segment: list(device.status.suction_level_list),
         available_fn=lambda device: bool(
             device.status.segments
-            and next(iter(device.status.segments.values())).fan_speed is not None
+            and next(iter(device.status.segments.values())).suction_level is not None
             and device.status.customized_cleaning
             and not device.status.zone_cleaning
             and not device.status.fast_mapping
         ),
-        value_fn=lambda device, segment: FAN_SPEED_CODE_TO_NAME.get(
-            segment.fan_speed, STATE_UNKNOWN
+        value_fn=lambda device, segment: SUCTION_LEVEL_CODE_TO_NAME.get(
+            segment.suction_level, STATE_UNKNOWN
         ),
-        value_int_fn=lambda value, self: DreameVacuumFanSpeed[value.upper()],
-        set_fn=lambda device, segment_id, value: device.set_segment_fan_speed(
+        value_int_fn=lambda value, self: DreameVacuumSuctionLevel[value.upper()],
+        set_fn=lambda device, segment_id, value: device.set_segment_suction_level(
             segment_id, value
         ),
     ),
     DreameVacuumSelectEntityDescription(
-        key="water_level",
-        device_class=f"{DOMAIN}__water_level",
-        icon_fn=lambda value, segment: WATER_LEVEL_TO_ICON.get(
-            segment.water_level, "mdi:water"
+        key="water_volume",
+        device_class=f"{DOMAIN}__water_volume",
+        icon_fn=lambda value, segment: WATER_VOLUME_TO_ICON.get(
+            segment.water_volume, "mdi:water"
         )
         if segment
         else "mdi:water",
-        options=lambda device, segment: list(device.status.water_level_list),
+        options=lambda device, segment: list(device.status.water_volume_list),
         available_fn=lambda device: bool(
             device.status.segments
-            and next(iter(device.status.segments.values())).water_level is not None
+            and next(iter(device.status.segments.values())).water_volume is not None
             and device.status.customized_cleaning
             and not device.status.zone_cleaning
             and not device.status.fast_mapping
         ),
-        value_fn=lambda device, segment: WATER_LEVEL_CODE_TO_NAME.get(
-            segment.water_level, STATE_UNKNOWN
+        value_fn=lambda device, segment: WATER_VOLUME_CODE_TO_NAME.get(
+            segment.water_volume, STATE_UNKNOWN
         ),
-        value_int_fn=lambda value, self: DreameVacuumWaterLevel[value.upper()],
-        set_fn=lambda device, segment_id, value: device.set_segment_water_level(
+        value_int_fn=lambda value, self: DreameVacuumWaterVolume[value.upper()],
+        set_fn=lambda device, segment_id, value: device.set_segment_water_volume(
             segment_id, value
         ),
     ),
     DreameVacuumSelectEntityDescription(
-        key="repeats",
-        icon_fn=lambda value, segment: "mdi:home-floor-" + str(segment.repeats)
-        if segment and segment.repeats and segment.repeats < 4
+        key="cleaning_times",
+        icon_fn=lambda value, segment: "mdi:home-floor-" + str(segment.cleaning_times)
+        if segment and segment.cleaning_times and segment.cleaning_times < 4
         else "mdi:repeat",
         options=lambda device, segment: [f"{i}{UNIT_TIMES}" for i in range(1, 4)],
         available_fn=lambda device: bool(
             device.status.segments
-            and next(iter(device.status.segments.values())).repeats is not None
+            and next(iter(device.status.segments.values())).cleaning_times is not None
             and device.status.customized_cleaning
             and not device.status.zone_cleaning
             and not device.status.started
             and not device.status.fast_mapping
         ),
-        value_fn=lambda device, segment: f"{segment.repeats}{UNIT_TIMES}",
+        value_fn=lambda device, segment: f"{segment.cleaning_times}{UNIT_TIMES}",
         value_int_fn=lambda value, self: int(value[0]),
-        set_fn=lambda device, segment_id, value: device.set_segment_repeats(
+        set_fn=lambda device, segment_id, value: device.set_segment_cleaning_times(
             segment_id, value
         ),
     ),

@@ -10,22 +10,22 @@ from .types import (
     DreameVacuumRelocationStatus,
     DreameVacuumDustCollection,
     DreameVacuumAutoEmptyStatus,
-    DreameVacuumWashStationStatus,
-    DreameVacuumFanSpeed,
-    DreameVacuumWaterLevel,
+    DreameVacuumSelfWashBaseStatus,
+    DreameVacuumSuctionLevel,
+    DreameVacuumWaterVolume,
     DreameVacuumCleaningMode,
     DreameVacuumProperty,
     DreameVacuumAction,
 )
 
-FAN_SPEED_SILENT: Final = "silent"
-FAN_SPEED_STANDARD: Final = "standard"
-FAN_SPEED_STRONG: Final = "strong"
-FAN_SPEED_TURBO: Final = "turbo"
+SUCTION_LEVEL_QUIET: Final = "quiet"
+SUCTION_LEVEL_STANDARD: Final = "standard"
+SUCTION_LEVEL_STRONG: Final = "strong"
+SUCTION_LEVEL_TURBO: Final = "turbo"
 
-WATER_LEVEL_LOW: Final = "low"
-WATER_LEVEL_MEDIUM: Final = "medium"
-WATER_LEVEL_HIGH: Final = "high"
+WATER_VOLUME_LOW: Final = "low"
+WATER_VOLUME_MEDIUM: Final = "medium"
+WATER_VOLUME_HIGH: Final = "high"
 
 CLEANING_MODE_SWEEPING: Final = "sweeping"
 CLEANING_MODE_MOPPING: Final = "mopping"
@@ -99,10 +99,10 @@ DUST_COLLECTION_AVAILABLE: Final = "available"
 AUTO_EMPTY_STATUS_ACTIVE: Final = "active"
 AUTO_EMPTY_STATUS_NOT_PERFORMED: Final = "not_performed"
 
-WASH_STATION_STATUS_WASHING: Final = "washing"
-WASH_STATION_STATUS_DRYING: Final = "drying"
-WASH_STATION_STATUS_PAUSED: Final = "paused"
-WASH_STATION_STATUS_RETURNING: Final = "returning"
+SELF_WASH_BASE_STATUS_WASHING: Final = "washing"
+SELF_WASH_BASE_STATUS_DRYING: Final = "drying"
+SELF_WASH_BASE_STATUS_PAUSED: Final = "paused"
+SELF_WASH_BASE_STATUS_RETURNING: Final = "returning"
 
 WATER_TANK_INSTALLED: Final = "installed"
 WATER_TANK_NOT_INSTALLED: Final = "not_installed"
@@ -142,7 +142,7 @@ ERROR_FLOW_SHIELDING: Final = "flow_shielding"
 ERROR_INFRARED_SHIELDING: Final = "infrared_shielding"
 ERROR_CHARGE_NO_ELECTRIC: Final = "charge_no_electric"
 ERROR_BATTERY_FAULT: Final = "battery_fault"
-ERROR_FAN_SPEED: Final = "fan_speed"
+ERROR_FAN_SPEED_ERROR: Final = "fan_speed_error"
 ERROR_LEFTWHELL_SPEED: Final = "left_wheell_speed"
 ERROR_RIGHTWHELL_SPEED: Final = "right_wheell_speed"
 ERROR_BMI055_ACCE: Final = "bmi055_acce"
@@ -197,7 +197,7 @@ ATTR_ID: Final = "id"
 ATTR_NAME: Final = "name"
 ATTR_ICON: Final = "icon"
 ATTR_STATUS: Final = "status"
-ATTR_FAN_SPEED: Final = "fan_speed"
+ATTR_SUCTION_LEVEL: Final = "suction_level"
 ATTR_WATER_TANK: Final = "water_tank"
 ATTR_COMPLETED: Final = "completed"
 ATTR_CLEANING_TIME: Final = "cleaning_time"
@@ -281,8 +281,8 @@ PROPERTY_TO_NAME: Final = {
     DreameVacuumProperty.STATUS: ["status", "Status"],
     DreameVacuumProperty.CLEANING_TIME: ["cleaning_time", "Cleaning Time"],
     DreameVacuumProperty.CLEANED_AREA: ["cleaned_area", "Cleaned Area"],
-    DreameVacuumProperty.FAN_SPEED: ["fan_speed", "Fan Speed"],
-    DreameVacuumProperty.WATER_LEVEL: ["water_level", "Water Level"],
+    DreameVacuumProperty.SUCTION_LEVEL: ["suction_level", "Suction Level"],
+    DreameVacuumProperty.WATER_VOLUME: ["water_volume", "Water Volume"],
     DreameVacuumProperty.WATER_TANK: ["water_tank", "Water Tank"],
     DreameVacuumProperty.TASK_STATUS: ["task_status", "Task Status"],
     DreameVacuumProperty.RESUME_CLEANING: ["resume_cleaning", "Resume Cleaning"],
@@ -304,9 +304,9 @@ PROPERTY_TO_NAME: Final = {
         "AI Obstacle Detection",
     ],
     DreameVacuumProperty.CLEANING_MODE: ["cleaning_mode", "Cleaning Mode"],
-    DreameVacuumProperty.WASH_STATION_STATUS: [
-        "wash_station_status",
-        "Wash Station Status",
+    DreameVacuumProperty.SELF_WASH_BASE_STATUS: [
+        "self_wash_base_status",
+        "Self-Wash Base Status",
     ],
     DreameVacuumProperty.CUSTOMIZED_CLEANING: [
         "customized_cleaning",
@@ -408,6 +408,7 @@ ACTION_TO_NAME: Final = {
     DreameVacuumAction.RESET_SENSOR: ["reset_sensor", "Reset Sensor"],
     DreameVacuumAction.START_AUTO_EMPTY: ["start_auto_empty", "Start Auto Empty"],
     DreameVacuumAction.RESET_MOP: ["reset_mop", "Reset Mop"],
+    DreameVacuumAction.RESET_SILVER_ION: ["reset_silver_ion", "Reset Silver-ion"],
 }
 
 STATE_CODE_TO_STATE: Final = {
@@ -428,19 +429,19 @@ STATE_CODE_TO_STATE: Final = {
     DreameVacuumState.UPGRADING: STATE_UPGRADING,
 }
 
-# Dreame Vacuum fan speed names
-FAN_SPEED_CODE_TO_NAME: Final = {
-    DreameVacuumFanSpeed.SILENT: FAN_SPEED_SILENT,
-    DreameVacuumFanSpeed.STANDARD: FAN_SPEED_STANDARD,
-    DreameVacuumFanSpeed.STRONG: FAN_SPEED_STRONG,
-    DreameVacuumFanSpeed.TURBO: FAN_SPEED_TURBO,
+# Dreame Vacuum suction level names
+SUCTION_LEVEL_CODE_TO_NAME: Final = {
+    DreameVacuumSuctionLevel.QUIET: SUCTION_LEVEL_QUIET,
+    DreameVacuumSuctionLevel.STANDARD: SUCTION_LEVEL_STANDARD,
+    DreameVacuumSuctionLevel.STRONG: SUCTION_LEVEL_STRONG,
+    DreameVacuumSuctionLevel.TURBO: SUCTION_LEVEL_TURBO,
 }
 
-# Dreame Vacuum water level names
-WATER_LEVEL_CODE_TO_NAME: Final = {
-    DreameVacuumWaterLevel.LOW: WATER_LEVEL_LOW,
-    DreameVacuumWaterLevel.MEDIUM: WATER_LEVEL_MEDIUM,
-    DreameVacuumWaterLevel.HIGH: WATER_LEVEL_HIGH,
+# Dreame Vacuum water volume names
+WATER_VOLUME_CODE_TO_NAME: Final = {
+    DreameVacuumWaterVolume.LOW: WATER_VOLUME_LOW,
+    DreameVacuumWaterVolume.MEDIUM: WATER_VOLUME_MEDIUM,
+    DreameVacuumWaterVolume.HIGH: WATER_VOLUME_HIGH,
 }
 
 # Dreame Vacuum cleaning mode names
@@ -554,7 +555,7 @@ ERROR_CODE_TO_ERROR_NAME: Final = {
     DreameVacuumErrorCode.INFRARED_SHIELDING: ERROR_INFRARED_SHIELDING,
     DreameVacuumErrorCode.CHARGE_NO_ELECTRIC: ERROR_CHARGE_NO_ELECTRIC,
     DreameVacuumErrorCode.BATTERY_FAULT: ERROR_BATTERY_FAULT,
-    DreameVacuumErrorCode.FAN_SPEED: ERROR_FAN_SPEED,
+    DreameVacuumErrorCode.FAN_SPEED_ERROR: ERROR_FAN_SPEED_ERROR,
     DreameVacuumErrorCode.LEFTWHELL_SPEED: ERROR_LEFTWHELL_SPEED,
     DreameVacuumErrorCode.RIGHTWHELL_SPEED: ERROR_RIGHTWHELL_SPEED,
     DreameVacuumErrorCode.BMI055_ACCE: ERROR_BMI055_ACCE,
@@ -617,12 +618,12 @@ AUTO_EMPTY_STATUS_TO_NAME: Final = {
     DreameVacuumAutoEmptyStatus.NOT_PERFORMED: AUTO_EMPTY_STATUS_NOT_PERFORMED,
 }
 
-WASH_STATION_STATUS_TO_NAME: Final = {
-    DreameVacuumWashStationStatus.IDLE: STATE_IDLE,
-    DreameVacuumWashStationStatus.WASHING: WASH_STATION_STATUS_WASHING,
-    DreameVacuumWashStationStatus.DRYING: WASH_STATION_STATUS_DRYING,
-    DreameVacuumWashStationStatus.PAUSED: WASH_STATION_STATUS_PAUSED,
-    DreameVacuumWashStationStatus.RETURNING: WASH_STATION_STATUS_RETURNING,
+SELF_WASH_BASE_STATUS_TO_NAME: Final = {
+    DreameVacuumSelfWashBaseStatus.IDLE: STATE_IDLE,
+    DreameVacuumSelfWashBaseStatus.WASHING: SELF_WASH_BASE_STATUS_WASHING,
+    DreameVacuumSelfWashBaseStatus.DRYING: SELF_WASH_BASE_STATUS_DRYING,
+    DreameVacuumSelfWashBaseStatus.PAUSED: SELF_WASH_BASE_STATUS_PAUSED,
+    DreameVacuumSelfWashBaseStatus.RETURNING: SELF_WASH_BASE_STATUS_RETURNING,
 }
 
 ERROR_CODE_TO_IMAGE_INDEX: Final = {
@@ -782,7 +783,7 @@ ERROR_CODE_TO_ERROR_DESCRIPTION: Final = {
         "Battery temperature error",
         "Please wait until the battery temperature returns to normal.",
     ],
-    DreameVacuumErrorCode.FAN_SPEED: [
+    DreameVacuumErrorCode.FAN_SPEED_ERROR: [
         "Fan speed sensor error",
         "Please try to restart the vacuum-mop.",
     ],

@@ -7,6 +7,7 @@ LOGGER = logging.getLogger(__package__)
 UNIT_MINUTES: Final = "min"
 UNIT_HOURS: Final = "hr"
 UNIT_PERCENT: Final = "%"
+UNIT_DAYS: Final = "days"
 UNIT_AREA: Final = "m²"
 UNIT_TIMES: Final = "x"
 
@@ -24,6 +25,11 @@ CONF_MAP: Final = "map"
 CONTENT_TYPE: Final = "image/png"
 
 COLOR_SCHEME: Final = {"light": 0, "dark": 1, "grayscale": 2}
+
+FAN_SPEED_SILENT: Final = "silent"
+FAN_SPEED_STANDARD: Final = "standard"
+FAN_SPEED_STRONG: Final = "strong"
+FAN_SPEED_TURBO: Final = "turbo"
 
 SERVICE_CLEAN_ZONE: Final = "vacuum_clean_zone"
 SERVICE_CLEAN_SEGMENT: Final = "vacuum_clean_segment"

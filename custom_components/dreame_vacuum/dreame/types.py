@@ -78,9 +78,9 @@ ATTR_NAME: Final = "name"
 ATTR_OUTLINE: Final = "outline"
 ATTR_CENTER: Final = "center"
 ATTR_ORDER: Final = "order"
-ATTR_REPEATS: Final = "repeats"
-ATTR_FAN_SPEED: Final = "fan_speed"
-ATTR_WATER_LEVEL: Final = "water_level"
+ATTR_CLEANING_TIMES: Final = "cleaning_times"
+ATTR_SUCTION_LEVEL: Final = "suction_level"
+ATTR_WATER_VOLUME: Final = "water_volume"
 ATTR_TYPE: Final = "type"
 ATTR_INDEX: Final = "index"
 ATTR_ICON: Final = "icon"
@@ -131,7 +131,7 @@ class DreameVacuumErrorCode(IntEnum):
     INFRARED_SHIELDING = 27
     CHARGE_NO_ELECTRIC = 28
     BATTERY_FAULT = 29
-    FAN_SPEED = 30
+    FAN_SPEED_ERROR = 30
     LEFTWHELL_SPEED = 31
     RIGHTWHELL_SPEED = 32
     BMI055_ACCE = 33
@@ -204,11 +204,11 @@ class DreameVacuumState(IntEnum):
     UPGRADING = 14
 
 
-class DreameVacuumFanSpeed(IntEnum):
-    """Dreame Vacuum fan speed"""
+class DreameVacuumSuctionLevel(IntEnum):
+    """Dreame Vacuum suction level"""
 
     UNKNOWN = -1
-    SILENT = 0
+    QUIET = 0
     STANDARD = 1
     STRONG = 2
     TURBO = 3
@@ -232,8 +232,8 @@ class DreameVacuumWaterTank(IntEnum):
     MOP_INSTALLED = 10
 
 
-class DreameVacuumWaterLevel(IntEnum):
-    """Dreame Vacuum water level"""
+class DreameVacuumWaterVolume(IntEnum):
+    """Dreame Vacuum water volume"""
 
     UNKNOWN = -1
     LOW = 1
@@ -330,8 +330,8 @@ class DreameVacuumAutoEmptyStatus(IntEnum):
     NOT_PERFORMED = 2
 
 
-class DreameVacuumWashStationStatus(IntEnum):
-    """Dreame Vacuum washing station status"""
+class DreameVacuumSelfWashBaseStatus(IntEnum):
+    """Dreame Vacuum self-wash base status"""
 
     UNKNOWN = -1
     IDLE = 0
@@ -351,8 +351,8 @@ class DreameVacuumProperty(IntEnum):
     STATUS = 4,
     CLEANING_TIME = 5,
     CLEANED_AREA = 6,
-    FAN_SPEED = 7,
-    WATER_LEVEL = 8,
+    SUCTION_LEVEL = 7,
+    WATER_VOLUME = 8,
     WATER_TANK = 9,
     TASK_STATUS = 10,
     CLEANING_START_TIME = 11,
@@ -370,7 +370,7 @@ class DreameVacuumProperty(IntEnum):
     OBSTACLE_AVOIDANCE = 23,
     AI_DETECTION = 24,
     CLEANING_MODE = 25,
-    WASH_STATION_STATUS = 26,
+    SELF_WASH_BASE_STATUS = 26,
     CUSTOMIZED_CLEANING = 27,
     CHILD_LOCK = 28,
     CARPET_SENSITIVITY = 29,
@@ -423,6 +423,8 @@ class DreameVacuumProperty(IntEnum):
     SENSOR_DIRTY_TIME_LEFT = 76,
     MOP_LEFT = 77,
     MOP_TIME_LEFT = 78,
+    SILVER_ION_TIME_LEFT = 79,
+    SILVER_ION_LEFT = 80
 
 
 class DreameVacuumAction(IntEnum):
@@ -445,6 +447,7 @@ class DreameVacuumAction(IntEnum):
     RESET_SENSOR = 15
     START_AUTO_EMPTY = 16
     RESET_MOP = 17
+    RESET_SILVER_ION = 10
 
 
 # Dreame Vacuum property mapping
@@ -456,8 +459,8 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.STATUS: {"siid": 4, "piid": 1},
     DreameVacuumProperty.CLEANING_TIME: {"siid": 4, "piid": 2},
     DreameVacuumProperty.CLEANED_AREA: {"siid": 4, "piid": 3},
-    DreameVacuumProperty.FAN_SPEED: {"siid": 4, "piid": 4},
-    DreameVacuumProperty.WATER_LEVEL: {"siid": 4, "piid": 5},
+    DreameVacuumProperty.SUCTION_LEVEL: {"siid": 4, "piid": 4},
+    DreameVacuumProperty.WATER_VOLUME: {"siid": 4, "piid": 5},
     DreameVacuumProperty.WATER_TANK: {"siid": 4, "piid": 6},
     DreameVacuumProperty.TASK_STATUS: {"siid": 4, "piid": 7},
     DreameVacuumProperty.CLEANING_START_TIME: {"siid": 4, "piid": 8},
@@ -477,7 +480,7 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.AI_DETECTION: {"siid": 4, "piid": 22},
     DreameVacuumProperty.CLEANING_MODE: {"siid": 4, "piid": 23},
     # DreameVacuumProperty.UPLOAD_MAP: {"siid": 4, "piid": 24},
-    DreameVacuumProperty.WASH_STATION_STATUS: {"siid": 4, "piid": 25},
+    DreameVacuumProperty.SELF_WASH_BASE_STATUS: {"siid": 4, "piid": 25},
     DreameVacuumProperty.CUSTOMIZED_CLEANING: {"siid": 4, "piid": 26},
     DreameVacuumProperty.CHILD_LOCK: {"siid": 4, "piid": 27},
     DreameVacuumProperty.CARPET_SENSITIVITY: {"siid": 4, "piid": 28},
@@ -531,6 +534,9 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.SENSOR_DIRTY_TIME_LEFT: {"siid": 16, "piid": 2},
     DreameVacuumProperty.MOP_LEFT: {"siid": 18, "piid": 1},
     DreameVacuumProperty.MOP_TIME_LEFT: {"siid": 18, "piid": 2},
+    DreameVacuumProperty.SILVER_ION_TIME_LEFT: {"siid": 18, "piid": 1},
+    DreameVacuumProperty.SILVER_ION_LEFT: {"siid": 18, "piid": 2},
+
 }
 
 # Dreame Vacuum action mapping
@@ -552,6 +558,7 @@ DreameVacuumActionMapping = {
     DreameVacuumAction.RESET_SENSOR: {"siid": 16, "aiid": 1},
     DreameVacuumAction.START_AUTO_EMPTY: {"siid": 15, "aiid": 1},
     DreameVacuumAction.RESET_MOP: {"siid": 18, "aiid": 1},
+    DreameVacuumAction.RESET_SILVER_ION: {"siid": 19, "aiid": 1},
 }
 
 PROPERTY_AVAILABILITY: Final = {
@@ -561,8 +568,8 @@ PROPERTY_AVAILABILITY: Final = {
     DreameVacuumProperty.MOP_CLEANING_REMAINDER: lambda device: device.status.water_tank_installed,
     DreameVacuumProperty.DND_START: lambda device: device.status.dnd_enabled,
     DreameVacuumProperty.DND_END: lambda device: device.status.dnd_enabled,
-    DreameVacuumProperty.FAN_SPEED: lambda device: not device.status.mopping and not (device.status.customized_cleaning and not device.status.zone_cleaning) and not device.status.fast_mapping,
-    DreameVacuumProperty.WATER_LEVEL: lambda device: device.status.water_tank_installed and not device.status.sweeping and not (device.status.customized_cleaning and not device.status.zone_cleaning) and not device.status.fast_mapping,
+    DreameVacuumProperty.SUCTION_LEVEL: lambda device: not device.status.mopping and not (device.status.customized_cleaning and not device.status.zone_cleaning) and not device.status.fast_mapping,
+    DreameVacuumProperty.WATER_VOLUME: lambda device: device.status.water_tank_installed and not device.status.sweeping and not (device.status.customized_cleaning and not device.status.zone_cleaning) and not device.status.fast_mapping,
     DreameVacuumProperty.CLEANING_MODE: lambda device: not device.status.started and not device.status.fast_mapping and not device.status.cleaning_paused,
     DreameVacuumProperty.CARPET_SENSITIVITY: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_BOOST)),
     DreameVacuumProperty.AUTO_EMPTY_FREQUENCY: lambda device: bool(device.get_property(DreameVacuumProperty.AUTO_DUST_COLLECTING)),
@@ -577,6 +584,7 @@ ACTION_AVAILABILITY: Final = {
     DreameVacuumAction.RESET_FILTER: lambda device: bool(device.status.filter_life < 100),
     DreameVacuumAction.RESET_SENSOR: lambda device: bool(device.status.sensor_dirty_life < 100),
     DreameVacuumAction.RESET_MOP: lambda device: bool(device.status.mop_life < 100),
+    DreameVacuumAction.RESET_SILVER_ION: lambda device: bool(device.status.silver_ion < 100),
     DreameVacuumAction.START_AUTO_EMPTY: lambda device: device.status.dust_collection_available,
     DreameVacuumAction.CLEAR_WARNING: lambda device: device.status.has_warning,
     DreameVacuumAction.START: lambda device: not device.status.started or device.status.returning or device.status.returning_paused,
@@ -715,9 +723,9 @@ class Segment(Zone):
         type: int = 0,
         icon: str = None,
         neighbors: List[int] = [],
-        repeats: int = None,
-        fan_speed: int = None,
-        water_level: int = None,
+        cleaning_times: int = None,
+        suction_level: int = None,
+        water_volume: int = None,
         order: int = None,
     ) -> None:
         super().__init__(x0, y0, x1, y1)
@@ -731,9 +739,9 @@ class Segment(Zone):
         self.icon = icon
         self.neighbors = neighbors
         self.order = order
-        self.repeats = repeats
-        self.fan_speed = fan_speed
-        self.water_level = water_level
+        self.cleaning_times = cleaning_times
+        self.suction_level = suction_level
+        self.water_volume = water_volume
         self.color_index = None
         self.set_name()
 
@@ -793,12 +801,12 @@ class Segment(Zone):
             attributes[ATTR_NAME] = self.name
         if self.order is not None:
             attributes[ATTR_ORDER] = self.order
-        if self.repeats is not None:
-            attributes[ATTR_REPEATS] = self.repeats
-        if self.fan_speed is not None:
-            attributes[ATTR_FAN_SPEED] = self.fan_speed
-        if self.water_level is not None:
-            attributes[ATTR_WATER_LEVEL] = self.water_level
+        if self.cleaning_times is not None:
+            attributes[ATTR_CLEANING_TIMES] = self.cleaning_times
+        if self.suction_level is not None:
+            attributes[ATTR_SUCTION_LEVEL] = self.suction_level
+        if self.water_volume is not None:
+            attributes[ATTR_WATER_VOLUME] = self.water_volume
         if self.type is not None:
             attributes[ATTR_TYPE] = self.type
         if self.index is not None:
@@ -831,9 +839,9 @@ class Segment(Zone):
             and self.icon == other.icon
             and self.neighbors == other.neighbors
             and self.order == other.order
-            and self.repeats == other.repeats
-            and self.fan_speed == other.fan_speed
-            and self.water_level == other.water_level
+            and self.cleaning_times == other.cleaning_times
+            and self.suction_level == other.suction_level
+            and self.water_volume == other.water_volume
         )
 
     def __str__(self) -> str:
@@ -1177,7 +1185,7 @@ class CleaningHistory:
     status: DreameVacuumStatus = None
     cleaning_time: int = 0
     cleaned_area: int = 0
-    fan_speed: DreameVacuumFanSpeed = None
+    suction_level: DreameVacuumSuctionLevel = None
     file_name: str = None
     completed: bool = None
     water_tank: DreameVacuumWaterTank = None

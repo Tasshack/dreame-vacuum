@@ -67,6 +67,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         value_fn=lambda value, device: value.split(":")[0],
         format_fn=lambda value, device: "{:02d}:".format(value)
         + device.status.dnd_start.split(":")[1],
+        entity_registry_enabled_default=False,
     ),
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.DND_START,
@@ -80,6 +81,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         value_fn=lambda value, device: value.split(":")[1],
         format_fn=lambda value, device: device.status.dnd_start.split(":")[0]
         + ":{:02d}".format(value),
+        entity_registry_enabled_default=False,
     ),
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.DND_END,
@@ -93,6 +95,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         value_fn=lambda value, device: value.split(":")[0],
         format_fn=lambda value, device: "{:02d}:".format(value)
         + device.status.dnd_end.split(":")[1],
+        entity_registry_enabled_default=False,
     ),
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.DND_END,
@@ -106,6 +109,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         value_fn=lambda value, device: value.split(":")[1],
         format_fn=lambda value, device: device.status.dnd_end.split(":")[0]
         + ":{:02d}".format(value),
+        entity_registry_enabled_default=False,
     ),
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.DRYING_TIME,

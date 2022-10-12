@@ -27,9 +27,9 @@ from .types import (
     DreameVacuumRelocationStatus,
     DreameVacuumDustCollection,
     DreameVacuumAutoEmptyStatus,
-    DreameVacuumWashStationStatus,
-    DreameVacuumFanSpeed,
-    DreameVacuumWaterLevel,
+    DreameVacuumSelfWashBaseStatus,
+    DreameVacuumSuctionLevel,
+    DreameVacuumWaterVolume,
     DreameVacuumCleaningMode,
     CleaningHistory,
     MapData,
@@ -37,13 +37,13 @@ from .types import (
 )
 from .const import (
     STATE_UNKNOWN,
-    FAN_SPEED_CODE_TO_NAME,
-    WATER_LEVEL_CODE_TO_NAME,
+    SUCTION_LEVEL_CODE_TO_NAME,
+    WATER_VOLUME_CODE_TO_NAME,
     CLEANING_MODE_CODE_TO_NAME,
     CARPET_SENSITIVITY_CODE_TO_NAME,
     CHARGING_STATUS_CODE_TO_NAME,
     RELOCATION_STATUS_CODE_TO_NAME,
-    WASH_STATION_STATUS_TO_NAME,
+    SELF_WASH_BASE_STATUS_TO_NAME,
     AUTO_EMPTY_STATUS_TO_NAME,
     TASK_STATUS_CODE_TO_NAME,
     STATE_CODE_TO_STATE,
@@ -74,7 +74,7 @@ from .const import (
     ATTR_NAME,
     ATTR_ICON,
     ATTR_STATUS,
-    ATTR_FAN_SPEED,
+    ATTR_SUCTION_LEVEL,
     ATTR_WATER_TANK,
     ATTR_COMPLETED,
     ATTR_CLEANING_TIME,
@@ -173,7 +173,7 @@ class DreameVacuumDevice:
                         DreameVacuumProperty.STATUS)
             self.listen(self._map_property_changed, DreameVacuumProperty.ERROR)
             self.listen(
-                self._map_property_changed, DreameVacuumProperty.WASH_STATION_STATUS
+                self._map_property_changed, DreameVacuumProperty.SELF_WASH_BASE_STATUS
             )
             self.listen(
                 self._map_property_changed, DreameVacuumProperty.CHARGING_STATUS
@@ -332,7 +332,7 @@ class DreameVacuumDevice:
         """Update cleaning mode on device when water tank status is changed."""
         if (
             # Check that the device is capable to sweeping while water tank is attached
-            not self.status.wash_station_available
+            not self.status.self_wash_base_available
             and not self.status.started
         ):
             # App does not allow you to update cleaning mode when water tank is not installed.
@@ -432,6 +432,8 @@ class DreameVacuumDevice:
                     DreameVacuumProperty.SENSOR_DIRTY_TIME_LEFT,
                     DreameVacuumProperty.MOP_LEFT,
                     DreameVacuumProperty.MOP_TIME_LEFT,
+                    DreameVacuumProperty.SILVER_ION_TIME_LEFT,
+                    DreameVacuumProperty.SILVER_ION_LEFT,
                     DreameVacuumProperty.TOTAL_CLEANING_TIME,
                     DreameVacuumProperty.CLEANING_COUNT,
                     DreameVacuumProperty.TOTAL_CLEANED_AREA,
@@ -512,11 +514,11 @@ class DreameVacuumDevice:
                             history.cleaning_time = value
                         elif piid == PIID(DreameVacuumProperty.CLEANED_AREA, self.property_mapping):
                             history.cleaned_area = value
-                        elif piid == PIID(DreameVacuumProperty.FAN_SPEED, self.property_mapping):
-                            if value in DreameVacuumFanSpeed._value2member_map_:
-                                history.fan_speed = DreameVacuumFanSpeed(value)
+                        elif piid == PIID(DreameVacuumProperty.SUCTION_LEVEL, self.property_mapping):
+                            if value in DreameVacuumSuctionLevel._value2member_map_:
+                                history.suction_level = DreameVacuumSuctionLevel(value)
                             else:
-                                history.fan_speed = DreameVacuumFanSpeed.UNKNOWN
+                                history.suction_level = DreameVacuumSuctionLevel.UNKNOWN
                         elif piid == PIID(DreameVacuumProperty.CLEANING_START_TIME, self.property_mapping):
                             history.date = datetime.fromtimestamp(value)
                         elif piid == PIID(DreameVacuumProperty.CLEAN_LOG_FILE_NAME, self.property_mapping):
@@ -785,8 +787,8 @@ class DreameVacuumDevice:
                 ):
                     map_data.robot_position.a = 270
 
-                # Robots with wash station parks in reverse therefore we don't need to modify the charger angle
-                if not self.status.wash_station_available:
+                # Robots with self-wash base parks in reverse therefore we don't need to modify the charger angle
+                if not self.status.self_wash_base_available:
                     map_data.robot_position.a = map_data.robot_position.a + 180
 
                 # Calculate new robot position with an offset to the dock
@@ -857,7 +859,7 @@ class DreameVacuumDevice:
             DreameVacuumProperty.TASK_STATUS,
             DreameVacuumProperty.WARN_STATUS,
             DreameVacuumProperty.RELOCATION_STATUS,
-            DreameVacuumProperty.WASH_STATION_STATUS,
+            DreameVacuumProperty.SELF_WASH_BASE_STATUS,
             DreameVacuumProperty.DUST_COLLECTION,
             DreameVacuumProperty.AUTO_EMPTY_STATUS,
             DreameVacuumProperty.CLEANING_PAUSED,
@@ -895,8 +897,8 @@ class DreameVacuumDevice:
             # Read/Write properties
             properties.extend(
                 [
-                    DreameVacuumProperty.FAN_SPEED,
-                    DreameVacuumProperty.WATER_LEVEL,
+                    DreameVacuumProperty.SUCTION_LEVEL,
+                    DreameVacuumProperty.WATER_VOLUME,
                     DreameVacuumProperty.RESUME_CLEANING,
                     DreameVacuumProperty.CARPET_BOOST,
                     DreameVacuumProperty.MOP_CLEANING_REMAINDER,
@@ -981,6 +983,9 @@ class DreameVacuumDevice:
         elif action is DreameVacuumAction.RESET_MOP:
             self._consumable_reset = True
             self._update_property(DreameVacuumProperty.MOP_LEFT, 100)
+        elif action is DreameVacuumAction.RESET_SILVER_ION:
+            self._consumable_reset = True
+            self._update_property(DreameVacuumProperty.SILVER_ION_LEFT, 100)
 
         # Update listeners
         if (
@@ -1027,13 +1032,13 @@ class DreameVacuumDevice:
         self._device_connection.send(command, parameters, 1, 2)
         self.schedule_update(1)
 
-    def set_fan_speed(self, fan_speed: int) -> bool:
-        """Set fan speed."""
+    def set_suction_level(self, suction_level: int) -> bool:
+        """Set suction level."""
         if self.status.started and (self.status.customized_cleaning and not self.status.zone_cleaning):
             raise InvalidActionException(
-                "Cannot set fan speed when customized cleaning is enabled"
+                "Cannot set suction level when customized cleaning is enabled"
             )
-        return self.set_property(DreameVacuumProperty.FAN_SPEED, int(fan_speed))
+        return self.set_property(DreameVacuumProperty.SUCTION_LEVEL, int(suction_level))
 
     def set_cleaning_mode(self, cleaning_mode: int) -> bool:
         """Set cleaning mode."""
@@ -1042,7 +1047,7 @@ class DreameVacuumDevice:
                 "Cannot set cleaning mode while vacuum is running"
             )
 
-        if not self.status.wash_station_available:
+        if not self.status.self_wash_base_available:
             if cleaning_mode is DreameVacuumCleaningMode.SWEEPING:
                 if self.status.water_tank_installed:
                     raise InvalidActionException(
@@ -1054,14 +1059,14 @@ class DreameVacuumDevice:
                 )
         return self.set_property(DreameVacuumProperty.CLEANING_MODE, int(cleaning_mode))
 
-    def set_water_level(self, water_level: int) -> bool:
-        """Set water level."""
+    def set_water_volume(self, water_volume: int) -> bool:
+        """Set water volume."""
         if self.status.started and (self.status.customized_cleaning and not self.status.zone_cleaning):
             raise InvalidActionException(
-                "Cannot set water level when customized cleaning is enabled"
+                "Cannot set water volume when customized cleaning is enabled"
             )
 
-        return self.set_property(DreameVacuumProperty.WATER_LEVEL, int(water_level))
+        return self.set_property(DreameVacuumProperty.WATER_VOLUME, int(water_volume))
 
     def set_dnd_enabled(self, dnd_enabled: bool) -> bool:
         """Set do not disturb function"""
@@ -1163,13 +1168,13 @@ class DreameVacuumDevice:
             return self.start()
         return self.pause()
 
-    def clean_zone(self, zones: list[int] | list[list[int]], repeats: int) -> dict[str, Any] | None:
+    def clean_zone(self, zones: list[int] | list[list[int]], cleaning_times: int) -> dict[str, Any] | None:
         """Clean selected area."""
         if not isinstance(zones[0], list):
             zones = [zones]
 
-        fan_speed = self.status.fan_speed.value
-        water_level = self.status.water_level.value
+        suction_level = self.status.suction_level.value
+        water_volume = self.status.water_volume.value
 
         cleanlist = []
         for zone in zones:
@@ -1179,9 +1184,9 @@ class DreameVacuumDevice:
                     int(round(zone[1])),
                     int(round(zone[2])),
                     int(round(zone[3])),
-                    repeats,
-                    fan_speed,
-                    water_level,
+                    cleaning_times,
+                    suction_level,
+                    water_volume,
                 ]
             )
 
@@ -1199,16 +1204,16 @@ class DreameVacuumDevice:
             ),
         )
 
-    def clean_segment(self, selected_segments: int | list[int], repeats: int | list[int], fan_speed: int | list[int], water_level: int | list[int]) -> dict[str, Any] | None:
+    def clean_segment(self, selected_segments: int | list[int], cleaning_times: int | list[int], suction_level: int | list[int], water_volume: int | list[int]) -> dict[str, Any] | None:
         """Clean selected segment using id."""
         if not isinstance(selected_segments, list):
             selected_segments = [selected_segments]
 
-        if not fan_speed or fan_speed is "":
-            fan_speed = self.status.fan_speed.value
+        if not suction_level or suction_level is "":
+            suction_level = self.status.suction_level.value
 
-        if not water_level or water_level is "":
-            water_level = self.status.water_level.value
+        if not water_volume or water_volume is "":
+            water_volume = self.status.water_volume.value
 
         cleanlist = []
         index = 0
@@ -1216,32 +1221,32 @@ class DreameVacuumDevice:
         custom_order = self.get_property(DreameVacuumProperty.CUSTOMIZED_CLEANING) is not None and self.status.custom_order
 
         for segment_id in selected_segments:
-            if isinstance(repeats, list):
-                repeat = repeats[index]
+            if isinstance(cleaning_times, list):
+                repeat = cleaning_times[index]
             elif (
                 segments and segment_id in segments and self.status.customized_cleaning
             ):
-                repeat = segments[segment_id].repeats
+                repeat = segments[segment_id].cleaning_times
             else:
-                repeat = repeats
+                repeat = cleaning_times
 
-            if isinstance(fan_speed, list):
-                fan = fan_speed[index]
+            if isinstance(suction_level, list):
+                fan = suction_level[index]
             elif (
                 segments and segment_id in segments and self.status.customized_cleaning
             ):
-                fan = segments[segment_id].fan_speed
+                fan = segments[segment_id].suction_level
             else:
-                fan = fan_speed
+                fan = suction_level
 
-            if isinstance(water_level, list):
-                water = water_level[index]
+            if isinstance(water_volume, list):
+                water = water_volume[index]
             elif (
                 segments and segment_id in segments and self.status.customized_cleaning
             ):
-                water = segments[segment_id].water_level
+                water = segments[segment_id].water_volume
             else:
-                water = water_level
+                water = water_volume
 
             cleanlist.append(
                 [segment_id, repeat, fan, water,
@@ -1273,7 +1278,7 @@ class DreameVacuumDevice:
                 "Low battery capacity. Please start the robot for working after it being fully charged."
             )
 
-        if self.status.wash_station_available and self.status.water_tank:
+        if self.status.self_wash_base_available and self.status.water_tank:
             raise InvalidActionException(
                 "Low battery capacity. Please start the robot for working after it being fully charged."
             )
@@ -1293,9 +1298,9 @@ class DreameVacuumDevice:
 
         return self.start_custom(DreameVacuumStatus.CLEANING.value, "3")
 
-    def start_wash_station(self, parameters: dict[str, Any] = None) -> dict[str, Any] | None:
-        """Start wash station for cleaning or drying the mop."""
-        if not self.status.wash_station_available:
+    def start_self_wash_base(self, parameters: dict[str, Any] = None) -> dict[str, Any] | None:
+        """Start self-wash base for cleaning or drying the mop."""
+        if not self.status.self_wash_base_available:
             return
 
         if self.info and self.info.version <= 1037:
@@ -1312,30 +1317,30 @@ class DreameVacuumDevice:
         return self.call_action(DreameVacuumAction.START_WASHING, payload)
 
     def start_washing(self) -> dict[str, Any] | None:
-        """Start washing the mop if wash station is present."""
+        """Start washing the mop if self-wash base is present."""
         if self.status_washing_paused:
             if self.info and self.info.version <= 1037:
                 return self.start()
-            return self.start_wash_station("1,1")
+            return self.start_self_wash_base("1,1")
         if self.status.washing_available or self.status.returning_to_wash_paused:
-            return self.start_wash_station("2,1")
+            return self.start_self_wash_base("2,1")
 
     def pause_washing(self) -> dict[str, Any] | None:
-        """Pause washing the mop if wash station is present."""
+        """Pause washing the mop if self-wash base is present."""
         if self.status.washing:
             if self.info and self.info.version <= 1037:
                 return self.pause()
-            return self.start_wash_station("1,0")
+            return self.start_self_wash_base("1,0")
 
     def start_dring(self) -> dict[str, Any] | None:
-        """Start drying the mop if wash station is present."""
+        """Start drying the mop if self-wash base is present."""
         if self.status.drying_available and not self.status.drying:
-            return self.start_wash_station("3,1")
+            return self.start_self_wash_base("3,1")
 
     def stop_dring(self) -> dict[str, Any] | None:
-        """Stop drying the mop if wash station is present."""
+        """Stop drying the mop if self-wash base is present."""
         if self.status.drying_available and self.status.drying:
-            return self.start_wash_station("3,0")
+            return self.start_self_wash_base("3,0")
 
     def clear_warning(self) -> dict[str, Any] | None:
         """Clear warning error code from the vacuum cleaner."""
@@ -1357,7 +1362,7 @@ class DreameVacuumDevice:
 
         if self.status.washing:
             raise InvalidActionException(
-                "Cannot remote control vacuum while wash station is running"
+                "Cannot remote control vacuum while self-wash base is running"
             )
 
         payload = (
@@ -1699,34 +1704,34 @@ class DreameVacuumDevice:
         if cleanset is not None:
             return self.update_map_data({"customeClean": cleanset})
 
-    def set_custom_cleaning(self, fan_speed: list[int], water_level: list[int], repeats: list[int]) -> dict[str, Any] | None:
+    def set_custom_cleaning(self, suction_level: list[int], water_volume: list[int], cleaning_times: list[int]) -> dict[str, Any] | None:
         """Set customized cleaning settings on current map. 
         Device will use these settings even you pass another setting for custom segment cleaning."""
 
         if (
-            fan_speed != ""
-            and fan_speed
-            and water_level != ""
-            and water_level
-            and repeats != ""
-            and repeats is not None
+            suction_level != ""
+            and suction_level
+            and water_volume != ""
+            and water_volume
+            and cleaning_times != ""
+            and cleaning_times is not None
         ):
             segments = self.status.segments
             if segments:
                 count = len(segments.items())
                 if (
-                    len(fan_speed) != count
-                    or len(water_level) != count
-                    or len(repeats) != repeats
+                    len(suction_level) != count
+                    or len(water_volume) != count
+                    or len(cleaning_times) != cleaning_times
                 ):
                     return
 
             custom_cleaning = []
             index = 0
-            for mode in fan_speed:
+            for mode in suction_level:
                 custom_cleaning.append(
-                    # for some reason cleanset uses different int values for water level
-                    [index + 1, mode, water_level[index] + 1, repeats[index]]
+                    # for some reason cleanset uses different int values for water volume
+                    [index + 1, mode, water_volume[index] + 1, cleaning_times[index]]
                 )
                 index = index + 1
 
@@ -1752,33 +1757,33 @@ class DreameVacuumDevice:
                 self._map_manager.editor.set_segment_order(segment_id, order)
             )
 
-    def set_segment_fan_speed(self, segment_id: int, fan_speed: int) -> dict[str, Any] | None:
-        """Update fan speed of a segment on current map"""
+    def set_segment_suction_level(self, segment_id: int, suction_level: int) -> dict[str, Any] | None:
+        """Update suction level of a segment on current map"""
         if self._map_manager and not self.status.has_temporary_map:
             return self.set_cleanset(
-                self._map_manager.editor.set_segment_fan_speed(
-                    segment_id, fan_speed)
+                self._map_manager.editor.set_segment_suction_level(
+                    segment_id, suction_level)
             )
 
-    def set_segment_water_level(self, segment_id: int, water_level: int) -> dict[str, Any] | None:
-        """Update water level of a segment on current map"""
+    def set_segment_water_volume(self, segment_id: int, water_volume: int) -> dict[str, Any] | None:
+        """Update water volume of a segment on current map"""
         if self._map_manager and not self.status.has_temporary_map:
             return self.set_cleanset(
-                self._map_manager.editor.set_segment_water_level(
-                    segment_id, water_level)
+                self._map_manager.editor.set_segment_water_volume(
+                    segment_id, water_volume)
             )
 
-    def set_segment_repeats(self, segment_id: int, repeats: int) -> dict[str, Any] | None:
-        """Update repeats of a segment on current map."""
+    def set_segment_cleaning_times(self, segment_id: int, cleaning_times: int) -> dict[str, Any] | None:
+        """Update cleaning times of a segment on current map."""
         if self.status.started:
             raise InvalidActionException(
-                "Cannot set room repeats while vacuum is running"
+                "Cannot set room cleaning times while vacuum is running"
             )
 
         if self._map_manager and not self.status.has_temporary_map:
             return self.set_cleanset(
-                self._map_manager.editor.set_segment_repeats(
-                    segment_id, repeats)
+                self._map_manager.editor.set_segment_cleaning_times(
+                    segment_id, cleaning_times)
             )
 
     @property
@@ -1834,8 +1839,8 @@ class DreameVacuumDeviceStatus:
 
     _cleaning_history = None
 
-    fan_speed_list = {v: k for k, v in FAN_SPEED_CODE_TO_NAME.items()}
-    water_level_list = {v: k for k, v in WATER_LEVEL_CODE_TO_NAME.items()}
+    suction_level_list = {v: k for k, v in SUCTION_LEVEL_CODE_TO_NAME.items()}
+    water_volume_list = {v: k for k, v in WATER_VOLUME_CODE_TO_NAME.items()}
     cleaning_mode_list = {v: k for k, v in CLEANING_MODE_CODE_TO_NAME.items()}
     carpet_sensitivity_list = {v: k for k,
                                v in CARPET_SENSITIVITY_CODE_TO_NAME.items()}
@@ -1871,32 +1876,32 @@ class DreameVacuumDeviceStatus:
         return self._get_property(DreameVacuumProperty.BATTERY_LEVEL)
 
     @property
-    def fan_speed(self) -> DreameVacuumFanSpeed:
-        """Return fan speed of the device."""
-        value = self._get_property(DreameVacuumProperty.FAN_SPEED)
-        if value is not None and value in DreameVacuumFanSpeed._value2member_map_:
-            return DreameVacuumFanSpeed(value)
-        _LOGGER.debug("FAN_SPEED not supported: %s", value)
-        return DreameVacuumFanSpeed.UNKNOWN
+    def suction_level(self) -> DreameVacuumSuctionLevel:
+        """Return suction level of the device."""
+        value = self._get_property(DreameVacuumProperty.SUCTION_LEVEL)
+        if value is not None and value in DreameVacuumSuctionLevel._value2member_map_:
+            return DreameVacuumSuctionLevel(value)
+        _LOGGER.debug("SUCTION_LEVEL not supported: %s", value)
+        return DreameVacuumSuctionLevel.UNKNOWN
 
     @property
-    def fan_speed_name(self) -> str:
-        """Return fan speed as string for translation."""
-        return FAN_SPEED_CODE_TO_NAME.get(self.fan_speed, STATE_UNKNOWN)
+    def suction_level_name(self) -> str:
+        """Return suction level as string for translation."""
+        return SUCTION_LEVEL_CODE_TO_NAME.get(self.suction_level, STATE_UNKNOWN)
 
     @property
-    def water_level(self) -> DreameVacuumWaterLevel:
-        """Return water level of the device."""
-        value = self._get_property(DreameVacuumProperty.WATER_LEVEL)
-        if value is not None and value in DreameVacuumWaterLevel._value2member_map_:
-            return DreameVacuumWaterLevel(value)
-        _LOGGER.debug("WATER_LEVEL not supported: %s", value)
-        return DreameVacuumWaterLevel.UNKNOWN
+    def water_volume(self) -> DreameVacuumWaterVolume:
+        """Return water volume of the device."""
+        value = self._get_property(DreameVacuumProperty.WATER_VOLUME)
+        if value is not None and value in DreameVacuumWaterVolume._value2member_map_:
+            return DreameVacuumWaterVolume(value)
+        _LOGGER.debug("WATER_VOLUME not supported: %s", value)
+        return DreameVacuumWaterVolume.UNKNOWN
 
     @property
-    def water_level_name(self) -> str:
-        """Return water level as string for translation."""
-        return WATER_LEVEL_CODE_TO_NAME.get(self.water_level, STATE_UNKNOWN)
+    def water_volume_name(self) -> str:
+        """Return water volume as string for translation."""
+        return WATER_VOLUME_CODE_TO_NAME.get(self.water_volume, STATE_UNKNOWN)
 
     @property
     def cleaning_mode(self) -> DreameVacuumCleaningMode:
@@ -2010,21 +2015,21 @@ class DreameVacuumDeviceStatus:
         return RELOCATION_STATUS_CODE_TO_NAME.get(self.relocation_status, STATE_UNKNOWN)
 
     @property
-    def wash_station_status(self) -> DreameVacuumWashStationStatus:
-        """Return wash station status of the device."""
-        value = self._get_property(DreameVacuumProperty.WASH_STATION_STATUS)
+    def self_wash_base_status(self) -> DreameVacuumSelfWashBaseStatus:
+        """Return self-wash base status of the device."""
+        value = self._get_property(DreameVacuumProperty.SELF_WASH_BASE_STATUS)
         if (
             value is not None
-            and value in DreameVacuumWashStationStatus._value2member_map_
+            and value in DreameVacuumSelfWashBaseStatus._value2member_map_
         ):
-            return DreameVacuumWashStationStatus(value)
-        _LOGGER.debug("WASH_STATION_STATUS not supported: %s", value)
-        return DreameVacuumWashStationStatus.UNKNOWN
+            return DreameVacuumSelfWashBaseStatus(value)
+        _LOGGER.debug("SELF_WASH_BASE_STATUS not supported: %s", value)
+        return DreameVacuumSelfWashBaseStatus.UNKNOWN
 
     @property
-    def wash_station_status_name(self) -> str:
-        """Return wash station status as string for translation."""
-        return WASH_STATION_STATUS_TO_NAME.get(self.wash_station_status, STATE_UNKNOWN)
+    def self_wash_base_status_name(self) -> str:
+        """Return self-wash base status as string for translation."""
+        return SELF_WASH_BASE_STATUS_TO_NAME.get(self.self_wash_base_status, STATE_UNKNOWN)
 
     @property
     def dust_collection(self) -> DreameVacuumDustCollection:
@@ -2132,7 +2137,7 @@ class DreameVacuumDeviceStatus:
         elif self.charging:
             return 2
         elif self.sleeping:
-            if self.wash_station_available and (
+            if self.self_wash_base_available and (
                 self.washing
                 or self.drying
                 or self.washing_paused
@@ -2213,7 +2218,7 @@ class DreameVacuumDeviceStatus:
     def water_tank_installed(self) -> bool:
         """Returns true when water tank or additional mop is installed to the device."""
         water_tank = self.water_tank
-        return bool(water_tank is DreameVacuumWaterTank.INSTALLED or water_tank is DreameVacuumWaterTank.MOP_INSTALLED or self.wash_station_available)
+        return bool(water_tank is DreameVacuumWaterTank.INSTALLED or water_tank is DreameVacuumWaterTank.MOP_INSTALLED or self.self_wash_base_available)
 
     @property
     def located(self) -> bool:
@@ -2226,12 +2231,12 @@ class DreameVacuumDeviceStatus:
 
     @property
     def sweeping(self) -> bool:
-        """Returns true when cleaning mode is sweeping therefore cannot set its water level."""
+        """Returns true when cleaning mode is sweeping therefore cannot set its water volume."""
         return bool(self.cleaning_mode is DreameVacuumCleaningMode.SWEEPING)
 
     @property
     def mopping(self) -> bool:
-        """Returns true when cleaning mode is mopping therefore cannot set its fan speed."""
+        """Returns true when cleaning mode is mopping therefore cannot set its suction level."""
         return bool(self.cleaning_mode is DreameVacuumCleaningMode.MOPPING)
 
     @property
@@ -2431,10 +2436,10 @@ class DreameVacuumDeviceStatus:
         return bool(self._get_property(DreameVacuumProperty.MULTI_FLOOR_MAP))
 
     @property
-    def wash_station_available(self) -> bool:
-        """Returns true when device has a wash station for cleaning and drying the mop."""
+    def self_wash_base_available(self) -> bool:
+        """Returns true when device has a self-wash base for cleaning and drying the mop."""
         return bool(
-            self._get_property(DreameVacuumProperty.WASH_STATION_STATUS)
+            self._get_property(DreameVacuumProperty.SELF_WASH_BASE_STATUS)
             is not None
         )
 
@@ -2466,10 +2471,10 @@ class DreameVacuumDeviceStatus:
                         .replace("_", " ")
                         .capitalize()
                     )
-                if history.fan_speed is not None:
-                    list[date][ATTR_FAN_SPEED] = (
-                        FAN_SPEED_CODE_TO_NAME.get(
-                            history.fan_speed, STATE_UNKNOWN)
+                if history.suction_level is not None:
+                    list[date][ATTR_SUCTION_LEVEL] = (
+                        SUCTION_LEVEL_CODE_TO_NAME.get(
+                            history.suction_level, STATE_UNKNOWN)
                         .replace("_", " ")
                         .capitalize()
                     )
@@ -2487,33 +2492,33 @@ class DreameVacuumDeviceStatus:
     @property
     def washing(self) -> bool:
         """Returns true the when device is currently performing mop washing."""
-        return bool(self.wash_station_available and self.wask_station_status is DreameVacuumWashStationStatus.WASHING)
+        return bool(self.self_wash_base_available and self.wask_station_status is DreameVacuumSelfWashBaseStatus.WASHING)
 
     @property
     def drying(self) -> bool:
         """Returns true the when device is currently performing mop drying."""
-        return bool(self.wash_station_available and self.wask_station_status is DreameVacuumWashStationStatus.DRYING)
+        return bool(self.self_wash_base_available and self.wask_station_status is DreameVacuumSelfWashBaseStatus.DRYING)
 
     @property
     def washing_paused(self) -> bool:
         """Returns true when mop washing paused."""
-        return bool(self.wash_station_available and self.wask_station_status is DreameVacuumWashStationStatus.PAUSED)
+        return bool(self.self_wash_base_available and self.wask_station_status is DreameVacuumSelfWashBaseStatus.PAUSED)
 
     @property
     def returning_to_wash(self) -> bool:
-        """Returns true when the device returning to wash station to wash or dry its mop."""
-        return bool(self.wash_station_available and self.wask_station_status is DreameVacuumWashStationStatus.RETURNING and (self.state == DreameVacuumState.RETURNING or self.state == DreameVacuumState.RETURNING_WASHING))
+        """Returns true when the device returning to self-wash base to wash or dry its mop."""
+        return bool(self.self_wash_base_available and self.wask_station_status is DreameVacuumSelfWashBaseStatus.RETURNING and (self.state == DreameVacuumState.RETURNING or self.state == DreameVacuumState.RETURNING_WASHING))
 
     @property
     def returning_to_wash_paused(self) -> bool:
-        """Returns true when the device returning to wash station to wash or dry its mop."""
-        return bool(self.wash_station_available and self.wask_station_status is DreameVacuumWashStationStatus.RETURNING and self.state == DreameVacuumState.PAUSED)
+        """Returns true when the device returning to self-wash base to wash or dry its mop."""
+        return bool(self.self_wash_base_available and self.wask_station_status is DreameVacuumSelfWashBaseStatus.RETURNING and self.state == DreameVacuumState.PAUSED)
 
     @property
     def washing_available(self) -> bool:
-        """Returns true when device has a wash station and washing mop can be performed."""
+        """Returns true when device has a self-wash base and washing mop can be performed."""
         return bool(
-            self.wash_station_available and
+            self.self_wash_base_available and
             self.water_tank_installed and
             not
             (
@@ -2529,9 +2534,9 @@ class DreameVacuumDeviceStatus:
 
     @property
     def drying_available(self) -> bool:
-        """Returns true when device has a wash station and drying mop can be performed."""
+        """Returns true when device has a self-wash base and drying mop can be performed."""
         return bool(
-            self.wash_station_available and
+            self.self_wash_base_available and
             self.water_tank_installed and
             self.docked and
             not (self.washing or self.washing_paused)
@@ -2573,6 +2578,11 @@ class DreameVacuumDeviceStatus:
     def mop_life(self) -> int:
         """Returns mop remaining life in percent."""
         return self._get_property(DreameVacuumProperty.MOP_LEFT)
+
+    @property
+    def silver_ion_life(self) -> int:
+        """Returns silver-ion life in percent."""
+        return self._get_property(DreameVacuumProperty.SILVER_ION_LEFT)
 
     @property
     def dnd_enabled(self) -> bool:
@@ -2704,7 +2714,7 @@ class DreameVacuumDeviceStatus:
         """Return the attributes of the device."""
         properties = [
             DreameVacuumProperty.CLEANING_MODE,
-            DreameVacuumProperty.WATER_LEVEL,
+            DreameVacuumProperty.WATER_VOLUME,
             DreameVacuumProperty.ERROR,
             DreameVacuumProperty.CLEANING_TIME,
             DreameVacuumProperty.CLEANED_AREA,
@@ -2720,6 +2730,8 @@ class DreameVacuumDeviceStatus:
             DreameVacuumProperty.SENSOR_DIRTY_TIME_LEFT,
             DreameVacuumProperty.MOP_LEFT,
             DreameVacuumProperty.MOP_TIME_LEFT,
+            DreameVacuumProperty.SILVER_ION_LEFT,
+            DreameVacuumProperty.SILVER_ION_TIME_LEFT,
             DreameVacuumProperty.TOTAL_CLEANED_AREA,
             DreameVacuumProperty.TOTAL_CLEANING_TIME,
             DreameVacuumProperty.CLEANING_COUNT,
@@ -2740,8 +2752,8 @@ class DreameVacuumDeviceStatus:
 
                 if prop is DreameVacuumProperty.ERROR:
                     value = self.error_name.replace("_", " ").capitalize()
-                elif prop is DreameVacuumProperty.WATER_LEVEL:
-                    value = self.water_level_name.capitalize()
+                elif prop is DreameVacuumProperty.WATER_VOLUME:
+                    value = self.water_volume_name.capitalize()
                 elif prop is DreameVacuumProperty.CLEANING_MODE:
                     value = self.cleaning_mode_name.replace("_", " ").capitalize()
 

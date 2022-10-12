@@ -38,9 +38,9 @@ Dynamically rendered icons and texts for:
 - Room type
 - Custom name
 - Cleaning order
-- Fan speed
+- suction level
 - Water level
-- Repeats
+- Cleaning Times
 
 <a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_icons.gif" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_icons.gif" width="500px"></a>
 

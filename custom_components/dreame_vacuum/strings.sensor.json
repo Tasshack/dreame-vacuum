@@ -110,7 +110,7 @@
       "infrared_shielding": "Infrared shielding error",
       "charge_no_electric": "The charging dock is not powered on",
       "battery_fault": "Battery error",
-      "fan_speed": "Fan speed sensor error",
+      "fan_speed_error": "Fan speed sensor error",
       "left_wheell_speed": "Left wheel may be blocked by foreign objects",
       "right_wheell_speed": "Right wheel may be blocked by foreign objects",
       "bmi055_acce": "Accelerometer error",
@@ -165,7 +165,7 @@
       "failed": "Failed",
       "success": "Success"
     },
-    "dreame_vacuum__wash_station_status": {
+    "dreame_vacuum__self_wash_base_status": {
       "unknown": "Unknown",
       "washing": "Washing",
       "drying": "Drying",

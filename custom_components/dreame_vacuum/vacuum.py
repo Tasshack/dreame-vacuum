@@ -20,12 +20,16 @@ from homeassistant.components.vacuum import (
     STATE_PAUSED,
     STATE_RETURNING,
     VacuumEntity,
-    VacuumEntityFeature,
+    VacuumEntityFeature
 )
 
-from .dreame import DreameVacuumState, InvalidActionException
+from .dreame import DreameVacuumState, DreameVacuumSuctionLevel, InvalidActionException, SUCTION_LEVEL_QUIET
 from .const import (
     DOMAIN,
+    FAN_SPEED_SILENT,
+    FAN_SPEED_STANDARD,
+    FAN_SPEED_STRONG,
+    FAN_SPEED_TURBO,
     INPUT_CLEANING_ORDER,
     INPUT_DND_ENABLED,
     INPUT_DND_END,
@@ -105,6 +109,12 @@ STATE_CODE_TO_STATE: Final = {
     DreameVacuumState.UPGRADING: STATE_IDLE,
 }
 
+FAN_SPEED_CODE_TO_NAME: Final = {
+    DreameVacuumSuctionLevel.QUIET: FAN_SPEED_SILENT,
+    DreameVacuumSuctionLevel.STANDARD: FAN_SPEED_STANDARD,
+    DreameVacuumSuctionLevel.STRONG: FAN_SPEED_STRONG,
+    DreameVacuumSuctionLevel.TURBO: FAN_SPEED_TURBO,
+}
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -385,6 +395,8 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
         elif self.device.status.sleeping:
             self._attr_icon = "mdi:sleep"
         elif self.device.status.charging:
+            self._attr_icon = "mdi:lightning-bolt-circle"
+        elif self.device.status.docked:
             self._attr_icon = "mdi:ev-station"
         elif self.device.status.paused:
             self._attr_icon = "mdi:pause-circle"
@@ -395,8 +407,8 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
             self._attr_fan_speed_list = None
             self._attr_fan_speed = STATE_UNAVAILABLE.capitalize()
         else:
-            self._attr_fan_speed_list = list({k.capitalize() for k in self.device.status.fan_speed_list})
-            self._attr_fan_speed = self.device.status.fan_speed_name.capitalize()
+            self._attr_fan_speed_list = list({v.capitalize() for k, v in FAN_SPEED_CODE_TO_NAME.items()})
+            self._attr_fan_speed = FAN_SPEED_CODE_TO_NAME.get(self.device.status.suction_level, STATE_UNKNOWN).capitalize()
 
         self._attr_battery_level = self.device.status.battery_level
         self._attr_extra_state_attributes = self.device.status.attributes
@@ -504,9 +516,9 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
             )
 
         if isinstance(fan_speed, str):
-            fan_speed = fan_speed.lower().replace(" ", "_")
-        if fan_speed in self.device.status.fan_speed_list:
-            fan_speed = self.device.status.fan_speed_list[fan_speed]
+            fan_speed = fan_speed.lower().replace(" ", "_").replace(FAN_SPEED_SILENT, SUCTION_LEVEL_QUIET)
+        if fan_speed in self.device.status.suction_level_list:
+            fan_speed = self.device.status.suction_level_list[fan_speed]
         else:
             try:
                 fan_speed = int(fan_speed)
@@ -517,7 +529,7 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
                     self.fan_speed_list,
                 ) from None
         await self._try_command(
-            "Unable to set fan speed: %s", self.device.set_fan_speed, fan_speed
+            "Unable to set fan speed: %s", self.device.set_suction_level, fan_speed
         )
 
     async def async_select_map(self, map_id) -> None:

@@ -80,6 +80,15 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         ),
     ),
     DreameVacuumButtonEntityDescription(
+        action_key=DreameVacuumAction.RESET_SILVER_ION,
+        icon="mdi:shimmer",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.status.silver_ion_life is not None
+        ),
+    ),
+    DreameVacuumButtonEntityDescription(
         action_key=DreameVacuumAction.START_AUTO_EMPTY,
         icon_fn=lambda value, device: "mdi:delete-off"
         if not device.status.dust_collection_available
@@ -121,14 +130,14 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         available_fn=lambda device: bool(
             device.status.washing_available or device.status.returning_to_wash_paused or device.status.washing_paused),
         action_fn=lambda device: device.start_washing(),
-        exists_fn=lambda description, device: device.status.wash_station_available,
+        exists_fn=lambda description, device: device.status.self_wash_base_available,
     ),
     DreameVacuumButtonEntityDescription(
         key="pause_washing",
         icon="mdi:washing-machine-off",
         available_fn=lambda device: device.status.washing,
         action_fn=lambda device: device.pause_washing(),
-        exists_fn=lambda description, device: device.status.wash_station_available,
+        exists_fn=lambda description, device: device.status.self_wash_base_available,
     ),
     DreameVacuumButtonEntityDescription(
         key="start_drying",
@@ -136,7 +145,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         available_fn=lambda device: bool(
             device.status.drying_available and not device.status.drying),
         action_fn=lambda device: device.start_drying(),
-        exists_fn=lambda description, device: device.status.wash_station_available,
+        exists_fn=lambda description, device: device.status.self_wash_base_available,
     ),
     DreameVacuumButtonEntityDescription(
         key="stop_drying",
@@ -144,7 +153,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         available_fn=lambda device: bool(
             device.status.drying_available and device.status.drying),
         action_fn=lambda device: device.stop_drying(),
-        exists_fn=lambda description, device: device.status.wash_station_available,
+        exists_fn=lambda description, device: device.status.self_wash_base_available,
     ),
 )
 

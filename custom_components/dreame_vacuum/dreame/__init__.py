@@ -3,9 +3,9 @@ from .types import (
     DreameVacuumAction,
     DreameVacuumRelocationStatus,
     DreameVacuumAutoEmptyStatus,
-    DreameVacuumFanSpeed,
+    DreameVacuumSuctionLevel,
     DreameVacuumCleaningMode,
-    DreameVacuumWaterLevel,
+    DreameVacuumWaterVolume,
     DreameVacuumCarpetSensitivity,
     DreameVacuumTaskStatus,
     DreameVacuumState,
@@ -13,10 +13,11 @@ from .types import (
     ACTION_AVAILABILITY,
 )
 from .const import (
-    FAN_SPEED_CODE_TO_NAME,
-    WATER_LEVEL_CODE_TO_NAME,
+    SUCTION_LEVEL_CODE_TO_NAME,
+    WATER_VOLUME_CODE_TO_NAME,
     PROPERTY_TO_NAME,
     ACTION_TO_NAME,
+    SUCTION_LEVEL_QUIET,
 )
 from .device import DreameVacuumDevice
 from .protocol import MiIODeviceProtocol, MiIOCloudProtocol

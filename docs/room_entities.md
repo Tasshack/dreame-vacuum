@@ -41,9 +41,9 @@ entities:
       type: custom:config-template-card
       variables:
         - states['{{ entity_id }}_name']
-        - states['{{ entity_id }}_fan_speed'].entity_id
+        - states['{{ entity_id }}_suction_level'].entity_id
         - states['{{ entity_id }}_water_level'].entity_id
-        - states['{{ entity_id }}_repeats'].entity_id
+        - states['{{ entity_id }}_cleaning_times'].entity_id
         - states['{{ entity_id }}_order'].entity_id
       entities:
         - ${vars[0].entity_id}
@@ -58,7 +58,7 @@ entities:
         name: ${vars[0].state}
         entities:
           - entity: ${vars[1]}
-            name: Fan
+            name: Suction
             hide_if: unavailable
             tap_action:
               action: call-service
@@ -78,7 +78,7 @@ entities:
             styles:
               width: 55px
           - entity: ${vars[3]}
-            name: Repeats
+            name: Times
             hide_if: unavailable
             tap_action:
               action: call-service

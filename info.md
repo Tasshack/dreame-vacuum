@@ -4,9 +4,9 @@
 
 Complete app replacement for Dreame second generation lidar robot vacuums and a Valetudo alternative for integrating your device to Home Assistant.
 
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map.png" width="48%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_app.png" width="48%">
-
-<img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings.png" width="48%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings_app.png" width="48%">
+<p align="center">
+    <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map.png" width="20%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_app.png" width="20%"><img width=8%><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings.png" width="20%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/settings_app.png" width="20%">
+</p>
 
 ## Features
 All features completely reverse engineered from the official Mi Home app RN plugin for Z10 Pro with firmware version 1156.
@@ -176,6 +176,8 @@ shortcuts:
 type: custom:valetudo-map-card
 vacuum: # Your vacuum name not the entity id
 rotate: 0 # Map rotation entity does not work on valetudo map card
+dock_icon: mdi:lightning-bolt-circle
+dock_color: rgb(105 178 141)
 vacuum_color: rgb(110, 110, 110)
 wall_color: rgb(159, 159, 159)
 floor_color: rgb(221, 221, 221)

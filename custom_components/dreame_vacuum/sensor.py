@@ -15,7 +15,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN, UNIT_MINUTES, UNIT_HOURS, UNIT_PERCENT, UNIT_AREA, UNIT_TIMES
+from .const import DOMAIN, UNIT_MINUTES, UNIT_HOURS, UNIT_PERCENT, UNIT_AREA, UNIT_TIMES, UNIT_DAYS
 from .dreame import (
     DreameVacuumProperty,
     DreameVacuumRelocationStatus,
@@ -103,8 +103,8 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         else "mdi:delete",
     ),
     DreameVacuumSensorEntityDescription(
-        property_key=DreameVacuumProperty.WASH_STATION_STATUS,
-        device_class=f"{DOMAIN}__wash_station_status",
+        property_key=DreameVacuumProperty.SELF_WASH_BASE_STATUS,
+        device_class=f"{DOMAIN}__self_wash_base_status",
         icon="mdi:dishwasher",
     ),
     DreameVacuumSensorEntityDescription(
@@ -197,6 +197,21 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         property_key=DreameVacuumProperty.MOP_TIME_LEFT,
         icon="mdi:hydro-power",
         native_unit_of_measurement=UNIT_HOURS,
+        device_class=SensorDeviceClass.DURATION,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.SILVER_ION_LEFT,
+        icon="mdi:shimmer",
+        native_unit_of_measurement=UNIT_PERCENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.SILVER_ION_TIME_LEFT,
+        icon="mdi:shimmer",
+        native_unit_of_measurement=UNIT_DAYS,
         device_class=SensorDeviceClass.DURATION,
         entity_category=EntityCategory.DIAGNOSTIC,
         entity_registry_enabled_default=False,

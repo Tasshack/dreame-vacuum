@@ -5,7 +5,7 @@ vacuum_clean_segment:
       domain: vacuum
   fields:
     segments:
-      description: List of rooms to be cleaned. Only room's Character or an array of room's character, repeats, fan speed and mop mode to override the default values per room.
+      description: List of rooms to be cleaned. Only room's Character or an array of room's character, cleaning times, fan speed and mop mode to override the default values per room.
       example: "[3,2] or 3" 
       required: true
       selector:

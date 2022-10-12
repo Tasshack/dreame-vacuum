@@ -43,14 +43,15 @@ SUPPORTED_MODELS = [
     "dreame.vacuum.r2104",
     "dreame.vacuum.r2233",
     "dreame.vacuum.r2228",
-    # "dreame.vacuum.p2114o",
+    "dreame.vacuum.p2114o",
     "dreame.vacuum.r2205",
     "dreame.vacuum.p2150a",
     "dreame.vacuum.p2150b",
     "dreame.vacuum.p2156",
-    # "dreame.vacuum.p2149o",
+    "dreame.vacuum.p2149o",
     "dreame.vacuum.p2259",
     "dreame.vacuum.p2187",
+    #"dreame.vacuum.p2009",
 ]
 
 WITH_MAP: Final = "With map (Automatic)"

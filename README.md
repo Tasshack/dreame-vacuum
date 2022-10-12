@@ -195,6 +195,8 @@ shortcuts:
 type: custom:valetudo-map-card
 vacuum: # Your vacuum name not the entity id
 rotate: 0 # Map rotation entity does not work on valetudo map card
+dock_icon: mdi:lightning-bolt-circle
+dock_color: rgb(105 178 141)
 vacuum_color: rgb(110, 110, 110)
 wall_color: rgb(159, 159, 159)
 floor_color: rgb(221, 221, 221)

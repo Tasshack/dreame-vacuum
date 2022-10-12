@@ -1425,24 +1425,24 @@ class DreameMapVacuumMapEditor:
     def cleanset(self, map_data: MapData) -> list[list[int]] | None:
         cleanset = []
         for (k, v) in map_data.segments.items():
-            if v.fan_speed is None:
-                v.fan_speed = 1
-            if v.water_level is None:
-                v.water_level = 2
-            if v.repeats is None:
-                v.repeats = 1
+            if v.suction_level is None:
+                v.suction_level = 1
+            if v.water_volume is None:
+                v.water_volume = 2
+            if v.cleaning_times is None:
+                v.cleaning_times = 1
 
             cleanset.append(
                 [
                     k,
-                    v.fan_speed,
-                    v.water_level + 1,
-                    v.repeats,
+                    v.suction_level,
+                    v.water_volume + 1,
+                    v.cleaning_times,
                 ]
             )
         return cleanset
 
-    def set_segment_fan_speed(self, segment_id: int, fan_speed: int) -> list[list[int]] | None:
+    def set_segment_suction_level(self, segment_id: int, suction_level: int) -> list[list[int]] | None:
         map_data = self._map_data
         if (
             map_data
@@ -1450,26 +1450,26 @@ class DreameMapVacuumMapEditor:
             and segment_id in map_data.segments
             and not map_data.temporary_map
         ):
-            map_data.segments[segment_id].fan_speed = fan_speed
-            map_data.cleanset[str(segment_id)][0] = fan_speed
+            map_data.segments[segment_id].suction_level = suction_level
+            map_data.cleanset[str(segment_id)][0] = suction_level
             self._set_updated_frame_id(map_data.frame_id)
             self.refresh_map()
             return self.cleanset(map_data)
 
-    def set_segment_water_level(self, segment_id: int, water_level: int) -> list[list[int]] | None:
+    def set_segment_water_volume(self, segment_id: int, water_volume: int) -> list[list[int]] | None:
         map_data = self._map_data
         if (
             map_data
             and map_data.segments
             and segment_id in map_data.segments
         ):
-            map_data.segments[segment_id].water_level = water_level
-            map_data.cleanset[str(segment_id)][1] = water_level + 1
+            map_data.segments[segment_id].water_volume = water_volume
+            map_data.cleanset[str(segment_id)][1] = water_volume + 1
             self._set_updated_frame_id(map_data.frame_id)
             self.refresh_map()
             return self.cleanset(map_data)
 
-    def set_segment_repeats(self, segment_id: int, repeats: int) -> list[list[int]] | None:
+    def set_segment_cleaning_times(self, segment_id: int, cleaning_times: int) -> list[list[int]] | None:
         map_data = self._map_data
         if (
             map_data
@@ -1477,8 +1477,8 @@ class DreameMapVacuumMapEditor:
             and segment_id in map_data.segments
             and not map_data.temporary_map
         ):
-            map_data.segments[segment_id].repeats = repeats
-            map_data.cleanset[str(segment_id)][2] = repeats
+            map_data.segments[segment_id].cleaning_times = cleaning_times
+            map_data.cleanset[str(segment_id)][2] = cleaning_times
             self._set_updated_frame_id(map_data.frame_id)
             self.refresh_map()
             return self.cleanset(map_data)
@@ -2381,16 +2381,16 @@ class DreameVacuumMapDecoder:
 
                     item = cleanset[segment_id]
 
-                    map_data.segments[k].fan_speed = item[0]
-                    map_data.segments[k].water_level = (
+                    map_data.segments[k].suction_level = item[0]
+                    map_data.segments[k].water_volume = (
                         item[1] - 1
-                    )  # for some reason cleanset uses different int values for water level
-                    map_data.segments[k].repeats = item[2]
+                    )  # for some reason cleanset uses different int values for water volume
+                    map_data.segments[k].cleaning_times = item[2]
                     map_data.segments[k].order = item[3]
                 else:
-                    map_data.segments[k].fan_speed = None
-                    map_data.segments[k].water_level = None
-                    map_data.segments[k].repeats = None
+                    map_data.segments[k].suction_level = None
+                    map_data.segments[k].water_volume = None
+                    map_data.segments[k].cleaning_times = None
                     map_data.segments[k].order = None
 
     @staticmethod
@@ -2966,7 +2966,7 @@ class DreameVacuumMapRenderer:
             border=(50, 75, 50, 75),
         )
 
-        self._repeats_icon = [
+        self._cleaning_times_icon = [
             Image.open(BytesIO(base64.b64decode(
                 MAP_ICON_REPEATS_ONE))).convert("RGBA"),
             Image.open(BytesIO(base64.b64decode(
@@ -2976,29 +2976,29 @@ class DreameVacuumMapRenderer:
             ),
         ]
 
-        self._fan_speed_icon = [
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_FAN_SPEED_SILENT))).convert(
+        self._suction_level_icon = [
+            Image.open(BytesIO(base64.b64decode(MAP_ICON_SUCTION_LEVEL_QUIET))).convert(
                 "RGBA"
             ),
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_FAN_SPEED_STANDART))).convert(
+            Image.open(BytesIO(base64.b64decode(MAP_ICON_SUCTION_LEVEL_STANDART))).convert(
                 "RGBA"
             ),
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_FAN_SPEED_STRONG))).convert(
+            Image.open(BytesIO(base64.b64decode(MAP_ICON_SUCTION_LEVEL_STRONG))).convert(
                 "RGBA"
             ),
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_FAN_SPEED_TURBO))).convert(
+            Image.open(BytesIO(base64.b64decode(MAP_ICON_SUCTION_LEVEL_TURBO))).convert(
                 "RGBA"
             ),
         ]
 
-        self._water_level_icon = [
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_WATER_LEVEL_LOW))).convert(
+        self._water_volume_icon = [
+            Image.open(BytesIO(base64.b64decode(MAP_ICON_WATER_VOLUME_LOW))).convert(
                 "RGBA"
             ),
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_WATER_LEVEL_MEDIUM))).convert(
+            Image.open(BytesIO(base64.b64decode(MAP_ICON_WATER_VOLUME_MEDIUM))).convert(
                 "RGBA"
             ),
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_WATER_LEVEL_HIGH))).convert(
+            Image.open(BytesIO(base64.b64decode(MAP_ICON_WATER_VOLUME_HIGH))).convert(
                 "RGBA"
             ),
         ]
@@ -3764,9 +3764,9 @@ class DreameVacuumMapRenderer:
 
                 custom = (
                     cleanset
-                    and segment.fan_speed is not None
-                    and segment.water_level is not None
-                    and segment.repeats is not None
+                    and segment.suction_level is not None
+                    and segment.water_volume is not None
+                    and segment.cleaning_times is not None
                 )
                 if order_font or custom:
                     if icon:
@@ -3867,7 +3867,7 @@ class DreameVacuumMapRenderer:
 
                         s = icon_size * 0.85 * scale
                         ico = DreameVacuumMapRenderer._set_icon_color(
-                            self._fan_speed_icon[segment.fan_speed],
+                            self._suction_level_icon[segment.suction_level],
                             s,
                             MAP_COLOR_SEGMENTS[self.color_scheme][segment.color_index][
                                 1
@@ -3897,7 +3897,7 @@ class DreameVacuumMapRenderer:
                         )
 
                         ico = DreameVacuumMapRenderer._set_icon_color(
-                            self._water_level_icon[segment.water_level - 1],
+                            self._water_volume_icon[segment.water_volume - 1],
                             s,
                             MAP_COLOR_SEGMENTS[self.color_scheme][segment.color_index][
                                 1
@@ -3926,7 +3926,7 @@ class DreameVacuumMapRenderer:
                         )
 
                         ico = DreameVacuumMapRenderer._set_icon_color(
-                            self._repeats_icon[segment.repeats - 1],
+                            self._cleaning_times_icon[segment.cleaning_times - 1],
                             s,
                             MAP_COLOR_SEGMENTS[self.color_scheme][segment.color_index][
                                 1

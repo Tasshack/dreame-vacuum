@@ -7,7 +7,7 @@
 - Most of the entities including the vacuum entity has dynamic icons for their state and can be overridden from entity settings.
 - Most of the sensor and all select entities returns their current raw integer value on `raw_value`, `map_id` or `segment_id` attributes for ease of use on automations and services.
 - All entities has dynamic refresh rate determined by its change range and device state. Integration only inform Home Assistant when a device property has changed trough listeners. This is more like a *local_push* type of approach instead of *local_pull* but please note that it may take time entity to reflect the changes when you edit related setting from the official App.
-- Some entities has custom availability rules for another specific entity or state. E.g. *tight_mopping* entity will become *unavailable* when water tank is not attached but only if robot is not equipped with a washing station. (All off the rules extracted from the official App)
+- Some entities has custom availability rules for another specific entity or state. E.g. *tight_mopping* entity will become *unavailable* when water tank is not attached but only if robot is not equipped with a self-wash base. (All off the rules extracted from the official App)
 - Exposed cloud connected entities for all available settings that are stored not on the device but on specific map data itself. E.g. *map_rotation*
 - Generated entities have the following naming schema:
 
@@ -24,12 +24,12 @@
 | `obstacle_avoidance`   | Enable/Disable 3D obstacle avoidance | Available on vacuums with line laser
 | `customized_cleaning`   | Enable/Disable customized room cleaning | Available on devices with firmware above 1056
 | `child_lock`   | Enable/Disable child lock |
-| `tight_mopping`   | Enable/Disable tight mopping pattern | Available on devices with firmware above 1056 and unavailable if vacuum does not have washing station and water tank is not installed. 
+| `tight_mopping`   | Enable/Disable tight mopping pattern | Available on devices with firmware above 1056 and unavailable if vacuum does not have self-wash base and water tank is not installed. 
 | `dnd`   | Enable/Disable do not disturb |
 | `multi_floor_map`   | Enable/Disable multi-floor map | Available on vacuums can store more than one map
 | `auto_dust_collecting`   | Enable/Disable automatic dust collecting when cleaning completed |  Available on vacuums with auto-empty station
 | `carpet_distinguish`   | Enable/Disable carpet detection | Available on vacuums with ultrasonic carpet sensor
-| `auto_wash`   | Enable/Disable automatic mop washing when cleaning completed | Available on vacuums with washing station
+| `auto_wash`   | Enable/Disable automatic mop washing when cleaning completed | Available on vacuums with self-wash base
 | `ai_obstacle_detection`   | Enable/Disable AI obstacle detection | Available on vacuums with camera
 | `obstacle_picture`   | Enable/Disable uploading obstacle picture to cloud | Available on vacuums with camera
 | `pet_detection`   | Enable/Disable AI pet detection | Available on vacuums with camera
@@ -52,7 +52,7 @@
 | `water_tank`   | Water tank status of the robot |
 | `dust_collection`   | Dust collection is available, not available or not preformed due to do not disturb settings | Available on vacuums with auto-empty station
 | `auto_empty_status`   | Status of auto empty dock | Available on vacuums with auto-empty station
-| `wash_station_status`   | Status of wash station | Available on vacuums with washing station
+| `self_wash_base_status`   | Status of self-wash base | Available on vacuums with self-wash base
 | `error`   | Fault code description of robot | <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md#error-reporting" target="_blank">Error reporting</a>
 | `charging_status`   | Charging status of the robot |
 | `battery_level`   | Battery level of the robot |
@@ -68,8 +68,10 @@
 | `filter_time_left`   | Filter life left in hours |
 | `sensor_dirty_left`   | Time left to clean the sensors in percent  | Available on vacuums with line laser
 | `sensor_dirty_time_left`   | Time left to clean the sensors in hours | Available on vacuums with line laser
-| `mop_left`   | Mop life left in percent | Available on vacuums with washing station
-| `mop_time_left`   | Mop life left in hours | Available on vacuums with washing station
+| `mop_left`   | Mop life left in percent | Available on vacuums with self-wash base
+| `mop_time_left`   | Mop life left in hours | Available on vacuums with self-wash base
+| `silver_ion_left`   | Silver-ion life left in percent | Available on W10 Pro
+| `silver_ion_time_left`   | Silver-ion life left in hours | Available on W10 Pro
 | `cleaning_history`   | Previous cleaning job details as attributes | Available with map feature
 | `current_room`   | Current room that vacuum currently in | Available with map feature
 
@@ -78,12 +80,12 @@
 | Name  | Description  | Notes |
 | ----------------------- | -------------------- | -------------------- |
 | `volume`   | Volume level |
-| `mop_cleaning_remainder`   | Mop cleaning remainder | Available on vacuums without washing station
+| `mop_cleaning_remainder`   | Mop cleaning remainder | Available on vacuums without self-wash base
 | `dnd_start_hour`   | Do not disturb start hour (XX:00 -> 00:00) | Unavailable when do not disturb is disabled
 | `dnd_start_minute`   | Do not disturb start minute (00:XX -> 00:00) | Unavailable when do not disturb is disabled
 | `dnd_end_hour`   | Do not disturb end hour (00:00 -> XX:00) | Unavailable when do not disturb is disabled
 | `dnd_end_minute`   | Do not disturb end minute (00:00 -> 00:XX) | Unavailable when do not disturb is disabled
-| `drying_time`   | Mop drying time in minutes | Available on vacuums with washing station
+| `drying_time`   | Mop drying time in minutes | Available on vacuums with self-wash base
 | `auto_add_detergent`   | *Undocumented* | Available on S10 and S10 Pro
 | `carpet_clean`   | *Undocumented* | Available on S10 and S10 Pro
 
@@ -95,21 +97,22 @@
 | `reset_side_brush`   | Reset side brush remaining life left |
 | `reset_filter`   | Reset filter remaining life left |
 | `reset_sensor`   | Reset sensor cleaning remaining left | Available on vacuums with line laser
-| `reset_mop`   | Reset mop remaining life left | Available on vacuums with washing station
+| `reset_mop`   | Reset mop remaining life left | Available on vacuums with self-wash base
+| `reset_silver_ion`   | Reset silver-ion remaining life left | Available on W10 Pro
 | `start_auto_empty`   | Start auto-emptying | Available on vacuums with auto-empty station
 | `clear_warning`   | Clear warning | Unavailable when there is no warning to clear
 | `start_fast_mapping`   | Start fast mapping | Unavailable when maximum map count reached
 | `start_mapping`   | Create new map with cleaning the whole floor | Unavailable when maximum map count reached
-| `start_washing`   | Manually start mop washing | Available on vacuums with washing station, unavailable when washing is not possible or already washing mop
-| `pause_washing`   | Pause mop washing | Available on vacuums with washing station, unavailable when robot is not currently washing mop
-| `start_drying`   | Manually start mop drying | Available on vacuums with washing station, unavailable when drying is not possible or already drying mop
-| `stop_drying`   | Stop mop drying | Available on vacuums with washing station, unavailable when robot is not currently drying mop
+| `start_washing`   | Manually start mop washing | Available on vacuums with self-wash base, unavailable when washing is not possible or already washing mop
+| `pause_washing`   | Pause mop washing | Available on vacuums with self-wash base, unavailable when robot is not currently washing mop
+| `start_drying`   | Manually start mop drying | Available on vacuums with self-wash base, unavailable when drying is not possible or already drying mop
+| `stop_drying`   | Stop mop drying | Available on vacuums with self-wash base, unavailable when robot is not currently drying mop
 
 ## Select
 | Name  | Description  | Notes |
 | ----------------------- | -------------------- | -------------------- |
-| `fan_speed`   | Suction level of the vacuum | Unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning
-| `water_level`   | Water level of the vacuum | Unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning. (Only on robots without washing station)
+| `suction_level`   | Suction level of the vacuum | Unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning
+| `water_level`   | Water level of the vacuum | Unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning. (Only on robots without self-wash base)
 | `cleaning_mode`   | Cleaning mode of the vacuum. (Sweeping, Mopping, Mopping and Sweeping) | Unavailable during cleaning.<br> (Options are dynamically generated for vacuums with attachable water tank.)<br> *Only available on devices firmware above 1056.* 
 | `carpet_sensitivity`   | Carpet sensitivity of carpet boost feature | Unavailable when carpet boost is disabled
 | `auto_empty_frequency`  | Auto empty frequency | Unavailable when automatic dust collection is disabled or not available
@@ -127,9 +130,9 @@
 | Name  | Description  | Notes |
 | ----------------------- | -------------------- | -------------------- |
 | `name`   | Room name from predefined types or current custom name | Unavailable when room does not exists on current map
-| `fan_speed`   | Suction level for the room | Unavailable if customized cleaning is disabled
+| `suction_level`   | Suction level for the room | Unavailable if customized cleaning is disabled
 | `water_level`   | Water level for the room | Unavailable if customized cleaning is disabled
-| `repeats`   | Cleaning repeats of the room | Unavailable when cleaning job is active or customized cleaning is disabled
+| `cleaning times`   | Cleaning times of the room | Unavailable when cleaning job is active or customized cleaning is disabled
 | `order`   | Cleaning order of the room | Unavailable when cleaning job is active or cleaning sequence is disabled
 
 #### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/room_entities/map.md" target="_blank">For more info about customized cleaning feature</a>
