@@ -34,7 +34,6 @@ All features completely reverse engineered from the official Mi Home app RN plug
 - `dreame.vacuum.p2150a` *(Mi Robot Vacuum-Mop 2 Ultra)*
 - `dreame.vacuum.p2150b` *(Mi Robot Vacuum-Mop 2 Ultra Set)*
 - `dreame.vacuum.p2157` *(MOVA L600)*
-- `dreame.vacuum.p2156o` *(MOVA Z500)*
 - `dreame.vacuum.p2156` 
 - `dreame.vacuum.p2114o` 
 - `dreame.vacuum.p2149o` 
