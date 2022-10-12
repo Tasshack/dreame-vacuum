@@ -584,7 +584,7 @@ ACTION_AVAILABILITY: Final = {
     DreameVacuumAction.RESET_FILTER: lambda device: bool(device.status.filter_life < 100),
     DreameVacuumAction.RESET_SENSOR: lambda device: bool(device.status.sensor_dirty_life < 100),
     DreameVacuumAction.RESET_MOP: lambda device: bool(device.status.mop_life < 100),
-    DreameVacuumAction.RESET_SILVER_ION: lambda device: bool(device.status.silver_ion < 100),
+    DreameVacuumAction.RESET_SILVER_ION: lambda device: bool(device.status.silver_ion_life < 100),
     DreameVacuumAction.START_AUTO_EMPTY: lambda device: device.status.dust_collection_available,
     DreameVacuumAction.CLEAR_WARNING: lambda device: device.status.has_warning,
     DreameVacuumAction.START: lambda device: not device.status.started or device.status.returning or device.status.returning_paused,
