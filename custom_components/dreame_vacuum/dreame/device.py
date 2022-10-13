@@ -246,7 +246,7 @@ class DreameVacuumDevice:
                         changed = True
                     current_value = self.data.get(did)
                     if current_value is not None:
-                        _LOGGER.debug(
+                        _LOGGER.info(
                             "%s Changed: %s -> %s", DreameVacuumProperty(did).name, current_value, value)
                     self.data[did] = value
                     if did in self._property_update_callback:
@@ -475,7 +475,7 @@ class DreameVacuumDevice:
     def _request_cleaning_history(self) -> None:
         """Get and parse the cleaning history from cloud event data and set it to memory"""
         if self.cloud_connected:
-            _LOGGER.debug("Get Cleaning History")
+            _LOGGER.info("Get Cleaning History")
             # Limit the results
             start = None
             total = self.get_property(DreameVacuumProperty.CLEANING_COUNT)
@@ -595,7 +595,7 @@ class DreameVacuumDevice:
 
     def connect_device(self) -> None:
         """Connect to the device api."""
-        _LOGGER.debug("Connecting to device")
+        _LOGGER.info("Connecting to device")
         self.info = DreameVacuumDeviceInfo(self._device_connection.connect())
         if self.mac is None:
             self.mac = self.info.mac_address
