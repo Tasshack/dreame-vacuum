@@ -30,12 +30,12 @@
 | `multi_floor_map`   | Enable/Disable multi-floor map | Available on vacuums can store more than one map
 | `auto_dust_collecting`   | Enable/Disable automatic dust collecting when cleaning completed |  Available on vacuums with auto-empty station
 | `self_clean`   | Enable/Disable automatic self cleaning feature | Available on vacuums with self-wash base
-| `ai_obstacle_detection`   | Enable/Disable AI obstacle detection | Available on vacuums with camera
-| `obstacle_picture`   | Enable/Disable uploading obstacle picture to cloud | Available on vacuums with camera
-| `pet_detection`   | Enable/Disable AI pet detection | Available on vacuums with camera
-| `human_detection`   | Enable/Disable AI human detection | Available on vacuums with camera
-| `furniture_detection`   | Enable/Disable AI furniture detection | Available on vacuums with camera
-| `fluid_detection`   | Enable/Disable AI fluid detection | Available on vacuums with camera
+| `ai_obstacle_detection`   | Enable/Disable AI obstacle detection | Available on S10 and L10s models
+| `obstacle_picture`   | Enable/Disable uploading obstacle picture to cloud | Available on S10 and L10s models
+| `pet_detection`   | Enable/Disable AI pet detection | Available on S10 and L10s models
+| `human_detection`   | Enable/Disable AI human detection | Available on S10 and L10s models
+| `furniture_detection`   | Enable/Disable AI furniture detection | Available on S10 and L10s models
+| `fluid_detection`   | Enable/Disable AI fluid detection | Available on S10 and L10s models
 | `cleaning_sequence`   | Enable/Disable custom room cleaning sequence | Available with map feature (This a dynamically created entity and not actually tied to any setting directly, when turned of it actually deletes current cleaning order and regenerates with default order when turned on again)
 
 ## Sensor
