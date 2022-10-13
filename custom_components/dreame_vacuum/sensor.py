@@ -80,10 +80,18 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.WATER_TANK,
-        device_class=f"{DOMAIN}__water_tank",
+        device_class=f"{DOMAIN}__water_tank_and_mop",
         icon_fn=lambda value, device: "mdi:water-pump-off"
         if not device.status.water_tank_installed
         else "mdi:water-pump",
+        exists_fn=lambda description, device: not device.status.self_wash_base_available and DreameVacuumEntityDescription().exists_fn(description, device),
+    ),
+    DreameVacuumSensorEntityDescription(
+        key="mop_pad",
+        device_class=f"{DOMAIN}__water_tank_and_mop",
+        icon="mdi:google-circles-communities",
+        value_fn=lambda value, device: device.status.water_tank_name,
+        exists_fn=lambda description, device: device.status.self_wash_base_available,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.DUST_COLLECTION,
@@ -187,14 +195,14 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
-        property_key=DreameVacuumProperty.MOP_LEFT,
+        property_key=DreameVacuumProperty.MOP_PAD_LEFT,
         icon="mdi:hydro-power",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
         entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
-        property_key=DreameVacuumProperty.MOP_TIME_LEFT,
+        property_key=DreameVacuumProperty.MOP_PAD_TIME_LEFT,
         icon="mdi:hydro-power",
         native_unit_of_measurement=UNIT_HOURS,
         device_class=SensorDeviceClass.DURATION,

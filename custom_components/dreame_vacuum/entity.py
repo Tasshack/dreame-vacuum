@@ -40,10 +40,8 @@ class DreameVacuumEntityDescription:
             description.action_key is not None
             and description.action_key in device.action_mapping
         )
-        or (
-            description.property_key is not None
-            and description.property_key.value in device.data
-        )
+        or description.property_key is None
+        or description.property_key.value in device.data
     )
     value_fn: Callable[[object, object], Any] = None
     format_fn: Callable[[str, object], Any] = None

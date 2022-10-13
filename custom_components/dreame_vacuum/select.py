@@ -42,9 +42,13 @@ from .dreame import (
     DreameVacuumSuctionLevel,
     DreameVacuumCleaningMode,
     DreameVacuumWaterVolume,
+    DreameVacuumSelfCleanArea,
+    DreameVacuumMopPadHumidity,
     DreameVacuumCarpetSensitivity,
     SUCTION_LEVEL_CODE_TO_NAME,
     WATER_VOLUME_CODE_TO_NAME,
+    MOP_PAD_HUMIDITY_CODE_TO_NAME,
+    PROPERTY_AVAILABILITY,
 )
 
 SUCTION_LEVEL_TO_ICON = {
@@ -59,6 +63,13 @@ WATER_VOLUME_TO_ICON = {
     DreameVacuumWaterVolume.MEDIUM: "mdi:water",
     DreameVacuumWaterVolume.HIGH: "mdi:water-plus",
 }
+
+MOP_PAD_HUMIDITY_TO_ICON = {
+    DreameVacuumMopPadHumidity.SLIGHTLY_DRY: "mdi:water-minus",
+    DreameVacuumMopPadHumidity.MOIST: "mdi:water",
+    DreameVacuumMopPadHumidity.WET: "mdi:water-plus",
+}
+
 
 @dataclass
 class DreameVacuumSelectEntityDescription(
@@ -92,6 +103,10 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         else WATER_VOLUME_TO_ICON.get(device.status.water_volume, "mdi:water"),
         options=lambda device, segment: list(device.status.water_volume_list),
         value_int_fn=lambda value, device: DreameVacuumWaterVolume[value.upper()],
+        exists_fn=lambda description, device: bool(
+            not device.status.self_wash_base_available and 
+            DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
     ),
     DreameVacuumSelectEntityDescription(
         property_key=DreameVacuumProperty.CLEANING_MODE,
@@ -102,7 +117,9 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         if device.status.cleaning_mode is DreameVacuumCleaningMode.MOPPING
         else "mdi:broom",
         options=lambda device, segment: list(device.status.cleaning_mode_list),
+        value_fn=lambda value, device: device.status.cleaning_mode_name,
         value_int_fn=lambda value, device: DreameVacuumCleaningMode[value.upper()],
+        set_fn=lambda device, map_id, value: device.set_cleaning_mode(value),
     ),
     DreameVacuumSelectEntityDescription(
         property_key=DreameVacuumProperty.CARPET_SENSITIVITY,
@@ -119,6 +136,34 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
         value_fn=lambda value, device: f"{value}{UNIT_TIMES}",
         value_int_fn=lambda value, device: int(value[0]),
+    ),
+    DreameVacuumSelectEntityDescription(
+        key="mop_pad_humidity",
+        device_class=f"{DOMAIN}__mop_pad_humidity",
+        icon_fn=lambda value, device: "mdi:water-off"
+        if (
+            not device.status.water_tank_installed
+            or device.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING
+        )
+        else MOP_PAD_HUMIDITY_TO_ICON.get(device.status.mop_pad_humidity, "mdi:water-percent"),
+        options=lambda device, segment: list(device.status.mop_pad_humidity_list),
+        value_fn=lambda value, device: device.status.mop_pad_humidity_name,
+        value_int_fn=lambda value, device: DreameVacuumMopPadHumidity[value.upper()],
+        exists_fn=lambda description, device: device.status.self_wash_base_available,
+        available_fn=PROPERTY_AVAILABILITY.get(DreameVacuumProperty.WATER_VOLUME),
+        set_fn=lambda device, map_id, value: device.set_mop_pad_humidity(value),
+    ),
+    DreameVacuumSelectEntityDescription(
+        key="self_clean_area",
+        device_class=f"{DOMAIN}__self_clean_area",
+        icon_fn=lambda value, device: "mdi:texture-box",
+        options=lambda device, segment: list(device.status.self_clean_area_list),
+        entity_category=EntityCategory.CONFIG,
+        value_fn=lambda value, device: device.status.self_clean_area_name,
+        value_int_fn=lambda value, device: DreameVacuumSelfCleanArea[value.upper()],
+        exists_fn=lambda description, device: device.status.self_wash_base_available,
+        available_fn=lambda device: device.status.self_clean,
+        set_fn=lambda device, map_id, value: device.set_self_clean_area(value),
     ),
     DreameVacuumSelectEntityDescription(
         key="map_rotation",
@@ -218,6 +263,32 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         set_fn=lambda device, segment_id, value: device.set_segment_water_volume(
             segment_id, value
         ),
+        exists_fn=lambda description, device: not device.status.self_wash_base_available,
+    ),
+    DreameVacuumSelectEntityDescription(
+        key="mop_pad_humidity",
+        device_class=f"{DOMAIN}__mop_pad_humidity",
+        icon_fn=lambda value, segment: MOP_PAD_HUMIDITY_TO_ICON.get(
+            segment.water_volume, "mdi:water-percent"
+        )
+        if segment
+        else "mdi:water-percent",
+        options=lambda device, segment: list(device.status.mop_pad_humidity_list),
+        available_fn=lambda device: bool(
+            device.status.segments
+            and next(iter(device.status.segments.values())).mop_pad_humidity is not None
+            and device.status.customized_cleaning
+            and not device.status.zone_cleaning
+            and not device.status.fast_mapping
+        ),
+        value_fn=lambda device, segment: MOP_PAD_HUMIDITY_CODE_TO_NAME.get(
+            segment.mop_pad_humidity, STATE_UNKNOWN
+        ),
+        value_int_fn=lambda value, self: DreameVacuumMopPadHumidity[value.upper()],
+        set_fn=lambda device, segment_id, value: device.set_segment_mop_pad_humidity(
+            segment_id, value
+        ),
+        exists_fn=lambda description, device: device.status.self_wash_base_available,
     ),
     DreameVacuumSelectEntityDescription(
         key="cleaning_times",
@@ -358,6 +429,7 @@ def async_update_segment_selects(
         current[segment_id] = [
             DreameVacuumSegmentSelectEntity(coordinator, description, segment_id)
             for description in SEGMENT_SELECTS
+            if description.exists_fn(description, coordinator.device)
         ]
         new_entities = new_entities + current[segment_id]
 
@@ -448,7 +520,7 @@ class DreameVacuumSelectEntity(DreameVacuumEntity, SelectEntity):
 
         if option not in self._attr_options:
             raise HomeAssistantError(
-                f"Invalid option for {self.entity_description.name} {str(option)}. Valid options: {self._attr_options}"
+                f"Invalid option for {self.entity_description.name} {option}. Valid options: {self._attr_options}"
             )
 
         value = option
@@ -457,17 +529,10 @@ class DreameVacuumSelectEntity(DreameVacuumEntity, SelectEntity):
 
         if value is None:
             raise HomeAssistantError(
-                f"Invalid option for {self.entity_description.name} {str(option)}. Valid options: {self._attr_options}"
+                f"Invalid option for {self.entity_description.name} {option}. Valid options: {self._attr_options}"
             )
 
-        if self.entity_description.property_key is not None:
-            await self._try_command(
-                "Unable to call %s",
-                self.device.set_property,
-                self.entity_description.property_key,
-                int(value),
-            )
-        elif self.entity_description.set_fn is not None:
+        if self.entity_description.set_fn is not None:
             await self._try_command(
                 "Unable to call %s",
                 self.entity_description.set_fn,
@@ -475,7 +540,13 @@ class DreameVacuumSelectEntity(DreameVacuumEntity, SelectEntity):
                 0,
                 int(value),
             )
-
+        elif self.entity_description.property_key is not None:
+            await self._try_command(
+                "Unable to call %s",
+                self.device.set_property,
+                self.entity_description.property_key,
+                int(value),
+            )
 
 class DreameVacuumSegmentSelectEntity(DreameVacuumEntity, SelectEntity):
     """Defines a Dreame Vacuum Segment select."""

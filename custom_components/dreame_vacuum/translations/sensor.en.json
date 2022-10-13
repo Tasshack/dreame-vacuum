@@ -61,7 +61,7 @@
       "zone_docking_paused": "Zone docking paused",
       "room_docking_paused": "Room docking paused"
     },
-    "dreame_vacuum__water_tank": {
+    "dreame_vacuum__water_tank_and_mop": {
       "unknown": "Unknown",
       "installed": "Installed",
       "not_installed": "Not installed",
@@ -165,8 +165,9 @@
       "failed": "Failed",
       "success": "Success"
     },
-    "dreame_vacuum__wash_station_status": {
+    "dreame_vacuum__self_wash_base_status": {
       "unknown": "Unknown",
+      "idle": "Idle",
       "washing": "Washing",
       "drying": "Drying",
       "paused": "Paused",

@@ -125,7 +125,8 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         entity_registry_enabled_default=False,
     ),
     DreameVacuumButtonEntityDescription(
-        key="start_washing",
+        name="Self-Clean",
+        key="self_clean",
         icon="mdi:washing-machine",
         available_fn=lambda device: bool(
             device.status.washing_available or device.status.returning_to_wash_paused or device.status.washing_paused),
@@ -133,7 +134,8 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         exists_fn=lambda description, device: device.status.self_wash_base_available,
     ),
     DreameVacuumButtonEntityDescription(
-        key="pause_washing",
+        name="Self-Clean Pause",
+        key="self_clean_pause",
         icon="mdi:washing-machine-off",
         available_fn=lambda device: device.status.washing,
         action_fn=lambda device: device.pause_washing(),

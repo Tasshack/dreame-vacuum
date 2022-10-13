@@ -13,7 +13,9 @@ from .types import (
     DreameVacuumSelfWashBaseStatus,
     DreameVacuumSuctionLevel,
     DreameVacuumWaterVolume,
+    DreameVacuumMopPadHumidity,
     DreameVacuumCleaningMode,
+    DreameVacuumSelfCleanArea,
     DreameVacuumProperty,
     DreameVacuumAction,
 )
@@ -26,6 +28,10 @@ SUCTION_LEVEL_TURBO: Final = "turbo"
 WATER_VOLUME_LOW: Final = "low"
 WATER_VOLUME_MEDIUM: Final = "medium"
 WATER_VOLUME_HIGH: Final = "high"
+
+MOP_PAD_HUMIDITY_SLIGHTLY_DRY: Final = "slightly_dry"
+MOP_PAD_HUMIDITY_MOIST: Final = "moist"
+MOP_PAD_HUMIDITY_WET: Final = "wet"
 
 CLEANING_MODE_SWEEPING: Final = "sweeping"
 CLEANING_MODE_MOPPING: Final = "mopping"
@@ -103,6 +109,11 @@ SELF_WASH_BASE_STATUS_WASHING: Final = "washing"
 SELF_WASH_BASE_STATUS_DRYING: Final = "drying"
 SELF_WASH_BASE_STATUS_PAUSED: Final = "paused"
 SELF_WASH_BASE_STATUS_RETURNING: Final = "returning"
+
+SELF_AREA_CLEAN_FIVE_SQUARE_METERS: Final = "five_square_meters"
+SELF_AREA_CLEAN_TEN_SQUARE_METERS: Final = "ten_square_meters"
+SELF_AREA_CLEAN_FIFTEEN_SQUARE_METERS: Final = "fifteen_square_meters"
+SELF_AREA_CLEAN_SINGLE_ZONE: Final = "single_zone"
 
 WATER_TANK_INSTALLED: Final = "installed"
 WATER_TANK_NOT_INSTALLED: Final = "not_installed"
@@ -202,6 +213,7 @@ ATTR_WATER_TANK: Final = "water_tank"
 ATTR_COMPLETED: Final = "completed"
 ATTR_CLEANING_TIME: Final = "cleaning_time"
 ATTR_CLEANED_AREA: Final = "cleaned_area"
+ATTR_MOP_PAD_HUMIDITY: Final = "mop_pad_humidity"
 
 AI_SETTING_SWITCH: Final = "obstacle_detect_switch"
 AI_SETTING_PICTURE: Final = "obstacle_app_display_switch"
@@ -319,11 +331,11 @@ PROPERTY_TO_NAME: Final = {
     ],
     DreameVacuumProperty.TIGHT_MOPPING: ["tight_mopping", "Tight Mopping"],
     DreameVacuumProperty.CLEANING_CANCEL: ["cleaning_cancel", "Cleaning Cancel"],
-    DreameVacuumProperty.CARPET_DISTINGUISH: [
-        "carpet_distinguish",
-        "Carpet Distinguish",
+    DreameVacuumProperty.CARPET_RECOGNITION: [
+        "carpet_recognition",
+        "Carpet Recognition",
     ],
-    DreameVacuumProperty.AUTO_WASH: ["auto_wash", "Auto Wash"],
+    DreameVacuumProperty.SELF_CLEAN: ["self_clean", "Self-Clean"],
     DreameVacuumProperty.WARN_STATUS: ["warn_status", "Warn Status"],
     DreameVacuumProperty.CARPET_CLEAN: ["carpet_clean", "Carpet Clean"],
     DreameVacuumProperty.AUTO_ADD_DETERGENT: [
@@ -387,8 +399,8 @@ PROPERTY_TO_NAME: Final = {
         "sensor_dirty_time_left",
         "Sensor Dirty Time Left",
     ],
-    DreameVacuumProperty.MOP_LEFT: ["mop_left", "Mop Left"],
-    DreameVacuumProperty.MOP_TIME_LEFT: ["mop_time_left", "Mop Time Left"],
+    DreameVacuumProperty.MOP_PAD_LEFT: ["mop_pad_left", "Mop Pad Left"],
+    DreameVacuumProperty.MOP_PAD_TIME_LEFT: ["mop_pad_time_left", "Mop Pad Time Left"],
 }
 
 ACTION_TO_NAME: Final = {
@@ -442,6 +454,13 @@ WATER_VOLUME_CODE_TO_NAME: Final = {
     DreameVacuumWaterVolume.LOW: WATER_VOLUME_LOW,
     DreameVacuumWaterVolume.MEDIUM: WATER_VOLUME_MEDIUM,
     DreameVacuumWaterVolume.HIGH: WATER_VOLUME_HIGH,
+}
+
+# Dreame Vacuum mop pad humidity names
+MOP_PAD_HUMIDITY_CODE_TO_NAME: Final = {
+    DreameVacuumMopPadHumidity.SLIGHTLY_DRY: MOP_PAD_HUMIDITY_SLIGHTLY_DRY,
+    DreameVacuumMopPadHumidity.MOIST: MOP_PAD_HUMIDITY_MOIST,
+    DreameVacuumMopPadHumidity.WET: MOP_PAD_HUMIDITY_WET,
 }
 
 # Dreame Vacuum cleaning mode names
@@ -624,6 +643,13 @@ SELF_WASH_BASE_STATUS_TO_NAME: Final = {
     DreameVacuumSelfWashBaseStatus.DRYING: SELF_WASH_BASE_STATUS_DRYING,
     DreameVacuumSelfWashBaseStatus.PAUSED: SELF_WASH_BASE_STATUS_PAUSED,
     DreameVacuumSelfWashBaseStatus.RETURNING: SELF_WASH_BASE_STATUS_RETURNING,
+}
+
+SELF_AREA_CLEAN_TO_NAME: Final = {
+    DreameVacuumSelfCleanArea.FIVE_SQUARE_METERS: SELF_AREA_CLEAN_FIVE_SQUARE_METERS,
+    DreameVacuumSelfCleanArea.TEN_SQUARE_METERS: SELF_AREA_CLEAN_TEN_SQUARE_METERS,
+    DreameVacuumSelfCleanArea.FIFTEEN_SQUARE_METERS: SELF_AREA_CLEAN_FIFTEEN_SQUARE_METERS,
+    DreameVacuumSelfCleanArea.SINGLE_ZONE: SELF_AREA_CLEAN_SINGLE_ZONE,
 }
 
 ERROR_CODE_TO_IMAGE_INDEX: Final = {

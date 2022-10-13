@@ -86,12 +86,12 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        property_key=DreameVacuumProperty.CARPET_DISTINGUISH,
+        property_key=DreameVacuumProperty.CARPET_RECOGNITION,
         icon="mdi:rug",
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        property_key=DreameVacuumProperty.AUTO_WASH,
+        property_key=DreameVacuumProperty.SELF_CLEAN,
         icon="mdi:water-sync",
         entity_category=EntityCategory.CONFIG,
     ),

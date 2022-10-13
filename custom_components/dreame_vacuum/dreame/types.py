@@ -241,6 +241,15 @@ class DreameVacuumWaterVolume(IntEnum):
     HIGH = 3
 
 
+class DreameVacuumMopPadHumidity(IntEnum):
+    """Dreame Vacuum mop pad humidity"""
+
+    UNKNOWN = -1
+    SLIGHTLY_DRY = 1
+    MOIST = 2
+    WET = 3
+
+
 class DreameVacuumCarpetSensitivity(IntEnum):
     """Dreame Vacuum carpet boost sensitivity"""
 
@@ -341,6 +350,16 @@ class DreameVacuumSelfWashBaseStatus(IntEnum):
     RETURNING = 3
 
 
+class DreameVacuumSelfCleanArea(IntEnum):
+    """Dreame Vacuum self clean area"""
+
+    UNKNOWN = -1
+    SINGLE_ZONE = 0
+    FIVE_SQUARE_METERS = 5
+    TEN_SQUARE_METERS = 10
+    FIFTEEN_SQUARE_METERS = 15
+
+
 class DreameVacuumProperty(IntEnum):
     """Dreame Vacuum properties"""
 
@@ -376,8 +395,8 @@ class DreameVacuumProperty(IntEnum):
     CARPET_SENSITIVITY = 29,
     TIGHT_MOPPING = 30,
     CLEANING_CANCEL = 31,
-    CARPET_DISTINGUISH = 32,
-    AUTO_WASH = 33,
+    CARPET_RECOGNITION = 32,
+    SELF_CLEAN = 33,
     WARN_STATUS = 34,
     CARPET_CLEAN = 35,
     AUTO_ADD_DETERGENT = 36,
@@ -421,8 +440,8 @@ class DreameVacuumProperty(IntEnum):
     AUTO_EMPTY_STATUS = 74,
     SENSOR_DIRTY_LEFT = 75,
     SENSOR_DIRTY_TIME_LEFT = 76,
-    MOP_LEFT = 77,
-    MOP_TIME_LEFT = 78,
+    MOP_PAD_LEFT = 77,
+    MOP_PAD_TIME_LEFT = 78,
     SILVER_ION_TIME_LEFT = 79,
     SILVER_ION_LEFT = 80
 
@@ -486,8 +505,8 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.CARPET_SENSITIVITY: {"siid": 4, "piid": 28},
     DreameVacuumProperty.TIGHT_MOPPING: {"siid": 4, "piid": 29},
     DreameVacuumProperty.CLEANING_CANCEL: {"siid": 4, "piid": 30},
-    DreameVacuumProperty.CARPET_DISTINGUISH: {"siid": 4, "piid": 33},
-    DreameVacuumProperty.AUTO_WASH: {"siid": 4, "piid": 34},
+    DreameVacuumProperty.CARPET_RECOGNITION: {"siid": 4, "piid": 33},
+    DreameVacuumProperty.SELF_CLEAN: {"siid": 4, "piid": 34},
     DreameVacuumProperty.WARN_STATUS: {"siid": 4, "piid": 35},
     DreameVacuumProperty.CARPET_CLEAN: {"siid": 4, "piid": 36},
     DreameVacuumProperty.AUTO_ADD_DETERGENT: {"siid": 4, "piid": 37},
@@ -532,8 +551,8 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.AUTO_EMPTY_STATUS: {"siid": 15, "piid": 5},
     DreameVacuumProperty.SENSOR_DIRTY_LEFT: {"siid": 16, "piid": 1},
     DreameVacuumProperty.SENSOR_DIRTY_TIME_LEFT: {"siid": 16, "piid": 2},
-    DreameVacuumProperty.MOP_LEFT: {"siid": 18, "piid": 1},
-    DreameVacuumProperty.MOP_TIME_LEFT: {"siid": 18, "piid": 2},
+    DreameVacuumProperty.MOP_PAD_LEFT: {"siid": 18, "piid": 1},
+    DreameVacuumProperty.MOP_PAD_TIME_LEFT: {"siid": 18, "piid": 2},
     DreameVacuumProperty.SILVER_ION_TIME_LEFT: {"siid": 18, "piid": 1},
     DreameVacuumProperty.SILVER_ION_LEFT: {"siid": 18, "piid": 2},
 
@@ -572,6 +591,7 @@ PROPERTY_AVAILABILITY: Final = {
     DreameVacuumProperty.WATER_VOLUME: lambda device: device.status.water_tank_installed and not device.status.sweeping and not (device.status.customized_cleaning and not device.status.zone_cleaning) and not device.status.fast_mapping,
     DreameVacuumProperty.CLEANING_MODE: lambda device: not device.status.started and not device.status.fast_mapping and not device.status.cleaning_paused,
     DreameVacuumProperty.CARPET_SENSITIVITY: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_BOOST)),
+    DreameVacuumProperty.CARPET_BOOST: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
     DreameVacuumProperty.AUTO_EMPTY_FREQUENCY: lambda device: bool(device.get_property(DreameVacuumProperty.AUTO_DUST_COLLECTING)),
     DreameVacuumProperty.CLEANING_TIME: lambda device: not device.status.fast_mapping,
     DreameVacuumProperty.CLEANED_AREA: lambda device: not device.status.fast_mapping,
@@ -744,6 +764,10 @@ class Segment(Zone):
         self.water_volume = water_volume
         self.color_index = None
         self.set_name()
+
+    @property
+    def mop_pad_humidity(self) -> int:
+        return self.water_volume
 
     @property
     def outline(self) -> List[List[int]]:

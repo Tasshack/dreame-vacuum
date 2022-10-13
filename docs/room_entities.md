@@ -42,7 +42,7 @@ entities:
       variables:
         - states['{{ entity_id }}_name']
         - states['{{ entity_id }}_suction_level'].entity_id
-        - states['{{ entity_id }}_water_level'].entity_id
+        - states['{{ entity_id }}_water_volume'].entity_id
         - states['{{ entity_id }}_cleaning_times'].entity_id
         - states['{{ entity_id }}_order'].entity_id
       entities:
