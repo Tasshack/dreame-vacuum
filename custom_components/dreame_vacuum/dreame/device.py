@@ -312,12 +312,15 @@ class DreameVacuumDevice:
         if self._map_manager:
             map_list = self.get_property(DreameVacuumProperty.MAP_LIST)
             if map_list and map_list != "":
-                map_list = json.loads(map_list)
-                object_name = map_list.get("object_name")
-                if object_name and object_name != "":
-                    self._map_manager.set_map_list_object_name(map_list)
-                else:
-                    self._last_map_list_request = 0
+                try:
+                    map_list = json.loads(map_list)
+                    object_name = map_list.get("object_name")
+                    if object_name and object_name != "":
+                        self._map_manager.set_map_list_object_name(map_list)
+                    else:
+                        self._last_map_list_request = 0
+                except:
+                    pass
 
     def _recovery_map_list_changed(self, previous_recovery_map_list: Any = None) -> None:
         """Update recovery list object name on map manager recovery list property when changed"""
@@ -325,13 +328,16 @@ class DreameVacuumDevice:
             map_list = self.get_property(
                 DreameVacuumProperty.RECOVERY_MAP_LIST)
             if map_list and map_list != "":
-                map_list = json.loads(map_list)
-                object_name = map_list.get("object_name")
-                if object_name and object_name != "":
-                    self._map_manager.set_recovery_map_list_object_name(
-                        map_list)
-                else:
-                    self._last_map_list_request = 0
+                try:
+                    map_list = json.loads(map_list)
+                    object_name = map_list.get("object_name")
+                    if object_name and object_name != "":
+                        self._map_manager.set_recovery_map_list_object_name(
+                            map_list)
+                    else:
+                        self._last_map_list_request = 0
+                except:
+                    pass
 
     def _water_tank_changed(self, previous_water_tank: Any = None) -> None:
         """Update cleaning mode on device when water tank status is changed."""
@@ -455,96 +461,100 @@ class DreameVacuumDevice:
 
     def _ai_obstacle_detection_changed(self, previous_ai_obstacle_detection: Any = None) -> None:
         """AI Detection property returns multiple values as json this function parses and sets the sub properties to memory"""
-        settings = json.loads(self.get_property(
-            DreameVacuumProperty.AI_DETECTION))
+        value = self.get_property(DreameVacuumProperty.AI_DETECTION)
+        if isinstance(value, str):
+            settings = json.loads(value)
 
-        if AI_SETTING_SWITCH in settings:
-            self.status.ai_obstacle_detection = settings[AI_SETTING_SWITCH]
-        if AI_SETTING_PICTURE in settings:
-            self.status.obstacle_picture = settings[AI_SETTING_PICTURE]
-        if AI_SETTING_PET in settings:
-            self.status.pet_detection = settings[AI_SETTING_PET]
-        if AI_SETTING_HUMAN in settings:
-            self.status.human_detection = settings[AI_SETTING_HUMAN]
-        if AI_SETTING_FURNITURE in settings:
-            self.status.furniture_detection = settings[AI_SETTING_FURNITURE]
-        if AI_SETTING_FLUID in settings:
-            self.status.fluid_detection = settings[AI_SETTING_FLUID]
+            if AI_SETTING_SWITCH in settings:
+                self.status.ai_obstacle_detection = settings[AI_SETTING_SWITCH]
+            if AI_SETTING_PICTURE in settings:
+                self.status.obstacle_picture = settings[AI_SETTING_PICTURE]
+            if AI_SETTING_PET in settings:
+                self.status.pet_detection = settings[AI_SETTING_PET]
+            if AI_SETTING_HUMAN in settings:
+                self.status.human_detection = settings[AI_SETTING_HUMAN]
+            if AI_SETTING_FURNITURE in settings:
+                self.status.furniture_detection = settings[AI_SETTING_FURNITURE]
+            if AI_SETTING_FLUID in settings:
+                self.status.fluid_detection = settings[AI_SETTING_FLUID]
 
     def _request_cleaning_history(self) -> None:
         """Get and parse the cleaning history from cloud event data and set it to memory"""
         if self.cloud_connected:
             _LOGGER.info("Get Cleaning History")
-            # Limit the results
-            start = None
-            total = self.get_property(DreameVacuumProperty.CLEANING_COUNT)
-            if total > 0:
-                start = self.get_property(
-                    DreameVacuumProperty.FIRST_CLEANING_DATE)
+            try:
+                # Limit the results
+                start = None
+                total = self.get_property(DreameVacuumProperty.CLEANING_COUNT)
+                if total > 0:
+                    start = self.get_property(
+                        DreameVacuumProperty.FIRST_CLEANING_DATE)
 
-            if start is None:
-                start = int(time.time())
-            if total is None:
-                total = 5
-            limit = 40
-            if total < 20:
-                limit = total + 20
+                if start is None:
+                    start = int(time.time())
+                if total is None:
+                    total = 5
+                limit = 40
+                if total < 20:
+                    limit = total + 20
 
-            # Cleaning history is generated from events of status property that has been sent to cloud by the device when it changed
-            result = self._cloud_connection.get_device_event(
-                DIID(DreameVacuumProperty.STATUS,
-                     self.property_mapping), limit, start
-            )
-            if result:
-                cleaning_history = []
-                history_size = 0
-                for data in result:
-                    history_data = json.loads(data["value"])
+                # Cleaning history is generated from events of status property that has been sent to cloud by the device when it changed
+                result = self._cloud_connection.get_device_event(
+                    DIID(DreameVacuumProperty.STATUS,
+                         self.property_mapping), limit, start
+                )
+                if result:
+                    cleaning_history = []
+                    history_size = 0
+                    for data in result:
+                        history_data = json.loads(data["value"])
 
-                    history = CleaningHistory()
+                        history = CleaningHistory()
 
-                    for history_data_item in history_data:
-                        piid = history_data_item["piid"]
-                        value = history_data_item["value"]
-                        if piid == PIID(DreameVacuumProperty.STATUS, self.property_mapping):
-                            if value in DreameVacuumStatus._value2member_map_:
-                                history.status = DreameVacuumStatus(value)
-                            else:
-                                history.status = DreameVacuumStatus.UNKNOWN
-                        elif piid == PIID(DreameVacuumProperty.CLEANING_TIME, self.property_mapping):
-                            history.cleaning_time = value
-                        elif piid == PIID(DreameVacuumProperty.CLEANED_AREA, self.property_mapping):
-                            history.cleaned_area = value
-                        elif piid == PIID(DreameVacuumProperty.SUCTION_LEVEL, self.property_mapping):
-                            if value in DreameVacuumSuctionLevel._value2member_map_:
-                                history.suction_level = DreameVacuumSuctionLevel(value)
-                            else:
-                                history.suction_level = DreameVacuumSuctionLevel.UNKNOWN
-                        elif piid == PIID(DreameVacuumProperty.CLEANING_START_TIME, self.property_mapping):
-                            history.date = datetime.fromtimestamp(value)
-                        elif piid == PIID(DreameVacuumProperty.CLEAN_LOG_FILE_NAME, self.property_mapping):
-                            history.file_name = value
-                        elif piid == PIID(DreameVacuumProperty.CLEAN_LOG_STATUS, self.property_mapping):
-                            history.completed = bool(value)
-                        elif piid == PIID(DreameVacuumProperty.WATER_TANK, self.property_mapping):
-                            if value in DreameVacuumWaterTank._value2member_map_:
-                                history.water_tank = DreameVacuumWaterTank(
-                                    value)
-                            else:
-                                history.water_tank = DreameVacuumWaterTank.UNKNOWN
+                        for history_data_item in history_data:
+                            piid = history_data_item["piid"]
+                            value = history_data_item["value"]
+                            if piid == PIID(DreameVacuumProperty.STATUS, self.property_mapping):
+                                if value in DreameVacuumStatus._value2member_map_:
+                                    history.status = DreameVacuumStatus(value)
+                                else:
+                                    history.status = DreameVacuumStatus.UNKNOWN
+                            elif piid == PIID(DreameVacuumProperty.CLEANING_TIME, self.property_mapping):
+                                history.cleaning_time = value
+                            elif piid == PIID(DreameVacuumProperty.CLEANED_AREA, self.property_mapping):
+                                history.cleaned_area = value
+                            elif piid == PIID(DreameVacuumProperty.SUCTION_LEVEL, self.property_mapping):
+                                if value in DreameVacuumSuctionLevel._value2member_map_:
+                                    history.suction_level = DreameVacuumSuctionLevel(value)
+                                else:
+                                    history.suction_level = DreameVacuumSuctionLevel.UNKNOWN
+                            elif piid == PIID(DreameVacuumProperty.CLEANING_START_TIME, self.property_mapping):
+                                history.date = datetime.fromtimestamp(value)
+                            elif piid == PIID(DreameVacuumProperty.CLEAN_LOG_FILE_NAME, self.property_mapping):
+                                history.file_name = value
+                            elif piid == PIID(DreameVacuumProperty.CLEAN_LOG_STATUS, self.property_mapping):
+                                history.completed = bool(value)
+                            elif piid == PIID(DreameVacuumProperty.WATER_TANK, self.property_mapping):
+                                if value in DreameVacuumWaterTank._value2member_map_:
+                                    history.water_tank = DreameVacuumWaterTank(
+                                        value)
+                                else:
+                                    history.water_tank = DreameVacuumWaterTank.UNKNOWN
 
-                    if history_size > 0 and cleaning_history[-1].date == history.date:
-                        continue
+                        if history_size > 0 and cleaning_history[-1].date == history.date:
+                            continue
 
-                    cleaning_history.append(history)
-                    history_size = history_size + 1
-                    if history_size >= 20 or history_size >= total:
-                        break
+                        cleaning_history.append(history)
+                        history_size = history_size + 1
+                        if history_size >= 20 or history_size >= total:
+                            break
 
-                if self.status._cleaning_history != cleaning_history:
-                    self.status._cleaning_history = cleaning_history
-                    if self._ready:
-                        self._property_changed()
+                    if self.status._cleaning_history != cleaning_history:
+                        self.status._cleaning_history = cleaning_history
+                        if self._ready:
+                            self._property_changed()
+            except:
+                _LOGGER.warning("Get Cleaning History failed!")
 
     def _property_changed(self) -> None:
         """Call external listener when a property changed"""
@@ -2580,10 +2590,8 @@ class DreameVacuumDeviceStatus:
     @property
     def ai_detection_available(self) -> bool:
         """Returns true when device has AI obstacle detection feature."""
-        return bool(
-            self._get_property(DreameVacuumProperty.AI_DETECTION)
-            is not None
-        )
+        value = self._get_property(DreameVacuumProperty.AI_DETECTION)
+        return bool(value is not None and isinstance(value, str))
 
     @property
     def cleaning_history(self) -> dict[str, Any] | None:

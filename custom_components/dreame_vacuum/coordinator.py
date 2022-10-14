@@ -1,6 +1,7 @@
 """DataUpdateCoordinator for Dreame Vacuum."""
 from __future__ import annotations
 
+import traceback
 import math
 from homeassistant.components import persistent_notification
 from homeassistant.config_entries import ConfigEntry
@@ -226,7 +227,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             self.async_set_updated_data()
             return self.device
         except Exception as ex:
-            LOGGER.error("Update failed: %s", ex)
+            LOGGER.error("Update failed: %s", traceback.format_exc())
             raise UpdateFailed(ex) from ex
 
     @callback
