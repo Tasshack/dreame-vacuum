@@ -368,6 +368,24 @@ vacuum_set_restricted_zone:
       selector:
         text:
 
+vacuum_reset_consumable:
+  description: Reset consumable
+  target:
+    entity:
+      domain: vacuum
+  fields:
+    consumable:
+      description: Consumable type.
+      required: true
+      selector:
+        select:
+          options:
+            - "main_brush"
+            - "side_brush"
+            - "filter"
+            - "sensor"
+            - "mop_pad"
+            - "silver_ion"
 
 select_select_previous:
   name: Select Previous
