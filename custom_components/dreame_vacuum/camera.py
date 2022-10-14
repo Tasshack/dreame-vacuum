@@ -144,6 +144,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         self._image = self._renderer.default_map_image
         self._default_map = True
         self.map_index = map_index
+        self._state = STATE_UNAVAILABLE
 
         map_data = self._map_data
         if map_data:

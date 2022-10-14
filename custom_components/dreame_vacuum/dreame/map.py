@@ -590,7 +590,7 @@ class DreameMapVacuumMapManager:
 
     def _add_map_data(self, partial_map: MapDataPartial) -> None:
         if partial_map is not None:
-            _LOGGER.info("Add Map Data %s: %s %s", partial_map.map_id, partial_map._current_frame_id, partial_map.timestamp_ms)
+            _LOGGER.info("Add Map Data %s: %s %s", partial_map.map_id, partial_map.frame_id, partial_map.timestamp_ms)
 
             if (
                 partial_map.timestamp_ms is not None
