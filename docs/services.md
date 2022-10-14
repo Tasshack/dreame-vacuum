@@ -65,7 +65,7 @@ Start selected room cleaning with optional customized cleaning parameters.
       segments:
         - 3
         - 5
-      fan_speed: "high"
+      suction_level: "high"
     target:
       entity_id: vacuum.vacuum
     ```
@@ -77,7 +77,7 @@ Start selected room cleaning with optional customized cleaning parameters.
       segments:
         - 3
         - 5
-      fan_speed: 
+      suction_level: 
         - "high"
         - "quiet"
     target:
@@ -241,10 +241,10 @@ Set customized room cleaning parameters on current map.
     ```yaml
     service: dreame_vacuum.vacuum_set_custom_cleaning
     data:
-        fan_speed: 
+        suction_level: 
           - 0
           - 3
-        water_level: 
+        water_volume: 
           - 1
           - 2
         repeats: 
