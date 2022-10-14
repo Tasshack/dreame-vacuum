@@ -38,7 +38,6 @@ from .types import (
     Segment,
 )
 from .const import (
-    STATE_MOPPING_AND_SWEEPING,
     STATE_UNKNOWN,
     SUCTION_LEVEL_CODE_TO_NAME,
     WATER_VOLUME_CODE_TO_NAME,
