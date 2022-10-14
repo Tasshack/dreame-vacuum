@@ -34,7 +34,7 @@ from .const import (
     INPUT_DND_ENABLED,
     INPUT_DND_END,
     INPUT_DND_START,
-    INPUT_FAN_SPEED,
+    INPUT_SUCTION_LEVEL,
     INPUT_LANGUAGE_ID,
     INPUT_LINE,
     INPUT_MAP_ID,
@@ -52,7 +52,7 @@ from .const import (
     INPUT_URL,
     INPUT_VELOCITY,
     INPUT_WALL_ARRAY,
-    INPUT_WATER_LEVEL,
+    INPUT_WATER_VOLUME,
     INPUT_ZONE,
     INPUT_ZONE_ARRAY,
     INPUT_CONSUMABLE,
@@ -117,7 +117,7 @@ STATE_CODE_TO_STATE: Final = {
     DreameVacuumState.UPGRADING: STATE_IDLE,
 }
 
-FAN_SPEED_CODE_TO_NAME: Final = {
+SUCTION_LEVEL_TO_FAN_SPEED: Final = {
     DreameVacuumSuctionLevel.QUIET: FAN_SPEED_SILENT,
     DreameVacuumSuctionLevel.STANDARD: FAN_SPEED_STANDARD,
     DreameVacuumSuctionLevel.STRONG: FAN_SPEED_STRONG,
@@ -217,10 +217,10 @@ async def async_setup_entry(
             vol.Optional(INPUT_REPEATS): vol.All(
                 vol.Coerce(int), vol.Clamp(min=1, max=3)
             ),
-            vol.Optional(INPUT_FAN_SPEED): vol.All(
+            vol.Optional(INPUT_SUCTION_LEVEL): vol.All(
                 vol.Coerce(int), vol.Clamp(min=0, max=3)
             ),
-            vol.Optional(INPUT_WATER_LEVEL): vol.All(
+            vol.Optional(INPUT_WATER_VOLUME): vol.All(
                 vol.Coerce(int), vol.Clamp(min=1, max=3)
             ),
         },
@@ -366,8 +366,8 @@ async def async_setup_entry(
     platform.async_register_entity_service(
         SERVICE_SET_CUSTOM_CLEANING,
         {
-            vol.Required(INPUT_FAN_SPEED): cv.ensure_list,
-            vol.Required(INPUT_WATER_LEVEL): cv.ensure_list,
+            vol.Required(INPUT_SUCTION_LEVEL): cv.ensure_list,
+            vol.Required(INPUT_WATER_VOLUME): cv.ensure_list,
             vol.Required(INPUT_REPEATS): cv.ensure_list,
         },
         DreameVacuum.async_set_custom_cleaning.__name__,
@@ -441,8 +441,8 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
             self._attr_fan_speed_list = None
             self._attr_fan_speed = STATE_UNAVAILABLE.capitalize()
         else:
-            self._attr_fan_speed_list = list({v.capitalize() for k, v in FAN_SPEED_CODE_TO_NAME.items()})
-            self._attr_fan_speed = FAN_SPEED_CODE_TO_NAME.get(self.device.status.suction_level, STATE_UNKNOWN).capitalize()
+            self._attr_fan_speed_list = list({v.capitalize() for k, v in SUCTION_LEVEL_TO_FAN_SPEED.items()})
+            self._attr_fan_speed = SUCTION_LEVEL_TO_FAN_SPEED.get(self.device.status.suction_level, STATE_UNKNOWN).capitalize()
 
         self._attr_battery_level = self.device.status.battery_level
         self._attr_extra_state_attributes = self.device.status.attributes
@@ -508,7 +508,7 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
         )
 
     async def async_clean_segment(
-        self, segments, repeats=1, fan_speed="", water_level=""
+        self, segments, repeats=1, suction_level="", water_volume=""
     ) -> None:
         """Clean selected segments."""
         await self._try_command(
@@ -516,8 +516,8 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
             self.device.clean_segment,
             segments,
             repeats,
-            fan_speed,
-            water_level,
+            suction_level,
+            water_volume,
         )
 
     async def async_set_restricted_zone(self, walls="", zones="", no_mops="") -> None:
@@ -665,21 +665,21 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
                 cleaning_order,
             )
 
-    async def async_set_custom_cleaning(self, fan_speed, water_level, repeats) -> None:
+    async def async_set_custom_cleaning(self, suction_level, water_volume, repeats) -> None:
         """Set custom cleaning"""
         if (
-            fan_speed != ""
-            and fan_speed is not None
-            and water_level != ""
-            and water_level is not None
+            suction_level != ""
+            and suction_level is not None
+            and water_volume != ""
+            and water_volume is not None
             and repeats != ""
             and repeats is not None
         ):
             await self._try_command(
                 "Unable to call set_custom_cleaning: %s",
                 self.device.set_custom_cleaning,
-                fan_speed,
-                water_level,
+                suction_level,
+                water_volume,
                 repeats,
             )
 
