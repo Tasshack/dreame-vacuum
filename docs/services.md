@@ -254,6 +254,29 @@ Set customized room cleaning parameters on current map.
         entity_id: vacuum.vacuum
     ```
 
+### `dreame_vacuum.vacuum_reset_consumable`
+
+Reset a consumable life by type.
+
+**Examples:**
+- Reset Main Brush Life
+    ```yaml
+    service: dreame_vacuum.vacuum_reset_consumable
+    data:
+        consumable: "main_brush"
+    target:
+        entity_id: vacuum.vacuum
+    ```
+
+- Reset Mop Pad Life
+    ```yaml
+    service: dreame_vacuum.vacuum_reset_consumable
+    data:
+        consumable: "mop_pad"
+    target:
+        entity_id: vacuum.vacuum
+    ```
+
 ### *`vacuum.send_command`*
 
 Send command service can be used to send raw api requests that are not available with this integration. 

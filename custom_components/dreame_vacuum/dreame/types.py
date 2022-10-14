@@ -465,7 +465,7 @@ class DreameVacuumAction(IntEnum):
     RESET_FILTER = 14
     RESET_SENSOR = 15
     START_AUTO_EMPTY = 16
-    RESET_MOP = 17
+    RESET_MOP_PAD = 17
     RESET_SILVER_ION = 10
 
 
@@ -576,7 +576,7 @@ DreameVacuumActionMapping = {
     DreameVacuumAction.RESET_FILTER: {"siid": 11, "aiid": 1},
     DreameVacuumAction.RESET_SENSOR: {"siid": 16, "aiid": 1},
     DreameVacuumAction.START_AUTO_EMPTY: {"siid": 15, "aiid": 1},
-    DreameVacuumAction.RESET_MOP: {"siid": 18, "aiid": 1},
+    DreameVacuumAction.RESET_MOP_PAD: {"siid": 18, "aiid": 1},
     DreameVacuumAction.RESET_SILVER_ION: {"siid": 19, "aiid": 1},
 }
 
@@ -603,7 +603,7 @@ ACTION_AVAILABILITY: Final = {
     DreameVacuumAction.RESET_SIDE_BRUSH: lambda device: bool(device.status.side_brush_life < 100),
     DreameVacuumAction.RESET_FILTER: lambda device: bool(device.status.filter_life < 100),
     DreameVacuumAction.RESET_SENSOR: lambda device: bool(device.status.sensor_dirty_life < 100),
-    DreameVacuumAction.RESET_MOP: lambda device: bool(device.status.mop_life < 100),
+    DreameVacuumAction.RESET_MOP_PAD: lambda device: bool(device.status.mop_life < 100),
     DreameVacuumAction.RESET_SILVER_ION: lambda device: bool(device.status.silver_ion_life < 100),
     DreameVacuumAction.START_AUTO_EMPTY: lambda device: device.status.dust_collection_available,
     DreameVacuumAction.CLEAR_WARNING: lambda device: device.status.has_warning,

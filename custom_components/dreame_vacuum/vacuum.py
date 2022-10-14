@@ -23,7 +23,7 @@ from homeassistant.components.vacuum import (
     VacuumEntityFeature
 )
 
-from .dreame import DreameVacuumState, DreameVacuumSuctionLevel, InvalidActionException, SUCTION_LEVEL_QUIET
+from .dreame import DreameVacuumState, DreameVacuumSuctionLevel, DreameVacuumAction, InvalidActionException, SUCTION_LEVEL_QUIET
 from .const import (
     DOMAIN,
     FAN_SPEED_SILENT,
@@ -55,6 +55,7 @@ from .const import (
     INPUT_WATER_LEVEL,
     INPUT_ZONE,
     INPUT_ZONE_ARRAY,
+    INPUT_CONSUMABLE,
     SERVICE_CLEAN_ZONE,
     SERVICE_CLEAN_SEGMENT,
     SERVICE_INSTALL_VOICE_PACK,
@@ -74,6 +75,13 @@ from .const import (
     SERVICE_SAVE_TEMPORARY_MAP,
     SERVICE_DISCARD_TEMPORARY_MAP,
     SERVICE_REPLACE_TEMPORARY_MAP,
+    SERVICE_RESET_CONSUMABLE,
+    CONSUMABLE_MAIN_BRUSH,
+    CONSUMABLE_SIDE_BRUSH,
+    CONSUMABLE_FILTER,
+    CONSUMABLE_SENSOR,
+    CONSUMABLE_MOP_PAD,
+    CONSUMABLE_SILVER_ION,
 )
 
 SUPPORT_DREAME = (
@@ -114,6 +122,15 @@ FAN_SPEED_CODE_TO_NAME: Final = {
     DreameVacuumSuctionLevel.STANDARD: FAN_SPEED_STANDARD,
     DreameVacuumSuctionLevel.STRONG: FAN_SPEED_STRONG,
     DreameVacuumSuctionLevel.TURBO: FAN_SPEED_TURBO,
+}
+
+CONSUMABLE_RESET_ACTION = {
+    CONSUMABLE_MAIN_BRUSH: DreameVacuumAction.RESET_MAIN_BRUSH,
+    CONSUMABLE_SIDE_BRUSH: DreameVacuumAction.RESET_SIDE_BRUSH,
+    CONSUMABLE_FILTER: DreameVacuumAction.RESET_FILTER,
+    CONSUMABLE_SENSOR: DreameVacuumAction.RESET_SENSOR,
+    CONSUMABLE_MOP_PAD: DreameVacuumAction.RESET_MOP_PAD,
+    CONSUMABLE_SILVER_ION: DreameVacuumAction.RESET_SILVER_ION,
 }
 
 async def async_setup_entry(
@@ -364,6 +381,23 @@ async def async_setup_entry(
             vol.Optional(INPUT_DND_END): cv.string,
         },
         DreameVacuum.async_set_dnd.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_RESET_CONSUMABLE,
+        {
+            vol.Required(INPUT_CONSUMABLE): vol.In(
+                [
+                    CONSUMABLE_MAIN_BRUSH,
+                    CONSUMABLE_SIDE_BRUSH,
+                    CONSUMABLE_FILTER,
+                    CONSUMABLE_SENSOR,
+                    CONSUMABLE_MOP_PAD,
+                    CONSUMABLE_SILVER_ION,
+                ]
+            ),
+        },
+        DreameVacuum.async_reset_consumable.__name__,
     )
 
     async_add_entities([DreameVacuum(coordinator)])
@@ -668,7 +702,6 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
 
     async def async_set_dnd(self, dnd_enabled, dnd_start="", dnd_end="") -> None:
         """Set do not disturb function"""
-
         await self._try_command(
             "Unable to call set_dnd_enabled: %s",
             self.device.set_dnd_enabled,
@@ -681,4 +714,14 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
         if dnd_end != "" and dnd_end is not None:
             await self._try_command(
                 "Unable to call set_dnd_end: %s", self.device.set_dnd_end, dnd_end
+            )
+
+    async def async_reset_consumable(self, consumable: str) -> None:
+        """Reset consumable"""
+        action = CONSUMABLE_RESET_ACTION.get(consumable)
+        if action:
+            await self._try_command(
+                "Unable to call reset_consumable: %s",
+                self.device.call_action,
+                action,
             )

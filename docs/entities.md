@@ -98,7 +98,7 @@
 | `reset_side_brush`   | Reset side brush remaining life left |
 | `reset_filter`   | Reset filter remaining life left |
 | `reset_sensor`   | Reset sensor cleaning remaining left | Available on vacuums with line laser
-| `reset_mop`   | Reset mop remaining life left | Available on vacuums with self-wash base
+| `reset_mop_pad`   | Reset mop pad remaining life left | Available on vacuums with self-wash base
 | `reset_silver_ion`   | Reset silver-ion remaining life left | Available on W10 Pro
 | `start_auto_empty`   | Start auto-emptying | Available on vacuums with auto-empty station
 | `clear_warning`   | Clear warning | Unavailable when there is no warning to clear

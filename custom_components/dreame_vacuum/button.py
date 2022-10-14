@@ -71,7 +71,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         ),
     ),
     DreameVacuumButtonEntityDescription(
-        action_key=DreameVacuumAction.RESET_MOP,
+        action_key=DreameVacuumAction.RESET_MOP_PAD,
         icon="mdi:hydro-power",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(

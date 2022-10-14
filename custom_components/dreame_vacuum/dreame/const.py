@@ -419,7 +419,7 @@ ACTION_TO_NAME: Final = {
     DreameVacuumAction.RESET_FILTER: ["reset_filter", "Reset Filter"],
     DreameVacuumAction.RESET_SENSOR: ["reset_sensor", "Reset Sensor"],
     DreameVacuumAction.START_AUTO_EMPTY: ["start_auto_empty", "Start Auto Empty"],
-    DreameVacuumAction.RESET_MOP: ["reset_mop", "Reset Mop"],
+    DreameVacuumAction.RESET_MOP_PAD: ["reset_mop_pad", "Reset Mop Pad"],
     DreameVacuumAction.RESET_SILVER_ION: ["reset_silver_ion", "Reset Silver-ion"],
 }
 

@@ -1004,7 +1004,7 @@ class DreameVacuumDevice:
         elif action is DreameVacuumAction.RESET_SENSOR:
             self._consumable_reset = True
             self._update_property(DreameVacuumProperty.SENSOR_DIRTY_LEFT, 100)
-        elif action is DreameVacuumAction.RESET_MOP:
+        elif action is DreameVacuumAction.RESET_MOP_PAD:
             self._consumable_reset = True
             self._update_property(DreameVacuumProperty.MOP_PAD_LEFT, 100)
         elif action is DreameVacuumAction.RESET_SILVER_ION:
