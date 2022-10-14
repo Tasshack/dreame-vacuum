@@ -260,7 +260,7 @@ class DreameMapVacuumMapManager:
                         if next_partial_map:
                             self._add_map_data(next_partial_map)
                         else:
-                            self._delete_invalid_queue_partial_map()
+                            self._delete_invalid_partial_maps()
                             if self._partial_map_queue_size() > 8:
                                 self.request_new_map()
 
@@ -1273,8 +1273,8 @@ class DreameMapVacuumMapEditor:
                 return
 
             if map_data and self._selected_map_id == map_id:
-                if len(self._map_list) > 1:
-                    self.set_current_map(self._map_list[-1])
+                if len(self.map_manager._map_list) > 1:
+                    self.set_current_map(self.map_manager._map_list[-1])
                 else:
                     self.map_manager._map_data = None
                     self._updated_frame_id = None

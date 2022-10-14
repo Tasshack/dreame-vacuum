@@ -1393,7 +1393,7 @@ class DreameVacuumDevice:
 
     def start_washing(self) -> dict[str, Any] | None:
         """Start washing the mop if self-wash base is present."""
-        if self.status_washing_paused:
+        if self.status.washing_paused:
             if self.info and self.info.version <= 1037:
                 return self.start()
             return self.start_self_wash_base("1,1")
