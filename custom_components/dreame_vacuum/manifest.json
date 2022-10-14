@@ -6,7 +6,6 @@
   "issue_tracker": "https://github.com/Tasshack/dreame-vacuum/issues",
   "codeowners": [ "@tasshack" ],
   "requirements": [
-    "voluptuous",
     "pillow",
     "numpy",
     "pybase64",
