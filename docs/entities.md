@@ -7,7 +7,7 @@
 - Most of the entities including the vacuum entity has dynamic icons for their state and can be overridden from entity settings.
 - Most of the sensor and all select entities returns their current raw integer value on `raw_value`, `map_id` or `segment_id` attributes for ease of use on automations and services.
 - All entities has dynamic refresh rate determined by its change range and device state. Integration only inform Home Assistant when a device property has changed trough listeners. This is more like a *local_push* type of approach instead of *local_pull* but please note that it may take time entity to reflect the changes when you edit related setting from the official App.
-- Some entities has custom availability rules for another specific entity or state. E.g. *tight_mopping* entity will become *unavailable* when water tank is not attached. (All off the rules extracted from the official App)
+- Some entities has custom availability rules for another specific entity or state. E.g. *tight_mopping* entity will become *unavailable* when water tank or mop pad is not attached. (All off the rules extracted from the official App)
 - Exposed cloud connected entities for all available settings that are stored not on the device but on specific map data itself. E.g. *map_rotation*
 - Generated entities have the following naming schema:
 
@@ -25,7 +25,7 @@
 | `obstacle_avoidance`   | Enable/Disable 3D obstacle avoidance | Available on vacuums with line laser
 | `customized_cleaning`   | Enable/Disable customized room cleaning | Available on devices with firmware above 1056
 | `child_lock`   | Enable/Disable child lock |
-| `tight_mopping`   | Enable/Disable tight mopping pattern | Available on devices with firmware above 1056 and unavailable and water tank is not installed. 
+| `tight_mopping`   | Enable/Disable tight mopping pattern | Available on devices with firmware above 1056 and unavailable and water tank or mop pad is not installed. 
 | `dnd`   | Enable/Disable do not disturb |
 | `multi_floor_map`   | Enable/Disable multi-floor map | Available on vacuums can store more than one map
 | `auto_dust_collecting`   | Enable/Disable automatic dust collecting when cleaning completed |  Available on vacuums with auto-empty station
@@ -43,13 +43,13 @@
 | Name  | Description  | Notes |
 | ----------------------- | -------------------- | -------------------- |
 | `cleaning_time`   | Cleaning duration of last/current cleaning job | Unavailable during fast mapping
-| `mapping_time`   | Mapping duration of current fast mapping job | Only available when robot is fast mapping the floor
+| `mapping_time`   | Mapping duration of current fast mapping job | Only available when robot is fast mapping
 | `cleaned_area`   | Cleaned area of last/current cleaning job | Unavailable during fast mapping
 | `state`   | State of the robot | This entity exposes robot states that are not present in the home assistant like *charging_completed*
 | `status`   | Status of the robot |
 | `relocation_status`   | Relocation status of the robot |
 | `task_status`   | Task status of the robot |
-| `water_tank`   | Water tank status of the robot | Available on vacuums without self-wash base
+| `water_tank`   | Water tank status of the robot | Available on vacuums with water tank
 | `mop_pad`   | Water mop pad status of the robot | Available on vacuums with self-wash base
 | `dust_collection`   | Dust collection is available, not available or not preformed due to do not disturb settings | Available on vacuums with auto-empty station
 | `auto_empty_status`   | Status of auto empty dock | Available on vacuums with auto-empty station
@@ -113,7 +113,7 @@
 | Name  | Description  | Notes |
 | ----------------------- | -------------------- | -------------------- |
 | `suction_level`   | Suction level of the vacuum | Unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning
-| `water_volume`   | Water volume of the vacuum | Available on vacuums without self-wash base and unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning.
+| `water_volume`   | Water volume of the vacuum | Available on vacuums with water tank and unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning.
 | `mop_pad_humidity`   | Humidity level of the mop pad | Available on vacuums with self-wash base and unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning.
 | `cleaning_mode`   | Cleaning mode of the vacuum. (Sweeping, Mopping, Mopping and Sweeping) | Unavailable during cleaning.<br> (Options are dynamically generated for vacuums with attachable water tank.)<br> *Only available on devices firmware above 1056.* 
 | `carpet_sensitivity`   | Carpet sensitivity of carpet boost feature | Unavailable when carpet boost is disabled
@@ -134,7 +134,7 @@
 | ----------------------- | -------------------- | -------------------- |
 | `name`   | Room name from predefined types or current custom name | Unavailable when room does not exists on current map
 | `suction_level`   | Suction level for the room | Unavailable if customized cleaning is disabled
-| `water_volume`   | Water volume for the room | Available on vacuums without self-wash base and unavailable if customized cleaning is disabled
+| `water_volume`   | Water volume for the room | Available on vacuums with water tank and unavailable if customized cleaning is disabled
 | `mop_pad_humidity`   | Humidity level of the mop pad for the room | Available on vacuums with self-wash base and unavailable if customized cleaning is disabled
 | `cleaning times`   | Cleaning times of the room | Unavailable when cleaning job is active or customized cleaning is disabled
 | `order`   | Cleaning order of the room | Unavailable when cleaning job is active or cleaning sequence is disabled
