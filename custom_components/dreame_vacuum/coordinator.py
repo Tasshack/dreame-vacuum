@@ -1,7 +1,6 @@
 """DataUpdateCoordinator for Dreame Vacuum."""
 from __future__ import annotations
 
-import traceback
 import math
 from homeassistant.components import persistent_notification
 from homeassistant.config_entries import ConfigEntry
