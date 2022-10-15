@@ -8,6 +8,7 @@ import json
 import re
 import zlib
 import logging
+import traceback
 import copy
 import numpy as np
 from PIL import Image, ImageDraw, ImageOps, ImageFont, ImageEnhance, PngImagePlugin
@@ -935,7 +936,7 @@ class DreameMapVacuumMapManager:
                 self._map_data_changed()
         except Exception as ex:
             if self._available:
-                _LOGGER.warning("Map update Failed: %s", ex)
+                _LOGGER.warning("Map update Failed: %s", traceback.format_exc())
                 self._available = False
                 if self._error_callback:
                     self._error_callback(DeviceUpdateFailedException(ex))

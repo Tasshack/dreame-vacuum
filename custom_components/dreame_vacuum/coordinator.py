@@ -226,7 +226,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             self.async_set_updated_data()
             return self.device
         except Exception as ex:
-            LOGGER.error("Update failed: %s", ex)
+            LOGGER.error("Update failed: %s", traceback.format_exc())
             raise UpdateFailed(ex) from ex
 
     @callback
