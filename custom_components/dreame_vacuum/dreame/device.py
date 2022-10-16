@@ -2477,6 +2477,7 @@ class DreameVacuumDeviceStatus:
             or self.charging_status is DreameVacuumChargingStatus.CHARGING_COMPLETED
             or self.washing
             or self.drying
+            or self.washing_paused
         )
 
     @property
@@ -2541,7 +2542,7 @@ class DreameVacuumDeviceStatus:
         """Returns true when device is moving."""
         status = self.status
         return bool(
-            not self.charging
+            not self.docked
             and (
                 status is DreameVacuumStatus.CLEANING
                 or status is DreameVacuumStatus.BACK_HOME
