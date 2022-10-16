@@ -1784,8 +1784,6 @@ class DreameVacuumMapDecoder:
             unpadded_plaintext = unpadder.update(padded_plaintext)
             unpadded_plaintext += unpadder.finalize()            
             raw_map = base64.b64encode(unpadded_plaintext).decode('utf8')
-        else:
-            _LOGGER.info("Map Data: %s \n %s", raw_map, "KEYTEST")
 
         raw = zlib.decompress(base64.decodebytes(raw_map.encode("utf8")))
 
