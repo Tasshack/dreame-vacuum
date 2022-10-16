@@ -11,6 +11,7 @@ from .types import (
     DreameVacuumTaskStatus,
     DreameVacuumState,
     DreameVacuumSelfCleanArea,
+    DreameVacuumMopWashLevel,
     PROPERTY_AVAILABILITY,
     ACTION_AVAILABILITY,
 )

@@ -88,7 +88,7 @@
 | `dnd_end_minute`   | Do not disturb end minute (00:00 -> 00:XX) | Unavailable when do not disturb is disabled
 | `drying_time`   | Mop drying time in minutes | Available on vacuums with self-wash base
 | `auto_add_detergent`   | *Undocumented* | Available on S10 and S10 Pro
-| `carpet_clean`   | *Undocumented* | Available on S10 and S10 Pro
+| `carpet_cleaning_method_`   | *Undocumented* | Available on S10 and S10 Pro
 
 ## Button
 

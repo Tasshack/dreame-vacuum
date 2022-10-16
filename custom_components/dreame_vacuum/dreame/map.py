@@ -19,6 +19,11 @@ from typing import Optional, Tuple
 from functools import cmp_to_key
 from threading import Timer
 
+import hashlib
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+
 from .resources import *
 from .protocol import MiIODeviceProtocol, MiIOCloudProtocol
 from .exceptions import DeviceUpdateFailedException
@@ -246,11 +251,11 @@ class DreameMapVacuumMapManager:
                 timestamp = None
                 if object_name_result[0].get(MAP_PARAMETER_TIME):
                     timestamp = object_name_result[0][MAP_PARAMETER_TIME] * 1000
-                response = self._get_interim_file_data(
+                response, key = self._get_object_file_data(
                     object_name[0], timestamp)
                 if response:
                     partial_map = self._decode_map_partial(
-                        response.decode(), timestamp
+                        response.decode(), timestamp, key
                     )
                     if partial_map:
                         if self._map_data is None or partial_map.frame_type == MapFrameType.I.value:
@@ -521,6 +526,15 @@ class DreameMapVacuumMapManager:
 
         return len(self._map_data_queue[self._latest_map_id])
 
+    def _get_object_file_data(self, object_name: str = "", timestamp=None) -> Tuple[Any, Optional[str]]:
+        key = None
+        if object_name and "," in object_name:
+            values = object_name.split(",")
+            object_name = values[0]
+            key = values[1]
+        response = self._get_interim_file_data(object_name, timestamp)
+        return response, key
+
     def _get_interim_file_data(self, object_name: str = "", timestamp=None) -> str | None:
         if self._cloud_connection._logged_in:
             if object_name is None or object_name == "":
@@ -561,8 +575,8 @@ class DreameMapVacuumMapManager:
                 url = self._file_urls[object_name][MAP_PARAMETER_URL]
         return url
 
-    def _decode_map_partial(self, raw_map, timestamp=None) -> MapDataPartial | None:
-        partial_map = DreameVacuumMapDecoder.decode_map_partial(raw_map)
+    def _decode_map_partial(self, raw_map, timestamp=None, key=None) -> MapDataPartial | None:
+        partial_map = DreameVacuumMapDecoder.decode_map_partial(raw_map, key)
         if partial_map is not None:
             # After restart or unsuccessful start robot returns timestamp_ms as uptime and that messes up with the latest map/frame id detection.
             # I could not figure out how app handles with this issue but i have added this code to update time stamp as request/object time.
@@ -583,12 +597,12 @@ class DreameMapVacuumMapManager:
         return partial_map
 
     def _add_map_data_file(self, object_name: str, timestamp) -> None:
-        response = self._get_interim_file_data(object_name, timestamp)
+        response, key = self._get_object_file_data(object_name, timestamp)
         if response is not None:
-            self._add_raw_map_data(response.decode(), timestamp)
+            self._add_raw_map_data(response.decode(), timestamp, key=None)
 
-    def _add_raw_map_data(self, raw_map: str, timestamp=None) -> bool:
-        return self._add_map_data(self._decode_map_partial(raw_map, timestamp))
+    def _add_raw_map_data(self, raw_map: str, timestamp=None, key=None) -> bool:
+        return self._add_map_data(self._decode_map_partial(raw_map, timestamp, key))
 
     def _add_map_data(self, partial_map: MapDataPartial) -> None:
         if partial_map is not None:
@@ -1753,12 +1767,27 @@ class DreameVacuumMapDecoder:
         return None
 
     @staticmethod
-    def decode_map_partial(raw_map) -> MapDataPartial | None:
-        raw = zlib.decompress(
-            base64.decodebytes(
-                raw_map.replace("_", "/").replace("-", "+").encode("utf8")
-            )
-        )
+    def decode_map_partial(raw_map, key=None) -> MapDataPartial | None:
+        raw_map = raw_map.replace("_", "/").replace("-", "+")
+
+        if key is not None:
+            _LOGGER.info("Encrypted Map Data: %s \n %s", raw_map, key)
+
+            sha256Str = hashlib.sha256(key.encode()).digest()
+            aesKey = str(sha256Str[0:32])
+            aes_key = aesKey.encode('utf-8')
+            iv =  '6PFiLPYMHLylp7RR'.encode('utf-8')
+            cipher = Cipher(algorithms.AES(aes_key), modes.CBC(iv), backend=default_backend())
+            decryptor = cipher.decryptor()
+            padded_plaintext = decryptor.update(raw_map) + decryptor.finalize()
+            unpadder = padding.PKCS7(128).unpadder()
+            unpadded_plaintext = unpadder.update(padded_plaintext)
+            unpadded_plaintext += unpadder.finalize()            
+            raw_map = base64.b64encode(unpadded_plaintext).decode('utf8')
+        else:
+            _LOGGER.info("Map Data: %s \n %s", raw_map, "KEYTEST")
+
+        raw = zlib.decompress(base64.decodebytes(raw_map.encode("utf8")))
 
         if not raw or len(raw) < DreameVacuumMapDecoder.HEADER_SIZE:
             _LOGGER.error("Wrong header size for map")

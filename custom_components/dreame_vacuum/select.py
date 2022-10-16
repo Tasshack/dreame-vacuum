@@ -45,6 +45,7 @@ from .dreame import (
     DreameVacuumSelfCleanArea,
     DreameVacuumMopPadHumidity,
     DreameVacuumCarpetSensitivity,
+    DreameVacuumMopWashLevel,
     SUCTION_LEVEL_CODE_TO_NAME,
     WATER_VOLUME_CODE_TO_NAME,
     MOP_PAD_HUMIDITY_CODE_TO_NAME,
@@ -136,6 +137,14 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
         value_fn=lambda value, device: f"{value}{UNIT_TIMES}",
         value_int_fn=lambda value, device: int(value[0]),
+    ),
+    DreameVacuumSelectEntityDescription(
+        property_key=DreameVacuumProperty.MOP_WASH_LEVEL,
+        device_class=f"{DOMAIN}__mop_wash_level",
+        icon="mdi:water-opacity",
+        options=lambda device, segment: list(device.status.mop_wash_level_list),
+        value_int_fn=lambda value, device: DreameVacuumMopWashLevel[value.upper()],
+        entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSelectEntityDescription(
         key="mop_pad_humidity",

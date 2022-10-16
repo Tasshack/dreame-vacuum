@@ -96,6 +96,16 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumProperty.WATER_ELECTROLYSIS,
+        icon="mdi:lightning-bolt",
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumProperty.AUTO_WATER_REFILLING,
+        icon="mdi:water-boiler-auto",
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
         key="cleaning_sequence",
         icon="mdi:order-numeric-ascending",
         value_fn=lambda value, device: device.status.custom_order,
