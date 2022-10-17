@@ -601,7 +601,7 @@ class DreameMapVacuumMapManager:
     def _add_map_data_file(self, object_name: str, timestamp) -> None:
         response, key = self._get_object_file_data(object_name, timestamp)
         if response is not None:
-            self._add_raw_map_data(response.decode(), timestamp, key=None)
+            self._add_raw_map_data(response.decode(), timestamp, key)
 
     def _add_raw_map_data(self, raw_map: str, timestamp=None, key=None) -> bool:
         return self._add_map_data(self._decode_map_partial(raw_map, timestamp, key))
