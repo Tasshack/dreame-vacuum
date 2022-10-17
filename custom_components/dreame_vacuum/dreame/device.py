@@ -2032,7 +2032,7 @@ class DreameVacuumDeviceStatus:
         if self.self_wash_base_available:
             values = DreameVacuumDevice.split_group_value(value, self.sweeping_with_mop_pad_available)
             if values and len(values) == 3:
-                if not self.status.sweeping_with_mop_pad_available:
+                if not self.sweeping_with_mop_pad_available:
                     if not self.water_tank_installed:
                         return DreameVacuumCleaningMode.SWEEPING
                     if values[0] == 1:

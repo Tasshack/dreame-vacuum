@@ -554,7 +554,7 @@ class DreameMapVacuumMapManager:
 
             url = self._get_interim_file_url(object_name)
             if url:
-                _LOGGER.debug("Request map data from cloud %s", object_name)
+                _LOGGER.info("Request map data from cloud %s", url)
                 response = self._cloud_connection.get_file(url)
                 if response is not None:
                     return response
@@ -1018,6 +1018,7 @@ class DreameMapVacuumMapManager:
 
     def request_map_list(self) -> None:
         if self._map_list_object_name:
+            return
             _LOGGER.info("Get Map List: %s", self._map_list_object_name)
             response = self._get_interim_file_data(self._map_list_object_name)
             if response:
@@ -1778,8 +1779,6 @@ class DreameVacuumMapDecoder:
             raw_map = values[0]
 
         if key is not None:
-            _LOGGER.info("Encrypted Map Data: %s \n %s", raw_map, key)
-
             sha256Str = hashlib.sha256(key.encode()).digest()
             aesKey = str(sha256Str[0:32])
             aes_key = aesKey.encode('utf-8')
