@@ -2624,7 +2624,7 @@ class DreameVacuumDeviceStatus:
     @property
     def sweeping_with_mop_pad_available(self) -> bool:
         """Returns true when device has capability to only sweep while mop pad is attached."""
-        return bool(self.self_wash_base_available and self.get_property(DreameVacuumProperty.DUST_COLLECTION) is not None)
+        return bool(self.self_wash_base_available and self._get_property(DreameVacuumProperty.DUST_COLLECTION) is not None)
     
     @property
     def ai_detection_available(self) -> bool:

@@ -54,6 +54,7 @@ SUPPORTED_MODELS = [
     "dreame.vacuum.p2187",
     "dreame.vacuum.r2228o",
     "dreame.vacuum.r2215o",
+    "dreame.vacuum.p2157",
     #"dreame.vacuum.p2009",
 ]
 

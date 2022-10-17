@@ -332,6 +332,8 @@ class DreameMapVacuumMapManager:
                                 raw_map_data = values[1]
                             else:
                                 object_name = values[1]
+                                if len(values) == 3:
+                                    object_name = f'{object_name},{values[2]}'
 
             if has_map:
                 self._latest_object_name_time = int(
@@ -1769,6 +1771,11 @@ class DreameVacuumMapDecoder:
     @staticmethod
     def decode_map_partial(raw_map, key=None) -> MapDataPartial | None:
         raw_map = raw_map.replace("_", "/").replace("-", "+")
+
+        if "," in raw_map and key is None:
+            values = raw_map.split(",")
+            key = values[1]
+            raw_map = values[0]
 
         if key is not None:
             _LOGGER.info("Encrypted Map Data: %s \n %s", raw_map, key)
