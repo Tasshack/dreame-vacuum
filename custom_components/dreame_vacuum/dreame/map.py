@@ -11,6 +11,9 @@ import logging
 import traceback
 import copy
 import numpy as np
+import hashlib
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from PIL import Image, ImageDraw, ImageOps, ImageFont, ImageEnhance, PngImagePlugin
 from typing import Any
 from time import sleep
@@ -18,12 +21,6 @@ from io import BytesIO
 from typing import Optional, Tuple
 from functools import cmp_to_key
 from threading import Timer
-
-import hashlib
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import padding
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-
 from .resources import *
 from .protocol import MiIODeviceProtocol, MiIOCloudProtocol
 from .exceptions import DeviceUpdateFailedException
@@ -73,6 +70,7 @@ from .const import (
     MAP_REQUEST_PARAMETER_FORCE_TYPE,
     MAP_REQUEST_PARAMETER_TYPE,
     MAP_REQUEST_PARAMETER_INDEX,
+    MAP_REQUEST_PARAMETER_ROOM_ID,
     MAP_DATA_PARAMETER_CLASS,
     MAP_DATA_PARAMETER_SIZE,
     MAP_DATA_PARAMETER_X,
@@ -554,7 +552,7 @@ class DreameMapVacuumMapManager:
 
             url = self._get_interim_file_url(object_name)
             if url:
-                _LOGGER.info("Request map data from cloud %s", url)
+                _LOGGER.debug("Request map data from cloud %s", url)
                 response = self._cloud_connection.get_file(url)
                 if response is not None:
                     return response
@@ -667,7 +665,7 @@ class DreameMapVacuumMapManager:
                     )
                     # self._add_next_map_data()
                     return
-
+                
             if partial_map.frame_type == MapFrameType.P.value:
                 if (
                     self._current_frame_id is not None
@@ -913,9 +911,9 @@ class DreameMapVacuumMapManager:
             if self._map_list_object_name and self._need_map_list_request is None or (self._need_map_list_request and not self._device_running):
                 self.request_map_list()
 
-            # Not supported Yet
-            # if self._recovery_map_list_object_name and self._need_recovery_map_list_request is None or (self._need_recovery_map_list_request and not self._device_running):
-            #    self.request_recovery_map_list()
+             # Not supported Yet
+             # if self._recovery_map_list_object_name and self._need_recovery_map_list_request is None or (self._need_recovery_map_list_request and not self._device_running):
+             #    self.request_recovery_map_list()
 
             if self._map_request_time is not None or self._need_map_request:
                 self._map_request_count = self._map_request_count + 1
@@ -1018,7 +1016,6 @@ class DreameMapVacuumMapManager:
 
     def request_map_list(self) -> None:
         if self._map_list_object_name:
-            return
             _LOGGER.info("Get Map List: %s", self._map_list_object_name)
             response = self._get_interim_file_data(self._map_list_object_name)
             if response:
@@ -1555,6 +1552,9 @@ class DreameMapVacuumMapEditor:
                                            MAP_REQUEST_PARAMETER_INDEX: map_data.segments[k].index}
                     else:
                         segment_info[k] = {}
+                        
+                    if map_data.segments[k].unique_id:
+                        segment_info[k][MAP_REQUEST_PARAMETER_ROOM_ID] = map_data.segments[k].unique_id
 
                 self._set_updated_frame_id(map_data.frame_id)
                 self.refresh_map()
@@ -1674,7 +1674,7 @@ class DreameVacuumMapDecoder:
             blen = len(r2.neighbors)
 
         if alen == blen:
-            return r1.room_id - r2.room_id
+            return r1.segment_id - r2.segment_id
 
         return blen - alen
 
@@ -1778,38 +1778,34 @@ class DreameVacuumMapDecoder:
             key = values[1]
             raw_map = values[0]
 
+        raw_map = base64.decodebytes(raw_map.encode("utf8"))                           
+
         if key is not None:
-            sha256Str = hashlib.sha256(key.encode()).digest()
-            aesKey = str(sha256Str[0:32])
-            aes_key = aesKey.encode('utf-8')
-            iv =  '6PFiLPYMHLylp7RR'.encode('utf-8')
-            cipher = Cipher(algorithms.AES(aes_key), modes.CBC(iv), backend=default_backend())
+            cipher = Cipher(algorithms.AES(hashlib.sha256(key.encode()).hexdigest()[0:32].encode('utf8')), modes.CBC('6PFiLPYMHLylp7RR'.encode('utf8')), backend=default_backend())
             decryptor = cipher.decryptor()
-            padded_plaintext = decryptor.update(raw_map) + decryptor.finalize()
-            unpadder = padding.PKCS7(128).unpadder()
-            unpadded_plaintext = unpadder.update(padded_plaintext)
-            unpadded_plaintext += unpadder.finalize()            
-            raw_map = base64.b64encode(unpadded_plaintext).decode('utf8')
-
-        raw = zlib.decompress(base64.decodebytes(raw_map.encode("utf8")))
-
-        if not raw or len(raw) < DreameVacuumMapDecoder.HEADER_SIZE:
-            _LOGGER.error("Wrong header size for map")
-            return
-
+            raw_map = decryptor.update(raw_map) + decryptor.finalize()
+        
+        try:
+            raw_map = zlib.decompress(raw_map)
+            if not raw_map or len(raw_map) < DreameVacuumMapDecoder.HEADER_SIZE:
+                _LOGGER.error("Wrong header size for map")
+                return
+        except Exception as ex:
+            _LOGGER.error("Map data decompression failed: %s", ex)
+            pass
+        
         partial_map = MapDataPartial()
-        partial_map.map_id = DreameVacuumMapDecoder._read_int_16_le(raw)
-        partial_map.frame_id = DreameVacuumMapDecoder._read_int_16_le(raw, 2)
-        partial_map.frame_type = DreameVacuumMapDecoder._read_int_8(raw, 4)
-        partial_map.raw = raw
-
+        partial_map.map_id = DreameVacuumMapDecoder._read_int_16_le(raw_map)
+        partial_map.frame_id = DreameVacuumMapDecoder._read_int_16_le(raw_map, 2)
+        partial_map.frame_type = DreameVacuumMapDecoder._read_int_8(raw_map, 4)
+        partial_map.raw = raw_map
         image_size = DreameVacuumMapDecoder.HEADER_SIZE + (
-            DreameVacuumMapDecoder._read_int_16_le(raw, 19)
-            * DreameVacuumMapDecoder._read_int_16_le(raw, 21)
+            DreameVacuumMapDecoder._read_int_16_le(raw_map, 19)
+            * DreameVacuumMapDecoder._read_int_16_le(raw_map, 21)
         )
-        if len(raw) >= image_size:
+        if len(raw_map) >= image_size:
             try:
-                data_json = json.loads(raw[image_size:].decode("utf8"))
+                data_json = json.loads(raw_map[image_size:].decode("utf8"))
                 if data_json.get("timestamp_ms"):
                     partial_map.timestamp_ms = int(data_json["timestamp_ms"])
 
@@ -1865,6 +1861,8 @@ class DreameVacuumMapDecoder:
         data_json = partial_map.data_json
         if data_json is None:
             data_json = {}
+
+        _LOGGER.debug("Map Data Json: %s", data_json)
 
         map_data.rotation = rotation
         if "mra" in data_json:
@@ -2059,6 +2057,8 @@ class DreameVacuumMapDecoder:
                                     segments[k].type = segment_info["type"]
                                 if segment_info.get("index"):
                                     segments[k].index = segment_info["index"]
+                                if segment_info.get("roomID"):
+                                    segments[k].unique_id = segment_info["roomID"]
                                 if segment_info.get(MAP_PARAMETER_NAME):
                                     segments[k].custom_name = base64.b64decode(
                                         segment_info.get(MAP_PARAMETER_NAME)
@@ -2100,6 +2100,7 @@ class DreameVacuumMapDecoder:
                                 map_data.segments[k].custom_name = v.custom_name
                                 map_data.segments[k].type = v.type
                                 map_data.segments[k].index = v.index
+                                map_data.segments[k].unique_id = v.unique_id
                                 map_data.segments[k].neighbors = v.neighbors
                                 if map_data.saved_map_status == 2:
                                     map_data.segments[k].x = v.x
@@ -2458,11 +2459,11 @@ class DreameVacuumMapDecoder:
             for area_color in area_color_num:
                 color = area_color[0]
                 if color not in used_ids:
-                    area_color_index[segment.room_id] = color
+                    area_color_index[segment.segment_id] = color
                     break
 
-            if segment.room_id not in area_color_index:
-                area_color_index[segment.room_id] = 0
+            if segment.segment_id not in area_color_index:
+                area_color_index[segment.segment_id] = 0
 
         for i in area_color_index:
             map_data.segments[i].color_index = area_color_index[i]

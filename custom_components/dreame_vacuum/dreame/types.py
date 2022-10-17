@@ -74,6 +74,7 @@ ATTR_ACTIVE_SEGMENTS: Final = "active_segments"
 ATTR_FRAME_ID: Final = "frame_id"
 ATTR_MAP_INDEX: Final = "map_index"
 ATTR_ROOM_ID: Final = "room_id"
+ATTR_UNIQUE_ID: Final = "unique_id"
 ATTR_NAME: Final = "name"
 ATTR_OUTLINE: Final = "outline"
 ATTR_CENTER: Final = "center"
@@ -752,7 +753,7 @@ class Zone:
 class Segment(Zone):
     def __init__(
         self,
-        room_id: int,
+        segment_id: int,
         x0: Optional[float] = None,
         y0: Optional[float] = None,
         x1: Optional[float] = None,
@@ -771,7 +772,8 @@ class Segment(Zone):
         order: int = None,
     ) -> None:
         super().__init__(x0, y0, x1, y1)
-        self.room_id = room_id
+        self.segment_id = segment_id
+        self.unique_id = None
         self.x = x
         self.y = y
         self.name = name
@@ -807,17 +809,17 @@ class Segment(Zone):
             if self.index > 0:
                 self.name = f"{self.name} {self.index + 1}"
         else:
-            self.name = f"Room {self.room_id}"
+            self.name = f"Room {self.segment_id}"
         self.icon = SEGMENT_TYPE_CODE_TO_HA_ICON[self.type]
 
     def next_type_index(self, type, segments) -> int:
         index = 0
         if type > 0:
-            for room_id in sorted(segments, key=lambda room_id: segments[room_id].index):
+            for segment_id in sorted(segments, key=lambda segment_id: segments[segment_id].index):
                 if (
-                    room_id != self.room_id
-                    and segments[room_id].type == type
-                    and segments[room_id].index == index
+                    segment_id != self.segment_id
+                    and segments[segment_id].type == type
+                    and segments[segment_id].index == index
                 ):
                     index = index + 1
         return index
@@ -829,7 +831,7 @@ class Segment(Zone):
             if index > 0:
                 list[k] = f"{v} {index + 1}"
 
-        name = f"Room {self.room_id}"
+        name = f"Room {self.segment_id}"
         if self.type == 0:
             name = f"{self.name}"
         list[0] = name
@@ -841,8 +843,8 @@ class Segment(Zone):
     def as_dict(self) -> Dict[str, Any]:
         attributes = {**super(Segment, self).as_dict()}
         #attributes[ATTR_OUTLINE] = self.outline
-        if self.room_id:
-            attributes[ATTR_ROOM_ID] = self.room_id
+        if self.segment_id:
+            attributes[ATTR_ROOM_ID] = self.segment_id
         if self.name is not None:
             attributes[ATTR_NAME] = self.name
         if self.order is not None:
@@ -861,6 +863,8 @@ class Segment(Zone):
             #attributes[ATTR_ICON] = self.icon
         if self.color_index is not None:
             attributes[ATTR_COLOR_INDEX] = self.color_index
+        if self.unique_id is not None:
+            attributes[ATTR_UNIQUE_ID] = self.unique_id
         if self.x is not None and self.y is not None:
             #attributes[ATTR_CENTER] = self.center
             attributes[ATTR_X] = self.x
@@ -891,7 +895,7 @@ class Segment(Zone):
         )
 
     def __str__(self) -> str:
-        return f"{{room_id: {self.room_id}, outline: {self.outline}}}"
+        return f"{{room_id: {self.segment_id}, outline: {self.outline}}}"
 
     def __repr__(self) -> str:
         return self.__str__()

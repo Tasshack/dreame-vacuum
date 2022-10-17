@@ -1118,7 +1118,12 @@ class DreameVacuumDevice:
                 if not self.status.sweeping_with_mop_pad_available and cleaning_mode == 2:
                     values[0] = 0
                 else:
-                    values[0] = cleaning_mode
+                    if cleaning_mode == 2:
+                        values[0] = 0
+                    elif cleaning_mode == 0:
+                        values[0] = 2
+                    else:
+                        values[0] = cleaning_mode
                 cleaning_mode = DreameVacuumDevice.combine_group_value(values)
         
         return self.set_property(DreameVacuumProperty.CLEANING_MODE, int(cleaning_mode))
@@ -1595,7 +1600,7 @@ class DreameVacuumDevice:
             self._property_changed()
             self._last_map_request = time.time()
             self._map_manager.schedule_update(10)
-
+            
         response = self.call_action(
             DreameVacuumAction.UPDATE_MAP_DATA,
             [
@@ -1843,7 +1848,8 @@ class DreameVacuumDevice:
             segment_info = self._map_manager.editor.set_segment_name(
                 segment_id, segment_type, custom_name
             )
-            return self.update_map_data({"nsr": segment_info})
+            if segment_info:
+                return self.update_map_data({"nsr": segment_info})
 
     def set_segment_order(self, segment_id: int, order: int) -> dict[str, Any] | None:
         """Update cleaning order of a segment on current map"""
@@ -2039,6 +2045,10 @@ class DreameVacuumDeviceStatus:
                         return DreameVacuumCleaningMode.MOPPING
                     return DreameVacuumCleaningMode.MOPPING_AND_SWEEPING
                 else:
+                    if values[0] == 2:
+                        return DreameVacuumCleaningMode.SWEEPING
+                    if values[0] == 0:
+                        return DreameVacuumCleaningMode.MOPPING_AND_SWEEPING
                     value = values[0]
 
         if value is not None and value in DreameVacuumCleaningMode._value2member_map_:
@@ -2624,7 +2634,7 @@ class DreameVacuumDeviceStatus:
     @property
     def sweeping_with_mop_pad_available(self) -> bool:
         """Returns true when device has capability to only sweep while mop pad is attached."""
-        return bool(self.self_wash_base_available and self._get_property(DreameVacuumProperty.DUST_COLLECTION) is not None)
+        return bool(self.self_wash_base_available and self.get_property(DreameVacuumProperty.DUST_COLLECTION) is not None)
     
     @property
     def ai_detection_available(self) -> bool:
@@ -2956,7 +2966,7 @@ class DreameVacuumDeviceStatus:
         segments = self.segments
         if self.segments:
             attributes[ATTR_ROOMS] = [
-                {ATTR_ID: v.room_id, ATTR_NAME: v.name, ATTR_ICON: v.icon}
+                {ATTR_ID: v.segment_id, ATTR_NAME: v.name, ATTR_ICON: v.icon}
                 for k, v in sorted(segments.items())
             ]
 
