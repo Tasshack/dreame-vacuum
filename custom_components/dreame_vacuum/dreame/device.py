@@ -1439,12 +1439,12 @@ class DreameVacuumDevice:
                 return self.pause()
             return self.start_self_wash_base("1,0")
 
-    def start_dring(self) -> dict[str, Any] | None:
+    def start_drying(self) -> dict[str, Any] | None:
         """Start drying the mop if self-wash base is present."""
         if self.status.drying_available and not self.status.drying:
             return self.start_self_wash_base("3,1")
 
-    def stop_dring(self) -> dict[str, Any] | None:
+    def stop_drying(self) -> dict[str, Any] | None:
         """Stop drying the mop if self-wash base is present."""
         if self.status.drying_available and self.status.drying:
             return self.start_self_wash_base("3,0")
@@ -2318,13 +2318,13 @@ class DreameVacuumDeviceStatus:
         """Device status for robot icon rendering."""
         if self.running and not self.returning and not self.fast_mapping:
             return 1
+        elif self.charging:
+            return 2
         elif self.has_error or self.has_warning:
             if self.sleeping:
                 return 5
             else:
                 return 3
-        elif self.charging:
-            return 2
         elif self.sleeping:
             if self.self_wash_base_available and (
                 self.washing
