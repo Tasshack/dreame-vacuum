@@ -20,7 +20,7 @@ from .const import DOMAIN
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription
-from .dreame import DreameVacuumProperty, DreameVacuumAction
+from .dreame import DreameVacuumAction
 
 
 @dataclass
@@ -97,7 +97,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         else "mdi:delete-empty",
         exists_fn=lambda description, device: bool(
             DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.get_property(DreameVacuumProperty.DUST_COLLECTION)
+            and device.status.auto_empty_available
             is not None
         ),
     ),

@@ -908,7 +908,7 @@ class DreameMapVacuumMapManager:
 
         _LOGGER.debug("Map update: %s", self._update_interval)
         try:
-            if self._map_list_object_name and self._need_map_list_request is None or (self._need_map_list_request and not self._device_running):
+            if (self._map_list_object_name and self._need_map_list_request is None) or (self._need_map_list_request and not self._device_running):
                 self.request_map_list()
 
              # Not supported Yet
@@ -3681,11 +3681,11 @@ class DreameVacuumMapRenderer:
                 if self.color_scheme is 2:
                     icon_bg = (200, 200, 200, 200)
                     text_color = MAP_COLOR_BLACK
-                    text_stroke = (0, 0, 0, 200)
+                    text_stroke = (0, 0, 0, 100)
                 else:
                     icon_bg = (0, 0, 0, 100)
                     text_color = MAP_COLOR_WHITE
-                    text_stroke = (255, 255, 255, 200)
+                    text_stroke = (255, 255, 255, 100)
 
                 text = None
                 if segment.type == 0:
@@ -3699,11 +3699,11 @@ class DreameVacuumMapRenderer:
                 if text:
                     text_font = ImageFont.truetype(
                         BytesIO(self.font_file),
-                        (scale * 18) if segment.index > 0 else (scale * 14),
+                        (scale * 19) if segment.index > 0 else (scale * 17),
                     )
                 if segment.order:
                     order_font = ImageFont.truetype(
-                        BytesIO(self.font_file), (scale * 20)
+                        BytesIO(self.font_file), (scale * 21)
                     )
 
                 p = Point(segment.x, segment.y).to_img(dimensions)
@@ -3727,13 +3727,13 @@ class DreameVacuumMapRenderer:
                             padding = icon_size / 2
                             text_offset = (icon_size / 2) + 2
                             icon_offset = 2
-                            th = scale * 26
+                            th = scale * 23
                         else:
                             icon_size = size * 1.15
                             padding = icon_size / 4
                             icon_offset = padding - 2
                             text_offset = icon_size / 2
-                            th = scale * 20
+                            th = scale * 19
 
                         if rotation == 90 or rotation == 270:
                             y0 = y0 - ws - padding
@@ -3885,13 +3885,13 @@ class DreameVacuumMapRenderer:
                         icon_draw.text(
                             (
                                 (icon_h - tw) / 2 + margin,
-                                (icon_h - th - (6 * scale)) / 2,
+                                (icon_h - th - (4 * scale)) / 2,
                             ),
                             text,
                             font=order_font,
                             fill=MAP_COLOR_WHITE,
                             stroke_width=1,
-                            stroke_fill=MAP_COLOR_WHITE,
+                            stroke_fill=text_stroke,
                         )
 
                     if custom:

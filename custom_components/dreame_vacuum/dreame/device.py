@@ -1,5 +1,6 @@
 from __future__ import annotations
 from datetime import datetime
+from distutils.command.clean import clean
 import logging
 import time
 import json
@@ -1318,36 +1319,42 @@ class DreameVacuumDevice:
         custom_order = self.get_property(DreameVacuumProperty.CLEANING_MODE) is not None and self.status.custom_order
 
         for segment_id in selected_segments:
-            if isinstance(cleaning_times, list):
+            if not cleaning_times:
+                if (
+                    segments and segment_id in segments and self.status.customized_cleaning
+                ):
+                    repeat = segments[segment_id].cleaning_times
+                else:
+                    repeat = 1
+            elif isinstance(cleaning_times, list):
                 repeat = cleaning_times[index]
-            elif (
-                segments and segment_id in segments and self.status.customized_cleaning
-            ):
-                repeat = segments[segment_id].cleaning_times
             else:
                 repeat = cleaning_times
 
-            if isinstance(suction_level, list):
+            if not suction_level:
+                if (
+                    segments and segment_id in segments and self.status.customized_cleaning
+                ):
+                    fan = segments[segment_id].suction_level
+                else:
+                    fan = 1
+            elif isinstance(suction_level, list):
                 fan = suction_level[index]
-            elif (
-                segments and segment_id in segments and self.status.customized_cleaning
-            ):
-                fan = segments[segment_id].suction_level
             else:
                 fan = suction_level
 
-            if isinstance(water_volume, list):
-                water = water_volume[index]
-            elif (
-                segments and segment_id in segments and self.status.customized_cleaning
-            ):
-                if self.status.self_wash_base_available:
-                    water = segments[segment_id].mop_pad_humidity
+            if not water_volume:
+                if (
+                    segments and segment_id in segments and self.status.customized_cleaning
+                ):
+                    water = segments[segment_id].water_volume
                 else:
-                    water = segments[segment_id].water_volume                
+                    water = 1
+            elif isinstance(water_volume, list):
+                water = water_volume[index]
             else:
                 water = water_volume
-
+                
             cleanlist.append(
                 [segment_id, repeat, fan, water,
                     1 if custom_order else (index + 1)]
@@ -2353,9 +2360,14 @@ class DreameVacuumDeviceStatus:
         )
 
     @property
-    def dust_collection_available(self) -> bool:
+    def dust_collection_available(self) -> bool:        
         """Returns true when robot is docked and can start auto emptying."""
         return bool(self._get_property(DreameVacuumProperty.DUST_COLLECTION))
+
+    @property
+    def auto_empty_base_available(self) -> bool:        
+        """Returns true is robot has auto-empty station."""
+        return bool(self._get_property(DreameVacuumProperty.DUST_COLLECTION) is not None)
 
     @property
     def self_clean(self) -> bool:
@@ -2634,7 +2646,7 @@ class DreameVacuumDeviceStatus:
     @property
     def sweeping_with_mop_pad_available(self) -> bool:
         """Returns true when device has capability to only sweep while mop pad is attached."""
-        return bool(self.self_wash_base_available and self.get_property(DreameVacuumProperty.DUST_COLLECTION) is not None)
+        return bool(self.self_wash_base_available and self.auto_empty_base_available)
     
     @property
     def ai_detection_available(self) -> bool:
