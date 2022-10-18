@@ -273,7 +273,6 @@ class DreameMapVacuumMapManager:
     def _request_map(self, parameters: dict[str, Any] = None) -> dict[str, Any] | None:
         if parameters is None:
             parameters = {
-                MAP_REQUEST_PARAMETER_REQ_TYPE: 1,
                 MAP_REQUEST_PARAMETER_FRAME_TYPE: MapFrameType.I.name,
             }
 
@@ -970,6 +969,7 @@ class DreameMapVacuumMapManager:
     def request_new_map(self) -> None:
         if self._new_map_request_time and time.time() - self._new_map_request_time < 10:
             if time.time() - self._new_map_request_time > 2:
+                self._new_map_request_time = time.time()
                 self._request_map_from_cloud()
             return
 
@@ -1021,7 +1021,13 @@ class DreameMapVacuumMapManager:
             if response:
                 self._need_map_list_request = False
                 raw_map = response.decode()
-                map_info = json.loads(raw_map)
+                
+                try:
+                    map_info = json.loads(raw_map)
+                except:
+                    _LOGGER.warn("Get Map List failed")
+                    return
+
                 saved_map_list = map_info[MAP_PARAMETER_MAPSTR]
                 changed = False
                 now = time.time()
