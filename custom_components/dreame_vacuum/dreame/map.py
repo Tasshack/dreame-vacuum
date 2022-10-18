@@ -956,6 +956,10 @@ class DreameMapVacuumMapManager:
         self._ready = True
         self._update_running = False
 
+    def set_aes_iv(self, aes_iv: str) -> None:
+        if aes_iv:
+            DreameVacuumMapDecoder.AES_IV = aes_iv
+
     def set_update_interval(self, update_interval: float) -> None:
         if self._update_interval != update_interval:
             self._update_interval = update_interval
@@ -1649,6 +1653,7 @@ class DreameMapVacuumMapEditor:
 
 class DreameVacuumMapDecoder:
     HEADER_SIZE = 27
+    AES_IV = ""
 
     @staticmethod
     def _read_int_8(data: bytes, offset: int = 0) -> int:
@@ -1787,18 +1792,24 @@ class DreameVacuumMapDecoder:
         raw_map = base64.decodebytes(raw_map.encode("utf8"))                           
 
         if key is not None:
-            cipher = Cipher(algorithms.AES(hashlib.sha256(key.encode()).hexdigest()[0:32].encode('utf8')), modes.CBC('6PFiLPYMHLylp7RR'.encode('utf8')), backend=default_backend())
-            decryptor = cipher.decryptor()
-            raw_map = decryptor.update(raw_map) + decryptor.finalize()
+            try:
+                key = hashlib.sha256(key.encode()).hexdigest()[0:32].encode('utf8')
+                iv = DreameVacuumMapDecoder.AES_IV.encode('utf8')
+                cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
+                decryptor = cipher.decryptor()
+                raw_map = decryptor.update(raw_map) + decryptor.finalize()
+            except Exception as ex:
+                _LOGGER.error("Map data decryption failed, private key might be missing. Please report this issue with your device model https://github.com/Tasshack/dreame-vacuum/issues: %s", ex)
+                return None
         
         try:
             raw_map = zlib.decompress(raw_map)
             if not raw_map or len(raw_map) < DreameVacuumMapDecoder.HEADER_SIZE:
                 _LOGGER.error("Wrong header size for map")
-                return
+                return None
         except Exception as ex:
             _LOGGER.error("Map data decompression failed: %s", ex)
-            pass
+            return None
         
         partial_map = MapDataPartial()
         partial_map.map_id = DreameVacuumMapDecoder._read_int_16_le(raw_map)

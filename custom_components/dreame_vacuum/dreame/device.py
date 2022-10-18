@@ -61,6 +61,7 @@ from .const import (
     MOP_WASH_LEVEL_TO_NAME,
     ERROR_CODE_TO_IMAGE_INDEX,
     PROPERTY_TO_NAME,
+    DEVICE_MAP_KEY,
     AI_SETTING_SWITCH,
     AI_SETTING_PICTURE,
     AI_SETTING_PET,
@@ -625,6 +626,12 @@ class DreameVacuumDevice:
 
         if self.device_connected and self._cloud_connection is not None and (not self._ready or not self.available):
             if self._map_manager:
+                model = self.info.model.split('.')
+                if len(model) == 3:
+                    key = DEVICE_MAP_KEY.get(model[2])
+                    if key:
+                        self._map_manager.set_aes_iv(key)
+
                 self._map_manager.set_update_interval(
                     self._map_update_interval)
                 self._map_manager.set_device_running(self.status.running)

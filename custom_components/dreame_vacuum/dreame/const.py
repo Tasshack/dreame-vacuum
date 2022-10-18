@@ -293,6 +293,12 @@ MAP_DATA_PARAMETER_FLOOR: Final = "floor"
 MAP_DATA_PARAMETER_WALL: Final = "wall"
 MAP_DATA_PARAMETER_SEGMENT: Final = "segment"
 
+DEVICE_MAP_KEY: Final = {
+    "p2114o": "6PFiLPYMHLylp7RR",
+    "p2149o": "RNO4p35b2QKaovHC",
+    "p2114a": "",
+}
+
 PROPERTY_TO_NAME: Final = {
     DreameVacuumProperty.STATE: ["state", "State"],
     DreameVacuumProperty.ERROR: ["error", "Error"],
