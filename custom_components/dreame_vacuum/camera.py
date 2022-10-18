@@ -286,7 +286,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                         int(map_data.last_updated))
 
                 self.coordinator.hass.async_create_task(self._update_image(
-                    self.device.get_map_for_render(self.map_index), self.device.status.robot_status))
+                    self.device.get_map_for_render(self.map_index), self.device.status.robot_status, self.device.status.robot_shape))
         elif not self._default_map:
             self._image = self._renderer.default_map_image
             self._default_map = True
@@ -294,8 +294,8 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             self._last_updated = -1
             self._state = STATE_UNAVAILABLE
 
-    async def _update_image(self, map_data, robot_status) -> None:
-        self._image = self._renderer.render_map(map_data, robot_status)
+    async def _update_image(self, map_data, robot_status, robot_shape) -> None:
+        self._image = self._renderer.render_map(map_data, robot_status, robot_shape)
 
     @property
     def _map_data(self) -> Any:

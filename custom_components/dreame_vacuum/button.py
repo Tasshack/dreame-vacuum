@@ -142,7 +142,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
     ),
     DreameVacuumButtonEntityDescription(
         key="start_drying",
-        icon="mdi:tumble-dryer",
+        icon="mdi:weather-sunny",
         available_fn=lambda device: bool(
             device.status.drying_available and not device.status.drying),
         action_fn=lambda device: device.start_drying(),
@@ -150,7 +150,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
     ),
     DreameVacuumButtonEntityDescription(
         key="stop_drying",
-        icon="mdi:tumble-dryer-off",
+        icon="mdi:weather-sunny-off",
         available_fn=lambda device: bool(
             device.status.drying_available and device.status.drying),
         action_fn=lambda device: device.stop_drying(),

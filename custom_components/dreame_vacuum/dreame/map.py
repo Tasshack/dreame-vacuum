@@ -2538,7 +2538,7 @@ class DreameVacuumMapDataRenderer:
         image.save(buffer, format="PNG", pnginfo=info)
         return buffer.getvalue()
 
-    def render_map(self, map_data: MapData, robot_status: int = 0) -> bytes:
+    def render_map(self, map_data: MapData, robot_status: int = 0, robot_shape: int = 0) -> bytes:
         if map_data is None or map_data.empty_map:
             return self.default_map_image
 
@@ -2989,6 +2989,7 @@ class DreameVacuumMapRenderer:
         self.render_complete: bool = True
         self._layers: dict[MapRendererLayer, Any] = {}
         self._robot_status: int = None
+        self._robot_shape: int = 0
         self._calibration_points: dict[str, int] = None
         self._default_calibration_points: dict[str, int] = [
             {MAP_PARAMETER_VACUUM: {MAP_DATA_PARAMETER_X: 0, MAP_DATA_PARAMETER_Y: 0},
@@ -3169,7 +3170,7 @@ class DreameVacuumMapRenderer:
                 )
             return calibration_points
 
-    def render_map(self, map_data: MapData, robot_status: int = 0) -> bytes:
+    def render_map(self, map_data: MapData, robot_status: int = 0, robot_shape: int = 0) -> bytes:
         if map_data is None or map_data.empty_map:
             return self.default_map_image
 
@@ -3222,6 +3223,10 @@ class DreameVacuumMapRenderer:
             map_data.dimensions.padding = self._map_data.dimensions.padding
 
         map_data.dimensions.scale = 4 if map_data.saved_map_status == 2 or map_data.saved_map else 3
+        
+        if self._robot_shape != robot_shape:
+            self._robot_icon = None
+            self._robot_shape = robot_shape
 
         if self._map_data is None or (
             self._map_data.dimensions.scale != map_data.dimensions.scale
@@ -3583,17 +3588,24 @@ class DreameVacuumMapRenderer:
         self, robot_position, robot_status, layer, dimensions, size, map_rotation, scale
     ):
         new_layer = Image.new("RGBA", layer.size, MAP_COLOR_TRANSPARENT)
-        if self._robot_icon is None:
+        if self._robot_icon is None:            
+            if self._robot_shape == 1:
+                robot_image = MAP_ROBOT_MOP_IMAGE
+            else:
+                robot_image = MAP_ROBOT_IMAGE
+
             self._robot_icon = (
-                Image.open(BytesIO(base64.b64decode(MAP_ROBOT_IMAGE)))
+                Image.open(BytesIO(base64.b64decode(robot_image)))
                 .convert("RGBA")
                 .resize((size, size))
             )
-            enhancer = ImageEnhance.Brightness(self._robot_icon)
-            if self.color_scheme is 0:
-                self._robot_icon = enhancer.enhance(0.9)
-            else:
-                self._robot_icon = enhancer.enhance(1.5)
+
+            if self._robot_shape == 0:
+                enhancer = ImageEnhance.Brightness(self._robot_icon)
+                if self.color_scheme is 0:
+                    self._robot_icon = enhancer.enhance(0.9)
+                else:
+                    self._robot_icon = enhancer.enhance(1.5)
 
         icon = self._robot_icon.rotate(robot_position.a)
         point = robot_position.to_img(dimensions)

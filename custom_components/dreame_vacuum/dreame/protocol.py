@@ -559,7 +559,7 @@ class MiIOCloudProtocol:
         cookies = {"userId": self._username}
         try:
             response = self._session.get(
-                url, headers=headers, cookies=cookies, timeout=5
+                url, headers=headers, cookies=cookies, timeout=2
             )
         except:
             response = None

@@ -2346,6 +2346,13 @@ class DreameVacuumDeviceStatus:
         return 0
 
     @property
+    def robot_shape(self) -> int:  # TODO: Convert to enum
+        """Robot shape for icon rendering."""
+        if self.self_wash_base_available and not self.sweeping_with_mop_pad_available:
+            return 1
+        return 0
+
+    @property
     def has_error(self) -> bool:
         """Returns true when an error is present."""
         error = self.error
