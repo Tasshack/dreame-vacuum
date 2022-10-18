@@ -2695,7 +2695,7 @@ class DreameVacuumDeviceStatus:
     @property
     def washing(self) -> bool:
         """Returns true the when device is currently performing mop washing."""
-        return bool(self.self_wash_base_available and self.self_wash_base_status is DreameVacuumSelfWashBaseStatus.WASHING)
+        return bool(self.self_wash_base_available and (self.self_wash_base_status is DreameVacuumSelfWashBaseStatus.WASHING or self.self_wash_base_status is DreameVacuumSelfWashBaseStatus.CLEAN_ADD_WATER))
 
     @property
     def drying(self) -> bool:
