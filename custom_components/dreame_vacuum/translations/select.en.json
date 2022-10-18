@@ -31,6 +31,11 @@
       "ten_square_meters": "10m²",
       "fifteen_square_meters": "15m²",
       "single_zone": "Single zone"
+    },
+    "dreame_vacuum__mop_wash_level": {
+      "water_saving": "Water saving",
+      "daily": "Daily",
+      "deep": "Deep"
     }
   }
 }

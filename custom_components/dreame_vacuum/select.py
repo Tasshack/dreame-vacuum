@@ -503,7 +503,7 @@ class DreameVacuumSelectEntity(DreameVacuumEntity, SelectEntity):
         await self.async_select_option(self._attr_options[new_index])
 
     @callback
-    async def async_first(self, cycle: bool) -> None:
+    async def async_first(self) -> None:
         """Select first option."""
         await self.async_select_index(0)
 
@@ -639,7 +639,7 @@ class DreameVacuumSegmentSelectEntity(DreameVacuumEntity, SelectEntity):
         await self.async_select_option(self._attr_options[new_index])
 
     @callback
-    async def async_first(self, cycle: bool) -> None:
+    async def async_first(self) -> None:
         """Select first option."""
         await self.async_select_index(0)
 

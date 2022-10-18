@@ -347,9 +347,10 @@ class DreameVacuumSelfWashBaseStatus(IntEnum):
     IDLE = 0
     WASHING = 1
     DRYING = 2
-    PAUSED = 2
     RETURNING = 3
-
+    PAUSED = 4
+    CLEAN_ADD_WATER = 5
+    ADDING_WATER = 6
 
 class DreameVacuumSelfCleanArea(IntEnum):
     """Dreame Vacuum self clean area"""

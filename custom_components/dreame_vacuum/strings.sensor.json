@@ -171,7 +171,9 @@
       "washing": "Washing",
       "drying": "Drying",
       "paused": "Paused",
-      "returning": "Returning to wash"
+      "returning": "Returning to wash",
+      "clean_add_water": "Cleaning and adding water",
+      "adding_water": "Adding water"
     }
   }
 }
