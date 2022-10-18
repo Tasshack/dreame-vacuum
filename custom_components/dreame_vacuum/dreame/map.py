@@ -188,15 +188,15 @@ class DreameMapVacuumMapManager:
             DIID(DreameVacuumProperty.MAP_DATA), 20, self._latest_map_data_time
         )
         if map_data_result is None:
-            raise DeviceUpdateFailedException(
-                "get_device_property failed") from None
+            _LOGGER.warn("Getting map_data from cloud failed")
+            map_data_result = []
 
         object_name_result = self._cloud_connection.get_device_property(
             DIID(DreameVacuumProperty.OBJECT_NAME), 1, self._latest_object_name_time
         )
         if object_name_result is None:
-            raise DeviceUpdateFailedException(
-                "get_device_property failed") from None
+            _LOGGER.warn("Getting object_name from cloud failed")
+            object_name_result = []
 
         next_frame_id = 1
 

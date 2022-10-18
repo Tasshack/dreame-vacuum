@@ -790,7 +790,7 @@ class MiIOCloudProtocol:
 
         try:
             response = self._session.post(
-                url, headers=headers, cookies=cookies, params=fields, timeout=3
+                url, headers=headers, cookies=cookies, params=fields, timeout=5
             )
         except Exception as ex:
             _LOGGER.error("Execute api call failed: %s", ex)
