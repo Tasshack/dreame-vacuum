@@ -3325,8 +3325,7 @@ class DreameVacuumMapRenderer:
             "Render frame: %s:%s took: %.2f",
             map_data.map_id,
             map_data.frame_id,
-            time.time() - now,
-            map_data.dimensions.scale,
+            time.time() - now
         )
 
         self._map_data = map_data
