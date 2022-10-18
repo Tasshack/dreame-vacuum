@@ -1102,8 +1102,8 @@ class DreameVacuumDevice:
                 "Cannot set cleaning mode while vacuum is running"
             )
 
-        if not self.status.self_wash_base_available:
-            if cleaning_mode is DreameVacuumCleaningMode.SWEEPING:
+        if not self.status.sweeping_with_mop_pad_available:
+            if cleaning_mode is DreameVacuumCleaningMode.SWEEPING.value:
                 if self.status.water_tank_installed:
                     if self.status.self_wash_base_available:
                         raise InvalidActionException(
@@ -2328,6 +2328,10 @@ class DreameVacuumDeviceStatus:
         """Device status for robot icon rendering."""
         if self.running and not self.returning and not self.fast_mapping:
             return 1
+        elif self.self_wash_base_available and (self.washing or self.drying or self.washing_paused):
+            if self.has_error or self.has_warning:
+                return 6
+            return 7
         elif self.charging:
             return 2
         elif self.has_error or self.has_warning:
@@ -2336,12 +2340,6 @@ class DreameVacuumDeviceStatus:
             else:
                 return 3
         elif self.sleeping:
-            if self.self_wash_base_available and (
-                self.washing
-                or self.drying
-                or self.washing_paused
-            ):
-                return 0
             return 4
         return 0
 

@@ -3006,6 +3006,7 @@ class DreameVacuumMapRenderer:
         self._robot_cleaning_icon = None
         self._robot_warning_icon = None
         self._robot_sleeping_icon = None
+        self._robot_washing_icon = None
 
         default_map_image = Image.open(
             BytesIO(base64.b64decode(DEFAULT_MAP_IMAGE))
@@ -3242,6 +3243,7 @@ class DreameVacuumMapRenderer:
                 self._robot_charging_icon = None
                 self._robot_cleaning_icon = None
                 self._robot_warning_icon = None
+                self._robot_washing_icon = None
 
         if (
             self._map_data is None
@@ -3473,10 +3475,12 @@ class DreameVacuumMapRenderer:
                 self._map_data is None
                 or self._map_data.charger_position != map_data.charger_position
                 or self._map_data.rotation != map_data.rotation
+                or bool(self._robot_status > 5) != bool(robot_status > 5)
                 or not self._layers.get(MapRendererLayer.CHARGER)
             ):
                 self._layers[MapRendererLayer.CHARGER] = self.render_charger(
                     map_data.charger_position,
+                    robot_status,
                     layer,
                     map_data.dimensions,
                     int((7 * map_data.dimensions.scale * scale) * 1.2),
@@ -3561,7 +3565,7 @@ class DreameVacuumMapRenderer:
         return new_layer
 
     def render_charger(
-        self, charger_position, layer, dimensions, size, map_rotation, scale
+        self, charger_position, robot_status, layer, dimensions, size, map_rotation, scale
     ):
         new_layer = Image.new("RGBA", layer.size, MAP_COLOR_TRANSPARENT)
         if self._charger_icon is None:
@@ -3582,6 +3586,39 @@ class DreameVacuumMapRenderer:
              int((point.y * scale) - (size / 2))),
             self._charger_icon,
         )
+        
+        if robot_status > 5:
+            if self._robot_washing_icon is None:
+                self._robot_washing_icon = (
+                    Image.open(BytesIO(base64.b64decode(MAP_ROBOT_WASHING_IMAGE)))
+                    .convert("RGBA")
+                    .resize((int(size * 1.25), int(size * 1.25)))
+                    .rotate(-map_rotation)
+                )
+                enhancer = ImageEnhance.Brightness(self._robot_washing_icon)
+                if self.color_scheme is not 0:
+                    self._robot_washing_icon = enhancer.enhance(0.65)
+
+            icon = self._robot_washing_icon
+
+            icon_x = point.x * scale
+            icon_y = point.y * scale
+            offset = (size * 1.5)
+            if map_rotation == 90:
+                icon_x = icon_x + offset
+            elif map_rotation == 180:
+                icon_y = icon_y + offset
+            elif map_rotation == 270:
+                icon_x = icon_x - offset
+            else:
+                icon_y = icon_y - offset
+
+            new_layer.paste(
+                icon,
+                (int(icon_x - (icon.size[0] / 2)),
+                 int(icon_y - (icon.size[1] / 2))),
+                icon,
+            )
         return new_layer
 
     def render_vacuum(
@@ -3629,7 +3666,7 @@ class DreameVacuumMapRenderer:
                     .resize(((int(size * 1.3), int(size * 1.3))))
                 )
             status_icon = self._robot_charging_icon
-        elif robot_status == 3 or robot_status == 5:
+        elif robot_status == 3 or robot_status == 5 or robot_status == 6:
             if self._robot_warning_icon is None:
                 self._robot_warning_icon = (
                     Image.open(
@@ -3677,8 +3714,6 @@ class DreameVacuumMapRenderer:
 
             for k in [[19, 10, 0], [24, 24, 1]]:
                 status_icon = self._robot_sleeping_icon[k[2]]
-                x = point.x + k[0]
-                y = point.y - k[1]
                 if map_rotation == 90:
                     x = point.x + k[1]
                     y = point.y + k[0]
@@ -3688,6 +3723,9 @@ class DreameVacuumMapRenderer:
                 elif map_rotation == 270:
                     x = point.x - k[1]
                     y = point.y - k[0]
+                else:
+                    x = point.x + k[0]
+                    y = point.y - k[1]
 
                 new_layer.paste(
                     status_icon,
