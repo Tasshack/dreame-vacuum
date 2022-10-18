@@ -17,7 +17,7 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers import entity_registry
 
-from .const import DOMAIN, CONF_COLOR_SCHEME, COLOR_SCHEME, ATTR_CALIBRATION, CONTENT_TYPE
+from .const import DOMAIN, CONF_COLOR_SCHEME, COLOR_SCHEME, ATTR_CALIBRATION, CONTENT_TYPE, LOGGER
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription
@@ -200,6 +200,8 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 self._default_map == True or
                 self._frame_id != map_data.frame_id
             ):
+                LOGGER.debug("Coordinator update: %s", map_data.frame_id)
+
                 self._frame_id = map_data.frame_id
                 if not self.device.status.active:
                     self.update()
@@ -214,7 +216,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         if self._should_poll is True:
             self._should_poll = False
             now = time.time()
-            if now - self._last_map_request >= 0.25:
+            if now - self._last_map_request >= self.frame_interval:
                 self._last_map_request = now
                 if self.map_index == 0:
                     self.device.update_map()
@@ -262,10 +264,16 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             and self.available
             and (self.map_index > 0 or self.device.status.located)
         ):
+            if self.map_index == 0 and not self.entity_description.map_data_json and map_data.last_updated != self._last_updated and not self._renderer.render_complete:
+                LOGGER.warning("Waiting render complete")
+
             if (
                 self._renderer.render_complete
                 and map_data.last_updated != self._last_updated
             ):
+                if self.map_index == 0 and not self.entity_description.map_data_json:
+                    LOGGER.debug("Update map")
+
                 self._last_updated = map_data.last_updated
                 self._frame_id = map_data.frame_id
                 self._default_map = False

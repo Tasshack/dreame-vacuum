@@ -132,7 +132,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         entity_registry_enabled_default=False,
     ),
     DreameVacuumNumberEntityDescription(
-        property_key=DreameVacuumProperty.CARPET_CLEAN,
+        property_key=DreameVacuumProperty.CARPET_CLEANING_METHOD,
         icon="mdi:rug",
         mode=NumberMode.BOX,
         native_min_value=0,

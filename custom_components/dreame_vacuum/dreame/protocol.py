@@ -790,15 +790,19 @@ class MiIOCloudProtocol:
 
         try:
             response = self._session.post(
-                url, headers=headers, cookies=cookies, params=fields, timeout=3
+                url, headers=headers, cookies=cookies, params=fields, timeout=5
             )
         except Exception as ex:
-            response = None
-        if response is not None and response.status_code == 200:
-            decoded = self.decrypt_rc4(
-                self.signed_nonce(fields["_nonce"]), response.text
-            )
-            return json.loads(decoded)
+            _LOGGER.error("Execute api call failed: %s", ex)
+            return None
+
+        if response is not None:
+            if response.status_code == 200:
+                decoded = self.decrypt_rc4(
+                    self.signed_nonce(fields["_nonce"]), response.text
+                )
+                return json.loads(decoded)
+            _LOGGER.warn("Execute api call failed with response: %s", response.text())
         return None
 
     def get_api_url(self) -> str:

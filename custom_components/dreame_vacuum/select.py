@@ -45,6 +45,7 @@ from .dreame import (
     DreameVacuumSelfCleanArea,
     DreameVacuumMopPadHumidity,
     DreameVacuumCarpetSensitivity,
+    DreameVacuumMopWashLevel,
     SUCTION_LEVEL_CODE_TO_NAME,
     WATER_VOLUME_CODE_TO_NAME,
     MOP_PAD_HUMIDITY_CODE_TO_NAME,
@@ -136,6 +137,14 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
         value_fn=lambda value, device: f"{value}{UNIT_TIMES}",
         value_int_fn=lambda value, device: int(value[0]),
+    ),
+    DreameVacuumSelectEntityDescription(
+        property_key=DreameVacuumProperty.MOP_WASH_LEVEL,
+        device_class=f"{DOMAIN}__mop_wash_level",
+        icon="mdi:water-opacity",
+        options=lambda device, segment: list(device.status.mop_wash_level_list),
+        value_int_fn=lambda value, device: DreameVacuumMopWashLevel[value.upper()],
+        entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSelectEntityDescription(
         key="mop_pad_humidity",
@@ -343,8 +352,8 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             and not device.status.fast_mapping
             and not device.status.has_temporary_map
         ),
-        value_fn=lambda device, segment: device.status.segments[segment.room_id].name
-        if segment.room_id in device.status.segments
+        value_fn=lambda device, segment: device.status.segments[segment.segment_id].name
+        if segment.segment_id in device.status.segments
         else None,
         value_int_fn=lambda value, self: next(
             (
@@ -360,7 +369,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             segment_id, value
         ),
         attrs_fn=lambda segment: {
-            "room_id": segment.room_id,
+            "room_id": segment.segment_id,
             "index": segment.index,
             "type": segment.type,
         },
@@ -494,7 +503,7 @@ class DreameVacuumSelectEntity(DreameVacuumEntity, SelectEntity):
         await self.async_select_option(self._attr_options[new_index])
 
     @callback
-    async def async_first(self, cycle: bool) -> None:
+    async def async_first(self) -> None:
         """Select first option."""
         await self.async_select_index(0)
 
@@ -630,7 +639,7 @@ class DreameVacuumSegmentSelectEntity(DreameVacuumEntity, SelectEntity):
         await self.async_select_option(self._attr_options[new_index])
 
     @callback
-    async def async_first(self, cycle: bool) -> None:
+    async def async_first(self) -> None:
         """Select first option."""
         await self.async_select_index(0)
 

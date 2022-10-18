@@ -12,6 +12,6 @@
     "requests",
     "pycryptodome"
   ],
-  "version": "v0.8.4",
+  "version": "v0.9.0",
   "iot_class": "local_polling"
 }

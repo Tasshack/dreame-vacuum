@@ -30,6 +30,8 @@
 | `multi_floor_map`   | Enable/Disable multi-floor map | Available on vacuums can store more than one map
 | `auto_dust_collecting`   | Enable/Disable automatic dust collecting when cleaning completed |  Available on vacuums with auto-empty station
 | `self_clean`   | Enable/Disable automatic self cleaning feature | Available on vacuums with self-wash base
+| `water_electrolysis`   | Enable/Disable water electrolysis feature | Available on vacuums with water electrolysis feature
+| `auto_water_refilling`   | Enable/Disable external water input for self-wash base | Available on vacuums with self-wash base and external water input
 | `ai_obstacle_detection`   | Enable/Disable AI obstacle detection | Available on S10 and L10s models
 | `obstacle_picture`   | Enable/Disable uploading obstacle picture to cloud | Available on S10 and L10s models
 | `pet_detection`   | Enable/Disable AI pet detection | Available on S10 and L10s models
@@ -88,7 +90,7 @@
 | `dnd_end_minute`   | Do not disturb end minute (00:00 -> 00:XX) | Unavailable when do not disturb is disabled
 | `drying_time`   | Mop drying time in minutes | Available on vacuums with self-wash base
 | `auto_add_detergent`   | *Undocumented* | Available on S10 and S10 Pro
-| `carpet_clean`   | *Undocumented* | Available on S10 and S10 Pro
+| `carpet_cleaning_method_`   | *Undocumented* | Available on S10 and S10 Pro
 
 ## Button
 
@@ -115,10 +117,11 @@
 | `suction_level`   | Suction level of the vacuum | Unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning
 | `water_volume`   | Water volume of the vacuum | Available on vacuums with water tank and unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning.
 | `mop_pad_humidity`   | Humidity level of the mop pad | Available on vacuums with self-wash base and unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning.
-| `cleaning_mode`   | Cleaning mode of the vacuum. (Sweeping, Mopping, Mopping and Sweeping) | Unavailable during cleaning.<br> (Options are dynamically generated for vacuums with attachable water tank.)<br> *Only available on devices firmware above 1056.* 
+| `cleaning_mode`   | Cleaning mode of the vacuum. (Sweeping, Mopping, Mopping and Sweeping) | Unavailable during cleaning.<br> (Options are dynamically generated for vacuums without liftable mop pad.)
 | `carpet_sensitivity`   | Carpet sensitivity of carpet boost feature | Unavailable when carpet boost is disabled
 | `auto_empty_frequency`  | Auto empty frequency | Unavailable when automatic dust collection is disabled or not available
 | `self_clean_area`   | Select cleaning area before return to clean the mop pad | Available on vacuums with self-wash base
+| `mop_wash_level`   | Mop cleaning water usage level | Available on vacuums with self-wash base and external water input
 | `map_rotation`   | Sets the rotation of selected map | Available with map feature and unavailable when current map is not one of the selected maps (Different map rotations can be for saved maps but only selected map is editable via this entity)
 | `selected_map`   | Currently selected map | Available with map feature and unavailable when multi-floor map is disabled or not available (Robot will end active job when selected map is changed)
 

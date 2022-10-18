@@ -32,12 +32,14 @@ All features completely reverse engineered from the official Mi Home app RN plug
 - `dreame.vacuum.p2259` *(D9 Max)*
 - `dreame.vacuum.p2187` *(D9 Pro)*
 - `dreame.vacuum.r2228o` *(L10s Ultra)*
+- `dreame.vacuum.r2215o` *(L10s Pro)*
+- `dreame.vacuum.p2150o` *(Mi Robot Vacuum-Mop)*
 - `dreame.vacuum.p2150a` *(Mi Robot Vacuum-Mop 2 Ultra)*
 - `dreame.vacuum.p2150b` *(Mi Robot Vacuum-Mop 2 Ultra Set)*
+- `dreame.vacuum.p2114a` *(Mi robot Vacuum X10+)*
+- `dreame.vacuum.p2114o` *(Xiaomi Self-Cleaning Robot Vacuum-Mop)* 
+- `dreame.vacuum.p2149o` *(Xiaomi Self-Cleaning Robot Vacuum-Mop Pro)*
 - `dreame.vacuum.p2157` *(MOVA L600)*
-- `dreame.vacuum.p2114o` 
-- `dreame.vacuum.p2149o` 
-- `dreame.vacuum.p2150o`
 - *`More to be added later...`*
 
 
