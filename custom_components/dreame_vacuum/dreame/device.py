@@ -793,53 +793,56 @@ class DreameVacuumDevice:
                         map_data.charger_position)
 
                 # Calculate charger angle
+                charger_angle = map_data.charger_position.a
                 if (
-                    map_data.charger_position.a > -45
-                    and map_data.charger_position.a < 45
+                    charger_angle > -45
+                    and charger_angle < 45
                 ):
-                    map_data.robot_position.a = 0
+                    charger_angle = 0
                 elif (
-                    map_data.charger_position.a > -45
-                    and map_data.charger_position.a <= 45
-                    or map_data.charger_position.a > 315
-                    and map_data.charger_position.a <= 405
+                    charger_angle > -45
+                    and charger_angle <= 45
+                    or charger_angle > 315
+                    and charger_angle <= 405
                 ):
-                    map_data.robot_position.a = 0
+                    charger_angle = 0
                 elif (
-                    map_data.charger_position.a > 45
-                    and map_data.charger_position.a <= 135
-                    or map_data.charger_position.a > -315
-                    and map_data.charger_position.a <= -225
+                    charger_angle > 45
+                    and charger_angle <= 135
+                    or charger_angle > -315
+                    and charger_angle <= -225
                 ):
-                    map_data.robot_position.a = 90
+                    charger_angle = 90
                 elif (
-                    map_data.charger_position.a > 135
-                    and map_data.charger_position.a <= 225
-                    or map_data.charger_position.a > -225
-                    and map_data.charger_position.a <= -135
+                    charger_angle > 135
+                    and charger_angle <= 225
+                    or charger_angle > -225
+                    and charger_angle <= -135
                 ):
-                    map_data.robot_position.a = 180
+                    charger_angle = 180
                 elif (
-                    map_data.charger_position.a > 225
-                    and map_data.charger_position.a <= 315
-                    or map_data.charger_position.a > -135
-                    and map_data.charger_position.a <= -45
+                    charger_angle > 225
+                    and charger_angle <= 315
+                    or charger_angle > -135
+                    and charger_angle <= -45
                 ):
-                    map_data.robot_position.a = 270
-
-                # Robots with self-wash base parks in reverse therefore we don't need to modify the charger angle
-                if not self.status.self_wash_base_available:
-                    map_data.robot_position.a = map_data.robot_position.a + 180
+                    charger_angle = 270
 
                 # Calculate new robot position with an offset to the dock
                 map_data.robot_position.x = (
                     map_data.charger_position.x
-                    - 150 * math.cos(map_data.robot_position.a * math.pi / 180)
+                    + 150 * math.cos(charger_angle * math.pi / 180)
                 )
                 map_data.robot_position.y = (
                     map_data.charger_position.y
-                    - 150 * math.sin(map_data.robot_position.a * math.pi / 180)
+                    + 150 * math.sin(charger_angle * math.pi / 180)
                 )
+
+                # Robots with self-wash base parks in reverse therefore we don't need to modify the charger angle
+                if not self.status.self_wash_base_available:
+                    map_data.robot_position.a = charger_angle + 180
+                else:
+                    map_data.robot_position.a = charger_angle
 
         return map_data
 
