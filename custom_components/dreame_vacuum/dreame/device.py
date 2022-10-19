@@ -2984,7 +2984,7 @@ class DreameVacuumDeviceStatus:
                 elif prop is DreameVacuumProperty.CLEANING_MODE:
                     value = self.cleaning_mode_name.replace("_", " ").capitalize()
                 elif prop is DreameVacuumProperty.CUSTOMIZED_CLEANING:
-                    value = self.customized_cleaning
+                    value = self.customized_cleaning and not self.zone_cleaning 
                 attributes[prop_name] = value
                 
         attributes[ATTR_CLEANING_SEQUENCE] = self.custom_order

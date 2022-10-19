@@ -933,7 +933,10 @@ class DreameMapVacuumMapManager:
                         "Need map request: %.2f",
                         time.time() - (self._current_timestamp_ms / 1000.0),
                     )
-                self._request_current_map()
+                if time.time() - (self._current_timestamp_ms / 1000.0) > 30:
+                    self.request_new_map()
+                else:
+                    self._request_current_map()
             else:
                 if not self._request_map_from_cloud():
                     if self._device_running:
@@ -972,7 +975,7 @@ class DreameMapVacuumMapManager:
 
     def request_new_map(self) -> None:
         if self._new_map_request_time and time.time() - self._new_map_request_time < 10:
-            if time.time() - self._new_map_request_time > 2:
+            if time.time() - self._new_map_request_time > 3:
                 self._new_map_request_time = time.time()
                 self._request_map_from_cloud()
             return
