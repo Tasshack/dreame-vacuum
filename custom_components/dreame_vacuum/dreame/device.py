@@ -69,6 +69,7 @@ from .const import (
     AI_SETTING_FURNITURE,
     AI_SETTING_FLUID,
     ATTR_CHARGING,
+    ATTR_CLEANING_SEQUENCE,
     ATTR_STARTED,
     ATTR_PAUSED,
     ATTR_RUNNING,
@@ -88,6 +89,7 @@ from .const import (
     ATTR_CLEANING_TIME,
     ATTR_CLEANED_AREA,
     ATTR_MOP_PAD_HUMIDITY,
+    ATTR_MOP_PAD,
 )
 from .resources import ERROR_IMAGE
 from .exceptions import (
@@ -278,8 +280,8 @@ class DreameVacuumDevice:
             new_state = DreameVacuumState.SWEEPING
             if self.status.cleaning_mode is DreameVacuumCleaningMode.MOPPING:
                 new_state = DreameVacuumState.MOPPING
-            elif self.status.cleaning_mode is DreameVacuumCleaningMode.MOPPING_AND_SWEEPING:
-                new_state = DreameVacuumState.MOPPING_AND_SWEEPING
+            elif self.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING_AND_MOPPING:
+                new_state = DreameVacuumState.SWEEPING_AND_MOPPING
             self._update_property(
                 DreameVacuumProperty.STATE, new_state.value
             )
@@ -351,7 +353,7 @@ class DreameVacuumDevice:
             water_tank = self.status.water_tank
             if water_tank is DreameVacuumWaterTank.NOT_INSTALLED:
                 new_list.pop(DreameVacuumCleaningMode.MOPPING)
-                new_list.pop(DreameVacuumCleaningMode.MOPPING_AND_SWEEPING)
+                new_list.pop(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING)
                 if self.status.cleaning_mode != DreameVacuumCleaningMode.SWEEPING:
                     # Store current cleaning mode for future use when water tank is reinstalled
                     self._previous_cleaning_mode = self.status.cleaning_mode
@@ -374,7 +376,7 @@ class DreameVacuumDevice:
                     else:
                         self.set_property(
                             DreameVacuumProperty.CLEANING_MODE,
-                            DreameVacuumCleaningMode.MOPPING_AND_SWEEPING.value,
+                            DreameVacuumCleaningMode.SWEEPING_AND_MOPPING.value,
                         )
                     # Store current cleaning mode for future use when water tank is removed
                     self._previous_cleaning_mode = self.status.cleaning_mode
@@ -2060,12 +2062,12 @@ class DreameVacuumDeviceStatus:
                         return DreameVacuumCleaningMode.SWEEPING
                     if values[0] == 1:
                         return DreameVacuumCleaningMode.MOPPING
-                    return DreameVacuumCleaningMode.MOPPING_AND_SWEEPING
+                    return DreameVacuumCleaningMode.SWEEPING_AND_MOPPING
                 else:
                     if values[0] == 2:
                         return DreameVacuumCleaningMode.SWEEPING
                     if values[0] == 0:
-                        return DreameVacuumCleaningMode.MOPPING_AND_SWEEPING
+                        return DreameVacuumCleaningMode.SWEEPING_AND_MOPPING
                     value = values[0]
 
         if value is not None and value in DreameVacuumCleaningMode._value2member_map_:
@@ -2446,7 +2448,7 @@ class DreameVacuumDeviceStatus:
     def sweeping(self) -> bool:
         """Returns true when cleaning mode is sweeping therefore cannot set its water volume."""
         cleaning_mode = self.cleaning_mode
-        return bool(cleaning_mode is not DreameVacuumCleaningMode.MOPPING and cleaning_mode is not DreameVacuumCleaningMode.MOPPING_AND_SWEEPING)
+        return bool(cleaning_mode is not DreameVacuumCleaningMode.MOPPING and cleaning_mode is not DreameVacuumCleaningMode.SWEEPING_AND_MOPPING)
 
     @property
     def mopping(self) -> bool:
@@ -2954,13 +2956,18 @@ class DreameVacuumDeviceStatus:
             DreameVacuumProperty.CLEANING_COUNT,
             DreameVacuumProperty.DND_START,
             DreameVacuumProperty.DND_END,
+            DreameVacuumProperty.CUSTOMIZED_CLEANING,
             DreameVacuumProperty.SERIAL_NUMBER,
         ]
 
-        if not self.self_wash_base_available:
-            properties.append(DreameVacuumProperty.WATER_VOLUME)
-
         attributes = {}
+        if not self.self_wash_base_available:
+            attributes[ATTR_WATER_TANK] = self.water_tank_installed
+            properties.append(DreameVacuumProperty.WATER_VOLUME)
+        else:
+            attributes[ATTR_MOP_PAD] = self.water_tank_installed
+            attributes[ATTR_MOP_PAD_HUMIDITY] = self.mop_pad_humidity_name.replace("_", " ").capitalize()
+
         for prop in properties:
             value = self._get_property(prop)
             if value is not None:
@@ -2976,12 +2983,11 @@ class DreameVacuumDeviceStatus:
                     value = self.water_volume_name.capitalize()
                 elif prop is DreameVacuumProperty.CLEANING_MODE:
                     value = self.cleaning_mode_name.replace("_", " ").capitalize()
-
+                elif prop is DreameVacuumProperty.CUSTOMIZED_CLEANING:
+                    value = self.customized_cleaning
                 attributes[prop_name] = value
-
-        if self.self_wash_base_available:
-            attributes[ATTR_MOP_PAD_HUMIDITY] = self.mop_pad_humidity_name.replace("_", " ").capitalize()
-
+                
+        attributes[ATTR_CLEANING_SEQUENCE] = self.custom_order
         attributes[ATTR_CHARGING] = self.docked
         attributes[ATTR_STARTED] = self.started
         attributes[ATTR_PAUSED] = self.paused

@@ -117,7 +117,7 @@
 | `suction_level`   | Suction level of the vacuum | Unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning
 | `water_volume`   | Water volume of the vacuum | Available on vacuums with water tank and unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning.
 | `mop_pad_humidity`   | Humidity level of the mop pad | Available on vacuums with self-wash base and unavailable if customized cleaning enabled and current job is not zone cleaning or spot cleaning.
-| `cleaning_mode`   | Cleaning mode of the vacuum. (Sweeping, Mopping, Mopping and Sweeping) | Unavailable during cleaning.<br> (Options are dynamically generated for vacuums without liftable mop pad.)
+| `cleaning_mode`   | Cleaning mode of the vacuum. (Sweeping, Mopping, Sweeping and mopping) | Unavailable during cleaning.<br> (Options are dynamically generated for vacuums without liftable mop pad.)
 | `carpet_sensitivity`   | Carpet sensitivity of carpet boost feature | Unavailable when carpet boost is disabled
 | `auto_empty_frequency`  | Auto empty frequency | Unavailable when automatic dust collection is disabled or not available
 | `self_clean_area`   | Select cleaning area before return to clean the mop pad | Available on vacuums with self-wash base

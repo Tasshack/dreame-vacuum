@@ -612,7 +612,7 @@ class DreameMapVacuumMapManager:
                 and self._current_frame_id
                 and self._current_timestamp_ms > partial_map.timestamp_ms
             ):
-                _LOGGER.info(
+                _LOGGER.debug(
                     "Skip frame %s, timestamp %s:%s < %s:%s",
                     partial_map.frame_type,
                     partial_map.frame_id,
@@ -1799,7 +1799,7 @@ class DreameVacuumMapDecoder:
                 decryptor = cipher.decryptor()
                 raw_map = decryptor.update(raw_map) + decryptor.finalize()
             except Exception as ex:
-                _LOGGER.error("Map data decryption failed, private key might be missing. Please report this issue with your device model https://github.com/Tasshack/dreame-vacuum/issues: %s", ex)
+                _LOGGER.error("Map data decryption failed: %s. Private key might be missing, please report this issue with your device model https://github.com/Tasshack/dreame-vacuum/issues/new?assignees=Tasshack&labels=bug&template=bug_report.md&title=Map%20data%20decryption%20failed", ex)
                 return None
         
         try:

@@ -113,7 +113,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         property_key=DreameVacuumProperty.CLEANING_MODE,
         device_class=f"{DOMAIN}__cleaning_mode",
         icon_fn=lambda value, device: "mdi:hydro-power"
-        if device.status.cleaning_mode is DreameVacuumCleaningMode.MOPPING_AND_SWEEPING
+        if device.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING_AND_MOPPING
         else "mdi:cup-water"
         if device.status.cleaning_mode is DreameVacuumCleaningMode.MOPPING
         else "mdi:broom",

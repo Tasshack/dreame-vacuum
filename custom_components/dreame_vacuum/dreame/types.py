@@ -200,7 +200,7 @@ class DreameVacuumState(IntEnum):
     WASHING = 9
     RETURNING_WASHING = 10
     BUILDING = 11
-    MOPPING_AND_SWEEPING = 12
+    SWEEPING_AND_MOPPING = 12
     CHARGING_COMPLETED = 13
     UPGRADING = 14
 
@@ -221,7 +221,7 @@ class DreameVacuumCleaningMode(IntEnum):
     UNKNOWN = -1
     SWEEPING = 0
     MOPPING = 1
-    MOPPING_AND_SWEEPING = 2
+    SWEEPING_AND_MOPPING = 2
 
 
 class DreameVacuumWaterTank(IntEnum):

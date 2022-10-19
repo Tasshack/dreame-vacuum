@@ -36,7 +36,7 @@ MOP_PAD_HUMIDITY_WET: Final = "wet"
 
 CLEANING_MODE_SWEEPING: Final = "sweeping"
 CLEANING_MODE_MOPPING: Final = "mopping"
-CLEANING_MODE_MOPPING_AND_SWEEPING: Final = "mopping_and_sweeping"
+CLEANING_MODE_SWEEPING_AND_MOPPING: Final = "sweeping_and_mopping"
 
 STATE_UNKNOWN: Final = "unknown"
 STATE_SWEEPING: Final = "sweeping"
@@ -50,7 +50,7 @@ STATE_DRYING: Final = "drying"
 STATE_WASHING: Final = "washing"
 STATE_RETURNING_WASHING: Final = "returning_to_washing"
 STATE_BUILDING: Final = "building"
-STATE_MOPPING_AND_SWEEPING: Final = "mopping_and_sweeping"
+STATE_SWEEPING_AND_MOPPING: Final = "sweeping_and_mopping"
 STATE_CHARGING_COMPLETED: Final = "charging_completed"
 STATE_UPGRADING: Final = "upgrading"
 
@@ -221,6 +221,8 @@ ATTR_COMPLETED: Final = "completed"
 ATTR_CLEANING_TIME: Final = "cleaning_time"
 ATTR_CLEANED_AREA: Final = "cleaned_area"
 ATTR_MOP_PAD_HUMIDITY: Final = "mop_pad_humidity"
+ATTR_MOP_PAD: Final = "mop_pad"
+ATTR_CLEANING_SEQUENCE: Final = "cleaning_sequence"
 
 AI_SETTING_SWITCH: Final = "obstacle_detect_switch"
 AI_SETTING_PICTURE: Final = "obstacle_app_display_switch"
@@ -450,7 +452,7 @@ STATE_CODE_TO_STATE: Final = {
     DreameVacuumState.WASHING: STATE_WASHING,
     DreameVacuumState.RETURNING_WASHING: STATE_RETURNING_WASHING,
     DreameVacuumState.BUILDING: STATE_BUILDING,
-    DreameVacuumState.MOPPING_AND_SWEEPING: STATE_MOPPING_AND_SWEEPING,
+    DreameVacuumState.SWEEPING_AND_MOPPING: STATE_SWEEPING_AND_MOPPING,
     DreameVacuumState.CHARGING_COMPLETED: STATE_CHARGING_COMPLETED,
     DreameVacuumState.UPGRADING: STATE_UPGRADING,
 }
@@ -481,7 +483,7 @@ MOP_PAD_HUMIDITY_CODE_TO_NAME: Final = {
 CLEANING_MODE_CODE_TO_NAME: Final = {
     DreameVacuumCleaningMode.SWEEPING: CLEANING_MODE_SWEEPING,
     DreameVacuumCleaningMode.MOPPING: CLEANING_MODE_MOPPING,
-    DreameVacuumCleaningMode.MOPPING_AND_SWEEPING: CLEANING_MODE_MOPPING_AND_SWEEPING,
+    DreameVacuumCleaningMode.SWEEPING_AND_MOPPING: CLEANING_MODE_SWEEPING_AND_MOPPING,
 }
 
 WATER_TANK_CODE_TO_NAME: Final = {
