@@ -347,7 +347,7 @@ class DreameVacuumDevice:
 
     def _water_tank_changed(self, previous_water_tank: Any = None) -> None:
         """Update cleaning mode on device when water tank status is changed."""
-        if not self.status.started and not self.status.sweeping_with_mop_pad_available:
+        if not self.status.started:
             # App does not allow you to update cleaning mode when water tank or mop pad is not installed.
             new_list = CLEANING_MODE_CODE_TO_NAME.copy()
             water_tank = self.status.water_tank
@@ -357,27 +357,20 @@ class DreameVacuumDevice:
                 if self.status.cleaning_mode != DreameVacuumCleaningMode.SWEEPING:
                     # Store current cleaning mode for future use when water tank is reinstalled
                     self._previous_cleaning_mode = self.status.cleaning_mode
-                    self.set_property(
-                        DreameVacuumProperty.CLEANING_MODE,
-                        DreameVacuumCleaningMode.SWEEPING.value,
-                    )
+                    self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING.value)
             elif water_tank is DreameVacuumWaterTank.INSTALLED:
-                new_list.pop(DreameVacuumCleaningMode.SWEEPING)
-                if self.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING:
-                    if (
-                        self._previous_cleaning_mode is not None
-                        and self._previous_cleaning_mode
-                        != DreameVacuumCleaningMode.SWEEPING
-                    ):
-                        self.set_property(
-                            DreameVacuumProperty.CLEANING_MODE,
-                            self._previous_cleaning_mode.value,
-                        )
-                    else:
-                        self.set_property(
-                            DreameVacuumProperty.CLEANING_MODE,
-                            DreameVacuumCleaningMode.SWEEPING_AND_MOPPING.value,
-                        )
+                if not self.status.sweeping_with_mop_pad_available:
+                    new_list.pop(DreameVacuumCleaningMode.SWEEPING)
+
+                    if self.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING:
+                        if (
+                            self._previous_cleaning_mode is not None
+                            and self._previous_cleaning_mode
+                            != DreameVacuumCleaningMode.SWEEPING
+                        ):
+                            self.set_cleaning_mode(self._previous_cleaning_mode.value)
+                        else:
+                            self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING.value)
                     # Store current cleaning mode for future use when water tank is removed
                     self._previous_cleaning_mode = self.status.cleaning_mode
 
@@ -957,7 +950,7 @@ class DreameVacuumDevice:
                     DreameVacuumProperty.AI_DETECTION,
                     DreameVacuumProperty.DRYING_TIME,
                     DreameVacuumProperty.AUTO_ADD_DETERGENT,
-                    DreameVacuumProperty.CARPET_CLEANING_METHOD,
+                    DreameVacuumProperty.CARPET_AVOIDANCE,
                     DreameVacuumProperty.CLEANING_MODE,
                     DreameVacuumProperty.WATER_ELECTROLYSIS,
                     DreameVacuumProperty.AUTO_WATER_REFILLING,
@@ -1104,9 +1097,8 @@ class DreameVacuumDevice:
                 "Cannot set cleaning mode while vacuum is running"
             )
 
-        if not self.status.sweeping_with_mop_pad_available:
             if cleaning_mode is DreameVacuumCleaningMode.SWEEPING.value:
-                if self.status.water_tank_installed:
+                if self.status.water_tank_installed and not self.status.sweeping_with_mop_pad_available:
                     if self.status.self_wash_base_available:
                         raise InvalidActionException(
                             "Cannot set sweeping while mop pad is installed"
@@ -1512,8 +1504,7 @@ class DreameVacuumDevice:
             if self.status.ai_obstacle_detection or self.status.obstacle_picture:
                 if self._cloud_connection and not self.status.ai_policy_accepted:
                     prop = "prop.s_ai_config"
-                    response = self._cloud_connection.get_batch_device_datas([
-                                                                             prop])
+                    response = self._cloud_connection.get_batch_device_datas([prop])
                     if response and prop in response and response[prop]:
                         try:
                             self.status.ai_policy_accepted = json.loads(
@@ -1523,7 +1514,7 @@ class DreameVacuumDevice:
 
                     if not self.status.ai_policy_accepted:
                         raise InvalidActionException(
-                            "You need to accept privacy policy from the app before enabling ai detection feature"
+                            "You need to accept privacy policy from the App before enabling AI obstacle detection feature"
                         )
 
             mapping = self.property_mapping[DreameVacuumProperty.AI_DETECTION]
@@ -2532,6 +2523,18 @@ class DreameVacuumDeviceStatus:
         )
 
     @property
+    def carpet_avoidance(self) -> bool:        
+        """Returns true when carpet avoidance feature is enabled."""
+        value = self._get_property(DreameVacuumProperty.CARPET_AVOIDANCE)
+        return bool(value == 1)
+
+    @property
+    def auto_add_detergent(self) -> bool:        
+        """Returns true when auto-add detergent feature is enabled."""
+        value = self._get_property(DreameVacuumProperty.AUTO_ADD_DETERGENT)
+        return bool(value == 1 or value == 3)
+
+    @property
     def cleaning_paused(self) -> bool:
         """Returns true when device battery is too low for resuming its task and needs to be charged before continuing."""
         return bool(self._get_property(DreameVacuumProperty.CLEANING_PAUSED))
@@ -2663,7 +2666,7 @@ class DreameVacuumDeviceStatus:
     @property
     def sweeping_with_mop_pad_available(self) -> bool:
         """Returns true when device has capability to only sweep while mop pad is attached."""
-        return bool(self.self_wash_base_available and self.auto_empty_base_available)
+        return bool(self.self_wash_base_available and (self.auto_empty_base_available or self._get_property(DreameVacuumProperty.CARPET_AVOIDANCE) != None))
     
     @property
     def ai_detection_available(self) -> bool:

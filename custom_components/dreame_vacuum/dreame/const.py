@@ -353,10 +353,10 @@ PROPERTY_TO_NAME: Final = {
     ],
     DreameVacuumProperty.SELF_CLEAN: ["self_clean", "Self-Clean"],
     DreameVacuumProperty.WARN_STATUS: ["warn_status", "Warn Status"],
-    DreameVacuumProperty.CARPET_CLEANING_METHOD: ["carpet_cleaning_method", "Carpet Cleaning Method"],
+    DreameVacuumProperty.CARPET_AVOIDANCE: ["carpet_avoidance", "Carpet Avoidance"],
     DreameVacuumProperty.AUTO_ADD_DETERGENT: [
         "auto_add_detergent",
-        "Auto Add Detergent",
+        "Auto-Add Detergent",
     ],
     DreameVacuumProperty.DRYING_TIME: ["drying_time", "Drying Time"],
     DreameVacuumProperty.DND: ["dnd", "DnD"],

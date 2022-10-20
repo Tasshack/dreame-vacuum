@@ -120,27 +120,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_max_value=255,
         native_step=1,
         entity_category=EntityCategory.CONFIG,
-    ),
-    DreameVacuumNumberEntityDescription(
-        property_key=DreameVacuumProperty.AUTO_ADD_DETERGENT,
-        icon="mdi:chart-bubble",
-        mode=NumberMode.BOX,
-        native_min_value=0,
-        native_max_value=255,
-        native_step=1,
-        entity_category=EntityCategory.CONFIG,
-        entity_registry_enabled_default=False,
-    ),
-    DreameVacuumNumberEntityDescription(
-        property_key=DreameVacuumProperty.CARPET_CLEANING_METHOD,
-        icon="mdi:rug",
-        mode=NumberMode.BOX,
-        native_min_value=0,
-        native_max_value=255,
-        native_step=1,
-        entity_category=EntityCategory.CONFIG,
-        entity_registry_enabled_default=False,
-    ),
+    )
 )
 
 

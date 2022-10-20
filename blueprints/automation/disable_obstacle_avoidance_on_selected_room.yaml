@@ -16,7 +16,7 @@ blueprint:
             selector:
                 number:
                     min: 1
-                    max: 62
+                    max: 60
                     mode: box
 
 

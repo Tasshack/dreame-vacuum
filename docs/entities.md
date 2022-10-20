@@ -32,6 +32,7 @@
 | `self_clean`   | Enable/Disable automatic self cleaning feature | Available on vacuums with self-wash base
 | `water_electrolysis`   | Enable/Disable water electrolysis feature | Available on vacuums with water electrolysis feature
 | `auto_water_refilling`   | Enable/Disable external water input for self-wash base | Available on vacuums with self-wash base and external water input
+| `carpet_avoidance`   | Avoid carpets if mop pads are attached | Available on vacuums with mop pad lifting feature
 | `ai_obstacle_detection`   | Enable/Disable AI obstacle detection | Available on S10 and L10s models
 | `obstacle_picture`   | Enable/Disable uploading obstacle picture to cloud | Available on S10 and L10s models
 | `pet_detection`   | Enable/Disable AI pet detection | Available on S10 and L10s models
@@ -90,7 +91,6 @@
 | `dnd_end_minute`   | Do not disturb end minute (00:00 -> 00:XX) | Unavailable when do not disturb is disabled
 | `drying_time`   | Mop drying time in minutes | Available on vacuums with self-wash base
 | `auto_add_detergent`   | *Undocumented* | Available on S10 and S10 Pro
-| `carpet_cleaning_method_`   | *Undocumented* | Available on S10 and S10 Pro
 
 ## Button
 

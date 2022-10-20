@@ -24,7 +24,7 @@ CONF_MAP: Final = "map"
 
 CONTENT_TYPE: Final = "image/png"
 
-COLOR_SCHEME: Final = {"light": 0, "dark": 1, "grayscale": 2}
+COLOR_SCHEME: Final = {"Dreame Light": 0, "Dreame Dark": 1, "Mijia Light": 2, "Mijia Dark": 3, "Grayscale": 4}
 
 FAN_SPEED_SILENT: Final = "silent"
 FAN_SPEED_STANDARD: Final = "standard"

@@ -159,7 +159,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         value_fn=lambda value, device: device.status.mop_pad_humidity_name,
         value_int_fn=lambda value, device: DreameVacuumMopPadHumidity[value.upper()],
         exists_fn=lambda description, device: device.status.self_wash_base_available,
-        available_fn=PROPERTY_AVAILABILITY.get(DreameVacuumProperty.WATER_VOLUME),
+        available_fn=lambda device: device.status.water_tank_installed and not device.status.sweeping and not (device.status.customized_cleaning and not device.status.zone_cleaning) and not device.status.fast_mapping and not device.status.started,
         set_fn=lambda device, map_id, value: device.set_mop_pad_humidity(value),
     ),
     DreameVacuumSelectEntityDescription(
@@ -171,7 +171,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         value_fn=lambda value, device: device.status.self_clean_area_name,
         value_int_fn=lambda value, device: DreameVacuumSelfCleanArea[value.upper()],
         exists_fn=lambda description, device: device.status.self_wash_base_available,
-        available_fn=lambda device: device.status.self_clean,
+        available_fn=lambda device: device.status.self_clean and not device.status.started and not device.status.fast_mapping and not device.status.cleaning_paused,
         set_fn=lambda device, map_id, value: device.set_self_clean_area(value),
     ),
     DreameVacuumSelectEntityDescription(

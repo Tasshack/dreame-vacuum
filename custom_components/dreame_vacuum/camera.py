@@ -23,7 +23,6 @@ from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription
 from .dreame.map import DreameVacuumMapRenderer, DreameVacuumMapDataRenderer
 
-
 @dataclass
 class DreameVacuumCameraEntityDescription(
     DreameVacuumEntityDescription, CameraEntityDescription
@@ -140,7 +139,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         if description.map_data_json:
             self._renderer = DreameVacuumMapDataRenderer()
         else:
-            self._renderer = DreameVacuumMapRenderer(color_scheme)
+            self._renderer = DreameVacuumMapRenderer(color_scheme, self.device.status.robot_shape)
         self._image = self._renderer.default_map_image
         self._default_map = True
         self.map_index = map_index
@@ -286,7 +285,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                         int(map_data.last_updated))
 
                 self.coordinator.hass.async_create_task(self._update_image(
-                    self.device.get_map_for_render(self.map_index), self.device.status.robot_status, self.device.status.robot_shape))
+                    self.device.get_map_for_render(self.map_index), self.device.status.robot_status))
         elif not self._default_map:
             self._image = self._renderer.default_map_image
             self._default_map = True
@@ -294,8 +293,8 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             self._last_updated = -1
             self._state = STATE_UNAVAILABLE
 
-    async def _update_image(self, map_data, robot_status, robot_shape) -> None:
-        self._image = self._renderer.render_map(map_data, robot_status, robot_shape)
+    async def _update_image(self, map_data, robot_status) -> None:
+        self._image = self._renderer.render_map(map_data, robot_status)
 
     @property
     def _map_data(self) -> Any:

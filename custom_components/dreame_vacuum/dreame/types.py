@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, Final, List, Optional, Union
+from typing import Any, Dict, Final, List, Optional
 from enum import IntEnum
 from dataclasses import dataclass
 from datetime import datetime
@@ -409,7 +409,7 @@ class DreameVacuumProperty(IntEnum):
     CARPET_RECOGNITION = 34,
     SELF_CLEAN = 35,
     WARN_STATUS = 36,
-    CARPET_CLEANING_METHOD = 37,
+    CARPET_AVOIDANCE = 37,
     AUTO_ADD_DETERGENT = 38,
     CAPABILITY = 39
     DRYING_TIME = 40,
@@ -525,7 +525,7 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.CARPET_RECOGNITION: {"siid": 4, "piid": 33},
     DreameVacuumProperty.SELF_CLEAN: {"siid": 4, "piid": 34},
     DreameVacuumProperty.WARN_STATUS: {"siid": 4, "piid": 35},
-    DreameVacuumProperty.CARPET_CLEANING_METHOD: {"siid": 4, "piid": 36},
+    DreameVacuumProperty.CARPET_AVOIDANCE: {"siid": 4, "piid": 36},
     DreameVacuumProperty.AUTO_ADD_DETERGENT: {"siid": 4, "piid": 37},
     DreameVacuumProperty.CAPABILITY: {"siid": 4, "piid": 38},
     #DreameVacuumProperty.SAVE_WATER_TIPS: {"siid": 4, "piid": 39},
@@ -615,11 +615,13 @@ PROPERTY_AVAILABILITY: Final = {
     DreameVacuumProperty.CLEANING_MODE: lambda device: not device.status.started and not device.status.fast_mapping and not device.status.cleaning_paused,
     DreameVacuumProperty.CARPET_SENSITIVITY: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_BOOST)),
     DreameVacuumProperty.CARPET_BOOST: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
+    DreameVacuumProperty.CARPET_AVOIDANCE: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
     DreameVacuumProperty.AUTO_EMPTY_FREQUENCY: lambda device: bool(device.get_property(DreameVacuumProperty.AUTO_DUST_COLLECTING)),
     DreameVacuumProperty.CLEANING_TIME: lambda device: not device.status.fast_mapping,
     DreameVacuumProperty.CLEANED_AREA: lambda device: not device.status.fast_mapping,
     DreameVacuumProperty.RELOCATION_STATUS: lambda device: not device.status.fast_mapping,
     DreameVacuumProperty.MOP_WASH_LEVEL: lambda device: device.status.water_tank_installed and not device.status.sweeping,
+    DreameVacuumProperty.AUTO_ADD_DETERGENT: lambda device: bool(device.get_property(DreameVacuumProperty.AUTO_ADD_DETERGENT) != 2),
 }
 
 ACTION_AVAILABILITY: Final = {
@@ -1042,10 +1044,11 @@ class MapFrameType(IntEnum):
 
 
 class MapPixelType(IntEnum):
-    OUTSIDE = 255
-    WALL = 254
-    FLOOR = 253
-    NEW_SEGMENT = 252
+    OUTSIDE = 0
+    WALL = 255
+    FLOOR = 254
+    NEW_SEGMENT = 253
+    UNKNOWN = 252
 
 
 class MapDataPartial:
@@ -1216,7 +1219,37 @@ class MapData:
             attributes_list[ATTR_MAP_INDEX] = self.map_index
         return attributes_list
 
-
+@dataclass
+class MapRendererColorScheme:
+    name: str = "Default"
+    floor: tuple[int] = (221, 221, 221, 255)
+    outside: tuple[int] = (0, 0, 0, 0)
+    wall: tuple[int] = (159, 159, 159, 255)
+    passive_segment: tuple[int] = (200, 200, 200, 255)
+    new_segment: tuple[int] = (153, 191, 255, 255)
+    no_go: tuple[int] = (177, 0, 0, 128)
+    no_go_outline: tuple[int] = (199, 0, 0, 200)
+    no_mop: tuple[int] = (170, 47, 255, 128)
+    no_mop_outline: tuple[int] = (153, 0, 210, 200)
+    virtual_wall: tuple[int] = (199, 0, 0, 200)
+    active_area: tuple[int] = (255, 255, 255, 128)
+    active_area_outline: tuple[int] = (103, 156, 244, 200)
+    path: tuple[int] = (255, 255, 255, 255)
+    segment: tuple[list[tuple[int]]] = (
+        [(171, 199, 248, 255), (121, 170, 255, 255)],
+        [(249, 224, 125, 255), (255, 211, 38, 255)],
+        [(184, 227, 255, 255), (141, 210, 255, 255)],
+        [(184, 217, 141, 255), (150, 217, 141, 255)],
+    )
+    icon_background: tuple[int] = (0, 0, 0, 100)
+    settings_background: tuple[int] = (255, 255, 255, 175)
+    settings_icon_background: tuple[int] = (255, 255, 255, 205)
+    text: tuple[int] = (255, 255, 255, 255)
+    order: tuple[int] = (255, 255, 255, 255)
+    text_stroke: tuple[int] = (255, 255, 255, 100)
+    invert: bool = False
+    dark: bool = False
+    
 class MapRendererLayer(IntEnum):
     IMAGE = 0
     OBJECTS = 1

@@ -274,7 +274,7 @@ vacuum_split_segments:
       selector:
         number:
           min: 1
-          max: 62
+          max: 60
           mode: box
     line:
       description: "Split line coordinates"  
@@ -296,7 +296,7 @@ vacuum_rename_segment:
       selector:
         number:
           min: 1
-          max: 62
+          max: 60
           mode: box
     segment_name:
       description: "New name of the segment"
