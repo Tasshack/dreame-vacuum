@@ -156,6 +156,67 @@ Start selected zone cleaning with optional customized cleaning parameters.
     ```tity_id: vacuum.vacuum
     ```
 
+### `dreame_vacuum.vacuum_clean_spot`
+
+Start selected spot cleaning with optional customized cleaning parameters.
+
+> Spot cleaning feature is only available for Xiaomi/Mijia branded robots but it works with the Dreame devices too.
+
+> You can acquire point coordinates with <a href="https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card/blob/master/docs/templates/setup.md#getting-coordinates" target="_blank_">Xiaomi Vacuum Map Card</a>.
+
+**Examples:**
+
+- Clean selected zone
+    ```yaml
+    service: dreame_vacuum.vacuum_clean_spot
+    data:
+      points: 
+        - 819
+        - -263
+    target:
+      entity_id: vacuum.vacuum
+    ```
+- Clean multiple zones
+    ```yaml
+    service: dreame_vacuum.vacuum_clean_spot
+    data:
+      points: 
+        - - 819
+          - -263
+        - - 2001
+          - -3050
+    target:
+      entity_id: vacuum.vacuum
+    ```
+- Clean selected zone two times
+    ```yaml
+    service: dreame_vacuum.vacuum_clean_spot
+    data:
+      points: 
+        - 819
+        - -263
+      repeats: 2
+    target:
+      entity_id: vacuum.vacuum
+    ```
+
+- Clean first zone two times second zone three times
+    ```yaml
+    service: dreame_vacuum.vacuum_clean_spot
+    data:
+      points: 
+        - - 819
+          - -263
+        - - 2001
+          - -3050
+      repeats: 
+        - 2
+        - 3
+    target:
+      entity_id: vacuum.vacuum
+    ```tity_id: vacuum.vacuum
+    ```
+
 ### `dreame_vacuum.vacuum_set_dnd`
 
 Set do not disturb settings. *(This service exists because the lack of **date_time** entity on Home Assistant)*

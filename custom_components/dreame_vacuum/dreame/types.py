@@ -70,6 +70,7 @@ ATTR_TIMESTAMP: Final = "timestamp"
 ATTR_UPDATED: Final = "updated_at"
 ATTR_USED_TIMES: Final = "used_times"
 ATTR_ACTIVE_AREAS: Final = "active_areas"
+ATTR_ACTIVE_POINTS: Final = "active_points"
 ATTR_ACTIVE_SEGMENTS: Final = "active_segments"
 ATTR_FRAME_ID: Final = "frame_id"
 ATTR_MAP_INDEX: Final = "map_index"
@@ -610,8 +611,8 @@ PROPERTY_AVAILABILITY: Final = {
     DreameVacuumProperty.MOP_CLEANING_REMAINDER: lambda device: device.status.water_tank_installed,
     DreameVacuumProperty.DND_START: lambda device: device.status.dnd_enabled,
     DreameVacuumProperty.DND_END: lambda device: device.status.dnd_enabled,
-    DreameVacuumProperty.SUCTION_LEVEL: lambda device: not device.status.mopping and not (device.status.customized_cleaning and not device.status.zone_cleaning) and not device.status.fast_mapping,
-    DreameVacuumProperty.WATER_VOLUME: lambda device: device.status.water_tank_installed and not device.status.sweeping and not (device.status.customized_cleaning and not device.status.zone_cleaning) and not device.status.fast_mapping,
+    DreameVacuumProperty.SUCTION_LEVEL: lambda device: not device.status.mopping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping,
+    DreameVacuumProperty.WATER_VOLUME: lambda device: device.status.water_tank_installed and not device.status.sweeping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping,
     DreameVacuumProperty.CLEANING_MODE: lambda device: not device.status.started and not device.status.fast_mapping and not device.status.cleaning_paused,
     DreameVacuumProperty.CARPET_SENSITIVITY: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_BOOST)),
     DreameVacuumProperty.CARPET_BOOST: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
@@ -1084,6 +1085,7 @@ class MapData:
         self.path: Optional[Path] = None  # Data json: tr
         self.active_segments: Optional[int] = None  # Data json: sa
         self.active_areas: Optional[List[Area]] = None  # Data json: da2
+        self.active_points: Optional[List[Point]] = None  # Data json: sp
         self.used_times: Optional[int] = None  # Data json: map_used_times
         # Data json: rism.map_header.map_id
         self.saved_map_id: Optional[int] = None
@@ -1156,6 +1158,9 @@ class MapData:
         if self.active_areas != other.active_areas:
             return False
 
+        if self.active_points != other.active_points:
+            return False
+
         if self.clean_log != other.clean_log:
             return False
 
@@ -1205,6 +1210,8 @@ class MapData:
             attributes_list[ATTR_ACTIVE_AREAS] = self.active_areas
         if not self.saved_map and self.active_segments is not None:
             attributes_list[ATTR_ACTIVE_SEGMENTS] = self.active_segments
+        if not self.saved_map and self.active_points is not None:
+            attributes_list[ATTR_ACTIVE_POINTS] = self.active_points
         if self.walls is not None:
             attributes_list[ATTR_WALLS] = self.walls
         if self.no_go_areas is not None:
@@ -1218,6 +1225,25 @@ class MapData:
         if self.map_index:
             attributes_list[ATTR_MAP_INDEX] = self.map_index
         return attributes_list
+
+
+@dataclass
+class MapRendererConfig:
+    color: bool = True
+    icon: bool = True
+    name: bool = True
+    order: bool = True
+    suction_level: bool = True
+    water_volume: bool = True
+    cleaning_times: bool = True
+    path: bool = True
+    no_go: bool = True
+    no_mop: bool = True
+    virtual_wall: bool = True
+    active_area: bool = True
+    active_point: bool = True
+    charger: bool = True
+    robot: bool = True
 
 @dataclass
 class MapRendererColorScheme:
@@ -1234,6 +1260,8 @@ class MapRendererColorScheme:
     virtual_wall: tuple[int] = (199, 0, 0, 200)
     active_area: tuple[int] = (255, 255, 255, 128)
     active_area_outline: tuple[int] = (103, 156, 244, 200)
+    active_point: tuple[int] = (255, 255, 255, 128)
+    active_point_outline: tuple[int] = (103, 156, 244, 200)
     path: tuple[int] = (255, 255, 255, 255)
     segment: tuple[list[tuple[int]]] = (
         [(171, 199, 248, 255), (121, 170, 255, 255)],
@@ -1258,9 +1286,10 @@ class MapRendererLayer(IntEnum):
     NO_GO = 4
     WALL = 5
     ACTIVE_AREA = 6
-    SEGMENTS = 7
-    CHARGER = 8
-    ROBOT = 9
+    ACTIVE_POINT = 7
+    SEGMENTS = 8
+    CHARGER = 9
+    ROBOT = 10
 
 
 @dataclass

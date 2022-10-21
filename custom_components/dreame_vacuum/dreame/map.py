@@ -42,6 +42,7 @@ from .types import (
     MapImageDimensions,
     MapRendererLayer,
     MapRendererColorScheme,
+    MapRendererConfig,
 )
 from .const import (
     MAP_PARAMETER_NAME,
@@ -817,6 +818,7 @@ class DreameMapVacuumMapManager:
                                         self._map_data.active_segments
                                     )
                                     map_data.active_areas = self._map_data.active_areas
+                                    map_data.active_points = self._map_data.active_points
                                     map_data.path = self._map_data.path
                                     map_data.segments = self._map_data.segments
                                     changed = map_data != self._map_data
@@ -1219,6 +1221,20 @@ class DreameMapVacuumMapEditor:
         map_data = self._map_data
         if map_data is not None:
             map_data.active_segments = active_segments
+            self._set_updated_frame_id(map_data.frame_id)
+            self.refresh_map()
+
+    def set_active_points(self, active_points: list[list[int]]) -> None:
+        map_data = self._map_data
+        if map_data is not None:
+            map_data.active_points = []
+            for point in active_points:
+                map_data.active_points.append(
+                    Point(
+                        point[0],
+                        point[1],
+                    )
+                )
             self._set_updated_frame_id(map_data.frame_id)
             self.refresh_map()
 
@@ -1996,6 +2012,11 @@ class DreameVacuumMapDecoder:
                             y_coords[1],
                         )
                     )
+
+        if data_json.get("sp"):
+            map_data.active_points = []
+            for point in data_json["sp"]:
+                map_data.active_points.append(Point(point[0], point[1]))
 
         if "cleanset" in data_json:
             map_data.cleanset = data_json["cleanset"]
@@ -3009,6 +3030,8 @@ class DreameVacuumMapRenderer:
             virtual_wall = (133, 0, 0, 200),
             active_area = (200, 200, 200, 80),
             active_area_outline = (9, 54, 129, 200),
+            active_point = (200, 200, 200, 80),
+            active_point_outline = (9, 54, 129, 200),
             path = (200, 200, 200, 255),
             segment = (
                 [(13, 64, 155, 255), (0, 55, 150, 255)],
@@ -3051,6 +3074,8 @@ class DreameVacuumMapRenderer:
             virtual_wall = (133, 0, 0, 200),
             active_area = (200, 200, 200, 80),
             active_area_outline = (9, 54, 129, 200),
+            active_point = (200, 200, 200, 80),
+            active_point_outline = (9, 54, 129, 200),
             path = (200, 200, 200, 255),
             settings_icon_background = (255, 255, 255, 185),
             dark = True,
@@ -3068,6 +3093,8 @@ class DreameVacuumMapRenderer:
             virtual_wall = (133, 0, 0, 200),
             active_area = (221, 221, 221, 80),
             active_area_outline = (22, 103, 238, 200),
+            active_point = (221, 221, 221, 80),
+            active_point_outline = (22, 103, 238, 200),
             path = (200, 200, 200, 255),
             segment = (
                 [(90, 90, 90, 255), (95, 95, 95, 255)],
@@ -3087,6 +3114,7 @@ class DreameVacuumMapRenderer:
     def __init__(self, color_scheme: int = 0, robot_shape: int = 0) -> None:
         self._image = None
         self.color_scheme: MapRendererColorScheme = DreameVacuumMapRenderer.MAP_COLOR_SCHEME_LIST.get(color_scheme, MapRendererColorScheme())
+        self.config: MapRendererConfig = MapRendererConfig()
         self._map_data: MapData = None
         self.render_complete: bool = True
         self._layers: dict[MapRendererLayer, Any] = {}
@@ -3364,12 +3392,15 @@ class DreameVacuumMapRenderer:
 
             if map_data.segments is not None:
                 for (k, v) in map_data.segments.items():
-                    if map_data.active_segments and k not in map_data.active_segments:
-                        area_colors[k] = self.color_scheme.passive_segment
-                    elif v.color_index is not None:
-                        area_colors[k] = self.color_scheme.segment[
-                            v.color_index
-                        ][0]
+                    if self.config.color:
+                        if map_data.active_segments and k not in map_data.active_segments:
+                            area_colors[k] = self.color_scheme.passive_segment
+                        elif v.color_index is not None:
+                            area_colors[k] = self.color_scheme.segment[
+                                v.color_index
+                            ][0]
+                    else:
+                        area_colors[k] = area_colors[MapPixelType.FLOOR.value]
 
             pixels = np.full(
                 (
@@ -3461,7 +3492,7 @@ class DreameVacuumMapRenderer:
         line_width = 3
         border_width = 2
 
-        if map_data.path:
+        if map_data.path and self.config.path:
             if (
                 self._map_data is None
                 or self._map_data.path != map_data.path
@@ -3478,7 +3509,7 @@ class DreameVacuumMapRenderer:
             layer = Image.alpha_composite(
                 layer, self._layers[MapRendererLayer.PATH])
 
-        if map_data.no_mopping_areas:
+        if map_data.no_mopping_areas and self.config.no_mop:
             if (
                 self._map_data is None
                 or self._map_data.no_mopping_areas != map_data.no_mopping_areas
@@ -3496,7 +3527,7 @@ class DreameVacuumMapRenderer:
             layer = Image.alpha_composite(
                 layer, self._layers[MapRendererLayer.NO_MOP])
 
-        if map_data.no_go_areas:
+        if map_data.no_go_areas and self.config.no_go:
             if (
                 self._map_data is None
                 or self._map_data.no_go_areas != map_data.no_go_areas
@@ -3514,7 +3545,7 @@ class DreameVacuumMapRenderer:
             layer = Image.alpha_composite(
                 layer, self._layers[MapRendererLayer.NO_GO])
 
-        if map_data.walls:
+        if map_data.walls and self.config.virtual_wall:
             if (
                 self._map_data is None
                 or self._map_data.walls != map_data.walls
@@ -3531,7 +3562,7 @@ class DreameVacuumMapRenderer:
             layer = Image.alpha_composite(
                 layer, self._layers[MapRendererLayer.WALL])
 
-        if map_data.active_areas:
+        if map_data.active_areas and self.config.active_area:
             if (
                 self._map_data is None
                 or self._map_data.active_areas != map_data.active_areas
@@ -3549,7 +3580,25 @@ class DreameVacuumMapRenderer:
             layer = Image.alpha_composite(
                 layer, self._layers[MapRendererLayer.ACTIVE_AREA])
 
-        if map_data.segments:
+        if map_data.active_points and self.config.active_point:
+            if (
+                self._map_data is None
+                or self._map_data.active_points != map_data.active_points
+                or not self._layers.get(MapRendererLayer.ACTIVE_POINT)
+            ):
+                self._layers[MapRendererLayer.ACTIVE_POINT] = self.render_points(
+                    map_data.active_points,
+                    self.color_scheme.active_point_outline,
+                    self.color_scheme.active_point,
+                    layer,
+                    map_data.dimensions,
+                    border_width,
+                    scale,
+                )
+            layer = Image.alpha_composite(
+                layer, self._layers[MapRendererLayer.ACTIVE_POINT])
+
+        if map_data.segments and (self.config.icon or self.config.name or self.config.order or self.config.suction_level or self.config.water_volume or self.config.cleaning_times):
             if (
                 self._map_data is None
                 or self._map_data.segments != map_data.segments
@@ -3569,7 +3618,7 @@ class DreameVacuumMapRenderer:
             layer = Image.alpha_composite(
                 layer, self._layers[MapRendererLayer.SEGMENTS])
 
-        if map_data.charger_position:
+        if map_data.charger_position and self.config.charger:
             if (
                 self._map_data is None
                 or self._map_data.charger_position != map_data.charger_position
@@ -3589,7 +3638,7 @@ class DreameVacuumMapRenderer:
             layer = Image.alpha_composite(
                 layer, self._layers[MapRendererLayer.CHARGER])
 
-        if map_data.robot_position:
+        if map_data.robot_position and self.config.robot:
             if (
                 self._map_data is None
                 or self._map_data.robot_position != map_data.robot_position
@@ -3621,6 +3670,27 @@ class DreameVacuumMapRenderer:
         new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
         draw = ImageDraw.Draw(new_layer, "RGBA")
         for area in areas:
+            p = area.to_img(dimensions)
+            coords = [
+                p.x0 * scale,
+                p.y0 * scale,
+                p.x1 * scale,
+                p.y1 * scale,
+                p.x2 * scale,
+                p.y2 * scale,
+                p.x3 * scale,
+                p.y3 * scale,
+            ]
+            draw.polygon(coords, fill, color, width=(width * scale))
+        return new_layer
+
+    def render_points(self, points, color, fill, layer, dimensions, width, scale):
+        new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
+        draw = ImageDraw.Draw(new_layer, "RGBA")
+        size = 15 * 50
+        for point in points:
+            area = Area(point.x - size, point.y - size, point.x + size, point.y - size, point.x + size, point.y + size, point.x - size, point.y + size)
+
             p = area.to_img(dimensions)
             coords = [
                 p.x0 * scale,
@@ -3844,7 +3914,7 @@ class DreameVacuumMapRenderer:
         for segment in segments:
             if segment.x is not None and segment.y is not None:
                 text = None
-                if segment.type == 0:
+                if segment.type == 0 or not self.config.icon:
                     text = segment.name
                 elif segment.index > 0:
                     text = str(segment.index)
@@ -3852,12 +3922,13 @@ class DreameVacuumMapRenderer:
                 text_font = None
                 order_font = None
                 icon = None
-                if text:
+                if text and self.config.name:
                     text_font = ImageFont.truetype(
                         BytesIO(self.font_file),
-                        (scale * 19) if segment.index > 0 else (scale * 17),
+                        (scale * 19) if segment.index or not self.config.icon > 0 else (scale * 17),
                     )
-                if segment.order:
+
+                if segment.order and self.config.order:
                     order_font = ImageFont.truetype(
                         BytesIO(self.font_file), (scale * 21)
                     )
@@ -3866,7 +3937,7 @@ class DreameVacuumMapRenderer:
                 x = p.x
                 y = p.y
 
-                if segment.type != 0 or text_font:
+                if segment.type != 0 or text_font or not self.config.name:
                     icon_size = size * 1.3
                     icon = self._segment_icons.get(segment.type, 0)
                     x0 = x - size
@@ -3878,7 +3949,7 @@ class DreameVacuumMapRenderer:
                         tw, th = draw.textsize(text, text_font)
                         ws = tw / 4
 
-                        if segment.index > 0:
+                        if segment.index > 0 or not self.config.icon:
                             icon_size = size * 1.35
                             padding = icon_size / 2
                             text_offset = (icon_size / 2) + 2
@@ -3890,6 +3961,9 @@ class DreameVacuumMapRenderer:
                             icon_offset = padding - 2
                             text_offset = icon_size / 2
                             th = scale * 19
+
+                        if not self.config.icon:
+                            text_offset = 0
 
                         if rotation == 90 or rotation == 270:
                             y0 = y0 - ws - padding
@@ -3916,16 +3990,17 @@ class DreameVacuumMapRenderer:
                                 ty = (y - (th / 4)) * scale
                                 x = x + ws + icon_offset
 
-                        draw.rounded_rectangle(
-                            [
-                                int(x0 * scale),
-                                int(y0 * scale),
-                                int(x1 * scale),
-                                int(y1 * scale),
-                            ],
-                            fill=self.color_scheme.icon_background,
-                            radius=((size * scale)),
-                        )
+                        if self.config.icon:
+                            draw.rounded_rectangle(
+                                [
+                                    int(x0 * scale),
+                                    int(y0 * scale),
+                                    int(x1 * scale),
+                                    int(y1 * scale),
+                                ],
+                                fill=self.color_scheme.icon_background,
+                                radius=((size * scale)),
+                            )
 
                         icon_text = Image.new(
                             "RGBA", (tw, th), (255, 255, 255, 0))
@@ -3947,21 +4022,23 @@ class DreameVacuumMapRenderer:
                             fill=self.color_scheme.icon_background,
                         )
 
-                    s = icon_size * scale
-                    icon = icon.resize((int(s), int(s))).rotate(-rotation)
-                    new_layer.paste(
-                        icon, (int(x * scale - (s / 2)),
-                               int(y * scale - (s / 2))), icon
-                    )
+                    if self.config.icon:
+                        s = icon_size * scale
+                        icon = icon.resize((int(s), int(s))).rotate(-rotation)
+                        new_layer.paste(
+                            icon, (int(x * scale - (s / 2)),
+                                   int(y * scale - (s / 2))), icon
+                        )
 
                 custom = (
                     cleanset
                     and segment.suction_level is not None
                     and segment.water_volume is not None
                     and segment.cleaning_times is not None
+                    and (self.config.suction_level or self.config.water_volume or self.config.cleaning_times)
                 )
                 if order_font or custom:
-                    if icon:
+                    if icon or (not self.config.icon and self.config.name):
                         offset = size * 2.7
                         x_offset = 0
                         y_offset = -offset
@@ -3977,23 +4054,34 @@ class DreameVacuumMapRenderer:
 
                         x = p.x + x_offset
                         y = p.y + y_offset
-
+                        
                     if custom:
                         s = scale * 2
                         arrow = (s + 2) * scale
-                    else:
-                        s = scale * 3
-                        arrow = 5 * scale
-                    padding = s + arrow
-                    margin = s if custom else 0
-                    if custom:
+
                         if order_font:
                             icon_count = 4
                         else:
                             icon_count = 3
+
+                        if not self.config.suction_level:
+                            icon_count = icon_count - 1
+                        if not self.config.water_volume:
+                            icon_count = icon_count - 1
+                        if not self.config.cleaning_times:
+                            icon_count = icon_count - 1                            
                     else:
                         icon_count = 1
 
+                    if icon_count == 1:
+                        s = scale * 3
+                        arrow = 5 * scale
+                    else:                        
+                        s = scale * 3
+                        arrow = 5 * scale
+                        
+                    padding = s + arrow
+                    margin = s if icon_count > 1 else 0
                     radius = size
                     if custom:
                         radius = size - 2
@@ -4049,98 +4137,102 @@ class DreameVacuumMapRenderer:
                             stroke_width=1,
                             stroke_fill=self.color_scheme.text_stroke,
                         )
+                        
+                        ellipse_x1 = ellipse_x2 + (margin * 2)
+                        ellipse_x2 = ellipse_x1 + r
 
                     if custom:
                         icon_size = size * 1.45
-
                         s = icon_size * 0.85 * scale
-                        ico = DreameVacuumMapRenderer._set_icon_color(
-                            self._suction_level_icon[segment.suction_level],
-                            s,
-                            self.color_scheme.segment[segment.color_index][
-                                1
-                            ],
-                        )
-                        if order_font:
+                        
+                        if self.config.suction_level:
+                            ico = DreameVacuumMapRenderer._set_icon_color(
+                                self._suction_level_icon[segment.suction_level],
+                                s,
+                                self.color_scheme.segment[segment.color_index][
+                                    1
+                                ],
+                            )
+                            icon_draw.ellipse(
+                                [ellipse_x1, padding, ellipse_x2,
+                                    (icon_h - padding)],
+                                fill=self.color_scheme.settings_icon_background,
+                            )
+                            icon.paste(
+                                ico,
+                                (
+                                    int(
+                                        2
+                                        + ellipse_x1
+                                        + ((ellipse_x2 - ellipse_x1) / 2)
+                                        - ico.size[0] / 2
+                                    ),
+                                    int(((icon_h / 2) - ico.size[1] / 2)),
+                                ),
+                                ico,
+                            )
+                        
                             ellipse_x1 = ellipse_x2 + (margin * 2)
                             ellipse_x2 = ellipse_x1 + r
 
-                        icon_draw.ellipse(
-                            [ellipse_x1, padding, ellipse_x2,
-                                (icon_h - padding)],
-                            fill=self.color_scheme.settings_icon_background,
-                        )
-                        icon.paste(
-                            ico,
-                            (
-                                int(
-                                    2
-                                    + ellipse_x1
-                                    + ((ellipse_x2 - ellipse_x1) / 2)
-                                    - ico.size[0] / 2
+                        if self.config.water_volume:
+                            ico = DreameVacuumMapRenderer._set_icon_color(
+                                self._water_volume_icon[segment.water_volume - 1],
+                                s,
+                                self.color_scheme.segment[segment.color_index][
+                                    1
+                                ],
+                            )
+
+                            icon_draw.ellipse(
+                                [ellipse_x1, padding, ellipse_x2,
+                                    (icon_h - padding)],
+                                fill=self.color_scheme.settings_icon_background,
+                            )
+                            icon.paste(
+                                ico,
+                                (
+                                    int(
+                                        2
+                                        + ellipse_x1
+                                        + ((ellipse_x2 - ellipse_x1) / 2)
+                                        - ico.size[0] / 2
+                                    ),
+                                    int(((icon_h / 2) - ico.size[1] / 2)),
                                 ),
-                                int(((icon_h / 2) - ico.size[1] / 2)),
-                            ),
-                            ico,
-                        )
+                                ico,
+                            )
 
-                        ico = DreameVacuumMapRenderer._set_icon_color(
-                            self._water_volume_icon[segment.water_volume - 1],
-                            s,
-                            self.color_scheme.segment[segment.color_index][
-                                1
-                            ],
-                        )
-                        ellipse_x1 = ellipse_x2 + (margin * 2)
-                        ellipse_x2 = ellipse_x1 + r
+                            ellipse_x1 = ellipse_x2 + (margin * 2)
+                            ellipse_x2 = ellipse_x1 + r
 
-                        icon_draw.ellipse(
-                            [ellipse_x1, padding, ellipse_x2,
-                                (icon_h - padding)],
-                            fill=self.color_scheme.settings_icon_background,
-                        )
-                        icon.paste(
-                            ico,
-                            (
-                                int(
-                                    2
-                                    + ellipse_x1
-                                    + ((ellipse_x2 - ellipse_x1) / 2)
-                                    - ico.size[0] / 2
+                        if self.config.cleaning_times:
+                            ico = DreameVacuumMapRenderer._set_icon_color(
+                                self._cleaning_times_icon[segment.cleaning_times - 1],
+                                s,
+                                self.color_scheme.segment[segment.color_index][
+                                    1
+                                ],
+                            )
+
+                            icon_draw.ellipse(
+                                [ellipse_x1, padding, ellipse_x2,
+                                    (icon_h - padding)],
+                                fill=self.color_scheme.settings_icon_background,
+                            )
+                            icon.paste(
+                                ico,
+                                (
+                                    int(
+                                        2
+                                        + ellipse_x1
+                                        + ((ellipse_x2 - ellipse_x1) / 2)
+                                        - ico.size[0] / 2
+                                    ),
+                                    int(((icon_h / 2) - ico.size[1] / 2)),
                                 ),
-                                int(((icon_h / 2) - ico.size[1] / 2)),
-                            ),
-                            ico,
-                        )
-
-                        ico = DreameVacuumMapRenderer._set_icon_color(
-                            self._cleaning_times_icon[segment.cleaning_times - 1],
-                            s,
-                            self.color_scheme.segment[segment.color_index][
-                                1
-                            ],
-                        )
-                        ellipse_x1 = ellipse_x2 + (margin * 2)
-                        ellipse_x2 = ellipse_x1 + r
-
-                        icon_draw.ellipse(
-                            [ellipse_x1, padding, ellipse_x2,
-                                (icon_h - padding)],
-                            fill=self.color_scheme.settings_icon_background,
-                        )
-                        icon.paste(
-                            ico,
-                            (
-                                int(
-                                    2
-                                    + ellipse_x1
-                                    + ((ellipse_x2 - ellipse_x1) / 2)
-                                    - ico.size[0] / 2
-                                ),
-                                int(((icon_h / 2) - ico.size[1] / 2)),
-                            ),
-                            ico,
-                        )
+                                ico,
+                            )
 
                     icon = icon.rotate(-rotation, expand=1)
                     new_layer.paste(

@@ -159,7 +159,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         value_fn=lambda value, device: device.status.mop_pad_humidity_name,
         value_int_fn=lambda value, device: DreameVacuumMopPadHumidity[value.upper()],
         exists_fn=lambda description, device: device.status.self_wash_base_available,
-        available_fn=lambda device: device.status.water_tank_installed and not device.status.sweeping and not (device.status.customized_cleaning and not device.status.zone_cleaning) and not device.status.fast_mapping and not device.status.started,
+        available_fn=lambda device: device.status.water_tank_installed and not device.status.sweeping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping and not device.status.started,
         set_fn=lambda device, map_id, value: device.set_mop_pad_humidity(value),
     ),
     DreameVacuumSelectEntityDescription(
@@ -238,7 +238,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             device.status.segments
             and next(iter(device.status.segments.values())).suction_level is not None
             and device.status.customized_cleaning
-            and not device.status.zone_cleaning
+            and not (device.status.zone_cleaning or device.status.spot_cleaning)
             and not device.status.fast_mapping
         ),
         value_fn=lambda device, segment: SUCTION_LEVEL_CODE_TO_NAME.get(
@@ -262,7 +262,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             device.status.segments
             and next(iter(device.status.segments.values())).water_volume is not None
             and device.status.customized_cleaning
-            and not device.status.zone_cleaning
+            and not (device.status.zone_cleaning or device.status.spot_cleaning)
             and not device.status.fast_mapping
         ),
         value_fn=lambda device, segment: WATER_VOLUME_CODE_TO_NAME.get(
@@ -287,7 +287,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             device.status.segments
             and next(iter(device.status.segments.values())).mop_pad_humidity is not None
             and device.status.customized_cleaning
-            and not device.status.zone_cleaning
+            and not (device.status.zone_cleaning or device.status.spot_cleaning)
             and not device.status.fast_mapping
         ),
         value_fn=lambda device, segment: MOP_PAD_HUMIDITY_CODE_TO_NAME.get(
@@ -309,7 +309,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             device.status.segments
             and next(iter(device.status.segments.values())).cleaning_times is not None
             and device.status.customized_cleaning
-            and not device.status.zone_cleaning
+            and not (device.status.zone_cleaning or device.status.spot_cleaning)
             and not device.status.started
             and not device.status.fast_mapping
         ),

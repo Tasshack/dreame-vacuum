@@ -142,7 +142,8 @@ class DreameVacuumDevice:
         self._last_map_list_request: float = 0  # Last map list property requested time
         self._last_map_request: float = 0  # Last map request trigger time
         self._last_change: float = 0  # Last property change time
-        self._last_update_failed: float = 0  # Last update failed time
+        self._last_update_failed: float = 0  # Last update failed time      
+        self._update_fail_count: int = 0 # Update failed counter
         # Map Manager object. Only available when cloud connection is present
         self._map_manager: DreameMapVacuumMapManager = None
         self._update_callback = None  # External update callback for device
@@ -347,35 +348,35 @@ class DreameVacuumDevice:
 
     def _water_tank_changed(self, previous_water_tank: Any = None) -> None:
         """Update cleaning mode on device when water tank status is changed."""
-        if not self.status.started:
-            # App does not allow you to update cleaning mode when water tank or mop pad is not installed.
-            new_list = CLEANING_MODE_CODE_TO_NAME.copy()
-            water_tank = self.status.water_tank
-            if water_tank is DreameVacuumWaterTank.NOT_INSTALLED:
-                new_list.pop(DreameVacuumCleaningMode.MOPPING)
-                new_list.pop(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING)
-                if self.status.cleaning_mode != DreameVacuumCleaningMode.SWEEPING:
-                    # Store current cleaning mode for future use when water tank is reinstalled
+        # App does not allow you to update cleaning mode when water tank or mop pad is not installed.
+        new_list = CLEANING_MODE_CODE_TO_NAME.copy()
+        water_tank = self.status.water_tank
+        if water_tank is DreameVacuumWaterTank.NOT_INSTALLED:
+            new_list.pop(DreameVacuumCleaningMode.MOPPING)
+            new_list.pop(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING)
+            if self.status.cleaning_mode != DreameVacuumCleaningMode.SWEEPING:
+                # Store current cleaning mode for future use when water tank is reinstalled                
+                if not self.status.started:
                     self._previous_cleaning_mode = self.status.cleaning_mode
                     self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING.value)
-            elif water_tank is DreameVacuumWaterTank.INSTALLED:
-                if not self.status.sweeping_with_mop_pad_available:
-                    new_list.pop(DreameVacuumCleaningMode.SWEEPING)
+        elif water_tank is DreameVacuumWaterTank.INSTALLED:
+            if not self.status.sweeping_with_mop_pad_available:
+                new_list.pop(DreameVacuumCleaningMode.SWEEPING)
 
-                    if self.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING:
-                        if (
-                            self._previous_cleaning_mode is not None
-                            and self._previous_cleaning_mode
-                            != DreameVacuumCleaningMode.SWEEPING
-                        ):
-                            self.set_cleaning_mode(self._previous_cleaning_mode.value)
-                        else:
-                            self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING.value)
+                if not self.status.started and self.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING:
+                    if (
+                        self._previous_cleaning_mode is not None
+                        and self._previous_cleaning_mode
+                        != DreameVacuumCleaningMode.SWEEPING
+                    ):
+                        self.set_cleaning_mode(self._previous_cleaning_mode.value)
+                    else:
+                        self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING.value)
                     # Store current cleaning mode for future use when water tank is removed
                     self._previous_cleaning_mode = self.status.cleaning_mode
 
-            self.status.cleaning_mode_list = {
-                v: k for k, v in new_list.items()}
+        self.status.cleaning_mode_list = {
+            v: k for k, v in new_list.items()}
 
     def _task_status_changed(self, previous_task_status: Any = None) -> None:
         """Task status is a very important property and must be listened to trigger necessary actions when a task started or ended"""
@@ -578,12 +579,17 @@ class DreameVacuumDevice:
 
         try:
             self.update()
+            self._update_fail_count = 0
         except Exception as ex:
+            self._update_fail_count = self._update_fail_count + 1
             if self.available:
-                _LOGGER.warning("Update Failed: %s", ex)
                 self._last_update_failed = time.time()
-                self.available = False
-                self._update_failed(ex)
+                if self._update_fail_count <= 3:
+                    _LOGGER.warning("Update failed, retrying: %s", ex)
+                else:
+                    _LOGGER.debug("Update Failed: %s", ex)
+                    self.available = False
+                    self._update_failed(ex)
 
         self.schedule_update(self._update_interval)
 
@@ -757,6 +763,12 @@ class DreameVacuumDevice:
                 # Map data always contains last active areas
                 map_data.active_areas = None
 
+            if (
+                self.status.started and not self.status.spot_cleaning
+            ) or map_data.saved_map:
+                # Map data always contains last active areas
+                map_data.active_points = None
+
             if not self.status.segment_cleaning or map_data.saved_map:
                 # Map data always contains last active segments
                 map_data.active_segments = None
@@ -766,9 +778,10 @@ class DreameVacuumDevice:
                     # App does not render no mopping areas when cleaning mode is sweeping
                     map_data.no_mopping_areas = None
 
-                if self.status.zone_cleaning and map_data.active_areas:
-                    # App does not render segments when zone cleaning
+                if (self.status.zone_cleaning and map_data.active_areas) or (self.status.spot_cleaning and map_data.active_points):
+                    # App does not render segments when zone or spot cleaning
                     map_data.segments = None
+
             else:
                 map_data.path = None
 
@@ -1084,7 +1097,7 @@ class DreameVacuumDevice:
 
     def set_suction_level(self, suction_level: int) -> bool:
         """Set suction level."""
-        if self.status.started and (self.status.customized_cleaning and not self.status.zone_cleaning):
+        if self.status.started and (self.status.customized_cleaning and not (self.status.zone_cleaning or self.status.spot_cleaning)):
             raise InvalidActionException(
                 "Cannot set suction level when customized cleaning is enabled"
             )
@@ -1097,25 +1110,25 @@ class DreameVacuumDevice:
                 "Cannot set cleaning mode while vacuum is running"
             )
 
-            if cleaning_mode is DreameVacuumCleaningMode.SWEEPING.value:
-                if self.status.water_tank_installed and not self.status.sweeping_with_mop_pad_available:
-                    if self.status.self_wash_base_available:
-                        raise InvalidActionException(
-                            "Cannot set sweeping while mop pad is installed"
-                        )
-                    else:
-                        raise InvalidActionException(
-                            "Cannot set sweeping while water tank is installed"
-                        )
-            elif not self.status.water_tank_installed:
+        if cleaning_mode is DreameVacuumCleaningMode.SWEEPING.value:
+            if self.status.water_tank_installed and not self.status.sweeping_with_mop_pad_available:
                 if self.status.self_wash_base_available:
                     raise InvalidActionException(
-                        "Cannot set mopping while mop pad is not installed"
+                        "Cannot set sweeping while mop pads are installed"
                     )
                 else:
                     raise InvalidActionException(
-                        "Cannot set mopping while water tank is not installed"
+                        "Cannot set sweeping while water tank is installed"
                     )
+        elif not self.status.water_tank_installed:
+            if self.status.self_wash_base_available:
+                raise InvalidActionException(
+                    "Cannot set mopping while mop pads are not installed"
+                )
+            else:
+                raise InvalidActionException(
+                    "Cannot set mopping while water tank is not installed"
+                )
 
         if self.status.self_wash_base_available:
             values = DreameVacuumDevice.split_group_value(self.get_property(DreameVacuumProperty.CLEANING_MODE), self.status.sweeping_with_mop_pad_available)
@@ -1136,7 +1149,7 @@ class DreameVacuumDevice:
     def set_mop_pad_humidity(self, mop_pad_humidity: int) -> bool:
         """Set mop pad humidity."""
         if self.status.self_wash_base_available:
-            if self.status.started and (self.status.customized_cleaning and not self.status.zone_cleaning):
+            if self.status.started and (self.status.customized_cleaning and not (self.status.zone_cleaning or self.status.spot_cleaning)):
                 raise InvalidActionException(
                     "Cannot set mop pad humidity when customized cleaning is enabled"
                 )
@@ -1149,7 +1162,7 @@ class DreameVacuumDevice:
     def set_water_volume(self, water_volume: int) -> bool:
         """Set water volume."""
         if not self.status.self_wash_base_available:
-            if self.status.started and (self.status.customized_cleaning and not self.status.zone_cleaning):
+            if self.status.started and (self.status.customized_cleaning and not (self.status.zone_cleaning or self.status.spot_cleaning)):
                 raise InvalidActionException(
                     "Cannot set water volume when customized cleaning is enabled"
                 )
@@ -1266,7 +1279,7 @@ class DreameVacuumDevice:
 
     def clean_zone(self, zones: list[int] | list[list[int]], cleaning_times: int) -> dict[str, Any] | None:
         """Clean selected area."""
-        if not isinstance(zones[0], list):
+        if zones and not isinstance(zones[0], list):
             zones = [zones]
 
         suction_level = self.status.suction_level.value
@@ -1375,6 +1388,42 @@ class DreameVacuumDevice:
         return self.start_custom(
             DreameVacuumStatus.SEGMENT_CLEANING.value,
             str(json.dumps({"selects": cleanlist}, separators=(",", ":"))).replace(
+                " ", ""
+            ),
+        )
+
+    def clean_spot(self, points: list[int] | list[list[int]], cleaning_times: int | list[int], suction_level: int | list[int], water_volume: int | list[int]) -> dict[str, Any] | None:
+        if points and not isinstance(points[0], list):
+            points = [points]
+            
+        suction_level = self.status.suction_level.value
+        if self.status.self_wash_base_available:
+            water_volume = self.status.mop_pad_humidity.value
+        else:
+            water_volume = self.status.water_volume.value
+
+        cleanlist = []
+        for point in points:
+            cleanlist.append(
+                [
+                    int(round(point[0])),
+                    int(round(point[1])),
+                    cleaning_times,
+                    suction_level,
+                    water_volume,
+                ]
+            )
+
+        if not self.status.started:
+            self._update_status(DreameVacuumTaskStatus.SPOT_CLEANING, DreameVacuumStatus.SPOT_CLEANING)
+
+            if self._map_manager:
+                # Set active points on current map data is implemented on the app
+                self._map_manager.editor.set_active_points(points)
+
+        return self.start_custom(
+            DreameVacuumStatus.SPOT_CLEANING.value,
+            str(json.dumps({"points": cleanlist}, separators=(",", ":"))).replace(
                 " ", ""
             ),
         )
@@ -2458,6 +2507,20 @@ class DreameVacuumDeviceStatus:
                 or task_status is DreameVacuumTaskStatus.ZONE_CLEANING_PAUSED
                 or task_status is DreameVacuumTaskStatus.ZONE_MOPPING_PAUSED
                 or task_status is DreameVacuumTaskStatus.ZONE_DOCKING_PAUSED
+            )
+        )
+
+    @property
+    def spot_cleaning(self) -> bool:
+        """Returns true when device is currently performing a spot cleaning task."""
+        task_status = self.task_status
+        return bool(
+            self._device_connected
+            and self.started
+            and (
+                task_status is DreameVacuumTaskStatus.SPOT_CLEANING
+                or task_status is DreameVacuumTaskStatus.SPOT_CLEANING_PAUSED
+                or self.status is DreameVacuumStatus.SPOT_CLEANING
             )
         )
 

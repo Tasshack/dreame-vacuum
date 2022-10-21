@@ -137,6 +137,17 @@ map_modes:
           - - {{room["x1"]}}
             - {{room["y0"]}}
 {%- endfor %}
+  - name: Clean Spot
+    icon: mdi:map-marker-plus
+    max_repeats: 3
+    selection_type: MANUAL_POINT
+    repeats_type: EXTERNAL
+    service_call_schema:
+      service: dreame_vacuum.vacuum_clean_spot
+      service_data:
+        entity_id: '[[entity_id]]'
+        points: '[[selection]]'
+        repeats: '[[repeats]]'
 ```
 
 #### With [Vacuum Card](https://github.com/denysdovhan/vacuum-card)

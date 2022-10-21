@@ -56,8 +56,10 @@ from .const import (
     INPUT_ZONE,
     INPUT_ZONE_ARRAY,
     INPUT_CONSUMABLE,
+    INPUT_POINTS,
     SERVICE_CLEAN_ZONE,
     SERVICE_CLEAN_SEGMENT,
+    SERVICE_CLEAN_SPOT,
     SERVICE_INSTALL_VOICE_PACK,
     SERVICE_MERGE_SEGMENTS,
     SERVICE_MOVE_REMOTE_CONTROL_STEP,
@@ -225,6 +227,25 @@ async def async_setup_entry(
             ),
         },
         DreameVacuum.async_clean_segment.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_CLEAN_SPOT,
+        {
+            vol.Required(INPUT_POINTS): vol.Any(
+                vol.Coerce(int), [vol.Coerce(int)]
+            ),
+            vol.Optional(INPUT_REPEATS): vol.All(
+                vol.Coerce(int), vol.Clamp(min=1, max=3)
+            ),
+            vol.Optional(INPUT_SUCTION_LEVEL): vol.All(
+                vol.Coerce(int), vol.Clamp(min=0, max=3)
+            ),
+            vol.Optional(INPUT_WATER_VOLUME): vol.All(
+                vol.Coerce(int), vol.Clamp(min=1, max=3)
+            ),
+        },
+        DreameVacuum.async_clean_spot.__name__,
     )
 
     platform.async_register_entity_service(
@@ -437,8 +458,8 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
         else:
             self._attr_icon = "mdi:robot-vacuum"
 
-        if self.device.status.started and (self.device.status.customized_cleaning and not self.device.status.zone_cleaning):
-            self._attr_fan_speed_list = None
+        if self.device.status.started and (self.device.status.customized_cleaning and not (self.device.status.zone_cleaning or self.device.status.spot_cleaning)):
+            self._attr_fan_speed_list = []
             self._attr_fan_speed = STATE_UNAVAILABLE.capitalize()
         else:
             self._attr_fan_speed_list = list({v.capitalize() for k, v in SUCTION_LEVEL_TO_FAN_SPEED.items()})
@@ -520,6 +541,12 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
             water_volume,
         )
 
+    async def async_clean_spot(
+        self, points, repeats=1, suction_level="", water_volume=""
+    ) -> None:
+        await self._try_command(
+            "Unable to call clean_spot: %s", self.device.clean_spot, points, repeats, suction_level, water_volume)
+
     async def async_set_restricted_zone(self, walls="", zones="", no_mops="") -> None:
         """Create restricted zone."""
         await self._try_command(
@@ -544,7 +571,7 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
 
     async def async_set_fan_speed(self, fan_speed, **kwargs) -> None:
         """Set fan speed."""
-        if self.device.status.started and (self.device.status.customized_cleaning and not self.device.status.zone_cleaning):
+        if self.device.status.started and (self.device.status.customized_cleaning and not (self.device.status.zone_cleaning or self.device.status.spot_cleaning)):
             raise InvalidActionException(
                 "Cannot set fan speed when customized cleaning is enabled"
             )
