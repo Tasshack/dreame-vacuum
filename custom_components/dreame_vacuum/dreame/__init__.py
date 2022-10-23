@@ -14,6 +14,7 @@ from .types import (
     DreameVacuumMopWashLevel,
     PROPERTY_AVAILABILITY,
     ACTION_AVAILABILITY,
+    MAP_COLOR_SCHEME_LIST,
 )
 from .const import (
     SUCTION_LEVEL_CODE_TO_NAME,

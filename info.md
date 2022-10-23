@@ -53,7 +53,8 @@ All features completely reverse engineered from the official Mi Home app RN plug
 
     <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md" target="_blank">About map feature</a>
 
-- Enter required credentials according to the selected configuration type.
+- Enter required credentials according to the selected configuration type. 
+  > Please make sure that the devices are at same subnet for both configuration types. <a href="https://python-miio.readthedocs.io/en/latest/troubleshooting.html#discover-devices-across-subnets" target="_blank">python-miio article about this issue.</a>
 - Set your device name and integration settings:
 
     <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow_settings.png" width="350px">

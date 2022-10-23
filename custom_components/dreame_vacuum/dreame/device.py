@@ -38,6 +38,9 @@ from .types import (
     CleaningHistory,
     MapData,
     Segment,
+    ATTR_ACTIVE_AREAS,
+    ATTR_ACTIVE_POINTS,
+    ATTR_ACTIVE_SEGMENTS
 )
 from .const import (
     STATE_UNKNOWN,
@@ -83,6 +86,7 @@ from .const import (
     ATTR_NAME,
     ATTR_ICON,
     ATTR_STATUS,
+    ATTR_CLEANING_MODE,
     ATTR_SUCTION_LEVEL,
     ATTR_WATER_TANK,
     ATTR_COMPLETED,
@@ -270,13 +274,6 @@ class DreameVacuumDevice:
 
     def _update_status(self, task_status: DreameVacuumTaskStatus, status: DreameVacuumStatus) -> None:
         """Update status properties on memory for map renderer to update the image before action is sent to the device."""
-        self._update_property(
-            DreameVacuumProperty.TASK_STATUS, task_status.value
-        )
-        self._update_property(
-            DreameVacuumProperty.STATUS, status.value
-        )
-
         if task_status is not DreameVacuumTaskStatus.COMPLETED:
             new_state = DreameVacuumState.SWEEPING
             if self.status.cleaning_mode is DreameVacuumCleaningMode.MOPPING:
@@ -291,6 +288,13 @@ class DreameVacuumDevice:
             self._update_property(
                 DreameVacuumProperty.STATE, status.value
             )
+
+        self._update_property(
+            DreameVacuumProperty.STATUS, status.value
+        )
+        self._update_property(
+            DreameVacuumProperty.TASK_STATUS, task_status.value
+        )
 
     def _update_property(self, prop: DreameVacuumProperty, value: Any) -> Any:
         """Update device property on memory and notify listeners."""
@@ -585,7 +589,7 @@ class DreameVacuumDevice:
             if self.available:
                 self._last_update_failed = time.time()
                 if self._update_fail_count <= 3:
-                    _LOGGER.warning("Update failed, retrying: %s", ex)
+                    _LOGGER.warning("Update failed, retrying %s: %s", self._update_fail_count, ex)
                 else:
                     _LOGGER.debug("Update Failed: %s", ex)
                     self.available = False
@@ -1060,7 +1064,7 @@ class DreameVacuumDevice:
             self._consumable_reset
         ):
             self._property_changed()
-
+            
         try:
             result = self._device_connection.action(
                 mapping["siid"], mapping["aiid"], parameters)
@@ -1208,6 +1212,7 @@ class DreameVacuumDevice:
 
         if not self.status.started:
             self._update_status(DreameVacuumTaskStatus.AUTO_CLEANING, DreameVacuumStatus.CLEANING)
+
         if self._map_manager:
             self._map_manager.editor.refresh_map()
         return self.call_action(DreameVacuumAction.START)
@@ -1237,11 +1242,11 @@ class DreameVacuumDevice:
             return self.return_to_base()
                 
         if self.status.started:
-            self._update_status(DreameVacuumTaskStatus.COMPLETED, DreameVacuumStatus.STANDBY)
-
             # Clear active segments on current map data
             if self._map_manager:
                 self._map_manager.editor.set_active_segments([])
+
+            self._update_status(DreameVacuumTaskStatus.COMPLETED, DreameVacuumStatus.STANDBY)
         return self.call_action(DreameVacuumAction.STOP)
 
     def pause(self) -> dict[str, Any] | None:
@@ -1303,11 +1308,11 @@ class DreameVacuumDevice:
             )
 
         if not self.status.started:
-            self._update_status(DreameVacuumTaskStatus.ZONE_CLEANING, DreameVacuumStatus.ZONE_CLEANING)
-
             if self._map_manager:
                 # Set active areas on current map data is implemented on the app
                 self._map_manager.editor.set_active_areas(zones)
+
+            self._update_status(DreameVacuumTaskStatus.ZONE_CLEANING, DreameVacuumStatus.ZONE_CLEANING)
 
         return self.start_custom(
             DreameVacuumStatus.ZONE_CLEANING.value,
@@ -1379,11 +1384,11 @@ class DreameVacuumDevice:
             index = index + 1
 
         if not self.status.started:
-            self._update_status(DreameVacuumTaskStatus.SEGMENT_CLEANING, DreameVacuumStatus.SEGMENT_CLEANING)
-
             if self._map_manager:
                 # Set active segments on current map data is implemented on the app
                 self._map_manager.editor.set_active_segments(selected_segments)
+
+            self._update_status(DreameVacuumTaskStatus.SEGMENT_CLEANING, DreameVacuumStatus.SEGMENT_CLEANING)
                 
         return self.start_custom(
             DreameVacuumStatus.SEGMENT_CLEANING.value,
@@ -1415,11 +1420,11 @@ class DreameVacuumDevice:
             )
 
         if not self.status.started:
-            self._update_status(DreameVacuumTaskStatus.SPOT_CLEANING, DreameVacuumStatus.SPOT_CLEANING)
-
             if self._map_manager:
                 # Set active points on current map data is implemented on the app
                 self._map_manager.editor.set_active_points(points)
+
+            self._update_status(DreameVacuumTaskStatus.SPOT_CLEANING, DreameVacuumStatus.SPOT_CLEANING)
 
         return self.start_custom(
             DreameVacuumStatus.SPOT_CLEANING.value,
@@ -1453,8 +1458,8 @@ class DreameVacuumDevice:
     def start_mapping(self) -> dict[str, Any] | None:
         """Create a new map by cleaning whole floor."""
         if self._map_manager:
-            self._update_status(DreameVacuumTaskStatus.AUTO_CLEANING, DreameVacuumStatus.CLEANING)
             self._map_manager.editor.reset_map()
+            self._update_status(DreameVacuumTaskStatus.AUTO_CLEANING, DreameVacuumStatus.CLEANING)
 
         return self.start_custom(DreameVacuumStatus.CLEANING.value, "3")
 
@@ -2994,6 +2999,33 @@ class DreameVacuumDeviceStatus:
             and not current_map.empty_map
         ):
             return current_map.segments[current_map.robot_segment]
+
+    @property
+    def job(self) -> dict[str, Any] | None:
+        attributes = {
+            ATTR_CLEANING_MODE: self.cleaning_mode.name,
+            ATTR_STATUS: self.status.name
+        }        
+        attributes[ATTR_WATER_TANK if not self.self_wash_base_available else ATTR_MOP_PAD] = self.water_tank_installed
+
+        if self._device.cleanup_completed:
+            attributes.update({
+                ATTR_CLEANED_AREA: self._get_property(DreameVacuumProperty.CLEANED_AREA),
+                ATTR_CLEANING_TIME: self._get_property(DreameVacuumProperty.CLEANING_TIME),
+                ATTR_COMPLETED: True,
+            })
+        else:
+            attributes[ATTR_COMPLETED] = False
+
+        map_data = self.current_map
+        if map_data:
+            if map_data.active_segments is not None:
+                attributes[ATTR_ACTIVE_SEGMENTS] = map_data.active_segments
+            elif map_data.active_areas is not None:
+                attributes[ATTR_ACTIVE_AREAS] = map_data.active_areas
+            elif map_data.active_points is not None:
+                attributes[ATTR_ACTIVE_POINTS] = map_data.active_points
+        return attributes
 
     @property
     def attributes(self) -> dict[str, Any] | None:

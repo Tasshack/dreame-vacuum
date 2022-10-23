@@ -2,6 +2,7 @@
 from __future__ import annotations
 from typing import Any, Final
 import voluptuous as vol
+import homeassistant.helpers.config_validation as cv
 from collections.abc import Mapping
 import logging
 from homeassistant import config_entries
@@ -22,7 +23,7 @@ from homeassistant.config_entries import (
     SOURCE_REAUTH,
 )
 
-from .dreame import MiIODeviceProtocol, MiIOCloudProtocol
+from .dreame import MiIODeviceProtocol, MiIOCloudProtocol, MAP_COLOR_SCHEME_LIST
 
 from .const import (
     DOMAIN,
@@ -31,7 +32,9 @@ from .const import (
     CONF_COUNTRY,
     CONF_TYPE,
     CONF_MAC,
-    COLOR_SCHEME,
+    CONF_MAP_OBJECTS,
+    NOTIFICATION,
+    MAP_OBJECTS
 )
 
 # Dreame Gen2 Lidar Robots
@@ -79,16 +82,22 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
 
         if user_input is not None:
             return self.async_create_entry(title="", data={**options, **user_input})
+        
+        notify = options[CONF_NOTIFY]
+        if isinstance(notify, bool):
+            if notify is True:
+                notify = list(NOTIFICATION.keys())
+            else:
+                notify = []
 
         data_schema = vol.Schema(
-            {vol.Required(CONF_NOTIFY, default=options[CONF_NOTIFY]): bool}
+            {vol.Required(CONF_NOTIFY, default=notify): cv.multi_select(NOTIFICATION)}
         )
         if data[CONF_USERNAME]:
             data_schema = data_schema.extend(
                 {
-                    vol.Required(
-                        CONF_COLOR_SCHEME, default=options[CONF_COLOR_SCHEME]
-                    ): vol.In(list(COLOR_SCHEME))
+                    vol.Required(CONF_COLOR_SCHEME, default=options[CONF_COLOR_SCHEME]): vol.In(list(MAP_COLOR_SCHEME_LIST.keys())),
+                    vol.Required(CONF_MAP_OBJECTS, default=options.get(CONF_MAP_OBJECTS, list(MAP_OBJECTS.keys()))): cv.multi_select(MAP_OBJECTS),
                 }
             )
 
@@ -115,8 +124,6 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         self.username: str | None = None
         self.password: str | None = None
         self.country: str = None
-        self.notify: bool = True
-        self.colors: int = 0
         self.with_map: bool = True
         self.devices: dict[str, dict[str, Any]] = {}
 
@@ -331,9 +338,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             self.name = user_input[CONF_NAME]
-            self.notify = user_input[CONF_NOTIFY]
-            self.colors = user_input.get(CONF_COLOR_SCHEME)
-
+            
             return self.async_create_entry(
                 title=self.name,
                 data={
@@ -346,24 +351,23 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                     CONF_MAC: self.mac,
                 },
                 options={
-                    CONF_NOTIFY: self.notify,
-                    CONF_COLOR_SCHEME: self.colors,
+                    CONF_NOTIFY: user_input[CONF_NOTIFY],
+                    CONF_COLOR_SCHEME: user_input.get(CONF_COLOR_SCHEME),
                 },
             )
 
         data_schema = vol.Schema(
             {
                 vol.Required(CONF_NAME, default=self.name): str,
-                vol.Required(CONF_NOTIFY, default=self.notify): bool,
+                vol.Required(CONF_NOTIFY, default=list(NOTIFICATION.keys())): cv.multi_select(NOTIFICATION),
             }
         )
 
         if self.with_map:
             data_schema = data_schema.extend(
                 {
-                    vol.Required(
-                        CONF_COLOR_SCHEME, default=list(COLOR_SCHEME)[0]
-                    ): vol.In(list(COLOR_SCHEME))
+                    vol.Required(CONF_COLOR_SCHEME, default="Dreame Light"): vol.In(list(MAP_COLOR_SCHEME_LIST.keys())),
+                    vol.Required(CONF_MAP_OBJECTS, default=list(MAP_OBJECTS.keys())): cv.multi_select(MAP_OBJECTS),
                 }
             )
 

@@ -482,7 +482,7 @@ class DreameVacuumAction(IntEnum):
     RESET_SENSOR = 15
     START_AUTO_EMPTY = 16
     RESET_MOP_PAD = 17
-    RESET_SILVER_ION = 10
+    RESET_SILVER_ION = 18
 
 
 # Dreame Vacuum property mapping
@@ -846,7 +846,6 @@ class Segment(Zone):
 
     def as_dict(self) -> Dict[str, Any]:
         attributes = {**super(Segment, self).as_dict()}
-        #attributes[ATTR_OUTLINE] = self.outline
         if self.segment_id:
             attributes[ATTR_ROOM_ID] = self.segment_id
         if self.name is not None:
@@ -863,14 +862,13 @@ class Segment(Zone):
             attributes[ATTR_TYPE] = self.type
         if self.index is not None:
             attributes[ATTR_INDEX] = self.index
-        #if self.icon is not None:
-            #attributes[ATTR_ICON] = self.icon
+        if self.icon is not None:
+            attributes[ATTR_ICON] = self.icon
         if self.color_index is not None:
             attributes[ATTR_COLOR_INDEX] = self.color_index
         if self.unique_id is not None:
             attributes[ATTR_UNIQUE_ID] = self.unique_id
         if self.x is not None and self.y is not None:
-            #attributes[ATTR_CENTER] = self.center
             attributes[ATTR_X] = self.x
             attributes[ATTR_Y] = self.y
 
@@ -1244,10 +1242,11 @@ class MapRendererConfig:
     active_point: bool = True
     charger: bool = True
     robot: bool = True
+    obstacle: bool = True
+    carpet: bool = True
 
 @dataclass
 class MapRendererColorScheme:
-    name: str = "Default"
     floor: tuple[int] = (221, 221, 221, 255)
     outside: tuple[int] = (0, 0, 0, 0)
     wall: tuple[int] = (159, 159, 159, 255)
@@ -1278,6 +1277,99 @@ class MapRendererColorScheme:
     invert: bool = False
     dark: bool = False
     
+
+MAP_COLOR_SCHEME_LIST: Final = {
+    "Dreame Light": MapRendererColorScheme(),
+    "Dreame Dark": MapRendererColorScheme(
+        floor = (110, 110, 110, 255),
+        wall = (64, 64, 64, 255),
+        passive_segment = (100, 100, 100, 255),
+        new_segment = (0, 91, 244, 255),
+        no_go = (133, 0, 0, 128),
+        no_go_outline = (149, 0, 0, 200),
+        no_mop = (134, 0, 226, 128),
+        no_mop_outline = (115, 0, 157, 200),
+        virtual_wall = (133, 0, 0, 200),
+        active_area = (200, 200, 200, 80),
+        active_area_outline = (9, 54, 129, 200),
+        active_point = (200, 200, 200, 80),
+        active_point_outline = (9, 54, 129, 200),
+        path = (200, 200, 200, 255),
+        segment = (
+            [(13, 64, 155, 255), (0, 55, 150, 255)],
+            [(143, 75, 7, 255), (117, 53, 0, 255)],
+            [(0, 106, 176, 255), (0, 96, 158, 255)],
+            [(76, 107, 36, 255), (44, 107, 36, 255)],
+        ),
+        settings_icon_background = (255, 255, 255, 185),
+        dark = True,
+    ),        
+    "Mijia Light": MapRendererColorScheme(
+        new_segment = (131, 178, 255, 255),
+        virtual_wall = (255, 45, 45, 200),
+        no_go = (230, 30, 30, 128),
+        no_go_outline = (255, 45, 45, 200),
+        segment = (
+            [(131, 178, 255, 255), (105, 142, 204, 255)],
+            [(245, 201, 66, 255), (196, 161, 53, 255)],
+            [(103, 207, 229, 255), (82, 165, 182, 255)],
+            [(255, 155, 101, 255), (204, 124, 81, 255)],
+        ),
+    ),
+    "Mijia Dark": MapRendererColorScheme(
+        floor = (150, 150, 150, 255),
+        wall = (119, 133, 153, 255),
+        new_segment = (99, 148, 230, 255),
+        passive_segment = (100, 100, 100, 255),
+        no_go = (133, 0, 0, 128),
+        no_go_outline = (149, 0, 0, 200),
+        no_mop = (134, 0, 226, 128),
+        no_mop_outline = (115, 0, 157, 200),
+        virtual_wall = (133, 0, 0, 200),
+        active_area = (200, 200, 200, 80),
+        active_area_outline = (9, 54, 129, 200),
+        active_point = (200, 200, 200, 80),
+        active_point_outline = (9, 54, 129, 200),
+        path = (200, 200, 200, 255),
+        segment = (
+            [(108, 141, 195, 255), (76, 99, 137, 255)],
+            [(188, 157, 62, 255), (133, 111, 44, 255)],
+            [(88, 161, 176, 255), (62, 113, 123, 255)],
+            [(195, 125, 87, 255), (138, 89, 62, 255)],
+        ),
+        settings_icon_background = (255, 255, 255, 185),
+        dark = True,
+    ),
+    "Grayscale": MapRendererColorScheme(
+        floor = (100, 100, 100, 255),
+        wall = (40, 40, 40, 255),
+        passive_segment = (50, 50, 50, 255),
+        new_segment = (80, 80, 80, 255),
+        no_go = (133, 0, 0, 128),
+        no_go_outline = (149, 0, 0, 200),
+        no_mop = (134, 0, 226, 128),
+        no_mop_outline = (115, 0, 157, 200),
+        virtual_wall = (133, 0, 0, 200),
+        active_area = (221, 221, 221, 80),
+        active_area_outline = (22, 103, 238, 200),
+        active_point = (221, 221, 221, 80),
+        active_point_outline = (22, 103, 238, 200),
+        path = (200, 200, 200, 255),
+        segment = (
+            [(90, 90, 90, 255), (95, 95, 95, 255)],
+            [(80, 80, 80, 255), (85, 85, 85, 255)],
+            [(70, 70, 70, 255), (75, 75, 75, 255)],
+            [(60, 60, 60, 255), (65, 65, 65, 255)],
+        ),
+        icon_background = (200, 200, 200, 200),
+        settings_icon_background = (255, 255, 255, 205),
+        text = (0, 0, 0, 255),
+        text_stroke = (0, 0, 0, 100),
+        invert = True,
+        dark = True,
+    ),
+}
+
 class MapRendererLayer(IntEnum):
     IMAGE = 0
     OBJECTS = 1

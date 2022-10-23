@@ -11,8 +11,10 @@ from homeassistant.const import (
     CONF_TOKEN,
     CONF_PASSWORD,
     CONF_USERNAME,
+    ATTR_ENTITY_ID
 )
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.entity import generate_entity_id
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from .dreame import DreameVacuumDevice, DreameVacuumProperty
 from .dreame.resources import CONSUMABLE_IMAGE
@@ -29,6 +31,7 @@ from .const import (
     NOTIFICATION_FILTER_NO_LIFE_LEFT,
     NOTIFICATION_SENSOR_NO_LIFE_LEFT,
     NOTIFICATION_MOP_NO_LIFE_LEFT,
+    NOTIFICATION_SILVER_ION_LIFE_LEFT,
     NOTIFICATION_DUST_COLLECTION_NOT_PERFORMED,
     NOTIFICATION_RESUME_CLEANING,
     NOTIFICATION_RESUME_CLEANING_NOT_PERFORMED,
@@ -41,10 +44,16 @@ from .const import (
     NOTIFICATION_ID_REPLACE_FILTER,
     NOTIFICATION_ID_CLEAN_SENSOR,
     NOTIFICATION_ID_REPLACE_MOP,
+    NOTIFICATION_ID_SILVER_ION,
     NOTIFICATION_ID_CLEANUP_COMPLETED,
     NOTIFICATION_ID_WARNING,
     NOTIFICATION_ID_ERROR,
     NOTIFICATION_ID_REPLACE_TEMPORARY_MAP,
+    EVENT_TASK_STATUS,
+    EVENT_CONSUMABLE,
+    EVENT_WARNING,
+    EVENT_ERROR,
+    EVENT_INFORMATION,
 )
 
 
@@ -77,18 +86,17 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             entry.data.get(CONF_PASSWORD),
             entry.data.get(CONF_COUNTRY),
         )
-
-        if self._notify:
-            self.device.listen(
-                self._dust_collection_changed, DreameVacuumProperty.DUST_COLLECTION
-            )
-            self.device.listen(self._error_changed, DreameVacuumProperty.ERROR)
-            self.device.listen(
-                self._task_status_changed, DreameVacuumProperty.TASK_STATUS
-            )
-            self.device.listen(
-                self._cleaning_paused_changed, DreameVacuumProperty.CLEANING_PAUSED
-            )
+        
+        self.device.listen(
+            self._dust_collection_changed, DreameVacuumProperty.DUST_COLLECTION
+        )
+        self.device.listen(self._error_changed, DreameVacuumProperty.ERROR)
+        self.device.listen(
+            self._task_status_changed, DreameVacuumProperty.TASK_STATUS
+        )
+        self.device.listen(
+            self._cleaning_paused_changed, DreameVacuumProperty.CLEANING_PAUSED
+        )
         self.device.listen(self.async_set_updated_data)
         self.device.listen_error(self.async_set_update_error)
 
@@ -107,6 +115,8 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
     def _dust_collection_changed(self, previous_value=None) -> None:
         if previous_value is not None:
             if self.device.status.auto_emptying_not_performed:
+                self._fire_event(EVENT_INFORMATION, {EVENT_INFORMATION: NOTIFICATION_DUST_COLLECTION_NOT_PERFORMED})
+
                 self._create_persistent_notification(
                     NOTIFICATION_DUST_COLLECTION_NOT_PERFORMED,
                     NOTIFICATION_ID_DUST_COLLECTION,
@@ -124,6 +134,9 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                     hour = math.floor(dnd_remaining / 3600)
                     minute = math.floor((dnd_remaining - hour * 3600) / 60)
                     notification = f"{NOTIFICATION_RESUME_CLEANING_NOT_PERFORMED}\n## Cleaning will start in {hour} hour(s) and {minute} minutes(s)"
+                self._fire_event(EVENT_INFORMATION, {EVENT_INFORMATION: NOTIFICATION_RESUME_CLEANING_NOT_PERFORMED})
+            else:
+                self._fire_event(EVENT_INFORMATION, {EVENT_INFORMATION: NOTIFICATION_RESUME_CLEANING})
 
             self._create_persistent_notification(
                 notification, NOTIFICATION_ID_CLEANING_PAUSED
@@ -133,41 +146,57 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 NOTIFICATION_ID_CLEANING_PAUSED)
 
     def _task_status_changed(self, previous_value=None) -> None:
-        if previous_value is not None and self.device.cleanup_completed:
-            self._create_persistent_notification(
-                NOTIFICATION_CLEANUP_COMPLETED, NOTIFICATION_ID_CLEANUP_COMPLETED
-            )
+        if previous_value is not None:
+            if self.device.cleanup_completed:
+                self._fire_event(EVENT_TASK_STATUS, self.device.status.job)
+                self._create_persistent_notification(
+                    NOTIFICATION_CLEANUP_COMPLETED, NOTIFICATION_ID_CLEANUP_COMPLETED
+                )
 
-            if self.device.status.main_brush_life == 0:
-                self._create_persistent_notification(
-                    f'{NOTIFICATION_MAIN_BRUSH_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get("main_brush")})',
-                    NOTIFICATION_ID_REPLACE_MAIN_BRUSH,
-                )
-            if self.device.status.side_brush_life == 0:
-                self._create_persistent_notification(
-                    f'{NOTIFICATION_SIDE_BRUSH_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get("side_brush")})',
-                    NOTIFICATION_ID_REPLACE_SIDE_BRUSH,
-                )
-            if self.device.status.filter_life == 0:
-                self._create_persistent_notification(
-                    f'{NOTIFICATION_FILTER_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get("filter")})',
-                    NOTIFICATION_ID_REPLACE_FILTER,
-                )
-            if self.device.status.sensor_dirty_life == 0:
-                self._create_persistent_notification(
-                    f'{NOTIFICATION_SENSOR_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get("sensor")})',
-                    NOTIFICATION_ID_CLEAN_SENSOR,
-                )
-            if self.device.status.mop_life == 0:
-                self._create_persistent_notification(
-                    NOTIFICATION_MOP_NO_LIFE_LEFT, NOTIFICATION_ID_REPLACE_MOP
-                )
+                if self.device.status.main_brush_life == 0:
+                    self._create_persistent_notification(
+                        f'{NOTIFICATION_MAIN_BRUSH_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get("main_brush")})',
+                        NOTIFICATION_ID_REPLACE_MAIN_BRUSH,
+                    )
+                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: "main_brush"})
+                if self.device.status.side_brush_life == 0:
+                    self._create_persistent_notification(
+                        f'{NOTIFICATION_SIDE_BRUSH_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get("side_brush")})',
+                        NOTIFICATION_ID_REPLACE_SIDE_BRUSH,
+                    )
+                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: "side_brush"})
+                if self.device.status.filter_life == 0:
+                    self._create_persistent_notification(
+                        f'{NOTIFICATION_FILTER_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get("filter")})',
+                        NOTIFICATION_ID_REPLACE_FILTER,
+                    )
+                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: "filter"})
+                if self.device.status.sensor_dirty_life == 0:
+                    self._create_persistent_notification(
+                        f'{NOTIFICATION_SENSOR_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get("sensor")})',
+                        NOTIFICATION_ID_CLEAN_SENSOR,
+                    )
+                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: "sensor"})
+                if self.device.status.mop_life == 0:
+                    self._create_persistent_notification(
+                        NOTIFICATION_MOP_NO_LIFE_LEFT, NOTIFICATION_ID_REPLACE_MOP
+                    )
+                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: "mop_pad"})
+                if self.device.status.silver_ion_life == 0:
+                    self._create_persistent_notification(
+                        NOTIFICATION_SILVER_ION_LIFE_LEFT, NOTIFICATION_ID_SILVER_ION
+                    )
+                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: "silver_ion"})
+            elif previous_value == 0 and not self.device.status.fast_mapping:
+                self._fire_event(EVENT_TASK_STATUS, self.device.status.job)
 
     def _error_changed(self, previous_value=None) -> None:
         has_warning = self.device.status.has_warning
         if has_warning:
+            self._fire_event(EVENT_WARNING, {EVENT_WARNING: self.device.status.error_description[0]})
+
             self._create_persistent_notification(
-                self.device.status.error_description, NOTIFICATION_ID_WARNING
+                self.device.status.error_description[0], NOTIFICATION_ID_WARNING
             )
         elif self._has_warning:
             self._has_warning = False
@@ -175,6 +204,8 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
 
         if self.device.status.has_error:
             description = self.device.status.error_description
+            self._fire_event(EVENT_ERROR, {EVENT_ERROR: description[0]})
+
             description = f"### {description[0]}\n{description[1]}"
             image = self.device.status.error_image
             if image:
@@ -187,6 +218,8 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
 
     def _has_temporary_map_changed(self, previous_value=None) -> None:
         if self.device.status.has_temporary_map:
+            self._fire_event(EVENT_WARNING, {EVENT_WARNING: NOTIFICATION_REPLACE_MULTI_MAP})
+
             self._create_persistent_notification(
                 NOTIFICATION_REPLACE_MULTI_MAP
                 if self.device.status.multi_map
@@ -194,16 +227,36 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 NOTIFICATION_ID_REPLACE_TEMPORARY_MAP,
             )
         else:
+            self._fire_event(EVENT_WARNING, {EVENT_WARNING: NOTIFICATION_ID_REPLACE_TEMPORARY_MAP})
+
             self._remove_persistent_notification(
                 NOTIFICATION_ID_REPLACE_TEMPORARY_MAP)
 
     def _create_persistent_notification(self, content, notification_id) -> None:
-        persistent_notification.async_create(
-            self.hass,
-            content,
-            title=self.device.name,
-            notification_id=f"{DOMAIN}_{notification_id}",
-        )
+        if self._notify:
+            if isinstance(self._notify, list):
+                if notification_id == NOTIFICATION_ID_CLEANUP_COMPLETED:
+                    if NOTIFICATION_ID_CLEANUP_COMPLETED not in self._notify:
+                        return
+                elif NOTIFICATION_ID_WARNING in notification_id:
+                    if NOTIFICATION_ID_WARNING not in self._notify:
+                        return
+                elif NOTIFICATION_ID_ERROR in notification_id:
+                    if NOTIFICATION_ID_ERROR not in self._notify:
+                        return
+                elif notification_id == NOTIFICATION_ID_DUST_COLLECTION or notification_id == NOTIFICATION_ID_CLEANING_PAUSED:
+                    if "information" not in self._notify:
+                        return
+                elif notification_id != NOTIFICATION_ID_REPLACE_TEMPORARY_MAP: 
+                    if "consumable" not in self._notify:
+                        return
+
+            persistent_notification.async_create(
+                self.hass,
+                content,
+                title=self.device.name,
+                notification_id=f"{DOMAIN}_{notification_id}",
+            )
 
     def _remove_persistent_notification(self, notification_id) -> None:
         persistent_notification.async_dismiss(
@@ -218,6 +271,12 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             ):
                 self._has_warning = False
                 self.device.clear_warning()
+
+    def _fire_event(self, event_id, data) -> None:
+        event_data =  {ATTR_ENTITY_ID: generate_entity_id("vacuum.{}", self.device.name, hass=self.hass)}
+        if data:
+            event_data.update(data)
+        self.hass.bus.fire(f"{DOMAIN}_{event_id}", event_data)
 
     async def _async_update_data(self) -> DreameVacuumDevice:
         """Handle device update. This function is only called once when the integration is added to Home Assistant."""

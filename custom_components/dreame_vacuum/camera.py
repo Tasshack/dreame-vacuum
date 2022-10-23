@@ -17,7 +17,7 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers import entity_registry
 
-from .const import DOMAIN, CONF_COLOR_SCHEME, COLOR_SCHEME, ATTR_CALIBRATION, CONTENT_TYPE, LOGGER
+from .const import DOMAIN, CONF_COLOR_SCHEME, CONF_MAP_OBJECTS, MAP_OBJECTS, ATTR_CALIBRATION, CONTENT_TYPE, LOGGER
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription
@@ -52,15 +52,16 @@ async def async_setup_entry(
 ) -> None:
     """Set up Dreame Vacuum Camera based on a config entry."""
     coordinator: DreameVacuumDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
-    color_scheme = COLOR_SCHEME.get(entry.options.get(CONF_COLOR_SCHEME), 0)
+    color_scheme = entry.options.get(CONF_COLOR_SCHEME)
+    map_objects = entry.options.get(CONF_MAP_OBJECTS, MAP_OBJECTS.keys())
     if coordinator.device.status.map_available:
         async_add_entities(
-            DreameVacuumCameraEntity(coordinator, description, color_scheme)
+            DreameVacuumCameraEntity(coordinator, description, color_scheme, map_objects)
             for description in CAMERAS
         )
 
     update_map_cameras = partial(
-        async_update_map_cameras, coordinator, {}, async_add_entities, color_scheme
+        async_update_map_cameras, coordinator, {}, async_add_entities, color_scheme, map_objects
     )
     coordinator.async_add_listener(update_map_cameras)
     update_map_cameras()
@@ -71,7 +72,8 @@ def async_update_map_cameras(
     coordinator: DreameVacuumDataUpdateCoordinator,
     current: dict[str, list[DreameVacuumCameraEntity]],
     async_add_entities,
-    color_scheme: int,
+    color_scheme: str,
+    map_objects: list[str],
 ) -> None:
     new_indexes = set(
         [k for k in range(1, len(coordinator.device.status.map_list) + 1)])
@@ -90,6 +92,7 @@ def async_update_map_cameras(
                     icon="mdi:map-search",
                 ),
                 color_scheme,
+                map_objects,
                 map_index,
             )
         ]
@@ -119,7 +122,8 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         self,
         coordinator: DreameVacuumDataUpdateCoordinator,
         description: DreameVacuumCameraEntityDescription,
-        color_scheme: int = 0,
+        color_scheme: str = None,
+        map_objects: list[str] = None,
         map_index: int = 0,
     ) -> None:
         """Initialize a Dreame Vacuum Camera entity."""
@@ -135,12 +139,12 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         self._last_map_request = 0
         self._attr_is_streaming = True
         
-        self._available = self.device.device_connected
+        self._available = self.device.device_connected and self.device.cloud_connected
         if description.map_data_json:
             self._renderer = DreameVacuumMapDataRenderer()
         else:
-            self._renderer = DreameVacuumMapRenderer(color_scheme, self.device.status.robot_shape)
-        self._image = self._renderer.default_map_image
+            self._renderer = DreameVacuumMapRenderer(color_scheme, map_objects, self.device.status.robot_shape)
+        self._image = self._default_map_image
         self._default_map = True
         self.map_index = map_index
         self._state = STATE_UNAVAILABLE
@@ -177,7 +181,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     @callback
     def _handle_coordinator_update(self) -> None:
         """Fetch state from the device."""
-        self._available = self.device.device_connected and self.device.cloud_connected
+        self._available = self.device.cloud_connected
         self._last_map_request = 0
         map_data = self._map_data
         if (
@@ -199,8 +203,6 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 self._default_map == True or
                 self._frame_id != map_data.frame_id
             ):
-                LOGGER.debug("Coordinator update: %s", map_data.frame_id)
-
                 self._frame_id = map_data.frame_id
                 if not self.device.status.active:
                     self.update()
@@ -236,7 +238,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         while True:
             img_bytes = await self.async_camera_image()
             if not img_bytes:
-                img_bytes = self._renderer.default_map_image
+                img_bytes = self._default_map_image
 
             if img_bytes != last_image:
                 # Always write twice, otherwise chrome ignores last frame and displays previous frame after second one
@@ -287,7 +289,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 self.coordinator.hass.async_create_task(self._update_image(
                     self.device.get_map_for_render(self.map_index), self.device.status.robot_status))
         elif not self._default_map:
-            self._image = self._renderer.default_map_image
+            self._image = self._default_map_image
             self._default_map = True
             self._frame_id = -1
             self._last_updated = -1
@@ -299,6 +301,12 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     @property
     def _map_data(self) -> Any:
         return self.device.get_map(self.map_index)
+
+    @property
+    def _default_map_image(self) -> Any:
+        if not self.device.device_connected and self.device.cloud_connected:
+            return self._renderer.disconnected_map_image
+        return self._renderer.default_map_image
 
     @property
     def frame_interval(self) -> float:

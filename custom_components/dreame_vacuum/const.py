@@ -19,17 +19,17 @@ CONF_COLOR_SCHEME: Final = "color_scheme"
 CONF_COUNTRY: Final = "country"
 CONF_TYPE: Final = "configuration_type"
 CONF_MAC: Final = "mac"
-CONF_MODEL: Final = "model"
-CONF_MAP: Final = "map"
+CONF_MAP_OBJECTS: Final = "map_objects"
 
 CONTENT_TYPE: Final = "image/png"
 
-COLOR_SCHEME: Final = {"Dreame Light": 0, "Dreame Dark": 1, "Mijia Light": 2, "Mijia Dark": 3, "Grayscale": 4}
+MAP_OBJECTS: Final = { "color": "Room Colors", "icon": "Room Icons", "name": "Room Names", "order": "Room Order", "suction_level": "Room Suction Level", "water_volume": "Room Water Volume", "cleaning_times": "Room Cleaning Times", "path": "Path", "no_go": "No Go Zones", "no_mop": "No Mop Zones", "virtual_wall": "Virtual Walls", "active_area": "Active Areas", "active_point": "Active Points", "charger": "Charger Icon", "robot": "Robot Icon", "obstacle": "AI Obstacle", "carpet": "Carpet Area" }
+NOTIFICATION: Final = { "cleanup_completed": "Cleanup Completed", "consumable": "Consumable", "information": "Information", "warning": "Warning", "error": "Error" }
 
-FAN_SPEED_SILENT: Final = "silent"
-FAN_SPEED_STANDARD: Final = "standard"
-FAN_SPEED_STRONG: Final = "strong"
-FAN_SPEED_TURBO: Final = "turbo"
+FAN_SPEED_SILENT: Final = "Silent"
+FAN_SPEED_STANDARD: Final = "Standard"
+FAN_SPEED_STRONG: Final = "Strong"
+FAN_SPEED_TURBO: Final = "Turbo"
 
 SERVICE_CLEAN_ZONE: Final = "vacuum_clean_zone"
 SERVICE_CLEAN_SEGMENT: Final = "vacuum_clean_segment"
@@ -102,6 +102,7 @@ NOTIFICATION_ID_REPLACE_SIDE_BRUSH: Final = "replace_side_brush"
 NOTIFICATION_ID_REPLACE_FILTER: Final = "replace_filter"
 NOTIFICATION_ID_CLEAN_SENSOR: Final = "clean_sensor"
 NOTIFICATION_ID_REPLACE_MOP: Final = "replace_mop"
+NOTIFICATION_ID_SILVER_ION: Final = "silver_ion"
 NOTIFICATION_ID_CLEANUP_COMPLETED: Final = "cleanup_completed"
 NOTIFICATION_ID_WARNING: Final = "warning"
 NOTIFICATION_ID_ERROR: Final = "error"
@@ -123,6 +124,9 @@ NOTIFICATION_SENSOR_NO_LIFE_LEFT: Final = (
 NOTIFICATION_MOP_NO_LIFE_LEFT: Final = (
     "### Mop pad must be replaced\nChange mop pad and reset the counter."
 )
+NOTIFICATION_SILVER_ION_LIFE_LEFT: Final = (
+    "### Silver-ion life is ended."
+)
 NOTIFICATION_DUST_COLLECTION_NOT_PERFORMED: Final = (
     "### Dust collecting (Auto-empty) task not performed\nThe robot will not perform auto-empty tasks during the DND period."
 )
@@ -138,3 +142,9 @@ NOTIFICATION_REPLACE_MAP: Final = (
 NOTIFICATION_REPLACE_MULTI_MAP: Final = (
     "### A new map has been generated\nMulti-floor maps that can be saved have reached the upper limit. You need to replace or discard map before using it."
 )
+
+EVENT_TASK_STATUS: Final = "task_status"
+EVENT_CONSUMABLE: Final = "consumable"
+EVENT_WARNING: Final = "warning"
+EVENT_ERROR: Final = "error"
+EVENT_INFORMATION: Final = "information"

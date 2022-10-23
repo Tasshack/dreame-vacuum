@@ -14,7 +14,7 @@ import numpy as np
 import hashlib
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from PIL import Image, ImageDraw, ImageOps, ImageFont, ImageEnhance, PngImagePlugin
+from PIL import Image, ImageDraw, ImageOps, ImageFont, ImageEnhance, PngImagePlugin, ImageFilter
 from typing import Any
 from time import sleep
 from io import BytesIO
@@ -43,6 +43,7 @@ from .types import (
     MapRendererLayer,
     MapRendererColorScheme,
     MapRendererConfig,
+    MAP_COLOR_SCHEME_LIST,
 )
 from .const import (
     MAP_PARAMETER_NAME,
@@ -2744,6 +2745,39 @@ class DreameVacuumMapDataRenderer:
             map_data_json[MAP_DATA_PARAMETER_ENTITIES].extend(
                 self._layers[MapRendererLayer.ACTIVE_AREA])
 
+        if map_data.active_points:
+            if (
+                self._map_data is None
+                or self._map_data.active_points != map_data.active_points
+                or not self._layers.get(MapRendererLayer.ACTIVE_POINT)
+            ):
+                self._layers[MapRendererLayer.ACTIVE_POINT] = []
+                size = 15 * map_data.dimensions.grid_size
+                for point in map_data.active_points:        
+                    area = Area(point.x - size, point.y - size, point.x + size, point.y - size, point.x + size, point.y + size, point.x - size, point.y + size)
+
+                    a = DreameVacuumMapDataRenderer._convert_coordinates(
+                        area.x0, area.y0
+                    )
+                    b = DreameVacuumMapDataRenderer._convert_coordinates(
+                        area.x1, area.y1
+                    )
+                    c = DreameVacuumMapDataRenderer._convert_coordinates(
+                        area.x2, area.y2
+                    )
+                    d = DreameVacuumMapDataRenderer._convert_coordinates(
+                        area.x3, area.y3
+                    )
+
+                    self._layers[MapRendererLayer.ACTIVE_POINT].append(
+                        {
+                            MAP_DATA_PARAMETER_TYPE: MAP_DATA_PARAMETER_ACTIVE_ZONE,
+                            MAP_DATA_PARAMETER_POINTS: [a[0], a[1], b[0], b[1], c[0], c[1], d[0], d[1]],
+                        }
+                    )
+            map_data_json[MAP_DATA_PARAMETER_ENTITIES].extend(
+                self._layers[MapRendererLayer.ACTIVE_POINT])
+
         if map_data.walls:
             if self._map_data is None or self._map_data.walls != map_data.walls or not self._layers.get(MapRendererLayer.WALL):
                 self._layers[MapRendererLayer.WALL] = []
@@ -3011,110 +3045,19 @@ class DreameVacuumMapDataRenderer:
     def default_map_image(self) -> bytes:
         return self._to_buffer(self._default_map_image, self._default_map_data)
 
+    @property
+    def disconnected_map_image(self) -> bytes:
+        return self.default_map_image
 
 class DreameVacuumMapRenderer:
-    MAP_COLOR_SCHEME_LIST: Final = {
-        0: MapRendererColorScheme(
-            name = "Dreame Light",
-        ),
-        1: MapRendererColorScheme(
-            name = "Dreame Dark",
-            floor = (110, 110, 110, 255),
-            wall = (64, 64, 64, 255),
-            passive_segment = (100, 100, 100, 255),
-            new_segment = (0, 91, 244, 255),
-            no_go = (133, 0, 0, 128),
-            no_go_outline = (149, 0, 0, 200),
-            no_mop = (134, 0, 226, 128),
-            no_mop_outline = (115, 0, 157, 200),
-            virtual_wall = (133, 0, 0, 200),
-            active_area = (200, 200, 200, 80),
-            active_area_outline = (9, 54, 129, 200),
-            active_point = (200, 200, 200, 80),
-            active_point_outline = (9, 54, 129, 200),
-            path = (200, 200, 200, 255),
-            segment = (
-                [(13, 64, 155, 255), (0, 55, 150, 255)],
-                [(143, 75, 7, 255), (117, 53, 0, 255)],
-                [(0, 106, 176, 255), (0, 96, 158, 255)],
-                [(76, 107, 36, 255), (44, 107, 36, 255)],
-            ),
-            settings_icon_background = (255, 255, 255, 185),
-            dark = True,
-        ),        
-        2: MapRendererColorScheme(
-            name = "Mijia Light",
-            segment = (
-                [(131, 178, 255, 255), (105, 142, 204, 255)],
-                [(245, 201, 66, 255), (196, 161, 53, 255)],
-                [(103, 207, 229, 255), (82, 165, 182, 255)],
-                [(255, 155, 101, 255), (204, 124, 81, 255)],
-            ),
-            new_segment = (131, 178, 255, 255),
-            virtual_wall = (255, 45, 45, 200),
-            no_go = (230, 30, 30, 128),
-            no_go_outline = (255, 45, 45, 200),
-        ),
-        3: MapRendererColorScheme(
-            name = "Mijia Dark",
-            segment = (
-                [(108, 141, 195, 255), (76, 99, 137, 255)],
-                [(188, 157, 62, 255), (133, 111, 44, 255)],
-                [(88, 161, 176, 255), (62, 113, 123, 255)],
-                [(195, 125, 87, 255), (138, 89, 62, 255)],
-            ),
-            floor = (150, 150, 150, 255),
-            wall = (119, 133, 153, 255),
-            new_segment = (99, 148, 230, 255),
-            passive_segment = (100, 100, 100, 255),
-            no_go = (133, 0, 0, 128),
-            no_go_outline = (149, 0, 0, 200),
-            no_mop = (134, 0, 226, 128),
-            no_mop_outline = (115, 0, 157, 200),
-            virtual_wall = (133, 0, 0, 200),
-            active_area = (200, 200, 200, 80),
-            active_area_outline = (9, 54, 129, 200),
-            active_point = (200, 200, 200, 80),
-            active_point_outline = (9, 54, 129, 200),
-            path = (200, 200, 200, 255),
-            settings_icon_background = (255, 255, 255, 185),
-            dark = True,
-        ),
-        4: MapRendererColorScheme(
-            name = "Grayscale",
-            floor = (100, 100, 100, 255),
-            wall = (40, 40, 40, 255),
-            passive_segment = (50, 50, 50, 255),
-            new_segment = (80, 80, 80, 255),
-            no_go = (133, 0, 0, 128),
-            no_go_outline = (149, 0, 0, 200),
-            no_mop = (134, 0, 226, 128),
-            no_mop_outline = (115, 0, 157, 200),
-            virtual_wall = (133, 0, 0, 200),
-            active_area = (221, 221, 221, 80),
-            active_area_outline = (22, 103, 238, 200),
-            active_point = (221, 221, 221, 80),
-            active_point_outline = (22, 103, 238, 200),
-            path = (200, 200, 200, 255),
-            segment = (
-                [(90, 90, 90, 255), (95, 95, 95, 255)],
-                [(80, 80, 80, 255), (85, 85, 85, 255)],
-                [(70, 70, 70, 255), (75, 75, 75, 255)],
-                [(60, 60, 60, 255), (65, 65, 65, 255)],
-            ),
-            icon_background = (200, 200, 200, 200),
-            settings_icon_background = (255, 255, 255, 205),
-            text = (0, 0, 0, 255),
-            text_stroke = (0, 0, 0, 100),
-            invert = True,
-            dark = True,
-        ),
-    }
+    def __init__(self, color_scheme: str = None, map_objects: list[str] = None, robot_shape: int = 0) -> None:
+        self.color_scheme: MapRendererColorScheme = MAP_COLOR_SCHEME_LIST.get(color_scheme, MapRendererColorScheme())        
+        self.config: MapRendererConfig = MapRendererConfig()        
+        if map_objects is not None:
+            for attr in self.config.__dict__.keys():
+                if attr not in map_objects:
+                    setattr(self.config, attr, False)
 
-    def __init__(self, color_scheme: int = 0, robot_shape: int = 0) -> None:
-        self._image = None
-        self.color_scheme: MapRendererColorScheme = DreameVacuumMapRenderer.MAP_COLOR_SCHEME_LIST.get(color_scheme, MapRendererColorScheme())
-        self.config: MapRendererConfig = MapRendererConfig()
         self._map_data: MapData = None
         self.render_complete: bool = True
         self._layers: dict[MapRendererLayer, Any] = {}
@@ -3130,6 +3073,7 @@ class DreameVacuumMapRenderer:
                 MAP_PARAMETER_MAP: {MAP_DATA_PARAMETER_X: 0, MAP_DATA_PARAMETER_Y: 0}},
         ]
 
+        self._image = None
         self._charger_icon = None
         self._robot_icon = None
         self._robot_charging_icon = None
@@ -3687,7 +3631,7 @@ class DreameVacuumMapRenderer:
     def render_points(self, points, color, fill, layer, dimensions, width, scale):
         new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
         draw = ImageDraw.Draw(new_layer, "RGBA")
-        size = 15 * 50
+        size = 15 * dimensions.grid_size
         for point in points:
             area = Area(point.x - size, point.y - size, point.x + size, point.y - size, point.x + size, point.y + size, point.x - size, point.y + size)
 
@@ -3937,98 +3881,113 @@ class DreameVacuumMapRenderer:
                 x = p.x
                 y = p.y
 
-                if segment.type != 0 or text_font or not self.config.name:
-                    icon_size = size * 1.3
-                    icon = self._segment_icons.get(segment.type, 0)
-                    x0 = x - size
-                    y0 = y - size
-                    x1 = x + size
-                    y1 = y + size
+                if self.config.name or self.config.icon:
+                    if segment.type != 0 or text_font or not self.config.name:
+                        icon_size = size * 1.3
+                        icon = self._segment_icons.get(segment.type, 0)
+                        x0 = x - size
+                        y0 = y - size
+                        x1 = x + size
+                        y1 = y + size
 
-                    if text_font:
-                        tw, th = draw.textsize(text, text_font)
-                        ws = tw / 4
+                        if text_font:
+                            tw, th = draw.textsize(text, text_font)
+                            ws = tw / 4
 
-                        if segment.index > 0 or not self.config.icon:
-                            icon_size = size * 1.35
-                            padding = icon_size / 2
-                            text_offset = (icon_size / 2) + 2
-                            icon_offset = 2
-                            th = scale * 23
-                        else:
-                            icon_size = size * 1.15
-                            padding = icon_size / 4
-                            icon_offset = padding - 2
-                            text_offset = icon_size / 2
-                            th = scale * 19
-
-                        if not self.config.icon:
-                            text_offset = 0
-
-                        if rotation == 90 or rotation == 270:
-                            y0 = y0 - ws - padding
-                            y1 = y1 + ws + padding
-
-                            if rotation == 90:
-                                ty = (y - ws + text_offset) * scale
-                                tx = (x - (th / 4)) * scale
-                                y = y - ws - icon_offset
+                            if segment.index > 0 or not self.config.icon:
+                                icon_size = size * 1.35
+                                padding = icon_size / 2
+                                text_offset = (icon_size / 2) + 2
+                                icon_offset = 2
+                                th = scale * 23
                             else:
-                                ty = (y - ws - text_offset) * scale
-                                tx = (x - (th / 4)) * scale
-                                y = y + ws + icon_offset
-                        else:
-                            x0 = x0 - ws - padding
-                            x1 = x1 + ws + padding
+                                icon_size = size * 1.15
+                                padding = icon_size / 4
+                                icon_offset = padding - 2
+                                text_offset = icon_size / 2
+                                th = scale * 19
 
-                            if rotation == 0:
-                                tx = (x - ws + text_offset) * scale
-                                ty = (y - (th / 4)) * scale
-                                x = x - ws - icon_offset
+                            if not self.config.icon:
+                                text_offset = 0
+
+                            if rotation == 90 or rotation == 270:
+                                y0 = y0 - ws - padding
+                                y1 = y1 + ws + padding
+
+                                if rotation == 90:
+                                    ty = (y - ws + text_offset) * scale
+                                    tx = (x - (th / 4)) * scale
+                                    y = y - ws - icon_offset
+                                else:
+                                    ty = (y - ws - text_offset) * scale
+                                    tx = (x - (th / 4)) * scale
+                                    y = y + ws + icon_offset
                             else:
-                                tx = (x - ws - text_offset) * scale
-                                ty = (y - (th / 4)) * scale
-                                x = x + ws + icon_offset
+                                x0 = x0 - ws - padding
+                                x1 = x1 + ws + padding
 
-                        if self.config.icon:
-                            draw.rounded_rectangle(
-                                [
-                                    int(x0 * scale),
-                                    int(y0 * scale),
-                                    int(x1 * scale),
-                                    int(y1 * scale),
-                                ],
+                                if rotation == 0:
+                                    tx = (x - ws + text_offset) * scale
+                                    ty = (y - (th / 4)) * scale
+                                    x = x - ws - icon_offset
+                                else:
+                                    tx = (x - ws - text_offset) * scale
+                                    ty = (y - (th / 4)) * scale
+                                    x = x + ws + icon_offset
+
+                            if self.config.icon:
+                                draw.rounded_rectangle(
+                                    [
+                                        int(x0 * scale),
+                                        int(y0 * scale),
+                                        int(x1 * scale),
+                                        int(y1 * scale),
+                                    ],
+                                    fill=self.color_scheme.icon_background,
+                                    radius=((size * scale)),
+                                )
+
+                            icon_text = Image.new(
+                                "RGBA", (tw, th), (255, 255, 255, 0))
+                            draw_text = ImageDraw.Draw(icon_text, "RGBA")
+
+                            if self.config.icon:
+                                stroke_width = 1
+                                text_color = self.color_scheme.text
+                                stroke_color = self.color_scheme.text_stroke
+                            else:
+                                stroke_width = 4
+                                if self.color_scheme.dark:
+                                    text_color = (240, 240, 240, 255)
+                                    stroke_color = (0, 0, 0, 210)
+                                else:
+                                    text_color = (15, 15, 15, 255)
+                                    stroke_color = (255, 255, 255, 210)
+
+                            draw_text.text(
+                                (0, 0),
+                                text,
+                                font=text_font,
+                                fill=text_color,
+                                stroke_width=stroke_width,
+                                stroke_fill=stroke_color,
+                            )
+                            icon_text = icon_text.rotate(-rotation, expand=1)
+                            new_layer.paste(
+                                icon_text, (int(tx), int(ty)), icon_text)
+                        else:
+                            draw.ellipse(
+                                [x0 * scale, y0 * scale, x1 * scale, y1 * scale],
                                 fill=self.color_scheme.icon_background,
-                                radius=((size * scale)),
                             )
 
-                        icon_text = Image.new(
-                            "RGBA", (tw, th), (255, 255, 255, 0))
-                        draw_text = ImageDraw.Draw(icon_text, "RGBA")
-                        draw_text.text(
-                            (0, 0),
-                            text,
-                            font=text_font,
-                            fill=self.color_scheme.text,
-                            stroke_width=1,
-                            stroke_fill=self.color_scheme.text_stroke,
-                        )
-                        icon_text = icon_text.rotate(-rotation, expand=1)
-                        new_layer.paste(
-                            icon_text, (int(tx), int(ty)), icon_text)
-                    else:
-                        draw.ellipse(
-                            [x0 * scale, y0 * scale, x1 * scale, y1 * scale],
-                            fill=self.color_scheme.icon_background,
-                        )
-
-                    if self.config.icon:
-                        s = icon_size * scale
-                        icon = icon.resize((int(s), int(s))).rotate(-rotation)
-                        new_layer.paste(
-                            icon, (int(x * scale - (s / 2)),
-                                   int(y * scale - (s / 2))), icon
-                        )
+                        if self.config.icon:
+                            s = icon_size * scale
+                            icon = icon.resize((int(s), int(s))).rotate(-rotation)
+                            new_layer.paste(
+                                icon, (int(x * scale - (s / 2)),
+                                       int(y * scale - (s / 2))), icon
+                            )
 
                 custom = (
                     cleanset
@@ -4038,22 +3997,21 @@ class DreameVacuumMapRenderer:
                     and (self.config.suction_level or self.config.water_volume or self.config.cleaning_times)
                 )
                 if order_font or custom:
-                    if icon or (not self.config.icon and self.config.name):
-                        offset = size * 2.7
-                        x_offset = 0
-                        y_offset = -offset
+                    offset = size * 2.7
+                    x_offset = 0
+                    y_offset = -offset
 
-                        if rotation == 90:
-                            y_offset = 0
-                            x_offset = offset
-                        elif rotation == 180:
-                            y_offset = offset
-                        elif rotation == 270:
-                            y_offset = 0
-                            x_offset = -offset
+                    if rotation == 90:
+                        y_offset = 0
+                        x_offset = offset
+                    elif rotation == 180:
+                        y_offset = offset
+                    elif rotation == 270:
+                        y_offset = 0
+                        x_offset = -offset
 
-                        x = p.x + x_offset
-                        y = p.y + y_offset
+                    x = p.x + x_offset
+                    y = p.y + y_offset
                         
                     if custom:
                         s = scale * 2
@@ -4079,7 +4037,10 @@ class DreameVacuumMapRenderer:
                     else:                        
                         s = scale * 3
                         arrow = 5 * scale
-                        
+                                            
+                    if not icon:
+                        arrow = 0
+
                     padding = s + arrow
                     margin = s if icon_count > 1 else 0
                     radius = size
@@ -4096,7 +4057,7 @@ class DreameVacuumMapRenderer:
                                      (255, 255, 255, 0))
                     icon_draw = ImageDraw.Draw(icon, "RGBA")
 
-                    if segment.type != 0 or text_font:
+                    if arrow and (segment.type != 0 or text_font):
                         xx = icon_w / 2
                         yy = icon_h - 2
 
@@ -4252,6 +4213,12 @@ class DreameVacuumMapRenderer:
     @property
     def default_map_image(self) -> bytes:
         return self._to_buffer(self._default_map_image)
+
+    @property
+    def disconnected_map_image(self) -> bytes:
+        if self._image:
+            return self._to_buffer(self._image.filter(ImageFilter.GaussianBlur(13)))
+        return self.default_map_image
 
     @property
     def default_calibration_points(self) -> dict[str, int]:

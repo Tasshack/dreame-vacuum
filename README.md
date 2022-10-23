@@ -53,26 +53,18 @@ Assistant root directory, e.g. `git clone https://github.com/tasshack/dreame-vac
 
 
 ### Via [HACS](https://hacs.xyz/)
-- Use this button: <a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=Tasshack&repository=dreame-vacuum&category=integration" target="_blank"><img src="https://my.home-assistant.io/badges/hacs_repository.svg" alt="Open your Home Assistant instance and open a repository inside the Home Assistant Community Store." /></a> or:
-  - Navigate to HACS -> Integrations -> Custom repositories -> Add
-  - Set *Repository* to **https://github.com/tasshack/dreame-vacuum**
-  - Set *Type* to **Integration**
-  - Confirm form submission and the repository should be appended to the list
-- Select and install **Dreame Vacuum** from the list
-- Restart Home Assistant
+<a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=Tasshack&repository=dreame-vacuum&category=integration" target="_blank"><img src="https://my.home-assistant.io/badges/hacs_repository.svg" alt="Open your Home Assistant instance and open a repository inside the Home Assistant Community Store." /></a>
 
 ## Configuration
-- Use this button: <a href="https://my.home-assistant.io/redirect/config_flow_start/?domain=dreame_vacuum" target="_blank"><img src="https://my.home-assistant.io/badges/config_flow_start.svg" alt="Open your Home Assistant instance and start setting up a new integration." /></a> or:
-  - Add the **Dreame Vacuum** integration in Settings -> Devices & Services -> Add Integration
-  - Select **Dreame Vacuum** from the list
-  - Confirm form submission
+<a href="https://my.home-assistant.io/redirect/config_flow_start/?domain=dreame_vacuum" target="_blank"><img src="https://my.home-assistant.io/badges/config_flow_start.svg" alt="Open your Home Assistant instance and start setting up a new integration." /></a>
 - Select configuration type:
 
     <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow.png" width="550px">
 
     <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md" target="_blank">About map feature</a>
 
-- Enter required credentials according to the selected configuration type.
+- Enter required credentials according to the selected configuration type. 
+  > Please make sure that the devices are at same subnet for both configuration types. <a href="https://python-miio.readthedocs.io/en/latest/troubleshooting.html#discover-devices-across-subnets" target="_blank">python-miio article about this issue.</a>
 - Set your device name and integration settings:
 
     <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow_settings.png" width="350px">
