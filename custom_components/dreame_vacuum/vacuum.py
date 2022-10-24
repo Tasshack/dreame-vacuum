@@ -462,7 +462,7 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
             self._attr_fan_speed_list = []
             self._attr_fan_speed = STATE_UNAVAILABLE.capitalize()
         else:
-            self._attr_fan_speed_list = [v for v in SUCTION_LEVEL_TO_FAN_SPEED.values()]
+            self._attr_fan_speed_list = list(SUCTION_LEVEL_TO_FAN_SPEED.values())
             self._attr_fan_speed = SUCTION_LEVEL_TO_FAN_SPEED.get(self.device.status.suction_level, STATE_UNKNOWN)
             
         self._attr_battery_level = self.device.status.battery_level

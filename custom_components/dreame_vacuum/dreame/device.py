@@ -44,6 +44,7 @@ from .types import (
 )
 from .const import (
     STATE_UNKNOWN,
+    STATE_UNAVAILABLE,
     SUCTION_LEVEL_CODE_TO_NAME,
     WATER_VOLUME_CODE_TO_NAME,
     MOP_PAD_HUMIDITY_CODE_TO_NAME,
@@ -3064,7 +3065,12 @@ class DreameVacuumDeviceStatus:
             properties.append(DreameVacuumProperty.WATER_VOLUME)
         else:
             attributes[ATTR_MOP_PAD] = self.water_tank_installed
-            attributes[ATTR_MOP_PAD_HUMIDITY] = self.mop_pad_humidity_name.replace("_", " ").capitalize()
+            if self.started and (self.customized_cleaning and not (self.zone_cleaning or self.spot_cleaning)):
+                attributes[ATTR_MOP_PAD_HUMIDITY] = STATE_UNAVAILABLE.capitalize()
+                attributes[f"{ATTR_MOP_PAD_HUMIDITY}_list"] = []
+            else:
+                attributes[ATTR_MOP_PAD_HUMIDITY] = self.mop_pad_humidity_name.replace("_", " ").capitalize()
+                attributes[f"{ATTR_MOP_PAD_HUMIDITY}_list"] = [v.replace("_", " ").capitalize() for v in self.mop_pad_humidity_list.keys()]
 
         for prop in properties:
             value = self._get_property(prop)
@@ -3078,11 +3084,16 @@ class DreameVacuumDeviceStatus:
                 if prop is DreameVacuumProperty.ERROR:
                     value = self.error_name.replace("_", " ").capitalize()
                 elif prop is DreameVacuumProperty.WATER_VOLUME:
-                    value = self.water_volume_name.capitalize()
+                    if self.started and (self.customized_cleaning and not (self.zone_cleaning or self.spot_cleaning)):
+                        value = STATE_UNAVAILABLE.capitalize()
+                        attributes[f"{prop_name}_list"] = []
+                    else:
+                        value = self.water_volume_name.capitalize()
+                        attributes[f"{prop_name}_list"] = [v.capitalize() for v in self.water_volume_list.keys()]
                 elif prop is DreameVacuumProperty.CLEANING_MODE:
                     value = self.cleaning_mode_name.replace("_", " ").capitalize()
                 elif prop is DreameVacuumProperty.CUSTOMIZED_CLEANING:
-                    value = self.customized_cleaning and not self.zone_cleaning 
+                    value = self.customized_cleaning and not self.zone_cleaning and not self.spot_cleaning 
                 attributes[prop_name] = value
                 
         attributes[ATTR_CLEANING_SEQUENCE] = self.custom_order
