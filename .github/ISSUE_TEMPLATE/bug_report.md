@@ -2,7 +2,7 @@
 name: Bug report
 about: Create a report to help improve the project
 title: ''
-labels: bug
+labels: bug, question
 assignees: Tasshack
 
 ---
