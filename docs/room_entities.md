@@ -24,15 +24,30 @@ With help of two custom cards you can generate a single card to manage all room 
 ```yaml
 {# ----------------- PROVIDE YOUR OWN ENTITY ID AND ROOM COUNT HERE ----------------- #}
 {% set vacuum_entity = "vacuum." %}
-{% set max_room_id = 8 %}
 {# ------------------- DO NOT CHANGE ANYTHING BELOW ------------------- #}
-{% set vacuum_name = states[vacuum_entity].entity_id.replace('vacuum.', '') %}
+{%- set vacuum_name = states[vacuum_entity].entity_id.replace('vacuum.', '') %} 
+{%- set mop_pad = ('mop_pad_humidity' in states[vacuum_entity].attributes)|bool %}
+{%- set rooms = namespace(list=[]) %}
+{%- for room in states[vacuum_entity].attributes.rooms %}  
+  {%- set rooms.list = rooms.list + [room.id] %}
+{%- endfor %}
+{%- if 'map_rooms' in states[vacuum_entity].attributes %}
+  {%- for map in states[vacuum_entity].attributes.map_rooms.values() %}  
+    {%- for room in map %}  
+      {%- if room.id not in rooms.list %}
+        {%- set rooms.list = rooms.list + [room.id] %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endfor %}
+{%- endif %}
+{%- set rooms.list = rooms.list|sort() %}
+
+
 type: entities
 title: Rooms
 entities:
-{# Alternatively room ids can be acquired from vacuum or camera entities #}
-{% for room in range(1, max_room_id) %}
-{% set entity_id = "select." + vacuum_name + "_room_" + room|string %}
+{%- for room in rooms.list %}
+{%- set entity_id = "select." + vacuum_name + "_room_" + room|string %}
   - type: conditional
     conditions:
       - entity: {{ entity_id }}_name
@@ -42,7 +57,11 @@ entities:
       variables:
         - states['{{ entity_id }}_name']
         - states['{{ entity_id }}_suction_level'].entity_id
+        {%- if mop_pad %}
+        - states['{{ entity_id }}_mop_pad_humidity'].entity_id
+        {%- else %}
         - states['{{ entity_id }}_water_volume'].entity_id
+        {%- endif %}
         - states['{{ entity_id }}_cleaning_times'].entity_id
         - states['{{ entity_id }}_order'].entity_id
       entities:
@@ -68,7 +87,7 @@ entities:
             styles:
               width: 55px
           - entity: ${vars[2]}
-            name: Water
+            name: {{ "Mop" if mop_pad else "Water" }}
             hide_if: unavailable
             tap_action:
               action: call-service

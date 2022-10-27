@@ -568,10 +568,12 @@ class DreameVacuumSegmentSelectEntity(DreameVacuumEntity, SelectEntity):
     ) -> None:
         """Initialize Dreame Vacuum Segment Select."""
         self.segment_id = segment_id
-        if coordinator.device and segment_id in coordinator.device.status.segments:
-            self.segment = copy.deepcopy(coordinator.device.status.segments[segment_id])
-        else:
-            self.segment = None
+        self.segment = None
+        self.segments = None
+        if coordinator.device:
+            self.segments = copy.deepcopy(coordinator.device.status.segments)
+            if segment_id in self.segments:
+                self.segment = self.segments[segment_id]
 
         super().__init__(coordinator, description)
         self._attr_unique_id = f"{self.device.mac}_room_{segment_id}_{description.key.lower()}"
@@ -604,18 +606,20 @@ class DreameVacuumSegmentSelectEntity(DreameVacuumEntity, SelectEntity):
 
     @callback
     def _handle_coordinator_update(self) -> None:
-        segments = self.device.status.segments
-        if segments and self.segment_id in segments:
-            if self.segment != segments[self.segment_id]:
-                self.segment = copy.deepcopy(segments[self.segment_id])
+        if self.segments != self.device.status.segments:
+            self.segments = copy.deepcopy(self.device.status.segments)
+            if self.segments and self.segment_id in self.segments:
+                if self.segment != self.segments[self.segment_id]:
+                    self.segment = self.segments[self.segment_id]
+                    self._attr_current_option = self.native_value
+                    self._set_id()
                 self._attr_options = self.entity_description.options(
                     self.device, self.segment
                 )
-                self._attr_current_option = self.native_value
+            elif self.segment:
+                self._attr_options = []
+                self.segment = None
                 self._set_id()
-        elif self.segment:
-            self.segment = None
-            self._set_id()
 
         self.async_write_ha_state()
 

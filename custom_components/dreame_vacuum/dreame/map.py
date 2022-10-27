@@ -1441,7 +1441,7 @@ class DreameMapVacuumMapEditor:
             if order > 0:
                 index = 1
                 # for k in sorted(map_data.segments, key=lambda segment: segment):
-                for (k, v) in map_data.segments.items():
+                for k in sorted(map_data.segments.keys()):
                     if not map_data.segments[k].order:
                         map_data.segments[k].order = index
                         map_data.cleanset[str(segment_id)][3] = index

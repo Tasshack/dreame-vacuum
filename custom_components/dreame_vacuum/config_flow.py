@@ -37,30 +37,42 @@ from .const import (
     MAP_OBJECTS
 )
 
-# Dreame Gen2 Lidar Robots
 SUPPORTED_MODELS = [
+    ## Dreame Lidar Robots
+    "dreame.vacuum.p2009",
+    "dreame.vacuum.p2027",
     "dreame.vacuum.p2028",
     "dreame.vacuum.p2028a",
     "dreame.vacuum.p2029",
-    "dreame.vacuum.p2027",
     "dreame.vacuum.r2104",
-    "dreame.vacuum.r2233",
-    "dreame.vacuum.r2228",
     "dreame.vacuum.p2114",
     "dreame.vacuum.p2114o",
     "dreame.vacuum.p2114a",
     "dreame.vacuum.p2114b",
-    "dreame.vacuum.r2205",
     "dreame.vacuum.p2150o",
     "dreame.vacuum.p2150a",
     "dreame.vacuum.p2150b",
     "dreame.vacuum.p2149o",
-    "dreame.vacuum.p2259",
+    "dreame.vacuum.p2157",
     "dreame.vacuum.p2187",
+    "dreame.vacuum.r2205",
+    "dreame.vacuum.p2259",
     "dreame.vacuum.r2228o",
     "dreame.vacuum.r2215o",
-    "dreame.vacuum.p2157",
-    #"dreame.vacuum.p2009",
+    "dreame.vacuum.r2233",
+    "dreame.vacuum.r2228",
+
+    ## Dreame Vslam Robots
+    #"dreame.vacuum.p2140q",
+    #"dreame.vacuum.p2140p",
+    #"dreame.vacuum.p2140o",
+    #"dreame.vacuum.p2140a",
+    #"dreame.vacuum.p2140",
+    #"dreame.vacuum.p2148o",
+    #"dreame.vacuum.p2156o",
+    #"dreame.vacuum.p2041o",
+    #"dreame.vacuum.p2041",
+    #"dreame.vacuum.p2008",
 ]
 
 WITH_MAP: Final = "With map (Automatic)"

@@ -81,6 +81,7 @@ from .const import (
     ATTR_RETURNING,
     ATTR_MAPPING,
     ATTR_ROOMS,
+    ATTR_CURRENT_SEGMENT,
     ATTR_MAP_ROOMS,
     ATTR_SELECTED_MAP,
     ATTR_ID,
@@ -2656,7 +2657,6 @@ class DreameVacuumDeviceStatus:
     def started(self) -> bool:
         """Returns true when device has an active task.
         Used for preventing updates on settings that relates to currently performing task."""
-
         return bool(
             self.task_status != DreameVacuumTaskStatus.COMPLETED or self.cleaning_paused
         )
@@ -2900,6 +2900,14 @@ class DreameVacuumDeviceStatus:
         return False
 
     @property
+    def cleaning_order(self) -> list[int] | None:
+        """Returns custom cleaning sequence list."""
+        segments = self.segments 
+        if segments:
+            return list(sorted(segments, key=lambda segment_id: segments[segment_id].order)) if self.custom_order else None
+        return [] if self.custom_order else None
+
+    @property
     def map_available(self) -> bool:
         """Returns true when mapping feature is available."""
         return bool(self._map_manager is not None)
@@ -3033,6 +3041,7 @@ class DreameVacuumDeviceStatus:
         """Return the attributes of the device."""
         properties = [
             DreameVacuumProperty.CLEANING_MODE,
+            DreameVacuumProperty.TIGHT_MOPPING,
             DreameVacuumProperty.ERROR,
             DreameVacuumProperty.CLEANING_TIME,
             DreameVacuumProperty.CLEANED_AREA,
@@ -3094,9 +3103,11 @@ class DreameVacuumDeviceStatus:
                     value = self.cleaning_mode_name.replace("_", " ").capitalize()
                 elif prop is DreameVacuumProperty.CUSTOMIZED_CLEANING:
                     value = self.customized_cleaning and not self.zone_cleaning and not self.spot_cleaning 
+                elif prop is DreameVacuumProperty.TIGHT_MOPPING:
+                    value = "on" if value == 1 else "off"
                 attributes[prop_name] = value
                 
-        attributes[ATTR_CLEANING_SEQUENCE] = self.custom_order
+        attributes[ATTR_CLEANING_SEQUENCE] = self.cleaning_order
         attributes[ATTR_CHARGING] = self.docked
         attributes[ATTR_STARTED] = self.started
         attributes[ATTR_PAUSED] = self.paused
@@ -3111,6 +3122,18 @@ class DreameVacuumDeviceStatus:
                 {ATTR_ID: v.segment_id, ATTR_NAME: v.name, ATTR_ICON: v.icon}
                 for k, v in sorted(segments.items())
             ]
+
+            if self.started and not self.fast_mapping:
+                map_data = self.current_map
+                active_segments = []
+                if map_data:
+                    if self.segment_cleaning and map_data.active_areas:
+                        active_segments = map_data.active_segments
+                    elif not self.zone_cleaning and not self.spot_cleaning:
+                        active_segments = list(segments.keys())
+                    attributes[ATTR_ACTIVE_SEGMENTS] = active_segments
+
+            attributes[ATTR_CURRENT_SEGMENT] = self.current_room.segment_id if self.current_room else 0
 
         if self.multi_map and self.map_list:
             if self.selected_map:

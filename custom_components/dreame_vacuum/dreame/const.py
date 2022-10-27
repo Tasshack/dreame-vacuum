@@ -210,6 +210,7 @@ ATTR_RETURNING_PAUSED: Final = "returning_paused"
 ATTR_RETURNING: Final = "returning"
 ATTR_MAPPING: Final = "mapping"
 ATTR_ROOMS: Final = "rooms"
+ATTR_CURRENT_SEGMENT: Final = "current_segment"
 ATTR_MAP_ROOMS: Final = "map_rooms"
 ATTR_SELECTED_MAP: Final = "selected_map"
 ATTR_ID: Final = "id"
@@ -300,6 +301,8 @@ MAP_DATA_PARAMETER_SEGMENT: Final = "segment"
 DEVICE_MAP_KEY: Final = {
     "p2114o": "6PFiLPYMHLylp7RR",
     "p2149o": "RNO4p35b2QKaovHC",
+    "p2140o": "8qnS9dqgT3CppGe1",
+    "p2140p": "8qnS9dqgT3CppGe1",
     "p2114a": "",
 }
 
