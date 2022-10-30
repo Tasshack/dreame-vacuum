@@ -342,15 +342,15 @@ vacuum_rename_segment:
       selector:
         text:
 
-vacuum_set_cleaning_order:
-  description: Set room cleaning order.
+vacuum_set_cleaning_sequence:
+  description: Set room cleaning sequence.
   target:
     entity:
       domain: vacuum
   fields:
-    cleaning_order:
-      description: Cleaning order.
-      example: "[5,3,2,1,4]"
+    cleaning_sequence:
+      description: Cleaning sequence.
+      example: "[5,3,2,1,4] or []"
       required: true
       selector:
         object:

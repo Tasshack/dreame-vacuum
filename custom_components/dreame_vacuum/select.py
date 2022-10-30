@@ -49,7 +49,6 @@ from .dreame import (
     SUCTION_LEVEL_CODE_TO_NAME,
     WATER_VOLUME_CODE_TO_NAME,
     MOP_PAD_HUMIDITY_CODE_TO_NAME,
-    PROPERTY_AVAILABILITY,
 )
 
 SUCTION_LEVEL_TO_ICON = {
@@ -303,7 +302,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         key="cleaning_times",
         icon_fn=lambda value, segment: "mdi:home-floor-" + str(segment.cleaning_times)
         if segment and segment.cleaning_times and segment.cleaning_times < 4
-        else "mdi:repeat",
+        else "mdi:home-floor-0",
         options=lambda device, segment: [f"{i}{UNIT_TIMES}" for i in range(1, 4)],
         available_fn=lambda device: bool(
             device.status.segments
@@ -492,15 +491,17 @@ class DreameVacuumSelectEntity(DreameVacuumEntity, SelectEntity):
     @callback
     async def async_offset_index(self, offset: int, cycle: bool) -> None:
         """Offset current index."""
-        new_index = (self._attr_options.index(self._attr_current_option)) + offset
+        current_index = (self._attr_options.index(self._attr_current_option))
+        new_index = current_index + offset
         if cycle:
             new_index = new_index % len(self._attr_options)
         elif new_index < 0:
             new_index = 0
         elif new_index >= len(self._attr_options):
             new_index = len(self._attr_options) - 1
-
-        await self.async_select_option(self._attr_options[new_index])
+        
+        if cycle or current_index != new_index:
+            await self.async_select_option(self._attr_options[new_index])
 
     @callback
     async def async_first(self) -> None:
@@ -632,15 +633,17 @@ class DreameVacuumSegmentSelectEntity(DreameVacuumEntity, SelectEntity):
     @callback
     async def async_offset_index(self, offset: int, cycle: bool) -> None:
         """Offset current index."""
-        new_index = (self._attr_options.index(self._attr_current_option)) + offset
+        current_index = (self._attr_options.index(self._attr_current_option))
+        new_index = current_index + offset
         if cycle:
             new_index = new_index % len(self._attr_options)
         elif new_index < 0:
             new_index = 0
         elif new_index >= len(self._attr_options):
             new_index = len(self._attr_options) - 1
-
-        await self.async_select_option(self._attr_options[new_index])
+        
+        if cycle or current_index != new_index:
+            await self.async_select_option(self._attr_options[new_index])
 
     @callback
     async def async_first(self) -> None:

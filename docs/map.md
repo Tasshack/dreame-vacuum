@@ -23,14 +23,16 @@ Partial map (P frame type) decoding for three seconds refresh rate with three se
 
 ### Color schemes
 
-There available color schemes for live and saved maps:
-- **Light**: Colors from the official App for light themes.
-- **Dark**: Darkened version of the *Light* map for dark themes.
-- **Grayscale**: Black and white version of the *Dark* map with inverted icon colors for a clean look.
+Five available color schemes for live and saved maps:
+- **Dreame Light**: Colors from the official Dreame App for light themes.
+- **Dreame Dark**: Darkened version of the *Dreame Light* map for dark themes.
+- **Mijia Light**: Colors from the official Mijia App for light themes.
+- **Mijia Dark**: Darkened version of the *Mijia Light* map for dark themes.
+- **Grayscale**: Black and white version of the *Dreame Dark* map with inverted icon colors for a clean look.
 
  > Map color scheme can be changed from integration configuration options.
 
-<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_light.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_light.png" width="31%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dark.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dark.png" width="31%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" width="31%"></a>
+<a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dreame_light.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dreame_light.png" width="19%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dreame_dark.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_dreame_dark.png" width="19%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_mijia_light.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_mijia_light.png" width="19%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_mijia_dark.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_mijia_dark.png" width="19%"></a><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" target="_blank"><a href="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" target="_blank"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_grayscale.png" width="19%"></a>
 
 ### Room and customized cleaning icons
 
@@ -112,6 +114,29 @@ Reverse engineered Valetudo map data generation with optimization features.
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/valetudo_map.png" width="500px">
 
 **<a href="https://github.com/Tasshack/dreame-vacuum/blob/master/README.md#with-valetudo-map-card" target="_blank">For more info about valetudo map card</a>**
+
+### Map Objects
+
+Configurable map object rendering options: 
+
+> Map object can be selected from integration configuration options.
+- **Room Colors**: Render rooms with colors
+- **Room Icons**: Render room icons instead of names
+- **Room Names**: Render custom and default room names
+- **Room Order**: Render cleaning sequence number of the room
+- **Room Suction Level**: Render customized cleaning suction level of the room
+- **Room Water Volume**: Render customized cleaning water volume of the room
+- **Room Cleaning Times**: Render customized cleaning times of the room
+- **Path**: Render path
+- **No Go Zones**: Render no go zones
+- **No Mop Zones**: Render no mop zones
+- **Virtual Walls**: Render virtual walls
+- **Active Areas**: Render active areas
+- **Active Points**: Render active points
+- **Charger Icon**: Render charger icon
+- **Robot Icon**: Render robot icon
+- **AI Obstacle**: Render obstacle icon *(Not supported yet)*
+- **Carpet Area**: Render carpet areas *(Not supported yet)*
 
 ### Map recovery
 

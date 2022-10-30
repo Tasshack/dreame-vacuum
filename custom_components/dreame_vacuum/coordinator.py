@@ -115,7 +115,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
     def _dust_collection_changed(self, previous_value=None) -> None:
         if previous_value is not None:
             if self.device.status.auto_emptying_not_performed:
-                self._fire_event(EVENT_INFORMATION, {EVENT_INFORMATION: NOTIFICATION_DUST_COLLECTION_NOT_PERFORMED})
+                self._fire_event(EVENT_INFORMATION, {EVENT_INFORMATION: NOTIFICATION_ID_DUST_COLLECTION})
 
                 self._create_persistent_notification(
                     NOTIFICATION_DUST_COLLECTION_NOT_PERFORMED,
@@ -134,9 +134,9 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                     hour = math.floor(dnd_remaining / 3600)
                     minute = math.floor((dnd_remaining - hour * 3600) / 60)
                     notification = f"{NOTIFICATION_RESUME_CLEANING_NOT_PERFORMED}\n## Cleaning will start in {hour} hour(s) and {minute} minutes(s)"
-                self._fire_event(EVENT_INFORMATION, {EVENT_INFORMATION: NOTIFICATION_RESUME_CLEANING_NOT_PERFORMED})
+                self._fire_event(EVENT_INFORMATION, {EVENT_INFORMATION: NOTIFICATION_ID_CLEANING_PAUSED})
             else:
-                self._fire_event(EVENT_INFORMATION, {EVENT_INFORMATION: NOTIFICATION_RESUME_CLEANING})
+                self._fire_event(EVENT_INFORMATION, {EVENT_INFORMATION: NOTIFICATION_ID_CLEANING_PAUSED})
 
             self._create_persistent_notification(
                 notification, NOTIFICATION_ID_CLEANING_PAUSED
@@ -193,7 +193,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
     def _error_changed(self, previous_value=None) -> None:
         has_warning = self.device.status.has_warning
         if has_warning:
-            self._fire_event(EVENT_WARNING, {EVENT_WARNING: self.device.status.error_description[0]})
+            self._fire_event(EVENT_WARNING, {EVENT_WARNING: self.device.status.error_description[0], "code": self.device.status.error.value})
 
             self._create_persistent_notification(
                 self.device.status.error_description[0], NOTIFICATION_ID_WARNING
@@ -204,7 +204,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
 
         if self.device.status.has_error:
             description = self.device.status.error_description
-            self._fire_event(EVENT_ERROR, {EVENT_ERROR: description[0]})
+            self._fire_event(EVENT_ERROR, {EVENT_ERROR: description[0], "code": self.device.status.error.value})
 
             description = f"### {description[0]}\n{description[1]}"
             image = self.device.status.error_image

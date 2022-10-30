@@ -11,6 +11,7 @@ import math
 from random import randrange
 from threading import Timer
 from typing import Any, Optional
+from xml.sax.handler import property_declaration_handler
 from .types import (
     PIID,
     DIID,
@@ -82,7 +83,6 @@ from .const import (
     ATTR_MAPPING,
     ATTR_ROOMS,
     ATTR_CURRENT_SEGMENT,
-    ATTR_MAP_ROOMS,
     ATTR_SELECTED_MAP,
     ATTR_ID,
     ATTR_NAME,
@@ -103,7 +103,7 @@ from .exceptions import (
     InvalidActionException,
     InvalidValueException,
 )
-from .protocol import MiIODeviceProtocol, MiIOCloudProtocol
+from .protocol import DreameVacuumDeviceProtocol, DreameVacuumCloudProtocol
 from .map import DreameMapVacuumMapManager
 
 _LOGGER = logging.getLogger(__name__)
@@ -137,7 +137,7 @@ class DreameVacuumDevice:
         self.data: dict[DreameVacuumProperty, Any] = {}
         self.available: bool = False  # Last update is successful or not
 
-        self._cloud_connection: MiIOCloudProtocol = None  # Cloud protocol object
+        self._cloud_connection: DreameVacuumCloudProtocol = None  # Cloud protocol object
         self._update_running: bool = False  # Update is running
         # Previous cleaning mode for restoring it after water tank is installed or removed
         self._previous_cleaning_mode: DreameVacuumCleaningMode = None
@@ -159,6 +159,7 @@ class DreameVacuumDevice:
         self._update_timer: Timer = None  # Update schedule timer
         # Used for requesting consumable properties after reset action otherwise they will only requested when cleaning completed
         self._consumable_reset: bool = False
+        self._dirty_data: dict[DreameVacuumProperty, Any] = {}
 
         _LOGGER.info("Initializing with host %s (token %s...)",
                      host, token[:5])
@@ -174,10 +175,10 @@ class DreameVacuumDevice:
         self.listen(self._ai_obstacle_detection_changed,
                     DreameVacuumProperty.AI_DETECTION)
 
-        self._device_connection = MiIODeviceProtocol(self.host, self.token)
+        self._device_connection = DreameVacuumDeviceProtocol(self.host, self.token)
 
         if username and password and country:
-            self._cloud_connection = MiIOCloudProtocol(
+            self._cloud_connection = DreameVacuumCloudProtocol(
                 username, password, country)
 
             self._map_manager = DreameMapVacuumMapManager(
@@ -251,6 +252,10 @@ class DreameVacuumDevice:
             if prop["code"] == 0:
                 did = int(prop["did"])
                 value = prop["value"]
+
+                if did in self._dirty_data:
+                    _LOGGER.info("Property %s Value Discarded: %s <- %s", DreameVacuumProperty(did).name, value, self._dirty_data[did])
+                    continue
 
                 if self.data.get(did, None) != value:
                     # Do not call external listener when map list and recovery map list properties changed
@@ -625,9 +630,11 @@ class DreameVacuumDevice:
         self.info = DreameVacuumDeviceInfo(self._device_connection.connect())
         if self.mac is None:
             self.mac = self.info.mac_address
+        _LOGGER.info("Connected to device")
             
         self._last_settings_request = time.time()
         self._last_map_list_request = self._last_settings_request
+        self._dirty_data = {}
         self._request_properties()
         self._last_update_failed = None
 
@@ -710,9 +717,12 @@ class DreameVacuumDevice:
         """Schedule a device update for future"""
         if not wait:
             wait = self._update_interval
+
         if self._update_timer is not None:
             self._update_timer.cancel()
+            del self._update_timer
             self._update_timer = None
+
         if wait >= 0:
             self._update_timer = Timer(wait, self._update_task)
             self._update_timer.start()
@@ -726,32 +736,39 @@ class DreameVacuumDevice:
     def set_property(self, prop: DreameVacuumProperty, value: Any) -> bool:
         """Sets property value using the existing property mapping and notify listeners
         Property must be set on memory first and notify its listeners because device does not return new value immediately."""
-
-        current_value = self._update_property(prop, value)
-        if current_value is not None:
+        
+        if prop.value not in self._dirty_data:
             self.schedule_update(10)
-            self._last_change = time.time()
-            self._last_settings_request = 0
+            self._dirty_data[prop.value] = value
+            current_value = self._update_property(prop, value)
+            if current_value is not None:
+                self._last_change = time.time()
+                self._last_settings_request = 0
 
-            try:
-                mapping = self.property_mapping[prop]
-                result = self._device_connection.set_property(mapping["siid"], mapping["piid"], value)
+                try:
+                    mapping = self.property_mapping[prop]
+                    result = self._device_connection.set_property(mapping["siid"], mapping["piid"], value)
 
-                if result and result[0]["code"] != 0:
-                    _LOGGER.error(
-                        "Property not updated: %s: %s -> %s", prop, current_value, value
-                    )
+                    if result and result[0]["code"] != 0:
+                        _LOGGER.error(
+                            "Property not updated: %s: %s -> %s", prop, current_value, value
+                        )
+                        self._update_property(prop, current_value)
+                    
+                    if prop.value in self._dirty_data:
+                        del self._dirty_data[prop.value]
+                    # Schedule the update for getting the updated property value from the device
+                    # If property is actually updated nothing will happen otherwise it will return to previous value and notify its listeners. (Post optimistic approach)
+                    self.schedule_update(3)
+                    return True
+                except Exception as ex:
                     self._update_property(prop, current_value)
+                    raise DeviceUpdateFailedException(
+                        "Set property failed %s: %s", prop.name, ex) from None
 
-                # Schedule the update for getting the updated property value from the device
-                # If property is actually updated nothing will happen otherwise it will return to previous value and notify its listeners. (Post optimistic approach)
-                self.schedule_update(3)
-                return True
-            except Exception as ex:
-                self._update_property(prop, current_value)
-                self.schedule_update(1)
-                raise DeviceUpdateFailedException(
-                    "Set property failed %s: %s", prop.name, ex) from None
+            if prop.value in self._dirty_data:
+                del self._dirty_data[prop.value]
+            self.schedule_update(1)
         return False
 
     def get_map_for_render(self, map_index: int) -> MapData | None:
@@ -1098,7 +1115,7 @@ class DreameVacuumDevice:
             raise InvalidActionException("Invalid Command: (%s).", command)
 
         self.schedule_update(5)
-        self._device_connection.send(command, parameters, 1, 2)
+        self._device_connection.send(command, parameters, 1)
         self.schedule_update(1)
 
     def set_suction_level(self, suction_level: int) -> bool:
@@ -1541,7 +1558,7 @@ class DreameVacuumDevice:
             }
         )
         mapping = self.property_mapping[DreameVacuumProperty.REMOTE_CONTROL]
-        return self._device_connection.set_property(mapping["siid"], mapping["piid"], payload, 1, 1)
+        return self._device_connection.set_property(mapping["siid"], mapping["piid"], payload, 1)
 
     def install_voice_pack(self, lang_id: int, url: str, md5: str, size: int) -> dict[str, Any] | None:
         """install a custom language pack"""
@@ -1550,7 +1567,7 @@ class DreameVacuumDevice:
             % {"lang_id": lang_id, "url": url, "md5": md5, "size": size}
         )
         mapping = self.property_mapping[DreameVacuumProperty.VOICE_CHANGE]
-        return self._device_connection.set_property(mapping["siid"], mapping["piid"], payload, 1, 1)
+        return self._device_connection.set_property(mapping["siid"], mapping["piid"], payload, 1)
 
     def set_ai_detection(self, settings: dict[str, bool]) -> dict[str, Any] | None:
         """Send ai detection parameters to the device."""
@@ -1574,7 +1591,7 @@ class DreameVacuumDevice:
                         )
 
             mapping = self.property_mapping[DreameVacuumProperty.AI_DETECTION]
-            return self._device_connection.set_property(mapping["siid"], mapping["piid"], str(json.dumps(settings, separators=(",", ":"))).replace(" ", ""), 1, 1)
+            return self._device_connection.set_property(mapping["siid"], mapping["piid"], str(json.dumps(settings, separators=(",", ":"))).replace(" ", ""), 1)
 
     def set_ai_obstacle_detection(self, enabled: bool) -> dict[str, Any] | None:
         """Enable or disable AI detection feature."""
@@ -1663,9 +1680,9 @@ class DreameVacuumDevice:
     def update_map_data(self, parameters: dict[str, Any]) -> dict[str, Any] | None:
         """Send update map action to the device."""
         if self._map_manager:
+            self._map_manager.schedule_update(10)
             self._property_changed()
             self._last_map_request = time.time()
-            self._map_manager.schedule_update(10)
             
         response = self.call_action(
             DreameVacuumAction.UPDATE_MAP_DATA,
@@ -1679,11 +1696,12 @@ class DreameVacuumDevice:
             ],
         )
 
+        self.schedule_update(5)
+
         if self._map_manager:
             self._map_manager.request_next_map()
             self._last_map_list_request = 0            
 
-        self.schedule_update(5)
         return response
 
     def rename_map(self, map_id: int, map_name: str = "") -> dict[str, Any] | None:
@@ -1800,7 +1818,7 @@ class DreameVacuumDevice:
 
             mapping = self.property_mapping[DreameVacuumProperty.MAP_RECOVERY]
             response = self._device_connection.set_property(mapping["siid"], mapping["piid"], str(
-                json.dumps({"map_id": map_id, "map_url": map_url}, separators=(",", ":"))).replace(" ", ""), 1, 1)
+                json.dumps({"map_id": map_id, "map_url": map_url}, separators=(",", ":"))).replace(" ", ""), 1)
 
             if self._map_manager:
                 self._map_manager.request_next_map()
@@ -1831,7 +1849,7 @@ class DreameVacuumDevice:
             line.append(segment)
             return self.update_map_data({"dsrid": line, "mapid": map_id})
 
-    def set_cleaning_order(self, cleaning_order: list[int]) -> dict[str, Any] | None:
+    def set_cleaning_sequence(self, cleaning_sequence: list[int]) -> dict[str, Any] | None:
         """Set cleaning sequence on current map. 
         Device will use this order even you specify order in segment cleaning."""
 
@@ -1842,21 +1860,19 @@ class DreameVacuumDevice:
 
         if self.status.started:
             raise InvalidActionException(
-                "Cannot set cleaning order while vacuum is running"
+                "Cannot set cleaning sequence while vacuum is running"
             )
+        
+        if cleaning_sequence is "" or not cleaning_sequence:
+            cleaning_sequence = []
+            
+        if self._map_manager:
+            if cleaning_sequence and self.status.segments and len(cleaning_sequence) != len(self.status.segments.items()):
+                raise InvalidValueException("Invalid size for cleaning sequence")
+                
+            cleaning_sequence = self._map_manager.editor.set_cleaning_sequence(cleaning_sequence)
 
-        if cleaning_order is not None:
-            if cleaning_order is "":
-                cleaning_order = []
-            elif cleaning_order:
-                segments = self.status.segments
-                if segments:
-                    count = len(segments.items())
-                    if len(cleaning_order) != count:
-                        raise InvalidValueException(
-                            "Invalid size for cleaning order")
-
-            return self.update_map_data({"cleanOrder": cleaning_order})
+        return self.update_map_data({"cleanOrder": cleaning_sequence})
 
     def set_cleanset(self, cleanset: dict[str, list[int]]) -> dict[str, Any] | None:
         """Set customized cleaning settings on current map. 
@@ -1920,9 +1936,7 @@ class DreameVacuumDevice:
     def set_segment_order(self, segment_id: int, order: int) -> dict[str, Any] | None:
         """Update cleaning order of a segment on current map"""
         if self._map_manager and not self.status.has_temporary_map:
-            return self.set_cleaning_order(
-                self._map_manager.editor.set_segment_order(segment_id, order)
-            )
+            return self.update_map_data({"cleanOrder": self._map_manager.editor.set_segment_order(segment_id, order)})
 
     def set_segment_suction_level(self, segment_id: int, suction_level: int) -> dict[str, Any] | None:
         """Update suction level of a segment on current map"""
@@ -2900,7 +2914,7 @@ class DreameVacuumDeviceStatus:
         return False
 
     @property
-    def cleaning_order(self) -> list[int] | None:
+    def cleaning_sequence(self) -> list[int] | None:
         """Returns custom cleaning sequence list."""
         segments = self.segments 
         if segments:
@@ -3010,6 +3024,16 @@ class DreameVacuumDeviceStatus:
             return current_map.segments[current_map.robot_segment]
 
     @property
+    def active_segments(self) -> list[int] | None:        
+        map_data = self.current_map
+        if map_data and self.started and not self.fast_mapping:
+            if self.segment_cleaning and map_data.active_areas:
+                return map_data.active_segments
+            elif not self.zone_cleaning and not self.spot_cleaning and map_data.segments:
+                return list(map_data.segments.keys())
+            return []
+
+    @property
     def job(self) -> dict[str, Any] | None:
         attributes = {
             ATTR_CLEANING_MODE: self.cleaning_mode.name,
@@ -3107,7 +3131,7 @@ class DreameVacuumDeviceStatus:
                     value = "on" if value == 1 else "off"
                 attributes[prop_name] = value
                 
-        attributes[ATTR_CLEANING_SEQUENCE] = self.cleaning_order
+        attributes[ATTR_CLEANING_SEQUENCE] = self.cleaning_sequence
         attributes[ATTR_CHARGING] = self.docked
         attributes[ATTR_STARTED] = self.started
         attributes[ATTR_PAUSED] = self.paused
@@ -3115,33 +3139,14 @@ class DreameVacuumDeviceStatus:
         attributes[ATTR_RETURNING_PAUSED] = self.returning_paused
         attributes[ATTR_RETURNING] = self.returning
         attributes[ATTR_MAPPING] = self.fast_mapping
-
-        segments = self.segments
-        if self.segments:
-            attributes[ATTR_ROOMS] = [
-                {ATTR_ID: v.segment_id, ATTR_NAME: v.name, ATTR_ICON: v.icon}
-                for k, v in sorted(segments.items())
-            ]
-
-            if self.started and not self.fast_mapping:
-                map_data = self.current_map
-                active_segments = []
-                if map_data:
-                    if self.segment_cleaning and map_data.active_areas:
-                        active_segments = map_data.active_segments
-                    elif not self.zone_cleaning and not self.spot_cleaning:
-                        active_segments = list(segments.keys())
-                    attributes[ATTR_ACTIVE_SEGMENTS] = active_segments
-
+        
+        if self.map_list:
+            attributes[ATTR_ACTIVE_SEGMENTS] = self.active_segments
             attributes[ATTR_CURRENT_SEGMENT] = self.current_room.segment_id if self.current_room else 0
-
-        if self.multi_map and self.map_list:
-            if self.selected_map:
-                attributes[ATTR_SELECTED_MAP] = self.selected_map.map_name
-
-            attributes[ATTR_MAP_ROOMS] = {}
+            attributes[ATTR_SELECTED_MAP] = self.selected_map.map_name if self.selected_map else None
+            attributes[ATTR_ROOMS] = {}
             for (k, v) in self.map_data_list.items():
-                attributes[ATTR_MAP_ROOMS][v.map_name] = [
+                attributes[ATTR_ROOMS][v.map_name] = [
                     {ATTR_ID: j, ATTR_NAME: s.name, ATTR_ICON: s.icon}
                     for (j, s) in sorted(v.segments.items())
                 ]

@@ -23,95 +23,175 @@ With help of two custom cards you can generate a single card to manage all room 
 
 ```yaml
 {# ----------------- PROVIDE YOUR OWN ENTITY ID AND ROOM COUNT HERE ----------------- #}
+{# ----------------- PROVIDE YOUR OWN ENTITY ID AND ROOM COUNT HERE ----------------- #}
 {% set vacuum_entity = "vacuum." %}
 {# ------------------- DO NOT CHANGE ANYTHING BELOW ------------------- #}
 {%- set vacuum_name = states[vacuum_entity].entity_id.replace('vacuum.', '') %} 
 {%- set mop_pad = ('mop_pad_humidity' in states[vacuum_entity].attributes)|bool %}
-{%- set rooms = namespace(list=[]) %}
-{%- for room in states[vacuum_entity].attributes.rooms %}  
-  {%- set rooms.list = rooms.list + [room.id] %}
-{%- endfor %}
-{%- if 'map_rooms' in states[vacuum_entity].attributes %}
-  {%- for map in states[vacuum_entity].attributes.map_rooms.values() %}  
+{% set rooms = namespace(list=[]) %}
+{%- if 'rooms' in states[vacuum_entity].attributes %}
+{%- for map in states[vacuum_entity].attributes.rooms.values() %}  
     {%- for room in map %}  
-      {%- if room.id not in rooms.list %}
+    {%- if room.id not in rooms.list %}
         {%- set rooms.list = rooms.list + [room.id] %}
-      {%- endif %}
+    {%- endif %}
     {%- endfor %}
-  {%- endfor %}
+{%- endfor %}
 {%- endif %}
 {%- set rooms.list = rooms.list|sort() %}
 
-
 type: entities
 title: Rooms
+show_header_toggle: false
 entities:
 {%- for room in rooms.list %}
-{%- set entity_id = "select." + vacuum_name + "_room_" + room|string %}
-  - type: conditional
-    conditions:
-      - entity: {{ entity_id }}_name
-        state_not: unavailable
-    row:
-      type: custom:config-template-card
-      variables:
-        - states['{{ entity_id }}_name']
-        - states['{{ entity_id }}_suction_level'].entity_id
-        {%- if mop_pad %}
-        - states['{{ entity_id }}_mop_pad_humidity'].entity_id
-        {%- else %}
-        - states['{{ entity_id }}_water_volume'].entity_id
-        {%- endif %}
-        - states['{{ entity_id }}_cleaning_times'].entity_id
-        - states['{{ entity_id }}_order'].entity_id
-      entities:
-        - ${vars[0].entity_id}
-        - ${vars[1]}
-        - ${vars[2]}
-        - ${vars[3]}
-        - ${vars[4]}
-      card:
+{%- set room_exists = "states['" + vacuum_entity + "'].attributes.cleaning_sequence && states['" + vacuum_entity + "'].attributes.cleaning_sequence.length > " + (loop.index - 1)|string  %} 
+{%- set room_id = "(" + room_exists + " ? (states['" + vacuum_entity + "'].attributes.cleaning_sequence[" + (loop.index - 1)|string + "]) : " + room|string + ")" %}
+{%- set current_room = "(vars[5].state == 'unavailable' && states['select." + vacuum_name + "_cleaning_mode'].state == 'unavailable' && states['" + vacuum_entity + "'].attributes.current_segment == vars[0])" %}
+  - type: custom:config-template-card
+    variables:
+      - >- 
+        {{ room_id }}
+      - states['select.{{ vacuum_name }}_room_' + vars[0] + '_name'] 
+      - states['select.{{ vacuum_name }}_room_' + vars[0] + '_suction_level']
+      {%- if mop_pad %}
+      - states['select.{{ vacuum_name }}_room_' + vars[0] + '_mop_pad_humidity']
+      {%- else %}
+      - states['select.{{ vacuum_name }}_room_' + vars[0] + '_water_volume']
+      {%- endif %}
+      - states['select.{{ vacuum_name }}_room_' + vars[0] + '_cleaning_times']
+      - states['select.{{ vacuum_name }}_room_' + vars[0] + '_order']
+      - >- 
+        states['{{ vacuum_entity }}']
+      - >-
+        (vars[6].attributes.rooms && vars[6].attributes.selected_map ? vars[6].attributes.rooms[vars[6].attributes.selected_map].length : 1)
+      - >-
+        ({{ current_room }} ? 'var(--state-icon-active-color)' : 'var(--text-primary-color)')
+      - >-
+        (vars[6].attributes.cleaning_sequence ? 'inherit' : 'none')
+      - >-
+        (vars[5].state != 'unavailable' ? 'inherit' : 'none')
+      - >-
+        (vars[6].attributes.customized_cleaning && (!vars[6].attributes.active_segments || states['{{ vacuum_entity }}'].attributes.active_segments.includes(vars[0])) ? 'inherit' : 'none')
+    entities:
+      - ${vars[1].entity_id}
+      - ${vars[2].entity_id}
+      - ${vars[3].entity_id}
+      - ${vars[4].entity_id}
+      - ${vars[5].entity_id}
+      - ${vars[6].entity_id}
+    card:
+      type: conditional
+      conditions:
+        - entity: ${vars[1].entity_id}
+          state_not: unavailable
+      card:            
         type: custom:multiple-entity-row
-        entity: ${vars[0].entity_id}
+        entity: ${vars[1].entity_id}
         show_state: false
-        name: ${vars[0].state}
+        name: ${vars[1].state}
         entities:
-          - entity: ${vars[1]}
-            name: Suction
-            hide_if: unavailable
+          - icon: ${vars[2].attributes.icon}
+            entity: ${vars[2].entity_id}
+            name: ' '
+            tap_action: 
+              action: call-service
+              service: dreame_vacuum.select_select_next
+              service_data:
+                entity_id: ${vars[2].entity_id}
+            double_tap_action:
+              action: call-service
+              service: dreame_vacuum.select_select_previous
+              service_data:
+                entity_id: ${vars[2].entity_id}
+            hold_action:
+              action: more-info
+            styles:
+              display: ${vars[11]}
+              pointer-events: >-
+                ${vars[2].state != 'unavailable' ? 'inherit' : 'none'}
+              width: 28px
+              '--paper-item-icon-color': ${vars[7]}
+          - icon: ${vars[3].attributes.icon}
+            entity: ${vars[3].entity_id}
+            name: ' '
             tap_action:
               action: call-service
               service: dreame_vacuum.select_select_next
               service_data:
-                entity_id: ${vars[1]}
+                entity_id: ${vars[3].entity_id}
+            double_tap_action:
+              action: call-service
+              service: dreame_vacuum.select_select_previous
+              service_data:
+                entity_id: ${vars[3].entity_id}
             styles:
-              width: 55px
-          - entity: ${vars[2]}
-            name: {{ "Mop" if mop_pad else "Water" }}
-            hide_if: unavailable
+              display: ${vars[11]}
+              pointer-events: >-
+                ${vars[3].state != 'unavailable' ? 'inherit' : 'none'}
+              width: 28px
+              '--paper-item-icon-color': ${vars[8]}
+          - icon: ${vars[4].attributes.icon}
+            entity: ${vars[4].entity_id}
+            name: ' '
             tap_action:
               action: call-service
               service: dreame_vacuum.select_select_next
               service_data:
-                entity_id: ${vars[2]}
+                entity_id: ${vars[4].entity_id}
+            double_tap_action:
+              action: call-service
+              service: dreame_vacuum.select_select_previous
+              service_data:
+                entity_id: ${vars[4].entity_id}
+            hold_action:
+              action: more-info
             styles:
-              width: 55px
-          - entity: ${vars[3]}
-            name: Times
-            hide_if: unavailable
+              display: ${vars[11]}
+              pointer-events: >-
+                ${vars[4].state != 'unavailable' ? 'inherit' : 'none'}
+              width: 28px
+              '--paper-item-icon-color': ${vars[8]}
+          - icon: mdi:chevron-down
+            entity: ${vars[5].entity_id}
+            name: ' '
             tap_action:
               action: call-service
               service: dreame_vacuum.select_select_next
               service_data:
-                entity_id: ${vars[3]}
+                entity_id: ${vars[5].entity_id}
+                cycle: false
+            hold_action:
+              action: more-info
             styles:
-              width: 30px
-          - entity: ${vars[4]}
-            name: Order
-            hide_if: unavailable
+              display: ${vars[9]}
+              margin-right: 0
+              margin-left: 8px
+              '--paper-item-icon-color': >-
+                ${(vars[7] > {{ loop.index }} ? 'var(--primary-color)' : 'var(--state-unavailable-color)')}
+              pointer-events: >-
+                ${(vars[7] > {{ loop.index }} ? vars[10] : 'none')}
+          - icon: mdi:chevron-up
+            entity: ${vars[5].entity_id}
+            name: ' '
+            tap_action:
+              action: call-service
+              service: dreame_vacuum.select_select_previous
+              service_data:
+                entity_id: ${vars[5].entity_id}
+                cycle: false
+            hold_action:
+              action: more-info
             styles:
-              width: 35px
-{%- endfor %}
+              display: ${vars[9]}
+              '--paper-item-icon-color': {{ 'var(--primary-color)' if loop.index > 1 else 'var(--state-unavailable-color)' }}
+              pointer-events: {{ "${vars[10]}" if loop.index > 1 else 'none' }}
+  {%- endfor %}
+  - type: divider
+  - entity: switch.vacuum_customized_cleaning
+    name: Customized Cleaning
+  - entity: switch.vacuum_cleaning_sequence
+    name: Cleaning Sequence
 ```
 
 #### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md#select-entities-for-rooms">For more information about room entities</a>

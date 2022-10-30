@@ -20,10 +20,9 @@ from homeassistant.config_entries import (
     ConfigEntry,
     ConfigFlow,
     OptionsFlow,
-    SOURCE_REAUTH,
 )
 
-from .dreame import MiIODeviceProtocol, MiIOCloudProtocol, MAP_COLOR_SCHEME_LIST
+from .dreame import DreameVacuumDeviceProtocol, DreameVacuumCloudProtocol, MAP_COLOR_SCHEME_LIST
 
 from .const import (
     DOMAIN,
@@ -198,7 +197,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
         if len(self.token) == 32:
             try:
-                protocol = MiIODeviceProtocol(self.host, self.token)
+                protocol = DreameVacuumDeviceProtocol(self.host, self.token)
                 info = await self.hass.async_add_executor_job(protocol.connect, 2)
                 if info:
                     self.mac = info["mac"]
@@ -268,7 +267,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 self.password = password
                 self.country = country
 
-                protocol = MiIOCloudProtocol(
+                protocol = DreameVacuumCloudProtocol(
                     self.username, self.password, self.country)
                 await self.hass.async_add_executor_job(protocol.login)
 
@@ -367,6 +366,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 options={
                     CONF_NOTIFY: user_input[CONF_NOTIFY],
                     CONF_COLOR_SCHEME: user_input.get(CONF_COLOR_SCHEME),
+                    CONF_MAP_OBJECTS: user_input.get(CONF_MAP_OBJECTS),
                 },
             )
 

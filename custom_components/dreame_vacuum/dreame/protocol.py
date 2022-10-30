@@ -1,531 +1,98 @@
-import binascii
-import codecs
 import logging
-import socket
 import random
-import calendar
 import hashlib
 import json
 import base64
 import hmac
 import time
 import locale
-import datetime
 import os
 import tzlocal
-from Crypto.Cipher import ARC4
 import requests
-from datetime import datetime, timedelta
-from typing import Any, Dict, Optional, List, Tuple
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import padding
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from .exceptions import DeviceException, InvalidValueException
-from construct import (
-    core,
-    Adapter,
-    Bytes,
-    Checksum,
-    Const,
-    Default,
-    GreedyBytes,
-    Hex,
-    IfThenElse,
-    Int16ub,
-    Int32ub,
-    Pointer,
-    RawCopy,
-    Rebuild,
-    Struct,
-)
+from typing import Any, Dict, Optional, Tuple
+from datetime import datetime
+from Crypto.Cipher import ARC4
+from miio.miioprotocol import MiIOProtocol
 
 _LOGGER = logging.getLogger(__name__)
 
-
-class Utils:
-    """This class is adapted from the original xpn.py code by gst666."""
-
-    @staticmethod
-    def verify_token(token: bytes) -> None:
-        """Checks if the given token is of correct type and length."""
-        if not isinstance(token, bytes):
-            raise InvalidValueException("Token must be bytes")
-        if len(token) != 16:
-            raise InvalidValueException("Wrong token length")
-
-    @staticmethod
-    def md5(data: bytes) -> bytes:
-        """Calculates a md5 hashsum for the given bytes object."""
-        checksum = hashlib.md5()  # nosec
-        checksum.update(data)
-        return checksum.digest()
-
-    @staticmethod
-    def key_iv(token: bytes) -> Tuple[bytes, bytes]:
-        """Generate an IV used for encryption based on given token."""
-        key = Utils.md5(token)
-        iv = Utils.md5(key + token)
-        return key, iv
-
-    @staticmethod
-    def encrypt(plaintext: bytes, token: bytes) -> bytes:
-        """Encrypt plaintext with a given token.
-
-        :param bytes plaintext: Plaintext (json) to encrypt
-        :param bytes token: Token to use
-        :return: Encrypted bytes
-        """
-        if not isinstance(plaintext, bytes):
-            raise TypeError("plaintext requires bytes")
-        Utils.verify_token(token)
-        key, iv = Utils.key_iv(token)
-        padder = padding.PKCS7(128).padder()
-
-        padded_plaintext = padder.update(plaintext) + padder.finalize()
-        cipher = Cipher(algorithms.AES(key), modes.CBC(iv),
-                        backend=default_backend())
-
-        encryptor = cipher.encryptor()
-        return encryptor.update(padded_plaintext) + encryptor.finalize()
-
-    @staticmethod
-    def decrypt(ciphertext: bytes, token: bytes) -> bytes:
-        """Decrypt ciphertext with a given token.
-
-        :param bytes ciphertext: Ciphertext to decrypt
-        :param bytes token: Token to use
-        :return: Decrypted bytes object
-        """
-        if not isinstance(ciphertext, bytes):
-            raise TypeError("ciphertext requires bytes")
-        Utils.verify_token(token)
-        key, iv = Utils.key_iv(token)
-        cipher = Cipher(algorithms.AES(key), modes.CBC(iv),
-                        backend=default_backend())
-
-        decryptor = cipher.decryptor()
-        padded_plaintext = decryptor.update(ciphertext) + decryptor.finalize()
-
-        unpadder = padding.PKCS7(128).unpadder()
-        unpadded_plaintext = unpadder.update(padded_plaintext)
-        unpadded_plaintext += unpadder.finalize()
-        return unpadded_plaintext
-
-    @staticmethod
-    def checksum_field_bytes(ctx: Dict[str, Any]) -> bytearray:
-        """Gather bytes for checksum calculation."""
-        x = bytearray(ctx["header"].data)
-        x += ctx["_"]["token"]
-        if "data" in ctx:
-            x += ctx["data"].data
-            # print("DATA: %s" % ctx["data"])
-
-        return x
-
-    @staticmethod
-    def get_length(x) -> int:
-        """Return total packet length."""
-        datalen = x._.data.length  # type: int
-        return datalen + 32
-
-    @staticmethod
-    def is_hello(x) -> bool:
-        """Return if packet is a hello packet."""
-        # not very nice, but we know that hellos are 32b of length
-        if "length" in x:
-            val = x["length"]
-        else:
-            val = x.header.value["length"]
-
-        return bool(val == 32)
-
-
-class TimeAdapter(Adapter):
-    """Adapter for timestamp conversion."""
-
-    def _encode(self, obj, context, path):
-        return calendar.timegm(obj.timetuple())
-
-    def _decode(self, obj, context, path):
-        return datetime.utcfromtimestamp(obj)
-
-
-class EncryptionAdapter(Adapter):
-    """Adapter to handle communication encryption."""
-
-    def _encode(self, obj, context, path):
-        """Encrypt the given payload with the token stored in the context.
-
-        :param obj: JSON object to encrypt
-        """
-        # pp(context)
-        return Utils.encrypt(
-            json.dumps(obj).encode("utf-8") + b"\x00", context["_"]["token"]
-        )
-
-    def _decode(self, obj, context, path):
-        """Decrypts the given payload with the token stored in the context.
-
-        :return str: JSON object
-        """
-        try:
-            # pp(context)
-            decrypted = Utils.decrypt(obj, context["_"]["token"])
-            decrypted = decrypted.rstrip(b"\x00")
-        except Exception:
-            if obj:
-                _LOGGER.debug(
-                    "Unable to decrypt, returning raw bytes: %s", obj)
-            return obj
-
-        # list of adaption functions for malformed json payload (quirks)
-        decrypted_quirks = [  # try without modifications first
-            lambda decrypted_bytes: decrypted_bytes,
-            # powerstrip returns malformed JSON if the device is not
-            # connected to the cloud, so we try to fix it here carefully.
-            lambda decrypted_bytes: decrypted_bytes.replace(
-                b',,"otu_stat"', b',"otu_stat"'
-            ),
-            # xiaomi cloud returns malformed json when answering
-            # _sync.batch_gen_room_up_url
-            # command so try to sanitize it
-            lambda decrypted_bytes: decrypted_bytes[: decrypted_bytes.rfind(
-                b"\x00")]
-            if b"\x00" in decrypted_bytes
-            else decrypted_bytes,
-        ]
-
-        for i, quirk in enumerate(decrypted_quirks):
-            try:
-                decoded = quirk(decrypted).decode("utf-8")
-                return json.loads(decoded)
-            except Exception as ex:
-                # log the error when decrypted bytes couldn't be loaded
-                # after trying all quirk adaptions
-                if i == len(decrypted_quirks) - 1:
-                    _LOGGER.debug("Unable to parse json '%s': %s", decoded, ex)
-                    raise DeviceException(
-                        "Unable to parse message payload") from ex
-
-        return None
-
-
-Message = Struct(  # for building we need data before anything else.
-    "data" / Pointer(32, RawCopy(EncryptionAdapter(GreedyBytes))),
-    "header"
-    / RawCopy(
-        Struct(
-            Const(0x2131, Int16ub),
-            "length" / Rebuild(Int16ub, Utils.get_length),
-            "unknown" / Default(Int32ub, 0x00000000),
-            "device_id" / Hex(Bytes(4)),
-            "ts" / TimeAdapter(Default(Int32ub, datetime.utcnow())),
-        )
-    ),
-    "checksum"
-    / IfThenElse(
-        Utils.is_hello,
-        Bytes(16),
-        Checksum(Bytes(16), Utils.md5, Utils.checksum_field_bytes),
-    ),
-)
-
-
-class MiIODeviceProtocol:
-    """miIO protocol implementation. This module contains the implementation of routines to send handshakes, send commands and discover devices (MiIOProtocol)."""
-
+class DreameVacuumDeviceProtocol(MiIOProtocol):
     def __init__(self, ip: str, token: str) -> None:
-        """Create a :class:`MiIODeviceProtocol` instance."""
+        super().__init__(ip, token, 0, 0, True, 2)
         self.ip = None
-        self._token = None
+        self.token = None
         self.set_credentials(ip, token)
-        self.lazy_discover = True
-
-    def connect(self, retry_count=2) -> Any:
-        return self.send("miIO.info")
 
     def set_credentials(self, ip: str, token: str):
         if self.ip != ip or self.token != token:
             self.ip = ip
             self.port = 54321
-            self._token = token
+            self.token = token
 
             if token is None or token == "":
                 token = 32 * "0"
-            self.token = bytes.fromhex(token)
-
-            self.__id = 0
+            self.token = bytes.fromhex(token)            
             self._discovered = False
-            self._device_ts: datetime = datetime.utcnow()
-            self._device_id = bytes()
 
-    def send_handshake(self, *, retry_count=2) -> Message:
-        """Send a handshake to the device."""
-        try:
-            m = MiIODeviceProtocol.discover(self.ip)
-        except DeviceException as ex:
-            if retry_count > 0:
-                return self.send_handshake(retry_count=retry_count - 1)
-            raise ex
-
-        if m is None:
-            raise DeviceException("Unable to discover the device %s" % self.ip)
-
-        header = m.header.value
-        self._device_id = header.device_id
-        self._device_ts = header.ts
-        self._discovered = True
-
-        _LOGGER.debug(
-            "Discovered %s with ts: %s, token: %s",
-            binascii.hexlify(self._device_id).decode(),
-            self._device_ts,
-            codecs.encode(m.checksum, "hex"),
-        )
-
-        return m
-
-    @staticmethod
-    def discover(addr: str = None, timeout: int = 2) -> Any:
-        """Scan for devices in the network. This method is used to discover supported
-        devices by sending a handshake message to the broadcast address on port 54321.
-        If the target IP address is given, the handshake will be send as an unicast
-        packet."""
-        is_broadcast = addr is None
-        seen_addrs = []  # type: List[str]
-        if is_broadcast:
-            addr = "<broadcast>"
-            is_broadcast = True
-            _LOGGER.info(
-                "Sending discovery to %s with timeout of %ss..", addr, timeout)
-        # magic, length 32
-        helobytes = bytes.fromhex(
-            "21310020ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-        )
-
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        s.settimeout(timeout)
-        for _ in range(3):
-            s.sendto(helobytes, (addr, 54321))
-        while True:
-            try:
-                data, recv_addr = s.recvfrom(1024)
-                m = Message.parse(data)  # type: Message
-                _LOGGER.debug("Got a response: %s", m)
-                if not is_broadcast:
-                    return m
-
-                if recv_addr[0] not in seen_addrs:
-                    _LOGGER.info(
-                        "  IP %s (ID: %s) - token: %s",
-                        recv_addr[0],
-                        binascii.hexlify(m.header.value.device_id).decode(),
-                        codecs.encode(m.checksum, "hex"),
-                    )
-                    seen_addrs.append(recv_addr[0])
-            except socket.timeout:
-                if is_broadcast:
-                    _LOGGER.info("Discovery done")
-                return  # ignore timeouts on discover
-            except Exception as ex:
-                _LOGGER.warning("error while reading discover results: %s", ex)
-                break
+    def connect(self, retry_count=2) -> Any:
+        return self.send("miIO.info", retry_count=retry_count)
 
     def get_properties(
         self,
         parameters: Any = None,
-        retry_count: int = 1,
-        timeout: int = 3
+        retry_count: int = 1
     ) -> Any:
-        return self.send("get_properties", parameters, retry_count, timeout)
-
+        return self.send("get_properties", parameters=parameters, retry_count=retry_count)
+    
     def set_property(
         self,
         siid: int,
         piid: int,
         value: Any = None,
-        retry_count: int = 0,
-        timeout: int = 2
+        retry_count: int = 0
     ) -> Any:
-        return self.set_properties([
-            {
+        return self.set_properties([{
                 "did": f'{siid}.{piid}',
                 "siid": siid,
                 "piid": piid,
                 "value": value,
             }
-        ], retry_count, timeout)
+        ], retry_count=retry_count)
 
     def set_properties(
         self,
         parameters: Any = None,
-        retry_count: int = 1,
-        timeout: int = 3
+        retry_count: int = 1
     ) -> Any:
-        return self.send("set_properties", parameters, retry_count, timeout)
+        return self.send("set_properties", parameters=parameters, retry_count=retry_count)
 
     def action(
         self,
         siid: int,
         aiid: int,
         parameters=[],
-        retry_count: int = 1,
-        timeout: int = 3
+        retry_count: int = 1
     ) -> Any:
         if parameters is None:
             parameters = []
 
         return self.send(
             "action",
-            {
+            parameters={
                 "did": f'{siid}.{aiid}',
                 "siid": siid,
                 "aiid": aiid,
                 "in": parameters,
             },
+            retry_count=retry_count,
         )
-
-    def send(
-        self,
-        command: str,
-        parameters: Any = None,
-        retry_count: int = 1,
-        timeout: int = 3,
-        *,
-        extra_parameters: Dict = None,
-    ) -> Any:
-        """Build and send the given command. Note that this will implicitly call
-        :func:`send_handshake` to do a handshake, and will re-try in case of errors
-        while incrementing the `_id` by 100."""
-
-        try:
-            if not self.lazy_discover or not self._discovered:
-                self.send_handshake()
-
-            request = self._create_request(
-                command, parameters, extra_parameters)
-
-            send_ts = self._device_ts + timedelta(seconds=1)
-            header = {
-                "length": 0,
-                "unknown": 0x00000000,
-                "device_id": self._device_id,
-                "ts": send_ts,
-            }
-
-            msg = {
-                "data": {"value": request},
-                "header": {"value": header},
-                "checksum": 0,
-            }
-            m = Message.build(msg, token=self.token)
-            _LOGGER.debug("%s:%s >>: %s", self.ip, self.port, request)
-
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.settimeout(timeout)
-
-            s.sendto(m, (self.ip, self.port))
-        except OSError as ex:
-            _LOGGER.error("failed to send msg: %s", ex)
-            return None
-            # raise DeviceException from ex
-
-        try:
-            data, addr = s.recvfrom(4096)
-            m = Message.parse(data, token=self.token)
-
-            header = m.header.value
-            payload = m.data.value
-
-            self.__id = payload["id"]
-            # type: ignore # ts uses timeadapter
-            self._device_ts = header["ts"]
-
-            _LOGGER.debug(
-                "%s:%s (ts: %s, id: %s) << %s",
-                self.ip,
-                self.port,
-                header["ts"],
-                payload["id"],
-                payload,
-            )
-            if "error" in payload:
-                raise DeviceException(
-                    "Device returned error: %s" % payload["error"])
-            try:
-                return payload["result"]
-            except KeyError:
-                return payload
-        except core.ChecksumError as ex:
-            raise DeviceException(
-                "Got checksum error which indicates use of an invalid token. Please check your token!"
-            ) from ex
-        except OSError as ex:
-            if retry_count > 0:
-                _LOGGER.debug(
-                    "Retrying with incremented id, retries left: %s", retry_count
-                )
-                self.__id += 100
-                self._discovered = False
-                return self.send(
-                    command,
-                    parameters,
-                    retry_count - 1,
-                    extra_parameters=extra_parameters,
-                )
-
-            _LOGGER.error("Got error when receiving: %s", ex)
-            raise DeviceException("No response from the device") from ex
-        except Exception as ex:
-            if retry_count > 0:
-                _LOGGER.debug(
-                    "Retrying to send failed command, retries left: %s", retry_count
-                )
-                return self.send(
-                    command,
-                    parameters,
-                    retry_count - 1,
-                    extra_parameters=extra_parameters,
-                )
-
-            _LOGGER.error("Got error when receiving: %s", ex)
-            raise DeviceException("Unable to recover failed command") from ex
-
-    @property
-    def _id(self) -> int:
-        """Increment and return the sequence id."""
-        self.__id += random.randint(1, 1000)
-        if self.__id >= 9999:
-            self.__id = 1
-        return self.__id
-
-    @property
-    def raw_id(self) -> int:
-        return self.__id
 
     @property
     def connected(self) -> bool:
-        return self._discovered
+        return self._discovered    
 
-    def _create_request(
-        self, command: str, parameters: Any, extra_parameters: Dict = None
-    ):
-        """Create request payload."""
-        request = {"id": self._id, "method": command}
-
-        if parameters is not None:
-            request["params"] = parameters
-        else:
-            request["params"] = []
-
-        if extra_parameters is not None:
-            request = {**request, **extra_parameters}
-
-        return request
-
-
-class MiIOCloudProtocol:
+    
+class DreameVacuumCloudProtocol:
     def __init__(self, username: str, password: str, country: str) -> None:
         self.two_factor_auth_url = None
         self._username = username
@@ -543,7 +110,7 @@ class MiIOCloudProtocol:
         self._logged_in = None
         self._uid = None
         self._did = None
-        self._useragent = f"Android-7.1.1-1.0.0-ONEPLUS A3010-136-{MiIOCloudProtocol.get_random_agent_id()} APP/xiaomi.smarthome APPV/62830"
+        self._useragent = f"Android-7.1.1-1.0.0-ONEPLUS A3010-136-{DreameVacuumCloudProtocol.get_random_agent_id()} APP/xiaomi.smarthome APPV/62830"
         self._locale = locale.getdefaultlocale()[0]
 
         timezone = datetime.now(tzlocal.get_localzone()).strftime("%z")
@@ -641,7 +208,7 @@ class MiIOCloudProtocol:
     def login(self) -> bool:
         self._session.close()
         self._session = requests.session()
-        self._device_id = MiIOCloudProtocol.generate_device_id()
+        self._device_id = DreameVacuumCloudProtocol.generate_device_id()
         self._session.cookies.set(
             "sdkVersion", "accountsdk-18.8.15", domain="mi.com")
         self._session.cookies.set(
@@ -868,14 +435,14 @@ class MiIOCloudProtocol:
         params: Dict[str, str],
         ssecurity: str,
     ) -> Dict[str, str]:
-        params["rc4_hash__"] = MiIOCloudProtocol.generate_enc_signature(
+        params["rc4_hash__"] = DreameVacuumCloudProtocol.generate_enc_signature(
             url, method, signed_nonce, params
         )
         for k, v in params.items():
-            params[k] = MiIOCloudProtocol.encrypt_rc4(signed_nonce, v)
+            params[k] = DreameVacuumCloudProtocol.encrypt_rc4(signed_nonce, v)
         params.update(
             {
-                "signature": MiIOCloudProtocol.generate_enc_signature(
+                "signature": DreameVacuumCloudProtocol.generate_enc_signature(
                     url, method, signed_nonce, params
                 ),
                 "ssecurity": ssecurity,

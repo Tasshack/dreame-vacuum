@@ -39,7 +39,7 @@
 | `human_detection`   | Enable/Disable AI human detection | Available on S10 and L10s models
 | `furniture_detection`   | Enable/Disable AI furniture detection | Available on S10 and L10s models
 | `fluid_detection`   | Enable/Disable AI fluid detection | Available on S10 and L10s models
-| `cleaning_sequence`   | Enable/Disable custom room cleaning sequence | Available with map feature (This a dynamically created entity and not actually tied to any setting directly, when turned of it actually deletes current cleaning order and regenerates with default order when turned on again)
+| `cleaning_sequence`   | Enable/Disable custom room cleaning sequence | Available with map feature (This a dynamically created entity and not actually tied to any setting directly, when turned of it actually deletes current cleaning order and regenerates with default order or restores previous order from memory when turned on again)
 
 ## Sensor
 

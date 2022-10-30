@@ -25,5 +25,5 @@ from .const import (
     SUCTION_LEVEL_QUIET,
 )
 from .device import DreameVacuumDevice
-from .protocol import MiIODeviceProtocol, MiIOCloudProtocol
+from .protocol import DreameVacuumDeviceProtocol, DreameVacuumCloudProtocol
 from .exceptions import DeviceException, DeviceUpdateFailedException, InvalidActionException, InvalidValueException

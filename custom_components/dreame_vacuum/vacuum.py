@@ -30,7 +30,7 @@ from .const import (
     FAN_SPEED_STANDARD,
     FAN_SPEED_STRONG,
     FAN_SPEED_TURBO,
-    INPUT_CLEANING_ORDER,
+    INPUT_CLEANING_SEQUENCE,
     INPUT_DND_ENABLED,
     INPUT_DND_END,
     INPUT_DND_START,
@@ -69,7 +69,7 @@ from .const import (
     SERVICE_SELECT_MAP,
     SERVICE_DELETE_MAP,
     SERVICE_RESTORE_MAP,
-    SERVICE_SET_CLEANING_ORDER,
+    SERVICE_SET_CLEANING_SEQUENCE,
     SERVICE_SET_CUSTOM_CLEANING,
     SERVICE_SET_DND,
     SERVICE_SET_RESTRICTED_ZONE,
@@ -377,11 +377,11 @@ async def async_setup_entry(
     )
 
     platform.async_register_entity_service(
-        SERVICE_SET_CLEANING_ORDER,
+        SERVICE_SET_CLEANING_SEQUENCE,
         {
-            vol.Required(INPUT_CLEANING_ORDER): cv.ensure_list,
+            vol.Required(INPUT_CLEANING_SEQUENCE): cv.ensure_list,
         },
-        DreameVacuum.async_set_cleaning_order.__name__,
+        DreameVacuum.async_set_cleaning_sequence.__name__,
     )
 
     platform.async_register_entity_service(
@@ -683,13 +683,13 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
                 line,
             )
 
-    async def async_set_cleaning_order(self, cleaning_order) -> None:
-        """Set cleaning order"""
-        if cleaning_order != "" and cleaning_order is not None:
+    async def async_set_cleaning_sequence(self, cleaning_sequence) -> None:
+        """Set cleaning sequence"""
+        if cleaning_sequence != "" and cleaning_sequence is not None:
             await self._try_command(
-                "Unable to call cleaning_order: %s",
-                self.device.set_cleaning_order,
-                cleaning_order,
+                "Unable to call cleaning_sequence: %s",
+                self.device.set_cleaning_sequence,
+                cleaning_sequence,
             )
 
     async def async_set_custom_cleaning(self, suction_level, water_volume, repeats) -> None:

@@ -9,7 +9,7 @@ Services for actions that are not available via an entity.
 
 Start selected room cleaning with optional customized cleaning parameters. 
 > - If you are using integration with map feature, you can acquire segment ids from vacuum entity attributes.
-> - Cleaning parameters and cleaning order are ignored by the device when `customized_cleaning` or `cleaning_sequence` is enabled.
+> - Cleaning parameters and cleaning sequence are ignored by the device when `customized_cleaning` or `cleaning_sequence` is enabled.
 
 **Examples:**
 
@@ -259,19 +259,19 @@ Send remote control command to vacuum. *(For use of a custom lovelace card)*
 
 Install an official voice pack.
 
-### `dreame_vacuum.vacuum_set_cleaning_order`
+### `dreame_vacuum.vacuum_set_cleaning_sequence`
 
 Set room cleaning sequence on current map. 
 
-> Exact number of room ids must be passed as order list
+> Exact number of room ids must be passed as sequence list
 
 **Example:**
 
-- Set room cleaning order on current map to 3, 5, 4, 2, 1
+- Set room cleaning sequence on current map to 3, 5, 4, 2, 1
     ```yaml
-    service: dreame_vacuum.vacuum_set_cleaning_order
+    service: dreame_vacuum.vacuum_set_cleaning_sequence
     data:
-        cleaning_order: 
+        cleaning_sequence: 
           - 3
           - 5
           - 4
@@ -281,11 +281,11 @@ Set room cleaning sequence on current map.
         entity_id: vacuum.vacuum
     ```
 
-- Disable custom cleaning order on current map
+- Disable custom cleaning sequence on current map
     ```yaml
-    service: dreame_vacuum.vacuum_set_cleaning_order
+    service: dreame_vacuum.vacuum_set_cleaning_sequence
     data:
-        cleaning_order: []
+        cleaning_sequence: []
     target:
         entity_id: vacuum.vacuum
     ```

@@ -130,7 +130,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
             and device.status.segments
             and next(iter(device.status.segments.values())).order is not None
         ),
-        set_fn=lambda device, value: device.set_segment_order(1, value),
+        set_fn=lambda device, value: device.set_segment_order(next(iter(device.status.segments.values())).segment_id, value),
         format_fn=lambda value, device: int(value),
         entity_category=EntityCategory.CONFIG,
     ),
