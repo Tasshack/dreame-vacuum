@@ -1,0 +1,73 @@
+{
+    "config": {
+      "abort": {
+        "already_configured": "Gerät ist bereits konfiguriert",
+        "cannot_connect": "Verbindung fehlgeschlagen. Bitte stellen Sie sicher, dass sich das Gerät im selben Netzwerk und Subnetz befindet."
+      },
+      "error": {
+        "cannot_connect": "Verbindung fehlgeschlagen. Bitte stellen Sie sicher, dass sich das Gerät im selben Netzwerk und Subnetz befindet.",
+        "unsupported": "Gerät wird nicht unterstützt",
+        "wrong_token": "Prüfsummenfehler, falscher Token",
+        "2fa_required": "Zweifaktoren Anmeldung erforderlich",
+        "credentials_incomplete": "Anmeldedaten unvollständig, bitte geben Sie Benutzername, Passwort und das Land ein",
+        "login_error": "Anmeldung bei Xiaomi Miio Cloud nicht möglich, bitte überprüfen Sie die Anmeldedaten.",
+        "no_devices": "Keine unterstützten Geräte in diesem Xiaomi Miio Cloud-Konto für das ausgewählte Land gefunden."
+      },
+      "step": {
+        "user": {
+          "data": {
+            "configuration_type": "Konfigurationstyp"
+          },
+          "description": "Die Kartenfunktion erfordert eine Cloud-Verbindung und bietet eine automatische Konfiguration. Wenn Sie die Kartenfunktion nicht verwenden möchten, können Sie die manuelle Konfiguration wählen."
+        },
+        "without_map": {
+          "data": {
+            "host": "Host",
+            "token": "Token"
+          },
+          "description": "Sie benötigen das 32 Zeichen lange API-Token, siehe https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token für weitere Informationen."
+        },
+        "with_map": {
+          "data": {
+            "username": "Benutzername",
+            "password": "Passwort",
+            "country": "Cloudserver"
+          },
+          "description": "Melden Sie sich bei der Xiaomi Miio Cloud an, siehe https://www.openhab.org/addons/bindings/miio/#country-servers für den zu verwendenden Cloud-Server."
+        },
+        "devices": {
+          "data": {
+            "devices": "Unterstützte Geräte"
+          },
+          "description": "Bitte wählen Sie den Dreame Wischroboter aus, das Sie einrichten möchten."
+        },
+        "options": {
+          "data": {
+            "name": "Name",
+            "color_scheme": "Farbschema der Karte",
+            "notify": "Benachrichtigung",
+            "map_objects": "Karten Objekte"
+          }
+        },
+        "reauth_confirm": {
+          "description": "Die Dreame Wischroboter-Integration benötigt eine erneute Authentifizierung Ihres Kontos, um die Token zu aktualisieren oder um die fehlende Cloud-Anmeldeinformationen hinzuzufügen",
+          "title": "Reauthentifiziere Integration"
+        }
+      }
+    },
+    "options": {
+      "step": {
+        "init": {
+          "data": {
+            "color_scheme": "Farbschema der Karte",
+            "notify": "Benachrichtigung",
+            "map_objects": "Karten Objekte",
+            "configuration_type": "Konfigurationstyp"
+          }
+        }
+      },
+      "error": {
+        "cloud_credentials_incomplete": "Anmeldedaten unvollständig, bitte geben Sie Benutzername, Passwort und das Land ein"
+      }
+    }
+  }
