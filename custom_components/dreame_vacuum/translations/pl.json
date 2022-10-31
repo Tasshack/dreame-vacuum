@@ -1,0 +1,73 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Urządzenie jest już skonfigurowane",
+      "cannot_connect": "Nie udało się połączyć. Upewnij się, że urządzenie jest w tej samej sieci."
+    },
+    "error": {
+      "cannot_connect": "Nie udało się połączyć. Upewnij się, że urządzenie jest w tej samej sieci.",
+      "unsupported": "Urządzenie nie jest obsługiwane",
+      "wrong_token": "Błąd sumy kontrolnej, zły token",
+      "2fa_required": "Wymagane logowanie 2FA",
+      "credentials_incomplete": "Niepoprawne dane logowania, proszę podać nazwę użytkownika, hasło i kraj",
+      "login_error": "Nie można zalogować się do chmury Xiaomi Miio, sprawdź dane logowania.",
+      "no_devices": "Nie znaleziono obsługiwanych urządzeń na tym koncie w chmurze Xiaomi Miio w wybranym kraju."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Typ konfiguracji"
+        },
+        "description": "Funkcja mapy wymaga połączenia z chmurą oraz zapewnia automatyczną konfigurację. Jeśli nie chcesz korzystać z funkcji mapy, możesz wybrać konfigurację ręczną."
+      },
+      "without_map": {
+        "data": {
+          "host": "Host",
+          "token": "Token"
+        },
+        "description": "Potrzebujesz 32-znakowego tokena API, zobacz https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token, aby uzyskać wiecej informacji."
+      },
+      "with_map": {
+        "data": {
+          "username": "Nazwa użytkownika",
+          "password": "Hasło",
+          "country": "Kraj serwera"
+        },
+        "description": "Zaloguj się do chmury Xiaomi Miio, zobacz https://www.openhab.org/addons/bindings/miio/#country-servers, aby uzyskać wiecej informacji."
+      },
+      "devices": {
+        "data": {
+          "devices": "Obsługiwane urządzenia"
+        },
+        "description": "Wybierz urządzenie Dreame Vacuum, które chcesz skonfigurować."
+      },
+      "options": {
+        "data": {
+          "name": "Nazwa",
+          "color_scheme": "Schemat kolorów mapy",
+          "notify": "Powiadomienia",
+          "map_objects": "Mapuj obiekty"
+        }
+      },
+      "reauth_confirm": {
+        "description": "Integracja Dreame Vacuum musi ponownie uwierzytelnić twoje konto, aby zaktualizować tokeny lub dodać brakujące dane uwierzytelniające do chmury.",
+        "title": "Ponowne uwierzytelnienie integracji"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Schemat kolorów mapy",
+          "notify": "Powiadomienia",
+          "map_objects": "Mapuj obiekty",
+          "configuration_type": "Typ konfiguracji"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Dane logowania do chmury są niekompletne, proszę podać nazwę użytkownika, hasło i kraj"
+    }
+  }
+}
