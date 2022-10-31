@@ -577,7 +577,7 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
             )
 
         if isinstance(fan_speed, str):
-            fan_speed = fan_speed.lower().replace(FAN_SPEED_SILENT, SUCTION_LEVEL_QUIET)
+            fan_speed = fan_speed.lower().replace(FAN_SPEED_SILENT.lower(), SUCTION_LEVEL_QUIET)
         if fan_speed in self.device.status.suction_level_list:
             fan_speed = self.device.status.suction_level_list[fan_speed]
         else:
