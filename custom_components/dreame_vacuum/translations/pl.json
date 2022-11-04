@@ -2,10 +2,10 @@
   "config": {
     "abort": {
       "already_configured": "Urządzenie jest już skonfigurowane",
-      "cannot_connect": "Nie udało się połączyć. Upewnij się, że urządzenie jest w tej samej sieci."
+      "cannot_connect": "Nie udało się połączyć."
     },
     "error": {
-      "cannot_connect": "Nie udało się połączyć. Upewnij się, że urządzenie jest w tej samej sieci.",
+      "cannot_connect": "Nie udało się połączyć.",
       "unsupported": "Urządzenie nie jest obsługiwane",
       "wrong_token": "Błąd sumy kontrolnej, zły token",
       "2fa_required": "Wymagane logowanie 2FA",
@@ -31,7 +31,8 @@
         "data": {
           "username": "Nazwa użytkownika",
           "password": "Hasło",
-          "country": "Kraj serwera"
+          "country": "Kraj serwera",
+          "prefer_cloud": "Preferuj połączenie z chmurą"
         },
         "description": "Zaloguj się do chmury Xiaomi Miio, zobacz https://www.openhab.org/addons/bindings/miio/#country-servers, aby uzyskać wiecej informacji."
       },
@@ -62,7 +63,8 @@
           "color_scheme": "Schemat kolorów mapy",
           "notify": "Powiadomienia",
           "map_objects": "Mapuj obiekty",
-          "configuration_type": "Typ konfiguracji"
+          "configuration_type": "Typ konfiguracji",
+          "prefer_cloud": "Preferuj połączenie z chmurą"
         }
       }
     },

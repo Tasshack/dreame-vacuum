@@ -20,6 +20,7 @@ CONF_COUNTRY: Final = "country"
 CONF_TYPE: Final = "configuration_type"
 CONF_MAC: Final = "mac"
 CONF_MAP_OBJECTS: Final = "map_objects"
+CONF_PREFER_CLOUD: Final = "prefer_cloud"
 
 CONTENT_TYPE: Final = "image/png"
 
@@ -94,6 +95,7 @@ CONSUMABLE_FILTER = "filter"
 CONSUMABLE_SENSOR = "sensor"
 CONSUMABLE_MOP_PAD = "mop_pad"
 CONSUMABLE_SILVER_ION = "silver_ion"
+CONSUMABLE_DETERGENT = "detergent"
 
 NOTIFICATION_ID_DUST_COLLECTION: Final = "dust_collection"
 NOTIFICATION_ID_CLEANING_PAUSED: Final = "cleaning_paused"
@@ -103,6 +105,7 @@ NOTIFICATION_ID_REPLACE_FILTER: Final = "replace_filter"
 NOTIFICATION_ID_CLEAN_SENSOR: Final = "clean_sensor"
 NOTIFICATION_ID_REPLACE_MOP: Final = "replace_mop"
 NOTIFICATION_ID_SILVER_ION: Final = "silver_ion"
+NOTIFICATION_ID_REPLACE_DETERGENT: Final = "replace_detergent"
 NOTIFICATION_ID_CLEANUP_COMPLETED: Final = "cleanup_completed"
 NOTIFICATION_ID_WARNING: Final = "warning"
 NOTIFICATION_ID_ERROR: Final = "error"
@@ -125,7 +128,10 @@ NOTIFICATION_MOP_NO_LIFE_LEFT: Final = (
     "### Mop pad must be replaced\nChange mop pad and reset the counter."
 )
 NOTIFICATION_SILVER_ION_LIFE_LEFT: Final = (
-    "### Silver-ion life is ended."
+    "### Silver Ion Sterilizer Deteriorated.\nPlease replace the silver ion sterilizer and reset the counter."
+)
+NOTIFICATION_DETERGENT_NO_LIFE_LEFT: Final = (
+    "### The multi-surface floor cleaner performs well in the deep cleaning of the mop pad and floors, as well as removing dirt, grime and sticky messes.\nThe cleaner will be added automatically while cleaning. It is recommended to check the remaining amount through the app and replace it promptly."
 )
 NOTIFICATION_DUST_COLLECTION_NOT_PERFORMED: Final = (
     "### Dust collecting (Auto-empty) task not performed\nThe robot will not perform auto-empty tasks during the DND period."

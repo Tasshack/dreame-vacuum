@@ -84,6 +84,7 @@ from .const import (
     CONSUMABLE_SENSOR,
     CONSUMABLE_MOP_PAD,
     CONSUMABLE_SILVER_ION,
+    CONSUMABLE_DETERGENT,
 )
 
 SUPPORT_DREAME = (
@@ -133,6 +134,7 @@ CONSUMABLE_RESET_ACTION = {
     CONSUMABLE_SENSOR: DreameVacuumAction.RESET_SENSOR,
     CONSUMABLE_MOP_PAD: DreameVacuumAction.RESET_MOP_PAD,
     CONSUMABLE_SILVER_ION: DreameVacuumAction.RESET_SILVER_ION,
+    CONSUMABLE_DETERGENT: DreameVacuumAction.RESET_DETERGENT,
 }
 
 async def async_setup_entry(
@@ -298,10 +300,10 @@ async def async_setup_entry(
         SERVICE_MOVE_REMOTE_CONTROL_STEP,
         {
             vol.Required(INPUT_VELOCITY): vol.All(
-                vol.Coerce(int), vol.Clamp(min=-300, max=100)
+                vol.Coerce(int), vol.Clamp(min=-600, max=600)
             ),
             vol.Required(INPUT_ROTATION): vol.All(
-                vol.Coerce(int), vol.Clamp(min=-128, max=128)
+                vol.Coerce(int), vol.Clamp(min=-360, max=360)
             ),
         },
         DreameVacuum.async_remote_control_move_step.__name__,
@@ -415,6 +417,7 @@ async def async_setup_entry(
                     CONSUMABLE_SENSOR,
                     CONSUMABLE_MOP_PAD,
                     CONSUMABLE_SILVER_ION,
+                    CONSUMABLE_DETERGENT,
                 ]
             ),
         },
@@ -558,7 +561,7 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
         )
 
     async def async_remote_control_move_step(
-        self, rotation: int = 0, velocity: int = 0, duration: int = 1500
+        self, rotation: int = 0, velocity: int = 0
     ) -> None:
         """Remote control the robot."""
         await self._try_command(
@@ -566,7 +569,6 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
             self.device.remote_control_move_step,
             rotation,
             velocity,
-            duration,
         )
 
     async def async_set_fan_speed(self, fan_speed, **kwargs) -> None:
@@ -576,19 +578,23 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
                 "Cannot set fan speed when customized cleaning is enabled"
             )
 
-        if isinstance(fan_speed, str):
-            fan_speed = fan_speed.lower().replace(FAN_SPEED_SILENT.lower(), SUCTION_LEVEL_QUIET)
-        if fan_speed in self.device.status.suction_level_list:
-            fan_speed = self.device.status.suction_level_list[fan_speed]
+        if isinstance(fan_speed, str) and fan_speed.isnumeric():
+            fan_speed = int(fan_speed)
+
+        if isinstance(fan_speed, int):
+            if fan_speed not in DreameVacuumSuctionLevel._value2member_map_:
+                raise HomeAssistantError("Invalid fan speed")
         else:
-            try:
-                fan_speed = int(fan_speed)
-            except ValueError as exc:
+            fan_speed = fan_speed.lower()
+            fan_speed_list = ({v.lower(): k for k, v in SUCTION_LEVEL_TO_FAN_SPEED.items()})
+            if fan_speed in fan_speed_list:
+                fan_speed = fan_speed_list[fan_speed]
+            else:
                 raise HomeAssistantError(
-                    "Fan speed not recognized (%s). Valid options: %s",
-                    exc,
+                    "Fan speed not recognized. Valid options: %s",
                     self.fan_speed_list,
                 ) from None
+
         await self._try_command(
             "Unable to set fan speed: %s", self.device.set_suction_level, fan_speed
         )

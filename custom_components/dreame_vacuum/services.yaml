@@ -423,6 +423,7 @@ vacuum_reset_consumable:
             - "sensor"
             - "mop_pad"
             - "silver_ion"
+            - "detergent"
 
 select_select_previous:
   name: Select Previous

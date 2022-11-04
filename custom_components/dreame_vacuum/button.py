@@ -89,6 +89,15 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         ),
     ),
     DreameVacuumButtonEntityDescription(
+        action_key=DreameVacuumAction.RESET_DETERGENT,
+        icon="mdi:chart-bubble",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.status.detergent_life is not None
+        ),
+    ),
+    DreameVacuumButtonEntityDescription(
         action_key=DreameVacuumAction.START_AUTO_EMPTY,
         icon_fn=lambda value, device: "mdi:delete-off"
         if not device.status.dust_collection_available
@@ -112,7 +121,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
         available_fn=lambda device: device.status.mapping_available,
         action_fn=lambda device: device.start_fast_mapping(),
-        exists_fn=lambda description, device: True,
+        exists_fn=lambda description, device: device.status.lidar_navigation,
     ),
     DreameVacuumButtonEntityDescription(
         key="start_mapping",
@@ -120,7 +129,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
         available_fn=lambda device: device.status.mapping_available,
         action_fn=lambda device: device.start_mapping(),
-        exists_fn=lambda description, device: True,
+        exists_fn=lambda description, device: device.status.lidar_navigation,
         entity_registry_enabled_default=False,
     ),
     DreameVacuumButtonEntityDescription(

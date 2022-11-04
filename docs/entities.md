@@ -33,12 +33,14 @@
 | `water_electrolysis`   | Enable/Disable water electrolysis feature | Available on vacuums with water electrolysis feature
 | `auto_water_refilling`   | Enable/Disable external water input for self-wash base | Available on vacuums with self-wash base and external water input
 | `carpet_avoidance`   | Avoid carpets if mop pads are attached | Available on vacuums with mop pad lifting feature
+| `map_saving`   | Map saving mode setting for VSLAM devices | Available on vacuums without lidar navigation
 | `ai_obstacle_detection`   | Enable/Disable AI obstacle detection | Available on S10 and L10s models
-| `obstacle_picture`   | Enable/Disable uploading obstacle picture to cloud | Available on S10 and L10s models
-| `pet_detection`   | Enable/Disable AI pet detection | Available on S10 and L10s models
-| `human_detection`   | Enable/Disable AI human detection | Available on S10 and L10s models
-| `furniture_detection`   | Enable/Disable AI furniture detection | Available on S10 and L10s models
-| `fluid_detection`   | Enable/Disable AI fluid detection | Available on S10 and L10s models
+| `obstacle_image_upload`   | Enable/Disable uploading obstacle picture to cloud | Available on devices with front camera
+| `obstacle_picture`   | Enable/Disable obstacle picture displaying | Available on devices with front camera
+| `pet_detection`   | Enable/Disable AI pet detection | Available on devices with front camera
+| `human_detection`   | Enable/Disable AI human detection | Available on devices with front camera
+| `furniture_detection`   | Enable/Disable AI furniture detection | Available on devices with front camera
+| `fluid_detection`   | Enable/Disable AI fluid detection | Available on devices with front camera
 | `cleaning_sequence`   | Enable/Disable custom room cleaning sequence | Available with map feature (This a dynamically created entity and not actually tied to any setting directly, when turned of it actually deletes current cleaning order and regenerates with default order or restores previous order from memory when turned on again)
 
 ## Sensor
@@ -76,6 +78,8 @@
 | `mop_pad_time_left`   | Mop life left in hours | Available on vacuums with self-wash base
 | `silver_ion_left`   | Silver-ion life left in percent | Available on vacuums with silver-ion feature
 | `silver_ion_time_left`   | Silver-ion life left in hours | Available on vacuums with silver-ion feature
+| `detergent_left`   | Detergent left in percent | Available on vacuums has detergent cartridge
+| `detergent_time_left`   | Detergent left in hours | Available on vacuums has detergent cartridge
 | `cleaning_history`   | Previous cleaning job details as attributes | Available with map feature
 | `current_room`   | Current room that vacuum currently in | Available with map feature
 

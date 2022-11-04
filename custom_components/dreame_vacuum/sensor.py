@@ -225,6 +225,21 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.DETERGENT_LEFT,
+        icon="mdi:water-opacity",
+        native_unit_of_measurement=UNIT_PERCENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.DETERGENT_TIME_LEFT,
+        icon="mdi:water-opacity",
+        native_unit_of_measurement=UNIT_DAYS,
+        device_class=SensorDeviceClass.DURATION,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        entity_registry_enabled_default=False,
+    ),
+    DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.FIRST_CLEANING_DATE,
         icon="mdi:calendar-start",
         device_class=SensorDeviceClass.DATE,

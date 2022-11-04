@@ -22,32 +22,44 @@ All features completely reverse engineered from the official Mi Home app RN plug
 - [Customized room cleaning entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/room_entities.md)
 - [Services for device and map with examples](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md)
 - [Persistent notifications and error reporting](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md)
+- [Events for automations](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/events.md)
 - [Valetudo map card support](#with-valetudo-map-card)
 - Onboard scheduling support *(Coming soon)*
 
 ## Supported Devices
-
-- `dreame.vacuum.p2028` *(Z10 Pro)*
-- `dreame.vacuum.p2028a` *(L10 Plus)*
-- `dreame.vacuum.p2029` *(L10 Pro)*
-- `dreame.vacuum.p2027` *(W10)*
-- `dreame.vacuum.r2104` *(W10 Pro)*
-- `dreame.vacuum.r2228` *(S10)*
-- `dreame.vacuum.r2233` *(S10 Pro)*
-- `dreame.vacuum.p2009` *(D9)*
-- `dreame.vacuum.p2259` *(D9 Max)*
-- `dreame.vacuum.p2187` *(D9 Pro)*
-- `dreame.vacuum.r2205` *(D10 Plus)*
-- `dreame.vacuum.r2228o` *(L10s Ultra)*
-- `dreame.vacuum.r2215o` *(L10s Pro)*
-- `dreame.vacuum.p2150o` *(Mi Robot Vacuum-Mop)*
-- `dreame.vacuum.p2150a` *(Mi Robot Vacuum-Mop 2 Ultra)*
-- `dreame.vacuum.p2150b` *(Mi Robot Vacuum-Mop 2 Ultra Set)*
-- `dreame.vacuum.p2114a` *(Mi robot Vacuum X10+)*
-- `dreame.vacuum.p2114o` *(Xiaomi Self-Cleaning Robot Vacuum-Mop)* 
-- `dreame.vacuum.p2149o` *(Xiaomi Self-Cleaning Robot Vacuum-Mop Pro)*
-- `dreame.vacuum.p2157` *(MOVA L600)*
-- *`More to be added later...`*
+- **Dreame**
+  - `dreame.vacuum.p2009` *(D9)*
+  - `dreame.vacuum.p2259` *(D9 Max)*
+  - `dreame.vacuum.p2187` *(D9 Pro)*
+  - `dreame.vacuum.r2205` *(D10 Plus)*
+  - `dreame.vacuum.p2029` *(L10 Pro)*
+  - `dreame.vacuum.p2028a` *(L10 Plus)*
+  - `dreame.vacuum.r2228o` *(L10s Ultra)*
+  - `dreame.vacuum.r2215o` *(L10s Pro)*
+  - `dreame.vacuum.r2216o` *(L10s Pro)*
+  - `dreame.vacuum.p2028` *(Z10 Pro)*
+  - `dreame.vacuum.p2027` *(W10)*
+  - `dreame.vacuum.r2104` *(W10 Pro)*
+  - `dreame.vacuum.r2251o` *(W10s)*
+  - `dreame.vacuum.r2232a` *(W10s Pro)*
+  - `dreame.vacuum.r2228` *(S10)*
+  - `dreame.vacuum.r2211o` *(S10+)*
+  - `dreame.vacuum.r2233` *(S10 Pro)*
+  - `dreame.vacuum.r2247` *(S10 Pro Plus)*
+  - `dreame.vacuum.r2246` *(S10 Plus)*
+  - `dreame.vacuum.r2215` *(X10)*
+  - `dreame.vacuum.r2235` *(X10 Ultra)*
+- **Mijia**
+  - `dreame.vacuum.p2150o` *(Vacuum-Mop)*
+  - `dreame.vacuum.p2150a` *(Vacuum-Mop 2 Ultra)*
+  - `dreame.vacuum.p2150b` *(Vacuum-Mop 2 Ultra Set)*
+  - `dreame.vacuum.p2114o` *(Self-Cleaning Robot Vacuum-Mop)* 
+  - `dreame.vacuum.p2149o` *(Self-Cleaning Robot Vacuum-Mop Pro)*
+  - `dreame.vacuum.r2254` *(1S)*
+  - `dreame.vacuum.r2209` *(X10)*
+  - `dreame.vacuum.p2114a` *(X10+)*
+- **MOVA** 
+  - `dreame.vacuum.p2157` *(L600)*
 
 ## Configuration
 - Use this button: <a href="https://my.home-assistant.io/redirect/config_flow_start/?domain=dreame_vacuum" target="_blank"><img src="https://my.home-assistant.io/badges/config_flow_start.svg" alt="Open your Home Assistant instance and start setting up a new integration." /></a> or:

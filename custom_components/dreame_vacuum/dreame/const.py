@@ -191,6 +191,7 @@ ERROR_ROUTE: Final = "route"
 ERROR_RESTRICTED: Final = "restricted"
 ERROR_REMOVE_MOP: Final = "remove_mop"
 ERROR_MOP_REMOVED: Final = "mop_removed"
+ERROR_MOP_PAD_STOP_ROTATE: Final = "mop_pad_stop_rotate"
 ERROR_BIN_FULL: Final = "bin_full"
 ERROR_BIN_OPEN: Final = "bin_open"
 ERROR_WATER_TANK: Final = "water_tank"
@@ -227,7 +228,7 @@ ATTR_MOP_PAD: Final = "mop_pad"
 ATTR_CLEANING_SEQUENCE: Final = "cleaning_sequence"
 
 AI_SETTING_SWITCH: Final = "obstacle_detect_switch"
-AI_SETTING_PICTURE: Final = "obstacle_app_display_switch"
+AI_SETTING_UPLOAD: Final = "obstacle_app_display_switch"
 AI_SETTING_PET: Final = "whether_have_pet"
 AI_SETTING_HUMAN: Final = "human_detect_switch"
 AI_SETTING_FURNITURE: Final = "furniture_detect_switch"
@@ -302,7 +303,9 @@ DEVICE_MAP_KEY: Final = {
     "p2149o": "RNO4p35b2QKaovHC",
     "p2140o": "8qnS9dqgT3CppGe1",
     "p2140p": "8qnS9dqgT3CppGe1",
-    "p2114a": "",
+    "p2114a": "6PFiLPYMHLylp7RR",
+    "r2209": "qFKhvoAqRFTPfKN6",
+    "r2254": "wRy05fYLQJMRH6Mj",
 }
 
 PROPERTY_TO_NAME: Final = {
@@ -384,6 +387,10 @@ PROPERTY_TO_NAME: Final = {
         "auto_empty_frequency",
         "Auto Empty Frequency",
     ],
+    DreameVacuumProperty.MAP_SAVING: [
+        "map_saving",
+        "Map Saving",
+    ],
     DreameVacuumProperty.DUST_COLLECTION: ["dust_collection", "Dust Collection"],
     DreameVacuumProperty.AUTO_EMPTY_STATUS: ["auto_empty_status", "Auto Empty Status"],
     DreameVacuumProperty.SERIAL_NUMBER: ["serial_number", "Serial Number"],
@@ -421,6 +428,10 @@ PROPERTY_TO_NAME: Final = {
     ],
     DreameVacuumProperty.MOP_PAD_LEFT: ["mop_pad_left", "Mop Pad Left"],
     DreameVacuumProperty.MOP_PAD_TIME_LEFT: ["mop_pad_time_left", "Mop Pad Time Left"],
+    DreameVacuumProperty.SILVER_ION_LEFT: ["silver_ion_left", "Silver-ion Left"],
+    DreameVacuumProperty.SILVER_ION_TIME_LEFT: ["silver_ion_time_left", "Silver-ion Time Left"],
+    DreameVacuumProperty.DETERGENT_LEFT: ["detergent_left", "Detergent Left"],
+    DreameVacuumProperty.DETERGENT_TIME_LEFT: ["detergent_time_left", "Detergent Time Left"],
 }
 
 ACTION_TO_NAME: Final = {
@@ -441,6 +452,7 @@ ACTION_TO_NAME: Final = {
     DreameVacuumAction.START_AUTO_EMPTY: ["start_auto_empty", "Start Auto Empty"],
     DreameVacuumAction.RESET_MOP_PAD: ["reset_mop_pad", "Reset Mop Pad"],
     DreameVacuumAction.RESET_SILVER_ION: ["reset_silver_ion", "Reset Silver-ion"],
+    DreameVacuumAction.RESET_DETERGENT: ["reset_detergent", "Reset Detergent"],
 }
 
 STATE_CODE_TO_STATE: Final = {
@@ -632,6 +644,8 @@ ERROR_CODE_TO_ERROR_NAME: Final = {
     DreameVacuumErrorCode.REMOVE_MOP: ERROR_REMOVE_MOP,
     DreameVacuumErrorCode.MOP_REMOVED: ERROR_MOP_REMOVED,
     DreameVacuumErrorCode.MOP_REMOVED_2: ERROR_MOP_REMOVED,
+    DreameVacuumErrorCode.MOP_PAD_STOP_ROTATE: ERROR_MOP_PAD_STOP_ROTATE,
+    DreameVacuumErrorCode.MOP_PAD_STOP_ROTATE_2: ERROR_MOP_PAD_STOP_ROTATE,
     DreameVacuumErrorCode.BIN_FULL: ERROR_BIN_FULL,
     DreameVacuumErrorCode.BIN_OPEN: ERROR_BIN_OPEN,
     DreameVacuumErrorCode.BIN_OPEN_2: ERROR_BIN_OPEN,
@@ -719,6 +733,7 @@ ERROR_CODE_TO_IMAGE_INDEX: Final = {
     DreameVacuumErrorCode.BIN_FULL_2: 101,
     DreameVacuumErrorCode.BIN_OPEN: 102,
     DreameVacuumErrorCode.BIN_OPEN_2: 102,
+
 }
 
 # Dreame Vacuum error descriptions
@@ -985,6 +1000,14 @@ ERROR_CODE_TO_ERROR_DESCRIPTION: Final = {
     DreameVacuumErrorCode.MOP_REMOVED_2: [
         "The mop pad comes off during the cleaning task.",
         "The mop pads come off, install them before resuming working.",
+    ],
+    DreameVacuumErrorCode.MOP_PAD_STOP_ROTATE: [
+        "Mop Pad Stops Rotating",
+        "The mop pad has stopped rotating, please check.",
+    ],
+    DreameVacuumErrorCode.MOP_PAD_STOP_ROTATE_2: [
+        "Mop Pad Stops Rotating",
+        "The mop pad has stopped rotating, please check.",
     ],
     DreameVacuumErrorCode.BIN_FULL: [
         "The dust collection bag is full, or the air duct is blocked.",

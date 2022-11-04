@@ -140,6 +140,7 @@
       "restricted": "Es wurde festgestellt, dass sich der Staubsauger in einem Sperrgebiet befindet.",
       "remove_mop": "Wischen abgeschlossen. Bitte entfernen Sie den Mopp rechtzeitig und reinigen Sie ihn.",
       "mop_removed": "Der Wischmopp hat sich während der Reinigung gelöst.",
+      "mop_pad_stop_rotate": "Der Wischmopp dreht sich nicht mehr",
       "bin_full": "Der Staubsammelbeutel ist voll, oder der Luftkanal ist verstopft.",
       "bin_open": "Die obere Abdeckung des automatischen Leergutbehälters ist nicht geschlossen, oder der Staubbeutel ist nicht installiert.",
       "water_tank": "Der Frischwassertank ist nicht installiert.",

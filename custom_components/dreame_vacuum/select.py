@@ -182,7 +182,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         if device.status.selected_map
         and device.status.selected_map.rotation is not None
         else "",
-        exists_fn=lambda description, device: device.status.map_available,
+        exists_fn=lambda description, device: device.status.map_available and device.status.lidar_navigation,
         available_fn=lambda device: bool(
             device.status.selected_map is not None
             and device.status.selected_map.rotation is not None
@@ -203,7 +203,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         value_fn=lambda value, device: device.status.selected_map.map_name
         if device.status.selected_map and device.status.selected_map.map_name
         else "",
-        exists_fn=lambda description, device: device.status.map_available,
+        exists_fn=lambda description, device: device.status.map_available and device.status.lidar_navigation,
         available_fn=lambda device: bool(
             device.status.multi_map
             and not device.status.fast_mapping
@@ -231,7 +231,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             segment.suction_level, "mdi:fan"
         )
         if segment
-        else "mdi:fan",
+        else "mdi:fan-off",
         options=lambda device, segment: list(device.status.suction_level_list),
         available_fn=lambda device: bool(
             device.status.segments
@@ -255,7 +255,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             segment.water_volume, "mdi:water"
         )
         if segment
-        else "mdi:water",
+        else "mdi:water-off",
         options=lambda device, segment: list(device.status.water_volume_list),
         available_fn=lambda device: bool(
             device.status.segments
@@ -280,7 +280,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             segment.water_volume, "mdi:water-percent"
         )
         if segment
-        else "mdi:water-percent",
+        else "mdi:water-off",
         options=lambda device, segment: list(device.status.mop_pad_humidity_list),
         available_fn=lambda device: bool(
             device.status.segments

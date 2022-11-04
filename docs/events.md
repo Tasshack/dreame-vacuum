@@ -29,6 +29,7 @@ Fires when consumable life is ended.
   - `sensor`: Sensors must be cleaned
   - `mop_pad`: Mop pads must be replaced
   - `silver_ion`: Silver-ion must be replaced
+  - `detergent`: Detergent must be replaced
 
 ### Information
 Fires when certain job cannot be executed due to the user settings.

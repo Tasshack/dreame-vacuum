@@ -140,6 +140,7 @@
       "restricted": "Detected that the vacuum-mop is in a restricted area.",
       "remove_mop": "Mopping completed. Please remove and clean the mop in time.",
       "mop_removed": "The mop pad comes off during the cleaning task.",
+      "mop_pad_stop_rotate": "The mop pad has stopped rotating.",
       "bin_full": "The dust collection bag is full, or the air duct is blocked.",
       "bin_open": "The upper cover of auto-empty base is not closed, or the dust collection bag is not installed.",
       "water_tank": "The clean water tank is not installed.",

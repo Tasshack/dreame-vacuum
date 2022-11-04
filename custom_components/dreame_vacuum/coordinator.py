@@ -24,6 +24,7 @@ from .const import (
     CONF_NOTIFY,
     CONF_COUNTRY,
     CONF_MAC,
+    CONF_PREFER_CLOUD,
     CONTENT_TYPE,
     NOTIFICATION_CLEANUP_COMPLETED,
     NOTIFICATION_MAIN_BRUSH_NO_LIFE_LEFT,
@@ -32,6 +33,7 @@ from .const import (
     NOTIFICATION_SENSOR_NO_LIFE_LEFT,
     NOTIFICATION_MOP_NO_LIFE_LEFT,
     NOTIFICATION_SILVER_ION_LIFE_LEFT,
+    NOTIFICATION_DETERGENT_NO_LIFE_LEFT,
     NOTIFICATION_DUST_COLLECTION_NOT_PERFORMED,
     NOTIFICATION_RESUME_CLEANING,
     NOTIFICATION_RESUME_CLEANING_NOT_PERFORMED,
@@ -45,6 +47,7 @@ from .const import (
     NOTIFICATION_ID_CLEAN_SENSOR,
     NOTIFICATION_ID_REPLACE_MOP,
     NOTIFICATION_ID_SILVER_ION,
+    NOTIFICATION_ID_REPLACE_DETERGENT,
     NOTIFICATION_ID_CLEANUP_COMPLETED,
     NOTIFICATION_ID_WARNING,
     NOTIFICATION_ID_ERROR,
@@ -54,6 +57,13 @@ from .const import (
     EVENT_WARNING,
     EVENT_ERROR,
     EVENT_INFORMATION,
+    CONSUMABLE_MAIN_BRUSH,
+    CONSUMABLE_SIDE_BRUSH,
+    CONSUMABLE_FILTER,
+    CONSUMABLE_SENSOR,
+    CONSUMABLE_MOP_PAD,
+    CONSUMABLE_SILVER_ION,
+    CONSUMABLE_DETERGENT,
 )
 
 
@@ -85,6 +95,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             entry.data.get(CONF_USERNAME),
             entry.data.get(CONF_PASSWORD),
             entry.data.get(CONF_COUNTRY),
+            entry.options.get(CONF_PREFER_CLOUD, False),
         )
         
         self.device.listen(
@@ -155,38 +166,46 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
 
                 if self.device.status.main_brush_life == 0:
                     self._create_persistent_notification(
-                        f'{NOTIFICATION_MAIN_BRUSH_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get("main_brush")})',
+                        f'{NOTIFICATION_MAIN_BRUSH_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_MAIN_BRUSH)})',
                         NOTIFICATION_ID_REPLACE_MAIN_BRUSH,
                     )
-                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: "main_brush"})
+                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: CONSUMABLE_MAIN_BRUSH})
                 if self.device.status.side_brush_life == 0:
                     self._create_persistent_notification(
-                        f'{NOTIFICATION_SIDE_BRUSH_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get("side_brush")})',
+                        f'{NOTIFICATION_SIDE_BRUSH_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_SIDE_BRUSH)})',
                         NOTIFICATION_ID_REPLACE_SIDE_BRUSH,
                     )
-                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: "side_brush"})
+                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: CONSUMABLE_SIDE_BRUSH})
                 if self.device.status.filter_life == 0:
                     self._create_persistent_notification(
-                        f'{NOTIFICATION_FILTER_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get("filter")})',
+                        f'{NOTIFICATION_FILTER_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_FILTER)})',
                         NOTIFICATION_ID_REPLACE_FILTER,
                     )
-                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: "filter"})
+                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: CONSUMABLE_FILTER})
                 if self.device.status.sensor_dirty_life == 0:
                     self._create_persistent_notification(
-                        f'{NOTIFICATION_SENSOR_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get("sensor")})',
+                        f'{NOTIFICATION_SENSOR_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_SENSOR)})',
                         NOTIFICATION_ID_CLEAN_SENSOR,
                     )
-                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: "sensor"})
+                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: CONSUMABLE_SENSOR})
                 if self.device.status.mop_life == 0:
                     self._create_persistent_notification(
-                        NOTIFICATION_MOP_NO_LIFE_LEFT, NOTIFICATION_ID_REPLACE_MOP
+                        f'{NOTIFICATION_MOP_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_MOP_PAD)})',
+                        NOTIFICATION_ID_REPLACE_MOP
                     )
-                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: "mop_pad"})
+                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: CONSUMABLE_MOP_PAD})
                 if self.device.status.silver_ion_life == 0:
                     self._create_persistent_notification(
-                        NOTIFICATION_SILVER_ION_LIFE_LEFT, NOTIFICATION_ID_SILVER_ION
+                        f'{NOTIFICATION_SILVER_ION_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_SILVER_ION)})',
+                        NOTIFICATION_ID_SILVER_ION
                     )
-                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: "silver_ion"})
+                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: CONSUMABLE_SILVER_ION})
+                if self.device.status.detergent_life == 0:
+                    self._create_persistent_notification(
+                        NOTIFICATION_DETERGENT_NO_LIFE_LEFT, NOTIFICATION_ID_REPLACE_DETERGENT
+                    )
+                    self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: CONSUMABLE_DETERGENT})
+
             elif previous_value == 0 and not self.device.status.fast_mapping:
                 self._fire_event(EVENT_TASK_STATUS, self.device.status.job)
 

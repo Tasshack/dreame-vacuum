@@ -140,6 +140,7 @@
       "restricted": "Wykryto, że mop znajduje się w zabronionym obszarze.",
       "remove_mop": "Mopowanie zakończone. Wyjmij i wyczyść mop.",
       "mop_removed": "Nakładka na mopa odpadła podczas czyszczenia.",
+      "mop_pad_stop_rotate": "Podkładka mopa nie obraca się.",
       "bin_full": "Worek na kurz jest pełny lub kanał powietrzny jest zablokowany.",
       "bin_open": "Górna pokrywa automatycznego opróżniania podstawy nie jest zamknięta lub worek na kurz nie jest zainstalowany.",
       "water_tank": "Zbiornik na czystą wodę nie jest zainstalowany.",

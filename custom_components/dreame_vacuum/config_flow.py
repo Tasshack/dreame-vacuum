@@ -22,7 +22,7 @@ from homeassistant.config_entries import (
     OptionsFlow,
 )
 
-from .dreame import DreameVacuumDeviceProtocol, DreameVacuumCloudProtocol, MAP_COLOR_SCHEME_LIST
+from .dreame import DreameVacuumProtocol, MAP_COLOR_SCHEME_LIST
 
 from .const import (
     DOMAIN,
@@ -32,6 +32,7 @@ from .const import (
     CONF_TYPE,
     CONF_MAC,
     CONF_MAP_OBJECTS,
+    CONF_PREFER_CLOUD,
     NOTIFICATION,
     MAP_OBJECTS
 )
@@ -60,6 +61,16 @@ SUPPORTED_MODELS = [
     "dreame.vacuum.r2215o",
     "dreame.vacuum.r2233",
     "dreame.vacuum.r2228",
+    "dreame.vacuum.r2251o",
+    "dreame.vacuum.r2215",
+    "dreame.vacuum.r2247",
+    "dreame.vacuum.r2246",
+    "dreame.vacuum.r2232a",
+    "dreame.vacuum.r2235",
+    "dreame.vacuum.r2216o",
+    "dreame.vacuum.r2211o",
+    "dreame.vacuum.r2254",
+    "dreame.vacuum.r2209",
 
     ## Dreame Vslam Robots
     #"dreame.vacuum.p2140q",
@@ -111,6 +122,7 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
                 {
                     vol.Required(CONF_COLOR_SCHEME, default=options[CONF_COLOR_SCHEME]): vol.In(list(MAP_COLOR_SCHEME_LIST.keys())),
                     vol.Required(CONF_MAP_OBJECTS, default=options.get(CONF_MAP_OBJECTS, list(MAP_OBJECTS.keys()))): cv.multi_select(MAP_OBJECTS),
+                    vol.Required(CONF_PREFER_CLOUD, default=options.get(CONF_PREFER_CLOUD, False)): bool,
                 }
             )
 
@@ -136,9 +148,12 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         self.name: str | None = None
         self.username: str | None = None
         self.password: str | None = None
-        self.country: str = None
+        self.country: str = "cn"
         self.with_map: bool = True
+        self.device_id: int | None = None
+        self.prefer_cloud: bool = False
         self.devices: dict[str, dict[str, Any]] = {}
+        self.protocol: DreameVacuumProtocol | None = None
 
     @staticmethod
     @callback
@@ -156,7 +171,6 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             with_map = user_input.get(CONF_TYPE, WITH_MAP)
             self.with_map = True if with_map == WITH_MAP else False
             if self.with_map:
-                self.country = "cn"
                 return await self.async_step_with_map()
             return await self.async_step_without_map()
 
@@ -180,6 +194,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         self.username = user_input[CONF_USERNAME]
         self.password = user_input[CONF_PASSWORD]
         self.country = user_input[CONF_COUNTRY]
+        self.prefer_cloud = user_input[CONF_PREFER_CLOUD]
         return await self.async_step_reauth_confirm()
 
     async def async_step_reauth_confirm(
@@ -197,13 +212,23 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         errors: dict[str, str] = {}
         if len(self.token) == 32:
             try:
-                protocol = DreameVacuumDeviceProtocol(self.host, self.token)
-                info = await self.hass.async_add_executor_job(protocol.connect, 2)
+                if self.protocol is None:
+                    self.protocol = DreameVacuumProtocol(self.host, self.token, self.username, self.password, self.country, self.prefer_cloud)
+                elif not self.prefer_cloud:
+                    self.protocol.set_credentials(self.host, self.token)
+
+                if self.protocol.cloud:
+                    self.protocol.cloud.device_id = self.device_id
+
+                info = await self.hass.async_add_executor_job(self.protocol.connect, 5)
                 if info:
                     self.mac = info["mac"]
                     self.model = info["model"]
             except:
                 errors["base"] = "cannot_connect"
+
+                if self.prefer_cloud and self.username and self.password:
+                    return await self.async_step_with_map(errors=errors)
             else:
                 if self.mac:
                     await self.async_set_unique_id(format_mac(self.mac))
@@ -253,10 +278,9 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         )
 
     async def async_step_with_map(
-        self, user_input: dict[str, Any] | None = None
+        self, user_input: dict[str, Any] | None = None, errors: dict[str, Any] | None = {}
     ) -> FlowResult:
         """Configure a dreame vacuum device through the Miio Cloud."""
-        errors = {}
         if user_input is not None:
             username = user_input.get(CONF_USERNAME)
             password = user_input.get(CONF_PASSWORD)
@@ -266,25 +290,25 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 self.username = username
                 self.password = password
                 self.country = country
+                self.prefer_cloud = user_input.get(CONF_PREFER_CLOUD, False)
 
-                protocol = DreameVacuumCloudProtocol(
-                    self.username, self.password, self.country)
-                await self.hass.async_add_executor_job(protocol.login)
+                self.protocol = DreameVacuumProtocol(username=self.username, password=self.password, country=self.country, prefer_cloud=self.prefer_cloud)
+                await self.hass.async_add_executor_job(self.protocol.cloud.login)
 
-                if protocol._logged_in is None:
+                if self.protocol.cloud.two_factor_url is not None:
                     errors["base"] = "2fa_required"
-                elif protocol._logged_in is False:
+                elif self.protocol.cloud.logged_in is False:
                     errors["base"] = "login_error"
-                elif protocol._logged_in:
+                elif self.protocol.cloud.logged_in:
                     devices = await self.hass.async_add_executor_job(
-                        protocol.get_devices
+                        self.protocol.cloud.get_devices
                     )
                     if devices:
                         found = list(
                             filter(
                                 lambda d: not d.get("parent_id")
                                 and str(d["model"]) in SUPPORTED_MODELS,
-                                devices["result"]["list"],
+                                devices,
                             )
                         )
 
@@ -312,6 +336,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                     errors["base"] = "no_devices"
             else:
                 errors["base"] = "credentials_incomplete"
+
         return self.async_show_form(
             step_id="with_map",
             data_schema=vol.Schema(
@@ -321,6 +346,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                     vol.Required(CONF_COUNTRY, default=self.country): vol.In(
                         ["cn", "de", "us", "ru", "tw", "sg", "in", "i2"]
                     ),
+                    vol.Required(CONF_PREFER_CLOUD, default=self.prefer_cloud): bool,
                 }
             ),
             errors=errors,
@@ -367,6 +393,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                     CONF_NOTIFY: user_input[CONF_NOTIFY],
                     CONF_COLOR_SCHEME: user_input.get(CONF_COLOR_SCHEME),
                     CONF_MAP_OBJECTS: user_input.get(CONF_MAP_OBJECTS),
+                    CONF_PREFER_CLOUD: self.prefer_cloud,
                 },
             )
 
@@ -400,3 +427,4 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         if self.name is None:
             self.name = device_info["name"]
         self.token = device_info["token"]
+        self.device_id = device_info["did"]

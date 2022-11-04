@@ -22,7 +22,7 @@ from typing import Optional, Tuple
 from functools import cmp_to_key
 from threading import Timer
 from .resources import *
-from .protocol import DreameVacuumDeviceProtocol, DreameVacuumCloudProtocol
+from .protocol import DreameVacuumProtocol
 from .exceptions import DeviceUpdateFailedException
 from .types import (
     PIID,
@@ -114,7 +114,7 @@ _LOGGER = logging.getLogger(__name__)
 
 class DreameMapVacuumMapManager:
     def __init__(
-        self, device_connection: DreameVacuumDeviceProtocol, cloud_connection: DreameVacuumCloudProtocol
+        self, _protocol: DreameVacuumProtocol
     ) -> None:
         self._map_list_object_name: str = None
         self._map_list_md5: str = None
@@ -130,8 +130,7 @@ class DreameMapVacuumMapManager:
 
         self._init_data()
 
-        self._cloud_connection = cloud_connection
-        self._device_connection = device_connection
+        self._protocol = _protocol
         self.editor = DreameMapVacuumMapEditor(self)
 
     def _init_data(self) -> None:
@@ -187,14 +186,14 @@ class DreameMapVacuumMapManager:
         ):
             self._latest_object_name_time = request_start_time
 
-        map_data_result = self._cloud_connection.get_device_property(
+        map_data_result = self._protocol.cloud.get_device_property(
             DIID(DreameVacuumProperty.MAP_DATA), 20, self._latest_map_data_time
         )
         if map_data_result is None:
             _LOGGER.warn("Getting map_data from cloud failed")
             map_data_result = []
 
-        object_name_result = self._cloud_connection.get_device_property(
+        object_name_result = self._protocol.cloud.get_device_property(
             DIID(DreameVacuumProperty.OBJECT_NAME), 1, self._latest_object_name_time
         )
         if object_name_result is None:
@@ -285,7 +284,7 @@ class DreameMapVacuumMapManager:
         try:
             _LOGGER.info("Request map from device %s", payload)
             mapping = DreameVacuumActionMapping[DreameVacuumAction.REQUEST_MAP]
-            return self._device_connection.action(mapping["siid"], mapping["aiid"], payload, 0)
+            return self._protocol.action(mapping["siid"], mapping["aiid"], payload, 0)
         except Exception as ex:
             _LOGGER.warning("Send request map failed: %s", ex)
         return None
@@ -538,10 +537,10 @@ class DreameMapVacuumMapManager:
         return response, key
 
     def _get_interim_file_data(self, object_name: str = "", timestamp=None) -> str | None:
-        if self._cloud_connection._logged_in:
+        if self._protocol.cloud.logged_in:
             if object_name is None or object_name == "":
                 _LOGGER.debug("Get object name from cloud")
-                object_name_result = self._cloud_connection.get_device_property(
+                object_name_result = self._protocol.cloud.get_device_property(
                     DIID(DreameVacuumProperty.OBJECT_NAME)
                 )
                 if object_name_result:
@@ -550,12 +549,12 @@ class DreameMapVacuumMapManager:
                     object_name = object_name_result[0]
 
             if object_name is None or object_name == "":
-                object_name = f"{str(self._cloud_connection._uid)}/{str(self._cloud_connection._did)}/0"
+                object_name = f"{str(self._protocol.cloud.user_id)}/{str(self._protocol.cloud.device_id)}/0"
 
             url = self._get_interim_file_url(object_name)
             if url:
                 _LOGGER.debug("Request map data from cloud %s", url)
-                response = self._cloud_connection.get_file(url)
+                response = self._protocol.cloud.get_file(url)
                 if response is not None:
                     return response
                 _LOGGER.warning("Request map data from cloud failed %s", url)
@@ -571,7 +570,7 @@ class DreameMapVacuumMapManager:
                 url = f'{object[MAP_PARAMETER_URL]}&current={str(now)}'
 
         if url is None:
-            response = self._cloud_connection.get_interim_file_url(object_name)
+            response = self._protocol.cloud.get_interim_file_url(object_name)
             if response and response.get(MAP_PARAMETER_RESULT):
                 self._file_urls[object_name] = response[MAP_PARAMETER_RESULT]
                 url = self._file_urls[object_name][MAP_PARAMETER_URL]
@@ -680,7 +679,7 @@ class DreameMapVacuumMapManager:
                     self._current_map_id = None
 
                 if self._current_frame_id is None or self._map_data is None:
-                    self._queue_partial_map(map_data)
+                    self._queue_partial_map(partial_map)
 
                     if self._map_request_time is None:
                         self._request_i_map()
@@ -691,7 +690,7 @@ class DreameMapVacuumMapManager:
                         self._add_next_map_data()
                         return
 
-                    self._queue_partial_map(map_data)
+                    self._queue_partial_map(partial_map)
                     self._delete_invalid_partial_maps()
 
                     if self._partial_map_queue_size() > 0:
@@ -917,9 +916,9 @@ class DreameMapVacuumMapManager:
             if (self._map_list_object_name and self._need_map_list_request is None) or (self._need_map_list_request and not self._device_running):
                 self.request_map_list()
 
-             # Not supported Yet
-             # if self._recovery_map_list_object_name and self._need_recovery_map_list_request is None or (self._need_recovery_map_list_request and not self._device_running):
-             #    self.request_recovery_map_list()
+            ## Not supported Yet
+            #if self._recovery_map_list_object_name and self._need_recovery_map_list_request is None or (self._need_recovery_map_list_request and not self._device_running):
+            #    self.request_recovery_map_list()
 
             if self._map_request_time is not None or self._need_map_request:
                 self._updated_frame_id = None
@@ -946,14 +945,12 @@ class DreameMapVacuumMapManager:
                 #    self.request_new_map()
                 #else:
                 self._request_current_map()
-            else:
+            elif not self._request_map_from_cloud() and self._device_running:
+                _LOGGER.info("No new map data received, retrying")
+                sleep(0.5)
                 if not self._request_map_from_cloud():
-                    if self._device_running:
-                        _LOGGER.info("No new map data received, retrying")
-                        sleep(0.5)
-                        if not self._request_map_from_cloud():
-                            _LOGGER.info(
-                                "No new map data received on second try")
+                    _LOGGER.info(
+                        "No new map data received on second try")
 
             if not self._available:
                 self._available = True
@@ -1014,7 +1011,7 @@ class DreameMapVacuumMapManager:
                     self._map_list_object_name = object_name
                     if not self._device_running and self._map_list_md5 is not None:
                         self.request_next_map_list()
-                        self.schedule_update(1)
+                        self.schedule_update(2)
                     self._map_list_md5 = md5
                     return True
         return False
@@ -1032,7 +1029,12 @@ class DreameMapVacuumMapManager:
     def request_map_list(self) -> None:
         if self._map_list_object_name:
             _LOGGER.info("Get Map List: %s", self._map_list_object_name)
-            response = self._get_interim_file_data(self._map_list_object_name)
+            try:
+                response = self._get_interim_file_data(self._map_list_object_name)
+            except Exception as ex:
+                _LOGGER.warn("Get Map List failed: %s", ex)
+                return
+
             if response:
                 self._need_map_list_request = False
                 raw_map = response.decode()
@@ -1040,7 +1042,7 @@ class DreameMapVacuumMapManager:
                 try:
                     map_info = json.loads(raw_map)
                 except:
-                    _LOGGER.warn("Get Map List failed")
+                    _LOGGER.warn("Get Map List json parse failed")
                     return
 
                 saved_map_list = map_info[MAP_PARAMETER_MAPSTR]
@@ -1127,13 +1129,14 @@ class DreameMapVacuumMapManager:
                             map_time = map_info[MAP_PARAMETER_TIME]
                             object_name = map_info[MAP_PARAMETER_OBJNAME]
                             if object_name.endswith('mb.tbz2'):
-                                response = self._cloud_connection.get_file_url(
+                                response = self._protocol.cloud.get_file_url(
                                     object_name)
                             else:
-                                response = self._cloud_connection.get_interim_file_url(
+                                response = self._protocol.cloud.get_interim_file_url(
                                     object_name)
 
                             if response and response.get(MAP_PARAMETER_RESULT):
+                                _LOGGER.info("Get recovery map file url result: %s", response)
                                 map_url = response[MAP_PARAMETER_RESULT][MAP_PARAMETER_URL]
                                 recovery_map_data = DreameVacuumMapDecoder.decode_saved_map(
                                     map_info[MAP_PARAMETER_THB], self._saved_map_data[map_id].rotation)
@@ -2183,6 +2186,7 @@ class DreameVacuumMapDecoder:
                     map_data.segments = segments
 
         saved_map_data = None
+        #_LOGGER.warn("TEST: %s", data_json)
         if data_json.get("rism"):
             saved_map_data = DreameVacuumMapDecoder.decode_saved_map(
                 data_json["rism"], map_data.rotation
@@ -2223,20 +2227,22 @@ class DreameVacuumMapDecoder:
 
                 if not saved_map_data.cleanset:
                     saved_map_data.cleanset = copy.deepcopy(map_data.cleanset)
-
-                if map_data.saved_map_status == 2:
+                    
+                if map_data.saved_map_status == 2: # or vslam_map
                     if not map_data.no_go_areas:
                         map_data.no_go_areas = saved_map_data.no_go_areas
                     if not map_data.no_mopping_areas:
                         map_data.no_mopping_areas = saved_map_data.no_mopping_areas
                     if not map_data.walls:
                         map_data.walls = saved_map_data.walls
-                    if (
-                        map_data.charger_position is None
-                        and not map_data.saved_map
-                        and saved_map_data.charger_position
-                    ):
-                        map_data.charger_position = saved_map_data.charger_position
+
+                if (
+                    (map_data.saved_map_status == 2 or map_data.docked)
+                    and map_data.charger_position is None
+                    and not map_data.saved_map
+                    and saved_map_data.charger_position
+                ):
+                    map_data.charger_position = saved_map_data.charger_position
 
         if (
             not map_data.saved_map
@@ -3232,7 +3238,7 @@ class DreameVacuumMapRenderer:
         return ico
 
     @staticmethod
-    def _calculate_padding(dimensions, no_mopping_areas, no_go_areas, walls, padding) -> list[int]:
+    def _calculate_padding(dimensions, no_mopping_areas, no_go_areas, walls, padding, min_width, min_height) -> list[int]:
         if no_mopping_areas or no_go_areas or walls:
             min_x = 0
             min_y = 0
@@ -3293,6 +3299,16 @@ class DreameVacuumMapRenderer:
             if max_y > dimensions.height:
                 padding[3] = padding[3] + int(max_y - dimensions.height)
 
+        if dimensions.width < min_width:
+            size = int((min_width - dimensions.width) / 2)
+            padding[0] = padding[0] + size
+            padding[1] = padding[1] + size
+
+        if dimensions.height < min_height:
+            size = int((min_height - dimensions.height) / 2)
+            padding[2] = padding[2] + size
+            padding[3] = padding[3] + size
+
         return padding
 
     @staticmethod
@@ -3321,163 +3337,169 @@ class DreameVacuumMapRenderer:
         if map_data.saved_map:
             robot_status = 0
 
-        if (
-            self._map_data is None
-            or self._map_data.dimensions != map_data.dimensions
-            or self._map_data.map_id != map_data.map_id
-            or self._map_data.saved_map_status != map_data.saved_map_status
-        ):
-            self._map_data = None
-
-        if (
-            self._map_data
-            and self._map_data == map_data
-            and self._robot_status == robot_status
-            and self._map_data.segments == map_data.segments
-            and self._image
-        ):
-            self.render_complete = True
-            _LOGGER.info("Skip render frame, map data not changed")
-            return self._to_buffer(self._image)
-
-        if (
-            self._map_data is None
-            or self._map_data.no_mopping_areas != map_data.no_mopping_areas
-            or self._map_data.no_go_areas != map_data.no_go_areas
-            or self._map_data.walls != map_data.walls
-            or self._map_data.saved_map_status != map_data.saved_map_status
-            or self._map_data.restored_map != map_data.restored_map
-            or self._map_data.recovery_map != map_data.recovery_map
-        ):
-            map_data.dimensions.scale = 1
-            map_data.dimensions.padding = DreameVacuumMapRenderer._calculate_padding(
-                map_data.dimensions,
-                map_data.no_mopping_areas,
-                map_data.no_go_areas,
-                map_data.walls,
-                [6, 6, 6, 6]
-                if map_data.saved_map or map_data.restored_map or map_data.recovery_map
-                else [10, 10, 10, 10],
-            )
-            self._map_data = None
-        else:
-            map_data.dimensions.padding = self._map_data.dimensions.padding
-
-        map_data.dimensions.scale = 4 if map_data.saved_map_status == 2 or map_data.saved_map else 3
-        
-        if self._map_data is None or (
-            self._map_data.dimensions.scale != map_data.dimensions.scale
-            or self._map_data.rotation != map_data.rotation
-        ):
-            self._charger_icon = None
-            self._robot_sleeping_icon = None
+        try:
             if (
                 self._map_data is None
-                or self._map_data.dimensions.scale != map_data.dimensions.scale
+                or self._map_data.dimensions != map_data.dimensions
+                or self._map_data.map_id != map_data.map_id
+                or self._map_data.saved_map_status != map_data.saved_map_status
             ):
-                self._robot_icon = None
-                self._robot_charging_icon = None
-                self._robot_cleaning_icon = None
-                self._robot_warning_icon = None
-                self._robot_washing_icon = None
+                self._map_data = None
 
-        if (
-            self._map_data is None
-            or not self._layers.get(MapRendererLayer.IMAGE)
-            or self._map_data.active_segments != map_data.active_segments
-            or self._map_data.active_areas != map_data.active_areas
-            or self._map_data.segments != map_data.segments
-            or self._map_data.data != map_data.data
-        ):
-            self._calibration_points = self._calculate_calibration_points(
-                map_data)
+            if (
+                self._map_data
+                and self._map_data == map_data
+                and self._robot_status == robot_status
+                and self._map_data.segments == map_data.segments
+                and self._image
+            ):
+                self.render_complete = True
+                _LOGGER.info("Skip render frame, map data not changed")
+                return self._to_buffer(self._image)
 
-            area_colors = {}
-            # as implemented on the app
-            area_colors[MapPixelType.OUTSIDE.value] = self.color_scheme.outside
-            area_colors[MapPixelType.WALL.value] = self.color_scheme.wall
-            area_colors[MapPixelType.FLOOR.value] = self.color_scheme.floor
-            area_colors[MapPixelType.UNKNOWN.value] = self.color_scheme.floor
-            area_colors[MapPixelType.NEW_SEGMENT.value] = self.color_scheme.new_segment
+            if (
+                self._map_data is None
+                or self._map_data.no_mopping_areas != map_data.no_mopping_areas
+                or self._map_data.no_go_areas != map_data.no_go_areas
+                or self._map_data.walls != map_data.walls
+                or self._map_data.saved_map_status != map_data.saved_map_status
+                or self._map_data.restored_map != map_data.restored_map
+                or self._map_data.recovery_map != map_data.recovery_map
+            ):
+                map_data.dimensions.scale = 1
+                map_data.dimensions.padding = DreameVacuumMapRenderer._calculate_padding(
+                    map_data.dimensions,
+                    map_data.no_mopping_areas,
+                    map_data.no_go_areas,
+                    map_data.walls,
+                    [6, 6, 6, 6]
+                    if map_data.saved_map or map_data.restored_map or map_data.recovery_map
+                    else [10, 10, 10, 10],
+                    140,
+                    100
+                )
+                self._map_data = None
+            else:
+                map_data.dimensions.padding = self._map_data.dimensions.padding
 
-            if map_data.segments is not None:
-                for (k, v) in map_data.segments.items():
-                    if self.config.color:
-                        if map_data.active_segments and k not in map_data.active_segments:
-                            area_colors[k] = self.color_scheme.passive_segment
-                        elif v.color_index is not None:
-                            area_colors[k] = self.color_scheme.segment[
-                                v.color_index
-                            ][0]
-                    else:
-                        area_colors[k] = area_colors[MapPixelType.FLOOR.value]
+            map_data.dimensions.scale = 4 if map_data.saved_map_status == 2 or map_data.saved_map else 3
+        
+            if self._map_data is None or (
+                self._map_data.dimensions.scale != map_data.dimensions.scale
+                or self._map_data.rotation != map_data.rotation
+            ):
+                self._charger_icon = None
+                self._robot_sleeping_icon = None
+                if (
+                    self._map_data is None
+                    or self._map_data.dimensions.scale != map_data.dimensions.scale
+                ):
+                    self._robot_icon = None
+                    self._robot_charging_icon = None
+                    self._robot_cleaning_icon = None
+                    self._robot_warning_icon = None
+                    self._robot_washing_icon = None
 
-            pixels = np.full(
-                (
+            if (
+                self._map_data is None
+                or not self._layers.get(MapRendererLayer.IMAGE)
+                or self._map_data.active_segments != map_data.active_segments
+                or self._map_data.active_areas != map_data.active_areas
+                or self._map_data.segments != map_data.segments
+                or self._map_data.data != map_data.data
+            ):
+                self._calibration_points = self._calculate_calibration_points(
+                    map_data)
+
+                area_colors = {}
+                # as implemented on the app
+                area_colors[MapPixelType.OUTSIDE.value] = self.color_scheme.outside
+                area_colors[MapPixelType.WALL.value] = self.color_scheme.wall
+                area_colors[MapPixelType.FLOOR.value] = self.color_scheme.floor
+                area_colors[MapPixelType.UNKNOWN.value] = self.color_scheme.floor
+                area_colors[MapPixelType.NEW_SEGMENT.value] = self.color_scheme.new_segment
+
+                if map_data.segments is not None:
+                    for (k, v) in map_data.segments.items():
+                        if self.config.color:
+                            if map_data.active_segments and k not in map_data.active_segments:
+                                area_colors[k] = self.color_scheme.passive_segment
+                            elif v.color_index is not None:
+                                area_colors[k] = self.color_scheme.segment[
+                                    v.color_index
+                                ][0]
+                        else:
+                            area_colors[k] = area_colors[MapPixelType.FLOOR.value]
+
+                pixels = np.full(
                     (
-                        map_data.dimensions.height
-                        + (
-                            map_data.dimensions.padding[2]
-                            + map_data.dimensions.padding[3]
-                        )
+                        (
+                            map_data.dimensions.height
+                            + (
+                                map_data.dimensions.padding[2]
+                                + map_data.dimensions.padding[3]
+                            )
+                        ),
+                        (
+                            map_data.dimensions.width
+                            + (
+                                map_data.dimensions.padding[0]
+                                + map_data.dimensions.padding[1]
+                            )
+                        ),
+                        4,
                     ),
-                    (
-                        map_data.dimensions.width
-                        + (
-                            map_data.dimensions.padding[0]
-                            + map_data.dimensions.padding[1]
-                        )
-                    ),
-                    4,
-                ),
-                area_colors[MapPixelType.OUTSIDE.value],
-                dtype=np.uint8,
+                    area_colors[MapPixelType.OUTSIDE.value],
+                    dtype=np.uint8,
+                )
+
+                for y in range(map_data.dimensions.height):
+                    for x in range(map_data.dimensions.width):
+                        px_type = int(map_data.pixel_type[x, y])
+                        if px_type not in area_colors:
+                            px_type = MapPixelType.NEW_SEGMENT.value
+
+                        if px_type != MapPixelType.OUTSIDE.value:
+                            xx = (
+                                x + map_data.dimensions.padding[0]
+                            ) 
+                            yy = (
+                                (map_data.dimensions.height - y - 1)
+                                + map_data.dimensions.padding[2]
+                            ) 
+                            pixels[yy, xx] = area_colors[px_type]
+
+                pixels = pixels.repeat(map_data.dimensions.scale, axis=0).repeat(map_data.dimensions.scale, axis=1)
+
+                self._layers[MapRendererLayer.IMAGE] = Image.fromarray(pixels)
+
+            image = self.render_objects(
+                map_data,
+                robot_status,
+                self._layers[MapRendererLayer.IMAGE],
+                2,
             )
 
-            for y in range(map_data.dimensions.height):
-                for x in range(map_data.dimensions.width):
-                    px_type = int(map_data.pixel_type[x, y])
-                    if px_type not in area_colors:
-                        px_type = MapPixelType.NEW_SEGMENT.value
+            if map_data.rotation == 90:
+                image = image.transpose(Image.ROTATE_90)
+            elif map_data.rotation == 180:
+                image = image.transpose(Image.ROTATE_180)
+            elif map_data.rotation == 270:
+                image = image.transpose(Image.ROTATE_270)
 
-                    if px_type != MapPixelType.OUTSIDE.value:
-                        xx = (
-                            x + map_data.dimensions.padding[0]
-                        ) 
-                        yy = (
-                            (map_data.dimensions.height - y - 1)
-                            + map_data.dimensions.padding[2]
-                        ) 
-                        pixels[yy, xx] = area_colors[px_type]
+            _LOGGER.info(
+                "Render frame: %s:%s took: %.2f",
+                map_data.map_id,
+                map_data.frame_id,
+                time.time() - now
+            )
 
-            pixels = pixels.repeat(map_data.dimensions.scale, axis=0).repeat(map_data.dimensions.scale, axis=1)
+            self._map_data = map_data
+            self._robot_status = robot_status
+            self._image = image
+        except Exception as ex:
+            _LOGGER.error("Map render failed: %s", ex)
 
-            self._layers[MapRendererLayer.IMAGE] = Image.fromarray(pixels)
-
-        image = self.render_objects(
-            map_data,
-            robot_status,
-            self._layers[MapRendererLayer.IMAGE],
-            2,
-        )
-
-        if map_data.rotation == 90:
-            image = image.transpose(Image.ROTATE_90)
-        elif map_data.rotation == 180:
-            image = image.transpose(Image.ROTATE_180)
-        elif map_data.rotation == 270:
-            image = image.transpose(Image.ROTATE_270)
-
-        _LOGGER.info(
-            "Render frame: %s:%s took: %.2f",
-            map_data.map_id,
-            map_data.frame_id,
-            time.time() - now
-        )
-
-        self._map_data = map_data
-        self._robot_status = robot_status
-        self._image = image
         self.render_complete = True
         return self._to_buffer(self._image)
 
@@ -3612,21 +3634,40 @@ class DreameVacuumMapRenderer:
             if (
                 self._map_data is None
                 or self._map_data.segments != map_data.segments
-                or self._map_data.cleanset != map_data.cleanset
                 or self._map_data.rotation != map_data.rotation
+                or bool(self._map_data.cleanset) != bool(map_data.cleanset)
                 or not self._layers.get(MapRendererLayer.SEGMENTS)
             ):
-                self._layers[MapRendererLayer.SEGMENTS] = self.render_segments(
-                    map_data.segments.values(),
-                    map_data.cleanset,
-                    layer,
-                    map_data.dimensions,
-                    5 * map_data.dimensions.scale,
-                    map_data.rotation,
-                    scale,
-                )
-            layer = Image.alpha_composite(
-                layer, self._layers[MapRendererLayer.SEGMENTS])
+                if MapRendererLayer.SEGMENTS not in self._layers:
+                    self._layers[MapRendererLayer.SEGMENTS] = {}
+                else:
+                    for k in self._layers[MapRendererLayer.SEGMENTS].keys():
+                        if k not in map_data.segments:
+                            del self._layers[MapRendererLayer.SEGMENTS][k]
+
+                for k, v in map_data.segments.items():
+                    if (
+                        self._map_data is None 
+                        or k not in self._layers[MapRendererLayer.SEGMENTS] 
+                        or not self._map_data.segments
+                        or k not in self._map_data.segments
+                        or self._map_data.segments[k] != v
+                        or self._map_data.rotation != map_data.rotation
+                        or bool(self._map_data.cleanset) != bool(map_data.cleanset)
+                    ):
+                        self._layers[MapRendererLayer.SEGMENTS][k] = self.render_segment(
+                            v,
+                            bool(map_data.cleanset),
+                            layer,
+                            map_data.dimensions,
+                            5 * map_data.dimensions.scale,
+                            map_data.rotation,
+                            scale,
+                        )
+
+            if self._layers[MapRendererLayer.SEGMENTS]:
+                for k, v in sorted(self._layers[MapRendererLayer.SEGMENTS].items(), reverse=True):
+                    layer = Image.alpha_composite(layer, v)
 
         if map_data.charger_position and self.config.charger:
             if (
@@ -3916,360 +3957,359 @@ class DreameVacuumMapRenderer:
                 )
         return new_layer
 
-    def render_segments(
-        self, segments, cleanset, layer, dimensions, size, rotation, scale
+    def render_segment(
+        self, segment, cleanset, layer, dimensions, size, rotation, scale
     ):
         new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
         draw = ImageDraw.Draw(new_layer, "RGBA")
-        for segment in segments:
-            if segment.x is not None and segment.y is not None:
-                text = None
-                if segment.type == 0 or not self.config.icon:
-                    text = segment.name
-                elif segment.index > 0:
-                    text = str(segment.index)
+        if segment.x is not None and segment.y is not None:
+            text = None
+            if segment.type == 0 or not self.config.icon:
+                text = segment.name
+            elif segment.index > 0:
+                text = str(segment.index)
 
-                text_font = None
-                order_font = None
-                icon = None
-                if text and self.config.name:
-                    text_font = ImageFont.truetype(
-                        BytesIO(self.font_file),
-                        (scale * 19) if segment.index or not self.config.icon > 0 else (scale * 17),
-                    )
+            text_font = None
+            order_font = None
+            icon = None
+            if text and self.config.name:
+                text_font = ImageFont.truetype(
+                    BytesIO(self.font_file),
+                    (scale * 19) if segment.index or not self.config.icon > 0 else (scale * 17),
+                )
 
-                if segment.order and self.config.order:
-                    order_font = ImageFont.truetype(
-                        BytesIO(self.font_file), (scale * 21)
-                    )
+            if segment.order and self.config.order:
+                order_font = ImageFont.truetype(
+                    BytesIO(self.font_file), (scale * 21)
+                )
 
-                p = Point(segment.x, segment.y).to_img(dimensions)
-                x = p.x
-                y = p.y
+            p = Point(segment.x, segment.y).to_img(dimensions)
+            x = p.x
+            y = p.y
 
-                if self.config.name or self.config.icon:
-                    if segment.type != 0 or text_font or not self.config.name:
-                        icon_size = size * 1.3
-                        icon = self._segment_icons.get(segment.type, 0)
-                        x0 = x - size
-                        y0 = y - size
-                        x1 = x + size
-                        y1 = y + size
+            if self.config.name or self.config.icon:
+                if segment.type != 0 or text_font or not self.config.name:
+                    icon_size = size * 1.3
+                    icon = self._segment_icons.get(segment.type, 0)
+                    x0 = x - size
+                    y0 = y - size
+                    x1 = x + size
+                    y1 = y + size
 
-                        if text_font:
-                            tw, th = draw.textsize(text, text_font)
-                            ws = tw / 4
+                    if text_font:
+                        tw, th = draw.textsize(text, text_font)
+                        ws = tw / 4
 
-                            if segment.index > 0 or not self.config.icon:
-                                icon_size = size * 1.35
-                                padding = icon_size / 2
-                                text_offset = (icon_size / 2) + 2
-                                icon_offset = 2
-                                th = scale * 23
-                            else:
-                                icon_size = size * 1.15
-                                padding = icon_size / 4
-                                icon_offset = padding - 2
-                                text_offset = icon_size / 2
-                                th = scale * 19
-
-                            if not self.config.icon:
-                                text_offset = 0
-
-                            if rotation == 90 or rotation == 270:
-                                y0 = y0 - ws - padding
-                                y1 = y1 + ws + padding
-
-                                if rotation == 90:
-                                    ty = (y - ws + text_offset) * scale
-                                    tx = (x - (th / 4)) * scale
-                                    y = y - ws - icon_offset
-                                else:
-                                    ty = (y - ws - text_offset) * scale
-                                    tx = (x - (th / 4)) * scale
-                                    y = y + ws + icon_offset
-                            else:
-                                x0 = x0 - ws - padding
-                                x1 = x1 + ws + padding
-
-                                if rotation == 0:
-                                    tx = (x - ws + text_offset) * scale
-                                    ty = (y - (th / 4)) * scale
-                                    x = x - ws - icon_offset
-                                else:
-                                    tx = (x - ws - text_offset) * scale
-                                    ty = (y - (th / 4)) * scale
-                                    x = x + ws + icon_offset
-
-                            if self.config.icon:
-                                draw.rounded_rectangle(
-                                    [
-                                        int(x0 * scale),
-                                        int(y0 * scale),
-                                        int(x1 * scale),
-                                        int(y1 * scale),
-                                    ],
-                                    fill=self.color_scheme.icon_background,
-                                    radius=((size * scale)),
-                                )
-
-                            icon_text = Image.new(
-                                "RGBA", (tw, th), (255, 255, 255, 0))
-                            draw_text = ImageDraw.Draw(icon_text, "RGBA")
-
-                            if self.config.icon:
-                                stroke_width = 1
-                                text_color = self.color_scheme.text
-                                stroke_color = self.color_scheme.text_stroke
-                            else:
-                                stroke_width = 4
-                                if self.color_scheme.dark:
-                                    text_color = (240, 240, 240, 255)
-                                    stroke_color = (0, 0, 0, 210)
-                                else:
-                                    text_color = (15, 15, 15, 255)
-                                    stroke_color = (255, 255, 255, 210)
-
-                            draw_text.text(
-                                (0, 0),
-                                text,
-                                font=text_font,
-                                fill=text_color,
-                                stroke_width=stroke_width,
-                                stroke_fill=stroke_color,
-                            )
-                            icon_text = icon_text.rotate(-rotation, expand=1)
-                            new_layer.paste(
-                                icon_text, (int(tx), int(ty)), icon_text)
+                        if segment.index > 0 or not self.config.icon:
+                            icon_size = size * 1.35
+                            padding = icon_size / 2
+                            text_offset = (icon_size / 2) + 2
+                            icon_offset = 2
+                            th = scale * 23
                         else:
-                            draw.ellipse(
-                                [x0 * scale, y0 * scale, x1 * scale, y1 * scale],
-                                fill=self.color_scheme.icon_background,
-                            )
+                            icon_size = size * 1.15
+                            padding = icon_size / 4
+                            icon_offset = padding - 2
+                            text_offset = icon_size / 2
+                            th = scale * 19
+
+                        if not self.config.icon:
+                            text_offset = 0
+
+                        if rotation == 90 or rotation == 270:
+                            y0 = y0 - ws - padding
+                            y1 = y1 + ws + padding
+
+                            if rotation == 90:
+                                ty = (y - ws + text_offset) * scale
+                                tx = (x - (th / 4)) * scale
+                                y = y - ws - icon_offset
+                            else:
+                                ty = (y - ws - text_offset) * scale
+                                tx = (x - (th / 4)) * scale
+                                y = y + ws + icon_offset
+                        else:
+                            x0 = x0 - ws - padding
+                            x1 = x1 + ws + padding
+
+                            if rotation == 0:
+                                tx = (x - ws + text_offset) * scale
+                                ty = (y - (th / 4)) * scale
+                                x = x - ws - icon_offset
+                            else:
+                                tx = (x - ws - text_offset) * scale
+                                ty = (y - (th / 4)) * scale
+                                x = x + ws + icon_offset
 
                         if self.config.icon:
-                            s = icon_size * scale
-                            icon = icon.resize((int(s), int(s))).rotate(-rotation)
-                            new_layer.paste(
-                                icon, (int(x * scale - (s / 2)),
-                                       int(y * scale - (s / 2))), icon
+                            draw.rounded_rectangle(
+                                [
+                                    int(x0 * scale),
+                                    int(y0 * scale),
+                                    int(x1 * scale),
+                                    int(y1 * scale),
+                                ],
+                                fill=self.color_scheme.icon_background,
+                                radius=((size * scale)),
                             )
 
-                custom = (
-                    cleanset
-                    and segment.suction_level is not None
-                    and segment.water_volume is not None
-                    and segment.cleaning_times is not None
-                    and (self.config.suction_level or self.config.water_volume or self.config.cleaning_times)
-                )
-                if order_font or custom:
-                    offset = size * 2.7
-                    x_offset = 0
-                    y_offset = -offset
+                        icon_text = Image.new(
+                            "RGBA", (tw, th), (255, 255, 255, 0))
+                        draw_text = ImageDraw.Draw(icon_text, "RGBA")
 
-                    if rotation == 90:
-                        y_offset = 0
-                        x_offset = offset
-                    elif rotation == 180:
-                        y_offset = offset
-                    elif rotation == 270:
-                        y_offset = 0
-                        x_offset = -offset
-
-                    x = p.x + x_offset
-                    y = p.y + y_offset
-                        
-                    if custom:
-                        s = scale * 2
-                        arrow = (s + 2) * scale
-
-                        if order_font:
-                            icon_count = 4
+                        if self.config.icon:
+                            stroke_width = 1
+                            text_color = self.color_scheme.text
+                            stroke_color = self.color_scheme.text_stroke
                         else:
-                            icon_count = 3
+                            stroke_width = 4
+                            if self.color_scheme.dark:
+                                text_color = (240, 240, 240, 255)
+                                stroke_color = (0, 0, 0, 210)
+                            else:
+                                text_color = (15, 15, 15, 255)
+                                stroke_color = (255, 255, 255, 210)
 
-                        if not self.config.suction_level:
-                            icon_count = icon_count - 1
-                        if not self.config.water_volume:
-                            icon_count = icon_count - 1
-                        if not self.config.cleaning_times:
-                            icon_count = icon_count - 1                            
-                    else:
-                        icon_count = 1
-
-                    if icon_count == 1:
-                        s = scale * 3
-                        arrow = 5 * scale
-                    else:                        
-                        s = scale * 3
-                        arrow = 5 * scale
-                                            
-                    if not icon:
-                        arrow = 0
-
-                    padding = s + arrow
-                    margin = s if icon_count > 1 else 0
-                    radius = size
-                    if custom:
-                        radius = size - 2
-
-                    icon_w = (
-                        ((radius * icon_count * 2) * scale) +
-                        (arrow * 2) + (margin * 2)
-                    )
-                    icon_h = ((radius * 2) * scale) + (arrow * 2)
-                    r = icon_h - (padding * 2)
-                    icon = Image.new("RGBA", (icon_w, icon_h),
-                                     (255, 255, 255, 0))
-                    icon_draw = ImageDraw.Draw(icon, "RGBA")
-
-                    if arrow and (segment.type != 0 or text_font):
-                        xx = icon_w / 2
-                        yy = icon_h - 2
-
-                        icon_draw.polygon(
-                            [
-                                (xx, yy),
-                                (xx - arrow, yy - arrow),
-                                (xx + arrow, yy - arrow),
-                            ],
-                            fill=self.color_scheme.settings_background,
-                        )
-
-                    icon_draw.rounded_rectangle(
-                        [arrow, arrow, icon_w - arrow, icon_h - arrow],
-                        fill=self.color_scheme.settings_background,
-                        radius=((icon_h - (arrow * 2)) / 2),
-                    )
-
-                    ellipse_x1 = padding + margin
-                    ellipse_x2 = ellipse_x1 + r
-                    if order_font:
-                        icon_draw.ellipse(
-                            [ellipse_x1, padding, ellipse_x2, icon_h - padding],
-                            fill=self.color_scheme.segment[
-                                segment.color_index
-                            ][1],
-                        )
-                        text = str(segment.order)
-                        tw, th = icon_draw.textsize(text, order_font)
-                        icon_draw.text(
-                            (
-                                (icon_h - tw) / 2 + margin,
-                                (icon_h - th - (4 * scale)) / 2,
-                            ),
+                        draw_text.text(
+                            (0, 0),
                             text,
-                            font=order_font,
-                            fill=self.color_scheme.order,
-                            stroke_width=1,
-                            stroke_fill=self.color_scheme.text_stroke,
+                            font=text_font,
+                            fill=text_color,
+                            stroke_width=stroke_width,
+                            stroke_fill=stroke_color,
+                        )
+                        icon_text = icon_text.rotate(-rotation, expand=1)
+                        new_layer.paste(
+                            icon_text, (int(tx), int(ty)), icon_text)
+                    else:
+                        draw.ellipse(
+                            [x0 * scale, y0 * scale, x1 * scale, y1 * scale],
+                            fill=self.color_scheme.icon_background,
+                        )
+
+                    if self.config.icon:
+                        s = icon_size * scale
+                        icon = icon.resize((int(s), int(s))).rotate(-rotation)
+                        new_layer.paste(
+                            icon, (int(x * scale - (s / 2)),
+                                    int(y * scale - (s / 2))), icon
+                        )
+
+            custom = (
+                cleanset
+                and segment.suction_level is not None
+                and segment.water_volume is not None
+                and segment.cleaning_times is not None
+                and (self.config.suction_level or self.config.water_volume or self.config.cleaning_times)
+            )
+            if order_font or custom:
+                offset = size * 2.7
+                x_offset = 0
+                y_offset = -offset
+
+                if rotation == 90:
+                    y_offset = 0
+                    x_offset = offset
+                elif rotation == 180:
+                    y_offset = offset
+                elif rotation == 270:
+                    y_offset = 0
+                    x_offset = -offset
+
+                x = p.x + x_offset
+                y = p.y + y_offset
+                        
+                if custom:
+                    s = scale * 2
+                    arrow = (s + 2) * scale
+
+                    if order_font:
+                        icon_count = 4
+                    else:
+                        icon_count = 3
+
+                    if not self.config.suction_level:
+                        icon_count = icon_count - 1
+                    if not self.config.water_volume:
+                        icon_count = icon_count - 1
+                    if not self.config.cleaning_times:
+                        icon_count = icon_count - 1                            
+                else:
+                    icon_count = 1
+
+                if icon_count == 1:
+                    s = scale * 3
+                    arrow = 5 * scale
+                else:                        
+                    s = scale * 3
+                    arrow = 5 * scale
+                                            
+                if not icon:
+                    arrow = 0
+
+                padding = s + arrow
+                margin = s if icon_count > 1 else 0
+                radius = size
+                if custom:
+                    radius = size - 2
+
+                icon_w = (
+                    ((radius * icon_count * 2) * scale) +
+                    (arrow * 2) + (margin * 2)
+                )
+                icon_h = ((radius * 2) * scale) + (arrow * 2)
+                r = icon_h - (padding * 2)
+                icon = Image.new("RGBA", (icon_w, icon_h),
+                                    (255, 255, 255, 0))
+                icon_draw = ImageDraw.Draw(icon, "RGBA")
+
+                if arrow and (segment.type != 0 or text_font):
+                    xx = icon_w / 2
+                    yy = icon_h - 2
+
+                    icon_draw.polygon(
+                        [
+                            (xx, yy),
+                            (xx - arrow, yy - arrow),
+                            (xx + arrow, yy - arrow),
+                        ],
+                        fill=self.color_scheme.settings_background,
+                    )
+
+                icon_draw.rounded_rectangle(
+                    [arrow, arrow, icon_w - arrow, icon_h - arrow],
+                    fill=self.color_scheme.settings_background,
+                    radius=((icon_h - (arrow * 2)) / 2),
+                )
+
+                ellipse_x1 = padding + margin
+                ellipse_x2 = ellipse_x1 + r
+                if order_font:
+                    icon_draw.ellipse(
+                        [ellipse_x1, padding, ellipse_x2, icon_h - padding],
+                        fill=self.color_scheme.segment[
+                            segment.color_index
+                        ][1],
+                    )
+                    text = str(segment.order)
+                    tw, th = icon_draw.textsize(text, order_font)
+                    icon_draw.text(
+                        (
+                            (icon_h - tw) / 2 + margin,
+                            (icon_h - th - (4 * scale)) / 2,
+                        ),
+                        text,
+                        font=order_font,
+                        fill=self.color_scheme.order,
+                        stroke_width=1,
+                        stroke_fill=self.color_scheme.text_stroke,
+                    )
+                        
+                    ellipse_x1 = ellipse_x2 + (margin * 2)
+                    ellipse_x2 = ellipse_x1 + r
+
+                if custom:
+                    icon_size = size * 1.45
+                    s = icon_size * 0.85 * scale
+                        
+                    if self.config.suction_level:
+                        ico = DreameVacuumMapRenderer._set_icon_color(
+                            self._suction_level_icon[segment.suction_level],
+                            s,
+                            self.color_scheme.segment[segment.color_index][
+                                1
+                            ],
+                        )
+                        icon_draw.ellipse(
+                            [ellipse_x1, padding, ellipse_x2,
+                                (icon_h - padding)],
+                            fill=self.color_scheme.settings_icon_background,
+                        )
+                        icon.paste(
+                            ico,
+                            (
+                                int(
+                                    2
+                                    + ellipse_x1
+                                    + ((ellipse_x2 - ellipse_x1) / 2)
+                                    - ico.size[0] / 2
+                                ),
+                                int(((icon_h / 2) - ico.size[1] / 2)),
+                            ),
+                            ico,
                         )
                         
                         ellipse_x1 = ellipse_x2 + (margin * 2)
                         ellipse_x2 = ellipse_x1 + r
 
-                    if custom:
-                        icon_size = size * 1.45
-                        s = icon_size * 0.85 * scale
-                        
-                        if self.config.suction_level:
-                            ico = DreameVacuumMapRenderer._set_icon_color(
-                                self._suction_level_icon[segment.suction_level],
-                                s,
-                                self.color_scheme.segment[segment.color_index][
-                                    1
-                                ],
-                            )
-                            icon_draw.ellipse(
-                                [ellipse_x1, padding, ellipse_x2,
-                                    (icon_h - padding)],
-                                fill=self.color_scheme.settings_icon_background,
-                            )
-                            icon.paste(
-                                ico,
-                                (
-                                    int(
-                                        2
-                                        + ellipse_x1
-                                        + ((ellipse_x2 - ellipse_x1) / 2)
-                                        - ico.size[0] / 2
-                                    ),
-                                    int(((icon_h / 2) - ico.size[1] / 2)),
+                    if self.config.water_volume:
+                        ico = DreameVacuumMapRenderer._set_icon_color(
+                            self._water_volume_icon[segment.water_volume - 1],
+                            s,
+                            self.color_scheme.segment[segment.color_index][
+                                1
+                            ],
+                        )
+
+                        icon_draw.ellipse(
+                            [ellipse_x1, padding, ellipse_x2,
+                                (icon_h - padding)],
+                            fill=self.color_scheme.settings_icon_background,
+                        )
+                        icon.paste(
+                            ico,
+                            (
+                                int(
+                                    2
+                                    + ellipse_x1
+                                    + ((ellipse_x2 - ellipse_x1) / 2)
+                                    - ico.size[0] / 2
                                 ),
-                                ico,
-                            )
-                        
-                            ellipse_x1 = ellipse_x2 + (margin * 2)
-                            ellipse_x2 = ellipse_x1 + r
+                                int(((icon_h / 2) - ico.size[1] / 2)),
+                            ),
+                            ico,
+                        )
 
-                        if self.config.water_volume:
-                            ico = DreameVacuumMapRenderer._set_icon_color(
-                                self._water_volume_icon[segment.water_volume - 1],
-                                s,
-                                self.color_scheme.segment[segment.color_index][
-                                    1
-                                ],
-                            )
+                        ellipse_x1 = ellipse_x2 + (margin * 2)
+                        ellipse_x2 = ellipse_x1 + r
 
-                            icon_draw.ellipse(
-                                [ellipse_x1, padding, ellipse_x2,
-                                    (icon_h - padding)],
-                                fill=self.color_scheme.settings_icon_background,
-                            )
-                            icon.paste(
-                                ico,
-                                (
-                                    int(
-                                        2
-                                        + ellipse_x1
-                                        + ((ellipse_x2 - ellipse_x1) / 2)
-                                        - ico.size[0] / 2
-                                    ),
-                                    int(((icon_h / 2) - ico.size[1] / 2)),
+                    if self.config.cleaning_times:
+                        ico = DreameVacuumMapRenderer._set_icon_color(
+                            self._cleaning_times_icon[segment.cleaning_times - 1],
+                            s,
+                            self.color_scheme.segment[segment.color_index][
+                                1
+                            ],
+                        )
+
+                        icon_draw.ellipse(
+                            [ellipse_x1, padding, ellipse_x2,
+                                (icon_h - padding)],
+                            fill=self.color_scheme.settings_icon_background,
+                        )
+                        icon.paste(
+                            ico,
+                            (
+                                int(
+                                    2
+                                    + ellipse_x1
+                                    + ((ellipse_x2 - ellipse_x1) / 2)
+                                    - ico.size[0] / 2
                                 ),
-                                ico,
-                            )
+                                int(((icon_h / 2) - ico.size[1] / 2)),
+                            ),
+                            ico,
+                        )
 
-                            ellipse_x1 = ellipse_x2 + (margin * 2)
-                            ellipse_x2 = ellipse_x1 + r
-
-                        if self.config.cleaning_times:
-                            ico = DreameVacuumMapRenderer._set_icon_color(
-                                self._cleaning_times_icon[segment.cleaning_times - 1],
-                                s,
-                                self.color_scheme.segment[segment.color_index][
-                                    1
-                                ],
-                            )
-
-                            icon_draw.ellipse(
-                                [ellipse_x1, padding, ellipse_x2,
-                                    (icon_h - padding)],
-                                fill=self.color_scheme.settings_icon_background,
-                            )
-                            icon.paste(
-                                ico,
-                                (
-                                    int(
-                                        2
-                                        + ellipse_x1
-                                        + ((ellipse_x2 - ellipse_x1) / 2)
-                                        - ico.size[0] / 2
-                                    ),
-                                    int(((icon_h / 2) - ico.size[1] / 2)),
-                                ),
-                                ico,
-                            )
-
-                    icon = icon.rotate(-rotation, expand=1)
-                    new_layer.paste(
-                        icon,
-                        (
-                            int((x * scale) - ((icon.size[0]) / 2)),
-                            int((y * scale) - ((icon.size[1]) / 2)),
-                        ),
-                        icon,
-                    )
+                icon = icon.rotate(-rotation, expand=1)
+                new_layer.paste(
+                    icon,
+                    (
+                        int((x * scale) - ((icon.size[0]) / 2)),
+                        int((y * scale) - ((icon.size[1]) / 2)),
+                    ),
+                    icon,
+                )
         return new_layer
 
     @property

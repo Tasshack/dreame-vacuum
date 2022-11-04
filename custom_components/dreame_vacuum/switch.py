@@ -120,6 +120,12 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         format_fn=lambda value, device: int(value),
     ),
     DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumProperty.MAP_SAVING,
+        icon="mdi:map-legend",
+        entity_category=EntityCategory.CONFIG,
+        format_fn=lambda value, device: int(value),
+    ),
+    DreameVacuumSwitchEntityDescription(
         key="cleaning_sequence",
         icon="mdi:order-numeric-ascending",
         value_fn=lambda value, device: device.status.custom_order,
@@ -141,6 +147,16 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         value_fn=lambda value, device: device.status.ai_obstacle_detection,
         exists_fn=lambda description, device: device.status.ai_detection_available,
         set_fn=lambda device, value: device.set_ai_obstacle_detection(value),
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        key="obstacle_image_upload",
+        icon="mdi:cloud-upload",
+        value_fn=lambda value, device: device.status.obstacle_image_upload,
+        exists_fn=lambda description, device: device.status.ai_detection_available,
+        available_fn=lambda device: bool(
+            device.status.ai_obstacle_detection and device.status.obstacle_image_upload is not None),
+        set_fn=lambda device, value: device.set_obstacle_image_upload(value),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
