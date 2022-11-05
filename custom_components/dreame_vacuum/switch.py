@@ -129,7 +129,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         key="cleaning_sequence",
         icon="mdi:order-numeric-ascending",
         value_fn=lambda value, device: device.status.custom_order,
-        exists_fn=lambda description, device: device.status.map_available,
+        exists_fn=lambda description, device: device.status.customized_cleaning_available and device.status.map_available,
         available_fn=lambda device: bool(
             not device.status.started
             and device.status.has_saved_map

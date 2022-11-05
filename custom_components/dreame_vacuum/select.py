@@ -247,6 +247,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         set_fn=lambda device, segment_id, value: device.set_segment_suction_level(
             segment_id, value
         ),
+        exists_fn=lambda description, device: device.status.customized_cleaning_available,
     ),
     DreameVacuumSelectEntityDescription(
         key="water_volume",
@@ -271,7 +272,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         set_fn=lambda device, segment_id, value: device.set_segment_water_volume(
             segment_id, value
         ),
-        exists_fn=lambda description, device: not device.status.self_wash_base_available,
+        exists_fn=lambda description, device: device.status.customized_cleaning_available and not device.status.self_wash_base_available,
     ),
     DreameVacuumSelectEntityDescription(
         key="mop_pad_humidity",
@@ -296,7 +297,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         set_fn=lambda device, segment_id, value: device.set_segment_mop_pad_humidity(
             segment_id, value
         ),
-        exists_fn=lambda description, device: device.status.self_wash_base_available,
+        exists_fn=lambda description, device: device.status.customized_cleaning_available and device.status.self_wash_base_available,
     ),
     DreameVacuumSelectEntityDescription(
         key="cleaning_times",
@@ -317,6 +318,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         set_fn=lambda device, segment_id, value: device.set_segment_cleaning_times(
             segment_id, value
         ),
+        exists_fn=lambda description, device: device.status.customized_cleaning_available,
     ),
     DreameVacuumSelectEntityDescription(
         key="order",
@@ -340,6 +342,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         )
         if value > 0
         else None,
+        exists_fn=lambda description, device: device.status.customized_cleaning_available,
     ),
     DreameVacuumSelectEntityDescription(
         name="",

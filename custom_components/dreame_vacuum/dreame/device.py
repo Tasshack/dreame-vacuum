@@ -2807,6 +2807,11 @@ class DreameVacuumDeviceStatus:
         )
 
     @property
+    def customized_cleaning_available(self) -> bool:
+        """Returns true when customized cleaning feature is present on the device."""
+        return bool(self._get_property(DreameVacuumProperty.CUSTOMIZED_CLEANING) is not None)
+
+    @property
     def multi_map(self) -> bool:
         """Returns true when multi floor map feature is enabled."""
         return bool(self._get_property(DreameVacuumProperty.MULTI_FLOOR_MAP))
