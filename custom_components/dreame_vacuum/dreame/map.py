@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 import io
 import math
 import time
@@ -30,7 +29,10 @@ from .types import (
     DreameVacuumProperty,
     DreameVacuumAction,
     DreameVacuumActionMapping,
+    ObstacleType,
+    PathType,
     Point,
+    Obstacle,
     MapDataPartial,
     MapData,
     MapFrameType,
@@ -599,7 +601,7 @@ class DreameMapVacuumMapManager:
 
     def _add_map_data_file(self, object_name: str, timestamp) -> None:
         response, key = self._get_object_file_data(object_name, timestamp)
-        if response is not None:
+        if response is not None:  
             self._add_raw_map_data(response.decode(), timestamp, key)
 
     def _add_raw_map_data(self, raw_map: str, timestamp=None, key=None) -> bool:
@@ -1459,8 +1461,10 @@ class DreameMapVacuumMapEditor:
                         new_cleaning_sequence.append(k)
                         index = index + 1
             else:
-                if next(iter(map_data.segments.values())).order:
-                    self._previous_cleaning_sequence[map_data.map_id] = list(sorted(map_data.segments, key=lambda segment_id: map_data.segments[segment_id].order))
+                for v in map_data.segments.values():
+                    if v.order:
+                        self._previous_cleaning_sequence[map_data.map_id] =  [(k) for k, v in sorted(map_data.segments.items(), key=lambda s: s[1].order) if v.order]
+                        break
 
                 for k in map_data.segments.keys():
                     map_data.segments[k].order = 0
@@ -1471,7 +1475,7 @@ class DreameMapVacuumMapEditor:
 
             self._set_updated_frame_id(map_data.frame_id + 1)
             self.refresh_map()
-            return new_cleaning_sequence
+            return [(k) for k, v in sorted(map_data.segments.items(), key=lambda s: s[1].order) if v.order]
 
     def set_segment_order(self, segment_id: int, order: int) -> list[int] | None:
         map_data = self._map_data
@@ -1481,8 +1485,6 @@ class DreameMapVacuumMapEditor:
             and segment_id in map_data.segments
             and not map_data.temporary_map
         ):
-            cleaning_sequence = []
-
             if order > 0:
                 if (
                     not map_data.segments[segment_id].order
@@ -1509,16 +1511,11 @@ class DreameMapVacuumMapEditor:
                         if k != segment_id and v.order == order:
                             map_data.segments[k].order = current_order
                             map_data.cleanset[str(k)][3] = map_data.segments[k].order
-
-                for segment_id in sorted(
-                    map_data.segments,
-                    key=lambda segment_id: map_data.segments[segment_id].order,
-                ):
-                    cleaning_sequence.append(segment_id)
-
             else:
-                if next(iter(map_data.segments.values())).order:
-                    self._previous_cleaning_sequence[map_data.map_id] = list(sorted(map_data.segments, key=lambda segment_id: map_data.segments[segment_id].order))
+                for v in map_data.segments.values():
+                    if v.order:
+                        self._previous_cleaning_sequence[map_data.map_id] = [(k) for k, v in sorted(map_data.segments.items(), key=lambda s: s[1].order) if v.order]
+                        break
 
                 for k in map_data.segments.keys():
                     map_data.segments[k].order = 0
@@ -1529,7 +1526,7 @@ class DreameMapVacuumMapEditor:
 
             self._set_updated_frame_id(map_data.frame_id + 1)
             self.refresh_map()
-            return cleaning_sequence
+            return [(k) for k, v in sorted(map_data.segments.items(), key=lambda s: s[1].order) if v.order]
 
     def cleanset(self, map_data: MapData) -> list[list[int]] | None:
         cleanset = []
@@ -1540,15 +1537,18 @@ class DreameMapVacuumMapEditor:
                 v.water_volume = 2
             if v.cleaning_times is None:
                 v.cleaning_times = 1
-
-            cleanset.append(
-                [
+                
+            settings = [
                     k,
                     v.suction_level,
                     v.water_volume + 1,
                     v.cleaning_times,
                 ]
-            )
+
+            if v.cleaning_mode is not None:
+                settings.append(v.cleaning_mode)
+
+            cleanset.append(settings)
         return cleanset
 
     def set_segment_suction_level(self, segment_id: int, suction_level: int) -> list[list[int]] | None:
@@ -1592,6 +1592,22 @@ class DreameMapVacuumMapEditor:
         ):
             map_data.segments[segment_id].cleaning_times = cleaning_times
             map_data.cleanset[str(segment_id)][2] = cleaning_times
+            if self._saved_map_data and map_data.map_id in self._saved_map_data:
+                self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(map_data.cleanset)
+            self._set_updated_frame_id(map_data.frame_id + 1)
+            self.refresh_map()
+            return self.cleanset(map_data)
+
+    def set_segment_cleaning_mode(self, segment_id: int, cleaning_mode: int) -> list[list[int]] | None:
+        map_data = self._map_data
+        if (
+            map_data
+            and map_data.segments
+            and segment_id in map_data.segments
+            and not map_data.temporary_map
+        ):
+            map_data.segments[segment_id].cleaning_mode = cleaning_mode
+            map_data.cleanset[str(segment_id)][4] = cleaning_mode
             if self._saved_map_data and map_data.map_id in self._saved_map_data:
                 self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(map_data.cleanset)
             self._set_updated_frame_id(map_data.frame_id + 1)
@@ -2035,30 +2051,31 @@ class DreameVacuumMapDecoder:
             matches = [
                 m.groupdict()
                 for m in re.compile(
-                    r"(?P<operator>[SLl])(?P<x>-?\d+),(?P<y>-?\d+)"
+                    r"(?P<operator>[MWSLl])(?P<x>-?\d+),(?P<y>-?\d+)"
                 ).finditer(data_json["tr"])
             ]
             current_position = Point(0, 0)
             map_data.path = []
             for match in matches:
                 operator = match["operator"]
+                x = int(match["x"])
+                y = int(match["y"])
 
-                # You will only get "l" paths with in a P frame.
-                # It means path is connected with the path from previous frame and it should be rendered as a line.
-                absolute_point = operator == "l"
-                if operator == "S" or absolute_point:
-                    if absolute_point:
-                        current_position = Path(
-                            int(match["x"]), int(match["y"]), True)
-                    else:
-                        current_position = Path(
-                            int(match["x"]), int(match["y"]), False)
-                elif operator == "L":
+                if operator == "L":
                     current_position = Path(
-                        current_position.x + int(match["x"]),
-                        current_position.y + int(match["y"]),
-                        True,
+                        current_position.x + x,
+                        current_position.y + y,
+                        PathType.LINE
                     )
+                elif operator == "l":                    
+                    # You will only get "l" paths with in a P frame.
+                    # It means path is connected with the path from previous frame and it should be rendered as a line.
+                    current_position = Path(
+                        x, y, PathType.LINE)
+                else:
+                    current_position = Path(
+                        x, y, PathType(operator))
+
                 map_data.path.append(current_position)
 
         if data_json.get("sa") and isinstance(data_json["sa"], list):
@@ -2092,6 +2109,17 @@ class DreameVacuumMapDecoder:
             map_data.cleanset = data_json["cleanset"]
             if isinstance(map_data.cleanset, str):
                 map_data.cleanset = json.loads(map_data.cleanset)
+
+        if "ai_obstacle" in data_json:
+            map_data.obstacles = []
+            for obstacle in data_json["ai_obstacle"]:
+                if len(obstacle) >= 4:
+                    obstacle_type = int(obstacle[2])
+                    if obstacle_type in ObstacleType._value2member_map_:
+                        if len(obstacle) >= 7 and int(obstacle[4]) >= 1000:
+                            map_data.obstacles.append(Obstacle(float(obstacle[0]), float(obstacle[1]), ObstacleType(obstacle_type), int(float(obstacle[3]) * 100), obstacle[4], obstacle[5], obstacle[6]))
+                        else:
+                            map_data.obstacles.append(Obstacle(float(obstacle[0]), float(obstacle[1]), ObstacleType(obstacle_type), int(float(obstacle[3]) * 100)))
 
         map_data.empty_map = map_data.frame_type == MapFrameType.I.value
         if (width * height) > 0:
@@ -2336,6 +2364,8 @@ class DreameVacuumMapDecoder:
         current_map_data.clean_log = False
         if map_data.charger_position is not None:
             current_map_data.charger_position = map_data.charger_position
+        if map_data.obstacles is not None:
+            current_map_data.obstacles = map_data.obstacles
 
         # P map only returns difference between its previous frame.
         # Calculate new map size and update the buffer according to the received data at received offset.
@@ -2477,7 +2507,6 @@ class DreameVacuumMapDecoder:
                     int(
                         map_data.dimensions.top +
                         (v.y0 * map_data.dimensions.grid_size)
-                        - map_data.dimensions.grid_size
                     )
                 )
                 segments[k].x1 = (
@@ -2491,6 +2520,7 @@ class DreameVacuumMapDecoder:
                     int(
                         map_data.dimensions.top +
                         (v.y1 * map_data.dimensions.grid_size)
+                        + map_data.dimensions.grid_size
                     )
                 )
                 segments[k].x = int(
@@ -2530,11 +2560,13 @@ class DreameVacuumMapDecoder:
                     segment_id = str(k)
                     if segment_id not in cleanset:
                         cleanset[segment_id] = [
-                            1,
-                            3,
-                            1,
-                            0,
-                        ]  # Cleanset returns empty on restored map but robot uses these default values when that happens
+                                1,
+                                3,
+                                1,
+                                0,
+                            ]  # Cleanset returns empty on restored map but robot uses these default values when that happens
+                        if map_data.segments[k].cleaning_mode is not None:
+                            cleanset[segment_id].append(-1)
 
                     item = cleanset[segment_id]
 
@@ -2544,11 +2576,13 @@ class DreameVacuumMapDecoder:
                     )  # for some reason cleanset uses different int values for water volume
                     map_data.segments[k].cleaning_times = item[2]
                     map_data.segments[k].order = item[3]
+                    map_data.segments[k].cleaning_mode = item[4] if len(item) > 4 else None
                 else:
                     map_data.segments[k].suction_level = None
                     map_data.segments[k].water_volume = None
                     map_data.segments[k].cleaning_times = None
                     map_data.segments[k].order = None
+                    map_data.segments[k].cleaning_mode = None
 
     @staticmethod
     def set_segment_color_index(map_data: MapData) -> None:
@@ -2876,7 +2910,7 @@ class DreameVacuumMapDataRenderer:
             if map_data.path and len(map_data.path) > 1:
                 s = map_data.path[0]
                 for point in map_data.path[1:]:
-                    if point.line:
+                    if point.path_type == PathType.LINE:
                         point = point
                         a = DreameVacuumMapDataRenderer._convert_coordinates(
                             s.x, s.y)
@@ -3153,6 +3187,7 @@ class DreameVacuumMapRenderer:
         self._robot_warning_icon = None
         self._robot_sleeping_icon = None
         self._robot_washing_icon = None
+        self._obstacle_background = None
 
         default_map_image = Image.open(
             BytesIO(base64.b64decode(DEFAULT_MAP_IMAGE))
@@ -3212,14 +3247,21 @@ class DreameVacuumMapRenderer:
             if self.color_scheme.invert:
                 enhancer = ImageEnhance.Brightness(self._segment_icons[k])
                 self._segment_icons[k] = enhancer.enhance(0.1)
+
+        self._obstacle_icons = {}
+        for (k, v) in OBSTACLE_TYPE_TO_ICON.items():
+            self._obstacle_icons[k] = Image.open(BytesIO(base64.b64decode(v))).convert(
+                "RGBA"
+            )
                 
         self.font_file = zlib.decompress(base64.b64decode(MAP_FONT), zlib.MAX_WBITS|32)
 
     @staticmethod
     def _to_buffer(image) -> bytes:
-        buffer = io.BytesIO()
-        image.save(buffer, format="PNG")
-        return buffer.getvalue()
+        if image:
+            buffer = io.BytesIO()
+            image.save(buffer, format="PNG")
+            return buffer.getvalue()
 
     @staticmethod
     def _set_icon_color(image, size, color):
@@ -3372,9 +3414,9 @@ class DreameVacuumMapRenderer:
                     map_data.no_mopping_areas,
                     map_data.no_go_areas,
                     map_data.walls,
-                    [6, 6, 6, 6]
+                    [10, 10, 10, 10]
                     if map_data.saved_map or map_data.restored_map or map_data.recovery_map
-                    else [10, 10, 10, 10],
+                    else [14, 14, 14, 14],
                     140,
                     100
                 )
@@ -3390,6 +3432,7 @@ class DreameVacuumMapRenderer:
             ):
                 self._charger_icon = None
                 self._robot_sleeping_icon = None
+                self._obstacle_background = None
                 if (
                     self._map_data is None
                     or self._map_data.dimensions.scale != map_data.dimensions.scale
@@ -3497,8 +3540,8 @@ class DreameVacuumMapRenderer:
             self._map_data = map_data
             self._robot_status = robot_status
             self._image = image
-        except Exception as ex:
-            _LOGGER.error("Map render failed: %s", ex)
+        except Exception:
+            _LOGGER.error("Map render Failed: %s", traceback.format_exc())
 
         self.render_complete = True
         return self._to_buffer(self._image)
@@ -3641,7 +3684,7 @@ class DreameVacuumMapRenderer:
                 if MapRendererLayer.SEGMENTS not in self._layers:
                     self._layers[MapRendererLayer.SEGMENTS] = {}
                 else:
-                    for k in self._layers[MapRendererLayer.SEGMENTS].keys():
+                    for k in list(self._layers[MapRendererLayer.SEGMENTS].keys()).copy():
                         if k not in map_data.segments:
                             del self._layers[MapRendererLayer.SEGMENTS][k]
 
@@ -3709,6 +3752,25 @@ class DreameVacuumMapRenderer:
             layer = Image.alpha_composite(
                 layer, self._layers[MapRendererLayer.ROBOT])
 
+        if map_data.obstacles and self.config.obstacle:
+            if (
+                self._map_data is None
+                or self._map_data.obstacles != map_data.obstacles
+                or self._map_data.rotation != map_data.rotation
+                or not self._layers.get(MapRendererLayer.OBSTACLES)
+            ):
+                self._layers[MapRendererLayer.OBSTACLES] = self.render_obstacles(
+                    map_data.obstacles,
+                    layer,
+                    map_data.dimensions,
+                    10 * map_data.dimensions.scale,
+                    map_data.rotation,
+                    scale,
+                )
+
+            layer = Image.alpha_composite(
+                layer, self._layers[MapRendererLayer.OBSTACLES])
+
         if layer.size != map_image.size:
             layer.thumbnail(map_image.size, Image.Resampling.BOX, reducing_gap=1.5)
 
@@ -3770,18 +3832,99 @@ class DreameVacuumMapRenderer:
 
     def render_path(self, path, color, layer, dimensions, width, scale):
         new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
-        if len(path) > 1:
-            draw = ImageDraw.Draw(new_layer, "RGBA")
-            s = path[0].to_img(dimensions)
-            for point in path[1:]:
-                e = point.to_img(dimensions)
-                if point.line:
-                    draw.line(
-                        [s.x * scale, s.y * scale, e.x * scale, e.y * scale],
-                        width=int(width * scale),
-                        fill=color,
-                    )
-                s = e
+        draw = ImageDraw.Draw(new_layer, "RGBA")
+        sweep = []
+        mop = []
+        sweep_path = []
+        mop_path = []
+        for point in path:
+            p = point.to_img(dimensions)
+            p.x = p.x
+            p.y = p.y
+
+            if point.path_type == PathType.LINE:
+                l = [p.x * scale, p.y * scale]
+                if path_type == PathType.SWEEP_AND_MOP or path_type == PathType.SWEEP:
+                    sweep_path.extend(l)
+
+                if path_type == PathType.SWEEP_AND_MOP or path_type == PathType.MOP:
+                    mop_path.extend(l)
+            else:
+                if mop_path:
+                    mop.append(mop_path)
+
+                if sweep_path:
+                    sweep.append(sweep_path)
+
+                path_type = point.path_type
+                if path_type == PathType.SWEEP_AND_MOP or path_type == PathType.SWEEP:
+                    sweep_path = [p.x * scale, p.y * scale]
+                else:
+                    sweep_path = []
+
+                if path_type == PathType.SWEEP_AND_MOP or path_type == PathType.MOP:
+                    mop_path = [p.x * scale, p.y * scale]
+                else:
+                    mop_path = []
+
+        if sweep_path:
+            sweep.append(sweep_path)
+
+        if mop_path:
+            mop.append(mop_path)
+
+        for path in mop:
+            size = width * scale * 12
+            draw.line(
+                path,
+                width=int(size),
+                fill=(color[0], color[1], color[2], 100),
+                joint='curve',
+            )
+            size = int(math.floor(size / 2))
+            draw.ellipse([
+                        path[-2] - size, 
+                        path[-1] - size, 
+                        path[-2] + size, 
+                        path[-1] + size,
+                    ],
+                    fill=(color[0], color[1], color[2], 100),
+                )
+            draw.ellipse([
+                        path[0] - size, 
+                        path[1] - size, 
+                        path[0] + size, 
+                        path[1] + size,
+                    ],
+                    fill=(color[0], color[1], color[2], 100),
+                )
+
+        for path in sweep:
+            size = width * scale
+            draw.line(
+                path,
+                width=int(size),
+                fill=color,
+                joint='curve',
+            )
+            size = int(math.floor(size / 2))
+            draw.ellipse([
+                        path[-2] - size, 
+                        path[-1] - size, 
+                        path[-2] + size, 
+                        path[-1] + size,
+                    ],
+                    fill=color,
+                )
+            draw.ellipse([
+                        path[0] - size, 
+                        path[1] - size, 
+                        path[0] + size, 
+                        path[1] + size,
+                    ],
+                    fill=color,
+                )
+
         return new_layer
 
     def render_charger(
@@ -4310,6 +4453,59 @@ class DreameVacuumMapRenderer:
                     ),
                     icon,
                 )
+        return new_layer
+
+    def render_obstacles(self, obstacles, layer, dimensions, size, rotation, scale):
+        new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
+        icon_size = (size * scale * 0.85)
+        draw = ImageDraw.Draw(new_layer, "RGBA")
+
+        if self._obstacle_background is None:
+            self._obstacle_background = (
+                Image.open(BytesIO(base64.b64decode(MAP_ICON_OBSTACLE_BG)))
+                .convert("RGBA")
+                .rotate(-rotation)
+            )
+            self._obstacle_background.thumbnail((size * scale * scale, size * scale * scale), Image.ANTIALIAS)
+
+        bg_size = int(round((size * scale * 0.5) / 2))
+        offset = -8 * scale
+        if rotation == 90:
+            y_offset = 0
+            x_offset = offset
+        elif rotation == 180:
+            y_offset = offset
+            x_offset = 0
+        elif rotation == 270:
+            y_offset = 0
+            x_offset = -offset
+        else:
+            x_offset = 0
+            y_offset = -offset
+
+        for obstacle in obstacles:
+            icon = self._obstacle_icons.get(obstacle.obstacle_type.value)
+            if icon:
+                p = obstacle.to_img(dimensions)
+                x = p.x
+                y = p.y
+
+                new_layer.paste(
+                    self._obstacle_background, (int(round(x * scale - (self._obstacle_background.size[0] / 2) + x_offset)),
+                            int(round(y * scale - (self._obstacle_background.size[1] / 2) + y_offset)))
+                )
+                
+                draw.ellipse(
+                    [(x - bg_size) * scale, (y - bg_size) * scale, (x + bg_size) * scale, (y + bg_size) * scale],
+                    fill=self.color_scheme.segment[0][0],
+                )
+
+                icon = icon.resize((int(icon_size), int(icon_size))).rotate(-rotation)
+                new_layer.paste(
+                    icon, (int(round(x * scale - (icon_size / 2))),
+                            int(round(y * scale - (icon_size / 2)))), icon
+                )
+
         return new_layer
 
     @property

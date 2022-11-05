@@ -50,6 +50,7 @@ All features completely reverse engineered from the official Mi Home app RN plug
   - `dreame.vacuum.r2215` *(X10)*
   - `dreame.vacuum.r2235` *(X10 Ultra)*
 - **Mijia**
+  - `dreame.vacuum.p2036` *(Trouver LDS Finder)*
   - `dreame.vacuum.p2150o` *(Vacuum-Mop)*
   - `dreame.vacuum.p2150a` *(Vacuum-Mop 2 Ultra)*
   - `dreame.vacuum.p2150b` *(Vacuum-Mop 2 Ultra Set)*

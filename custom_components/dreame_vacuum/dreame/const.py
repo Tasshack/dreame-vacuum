@@ -202,6 +202,9 @@ ERROR_DIRTY_WATER_TANK_PUMP: Final = "dirty_water_tank_pump"
 ERROR_MOP_PAD: Final = "mop_pad"
 ERROR_WET_MOP_PAD: Final = "wet_mop_pad"
 ERROR_CLEAN_MOP_PAD: Final = "clean_mop_pad"
+ERROR_CLEAN_TANK_LEVEL: Final = "clean_tank_level"
+ERROR_DIRTY_TANK_LEVEL: Final = "dirty_tank_level"
+ERROR_WASHBOARD_LEVEL: Final = "washboard_level"
 
 ATTR_CHARGING: Final = "charging"
 ATTR_STARTED: Final = "started"
@@ -658,6 +661,9 @@ ERROR_CODE_TO_ERROR_NAME: Final = {
     DreameVacuumErrorCode.MOP_PAD: ERROR_MOP_PAD,
     DreameVacuumErrorCode.WET_MOP_PAD: ERROR_WET_MOP_PAD,
     DreameVacuumErrorCode.CLEAN_MOP_PAD: ERROR_CLEAN_MOP_PAD,
+    DreameVacuumErrorCode.CLEAN_TANK_LEVEL: ERROR_CLEAN_TANK_LEVEL,
+    DreameVacuumErrorCode.DIRTY_TANK_LEVEL: ERROR_DIRTY_TANK_LEVEL,
+    DreameVacuumErrorCode.WASHBOARD_LEVEL: ERROR_WASHBOARD_LEVEL,
 }
 
 DUST_COLLECTION_TO_NAME: Final = {
@@ -716,11 +722,13 @@ ERROR_CODE_TO_IMAGE_INDEX: Final = {
     DreameVacuumErrorCode.CHARGE_FAULT: 12,
     DreameVacuumErrorCode.CHARGE_NO_ELECTRIC: 16,
     DreameVacuumErrorCode.BATTERY_FAULT: 29,
+    DreameVacuumErrorCode.INFRARED_FAULT: 39,
     DreameVacuumErrorCode.LDS_ERROR: 48,
     DreameVacuumErrorCode.LDS_BUMPER: 49,
     DreameVacuumErrorCode.EDGE: 54,
     DreameVacuumErrorCode.EDGE_2: 54,
     DreameVacuumErrorCode.CARPET: 55,
+    DreameVacuumErrorCode.ULTRASONIC: 58,
     DreameVacuumErrorCode.ROUTE: 61,
     DreameVacuumErrorCode.ROUTE_2: 62,
     DreameVacuumErrorCode.BLOCKED: 63,
@@ -729,11 +737,25 @@ ERROR_CODE_TO_IMAGE_INDEX: Final = {
     DreameVacuumErrorCode.RESTRICTED: 65,
     DreameVacuumErrorCode.RESTRICTED_2: 65,
     DreameVacuumErrorCode.RESTRICTED_3: 65,
+    DreameVacuumErrorCode.MOP_REMOVED: 69,
+    DreameVacuumErrorCode.MOP_PAD_STOP_ROTATE: 69,
+    DreameVacuumErrorCode.MOP_PAD_STOP_ROTATE_2: 69,
     DreameVacuumErrorCode.BIN_FULL: 101,
     DreameVacuumErrorCode.BIN_FULL_2: 101,
     DreameVacuumErrorCode.BIN_OPEN: 102,
     DreameVacuumErrorCode.BIN_OPEN_2: 102,
-
+    DreameVacuumErrorCode.WATER_TANK: 105,
+    DreameVacuumErrorCode.CLEAN_TANK_LEVEL: 105,
+    DreameVacuumErrorCode.DIRTY_WATER_TANK: 106,
+    DreameVacuumErrorCode.DIRTY_WATER_TANK_2: 106,
+    DreameVacuumErrorCode.DIRTY_WATER_TANK_BLOCKED: 106,
+    DreameVacuumErrorCode.DIRTY_WATER_TANK_PUMP: 106,
+    DreameVacuumErrorCode.DIRTY_TANK_LEVEL: 106,
+    DreameVacuumErrorCode.WATER_TANK_DRY: 107,
+    DreameVacuumErrorCode.MOP_PAD: 111,
+    DreameVacuumErrorCode.WET_MOP_PAD: 111,
+    DreameVacuumErrorCode.WASHBOARD_LEVEL: 111,
+    DreameVacuumErrorCode.CLEAN_MOP_PAD: 114,
 }
 
 # Dreame Vacuum error descriptions
@@ -1056,5 +1078,17 @@ ERROR_CODE_TO_ERROR_DESCRIPTION: Final = {
     DreameVacuumErrorCode.CLEAN_MOP_PAD: [
         "The cleaning task is complete, please clean the mop pad washboard.",
         "Please clean the mop pad washboard in time to avoid stains or odor.",
+    ],
+    DreameVacuumErrorCode.CLEAN_TANK_LEVEL: [
+        "Please fill the clean water tank.",
+        "The water in the clean water tank is about to be used up. Check and fill the clean water tank promptly.",
+    ],
+    DreameVacuumErrorCode.DIRTY_TANK_LEVEL: [
+        "The water level in the used water tank is too high.",
+        "Please check if the used water tank is full.",
+    ],
+    DreameVacuumErrorCode.WASHBOARD_LEVEL: [
+        "Water level in the washboard is too high.",
+        "Please clean the used water tank and washboard in time.",
     ],
 }

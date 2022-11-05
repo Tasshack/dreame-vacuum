@@ -71,6 +71,7 @@ SUPPORTED_MODELS = [
     "dreame.vacuum.r2211o",
     "dreame.vacuum.r2254",
     "dreame.vacuum.r2209",
+    "dreame.vacuum.p2036",
 
     ## Dreame Vslam Robots
     #"dreame.vacuum.p2140q",

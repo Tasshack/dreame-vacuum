@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import Any, Dict, Final, List, Optional
-from enum import IntEnum
+from enum import IntEnum, Enum
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -83,10 +83,13 @@ ATTR_ORDER: Final = "order"
 ATTR_CLEANING_TIMES: Final = "cleaning_times"
 ATTR_SUCTION_LEVEL: Final = "suction_level"
 ATTR_WATER_VOLUME: Final = "water_volume"
+ATTR_CLEANING_MODE: Final = "cleaning_mode"
 ATTR_TYPE: Final = "type"
 ATTR_INDEX: Final = "index"
 ATTR_ICON: Final = "icon"
 ATTR_COLOR_INDEX: Final = "color_index"
+ATTR_OBSTACLES: Final = "obstacles"
+ATTR_POSSIBILTY: Final = "possibility"
 
 
 class DreameVacuumChargingStatus(IntEnum):
@@ -186,7 +189,9 @@ class DreameVacuumErrorCode(IntEnum):
     MOP_PAD = 111
     WET_MOP_PAD = 112
     CLEAN_MOP_PAD = 114
-
+    CLEAN_TANK_LEVEL = 116
+    DIRTY_TANK_LEVEL = 118
+    WASHBOARD_LEVEL = 119
 
 class DreameVacuumState(IntEnum):
     """Dreame Vacuum state"""
@@ -478,18 +483,19 @@ class DreameVacuumAction(IntEnum):
     STOP = 5
     CLEAR_WARNING = 6
     START_WASHING = 7
-    REQUEST_MAP = 8
-    UPDATE_MAP_DATA = 9
-    LOCATE = 10
-    TEST_SOUND = 11
-    RESET_MAIN_BRUSH = 12
-    RESET_SIDE_BRUSH = 13
-    RESET_FILTER = 14
-    RESET_SENSOR = 15
-    START_AUTO_EMPTY = 16
-    RESET_MOP_PAD = 17
-    RESET_SILVER_ION = 18
-    RESET_DETERGENT = 19
+    GET_PHOTO_INFO = 8
+    REQUEST_MAP = 9
+    UPDATE_MAP_DATA = 10
+    LOCATE = 11
+    TEST_SOUND = 12
+    RESET_MAIN_BRUSH = 13
+    RESET_SIDE_BRUSH = 14
+    RESET_FILTER = 15
+    RESET_SENSOR = 16
+    START_AUTO_EMPTY = 17
+    RESET_MOP_PAD = 18
+    RESET_SILVER_ION = 19
+    RESET_DETERGENT = 20
 
 
 # Dreame Vacuum property mapping
@@ -601,6 +607,7 @@ DreameVacuumActionMapping = {
     DreameVacuumAction.STOP: {"siid": 4, "aiid": 2},
     DreameVacuumAction.CLEAR_WARNING: {"siid": 4, "aiid": 3},
     DreameVacuumAction.START_WASHING: {"siid": 4, "aiid": 4},
+    DreameVacuumAction.GET_PHOTO_INFO: {"siid": 4, "aiid": 6},
     DreameVacuumAction.REQUEST_MAP: {"siid": 6, "aiid": 1},
     DreameVacuumAction.UPDATE_MAP_DATA: {"siid": 6, "aiid": 2},
     DreameVacuumAction.LOCATE: {"siid": 7, "aiid": 1},
@@ -663,6 +670,26 @@ def DIID(property: DreameVacuumProperty, mapping=DreameVacuumPropertyMapping) ->
     if property in mapping:
         return f'{mapping[property]["siid"]}.{mapping[property]["piid"]}'
 
+
+class PathType(str, Enum):
+    LINE = 'L'
+    SWEEP = 'S'
+    SWEEP_AND_MOP = 'W'
+    MOP = 'M'
+
+class ObstacleType(IntEnum):
+    BASE = 128
+    SCALE = 129
+    POWER_STRIP = 130
+    WIRE = 131
+    TOY = 132
+    SHOES = 133
+    SOCK = 134
+    POO = 135
+    TRASH_CAN = 136
+    FABRIC = 137
+    THREAD = 138
+    STAIN = 139
 
 class Point:
     def __init__(self, x: float, y: float, a=None) -> None:
@@ -729,10 +756,25 @@ class Point:
 
 
 class Path(Point):
-    def __init__(self, x: float, y: float, line: bool, absolute: bool = False) -> None:
+    def __init__(self, x: float, y: float, path_type: PathType) -> None:
         super().__init__(x, y)
-        self.line = line
-        self.absolute = absolute
+        self.path_type = path_type
+
+
+class Obstacle(Point):
+    def __init__(self, x: float, y: float, obstacle_type: ObstacleType, possibility: int, key: int = None, file_name: str = None, random: int = None) -> None:
+        super().__init__(x, y)
+        self.obstacle_type = obstacle_type
+        self.possibility = possibility
+        self.key = key
+        self.file_name = file_name
+        self.random = random
+
+    def as_dict(self) -> Dict[str, Any]:
+        attributes = super().as_dict()
+        attributes[ATTR_TYPE] = self.obstacle_type.name.replace("_", " ").capitalize()
+        attributes[ATTR_POSSIBILTY] = self.possibility
+        return attributes
 
 
 class Zone:
@@ -785,6 +827,7 @@ class Segment(Zone):
         cleaning_times: int = None,
         suction_level: int = None,
         water_volume: int = None,
+        cleaning_mode: int = None,
         order: int = None,
     ) -> None:
         super().__init__(x0, y0, x1, y1)
@@ -802,6 +845,7 @@ class Segment(Zone):
         self.cleaning_times = cleaning_times
         self.suction_level = suction_level
         self.water_volume = water_volume
+        self.cleaning_mode = cleaning_mode
         self.color_index = None
         self.set_name()
 
@@ -870,6 +914,8 @@ class Segment(Zone):
             attributes[ATTR_SUCTION_LEVEL] = self.suction_level
         if self.water_volume is not None:
             attributes[ATTR_WATER_VOLUME] = self.water_volume
+        if self.cleaning_mode is not None:
+            attributes[ATTR_CLEANING_MODE] = self.cleaning_mode
         if self.type is not None:
             attributes[ATTR_TYPE] = self.type
         if self.index is not None:
@@ -883,7 +929,6 @@ class Segment(Zone):
         if self.x is not None and self.y is not None:
             attributes[ATTR_X] = self.x
             attributes[ATTR_Y] = self.y
-
 
         return attributes
 
@@ -906,6 +951,7 @@ class Segment(Zone):
             and self.cleaning_times == other.cleaning_times
             and self.suction_level == other.suction_level
             and self.water_volume == other.water_volume
+            and self.cleaning_mode == other.cleaning_mode
         )
 
     def __str__(self) -> str:
@@ -1110,7 +1156,7 @@ class MapData:
         self.temporary_map: Optional[int] = None  # Data json: suw
         self.cleaned_area: Optional[int] = None  # Data json: cs
         self.recovery_map: Optional[bool] = None  # Data json: us
-        self.ai_obstacle: Optional[List[Point]
+        self.obstacles: Optional[List[Obstacle]
                                    ] = None  # Data json: ai_obstacle
         self.new_map: Optional[bool] = None  # Data json: risp
         # Generated
@@ -1234,6 +1280,8 @@ class MapData:
             attributes_list[ATTR_FRAME_ID] = self.frame_id
         if self.map_index:
             attributes_list[ATTR_MAP_INDEX] = self.map_index
+        if self.obstacles:
+            attributes_list[ATTR_OBSTACLES] = self.obstacles
         return attributes_list
 
 
@@ -1394,6 +1442,7 @@ class MapRendererLayer(IntEnum):
     SEGMENTS = 8
     CHARGER = 9
     ROBOT = 10
+    OBSTACLES = 11
 
 
 @dataclass

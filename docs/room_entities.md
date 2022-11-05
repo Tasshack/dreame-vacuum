@@ -23,7 +23,6 @@ With help of two custom cards you can generate a single card to manage all room 
 
 ```yaml
 {# ----------------- PROVIDE YOUR OWN ENTITY ID AND ROOM COUNT HERE ----------------- #}
-{# ----------------- PROVIDE YOUR OWN ENTITY ID AND ROOM COUNT HERE ----------------- #}
 {% set vacuum_entity = "vacuum." %}
 {# ------------------- DO NOT CHANGE ANYTHING BELOW ------------------- #}
 {%- set vacuum_name = states[vacuum_entity].entity_id.replace('vacuum.', '') %} 

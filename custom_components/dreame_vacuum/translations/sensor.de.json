@@ -150,7 +150,10 @@
       "dirty_water_tank_pump": "Schmutzwassertank Pumpenfehler.",
       "mop_pad": "Das Wischtuch ist nicht richtig installiert.",
       "wet_mop_pad": "Der Wasserstand des Wischtuchs ist ungewöhnlich, bitte reinigen Sie den Wischtuch rechtzeitig.",
-      "clean_mop_pad": "Die Reinigungsaufgabe ist abgeschlossen, bitte reinigen Sie das Wischtuch."
+      "clean_mop_pad": "Die Reinigungsaufgabe ist abgeschlossen, bitte reinigen Sie das Wischtuch.",
+      "clean_tank_level": "Überprüfen und füllen Sie den Reinwassertank umgehend nach.",
+      "dirty_tank_level": "Der Wasserstand im Brauchwassertank ist zu hoch.",
+      "washboard_level": "Wasserstand im Waschbrett ist zu hoch."
     },
     "dreame_vacuum__charging_status": {
       "unknown": "Unbekannt",

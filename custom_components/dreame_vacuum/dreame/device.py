@@ -830,6 +830,7 @@ class DreameVacuumDevice:
             if map_data.saved_map:
                 # App does not render robot position on saved map list
                 map_data.robot_position = None
+                map_data.obstacles = None
 
                 # App does not render restricted zones on saved map list
                 #map_data.walls = None
@@ -2987,7 +2988,9 @@ class DreameVacuumDeviceStatus:
         """Returns true when custom cleaning sequence is set."""
         segments = self.segments
         if segments:
-            return bool(next(iter(segments.values())).order)
+            for v in segments.values():
+                if v.order:
+                    return True
         return False
 
     @property
@@ -2995,7 +2998,7 @@ class DreameVacuumDeviceStatus:
         """Returns custom cleaning sequence list."""
         segments = self.segments 
         if segments:
-            return list(sorted(segments, key=lambda segment_id: segments[segment_id].order)) if self.custom_order else None
+            return list(sorted(segments, key=lambda segment_id: segments[segment_id].order if segments[segment_id].order else 99)) if self.custom_order else None
         return [] if self.custom_order else None
 
     @property

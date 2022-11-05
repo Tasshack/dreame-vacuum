@@ -14,7 +14,7 @@ from homeassistant.components.select import (
 )
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import STATE_UNKNOWN
+from homeassistant.const import STATE_UNKNOWN, STATE_UNAVAILABLE
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -323,8 +323,8 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         options=lambda device, segment: [
             str(i) for i in range(1, len(device.status.segments.values()) + 1)
         ]
-        if device.status.segments
-        else [0],
+        if device.status.segments and segment.order
+        else [STATE_UNAVAILABLE],
         entity_category=EntityCategory.CONFIG,
         available_fn=lambda device: bool(
             device.status.segments
@@ -334,7 +334,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             and device.status.has_saved_map
             and not device.status.fast_mapping
         ),
-        value_fn=lambda device, segment: str(segment.order),
+        value_fn=lambda device, segment: str(segment.order) if segment.order else STATE_UNAVAILABLE,
         set_fn=lambda device, segment_id, value: device.set_segment_order(
             segment_id, value
         )

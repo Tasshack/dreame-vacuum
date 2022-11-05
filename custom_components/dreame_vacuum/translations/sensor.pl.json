@@ -150,7 +150,10 @@
       "dirty_water_tank_pump": "Błąd pompy zbiornika brudnej wody.",
       "mop_pad": "Podkładka do mopa nie jest prawidłowo zainstalowana.",
       "wet_mop_pad": "Poziom wody w podkładce do mopa jest nieprawidłowy, proszę wyczyścić podkładkę w odpowiednim czasie.",
-      "clean_mop_pad": "Czyszczenie zostało zakończone, proszę wyczyścić podkłdkę do mycia mopa."
+      "clean_mop_pad": "Czyszczenie zostało zakończone, proszę wyczyścić podkłdkę do mycia mopa.",
+      "clean_tank_level": "Sprawdź i niezwłocznie napełnij zbiornik na czystą wodę.",
+      "dirty_tank_level": "Poziom wody w zbiorniku zużytej wody jest za wysoki.",
+      "washboard_level": "Za wysoki poziom wody w tarce."
     },
     "dreame_vacuum__charging_status": {
       "unknown": "Nieznany",

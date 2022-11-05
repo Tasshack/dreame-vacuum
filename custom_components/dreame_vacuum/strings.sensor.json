@@ -150,7 +150,10 @@
       "dirty_water_tank_pump": "Dirty water tank pump error.",
       "mop_pad": "The washboard is not installed properly.",
       "wet_mop_pad": "The water level of the washboard is abnormal, please clean the washboard timely.",
-      "clean_mop_pad": "The cleaning task is complete, please clean the mop pad washboard."
+      "clean_mop_pad": "The cleaning task is complete, please clean the mop pad washboard.",
+      "clean_tank_level": "Check and fill the clean water tank.",
+      "dirty_tank_level": "The water level in the used water tank is too high.",
+      "washboard_level": "Water level in the washboard is too high."
     },
     "dreame_vacuum__charging_status": {
       "unknown": "Unknown",
