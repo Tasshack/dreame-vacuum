@@ -44,10 +44,12 @@ class DreameVacuumCloudProtocol(MiCloud):
         self.captcha_url = None
         self.default_server = country
         self.device_id = None
-        
+        self._fail_count = 0
+        self._connected = False
+
     def _api_call(self, url, params):
         try:
-            response = self.request(f'{self._get_api_url(self.default_server)}{url}', params)
+            response = self.request(f'{self._get_api_url(self.default_server)}{url}', {"data": json.dumps(params, separators=(",", ":"))})
             if response:
                 return json.loads(response)
         except Exception:
@@ -84,13 +86,19 @@ class DreameVacuumCloudProtocol(MiCloud):
                 'data': params['data'],
             }
             response = self.session.post(url, data=post_data, timeout=3)
+            self._fail_count = 0
+            self._connected = True
             return response.text
-        except requests.exceptions.HTTPError as exc:
-            _LOGGER.warning('Error while executing request: %s', exc)
         except MiCloudException as exc:
             _LOGGER.warning('Error while decrypting response of request: %s', exc)
         except Exception as exc:
-            _LOGGER.warning("Error while executing request: %s", str(exc))
+            if self._connected:
+                _LOGGER.warning("Error while executing request: %s", str(exc))
+
+            if self._fail_count == 5:
+                self._connected = False
+            else:
+                self._fail_count = self._fail_count + 1
         
     def _login_step2(self, sign):
         post_data = {
@@ -133,7 +141,10 @@ class DreameVacuumCloudProtocol(MiCloud):
             _LOGGER.info("Logging in...")
             self.two_factor_url = None
             self.captcha_url = None
-            return super().login()
+            response = super().login()
+            self._fail_count = 0
+            self._connected = True
+            return response
         except Exception as ex:
             _LOGGER.error("Login failed: %s", ex)
             return None
@@ -150,8 +161,7 @@ class DreameVacuumCloudProtocol(MiCloud):
         return None
 
     def get_file_url(self, object_name: str = "") -> Any:
-        params = json.dumps({"obj_name": object_name}, separators=(",", ":"))
-        api_response = self._api_call("/home/getfileurl", {"data": params})
+        api_response = self._api_call("/home/getfileurl", {"obj_name": object_name})
         if (
             api_response is None
             or "result" not in api_response
@@ -162,9 +172,8 @@ class DreameVacuumCloudProtocol(MiCloud):
         return api_response
 
     def get_interim_file_url(self, object_name: str = "") -> Any:
-        params = {"data": f'{{"obj_name": "{object_name}"}}'}
         _LOGGER.debug("Get interim file url: %s", object_name)
-        api_response = self._api_call("/v2/home/get_interim_file_url", params)
+        api_response = self._api_call("/v2/home/get_interim_file_url", {"obj_name": object_name})
         if (
             api_response is None
             or not api_response.get("result")
@@ -175,7 +184,7 @@ class DreameVacuumCloudProtocol(MiCloud):
         return api_response
 
     def send(self, method, parameters) -> Any:
-        api_response = self._api_call(f'/v2/home/rpc/{self.device_id}', {"data": json.dumps(({"method": method, "params": parameters}))})
+        api_response = self._api_call(f'/v2/home/rpc/{self.device_id}', {"method": method, "params": parameters})
         if "result" not in api_response:
             return None
         return api_response["result"]
@@ -196,23 +205,13 @@ class DreameVacuumCloudProtocol(MiCloud):
             "key": key,
             "type": type,
         }
-        params = json.dumps(data, separators=(",", ":"))
-        api_response = self._api_call("/user/get_user_device_data", {"data": params})
+        api_response = self._api_call("/user/get_user_device_data", data)
         if api_response is None or "result" not in api_response:
             return None
 
         return api_response["result"]
 
     def get_devices(self, country=None, raw=False, save=False, file="devices.json"):
-        """Get a list with information about all devices.
-        :param country: country code for the server. Default: "de" (Europe)
-        :param raw: Return raw result from server instead of a python list.
-        :param save: Save information to json file. Default: False
-        :param file: json file to save to.
-        :return: List of devices
-        :rtype: list
-        """
-
         if not country:
             country = self.default_server
 
@@ -255,21 +254,32 @@ class DreameVacuumCloudProtocol(MiCloud):
         return None, None
     
     def get_batch_device_datas(self, props) -> Any:
-        data = {
+        data = [{
             "did": self.device_id,
             "props": props
-        }
-        params = json.dumps(data, separators=(",", ":"))
-        api_response = self._api_call("/device/batchdevicedatas", {"data": params})
-        if api_response is None or self.device_id not in api_response:
+        }]
+        api_response = self._api_call("/device/batchdevicedatas", data)
+        if api_response is None or "result" not in api_response or self.device_id not in api_response["result"]:
             return None
-        return api_response[self.device_id]
+        return api_response["result"][self.device_id]
+
+    def set_batch_device_datas(self, props) -> Any:
+        data = [{
+            "did": self.device_id,
+            "props": props
+        }]
+        api_response = self._api_call("/v2/device/batch_set_props", data)
+        if api_response is None or "result" not in api_response:
+            return None
+        return api_response["result"]
 
     @property
     def logged_in(self) -> bool:
         return bool(self.user_id and self.service_token)
 
-
+    @property
+    def connected(self) -> bool:
+        return self._connected
 
 class DreameVacuumProtocol:
     def __init__(

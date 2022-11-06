@@ -32,15 +32,16 @@
 | `self_clean`   | Enable/Disable automatic self cleaning feature | Available on vacuums with self-wash base
 | `water_electrolysis`   | Enable/Disable water electrolysis feature | Available on vacuums with water electrolysis feature
 | `auto_water_refilling`   | Enable/Disable external water input for self-wash base | Available on vacuums with self-wash base and external water input
+| `auto_mount_mop`   | Enable/Disable automatic assembly and disassembly of mop pads according selected cleaning mode | Available on vacuums with automatic mop assembly feature
 | `carpet_avoidance`   | Avoid carpets if mop pads are attached | Available on vacuums with mop pad lifting feature
 | `map_saving`   | Map saving mode setting for VSLAM devices | Available on vacuums without lidar navigation
 | `ai_obstacle_detection`   | Enable/Disable AI obstacle detection | Available on S10 and L10s models
-| `obstacle_image_upload`   | Enable/Disable uploading obstacle picture to cloud | Available on devices with front camera
-| `obstacle_picture`   | Enable/Disable obstacle picture displaying | Available on devices with front camera
-| `pet_detection`   | Enable/Disable AI pet detection | Available on devices with front camera
-| `human_detection`   | Enable/Disable AI human detection | Available on devices with front camera
-| `furniture_detection`   | Enable/Disable AI furniture detection | Available on devices with front camera
-| `fluid_detection`   | Enable/Disable AI fluid detection | Available on devices with front camera
+| `ai_obstacle_image_upload`   | Enable/Disable uploading obstacle picture to cloud | Available on devices with front camera
+| `ai_obstacle_picture`   | Enable/Disable obstacle picture displaying | Available on devices with front camera
+| `ai_pet_detection`   | Enable/Disable AI pet detection | Available on devices with front camera
+| `ai_human_detection`   | Enable/Disable AI human detection | Available on devices with front camera
+| `ai_furniture_detection`   | Enable/Disable AI furniture detection | Available on devices with front camera
+| `ai_fluid_detection`   | Enable/Disable AI fluid detection | Available on devices with front camera
 | `cleaning_sequence`   | Enable/Disable custom room cleaning sequence | Available with map feature (This a dynamically created entity and not actually tied to any setting directly, when turned of it actually deletes current cleaning order and regenerates with default order or restores previous order from memory when turned on again)
 
 ## Sensor

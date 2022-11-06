@@ -39,6 +39,7 @@ from .const import (
     NOTIFICATION_RESUME_CLEANING_NOT_PERFORMED,
     NOTIFICATION_REPLACE_MULTI_MAP,
     NOTIFICATION_REPLACE_MAP,
+    NOTIFICATION_2FA_LOGIN,
     NOTIFICATION_ID_DUST_COLLECTION,
     NOTIFICATION_ID_CLEANING_PAUSED,
     NOTIFICATION_ID_REPLACE_MAIN_BRUSH,
@@ -52,11 +53,13 @@ from .const import (
     NOTIFICATION_ID_WARNING,
     NOTIFICATION_ID_ERROR,
     NOTIFICATION_ID_REPLACE_TEMPORARY_MAP,
+    NOTIFICATION_ID_2FA_LOGIN,
     EVENT_TASK_STATUS,
     EVENT_CONSUMABLE,
     EVENT_WARNING,
     EVENT_ERROR,
     EVENT_INFORMATION,
+    EVENT_2FA_LOGIN,
     CONSUMABLE_MAIN_BRUSH,
     CONSUMABLE_SIDE_BRUSH,
     CONSUMABLE_FILTER,
@@ -321,6 +324,12 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             data[CONF_HOST] = self._host
             data[CONF_TOKEN] = self._token
             self.hass.config_entries.async_update_entry(self._entry, data=data)
+
+        #if not self.device.cloud_connected and self.device.status.map_available and self.device._protocol.cloud.two_factor_url:
+        #    self._create_persistent_notification(
+        #        f"{NOTIFICATION_2FA_LOGIN} [Click here]({self.device._protocol.cloud.two_factor_url}) to continue!", NOTIFICATION_ID_2FA_LOGIN
+        #    )
+        #    self._fire_event(EVENT_2FA_LOGIN, {"url": self.device._protocol.cloud.two_factor_url})
 
         self._available = self.device.available
 

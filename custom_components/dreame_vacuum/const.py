@@ -110,6 +110,7 @@ NOTIFICATION_ID_CLEANUP_COMPLETED: Final = "cleanup_completed"
 NOTIFICATION_ID_WARNING: Final = "warning"
 NOTIFICATION_ID_ERROR: Final = "error"
 NOTIFICATION_ID_REPLACE_TEMPORARY_MAP: Final = "replace_temporary_map"
+NOTIFICATION_ID_2FA_LOGIN: Final = "2fa_login"
 
 NOTIFICATION_CLEANUP_COMPLETED: Final = "### Cleanup completed"
 NOTIFICATION_MAIN_BRUSH_NO_LIFE_LEFT: Final = (
@@ -148,9 +149,11 @@ NOTIFICATION_REPLACE_MAP: Final = (
 NOTIFICATION_REPLACE_MULTI_MAP: Final = (
     "### A new map has been generated\nMulti-floor maps that can be saved have reached the upper limit. You need to replace or discard map before using it."
 )
+NOTIFICATION_2FA_LOGIN: Final = "### 2FA Login required\n"
 
 EVENT_TASK_STATUS: Final = "task_status"
 EVENT_CONSUMABLE: Final = "consumable"
 EVENT_WARNING: Final = "warning"
 EVENT_ERROR: Final = "error"
 EVENT_INFORMATION: Final = "information"
+EVENT_2FA_LOGIN: Final = "2fa_login"

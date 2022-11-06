@@ -174,6 +174,7 @@ class DreameVacuumDevice:
             self._charging_status_changed, DreameVacuumProperty.CHARGING_STATUS
         )
         self.listen(self._water_tank_changed, DreameVacuumProperty.WATER_TANK)
+        self.listen(self._water_tank_changed, DreameVacuumProperty.AUTO_MOUNT_MOP)
         self.listen(self._ai_obstacle_detection_changed,
                     DreameVacuumProperty.AI_DETECTION)
 
@@ -355,30 +356,31 @@ class DreameVacuumDevice:
         """Update cleaning mode on device when water tank status is changed."""
         # App does not allow you to update cleaning mode when water tank or mop pad is not installed.
         new_list = CLEANING_MODE_CODE_TO_NAME.copy()
-        water_tank = self.status.water_tank
-        if water_tank is DreameVacuumWaterTank.NOT_INSTALLED:
-            new_list.pop(DreameVacuumCleaningMode.MOPPING)
-            new_list.pop(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING)
-            if self.status.cleaning_mode != DreameVacuumCleaningMode.SWEEPING:
-                # Store current cleaning mode for future use when water tank is reinstalled                
-                if not self.status.started:
-                    self._previous_cleaning_mode = self.status.cleaning_mode
-                    self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING.value)
-        elif water_tank is DreameVacuumWaterTank.INSTALLED:
-            if not self.status.sweeping_with_mop_pad_available:
-                new_list.pop(DreameVacuumCleaningMode.SWEEPING)
+        if self.get_property(DreameVacuumProperty.AUTO_MOUNT_MOP) != 1:
+            water_tank = self.status.water_tank
+            if water_tank is DreameVacuumWaterTank.NOT_INSTALLED:
+                new_list.pop(DreameVacuumCleaningMode.MOPPING)
+                new_list.pop(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING)
+                if self.status.cleaning_mode != DreameVacuumCleaningMode.SWEEPING:
+                    # Store current cleaning mode for future use when water tank is reinstalled                
+                    if not self.status.started:
+                        self._previous_cleaning_mode = self.status.cleaning_mode
+                        self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING.value)
+            elif water_tank is DreameVacuumWaterTank.INSTALLED:
+                if not self.status.sweeping_with_mop_pad_available:
+                    new_list.pop(DreameVacuumCleaningMode.SWEEPING)
 
-                if not self.status.started and self.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING:
-                    if (
-                        self._previous_cleaning_mode is not None
-                        and self._previous_cleaning_mode
-                        != DreameVacuumCleaningMode.SWEEPING
-                    ):
-                        self.set_cleaning_mode(self._previous_cleaning_mode.value)
-                    else:
-                        self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING.value)
-                    # Store current cleaning mode for future use when water tank is removed
-                    self._previous_cleaning_mode = self.status.cleaning_mode
+                    if not self.status.started and self.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING:
+                        if (
+                            self._previous_cleaning_mode is not None
+                            and self._previous_cleaning_mode
+                            != DreameVacuumCleaningMode.SWEEPING
+                        ):
+                            self.set_cleaning_mode(self._previous_cleaning_mode.value)
+                        else:
+                            self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING.value)
+                        # Store current cleaning mode for future use when water tank is removed
+                        self._previous_cleaning_mode = self.status.cleaning_mode
 
         self.status.cleaning_mode_list = {
             v: k for k, v in new_list.items()}
@@ -497,14 +499,16 @@ class DreameVacuumDevice:
                 self.status.furniture_detection = settings[AI_SETTING_FURNITURE]
             if AI_SETTING_FLUID in settings:
                 self.status.fluid_detection = settings[AI_SETTING_FLUID]
-        #elif isinstance(value, int):
-        #    self.status.furniture_detection = (value & 1) == 1
-        #    self.status.ai_obstacle_detection = (value & 2) == 2
-        #    self.status.obstacle_picture = (value & 4) == 4
-        #    self.status.fluid_detection = (value & 8) == 8
-        #    self.status.pet_detection = (value & 16) == 16
-        #    self.status.obstacle_image_upload = (value & 32) == 32
-        #    self.status.ai_picture = (value & 64) == 64
+        elif isinstance(value, int):
+            self.status.furniture_detection = (value & 1) == 1
+            self.status.ai_obstacle_detection = (value & 2) == 2
+            self.status.obstacle_picture = (value & 4) == 4
+            self.status.fluid_detection = (value & 8) == 8
+            self.status.pet_detection = (value & 16) == 16
+            self.status.obstacle_image_upload = (value & 32) == 32
+            self.status.ai_picture = (value & 64) == 64
+
+        self.status.ai_policy_accepted = bool(self.status.ai_policy_accepted or self.status.ai_obstacle_detection or self.status.obstacle_picture)
 
     def _request_cleaning_history(self) -> None:
         """Get and parse the cleaning history from cloud event data and set it to memory"""
@@ -672,6 +676,16 @@ class DreameVacuumDevice:
             if self.cloud_connected:
                 self._request_cleaning_history()
 
+                if self.status.ai_detection_available and not self.status.ai_policy_accepted:
+                    prop = "prop.s_ai_config"
+                    response = self._protocol.cloud.get_batch_device_datas([prop])
+                    if response and prop in response and response[prop]:
+                        try:
+                            self.status.ai_policy_accepted = json.loads(
+                                response[prop]).get("privacyAuthed")
+                        except:
+                            pass
+
         if not self.available:
             self.available = True
             if self._ready:
@@ -830,12 +844,12 @@ class DreameVacuumDevice:
             if map_data.saved_map:
                 # App does not render robot position on saved map list
                 map_data.robot_position = None
-                map_data.obstacles = None
 
                 # App does not render restricted zones on saved map list
-                #map_data.walls = None
-                #map_data.no_go_areas = None
-                #map_data.no_mopping_areas = None
+                map_data.walls = None
+                map_data.no_go_areas = None
+                map_data.no_mopping_areas = None                
+                map_data.obstacles = None
 
             elif map_data.charger_position and map_data.docked:
                 # Calculate robot position when it is docked as implemented on the app
@@ -958,6 +972,7 @@ class DreameVacuumDevice:
             DreameVacuumProperty.AUTO_EMPTY_STATUS,
             DreameVacuumProperty.CLEANING_PAUSED,
             DreameVacuumProperty.CLEANING_CANCEL,
+            DreameVacuumProperty.SCHEDULED_CLEAN,
         ]
 
         now = time.time()
@@ -1003,7 +1018,7 @@ class DreameVacuumDevice:
                     DreameVacuumProperty.CLEANING_MODE,
                     DreameVacuumProperty.WATER_ELECTROLYSIS,
                     DreameVacuumProperty.AUTO_WATER_REFILLING,
-                    DreameVacuumProperty.AUTO_REMOVE_MOP,
+                    DreameVacuumProperty.AUTO_MOUNT_MOP,
                     DreameVacuumProperty.MOP_WASH_LEVEL,
                     DreameVacuumProperty.CUSTOMIZED_CLEANING,
                     DreameVacuumProperty.CHILD_LOCK,
@@ -1608,6 +1623,14 @@ class DreameVacuumDevice:
                         pass
 
                 if not self.status.ai_policy_accepted:
+                    if self.status.ai_obstacle_detection:
+                        self.status.ai_obstacle_detection = False
+
+                    if self.status.obstacle_image_upload:
+                        self.status.obstacle_image_upload = False
+
+                    self._property_changed()
+
                     raise InvalidActionException(
                         "You need to accept privacy policy from the App before enabling AI obstacle detection feature"
                     )
@@ -1622,7 +1645,7 @@ class DreameVacuumDevice:
         if self.status.ai_detection_available:
             current_value = self.status.ai_obstacle_detection
             self.status.ai_obstacle_detection = bool(enabled)
-            value = self._get_property(DreameVacuumProperty.AI_DETECTION)
+            value = self.get_property(DreameVacuumProperty.AI_DETECTION)
             if isinstance(value, int):
                 value = (value | 2) if self.status.ai_obstacle_detection else (value & -3)
                 result = self.set_ai_detection(value)
@@ -1639,7 +1662,7 @@ class DreameVacuumDevice:
         if self.status.ai_detection_available:
             current_value = self.status.obstacle_image_upload
             self.status.obstacle_image_upload = bool(enabled)
-            value = self._get_property(DreameVacuumProperty.AI_DETECTION)
+            value = self.get_property(DreameVacuumProperty.AI_DETECTION)
             if isinstance(value, int):
                 value = (value | 32) if self.status.obstacle_image_upload else (value & -33)
                 result = self.set_ai_detection(value)
@@ -1656,7 +1679,7 @@ class DreameVacuumDevice:
         if self.status.ai_detection_available:
             current_value = self.status.pet_detection
             self.status.pet_detection = bool(enabled)
-            value = self._get_property(DreameVacuumProperty.AI_DETECTION)
+            value = self.get_property(DreameVacuumProperty.AI_DETECTION)
             if isinstance(value, int):
                 value = (value | 16) if self.status.pet_detection else (value & -17)
                 result = self.set_ai_detection(value)
@@ -1673,7 +1696,7 @@ class DreameVacuumDevice:
         if self.status.ai_detection_available:
             current_value = self.status.human_detection
             self.status.human_detection = bool(enabled)
-            value = self._get_property(DreameVacuumProperty.AI_DETECTION)
+            value = self.get_property(DreameVacuumProperty.AI_DETECTION)
             if isinstance(value, int):
                 return None
             else:
@@ -1689,7 +1712,7 @@ class DreameVacuumDevice:
         if self.status.ai_detection_available:
             current_value = self.status.furniture_detection
             self.status.furniture_detection = bool(enabled)
-            value = self._get_property(DreameVacuumProperty.AI_DETECTION)
+            value = self.get_property(DreameVacuumProperty.AI_DETECTION)
             if isinstance(value, int):
                 value = (value | 1) if self.status.furniture_detection else (value & -2)
                 result = self.set_ai_detection(value)
@@ -1706,7 +1729,7 @@ class DreameVacuumDevice:
         if self.status.ai_detection_available:
             current_value = self.status.fluid_detection
             self.status.fluid_detection = bool(enabled)
-            value = self._get_property(DreameVacuumProperty.AI_DETECTION)
+            value = self.get_property(DreameVacuumProperty.AI_DETECTION)
             if isinstance(value, int):
                 value = (value | 8) if self.status.fluid_detection else (value & -9)
                 result = self.set_ai_detection(value)
@@ -1723,7 +1746,7 @@ class DreameVacuumDevice:
         if self.status.ai_detection_available:
             current_value = self.status.obstacle_picture
             self.status.obstacle_picture = bool(enabled)
-            value = self._get_property(DreameVacuumProperty.AI_DETECTION)
+            value = self.get_property(DreameVacuumProperty.AI_DETECTION)
             if isinstance(value, int):
                 value = (value | 4) if self.status.obstacle_picture else (value & -5)
                 result = self.set_ai_detection(value)
@@ -2085,6 +2108,7 @@ class DreameVacuumDevice:
         return (
             self._protocol.cloud
             and self._protocol.cloud.logged_in
+            and self._protocol.cloud.connected
         )
 
 
@@ -2104,7 +2128,7 @@ class DreameVacuumDeviceStatus:
     self_clean_area_list = {v: k for k, v in SELF_AREA_CLEAN_TO_NAME.items()}
     mop_wash_level_list = {v: k for k, v in MOP_WASH_LEVEL_TO_NAME.items()}
 
-    ai_policy_accepted = None
+    ai_policy_accepted = False
     ai_obstacle_detection = None
     obstacle_image_upload = None
     pet_detection = None
@@ -2525,6 +2549,10 @@ class DreameVacuumDeviceStatus:
         return bool(self._get_property(DreameVacuumProperty.SELF_CLEAN) == 1)
 
     @property
+    def scheduled_clean(self) -> bool:
+        return bool(self._get_property(DreameVacuumProperty.SCHEDULED_CLEAN) == 1)
+
+    @property
     def dnd_remaining(self) -> bool:
         """Returns remaining seconds to DND period to end."""
         if self.dnd_enabled:
@@ -2832,8 +2860,7 @@ class DreameVacuumDeviceStatus:
     @property
     def ai_detection_available(self) -> bool:
         """Returns true when device has AI obstacle detection feature."""
-        value = self._get_property(DreameVacuumProperty.AI_DETECTION)
-        return bool(value is not None and isinstance(value, str))
+        return self._get_property(DreameVacuumProperty.AI_DETECTION) is not None
 
     @property
     def cleaning_history(self) -> dict[str, Any] | None:
@@ -3117,8 +3144,9 @@ class DreameVacuumDeviceStatus:
     def active_segments(self) -> list[int] | None:        
         map_data = self.current_map
         if map_data and self.started and not self.fast_mapping:
-            if self.segment_cleaning and map_data.active_areas:
-                return map_data.active_segments
+            if self.segment_cleaning:
+                if map_data.active_segments:
+                    return map_data.active_segments
             elif not self.zone_cleaning and not self.spot_cleaning and map_data.segments and not self.docked and not self.returning and not self.returning_paused:
                 return list(map_data.segments.keys())
             return []

@@ -129,6 +129,7 @@ class DreameMapVacuumMapManager:
         self._device_running: bool = False
         self._available: bool = False
         self._ready: bool = False
+        self._connected: bool = True
 
         self._init_data()
 
@@ -191,6 +192,16 @@ class DreameMapVacuumMapManager:
         map_data_result = self._protocol.cloud.get_device_property(
             DIID(DreameVacuumProperty.MAP_DATA), 20, self._latest_map_data_time
         )
+
+        if not self._protocol.cloud.connected:
+            if self._connected:
+                self._connected = False
+                self._map_data_changed()
+            return False
+        elif not self._connected:
+            self._connected = True
+            self._map_data_changed()
+
         if map_data_result is None:
             _LOGGER.warn("Getting map_data from cloud failed")
             map_data_result = []
@@ -2904,7 +2915,7 @@ class DreameVacuumMapDataRenderer:
             map_data_json[MAP_DATA_PARAMETER_ENTITIES].extend(
                 self._layers[MapRendererLayer.WALL])
 
-        if self._map_data is None or self._map_data.path != map_data.path or not self._layers.get(MapRendererLayer.PATH):
+        if self._map_data is None or len(self._map_data.path) != len(map_data.path) or not self._layers.get(MapRendererLayer.PATH):
             points = []
             self._layers[MapRendererLayer.PATH] = []
             if map_data.path and len(map_data.path) > 1:
@@ -3280,7 +3291,7 @@ class DreameVacuumMapRenderer:
         return ico
 
     @staticmethod
-    def _calculate_padding(dimensions, no_mopping_areas, no_go_areas, walls, padding, min_width, min_height) -> list[int]:
+    def _calculate_padding(dimensions, no_mopping_areas, no_go_areas, walls, padding, min_width, min_height, scale) -> list[int]:
         if no_mopping_areas or no_go_areas or walls:
             min_x = 0
             min_y = 0
@@ -3350,6 +3361,9 @@ class DreameVacuumMapRenderer:
             size = int((min_height - dimensions.height) / 2)
             padding[2] = padding[2] + size
             padding[3] = padding[3] + size
+            
+        for k in range(4):
+            padding[k] = padding[k] * scale
 
         return padding
 
@@ -3398,6 +3412,8 @@ class DreameVacuumMapRenderer:
                 self.render_complete = True
                 _LOGGER.info("Skip render frame, map data not changed")
                 return self._to_buffer(self._image)
+            
+            scale = 4 if map_data.saved_map_status == 2 or map_data.saved_map else 3
 
             if (
                 self._map_data is None
@@ -3414,28 +3430,29 @@ class DreameVacuumMapRenderer:
                     map_data.no_mopping_areas,
                     map_data.no_go_areas,
                     map_data.walls,
-                    [10, 10, 10, 10]
-                    if map_data.saved_map or map_data.restored_map or map_data.recovery_map
-                    else [14, 14, 14, 14],
+                    [14, 14, 14, 14],
                     140,
-                    100
+                    100,
+                    scale
                 )
-                self._map_data = None
+
+                if self._map_data and self._map_data.dimensions.padding != map_data.dimensions.padding:
+                    self._map_data = None
             else:
                 map_data.dimensions.padding = self._map_data.dimensions.padding
 
-            map_data.dimensions.scale = 4 if map_data.saved_map_status == 2 or map_data.saved_map else 3
+            map_data.dimensions.scale = scale
         
-            if self._map_data is None or (
-                self._map_data.dimensions.scale != map_data.dimensions.scale
-                or self._map_data.rotation != map_data.rotation
-            ):
+            if self._map_data and self._map_data.dimensions.scale != scale:
+                self._map_data = None
+
+            if self._map_data is None or self._map_data.rotation != map_data.rotation:
                 self._charger_icon = None
                 self._robot_sleeping_icon = None
                 self._obstacle_background = None
+
                 if (
                     self._map_data is None
-                    or self._map_data.dimensions.scale != map_data.dimensions.scale
                 ):
                     self._robot_icon = None
                     self._robot_charging_icon = None
@@ -3451,9 +3468,6 @@ class DreameVacuumMapRenderer:
                 or self._map_data.segments != map_data.segments
                 or self._map_data.data != map_data.data
             ):
-                self._calibration_points = self._calculate_calibration_points(
-                    map_data)
-
                 area_colors = {}
                 # as implemented on the app
                 area_colors[MapPixelType.OUTSIDE.value] = self.color_scheme.outside
@@ -3473,23 +3487,11 @@ class DreameVacuumMapRenderer:
                                 ][0]
                         else:
                             area_colors[k] = area_colors[MapPixelType.FLOOR.value]
-
+                            
                 pixels = np.full(
                     (
-                        (
-                            map_data.dimensions.height
-                            + (
-                                map_data.dimensions.padding[2]
-                                + map_data.dimensions.padding[3]
-                            )
-                        ),
-                        (
-                            map_data.dimensions.width
-                            + (
-                                map_data.dimensions.padding[0]
-                                + map_data.dimensions.padding[1]
-                            )
-                        ),
+                        map_data.dimensions.height,
+                        map_data.dimensions.width,
                         4,
                     ),
                     area_colors[MapPixelType.OUTSIDE.value],
@@ -3503,18 +3505,29 @@ class DreameVacuumMapRenderer:
                             px_type = MapPixelType.NEW_SEGMENT.value
 
                         if px_type != MapPixelType.OUTSIDE.value:
-                            xx = (
-                                x + map_data.dimensions.padding[0]
-                            ) 
-                            yy = (
-                                (map_data.dimensions.height - y - 1)
-                                + map_data.dimensions.padding[2]
-                            ) 
-                            pixels[yy, xx] = area_colors[px_type]
+                            pixels[map_data.dimensions.height - y - 1, x] = area_colors[px_type]
+                
+                x_axis = np.any(pixels, axis=0)
+                y_axis = np.any(pixels, axis=1)
+                if x_axis.any() and y_axis.any():
+                    x_min, x_max = np.where(x_axis)[0][[0, -1]]
+                    y_min, y_max = np.where(y_axis)[0][[0, -1]]
+                
+                    if x_min != 0 and y_min != 0 and x_max != map_data.dimensions.width - 1 and y_max != map_data.dimensions.height - 1:
+                        map_data.dimensions.crop = [x_min * scale, (map_data.dimensions.width - (x_max + 1)) * scale, y_min * scale, (map_data.dimensions.height - (y_max + 1)) * scale]
+                        pixels = pixels[y_min:(y_max + 1), x_min:(x_max + 1)]
 
-                pixels = pixels.repeat(map_data.dimensions.scale, axis=0).repeat(map_data.dimensions.scale, axis=1)
+                self._calibration_points = self._calculate_calibration_points(map_data)
 
-                self._layers[MapRendererLayer.IMAGE] = Image.fromarray(pixels)
+                if self._map_data and self._map_data.dimensions.crop != map_data.dimensions.crop:
+                    self._map_data = None
+
+                self._layers[MapRendererLayer.IMAGE] = ImageOps.expand(
+                        Image.fromarray(pixels.repeat(scale, axis=0).repeat(scale, axis=1)), 
+                        border=tuple(map_data.dimensions.padding)
+                    )
+            else:
+                map_data.dimensions.crop = self._map_data.dimensions.crop
 
             image = self.render_objects(
                 map_data,

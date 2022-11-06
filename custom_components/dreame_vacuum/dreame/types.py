@@ -422,8 +422,8 @@ class DreameVacuumProperty(IntEnum):
     CAPABILITY = 39
     DRYING_TIME = 40
     MOP_WASH_LEVEL = 41
-    AUTO_REMOVE_MOP = 42
-    TIMING_CLEAN = 43
+    AUTO_MOUNT_MOP = 42
+    SCHEDULED_CLEAN = 43
     AUTO_WATER_REFILLING = 44
     DND = 45
     DND_START = 46
@@ -542,12 +542,12 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.CARPET_AVOIDANCE: {"siid": 4, "piid": 36},
     DreameVacuumProperty.AUTO_ADD_DETERGENT: {"siid": 4, "piid": 37},
     DreameVacuumProperty.CAPABILITY: {"siid": 4, "piid": 38},
-    #DreameVacuumProperty.SAVE_WATER_TIPS: {"siid": 4, "piid": 39},
+    # DreameVacuumProperty.SAVE_WATER_TIPS: {"siid": 4, "piid": 39},
     DreameVacuumProperty.DRYING_TIME: {"siid": 4, "piid": 40},
-    #DreameVacuumProperty.NO_WATER_WARNING: {"siid": 4, "piid": 41},
-    DreameVacuumProperty.AUTO_REMOVE_MOP: {"siid": 4, "piid": 45},
+    # DreameVacuumProperty.NO_WATER_WARNING: {"siid": 4, "piid": 41},
+    DreameVacuumProperty.AUTO_MOUNT_MOP: {"siid": 4, "piid": 45},
     DreameVacuumProperty.MOP_WASH_LEVEL: {"siid": 4, "piid": 46},
-    DreameVacuumProperty.TIMING_CLEAN: {"siid": 4, "piid": 47},
+    DreameVacuumProperty.SCHEDULED_CLEAN: {"siid": 4, "piid": 47},
     DreameVacuumProperty.AUTO_WATER_REFILLING: {"siid": 4, "piid": 51},
     # DreameVacuumProperty.COMBINED_DATA: {"siid": 4, "piid": 99},
     DreameVacuumProperty.DND: {"siid": 5, "piid": 1},
@@ -626,12 +626,11 @@ PROPERTY_AVAILABILITY: Final = {
     DreameVacuumProperty.CUSTOMIZED_CLEANING: lambda device: not device.status.started and (device.status.has_saved_map or device.status.current_map is None),
     DreameVacuumProperty.TIGHT_MOPPING: lambda device: device.status.water_tank_installed,
     DreameVacuumProperty.MULTI_FLOOR_MAP: lambda device: not device.status.has_temporary_map,
-    DreameVacuumProperty.MOP_CLEANING_REMAINDER: lambda device: device.status.water_tank_installed,
     DreameVacuumProperty.DND_START: lambda device: device.status.dnd_enabled,
     DreameVacuumProperty.DND_END: lambda device: device.status.dnd_enabled,
     DreameVacuumProperty.SUCTION_LEVEL: lambda device: not device.status.mopping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping,
     DreameVacuumProperty.WATER_VOLUME: lambda device: device.status.water_tank_installed and not device.status.sweeping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping,
-    DreameVacuumProperty.CLEANING_MODE: lambda device: not device.status.started and not device.status.fast_mapping and not device.status.cleaning_paused,
+    DreameVacuumProperty.CLEANING_MODE: lambda device: not device.status.started and not device.status.fast_mapping and not device.status.cleaning_paused and not device.status.scheduled_clean,
     DreameVacuumProperty.CARPET_SENSITIVITY: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_BOOST)),
     DreameVacuumProperty.CARPET_BOOST: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
     DreameVacuumProperty.CARPET_AVOIDANCE: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
@@ -723,18 +722,18 @@ class Point:
     
     def rotated(self, image_dimensions, degree) -> Point:
         w = int(
-            (
-                image_dimensions.width
-                + (image_dimensions.padding[0] + image_dimensions.padding[1])
-            )
-            * image_dimensions.scale
+            (image_dimensions.width * image_dimensions.scale) 
+            + image_dimensions.padding[0] 
+            + image_dimensions.padding[1] 
+            - image_dimensions.crop[0] 
+            - image_dimensions.crop[1]
         )
         h = int(
-            (
-                image_dimensions.height
-                + (image_dimensions.padding[2] + image_dimensions.padding[3])
-            )
-            * image_dimensions.scale
+            (image_dimensions.height * image_dimensions.scale) 
+            + image_dimensions.padding[2] 
+            + image_dimensions.padding[3] 
+            - image_dimensions.crop[2] 
+            - image_dimensions.crop[3]
         )
         x = self.x
         y = self.y
@@ -1067,11 +1066,12 @@ class MapImageDimensions:
         self.grid_size = grid_size
         self.scale = 1
         self.padding = [0, 0, 0, 0]
+        self.crop = [0, 0, 0, 0]
 
     def to_img(self, point: Point) -> Point:
         return Point(
             ((point.x - self.left) / self.grid_size) * self.scale
-            + (self.padding[0] * self.scale),
+            + self.padding[0] - self.crop[0],
             (
                 (
                     (self.height - 1) * self.grid_size
@@ -1080,7 +1080,7 @@ class MapImageDimensions:
                 / self.grid_size
             )
             * self.scale
-            + (self.padding[2] * self.scale),
+            + self.padding[2] - self.crop[2],
         )
     
     def __eq__(self: MapImageDimensions, other: MapImageDimensions) -> bool:

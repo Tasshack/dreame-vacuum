@@ -144,7 +144,8 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             self._renderer = DreameVacuumMapDataRenderer()
         else:
             self._renderer = DreameVacuumMapRenderer(color_scheme, map_objects, self.device.status.robot_shape)
-        self._image = self._default_map_image
+
+        self._image = self._renderer.default_map_image
         self._default_map = True
         self.map_index = map_index
         self._state = STATE_UNAVAILABLE
@@ -304,7 +305,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
 
     @property
     def _default_map_image(self) -> Any:
-        if not self.device.device_connected and self.device.cloud_connected:
+        if self._image and (not self.device.device_connected or not self.device.cloud_connected):
             return self._renderer.disconnected_map_image
         return self._renderer.default_map_image
 
