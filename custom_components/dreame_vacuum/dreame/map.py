@@ -2518,6 +2518,7 @@ class DreameVacuumMapDecoder:
                     int(
                         map_data.dimensions.top +
                         (v.y0 * map_data.dimensions.grid_size)
+                        - map_data.dimensions.grid_size
                     )
                 )
                 segments[k].x1 = (
@@ -2531,7 +2532,6 @@ class DreameVacuumMapDecoder:
                     int(
                         map_data.dimensions.top +
                         (v.y1 * map_data.dimensions.grid_size)
-                        + map_data.dimensions.grid_size
                     )
                 )
                 segments[k].x = int(
@@ -3487,7 +3487,7 @@ class DreameVacuumMapRenderer:
                                 ][0]
                         else:
                             area_colors[k] = area_colors[MapPixelType.FLOOR.value]
-                            
+                        
                 pixels = np.full(
                     (
                         map_data.dimensions.height,
@@ -3498,24 +3498,37 @@ class DreameVacuumMapRenderer:
                     dtype=np.uint8,
                 )
 
+                min_x = map_data.dimensions.width - 1
+                min_y = map_data.dimensions.height - 1
+                max_x = 0
+                max_y = 0
                 for y in range(map_data.dimensions.height):
                     for x in range(map_data.dimensions.width):
-                        px_type = int(map_data.pixel_type[x, y])
-                        if px_type not in area_colors:
-                            px_type = MapPixelType.NEW_SEGMENT.value
-
+                        px_type = int(map_data.pixel_type[x, map_data.dimensions.height - y - 1])
                         if px_type != MapPixelType.OUTSIDE.value:
-                            pixels[map_data.dimensions.height - y - 1, x] = area_colors[px_type]
-                
-                x_axis = np.any(pixels, axis=0)
-                y_axis = np.any(pixels, axis=1)
-                if x_axis.any() and y_axis.any():
-                    x_min, x_max = np.where(x_axis)[0][[0, -1]]
-                    y_min, y_max = np.where(y_axis)[0][[0, -1]]
-                
-                    if x_min != 0 and y_min != 0 and x_max != map_data.dimensions.width - 1 and y_max != map_data.dimensions.height - 1:
-                        map_data.dimensions.crop = [x_min * scale, (map_data.dimensions.width - (x_max + 1)) * scale, y_min * scale, (map_data.dimensions.height - (y_max + 1)) * scale]
-                        pixels = pixels[y_min:(y_max + 1), x_min:(x_max + 1)]
+                            pixels[y, x] = area_colors[px_type] if px_type in area_colors else MapPixelType.NEW_SEGMENT.value
+
+                            max_x = max(x, max_x)
+                            min_x = min(x, min_x)
+                            max_y = max(y, max_y)
+                            min_y = min(y, min_y)
+                            
+                if (
+                    (
+                        min_x != map_data.dimensions.width - 1 and 
+                        min_y != map_data.dimensions.height - 1 and 
+                        max_x != 0 and 
+                        max_y != 0
+                    ) and 
+                    (
+                        min_x != 0 or 
+                        min_y != 0 or 
+                        max_x != map_data.dimensions.width - 1 or 
+                        max_y != map_data.dimensions.height - 1
+                    )
+                ):                    
+                    map_data.dimensions.crop = [min_x * scale, (map_data.dimensions.width - (max_x + 1)) * scale, min_y * scale, (map_data.dimensions.height - (max_y + 1)) * scale]
+                    pixels = pixels[min_y:(max_y + 1), min_x:(max_x + 1)]
 
                 self._calibration_points = self._calculate_calibration_points(map_data)
 

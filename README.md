@@ -297,15 +297,14 @@ attributes:
 
 ## To Do
 
-- Events
 - 2FA Notifications
+- Support for non lidar Dreame vacuums
+- Cleaning history map support
 - Map recovery support
 - Schedule editing
-- Cleaning history map support
 - Map rendering and streaming optimizations
-- Custom map color support
-- AI Obstacle rendering support
-- Support for non lidar Dreame vacuums
+- AI Obstacle image support
+- Live camera feed support
 - Custom lovelace card for map editing
 
 ## Known Issues
