@@ -8,7 +8,7 @@
       "cannot_connect": "Failed to connect.",
       "unsupported": "Device is not supported",
       "wrong_token": "Checksum error, wrong token",
-      "2fa_required": "2FA Login required",
+      "2fa_required": "2FA Login required\n{url}",
       "credentials_incomplete": "Credentials incomplete, please fill in username, password and country",
       "login_error": "Could not login to Xiaomi Miio Cloud, check the credentials.",
       "no_devices": "No supported devices found in this Xiaomi Miio cloud account on selected country."

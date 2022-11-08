@@ -149,7 +149,7 @@ NOTIFICATION_REPLACE_MAP: Final = (
 NOTIFICATION_REPLACE_MULTI_MAP: Final = (
     "### A new map has been generated\nMulti-floor maps that can be saved have reached the upper limit. You need to replace or discard map before using it."
 )
-NOTIFICATION_2FA_LOGIN: Final = "### 2FA Login required\n"
+NOTIFICATION_2FA_LOGIN: Final = "### Additional authentication required.\nOpen following URL using device that has the same public IP, as your Home Assistant instance:\n"
 
 EVENT_TASK_STATUS: Final = "task_status"
 EVENT_CONSUMABLE: Final = "consumable"

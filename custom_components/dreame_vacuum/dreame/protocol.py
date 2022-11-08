@@ -3,6 +3,7 @@ import json
 import hashlib
 import requests
 import time
+import traceback
 from .exceptions import DeviceException
 from typing import Any, Optional, Tuple
 from micloud import miutils
@@ -135,19 +136,46 @@ class DreameVacuumCloudProtocol(MiCloud):
         self.pass_token = response_json['passToken']
 
         return location
-
+    
     def login(self):
-        try:
+        if not self._check_credentials():
+            return False
+
+        if self.user_id and self.service_token:
+            return True
+
+        if self.failed_logins <= 2:
             _LOGGER.info("Logging in...")
-            self.two_factor_url = None
-            self.captcha_url = None
-            response = super().login()
-            self._fail_count = 0
-            self._connected = True
-            return response
+
+        self.two_factor_url = None
+        self.captcha_url = None
+        try:
+            if self._login_request():
+                self.failed_logins = 0
+            else:
+                self.failed_logins += 1
+        except MiCloudException as ex:
+            self.failed_logins += 1
+            self.service_token = None
+            if self.failed_logins > 10:
+                self._init_session(reset=True)
+            _LOGGER.warning("Error logging on to Xiaomi cloud (%s): %s", self.failed_logins, str(ex))
+            return False
+        except MiCloudAccessDenied as ex:
+            self.failed_logins += 1
+            self.service_token = None
+            if self.failed_logins > 10:
+                self._init_session(reset=True)
+            if self.failed_logins <= 3:
+                _LOGGER.warning(str(ex))
+            return False
         except Exception as ex:
-            _LOGGER.error("Login failed: %s", ex)
-            return None
+            _LOGGER.error("Login failed: %s", traceback.format_exc())
+            return False
+
+        self._fail_count = 0
+        self._connected = True
+        return True
 
     def get_file(self, url: str = "") -> Any:
         try:

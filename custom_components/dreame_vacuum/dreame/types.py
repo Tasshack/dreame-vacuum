@@ -724,15 +724,15 @@ class Point:
         w = int(
             (image_dimensions.width * image_dimensions.scale) 
             + image_dimensions.padding[0] 
-            + image_dimensions.padding[1] 
+            + image_dimensions.padding[2] 
             - image_dimensions.crop[0] 
-            - image_dimensions.crop[1]
+            - image_dimensions.crop[2]
         )
         h = int(
             (image_dimensions.height * image_dimensions.scale) 
-            + image_dimensions.padding[2] 
+            + image_dimensions.padding[1] 
             + image_dimensions.padding[3] 
-            - image_dimensions.crop[2] 
+            - image_dimensions.crop[1] 
             - image_dimensions.crop[3]
         )
         x = self.x
@@ -1080,7 +1080,7 @@ class MapImageDimensions:
                 / self.grid_size
             )
             * self.scale
-            + self.padding[2] - self.crop[2],
+            + self.padding[1] - self.crop[1],
         )
     
     def __eq__(self: MapImageDimensions, other: MapImageDimensions) -> bool:
@@ -1247,7 +1247,7 @@ class MapData:
         attributes_list = {}
         if self.charger_position is not None:
             attributes_list[ATTR_CHARGER] = self.charger_position
-        if self.segments is not None and (self.saved_map or self.saved_map_status == 2):
+        if self.segments is not None and (self.saved_map or self.saved_map_status == 2 or self.restored_map):
             attributes_list[ATTR_ROOMS] = {k: v.as_dict() for k, v in sorted(self.segments.items())}
         if not self.saved_map and self.robot_position is not None:
             attributes_list[ATTR_ROBOT_POSITION] = self.robot_position

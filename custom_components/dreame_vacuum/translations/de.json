@@ -8,7 +8,7 @@
       "cannot_connect": "Verbindung fehlgeschlagen.",
       "unsupported": "Gerät wird nicht unterstützt",
       "wrong_token": "Prüfsummenfehler, falscher Token",
-      "2fa_required": "Zweifaktoren Anmeldung erforderlich",
+      "2fa_required": "Zweifaktoren Anmeldung erforderlich\n{url}",
       "credentials_incomplete": "Anmeldedaten unvollständig, bitte geben Sie Benutzername, Passwort und das Land ein",
       "login_error": "Anmeldung bei Xiaomi Miio Cloud nicht möglich, bitte überprüfen Sie die Anmeldedaten.",
       "no_devices": "Keine unterstützten Geräte in diesem Xiaomi Miio Cloud-Konto für das ausgewählte Land gefunden."

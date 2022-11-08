@@ -89,6 +89,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         self._available = False
         self._has_warning = False
         self._has_temporary_map = None
+        self._two_factor_url = None
 
         self.device = DreameVacuumDevice(
             entry.data[CONF_NAME],
@@ -119,12 +120,11 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             LOGGER,
             name=DOMAIN,
         )
-
-        if self._notify:
-            hass.bus.async_listen(
-                persistent_notification.EVENT_PERSISTENT_NOTIFICATIONS_UPDATED,
-                self._notification_dismiss_listener,
-            )
+        
+        hass.bus.async_listen(
+            persistent_notification.EVENT_PERSISTENT_NOTIFICATIONS_UPDATED,
+            self._notification_dismiss_listener,
+        )
 
     def _dust_collection_changed(self, previous_value=None) -> None:
         if previous_value is not None:
@@ -285,14 +285,22 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             self.hass, f"{DOMAIN}_{notification_id}")
 
     def _notification_dismiss_listener(self, event) -> None:
+        notifications = self.hass.data.get(persistent_notification.DOMAIN)
+
         if self._has_warning:
-            notifications = self.hass.data.get(persistent_notification.DOMAIN)
             if (
                 f"{persistent_notification.DOMAIN}.{DOMAIN}_{NOTIFICATION_ID_WARNING}"
                 not in notifications
             ):
                 self._has_warning = False
                 self.device.clear_warning()
+
+        if self._two_factor_url:
+            if (
+                f"{persistent_notification.DOMAIN}.{DOMAIN}_{NOTIFICATION_ID_2FA_LOGIN}"
+                not in notifications
+            ):
+                self._two_factor_url = None
 
     def _fire_event(self, event_id, data) -> None:
         event_data =  {ATTR_ENTITY_ID: generate_entity_id("vacuum.{}", self.device.name, hass=self.hass)}
@@ -324,12 +332,17 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             data[CONF_HOST] = self._host
             data[CONF_TOKEN] = self._token
             self.hass.config_entries.async_update_entry(self._entry, data=data)
+            
+        if self._two_factor_url != self.device.two_factor_url:
+            if self.device.two_factor_url:
+                self._create_persistent_notification(
+                    f"{NOTIFICATION_2FA_LOGIN}[{self.device.two_factor_url}]({self.device.two_factor_url})", NOTIFICATION_ID_2FA_LOGIN
+                )
+                self._fire_event(EVENT_2FA_LOGIN, {"url": self.device.two_factor_url})
+            else:
+                self._remove_persistent_notification(NOTIFICATION_ID_2FA_LOGIN)
 
-        #if not self.device.cloud_connected and self.device.status.map_available and self.device._protocol.cloud.two_factor_url:
-        #    self._create_persistent_notification(
-        #        f"{NOTIFICATION_2FA_LOGIN} [Click here]({self.device._protocol.cloud.two_factor_url}) to continue!", NOTIFICATION_ID_2FA_LOGIN
-        #    )
-        #    self._fire_event(EVENT_2FA_LOGIN, {"url": self.device._protocol.cloud.two_factor_url})
+            self._two_factor_url = self.device.two_factor_url
 
         self._available = self.device.available
 

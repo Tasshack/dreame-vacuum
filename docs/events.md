@@ -1,4 +1,4 @@
- Events
+# Events
 Integration tracks certain device properties and notifies HA on specific events similar to the notification feature but events always will be fired even notifications are disabled from integration options.
 
 ### Cleanup started or finished
@@ -55,3 +55,10 @@ Fires when there is a fault code on the device.
 - `entity_id`: Vacuum entity
 - `error`: Error description
 - `code`: Fault code of the error
+
+### 2FA Login Required
+Fires when there two factor authentication is required to login.
+
+#### `dreame_vacuum_2fa_login_`
+- `entity_id`: Vacuum entity
+- `url`: 2FA login URL

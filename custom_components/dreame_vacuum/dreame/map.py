@@ -894,13 +894,6 @@ class DreameMapVacuumMapManager:
             return None
         return self._map_data
 
-    def get_map_by_id(self, map_id: int = 0) -> MapData | None:
-        if map_id:
-            if map_id in self._saved_map_data:
-                return self._saved_map_data[map_id]
-            return None
-        return self._map_data
-
     def listen(self, callback) -> None:
         self._update_callback = callback
 
@@ -957,7 +950,8 @@ class DreameMapVacuumMapManager:
                 #if self._map_data and not self._map_data.empty_map and time.time() - (self._current_timestamp_ms / 1000.0) > 30:
                 #    self.request_new_map()
                 #else:
-                self._request_current_map()
+                if self._protocol.cloud.logged_in:
+                    self._request_current_map()
             elif not self._request_map_from_cloud() and self._device_running:
                 _LOGGER.info("No new map data received, retrying")
                 sleep(0.5)
@@ -1040,7 +1034,7 @@ class DreameMapVacuumMapManager:
         return False
 
     def request_map_list(self) -> None:
-        if self._map_list_object_name:
+        if self._map_list_object_name and self._protocol.cloud.logged_in:
             _LOGGER.info("Get Map List: %s", self._map_list_object_name)
             try:
                 response = self._get_interim_file_data(self._map_list_object_name)
@@ -2175,6 +2169,22 @@ class DreameVacuumMapDecoder:
                                         elif segment_id == 2:
                                             map_data.pixel_type[x,
                                                                 y] = MapPixelType.WALL.value
+                    elif (
+                        map_data.saved_map_status == 1
+                        or map_data.saved_map_status == 0
+                    ):
+                        for y in range(height):
+                            for x in range(width):
+                                segment_id = map_data.data[(width * y) + x] & 0b01111111
+                                # as implemented on the app
+                                if segment_id == 1 or segment_id == 3:
+                                    map_data.empty_map = False
+                                    map_data.pixel_type[x,
+                                                        y] = MapPixelType.NEW_SEGMENT.value
+                                elif segment_id == 2:
+                                    map_data.empty_map = False
+                                    map_data.pixel_type[x,
+                                                        y] = MapPixelType.WALL.value
                     else:
                         for y in range(height):
                             for x in range(width):
@@ -2187,20 +2197,7 @@ class DreameVacuumMapDecoder:
                                     else:
                                         segment_id = pixel & 0b01111111
                                         if segment_id > 0:
-                                            if (
-                                                map_data.saved_map_status == 1
-                                                or map_data.saved_map_status == 0
-                                            ):
-                                                # as implemented on the app
-                                                if segment_id == 1 or segment_id == 3:
-                                                    map_data.pixel_type[x,
-                                                                        y] = MapPixelType.NEW_SEGMENT.value
-                                                elif segment_id == 2:
-                                                    map_data.pixel_type[x,
-                                                                        y] = MapPixelType.WALL.value
-                                            elif segment_id < 64:
-                                                map_data.pixel_type[x,
-                                                                    y] = segment_id
+                                            map_data.pixel_type[x, y] = segment_id
 
                     segments = DreameVacuumMapDecoder.get_segments(map_data)
                     if segments and data_json.get("seg_inf"):
@@ -2225,7 +2222,7 @@ class DreameVacuumMapDecoder:
                     map_data.segments = segments
 
         saved_map_data = None
-        #_LOGGER.warn("TEST: %s", data_json)
+
         if data_json.get("rism"):
             saved_map_data = DreameVacuumMapDecoder.decode_saved_map(
                 data_json["rism"], map_data.rotation
@@ -3346,20 +3343,20 @@ class DreameVacuumMapRenderer:
             if min_x < 0:
                 padding[0] = padding[0] + int(-min_x)
             if max_x > dimensions.width:
-                padding[1] = padding[1] + int(max_x - dimensions.width)
+                padding[2] = padding[2] + int(max_x - dimensions.width)
             if min_y < 0:
-                padding[2] = padding[2] + int(-min_y)
+                padding[1] = padding[1] + int(-min_y)
             if max_y > dimensions.height:
                 padding[3] = padding[3] + int(max_y - dimensions.height)
 
         if dimensions.width < min_width:
             size = int((min_width - dimensions.width) / 2)
             padding[0] = padding[0] + size
-            padding[1] = padding[1] + size
+            padding[2] = padding[2] + size
 
         if dimensions.height < min_height:
             size = int((min_height - dimensions.height) / 2)
-            padding[2] = padding[2] + size
+            padding[1] = padding[1] + size
             padding[3] = padding[3] + size
             
         for k in range(4):
@@ -3527,7 +3524,7 @@ class DreameVacuumMapRenderer:
                         max_y != map_data.dimensions.height - 1
                     )
                 ):                    
-                    map_data.dimensions.crop = [min_x * scale, (map_data.dimensions.width - (max_x + 1)) * scale, min_y * scale, (map_data.dimensions.height - (max_y + 1)) * scale]
+                    map_data.dimensions.crop = [min_x * scale, min_y * scale, (map_data.dimensions.width - (max_x + 1)) * scale, (map_data.dimensions.height - (max_y + 1)) * scale]
                     pixels = pixels[min_y:(max_y + 1), min_x:(max_x + 1)]
 
                 self._calibration_points = self._calculate_calibration_points(map_data)

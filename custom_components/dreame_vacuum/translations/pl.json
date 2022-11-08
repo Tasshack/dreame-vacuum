@@ -8,7 +8,7 @@
       "cannot_connect": "Nie udało się połączyć.",
       "unsupported": "Urządzenie nie jest obsługiwane",
       "wrong_token": "Błąd sumy kontrolnej, zły token",
-      "2fa_required": "Wymagane logowanie 2FA",
+      "2fa_required": "Wymagane logowanie 2FA\n{url}",
       "credentials_incomplete": "Niepoprawne dane logowania, proszę podać nazwę użytkownika, hasło i kraj",
       "login_error": "Nie można zalogować się do chmury Xiaomi Miio, sprawdź dane logowania.",
       "no_devices": "Nie znaleziono obsługiwanych urządzeń na tym koncie w chmurze Xiaomi Miio w wybranym kraju."

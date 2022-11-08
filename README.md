@@ -297,14 +297,13 @@ attributes:
 
 ## To Do
 
-- 2FA Notifications
-- Support for non lidar Dreame vacuums
+- Support for VSLAM Dreame vacuums
 - Cleaning history map support
 - Map recovery support
 - Schedule editing
 - Map rendering and streaming optimizations
 - AI Obstacle image support
-- Live camera feed support
+- Live camera stream support
 - Custom lovelace card for map editing
 
 ## Known Issues

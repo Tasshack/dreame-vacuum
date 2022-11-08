@@ -164,6 +164,7 @@ class DreameVacuumDevice:
         self.mac = mac
         self.token = token
         self.host = host
+        self.two_factor_url = None
         self.status = DreameVacuumDeviceStatus(self)
 
         self.listen(self._task_status_changed,
@@ -696,15 +697,18 @@ class DreameVacuumDevice:
     def connect_cloud(self) -> None:
         """Connect to the cloud api."""
         if self._protocol.cloud and not self._protocol.cloud.logged_in:
-            self._protocol.cloud.login()
-            if self._protocol.cloud.two_factor_url is not None:
-                _LOGGER.warning("2FA required")
-                return
-            elif self._protocol.cloud.logged_in is False:
-                _LOGGER.error("Unable to log in, check credentials")
+            self._protocol.cloud.login()            
+            if self._protocol.cloud.logged_in is False:
+                if self._protocol.cloud.two_factor_url:
+                    self.two_factor_url = self._protocol.cloud.two_factor_url
                 self._map_manager.schedule_update(-1)
                 return
             elif self._protocol.cloud.logged_in:
+                if self.two_factor_url:
+                    self.two_factor_url = None
+                    self._property_changed()
+
+                self._map_manager.schedule_update(5)
                 self.token, self.host = self._protocol.cloud.get_info(
                     self.mac)
                 self._protocol.set_credentials(
@@ -825,7 +829,6 @@ class DreameVacuumDevice:
                 if (self.status.zone_cleaning and map_data.active_areas) or (self.status.spot_cleaning and map_data.active_points):
                     # App does not render segments when zone or spot cleaning
                     map_data.segments = None
-
             else:
                 map_data.path = None
 
@@ -835,6 +838,10 @@ class DreameVacuumDevice:
 
             # Device currently may not be docked but map data can be old and still showing when robot is docked
             map_data.docked = bool(map_data.docked or self.status.docked)
+
+            if not map_data.saved_map and not self.status.lidar_navigation and map_data.saved_map_status == 1 and map_data.docked:
+                # For correct scaling of vslam saved map
+                map_data.saved_map_status = 2
 
             if map_data.charger_position == None and map_data.docked and map_data.robot_position:
                 map_data.charger_position = copy.deepcopy(map_data.robot_position)
@@ -914,18 +921,13 @@ class DreameVacuumDevice:
     def get_map(self, map_index: int) -> MapData | None:
         """Get stored map data by index from map manager."""
         if self._map_manager:
-            if self.status.multi_map:
+            if self.status.multi_map and self.status.lidar_navigation:
                 return self._map_manager.get_map(map_index)
             if map_index == 1:
                 return self._map_manager.selected_map
             if map_index == 0:
                 return self.status.current_map
-
-    def get_map_by_id(self, map_id: int) -> MapData | None:
-        """Get stored map data by id from map manager."""
-        if self._map_manager:
-            return self._map_manager.get_map_by_id(map_id)
-
+                
     def update_map(self) -> None:
         """Trigger a map update. 
         This function is used for requesting map data when a image request has been made to renderer"""
@@ -3095,7 +3097,23 @@ class DreameVacuumDeviceStatus:
     def current_map(self) -> MapData | None:
         """Return the current map data"""
         if self.map_available:
-            return self._map_manager.get_map()
+            map_data = self._map_manager.get_map()
+            if map_data:
+                if not self.lidar_navigation and map_data.saved_map_status == 1 and 0 in self._map_manager.map_data_list and self.docked and not self.started:
+                    saved_map_data = self._map_manager.map_data_list[0]
+                    if saved_map_data:
+                        vslam_map_data = copy.deepcopy(map_data)
+                        vslam_map_data.segments = copy.deepcopy(saved_map_data.segments)
+                        vslam_map_data.data = saved_map_data.data
+                        vslam_map_data.pixel_type = saved_map_data.pixel_type
+                        vslam_map_data.dimensions = saved_map_data.dimensions
+                        vslam_map_data.charger_position = saved_map_data.charger_position
+                        vslam_map_data.robot_position = None
+                        vslam_map_data.docked = True
+                        vslam_map_data.restored_map = True
+                        vslam_map_data.path = None
+                        return vslam_map_data
+                return map_data
 
     @property
     def map_list(self) -> list[int] | None:

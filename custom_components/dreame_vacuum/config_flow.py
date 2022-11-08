@@ -16,6 +16,7 @@ from homeassistant.const import (
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.device_registry import format_mac
+from homeassistant.components import persistent_notification
 from homeassistant.config_entries import (
     ConfigEntry,
     ConfigFlow,
@@ -34,7 +35,9 @@ from .const import (
     CONF_MAP_OBJECTS,
     CONF_PREFER_CLOUD,
     NOTIFICATION,
-    MAP_OBJECTS
+    MAP_OBJECTS,
+    NOTIFICATION_ID_2FA_LOGIN,
+    NOTIFICATION_2FA_LOGIN,
 )
 
 SUPPORTED_MODELS = [
@@ -282,6 +285,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any] | None = None, errors: dict[str, Any] | None = {}
     ) -> FlowResult:
         """Configure a dreame vacuum device through the Miio Cloud."""
+        placeholders = {}
         if user_input is not None:
             username = user_input.get(CONF_USERNAME)
             password = user_input.get(CONF_PASSWORD)
@@ -298,9 +302,18 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
 
                 if self.protocol.cloud.two_factor_url is not None:
                     errors["base"] = "2fa_required"
+                    persistent_notification.create(
+                        self.hass,
+                        f"{NOTIFICATION_2FA_LOGIN}[{self.protocol.cloud.two_factor_url}]({self.protocol.cloud.two_factor_url})",
+                        f'Login to Dreame Vacuum: {self.username}',
+                        f'{DOMAIN}_{NOTIFICATION_ID_2FA_LOGIN}',
+                    )
+                    placeholders = {'url': self.protocol.cloud.two_factor_url }
                 elif self.protocol.cloud.logged_in is False:
                     errors["base"] = "login_error"
                 elif self.protocol.cloud.logged_in:
+                    persistent_notification.dismiss(self.hass, f'{DOMAIN}_{NOTIFICATION_ID_2FA_LOGIN}')
+
                     devices = await self.hass.async_add_executor_job(
                         self.protocol.cloud.get_devices
                     )
@@ -350,6 +363,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                     vol.Required(CONF_PREFER_CLOUD, default=self.prefer_cloud): bool,
                 }
             ),
+            description_placeholders=placeholders,
             errors=errors,
         )
 
