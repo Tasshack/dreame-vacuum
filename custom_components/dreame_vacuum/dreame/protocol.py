@@ -53,8 +53,9 @@ class DreameVacuumCloudProtocol:
         self._code = None
         self._serviceToken = None
         self._logged_in = None
-        self._uid = None
-        self._did = None
+        self.user_id = None
+        self.device_id = None
+        self.two_factor_url = None
         self._useragent = f"Android-7.1.1-1.0.0-ONEPLUS A3010-136-{DreameVacuumCloudProtocol.get_random_agent_id()} APP/xiaomi.smarthome APPV/62830"
         self._locale = locale.getdefaultlocale()[0]
         
@@ -224,7 +225,7 @@ class DreameVacuumCloudProtocol:
         return api_response
         
     def send(self, method, parameters) -> Any:
-        api_response = self.request(f"{self.get_api_url()}/v2/home/rpc/{self._did}", {"data": json.dumps({"method": method, "params": parameters}, separators=(",", ":"))})
+        api_response = self.request(f"{self.get_api_url()}/v2/home/rpc/{self.device_id}", {"data": json.dumps({"method": method, "params": parameters}, separators=(",", ":"))})
         if api_response is None or "result" not in api_response:
             return None
         return api_response["result"]
@@ -237,8 +238,8 @@ class DreameVacuumCloudProtocol:
 
     def get_device_data(self, key, type, limit=1, time_start=0, time_end=9999999999):
         api_response = self._api_call("user/get_user_device_data", {
-            "uid": str(self._uid),
-            "did": str(self._did),
+            "uid": str(self.user_id),
+            "did": str(self.device_id),
             "time_end": time_end,
             "time_start": time_start,
             "limit": limit,
@@ -263,8 +264,8 @@ class DreameVacuumCloudProtocol:
                        mac, devices["result"]["list"])
             )
             if len(found) > 0:
-                self._uid = found[0]["uid"]
-                self._did = found[0]["did"]
+                self.user_id = found[0]["uid"]
+                self.device_id = found[0]["did"]
                 return found[0]["token"], found[0]["localip"]
         return None, None
 
@@ -276,9 +277,9 @@ class DreameVacuumCloudProtocol:
             "did": self.device_id,
             "props": props
         }])
-        if api_response is None or self._did not in api_response:
+        if api_response is None or self.device_id not in api_response:
             return None
-        return api_response[self._did]
+        return api_response[self.device_id]
 
     def set_batch_device_datas(self, props) -> Any:
         api_response = self._api_call("v2/device/batch_set_props", [{
@@ -451,6 +452,7 @@ class DreameVacuumProtocol:
     ) -> None:
         self.prefer_cloud = prefer_cloud
         self._connected = False
+        self._mac = None
 
         if ip and token:
             self.device = DreameVacuumDeviceProtocol(ip, token)
@@ -464,7 +466,10 @@ class DreameVacuumProtocol:
             self.prefer_cloud = False
             self.cloud = None
 
-    def set_credentials(self, ip: str, token: str):
+        self.device_cloud = DreameVacuumCloudProtocol(username, password, country) if prefer_cloud else None
+
+    def set_credentials(self, ip: str, token: str, mac: str = None):
+        self._mac = mac;
         if ip and token:
             if self.device:
                 self.device.set_credentials(ip, token)
@@ -475,21 +480,27 @@ class DreameVacuumProtocol:
          
     def connect(self, retry_count=1) -> Any:
         response = self.send("miIO.info", retry_count=retry_count)
-        if (self.prefer_cloud or not self.device) and self.cloud and response:
+        if (self.prefer_cloud or not self.device) and self.device_cloud and response:
             self._connected = True
         return response
 
     def send(self, method, parameters: Any = None, retry_count: int = 1) -> Any:
-        if (self.prefer_cloud or not self.device) and self.cloud:
-            if not self.cloud.logged_in:
-                self.cloud.login()
+        if (self.prefer_cloud or not self.device) and self.device_cloud:
+            if not self.device_cloud.logged_in:
+                # Use different session for device cloud
+                self.device_cloud.login()
+                if self.device_cloud.logged_in and not self.device_cloud.device_id:
+                    if self.cloud.device_id:
+                        self.device_cloud.device_id = self.cloud.device_id
+                    elif self._mac:
+                        self.device_cloud.get_info(self._mac)
 
-            if not self.cloud.logged_in:
-                raise DeviceException("Unable to login")
+            if not self.device_cloud.logged_in:
+                raise DeviceException("Unable to login to device over cloud")
             
             response = None
             for i in range(retry_count + 1):
-                response = self.cloud.send(method, parameters=parameters)
+                response = self.device_cloud.send(method, parameters=parameters)
                 if response is not None:
                     break
 
@@ -554,8 +565,8 @@ class DreameVacuumProtocol:
 
     @property
     def connected(self) -> bool:
-        if (self.prefer_cloud or not self.device) and self.cloud:
-            return self.cloud.logged_in and self._connected
+        if (self.prefer_cloud or not self.device) and self.device_cloud:
+            return self.device_cloud.logged_in and self._connected
 
         if self.device:
             return self.device.connected

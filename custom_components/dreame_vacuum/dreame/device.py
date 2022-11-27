@@ -717,7 +717,7 @@ class DreameVacuumDevice:
                 self.token, self.host = self._protocol.cloud.get_info(
                     self.mac)
                 self._protocol.set_credentials(
-                    self.host, self.token)
+                    self.host, self.token, self.mac)
 
     def disconnect(self) -> None:
         """Disconnect from device and cancel timers"""

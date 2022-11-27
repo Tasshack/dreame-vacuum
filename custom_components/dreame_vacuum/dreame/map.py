@@ -4220,7 +4220,7 @@ class DreameVacuumMapRenderer:
                 .convert("RGBA")
                 .resize((size, size), resample=Image.Resampling.NEAREST)
             )
-            
+
             if self._robot_shape != 2:
                 enhancer = ImageEnhance.Brightness(self._robot_icon)
                 if self.color_scheme.dark:

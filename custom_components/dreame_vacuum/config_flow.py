@@ -217,12 +217,12 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         if len(self.token) == 32:
             try:
                 if self.protocol is None:
-                    self.protocol = DreameVacuumProtocol(self.host, self.token, self.username, self.password, self.country, self.prefer_cloud)
-                elif not self.prefer_cloud:
+                    self.protocol = DreameVacuumProtocol(self.host, self.token, self.username, self.password, self.country, self.prefer_cloud)                
+                else:
                     self.protocol.set_credentials(self.host, self.token)
 
-                if self.protocol.cloud:
-                    self.protocol.cloud.device_id = self.device_id
+                if self.protocol.device_cloud:
+                    self.protocol.device_cloud.device_id = self.device_id
 
                 info = await self.hass.async_add_executor_job(self.protocol.connect, 5)
                 if info:
@@ -321,8 +321,8 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                         found = list(
                             filter(
                                 lambda d: not d.get("parent_id")
-                                and str(d["model"]) in SUPPORTED_MODELS,
-                                devices,
+                                and str(d["model"]) in SUPPORTED_MODELS,                                
+                                devices["result"]["list"],
                             )
                         )
 
