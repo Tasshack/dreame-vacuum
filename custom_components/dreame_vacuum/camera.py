@@ -138,6 +138,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         self._frame_id = -1
         self._last_map_request = 0
         self._attr_is_streaming = True
+        self._calibration_points = None
         
         self._available = self.device.device_connected and self.device.cloud_connected
         if description.map_data_json:
@@ -298,6 +299,9 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
 
     async def _update_image(self, map_data, robot_status) -> None:
         self._image = self._renderer.render_map(map_data, robot_status)
+        if not self.entity_description.map_data_json and self._calibration_points != self._renderer.calibration_points:
+            self._calibration_points = self._renderer.calibration_points
+            self.coordinator.async_set_updated_data()
 
     @property
     def _map_data(self) -> Any:
@@ -338,7 +342,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             ):
                 attributes = map_data.as_dict()
                 if attributes:
-                    attributes[ATTR_CALIBRATION] = self._renderer.calibration_points
+                    attributes[ATTR_CALIBRATION] = self._calibration_points if self._calibration_points else self._renderer.calibration_points
                 return attributes
             elif self.available:
                 return {ATTR_CALIBRATION: self._renderer.default_calibration_points}

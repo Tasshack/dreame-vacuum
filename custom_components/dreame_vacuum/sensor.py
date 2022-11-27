@@ -45,6 +45,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:map-clock",
         native_unit_of_measurement=UNIT_MINUTES,
         available_fn=lambda device: device.status.fast_mapping,
+        exists_fn=lambda description, device: device.status.lidar_navigation,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.CLEANED_AREA,
@@ -71,7 +72,6 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         else "mdi:map-marker-check"
         if device.status.relocation_status is DreameVacuumRelocationStatus.SUCCESS
         else "mdi:map-marker-radius",
-        entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.TASK_STATUS,
@@ -99,7 +99,6 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon_fn=lambda value, device: "mdi:delete-off"
         if not device.status.dust_collection
         else "mdi:delete-sweep",
-        entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.AUTO_EMPTY_STATUS,
@@ -253,28 +252,25 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         native_unit_of_measurement=UNIT_MINUTES,
         device_class=SensorDeviceClass.DURATION,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.CLEANING_COUNT,
         icon="mdi:counter",
         native_unit_of_measurement=UNIT_TIMES,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.TOTAL_CLEANED_AREA,
         icon="mdi:set-square",
         native_unit_of_measurement=UNIT_AREA,
         entity_category=EntityCategory.DIAGNOSTIC,
-        entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         name="Current Room",
         key="current_room",
         icon="mdi:home-map-marker",
         value_fn=lambda value, device: device.status.current_room.name,
-        exists_fn=lambda description, device: device.status.map_available,
+        exists_fn=lambda description, device: device.status.map_available and device.status.lidar_navigation,
         available_fn=lambda device: bool(
             device.status.current_room is not None and not device.status.fast_mapping
         ),

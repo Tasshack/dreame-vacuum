@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, Final, List, Optional
 from enum import IntEnum, Enum
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 
 
@@ -635,7 +635,7 @@ PROPERTY_AVAILABILITY: Final = {
     DreameVacuumProperty.CARPET_BOOST: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
     DreameVacuumProperty.CARPET_AVOIDANCE: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
     DreameVacuumProperty.AUTO_EMPTY_FREQUENCY: lambda device: bool(device.get_property(DreameVacuumProperty.AUTO_DUST_COLLECTING)),
-    DreameVacuumProperty.CLEANING_TIME: lambda device: not device.status.fast_mapping,
+    DreameVacuumProperty.CLEANING_TIME: lambda device: device.status.lidar_navigation and not device.status.fast_mapping,
     DreameVacuumProperty.CLEANED_AREA: lambda device: not device.status.fast_mapping,
     DreameVacuumProperty.RELOCATION_STATUS: lambda device: not device.status.fast_mapping,
     DreameVacuumProperty.MOP_WASH_LEVEL: lambda device: device.status.water_tank_installed and not device.status.sweeping,
@@ -719,6 +719,9 @@ class Point:
 
     def to_img(self, image_dimensions) -> Point:
         return image_dimensions.to_img(self)
+
+    def to_coord(self, image_dimensions) -> Point:
+        return image_dimensions.to_coord(self)
     
     def rotated(self, image_dimensions, degree) -> Point:
         w = int(
@@ -806,6 +809,15 @@ class Zone:
             self.x0, self.y0, self.x0, self.y1, self.x1, self.y1, self.x1, self.y0
         )
 
+    def to_img(self, image_dimensions) -> Zone:
+        p0 = Point(self.x0, self.y0).to_img(image_dimensions)
+        p1 = Point(self.x1, self.y1).to_img(image_dimensions)
+        return Zone(p0.x, p0.y, p1.x, p1.y)
+
+    def to_coord(self, image_dimensions) -> Zone:
+        p0 = Point(self.x0, self.y0).to_coord(image_dimensions)
+        p1 = Point(self.x1, self.y1).to_coord(image_dimensions)
+        return Zone(p0.x, p0.y, p1.x, p1.y)
 
 class Segment(Zone):
     def __init__(
@@ -990,6 +1002,11 @@ class Wall:
         p1 = Point(self.x1, self.y1).to_img(image_dimensions)
         return Wall(p0.x, p0.y, p1.x, p1.y)
 
+    def to_coord(self, image_dimensions) -> Wall:
+        p0 = Point(self.x0, self.y0).to_coord(image_dimensions)
+        p1 = Point(self.x1, self.y1).to_coord(image_dimensions)
+        return Wall(p0.x, p0.y, p1.x, p1.y)
+
     def as_list(self) -> List[float]:
         return [self.x0, self.y0, self.x1, self.y1]
 
@@ -1056,6 +1073,13 @@ class Area:
         p3 = Point(self.x3, self.y3).to_img(image_dimensions)
         return Area(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y)
 
+    def to_coord(self, image_dimensions) -> Area:
+        p0 = Point(self.x0, self.y0).to_coord(image_dimensions)
+        p1 = Point(self.x1, self.y1).to_coord(image_dimensions)
+        p2 = Point(self.x2, self.y2).to_coord(image_dimensions)
+        p3 = Point(self.x3, self.y3).to_coord(image_dimensions)
+        return Area(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y)
+
 
 class MapImageDimensions:
     def __init__(self, top: int, left: int, height: int, width: int, grid_size: int) -> None:
@@ -1067,6 +1091,7 @@ class MapImageDimensions:
         self.scale = 1
         self.padding = [0, 0, 0, 0]
         self.crop = [0, 0, 0, 0]
+        self.bounds = None
 
     def to_img(self, point: Point) -> Point:
         return Point(
@@ -1081,6 +1106,18 @@ class MapImageDimensions:
             )
             * self.scale
             + self.padding[1] - self.crop[1],
+        )
+
+    def to_coord(self, point: Point) -> Point:
+        return Point(
+            ((point.x - self.left) / self.grid_size),
+            (
+                (
+                    (self.height - 1) * self.grid_size
+                    - (point.y - self.top)
+                )
+                / self.grid_size
+            ),
         )
     
     def __eq__(self: MapImageDimensions, other: MapImageDimensions) -> bool:
@@ -1106,6 +1143,8 @@ class MapPixelType(IntEnum):
     FLOOR = 254
     NEW_SEGMENT = 253
     UNKNOWN = 252
+    OBSTACLE_WALL = 251
+    NEW_SEGMENT_UNKNOWN = 250
 
 
 class MapDataPartial:
@@ -1128,8 +1167,10 @@ class MapData:
         self.robot_position: Optional[Point] = None
         # Map header: charger x, charger y, charger angle
         self.charger_position: Optional[Point] = None
+        self.optimized_charger_position: Optional[Point] = None        
         # Map header: top, left, height, width, grid_size
         self.dimensions: Optional[MapImageDimensions] = None
+        self.optimized_dimensions: Optional[MapImageDimensions] = None
         self.data: Optional[Any] = None  # Raw image data for handling P frames
         # Data json
         self.timestamp_ms: Optional[int] = None  # Data json: timestamp_ms
@@ -1165,6 +1206,7 @@ class MapData:
         self.map_name: Optional[str] = None  # Generated map name for map list
         # Generated pixel map for rendering colors
         self.pixel_type: Optional[Any] = None
+        self.optimized_pixel_type: Optional[Any] = None
         # Generated segments from pixel_type
         self.segments: Optional[Dict[int, Segment]] = None
         self.saved_map: Optional[bool] = None  # Generated for rism map
@@ -1173,6 +1215,8 @@ class MapData:
         self.robot_segment: Optional[int] = None
         # For renderer to detect changes
         self.last_updated: Optional[float] = None
+        # For vslam map rendering optimization
+        self.need_optimization: Optional[bool] = None
 
     def __eq__(self: MapData, other: MapData) -> bool:
         if other is None:
@@ -1245,8 +1289,8 @@ class MapData:
 
     def as_dict(self) -> Dict[str, Any]:
         attributes_list = {}
-        if self.charger_position is not None:
-            attributes_list[ATTR_CHARGER] = self.charger_position
+        if self.charger_position is not None:            
+            attributes_list[ATTR_CHARGER] = self.optimized_charger_position if self.optimized_charger_position is not None else self.charger_position
         if self.segments is not None and (self.saved_map or self.saved_map_status == 2 or self.restored_map):
             attributes_list[ATTR_ROOMS] = {k: v.as_dict() for k, v in sorted(self.segments.items())}
         if not self.saved_map and self.robot_position is not None:
@@ -1455,3 +1499,34 @@ class CleaningHistory:
     file_name: str = None
     completed: bool = None
     water_tank: DreameVacuumWaterTank = None
+
+    
+@dataclass
+class Line:
+    x: int | List[int] = None
+    y: int | List[int] = None
+    ishorizontal: bool = False
+    direction: int = 0
+
+@dataclass
+class CLine(Line):
+    length: int = 0
+    findEnd: bool = False
+
+@dataclass
+class ALine():
+    p0: Line = Line()
+    p1: Line = Line()
+    length: int = 0
+
+@dataclass
+class Paths:
+    clines: List[CLine] = field(default_factory=lambda: [])
+    alines: List[ALine] = field(default_factory=lambda: [])
+    length: int = 0
+    
+@dataclass
+class Angle:
+    lines: List[ALine] = field(default_factory=lambda: [])
+    horizontalDir: int = 0
+    verticalDir: int = 0

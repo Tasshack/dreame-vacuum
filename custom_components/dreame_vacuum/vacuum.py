@@ -192,8 +192,7 @@ async def async_setup_entry(
     platform.async_register_entity_service(
         SERVICE_CLEAN_ZONE,
         {
-            vol.Required(INPUT_ZONE): vol.All(
-                list,
+            vol.Required(INPUT_ZONE): vol.Any(
                 [
                     vol.ExactSequence(
                         [
@@ -204,6 +203,14 @@ async def async_setup_entry(
                         ]
                     )
                 ],
+                vol.ExactSequence(
+                    [
+                        vol.Coerce(int),
+                        vol.Coerce(int),
+                        vol.Coerce(int),
+                        vol.Coerce(int),
+                    ]
+                )
             ),
             vol.Optional(INPUT_REPEATS): vol.All(
                 vol.Coerce(int), vol.Clamp(min=1, max=3)
@@ -341,7 +348,7 @@ async def async_setup_entry(
     platform.async_register_entity_service(
         SERVICE_MERGE_SEGMENTS,
         {
-            vol.Required(INPUT_MAP_ID): cv.positive_int,
+            vol.Optional(INPUT_MAP_ID): cv.positive_int,
             vol.Required(INPUT_SEGMENTS_ARRAY): vol.All(
                 [vol.Coerce(int)]
             ),
@@ -352,7 +359,7 @@ async def async_setup_entry(
     platform.async_register_entity_service(
         SERVICE_SPLIT_SEGMENTS,
         {
-            vol.Required(INPUT_MAP_ID): cv.positive_int,
+            vol.Optional(INPUT_MAP_ID): cv.positive_int,
             vol.Required(INPUT_SEGMENT): vol.All(vol.Coerce(int)),
             vol.Required(INPUT_LINE): vol.All(
                 list,
@@ -668,7 +675,7 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
                 segment_name,
             )
 
-    async def async_merge_segments(self, map_id, segments=None) -> None:
+    async def async_merge_segments(self, map_id=None, segments=None) -> None:
         """Merge segments"""
         if segments is not None:
             await self._try_command(
@@ -678,7 +685,7 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
                 segments,
             )
 
-    async def async_split_segments(self, map_id, segment, line) -> None:
+    async def async_split_segments(self, map_id=None, segment=None, line=None) -> None:
         """Split segments"""
         if segment is not None and line is not None:
             await self._try_command(

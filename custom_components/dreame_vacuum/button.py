@@ -129,8 +129,8 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
         available_fn=lambda device: device.status.mapping_available,
         action_fn=lambda device: device.start_mapping(),
-        exists_fn=lambda description, device: device.status.lidar_navigation,
         entity_registry_enabled_default=False,
+        exists_fn=lambda description, device: device.status.lidar_navigation,
     ),
     DreameVacuumButtonEntityDescription(
         name="Self-Clean",

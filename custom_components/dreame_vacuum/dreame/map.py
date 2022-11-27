@@ -11,6 +11,7 @@ import traceback
 import copy
 import numpy as np
 import hashlib
+from py_mini_racer import MiniRacer
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from PIL import Image, ImageDraw, ImageOps, ImageFont, ImageEnhance, PngImagePlugin, ImageFilter
@@ -46,6 +47,10 @@ from .types import (
     MapRendererColorScheme,
     MapRendererConfig,
     MAP_COLOR_SCHEME_LIST,
+    ALine,
+    CLine,
+    Paths,
+    Angle,
 )
 from .const import (
     MAP_PARAMETER_NAME,
@@ -113,7 +118,6 @@ from .const import (
 
 _LOGGER = logging.getLogger(__name__)
 
-
 class DreameMapVacuumMapManager:
     def __init__(
         self, _protocol: DreameVacuumProtocol
@@ -127,14 +131,17 @@ class DreameMapVacuumMapManager:
         self._update_running: bool = False
         self._update_interval: float = 10
         self._device_running: bool = False
+        self._device_docked: bool = False
         self._available: bool = False
         self._ready: bool = False
         self._connected: bool = True
+        self._vslam_map: bool = False
 
         self._init_data()
 
         self._protocol = _protocol
         self.editor = DreameMapVacuumMapEditor(self)
+        self.optimizer = DreameVacuumMapOptimizer()
 
     def _init_data(self) -> None:
         self._map_data: MapData = None
@@ -253,8 +260,7 @@ class DreameMapVacuumMapManager:
                 elif tmpLen > 4:
                     self._request_missing_p_map()
                 elif tmpLen > 0 and len(map_data_result) > 0:
-                    self._request_next_p_map(
-                        self._latest_map_id, next_frame_id)
+                    self._request_next_p_map(self._latest_map_id, next_frame_id)
 
         if len(object_name_result) == 1:
             object_name = json.loads(
@@ -375,21 +381,19 @@ class DreameMapVacuumMapManager:
             self._last_p_request_time is not None
             and self._last_p_request_map_id == map_id
             and self._last_p_request_frame_id == frame_id
-            and time.time() - self._last_p_request_time < 3
+            and (time.time() - self._last_p_request_time) < 3
         ):
             return
 
         self._last_p_request_map_id = map_id
         self._last_p_request_frame_id = frame_id
         self._last_p_request_time = time.time()
-
-        result = self._request_map(
-            {
+                
+        result = self._request_map({
                 MAP_REQUEST_PARAMETER_MAP_ID: map_id,
                 MAP_REQUEST_PARAMETER_FRAME_ID: frame_id,
                 MAP_REQUEST_PARAMETER_FRAME_TYPE: MapFrameType.P.name,
-            }
-        )
+            })
         return bool(result and result[MAP_PARAMETER_CODE] == 0)
 
     def _request_next_p_map(self, map_id: int, frame_id: int) -> bool:
@@ -398,15 +402,13 @@ class DreameMapVacuumMapManager:
             return
 
         self._request_queue[key] = True
-        result = self._request_map(
-            {
-                MAP_REQUEST_PARAMETER_REQ_TYPE: 1,
+
+        result = self._request_map({
                 MAP_REQUEST_PARAMETER_MAP_ID: map_id,
+                MAP_REQUEST_PARAMETER_REQ_TYPE: 1,
                 MAP_REQUEST_PARAMETER_FRAME_ID: frame_id,
                 MAP_REQUEST_PARAMETER_FRAME_TYPE: MapFrameType.P.name,
-            }
-        )
-
+            })
         if result and result[MAP_PARAMETER_CODE] == 0:
             del self._request_queue[key]
 
@@ -430,6 +432,10 @@ class DreameMapVacuumMapManager:
             if raw_map_data:
                 _LOGGER.info("Lost P map received: %s:%s", map_id, frame_id)
                 self._add_raw_map_data(raw_map_data, timestamp)
+
+            if not raw_map_data and self._vslam_map and not object_name:
+                self.request_new_map()
+                return False
             return True
         return False
 
@@ -441,6 +447,7 @@ class DreameMapVacuumMapManager:
     def _request_current_map(self, map_request_time: int = None) -> bool:
         if self._request_i_map_available:
             return self._request_i_map(map_request_time)
+
         return self._request_map_from_cloud()
 
     def _map_data_changed(self) -> None:
@@ -453,8 +460,9 @@ class DreameMapVacuumMapManager:
             self._update_timer.cancel()
             self._update_timer = None
 
+        start = time.time()
         self.update()
-        self.schedule_update(self._update_interval)
+        self.schedule_update(max(self._update_interval - (time.time() - start), 1))
 
     def _queue_partial_map(self, map_data) -> None:
         if map_data.map_id != self._latest_map_id:
@@ -612,7 +620,7 @@ class DreameMapVacuumMapManager:
 
     def _add_map_data_file(self, object_name: str, timestamp) -> None:
         response, key = self._get_object_file_data(object_name, timestamp)
-        if response is not None:  
+        if response is not None:
             self._add_raw_map_data(response.decode(), timestamp, key)
 
     def _add_raw_map_data(self, raw_map: str, timestamp=None, key=None) -> bool:
@@ -679,7 +687,7 @@ class DreameMapVacuumMapManager:
                     )
                     # self._add_next_map_data()
                     return
-                
+
             if partial_map.frame_type == MapFrameType.P.value:
                 if (
                     self._current_frame_id is not None
@@ -718,7 +726,7 @@ class DreameMapVacuumMapManager:
                     self._map_data.robot_position) if self._map_data.robot_position else None
 
                 map_data = DreameVacuumMapDecoder.decode_p_map_data_from_partial(
-                    partial_map, self._map_data
+                    partial_map, self._map_data, self._vslam_map,
                 )
                 if map_data:
                     self._map_data = map_data
@@ -742,7 +750,7 @@ class DreameMapVacuumMapManager:
                 (
                     map_data,
                     saved_map_data,
-                ) = DreameVacuumMapDecoder.decode_map_data_from_partial(partial_map)
+                ) = DreameVacuumMapDecoder.decode_map_data_from_partial(partial_map, self._vslam_map)
                 if map_data is None:
                     self._add_next_map_data()
                     return
@@ -807,12 +815,30 @@ class DreameMapVacuumMapManager:
                             self.request_map_list()
 
                 if not map_data.saved_map:
+                    if self._vslam_map:
+                        if map_data.saved_map_status == 1 and saved_map_data and self._device_docked:
+                            map_data.segments = copy.deepcopy(saved_map_data.segments)
+                            map_data.data = copy.deepcopy(saved_map_data.data)
+                            map_data.pixel_type = copy.deepcopy(saved_map_data.pixel_type)
+                            map_data.dimensions = copy.deepcopy(saved_map_data.dimensions)
+                            map_data.charger_position = copy.deepcopy(saved_map_data.charger_position)
+                            map_data.no_go_areas = saved_map_data.no_go_areas
+                            map_data.no_mopping_areas = saved_map_data.no_mopping_areas
+                            map_data.walls = saved_map_data.walls
+                            map_data.robot_position = None
+                            map_data.docked = True
+                            #map_data.restored_map = True
+                            map_data.path = None
+                            map_data.need_optimization = False
+                        elif map_data.robot_position is None and map_data.restored_map and not self._device_docked and self._map_data:
+                            map_data.robot_position = self._map_data.robot_position
+
                     changed = (
                         self._current_frame_id is None
                         or self._map_data is None
                         or map_data != self._map_data
                     )
-                    
+
                     if (
                         changed
                         or self._current_frame_id != map_data.frame_id
@@ -826,7 +852,7 @@ class DreameMapVacuumMapManager:
                             if map_data.frame_id <= self._updated_frame_id:
                                 if (
                                     not self._map_data.empty_map
-                                    and self._map_data.saved_map_status == 2
+                                    and (self._map_data.saved_map_status == 2 or (self._vslam_map and self._map_data.saved_map_status == 1))
                                 ):
                                     map_data.active_segments = (
                                         self._map_data.active_segments
@@ -842,6 +868,12 @@ class DreameMapVacuumMapManager:
                                     map_data.empty_map = True
                             else:
                                 self._updated_frame_id = None
+
+                        if self._map_data and not changed and map_data.need_optimization and not self._map_data.need_optimization:
+                            map_data.need_optimization = False
+                            map_data.optimized_pixel_type = copy.deepcopy(self._map_data.optimized_pixel_type)
+                            map_data.optimized_dimensions = copy.deepcopy(self._map_data.optimized_dimensions)
+                            map_data.optimized_charger_position = copy.deepcopy(self._map_data.optimized_charger_position)
 
                         self._map_data = map_data
                         self._current_frame_id = map_data.frame_id
@@ -922,8 +954,8 @@ class DreameMapVacuumMapManager:
             if (self._map_list_object_name and self._need_map_list_request is None) or (self._need_map_list_request and not self._device_running):
                 self.request_map_list()
 
-            ## Not supported Yet
-            #if self._recovery_map_list_object_name and self._need_recovery_map_list_request is None or (self._need_recovery_map_list_request and not self._device_running):
+            # Not supported Yet
+            # if self._recovery_map_list_object_name and self._need_recovery_map_list_request is None or (self._need_recovery_map_list_request and not self._device_running):
             #    self.request_recovery_map_list()
 
             if self._map_request_time is not None or self._need_map_request:
@@ -947,9 +979,9 @@ class DreameMapVacuumMapManager:
                         "Need map request: %.2f",
                         time.time() - (self._current_timestamp_ms / 1000.0),
                     )
-                #if self._map_data and not self._map_data.empty_map and time.time() - (self._current_timestamp_ms / 1000.0) > 30:
+                # if self._map_data and not self._map_data.empty_map and time.time() - (self._current_timestamp_ms / 1000.0) > 30:
                 #    self.request_new_map()
-                #else:
+                # else:
                 if self._protocol.cloud.logged_in:
                     self._request_current_map()
             elif not self._request_map_from_cloud() and self._device_running:
@@ -964,7 +996,8 @@ class DreameMapVacuumMapManager:
                 self._map_data_changed()
         except Exception as ex:
             if self._available:
-                _LOGGER.warning("Map update Failed: %s", traceback.format_exc())
+                _LOGGER.warning("Map update Failed: %s",
+                                traceback.format_exc())
                 self._available = False
                 if self._error_callback:
                     self._error_callback(DeviceUpdateFailedException(ex))
@@ -976,15 +1009,27 @@ class DreameMapVacuumMapManager:
         if aes_iv:
             DreameVacuumMapDecoder.AES_IV = aes_iv
 
+    def set_vslam_map(self) -> None:
+        self._vslam_map = True
+
     def set_update_interval(self, update_interval: float) -> None:
         if self._update_interval != update_interval:
             self._update_interval = update_interval
             self.schedule_update()
 
-    def set_device_running(self, device_running: bool) -> None:
-        if self._device_running != device_running:
+    def set_device_running(self, running: bool, docked: bool) -> None:
+        if self._device_running != running or self._device_docked != docked:            
+            if self._vslam_map and not self._device_docked and docked and self._map_data and self._map_data.saved_map_status == 1:                
+                self._map_manager.request_next_map()
+            else:
+                self.schedule_update(2)
+            self._device_running = running
+            self._device_docked = docked
+
+    def set_device_docked(self, device_docked: bool) -> None:
+        if self._device_docked != device_docked:
             self.schedule_update(2)
-        self._device_running = device_running
+        self._device_docked = device_docked
 
     def request_new_map(self) -> None:
         if self._new_map_request_time and time.time() - self._new_map_request_time < 10:
@@ -1037,7 +1082,8 @@ class DreameMapVacuumMapManager:
         if self._map_list_object_name and self._protocol.cloud.logged_in:
             _LOGGER.info("Get Map List: %s", self._map_list_object_name)
             try:
-                response = self._get_interim_file_data(self._map_list_object_name)
+                response = self._get_interim_file_data(
+                    self._map_list_object_name)
             except Exception as ex:
                 _LOGGER.warn("Get Map List failed: %s", ex)
                 return
@@ -1045,7 +1091,7 @@ class DreameMapVacuumMapManager:
             if response:
                 self._need_map_list_request = False
                 raw_map = response.decode()
-                
+
                 try:
                     map_info = json.loads(raw_map)
                 except:
@@ -1060,7 +1106,7 @@ class DreameMapVacuumMapManager:
                     for v in saved_map_list:
                         if v.get(MAP_PARAMETER_MAP):
                             saved_map_data = DreameVacuumMapDecoder.decode_saved_map(
-                                v[MAP_PARAMETER_MAP], int(v[MAP_PARAMETER_ANGLE]) if v.get(
+                                v[MAP_PARAMETER_MAP], self._vslam_map, int(v[MAP_PARAMETER_ANGLE]) if v.get(
                                     MAP_PARAMETER_ANGLE) else 0
                             )
                             if saved_map_data is not None:
@@ -1143,10 +1189,11 @@ class DreameMapVacuumMapManager:
                                     object_name)
 
                             if response and response.get(MAP_PARAMETER_RESULT):
-                                _LOGGER.info("Get recovery map file url result: %s", response)
+                                _LOGGER.info(
+                                    "Get recovery map file url result: %s", response)
                                 map_url = response[MAP_PARAMETER_RESULT][MAP_PARAMETER_URL]
                                 recovery_map_data = DreameVacuumMapDecoder.decode_saved_map(
-                                    map_info[MAP_PARAMETER_THB], self._saved_map_data[map_id].rotation)
+                                    map_info[MAP_PARAMETER_THB], self._vslam_map, self._saved_map_data[map_id].rotation)
                                 # TODO: store recovery map
 
     @property
@@ -1196,7 +1243,7 @@ class DreameMapVacuumMapEditor:
     This class handles user edits on stored map data like updating customized cleaning settings or setting active segments on segment cleaning.
     Original app has a similar class to handle the same issue (Works optimistically) """
 
-    def __init__(self, map_manager) -> None:        
+    def __init__(self, map_manager) -> None:
         self._previous_cleaning_sequence: dict[int, list[int]] = {}
         self.map_manager = map_manager
 
@@ -1378,7 +1425,7 @@ class DreameMapVacuumMapEditor:
 
                 map_data.data = bytes(data)
                 del self.map_manager._saved_map_data[map_id].segments[segments[1]]
-                new_segments = DreameVacuumMapDecoder.get_segments(map_data)
+                new_segments = DreameVacuumMapDecoder.get_segments(map_data, self.map_manager._vslam_map)
                 map_data.segments[segments[0]].x = new_segments[segments[0]].x
                 map_data.segments[segments[0]].y = new_segments[segments[0]].y
 
@@ -1454,21 +1501,23 @@ class DreameMapVacuumMapEditor:
             if cleaning_sequence:
                 index = 1
                 for k in (
-                        cleaning_sequence 
+                        cleaning_sequence
                         if (
-                            len(cleaning_sequence) == len(map_data.segments.items())
+                            len(cleaning_sequence) == len(
+                                map_data.segments.items())
                             and all(k in cleaning_sequence for k in map_data.segments.keys())
                         )
                         else sorted(map_data.segments.keys())
-                        ):
-                        map_data.segments[k].order = index
-                        map_data.cleanset[str(k)][3] = map_data.segments[k].order
-                        new_cleaning_sequence.append(k)
-                        index = index + 1
+                ):
+                    map_data.segments[k].order = index
+                    map_data.cleanset[str(k)][3] = map_data.segments[k].order
+                    new_cleaning_sequence.append(k)
+                    index = index + 1
             else:
                 for v in map_data.segments.values():
                     if v.order:
-                        self._previous_cleaning_sequence[map_data.map_id] =  [(k) for k, v in sorted(map_data.segments.items(), key=lambda s: s[1].order) if v.order]
+                        self._previous_cleaning_sequence[map_data.map_id] = [(k) for k, v in sorted(
+                            map_data.segments.items(), key=lambda s: s[1].order) if v.order]
                         break
 
                 for k in map_data.segments.keys():
@@ -1476,7 +1525,8 @@ class DreameMapVacuumMapEditor:
                     map_data.cleanset[str(k)][3] = 0
 
             if self._saved_map_data and map_data.map_id in self._saved_map_data:
-                self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(map_data.cleanset)
+                self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(
+                    map_data.cleanset)
 
             self._set_updated_frame_id(map_data.frame_id + 1)
             self.refresh_map()
@@ -1497,7 +1547,8 @@ class DreameMapVacuumMapEditor:
                     and len(self._previous_cleaning_sequence[map_data.map_id]) == len(map_data.segments.items())
                     and all(k in self._previous_cleaning_sequence[map_data.map_id] for k in map_data.segments.keys())
                 ):
-                    cleaning_sequence = self.set_cleaning_sequence(self._previous_cleaning_sequence[map_data.map_id])
+                    cleaning_sequence = self.set_cleaning_sequence(
+                        self._previous_cleaning_sequence[map_data.map_id])
                     del self._previous_cleaning_sequence[map_data.map_id]
                     return cleaning_sequence
 
@@ -1505,7 +1556,8 @@ class DreameMapVacuumMapEditor:
                 for k in sorted(map_data.segments.keys()):
                     if not map_data.segments[k].order:
                         map_data.segments[k].order = index
-                        map_data.cleanset[str(k)][3] = map_data.segments[k].order
+                        map_data.cleanset[str(
+                            k)][3] = map_data.segments[k].order
                     index = index + 1
 
                 current_order = map_data.segments[segment_id].order
@@ -1515,11 +1567,13 @@ class DreameMapVacuumMapEditor:
                     for k, v in map_data.segments.items():
                         if k != segment_id and v.order == order:
                             map_data.segments[k].order = current_order
-                            map_data.cleanset[str(k)][3] = map_data.segments[k].order
+                            map_data.cleanset[str(
+                                k)][3] = map_data.segments[k].order
             else:
                 for v in map_data.segments.values():
                     if v.order:
-                        self._previous_cleaning_sequence[map_data.map_id] = [(k) for k, v in sorted(map_data.segments.items(), key=lambda s: s[1].order) if v.order]
+                        self._previous_cleaning_sequence[map_data.map_id] = [(k) for k, v in sorted(
+                            map_data.segments.items(), key=lambda s: s[1].order) if v.order]
                         break
 
                 for k in map_data.segments.keys():
@@ -1527,7 +1581,8 @@ class DreameMapVacuumMapEditor:
                     map_data.cleanset[str(k)][3] = 0
 
             if self._saved_map_data and map_data.map_id in self._saved_map_data:
-                self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(map_data.cleanset)
+                self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(
+                    map_data.cleanset)
 
             self._set_updated_frame_id(map_data.frame_id + 1)
             self.refresh_map()
@@ -1542,13 +1597,13 @@ class DreameMapVacuumMapEditor:
                 v.water_volume = 2
             if v.cleaning_times is None:
                 v.cleaning_times = 1
-                
+
             settings = [
-                    k,
-                    v.suction_level,
-                    v.water_volume + 1,
-                    v.cleaning_times,
-                ]
+                k,
+                v.suction_level,
+                v.water_volume + 1,
+                v.cleaning_times,
+            ]
 
             if v.cleaning_mode is not None:
                 settings.append(v.cleaning_mode)
@@ -1567,7 +1622,8 @@ class DreameMapVacuumMapEditor:
             map_data.segments[segment_id].suction_level = suction_level
             map_data.cleanset[str(segment_id)][0] = suction_level
             if self._saved_map_data and map_data.map_id in self._saved_map_data:
-                self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(map_data.cleanset)
+                self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(
+                    map_data.cleanset)
             self._set_updated_frame_id(map_data.frame_id + 1)
             self.refresh_map()
             return self.cleanset(map_data)
@@ -1582,7 +1638,8 @@ class DreameMapVacuumMapEditor:
             map_data.segments[segment_id].water_volume = water_volume
             map_data.cleanset[str(segment_id)][1] = water_volume + 1
             if self._saved_map_data and map_data.map_id in self._saved_map_data:
-                self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(map_data.cleanset)
+                self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(
+                    map_data.cleanset)
             self._set_updated_frame_id(map_data.frame_id + 1)
             self.refresh_map()
             return self.cleanset(map_data)
@@ -1598,7 +1655,8 @@ class DreameMapVacuumMapEditor:
             map_data.segments[segment_id].cleaning_times = cleaning_times
             map_data.cleanset[str(segment_id)][2] = cleaning_times
             if self._saved_map_data and map_data.map_id in self._saved_map_data:
-                self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(map_data.cleanset)
+                self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(
+                    map_data.cleanset)
             self._set_updated_frame_id(map_data.frame_id + 1)
             self.refresh_map()
             return self.cleanset(map_data)
@@ -1614,7 +1672,8 @@ class DreameMapVacuumMapEditor:
             map_data.segments[segment_id].cleaning_mode = cleaning_mode
             map_data.cleanset[str(segment_id)][4] = cleaning_mode
             if self._saved_map_data and map_data.map_id in self._saved_map_data:
-                self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(map_data.cleanset)
+                self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(
+                    map_data.cleanset)
             self._set_updated_frame_id(map_data.frame_id + 1)
             self.refresh_map()
             return self.cleanset(map_data)
@@ -1672,7 +1731,7 @@ class DreameMapVacuumMapEditor:
                                            MAP_REQUEST_PARAMETER_INDEX: map_data.segments[k].index}
                     else:
                         segment_info[k] = {}
-                        
+
                     if map_data.segments[k].unique_id:
                         segment_info[k][MAP_REQUEST_PARAMETER_ROOM_ID] = map_data.segments[k].unique_id
 
@@ -1805,7 +1864,7 @@ class DreameVacuumMapDecoder:
         return c1[1] - c2[1] if c1[1] != c2[1] else c1[0] - c2[0]
 
     @staticmethod
-    def _get_pixel_type(map_data: MapData, pixel) -> MapPixelType:
+    def _get_pixel_type(map_data: MapData, pixel, vslam_map: bool = False) -> MapPixelType:
         if map_data.frame_map:
             segment_id = pixel >> 2
 
@@ -1823,6 +1882,14 @@ class DreameVacuumMapDecoder:
             if segment_id == 1 or segment_id == 3:
                 return MapPixelType.NEW_SEGMENT.value
             if segment_id == 2:
+                return MapPixelType.WALL.value
+        elif vslam_map:
+            segment_id = pixel & 0b01111111
+            if segment_id == 1:
+                return MapPixelType.NEW_SEGMENT.value
+            elif segment_id == 3:
+                return MapPixelType.NEW_SEGMENT_UNKNOWN.value
+            elif segment_id == 2:         
                 return MapPixelType.WALL.value
         else:
             if pixel >> 7:
@@ -1845,7 +1912,6 @@ class DreameVacuumMapDecoder:
     @staticmethod
     def _get_segment_center(map_data, segment_id: int, center: int, vertical: bool) -> int | None:
         # Find center point implemented as on the app
-
         lines = []
         zero_pixels = -1
         segment_pixel = 0
@@ -1893,6 +1959,7 @@ class DreameVacuumMapDecoder:
 
             return int(math.ceil((maxLine[1] - maxLine[0]) / 2 + maxLine[0]))
         return None
+            
 
     @staticmethod
     def decode_map_partial(raw_map, key=None) -> MapDataPartial | None:
@@ -1903,19 +1970,21 @@ class DreameVacuumMapDecoder:
             key = values[1]
             raw_map = values[0]
 
-        raw_map = base64.decodebytes(raw_map.encode("utf8"))                           
+        raw_map = base64.decodebytes(raw_map.encode("utf8"))
 
         if key is not None:
             try:
-                key = hashlib.sha256(key.encode()).hexdigest()[0:32].encode('utf8')
+                key = hashlib.sha256(key.encode()).hexdigest()[
+                    0:32].encode('utf8')
                 iv = DreameVacuumMapDecoder.AES_IV.encode('utf8')
-                cipher = Cipher(algorithms.AES(key), modes.CBC(iv), backend=default_backend())
+                cipher = Cipher(algorithms.AES(key), modes.CBC(
+                    iv), backend=default_backend())
                 decryptor = cipher.decryptor()
                 raw_map = decryptor.update(raw_map) + decryptor.finalize()
             except Exception as ex:
                 _LOGGER.error("Map data decryption failed: %s. Private key might be missing, please report this issue with your device model https://github.com/Tasshack/dreame-vacuum/issues/new?assignees=Tasshack&labels=bug&template=bug_report.md&title=Map%20data%20decryption%20failed", ex)
                 return None
-        
+
         try:
             raw_map = zlib.decompress(raw_map)
             if not raw_map or len(raw_map) < DreameVacuumMapDecoder.HEADER_SIZE:
@@ -1924,10 +1993,11 @@ class DreameVacuumMapDecoder:
         except Exception as ex:
             _LOGGER.error("Map data decompression failed: %s", ex)
             return None
-        
+
         partial_map = MapDataPartial()
         partial_map.map_id = DreameVacuumMapDecoder._read_int_16_le(raw_map)
-        partial_map.frame_id = DreameVacuumMapDecoder._read_int_16_le(raw_map, 2)
+        partial_map.frame_id = DreameVacuumMapDecoder._read_int_16_le(
+            raw_map, 2)
         partial_map.frame_type = DreameVacuumMapDecoder._read_int_8(raw_map, 4)
         partial_map.raw = raw_map
         image_size = DreameVacuumMapDecoder.HEADER_SIZE + (
@@ -1946,18 +2016,18 @@ class DreameVacuumMapDecoder:
         return partial_map
 
     @staticmethod
-    def decode_map(raw_map: str, rotation: int = 0) -> Tuple[MapData, Optional[MapData]]:
+    def decode_map(raw_map: str, vslam_map: bool, rotation: int = 0) -> Tuple[MapData, Optional[MapData]]:
         return DreameVacuumMapDecoder.decode_map_data_from_partial(
-            DreameVacuumMapDecoder.decode_map_partial(raw_map), rotation
+            DreameVacuumMapDecoder.decode_map_partial(raw_map), vslam_map, rotation
         )
 
     @staticmethod
-    def decode_saved_map(raw_map: str, rotation: int = 0) -> MapData | None:
-        return DreameVacuumMapDecoder.decode_map(raw_map, rotation)[0]
+    def decode_saved_map(raw_map: str, vslam_map: bool, rotation: int = 0) -> MapData | None:
+        return DreameVacuumMapDecoder.decode_map(raw_map, vslam_map, rotation)[0]
 
     @staticmethod
     def decode_map_data_from_partial(
-        partial_map: MapDataPartial, rotation: int = 0
+        partial_map: MapDataPartial, vslam_map: bool, rotation: int = 0
     ) -> MapData | None:
         if partial_map is None:
             return
@@ -2072,7 +2142,7 @@ class DreameVacuumMapDecoder:
                         current_position.y + y,
                         PathType.LINE
                     )
-                elif operator == "l":                    
+                elif operator == "l":
                     # You will only get "l" paths with in a P frame.
                     # It means path is connected with the path from previous frame and it should be rendered as a line.
                     current_position = Path(
@@ -2122,9 +2192,11 @@ class DreameVacuumMapDecoder:
                     obstacle_type = int(obstacle[2])
                     if obstacle_type in ObstacleType._value2member_map_:
                         if len(obstacle) >= 7 and int(obstacle[4]) >= 1000:
-                            map_data.obstacles.append(Obstacle(float(obstacle[0]), float(obstacle[1]), ObstacleType(obstacle_type), int(float(obstacle[3]) * 100), obstacle[4], obstacle[5], obstacle[6]))
+                            map_data.obstacles.append(Obstacle(float(obstacle[0]), float(obstacle[1]), ObstacleType(
+                                obstacle_type), int(float(obstacle[3]) * 100), obstacle[4], obstacle[5], obstacle[6]))
                         else:
-                            map_data.obstacles.append(Obstacle(float(obstacle[0]), float(obstacle[1]), ObstacleType(obstacle_type), int(float(obstacle[3]) * 100)))
+                            map_data.obstacles.append(Obstacle(float(obstacle[0]), float(
+                                obstacle[1]), ObstacleType(obstacle_type), int(float(obstacle[3]) * 100)))
 
         map_data.empty_map = map_data.frame_type == MapFrameType.I.value
         if (width * height) > 0:
@@ -2175,13 +2247,30 @@ class DreameVacuumMapDecoder:
                     ):
                         for y in range(height):
                             for x in range(width):
-                                segment_id = map_data.data[(width * y) + x] & 0b01111111
+                                segment_id = map_data.data[(
+                                    width * y) + x] & 0b01111111
                                 # as implemented on the app
                                 if segment_id == 1 or segment_id == 3:
                                     map_data.empty_map = False
                                     map_data.pixel_type[x,
                                                         y] = MapPixelType.NEW_SEGMENT.value
                                 elif segment_id == 2:
+                                    map_data.empty_map = False
+                                    map_data.pixel_type[x,
+                                                        y] = MapPixelType.WALL.value
+                    elif vslam_map and not map_data.saved_map:
+                        for y in range(height):
+                            for x in range(width):
+                                segment_id = map_data.data[(width * y) + x] & 0b00000011
+                                if segment_id == 1:
+                                    map_data.empty_map = False
+                                    map_data.pixel_type[x,
+                                                        y] = MapPixelType.NEW_SEGMENT.value
+                                elif segment_id == 3:
+                                    map_data.empty_map = False
+                                    map_data.pixel_type[x,
+                                                        y] = MapPixelType.NEW_SEGMENT_UNKNOWN.value
+                                elif segment_id == 2:                                        
                                     map_data.empty_map = False
                                     map_data.pixel_type[x,
                                                         y] = MapPixelType.WALL.value
@@ -2197,9 +2286,10 @@ class DreameVacuumMapDecoder:
                                     else:
                                         segment_id = pixel & 0b01111111
                                         if segment_id > 0:
-                                            map_data.pixel_type[x, y] = segment_id
+                                            map_data.pixel_type[x,
+                                                                y] = segment_id
 
-                    segments = DreameVacuumMapDecoder.get_segments(map_data)
+                    segments = DreameVacuumMapDecoder.get_segments(map_data, vslam_map)
                     if segments and data_json.get("seg_inf"):
                         seg_inf = data_json["seg_inf"]
                         for (k, v) in segments.items():
@@ -2222,10 +2312,13 @@ class DreameVacuumMapDecoder:
                     map_data.segments = segments
 
         saved_map_data = None
+        restored_map = map_data.restored_map
 
         if data_json.get("rism"):
             saved_map_data = DreameVacuumMapDecoder.decode_saved_map(
-                data_json["rism"], map_data.rotation
+                data_json["rism"],
+                vslam_map,
+                map_data.rotation,
             )
 
             if saved_map_data is not None:
@@ -2234,11 +2327,17 @@ class DreameVacuumMapDecoder:
                 if saved_map_data.temporary_map:
                     map_data.temporary_map = saved_map_data.temporary_map
 
-                if map_data.restored_map or map_data.recovery_map:
+                if restored_map or map_data.recovery_map or (map_data.saved_map_status == 2 and map_data.empty_map):
                     map_data.segments = copy.deepcopy(saved_map_data.segments)
                     map_data.data = saved_map_data.data
                     map_data.pixel_type = saved_map_data.pixel_type
                     map_data.dimensions = saved_map_data.dimensions
+                    
+                    _LOGGER.warn("TEST EMPTY MAP: %s", restored_map)
+                    if map_data.empty_map:
+                        map_data.restored_map = False
+                        restored_map = True
+                        map_data.empty_map = False
                 else:
                     if saved_map_data.segments is not None:
                         if map_data.segments is None and (
@@ -2263,14 +2362,6 @@ class DreameVacuumMapDecoder:
 
                 if not saved_map_data.cleanset:
                     saved_map_data.cleanset = copy.deepcopy(map_data.cleanset)
-                    
-                if map_data.saved_map_status == 2: # or vslam_map
-                    if not map_data.no_go_areas:
-                        map_data.no_go_areas = saved_map_data.no_go_areas
-                    if not map_data.no_mopping_areas:
-                        map_data.no_mopping_areas = saved_map_data.no_mopping_areas
-                    if not map_data.walls:
-                        map_data.walls = saved_map_data.walls
 
                 if (
                     (map_data.saved_map_status == 2 or map_data.docked)
@@ -2279,6 +2370,15 @@ class DreameVacuumMapDecoder:
                     and saved_map_data.charger_position
                 ):
                     map_data.charger_position = saved_map_data.charger_position
+
+                if map_data.saved_map_status == 2:
+                    map_data.no_go_areas = saved_map_data.no_go_areas
+                    map_data.no_mopping_areas = saved_map_data.no_mopping_areas
+                    map_data.walls = saved_map_data.walls
+
+                    if vslam_map:
+                        map_data.segments = copy.deepcopy(saved_map_data.segments)
+                        map_data.charger_position = copy.deepcopy(saved_map_data.charger_position)
 
         if (
             not map_data.saved_map
@@ -2298,25 +2398,25 @@ class DreameVacuumMapDecoder:
                 DreameVacuumMapDecoder.set_segment_color_index(map_data)
 
         if data_json.get("vw"):
-            if data_json["vw"].get("rect"):
-                map_data.no_go_areas = []
-                for area in data_json["vw"]["rect"]:
-                    x_coords = sorted([area[0], area[2]])
-                    y_coords = sorted([area[1], area[3]])
-                    map_data.no_go_areas.append(
-                        Area(
-                            x_coords[0],
-                            y_coords[0],
-                            x_coords[1],
-                            y_coords[0],
-                            x_coords[1],
-                            y_coords[1],
-                            x_coords[0],
-                            y_coords[1],
+            if data_json["vw"].get("rect") and not map_data.no_go_areas:
+                    map_data.no_go_areas = []
+                    for area in data_json["vw"]["rect"]:
+                        x_coords = sorted([area[0], area[2]])
+                        y_coords = sorted([area[1], area[3]])
+                        map_data.no_go_areas.append(
+                            Area(
+                                x_coords[0],
+                                y_coords[0],
+                                x_coords[1],
+                                y_coords[0],
+                                x_coords[1],
+                                y_coords[1],
+                                x_coords[0],
+                                y_coords[1],
+                            )
                         )
-                    )
 
-            if data_json["vw"].get("mop"):
+            if data_json["vw"].get("mop") and not map_data.no_mopping_areas:
                 map_data.no_mopping_areas = []
                 for area in data_json["vw"]["mop"]:
                     x_coords = sorted([area[0], area[2]])
@@ -2334,7 +2434,7 @@ class DreameVacuumMapDecoder:
                         )
                     )
 
-            if data_json["vw"].get("line"):
+            if data_json["vw"].get("line") and not map_data.walls:
                 map_data.walls = [
                     Wall(
                         virtual_wall[0],
@@ -2345,17 +2445,21 @@ class DreameVacuumMapDecoder:
                     for virtual_wall in data_json["vw"]["line"]
                 ]
 
+        if vslam_map and not map_data.saved_map:
+            map_data.need_optimization = not restored_map
+
         return map_data, saved_map_data
 
     @staticmethod
     def decode_p_map_data_from_partial(
-        partial_map: MapDataPartial, current_map_data: MapData
+        partial_map: MapDataPartial, current_map_data: MapData, vslam_map: bool
     ) -> MapData | None:
         if partial_map.frame_type != MapFrameType.P.value:
             return None
 
         map_data, saved_map_data = DreameVacuumMapDecoder.decode_map_data_from_partial(
-            partial_map
+            partial_map, 
+            vslam_map,
         )
         if map_data is None:
             return None
@@ -2370,8 +2474,10 @@ class DreameVacuumMapDecoder:
         current_map_data.restored_map = False
         current_map_data.recovery_map = False
         current_map_data.clean_log = False
-        if map_data.charger_position is not None:
+
+        if map_data.charger_position is not None and (not vslam_map or current_map_data.saved_map_status != 2):
             current_map_data.charger_position = map_data.charger_position
+
         if map_data.obstacles is not None:
             current_map_data.obstacles = map_data.obstacles
 
@@ -2441,7 +2547,7 @@ class DreameVacuumMapDecoder:
                         pixel_type[
                             left_offset + x, top_offset + y
                         ] = DreameVacuumMapDecoder._get_pixel_type(
-                            current_map_data, int(data[new_index])
+                            current_map_data, int(data[new_index]), vslam_map,
                         )
 
             # Update size and buffer
@@ -2450,6 +2556,9 @@ class DreameVacuumMapDecoder:
             current_map_data.dimensions = MapImageDimensions(
                 top, left, height, width, grid_size
             )
+
+            if vslam_map:
+                current_map_data.need_optimization = True
 
         if map_data.path:
             # Append new paths received with P frame
@@ -2460,15 +2569,14 @@ class DreameVacuumMapDecoder:
 
         DreameVacuumMapDecoder.set_robot_segment(current_map_data)
 
-        # if (robotPos.l2r == true && _this.robotPos.l2r == true) {
-        #    _this.lastPos = _this.robotPos
-        # } else {
-        #    _this.lastPos = undefined
-        # }
+        # if robotPos.l2r == True and self._robotPos.l2r == True:
+        #    self._lastPos = self._robotPos
+        # else:
+        #    self._lastPos = None
         return current_map_data
 
     @staticmethod
-    def get_segments(map_data: MapData) -> dict[str, Any]:
+    def get_segments(map_data: MapData, vslam_map: bool) -> dict[str, Any]:
         segments = {}
         for y in range(map_data.dimensions.height):
             for x in range(map_data.dimensions.width):
@@ -2493,17 +2601,33 @@ class DreameVacuumMapDecoder:
                 x = int(math.ceil((v.x1 - v.x0) / 2 + v.x0))
                 y = int(math.ceil((v.y1 - v.y0) / 2 + v.y0))
 
-                if map_data.saved_map:
-                    center_x = DreameVacuumMapDecoder._get_segment_center(
-                        map_data, k, y, False
-                    )
-                    if center_x is not None:
-                        center_y = DreameVacuumMapDecoder._get_segment_center(
-                            map_data, k, center_x, True
+                if map_data.saved_map:                
+                    if vslam_map:
+                        if map_data.pixel_type[x, y] != k:
+                            startI = -1
+                            endI = -1
+                            for i in range(map_data.dimensions.width):
+                                value = map_data.pixel_type[i, y]
+                                if startI == -1:
+                                    if value == k:
+                                        startI = i
+                                elif value != k or i == (map_data.dimensions.width - 1):
+                                    endI = (i - 1)
+                                    break
+
+                            if startI != -1 and endI != -1:
+                                x = (endI - startI) + startI
+                    else:
+                        center_x = DreameVacuumMapDecoder._get_segment_center(
+                            map_data, k, y, False
                         )
-                        if center_y is not None:
-                            x = center_x
-                            y = center_y
+                        if center_x is not None:
+                            center_y = DreameVacuumMapDecoder._get_segment_center(
+                                map_data, k, center_x, True
+                            )
+                            if center_y is not None:
+                                x = center_x
+                                y = center_y
 
                 segments[k].x0 = (
                     int(
@@ -2568,11 +2692,11 @@ class DreameVacuumMapDecoder:
                     segment_id = str(k)
                     if segment_id not in cleanset:
                         cleanset[segment_id] = [
-                                1,
-                                3,
-                                1,
-                                0,
-                            ]  # Cleanset returns empty on restored map but robot uses these default values when that happens
+                            1,
+                            3,
+                            1,
+                            0,
+                        ]  # Cleanset returns empty on restored map but robot uses these default values when that happens
                         if map_data.segments[k].cleaning_mode is not None:
                             cleanset[segment_id].append(-1)
 
@@ -2584,7 +2708,8 @@ class DreameVacuumMapDecoder:
                     )  # for some reason cleanset uses different int values for water volume
                     map_data.segments[k].cleaning_times = item[2]
                     map_data.segments[k].order = item[3]
-                    map_data.segments[k].cleaning_mode = item[4] if len(item) > 4 else None
+                    map_data.segments[k].cleaning_mode = item[4] if len(
+                        item) > 4 else None
                 else:
                     map_data.segments[k].suction_level = None
                     map_data.segments[k].water_volume = None
@@ -2867,8 +2992,9 @@ class DreameVacuumMapDataRenderer:
             ):
                 self._layers[MapRendererLayer.ACTIVE_POINT] = []
                 size = 15 * map_data.dimensions.grid_size
-                for point in map_data.active_points:        
-                    area = Area(point.x - size, point.y - size, point.x + size, point.y - size, point.x + size, point.y + size, point.x - size, point.y + size)
+                for point in map_data.active_points:
+                    area = Area(point.x - size, point.y - size, point.x + size, point.y -
+                                size, point.x + size, point.y + size, point.x - size, point.y + size)
 
                     a = DreameVacuumMapDataRenderer._convert_coordinates(
                         area.x0, area.y0
@@ -3163,10 +3289,12 @@ class DreameVacuumMapDataRenderer:
     def disconnected_map_image(self) -> bytes:
         return self.default_map_image
 
+
 class DreameVacuumMapRenderer:
     def __init__(self, color_scheme: str = None, map_objects: list[str] = None, robot_shape: int = 0) -> None:
-        self.color_scheme: MapRendererColorScheme = MAP_COLOR_SCHEME_LIST.get(color_scheme, MapRendererColorScheme())        
-        self.config: MapRendererConfig = MapRendererConfig()        
+        self.color_scheme: MapRendererColorScheme = MAP_COLOR_SCHEME_LIST.get(
+            color_scheme, MapRendererColorScheme())
+        self.config: MapRendererConfig = MapRendererConfig()
         if map_objects is not None:
             for attr in self.config.__dict__.keys():
                 if attr not in map_objects:
@@ -3261,8 +3389,9 @@ class DreameVacuumMapRenderer:
             self._obstacle_icons[k] = Image.open(BytesIO(base64.b64decode(v))).convert(
                 "RGBA"
             )
-                
-        self.font_file = zlib.decompress(base64.b64decode(MAP_FONT), zlib.MAX_WBITS|32)
+
+        self.font_file = zlib.decompress(
+            base64.b64decode(MAP_FONT), zlib.MAX_WBITS | 32)
 
     @staticmethod
     def _to_buffer(image) -> bytes:
@@ -3288,77 +3417,100 @@ class DreameVacuumMapRenderer:
         return ico
 
     @staticmethod
-    def _calculate_padding(dimensions, no_mopping_areas, no_go_areas, walls, padding, min_width, min_height, scale) -> list[int]:
-        if no_mopping_areas or no_go_areas or walls:
-            min_x = 0
-            min_y = 0
-            max_x = dimensions.width
-            max_y = dimensions.height
+    def _calculate_bounds(dimensions, segments) -> list[int]:
+        if segments:
+            min_x = dimensions.width - 1
+            min_y = dimensions.height - 1
+            max_x = 0
+            max_y = 0
+            for segment in segments.values():
+                p = segment.to_coord(dimensions)
+                x_coords = sorted([int(p.x0), int(p.x1)])
+                y_coords = sorted([int(p.y0), int(p.y1)])
+                min_x = min(x_coords[0], min_x)
+                max_x = max(x_coords[1], max_x)
+                min_y = min(y_coords[0], min_y)
+                max_y = max(y_coords[1], max_y)
+
+            return [min_x, min_y, max_x, max_y]
+
+    @staticmethod
+    def _calculate_padding(dimensions, active_areas, no_mopping_areas, no_go_areas, walls, segments, padding, min_width, min_height, scale) -> list[int]:
+        min_x = 0
+        min_y = 0
+        max_x = dimensions.width
+        max_y = dimensions.height
+
+        if segments:
+            for segment in segments.values():
+                p = segment.to_coord(dimensions)
+                x_coords = sorted([int(p.x0), int(p.x1)])
+                y_coords = sorted([int(p.y0), int(p.y1)])
+                min_x = min(x_coords[0], min_x)
+                max_x = max(x_coords[1], max_x)
+                min_y = min(y_coords[0], min_y)
+                max_y = max(y_coords[1], max_y)
+                
+        if no_mopping_areas or no_go_areas or walls or active_areas:
+            if active_areas:
+                for area in active_areas:
+                    p = area.to_coord(dimensions)
+                    x_coords = sorted([p.x0, p.x1, p.x2, p.x3])
+                    y_coords = sorted([p.y0, p.y1, p.y2, p.y3])
+                    min_x = min(x_coords[0], min_x)
+                    max_x = max(x_coords[3], max_x)
+                    min_y = min(y_coords[0], min_y)
+                    max_y = max(y_coords[3], max_y)
 
             if no_mopping_areas:
                 for area in no_mopping_areas:
-                    p = area.to_img(dimensions)
+                    p = area.to_coord(dimensions)
                     x_coords = sorted([p.x0, p.x1, p.x2, p.x3])
                     y_coords = sorted([p.y0, p.y1, p.y2, p.y3])
-
-                    if x_coords[0] < min_x:
-                        min_x = x_coords[0]
-                    if x_coords[3] > max_x:
-                        max_x = x_coords[3]
-                    if y_coords[0] < min_y:
-                        min_y = y_coords[0]
-                    if y_coords[3] > max_y:
-                        max_y = y_coords[3]
+                    min_x = min(x_coords[0], min_x)
+                    max_x = max(x_coords[3], max_x)
+                    min_y = min(y_coords[0], min_y)
+                    max_y = max(y_coords[3], max_y)
 
             if no_go_areas:
                 for area in no_go_areas:
-                    p = area.to_img(dimensions)
+                    p = area.to_coord(dimensions)
                     x_coords = sorted([p.x0, p.x1, p.x2, p.x3])
                     y_coords = sorted([p.y0, p.y1, p.y2, p.y3])
-
-                    if x_coords[0] < min_x:
-                        min_x = x_coords[0]
-                    if x_coords[3] > max_x:
-                        max_x = x_coords[3]
-                    if y_coords[0] < min_y:
-                        min_y = y_coords[0]
-                    if y_coords[3] > max_y:
-                        max_y = y_coords[3]
+                    min_x = min(x_coords[0], min_x)
+                    max_x = max(x_coords[3], max_x)
+                    min_y = min(y_coords[0], min_y)
+                    max_y = max(y_coords[3], max_y)
 
             if walls:
                 for wall in walls:
-                    p = wall.to_img(dimensions)
+                    p = wall.to_coord(dimensions)
                     x_coords = sorted([p.x0, p.x1])
                     y_coords = sorted([p.y0, p.y1])
+                    min_x = min(x_coords[0], min_x)
+                    max_x = max(x_coords[1], max_x)
+                    min_y = min(y_coords[0], min_y)
+                    max_y = max(y_coords[1], max_y)
 
-                    if x_coords[0] < min_x:
-                        min_x = x_coords[0]
-                    if x_coords[1] > max_x:
-                        max_x = x_coords[1]
-                    if y_coords[0] < min_y:
-                        min_y = y_coords[0]
-                    if y_coords[1] > max_y:
-                        max_y = y_coords[1]
+        if min_x < 0:
+            padding[0] = padding[0] + int(-min_x)
+        if max_x > dimensions.width:
+            padding[2] = padding[2] + int(max_x - dimensions.width)
+        if min_y < 0:
+            padding[1] = padding[1] + int(-min_y)
+        if max_y > dimensions.height:
+            padding[3] = padding[3] + int(max_y - dimensions.height)
 
-            if min_x < 0:
-                padding[0] = padding[0] + int(-min_x)
-            if max_x > dimensions.width:
-                padding[2] = padding[2] + int(max_x - dimensions.width)
-            if min_y < 0:
-                padding[1] = padding[1] + int(-min_y)
-            if max_y > dimensions.height:
-                padding[3] = padding[3] + int(max_y - dimensions.height)
-
-        if dimensions.width < min_width:
-            size = int((min_width - dimensions.width) / 2)
+        if dimensions.width + padding[0] + padding[2] < min_width:
+            size = int((min_width - dimensions.width + padding[0] + padding[2]) / 2)
             padding[0] = padding[0] + size
             padding[2] = padding[2] + size
 
-        if dimensions.height < min_height:
-            size = int((min_height - dimensions.height) / 2)
+        if dimensions.height + padding[1] + padding[3] < min_height:
+            size = int((min_height - dimensions.height + padding[1] + padding[3]) / 2)
             padding[1] = padding[1] + size
             padding[3] = padding[3] + size
-            
+
         for k in range(4):
             padding[k] = padding[k] * scale
 
@@ -3381,7 +3533,7 @@ class DreameVacuumMapRenderer:
             return calibration_points
 
     def render_map(self, map_data: MapData, robot_status: int = 0) -> bytes:
-        if map_data is None or map_data.empty_map:
+        if map_data is None or map_data.empty_map or (map_data.dimensions.width * map_data.dimensions.height) < 2:
             return self.default_map_image
 
         self.render_complete = False
@@ -3409,24 +3561,42 @@ class DreameVacuumMapRenderer:
                 self.render_complete = True
                 _LOGGER.info("Skip render frame, map data not changed")
                 return self._to_buffer(self._image)
-            
+
             scale = 4 if map_data.saved_map_status == 2 or map_data.saved_map else 3
+
+            if not map_data.saved_map:
+                if (
+                    self._map_data is None
+                    or self._map_data.segments != map_data.segments
+                    or self._map_data.dimensions != map_data.dimensions
+                ):
+                    map_data.dimensions.bounds = DreameVacuumMapRenderer._calculate_bounds(
+                        map_data.dimensions,
+                        map_data.segments
+                    )
+
+                    if self._map_data and self._map_data.dimensions.bounds != map_data.dimensions.bounds:
+                        self._map_data = None
+                else:
+                    map_data.dimensions.bounds = self._map_data.dimensions.bounds
 
             if (
                 self._map_data is None
+                or self._map_data.active_areas != map_data.active_areas
                 or self._map_data.no_mopping_areas != map_data.no_mopping_areas
                 or self._map_data.no_go_areas != map_data.no_go_areas
                 or self._map_data.walls != map_data.walls
-                or self._map_data.saved_map_status != map_data.saved_map_status
+                or self._map_data.segments != map_data.segments
+                or self._map_data.dimensions != map_data.dimensions
                 or self._map_data.restored_map != map_data.restored_map
-                or self._map_data.recovery_map != map_data.recovery_map
             ):
-                map_data.dimensions.scale = 1
                 map_data.dimensions.padding = DreameVacuumMapRenderer._calculate_padding(
                     map_data.dimensions,
+                    map_data.active_areas,
                     map_data.no_mopping_areas,
                     map_data.no_go_areas,
                     map_data.walls,
+                    map_data.segments,
                     [14, 14, 14, 14],
                     140,
                     100,
@@ -3439,7 +3609,7 @@ class DreameVacuumMapRenderer:
                 map_data.dimensions.padding = self._map_data.dimensions.padding
 
             map_data.dimensions.scale = scale
-        
+
             if self._map_data and self._map_data.dimensions.scale != scale:
                 self._map_data = None
 
@@ -3469,10 +3639,12 @@ class DreameVacuumMapRenderer:
                 # as implemented on the app
                 area_colors[MapPixelType.OUTSIDE.value] = self.color_scheme.outside
                 area_colors[MapPixelType.WALL.value] = self.color_scheme.wall
+                area_colors[MapPixelType.OBSTACLE_WALL.value] = self.color_scheme.wall
                 area_colors[MapPixelType.FLOOR.value] = self.color_scheme.floor
                 area_colors[MapPixelType.UNKNOWN.value] = self.color_scheme.floor
                 area_colors[MapPixelType.NEW_SEGMENT.value] = self.color_scheme.new_segment
-
+                area_colors[MapPixelType.NEW_SEGMENT_UNKNOWN.value] = self.color_scheme.new_segment
+                
                 if map_data.segments is not None:
                     for (k, v) in map_data.segments.items():
                         if self.config.color:
@@ -3484,7 +3656,7 @@ class DreameVacuumMapRenderer:
                                 ][0]
                         else:
                             area_colors[k] = area_colors[MapPixelType.FLOOR.value]
-                        
+
                 pixels = np.full(
                     (
                         map_data.dimensions.height,
@@ -3501,43 +3673,57 @@ class DreameVacuumMapRenderer:
                 max_y = 0
                 for y in range(map_data.dimensions.height):
                     for x in range(map_data.dimensions.width):
-                        px_type = int(map_data.pixel_type[x, map_data.dimensions.height - y - 1])
+                        px_type = int(
+                            map_data.pixel_type[x, map_data.dimensions.height - y - 1])
                         if px_type != MapPixelType.OUTSIDE.value:
-                            pixels[y, x] = area_colors[px_type] if px_type in area_colors else MapPixelType.NEW_SEGMENT.value
+                            pixels[y, x] = area_colors[px_type] if px_type in area_colors else area_colors[MapPixelType.NEW_SEGMENT.value]
 
                             max_x = max(x, max_x)
                             min_x = min(x, min_x)
                             max_y = max(y, max_y)
-                            min_y = min(y, min_y)
-                            
+                            min_y = min(y, min_y)        
+                                
+                if map_data.dimensions.bounds:
+                    #min_x = max(0, min(map_data.dimensions.bounds[0], min_x))
+                    #max_x = min((map_data.dimensions.width - 1), max(map_data.dimensions.bounds[2], max_x))
+                    #min_y = max(0, min(map_data.dimensions.bounds[1], min_y))
+                    #max_y = min((map_data.dimensions.height - 1), max(map_data.dimensions.bounds[3], max_y))
+                    min_x = max(min(map_data.dimensions.bounds[0], min_x), min_x)
+                    max_x = min(max(map_data.dimensions.bounds[2], max_x), max_x)
+                    min_y = max(min(map_data.dimensions.bounds[1], min_y), min_y)
+                    max_y = min(max(map_data.dimensions.bounds[3], max_y), max_y)
+
                 if (
                     (
-                        min_x != map_data.dimensions.width - 1 and 
-                        min_y != map_data.dimensions.height - 1 and 
-                        max_x != 0 and 
+                        min_x != (map_data.dimensions.width - 1) and
+                        min_y != (map_data.dimensions.height - 1) and
+                        max_x != 0 and
                         max_y != 0
-                    ) and 
+                    ) and
                     (
-                        min_x != 0 or 
-                        min_y != 0 or 
-                        max_x != map_data.dimensions.width - 1 or 
-                        max_y != map_data.dimensions.height - 1
+                        min_x != 0 or
+                        min_y != 0 or
+                        max_x != (map_data.dimensions.width - 1) or
+                        max_y != (map_data.dimensions.height - 1)
                     )
-                ):                    
-                    map_data.dimensions.crop = [min_x * scale, min_y * scale, (map_data.dimensions.width - (max_x + 1)) * scale, (map_data.dimensions.height - (max_y + 1)) * scale]
+                ):  
+                    map_data.dimensions.crop = [min_x * scale, min_y * scale, (map_data.dimensions.width - (
+                        max_x + 1)) * scale, (map_data.dimensions.height - (max_y + 1)) * scale]
                     pixels = pixels[min_y:(max_y + 1), min_x:(max_x + 1)]
-
-                self._calibration_points = self._calculate_calibration_points(map_data)
-
+                        
                 if self._map_data and self._map_data.dimensions.crop != map_data.dimensions.crop:
                     self._map_data = None
 
                 self._layers[MapRendererLayer.IMAGE] = ImageOps.expand(
-                        Image.fromarray(pixels.repeat(scale, axis=0).repeat(scale, axis=1)), 
-                        border=tuple(map_data.dimensions.padding)
-                    )
+                    Image.fromarray(pixels.repeat(
+                        scale, axis=0).repeat(scale, axis=1)),
+                    border=tuple(map_data.dimensions.padding)
+                )
             else:
                 map_data.dimensions.crop = self._map_data.dimensions.crop
+
+            self._calibration_points = self._calculate_calibration_points(
+                map_data)
 
             image = self.render_objects(
                 map_data,
@@ -3713,8 +3899,8 @@ class DreameVacuumMapRenderer:
 
                 for k, v in map_data.segments.items():
                     if (
-                        self._map_data is None 
-                        or k not in self._layers[MapRendererLayer.SEGMENTS] 
+                        self._map_data is None
+                        or k not in self._layers[MapRendererLayer.SEGMENTS]
                         or not self._map_data.segments
                         or k not in self._map_data.segments
                         or self._map_data.segments[k] != v
@@ -3795,13 +3981,14 @@ class DreameVacuumMapRenderer:
                 layer, self._layers[MapRendererLayer.OBSTACLES])
 
         if layer.size != map_image.size:
-            layer.thumbnail(map_image.size, Image.Resampling.BOX, reducing_gap=1.5)
+            layer.thumbnail(
+                map_image.size, Image.Resampling.BOX, reducing_gap=1.5)
 
         return Image.alpha_composite(
             map_image,
             layer,
         )
-    
+
     def render_areas(self, areas, color, fill, layer, dimensions, width, scale):
         new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
         draw = ImageDraw.Draw(new_layer, "RGBA")
@@ -3825,7 +4012,8 @@ class DreameVacuumMapRenderer:
         draw = ImageDraw.Draw(new_layer, "RGBA")
         size = 15 * dimensions.grid_size
         for point in points:
-            area = Area(point.x - size, point.y - size, point.x + size, point.y - size, point.x + size, point.y + size, point.x - size, point.y + size)
+            area = Area(point.x - size, point.y - size, point.x + size, point.y -
+                        size, point.x + size, point.y + size, point.x - size, point.y + size)
 
             p = area.to_img(dimensions)
             coords = [
@@ -3906,21 +4094,21 @@ class DreameVacuumMapRenderer:
             )
             size = int(math.floor(size / 2))
             draw.ellipse([
-                        path[-2] - size, 
-                        path[-1] - size, 
-                        path[-2] + size, 
-                        path[-1] + size,
-                    ],
-                    fill=(color[0], color[1], color[2], 100),
-                )
+                path[-2] - size,
+                path[-1] - size,
+                path[-2] + size,
+                path[-1] + size,
+            ],
+                fill=(color[0], color[1], color[2], 100),
+            )
             draw.ellipse([
-                        path[0] - size, 
-                        path[1] - size, 
-                        path[0] + size, 
-                        path[1] + size,
-                    ],
-                    fill=(color[0], color[1], color[2], 100),
-                )
+                path[0] - size,
+                path[1] - size,
+                path[0] + size,
+                path[1] + size,
+            ],
+                fill=(color[0], color[1], color[2], 100),
+            )
 
         for path in sweep:
             size = width * scale
@@ -3932,21 +4120,21 @@ class DreameVacuumMapRenderer:
             )
             size = int(math.floor(size / 2))
             draw.ellipse([
-                        path[-2] - size, 
-                        path[-1] - size, 
-                        path[-2] + size, 
-                        path[-1] + size,
-                    ],
-                    fill=color,
-                )
+                path[-2] - size,
+                path[-1] - size,
+                path[-2] + size,
+                path[-1] + size,
+            ],
+                fill=color,
+            )
             draw.ellipse([
-                        path[0] - size, 
-                        path[1] - size, 
-                        path[0] + size, 
-                        path[1] + size,
-                    ],
-                    fill=color,
-                )
+                path[0] - size,
+                path[1] - size,
+                path[0] + size,
+                path[1] + size,
+            ],
+                fill=color,
+            )
 
         return new_layer
 
@@ -3955,30 +4143,39 @@ class DreameVacuumMapRenderer:
     ):
         new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
         if self._charger_icon is None:
+            if self._robot_shape == 1:
+                charger_image = MAP_CHARGER_VSLAM_IMAGE
+                size = int(size * 1.5)
+            else:
+                charger_image = MAP_CHARGER_IMAGE            
+
             self._charger_icon = (
-                Image.open(BytesIO(base64.b64decode(MAP_CHARGER_IMAGE)))
+                Image.open(BytesIO(base64.b64decode(charger_image)))
                 .convert("RGBA")
-                .resize((size, size))
-                .rotate(-map_rotation)
+                .resize((size, size), resample=Image.Resampling.NEAREST)
             )
+
             if self.color_scheme.dark:
                 enhancer = ImageEnhance.Brightness(self._charger_icon)
                 self._charger_icon = enhancer.enhance(0.7)
 
+        charger_icon = self._charger_icon.rotate(charger_position.a if self._robot_shape == 1 else (-map_rotation), expand=1)
+
         point = charger_position.to_img(dimensions)
         new_layer.paste(
-            self._charger_icon,
-            (int((point.x * scale) - (size / 2)),
-             int((point.y * scale) - (size / 2))),
-            self._charger_icon,
+            charger_icon,
+            (int((point.x * scale) - (charger_icon.size[0] / 2)),
+             int((point.y * scale) - (charger_icon.size[1] / 2))),
+            charger_icon,
         )
-        
+
         if robot_status > 5:
             if self._robot_washing_icon is None:
                 self._robot_washing_icon = (
-                    Image.open(BytesIO(base64.b64decode(MAP_ROBOT_WASHING_IMAGE)))
+                    Image.open(
+                        BytesIO(base64.b64decode(MAP_ROBOT_WASHING_IMAGE)))
                     .convert("RGBA")
-                    .resize((int(size * 1.25), int(size * 1.25)))
+                    .resize((int(size * 1.25), int(size * 1.25)), resample=Image.Resampling.NEAREST)
                     .rotate(-map_rotation)
                 )
                 enhancer = ImageEnhance.Brightness(self._robot_washing_icon)
@@ -4011,19 +4208,23 @@ class DreameVacuumMapRenderer:
         self, robot_position, robot_status, layer, dimensions, size, map_rotation, scale
     ):
         new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
-        if self._robot_icon is None:            
-            if self._robot_shape == 1:
+        if self._robot_icon is None:
+            if self._robot_shape == 2:
                 robot_image = MAP_ROBOT_MOP_IMAGE
+            elif self._robot_shape == 1:
+                robot_image = MAP_ROBOT_VSLAM_IMAGE
             else:
                 robot_image = MAP_ROBOT_IMAGE
-
+                
             self._robot_icon = (
                 Image.open(BytesIO(base64.b64decode(robot_image)))
                 .convert("RGBA")
-                .resize((size, size))
+                .resize((size, size), resample=Image.Resampling.NEAREST)
             )
 
-            if self._robot_shape == 0:
+            _LOGGER.warn("Size %s", size)
+
+            if self._robot_shape != 2:
                 enhancer = ImageEnhance.Brightness(self._robot_icon)
                 if self.color_scheme.dark:
                     self._robot_icon = enhancer.enhance(1.5)
@@ -4040,7 +4241,7 @@ class DreameVacuumMapRenderer:
                     Image.open(
                         BytesIO(base64.b64decode(MAP_ROBOT_CLEANING_IMAGE)))
                     .convert("RGBA")
-                    .resize(((int(size * 1.25), int(size * 1.25))))
+                    .resize(((int(size * 1.25), int(size * 1.25))), resample=Image.Resampling.NEAREST)
                 )
             status_icon = self._robot_cleaning_icon
         elif robot_status == 2:
@@ -4049,7 +4250,7 @@ class DreameVacuumMapRenderer:
                     Image.open(
                         BytesIO(base64.b64decode(MAP_ROBOT_CHARGING_IMAGE)))
                     .convert("RGBA")
-                    .resize(((int(size * 1.3), int(size * 1.3))))
+                    .resize(((int(size * 1.3), int(size * 1.3))), resample=Image.Resampling.NEAREST)
                 )
             status_icon = self._robot_charging_icon
         elif robot_status == 3 or robot_status == 5 or robot_status == 6:
@@ -4058,7 +4259,7 @@ class DreameVacuumMapRenderer:
                     Image.open(
                         BytesIO(base64.b64decode(MAP_ROBOT_WARNING_IMAGE)))
                     .convert("RGBA")
-                    .resize(((int(size * 1.3), int(size * 1.3))))
+                    .resize(((int(size * 1.3), int(size * 1.3))), resample=Image.Resampling.NEAREST)
                 )
             status_icon = self._robot_warning_icon
 
@@ -4093,9 +4294,9 @@ class DreameVacuumMapRenderer:
                     sleeping_icon = enhancer.enhance(0.7)
 
                 self._robot_sleeping_icon = [
-                    sleeping_icon.resize(((int(size * 0.3), int(size * 0.3)))),
+                    sleeping_icon.resize(((int(size * 0.3), int(size * 0.3))), resample=Image.Resampling.NEAREST),
                     sleeping_icon.resize(
-                        ((int(size * 0.35), int(size * 0.35)))),
+                        ((int(size * 0.35), int(size * 0.35))), resample=Image.Resampling.NEAREST),
                 ]
 
             for k in [[19, 10, 0], [24, 24, 1]]:
@@ -4258,7 +4459,7 @@ class DreameVacuumMapRenderer:
                         icon = icon.resize((int(s), int(s))).rotate(-rotation)
                         new_layer.paste(
                             icon, (int(x * scale - (s / 2)),
-                                    int(y * scale - (s / 2))), icon
+                                   int(y * scale - (s / 2))), icon
                         )
 
             custom = (
@@ -4284,7 +4485,7 @@ class DreameVacuumMapRenderer:
 
                 x = p.x + x_offset
                 y = p.y + y_offset
-                        
+
                 if custom:
                     s = scale * 2
                     arrow = (s + 2) * scale
@@ -4299,17 +4500,17 @@ class DreameVacuumMapRenderer:
                     if not self.config.water_volume:
                         icon_count = icon_count - 1
                     if not self.config.cleaning_times:
-                        icon_count = icon_count - 1                            
+                        icon_count = icon_count - 1
                 else:
                     icon_count = 1
 
                 if icon_count == 1:
                     s = scale * 3
                     arrow = 5 * scale
-                else:                        
+                else:
                     s = scale * 3
                     arrow = 5 * scale
-                                            
+
                 if not icon:
                     arrow = 0
 
@@ -4326,7 +4527,7 @@ class DreameVacuumMapRenderer:
                 icon_h = ((radius * 2) * scale) + (arrow * 2)
                 r = icon_h - (padding * 2)
                 icon = Image.new("RGBA", (icon_w, icon_h),
-                                    (255, 255, 255, 0))
+                                 (255, 255, 255, 0))
                 icon_draw = ImageDraw.Draw(icon, "RGBA")
 
                 if arrow and (segment.type != 0 or text_font):
@@ -4370,14 +4571,14 @@ class DreameVacuumMapRenderer:
                         stroke_width=1,
                         stroke_fill=self.color_scheme.text_stroke,
                     )
-                        
+
                     ellipse_x1 = ellipse_x2 + (margin * 2)
                     ellipse_x2 = ellipse_x1 + r
 
                 if custom:
                     icon_size = size * 1.45
                     s = icon_size * 0.85 * scale
-                        
+
                     if self.config.suction_level:
                         ico = DreameVacuumMapRenderer._set_icon_color(
                             self._suction_level_icon[segment.suction_level],
@@ -4404,7 +4605,7 @@ class DreameVacuumMapRenderer:
                             ),
                             ico,
                         )
-                        
+
                         ellipse_x1 = ellipse_x2 + (margin * 2)
                         ellipse_x2 = ellipse_x1 + r
 
@@ -4489,7 +4690,8 @@ class DreameVacuumMapRenderer:
                 .convert("RGBA")
                 .rotate(-rotation)
             )
-            self._obstacle_background.thumbnail((size * scale * scale, size * scale * scale), Image.ANTIALIAS)
+            self._obstacle_background.thumbnail(
+                (size * scale * scale, size * scale * scale), Image.ANTIALIAS)
 
         bg_size = int(round((size * scale * 0.5) / 2))
         offset = -8 * scale
@@ -4515,18 +4717,20 @@ class DreameVacuumMapRenderer:
 
                 new_layer.paste(
                     self._obstacle_background, (int(round(x * scale - (self._obstacle_background.size[0] / 2) + x_offset)),
-                            int(round(y * scale - (self._obstacle_background.size[1] / 2) + y_offset)))
+                                                int(round(y * scale - (self._obstacle_background.size[1] / 2) + y_offset)))
                 )
-                
+
                 draw.ellipse(
-                    [(x - bg_size) * scale, (y - bg_size) * scale, (x + bg_size) * scale, (y + bg_size) * scale],
+                    [(x - bg_size) * scale, (y - bg_size) * scale,
+                     (x + bg_size) * scale, (y + bg_size) * scale],
                     fill=self.color_scheme.segment[0][0],
                 )
 
-                icon = icon.resize((int(icon_size), int(icon_size))).rotate(-rotation)
+                icon = icon.resize(
+                    (int(icon_size), int(icon_size))).rotate(-rotation)
                 new_layer.paste(
                     icon, (int(round(x * scale - (icon_size / 2))),
-                            int(round(y * scale - (icon_size / 2)))), icon
+                           int(round(y * scale - (icon_size / 2)))), icon
                 )
 
         return new_layer
@@ -4548,3 +4752,1433 @@ class DreameVacuumMapRenderer:
     @property
     def default_calibration_points(self) -> dict[str, int]:
         return self._default_calibration_points
+
+
+
+class DreameVacuumMapOptimizer:
+    def __init__(self) -> None:
+        self._js_optimizer = None
+
+    def _clean_wall(self, data, width, height):
+        for j in range(1, height - 1):
+            for i in range(1, width - 1):
+                index = j * width + i
+                if data[index] == 1:
+                    num = 0
+                    if data[index - 1] != 1:
+                        num = num + 1
+                    if data[index + 1] != 1:
+                        num = num + 1
+                    if data[index + width] != 1:
+                        num = num + 1
+                    if data[index - width] != 1:
+                        num = num + 1
+                    if num > 2:
+                        data[index] = 0
+
+        for j in range(1, height - 1):
+            for i in range(1, width - 1):
+                index = j * width + i
+                if data[index] == 2:
+                    if (data[index - 1] == 1 and data[index + 1] == 1) or (data[index + width] == 1 and data[index - width] == 1):
+                        data[index] = 1
+                        
+        for i in range(len(data)):
+            if data[i] == 2:
+                data[i] = 0
+
+    def _obstacle_data(self, data, width, height):
+        for it in range(2):
+            for j in range(height):
+                for i in range(width):
+                    index = j * width + i
+                    cValue = data[index]
+                    if cValue == 2:
+                        l = (0 if i == 0 else data[index - 1])
+                        r = (0 if i == (width - 1) else data[index + 1])
+                        t = (0 if j == (height - 1) else data[index + width])
+                        b = (0 if j == 0 else data[index - width])
+                        if (l == 0 and r == 2) or (l == 2 and r == 0) or (t == 0 and b == 2) or (t == 2 and b == 0):
+                            data[index] = 0
+
+    def _find_first_empty_point(self, data, width, height):
+        size = len(data)
+
+        for i in range(width):
+            if data[i] == 0:
+                return [i, 0]
+            
+            if data[(height - 1) * width + i] == 0:
+                return [i, (height - 1)]
+        
+        for j in range(height):
+            if data[j * width] == 0:
+                return [0, j]
+            
+            if data[j * width + (width - 1)] == 0:
+                return [(width - 1), j]
+
+    def _find_zero_point(self, data, width, height, point):
+        finds = []
+        x = point[0]
+        y = point[1]
+        for _j in range(y - 1, y + 2):
+            for _i in range(x - 1, x + 2):
+                if _j == y or _i == x:
+                    index = _j * width + _i
+                    if data[index] == 0:
+                        data[index] = 255
+                        finds.append([_i, _j])
+        return finds
+
+    def _fill_map_data(self, data, width, height, fill):
+        self._fill_map_data_2(data, width, height)
+
+        size = len(data)
+        ssize = 3
+            
+        for it in range(2):
+            for i in range(width):
+                startY = -1
+                isEmpty = False
+                for j in range(height):
+                    index = j * width + i
+                    if data[index] != 0:
+                        if isEmpty and startY >= 0:
+                            if (j - startY - 1) <= ssize:
+                                for _j in range(startY + 1, j):
+                                    num = 0
+                                    if i > 0 and _j > 0:
+                                        for __i in range(i - 1, i + 2):
+                                            for __j in range(_j - 1, _j + 2):
+                                                if __i != i and __j != _j:
+                                                    if __i == i or __j == _j:
+                                                        ind = __j * width + __i
+                                                        if ind >= 0 and ind < size and data[__j * width + __i] != 0:
+                                                            num = num + 1
+                                    else:
+                                        num = 5
+
+                                    if num >= 3:
+                                        data[_j * width + i] = fill
+
+                            isEmpty = False
+                        startY = j
+                    else:
+                        if startY >= 0:
+                            isEmpty = True
+
+            for j in range(height):
+                startX = -1
+                isEmpty = False
+                for i in range(width):
+                    index = j * width + i
+                    if data[index] != 0:
+                        if isEmpty and startX >= 0:
+                            if (i - startX - 1) <= ssize:
+                                for _i in range(startX + 1, i):
+                                    num = 0
+                                    if _i > 0 and j > 0:
+                                        for __i in range(_i - 1, _i + 2):
+                                            for __j in range(j - 1, j + 2):
+                                                if __i != _i and __j != j:
+                                                    if __i == _i or __j == j:
+                                                        ind = __j * width + __i
+                                                        if ind >= 0 and ind < size and data[__j * width + __i] != 0:
+                                                            num = num + 1
+                                    else:
+                                        num = 5
+
+                                    if num >= 3:
+                                        data[j * width + _i] = fill
+
+                            isEmpty = False
+
+                        startX = i
+                    else:
+                        if startX >= 0:
+                            isEmpty = True
+
+    def _denoise(self, data, width, height):
+        tmpMapInfo = data.copy()
+        ssize = 20
+        for i in range(width):
+            startY = -1
+            for j in range(height):
+                index = j * width + i
+                if data[index] != 0:
+                    if startY < 0:
+                        startY = j
+                    continue
+
+                if startY != -1 and (j - startY) <= ssize:
+                    isBorder = False
+                    if i == 0 or i == (width - 1) or (j - startY) <= 2:
+                        isBorder = True
+
+                    if not isBorder:
+                        _i = i - 1
+                        isBorder = True
+                        for k in range(startY, j):
+                            if tmpMapInfo[k * width + _i] == 1:
+                                isBorder = False
+                                break
+
+                    if not isBorder:
+                        _i = i + 1
+                        isBorder = True
+                        for k in range(startY, j):
+                            if tmpMapInfo[k * width + _i] == 1:
+                                isBorder = False
+                                break
+
+                    if isBorder:
+                        for k in range(startY, j):
+                            data[k * width + i] = 0
+
+                startY = -1
+
+        for j in range(height):
+            startX = -1
+            for i in range(width):
+                index = j * width + i
+                if data[index] != 0:
+                    if startX < 0:
+                        startX = i
+                    continue
+
+                if startX != -1 and (i - startX) <= ssize:
+                    isBorder = False
+                    if j == 0 or j == (height - 1) or (i - startX) <= 2:
+                        isBorder = True
+
+                    if not isBorder:
+                        _j = j - 1
+                        isBorder = True
+                        for k in range(startX, i):
+                            if tmpMapInfo[_j * width + k] == 1:
+                                isBorder = False
+                                break
+
+                    if not isBorder:
+                        _j = j + 1
+                        isBorder = True
+                        for k in range(startX, i):
+                            if tmpMapInfo[_j * width + k] == 1:
+                                isBorder = False
+                                break
+
+                    if isBorder:
+                        for k in range(startX, i):
+                            data[j * width + k] = 0
+
+                startX = -1
+                
+        ssize = 2
+        for i in range(width):
+            startY = -1
+            for j in range(height):
+                index = j * width + i
+                if data[index] != 0:
+                    if startY < 0:
+                        startY = j
+                    continue
+
+                if startY != -1 and (j - startY) <= ssize:
+                    for k in range(startY, j):
+                        data[k * width + i] = 0
+
+                startY = -1
+
+        for j in range(height):
+            startX = -1
+            for i in range(width):
+                index = j * width + i
+                if data[index] != 0:
+                    if startX < 0:
+                        startX = i
+                    continue
+
+                if startX != -1 and (i - startX) <= ssize:
+                    for k in range(startX, i):
+                        data[j * width + k] = 0
+
+                startX = -1
+
+    def _update_border_value(self, data, width, height, stroke):
+        for j in range(height):
+            for i in range(width):
+                index = j * width + i
+                if data[index] != 0:
+                    if j == 0 or j == (height - 1) or i == 0 or i == (width - 1):
+                        data[index] = stroke
+                    else:
+                        hasFind = False
+                        for _i in range(i - 1, i + 2):
+                            for _j in range(j - 1, j + 2):
+                                if data[_j * width + _i] == 0:
+                                    hasFind = True
+                                    break
+                            if hasFind:
+                                break
+
+                        if hasFind:
+                            data[index] = stroke
+
+    def _fill_cross_line(self, data, width, height, stroke):
+        size = len(data)
+        for i in range(width):
+            startY = -1
+            for j in range(height):
+                index = j * width + i
+                lastY = j - 1
+                if data[index] == stroke and j != (height - 1):
+                    if startY < 0:
+                        startY = j
+                    continue
+
+                if startY >= 0:
+                    if j == (height - 1) and data[index] == stroke:
+                        lastY = j
+
+                    if lastY == startY:
+                        startY = -1
+                        continue
+
+                    crossNum = 0
+                    for _j in range(startY, lastY + 1):
+                        _i = i - 1
+                        if _i >= 0:
+                            cIndex = _j * width + _i
+                            if cIndex < size and data[cIndex] == stroke:
+                                crossNum = crossNum + 1
+
+                        _i = i + 1
+                        if _i < width:
+                            cIndex = _j * width + _i
+                            if cIndex < size and data[cIndex] == stroke:
+                                crossNum = crossNum + 1
+
+                        if crossNum > 2:
+                            break
+
+                    if crossNum > 2:
+                        for _j in range(startY, lastY + 1):
+                            _i = i - 1
+                            if _i >= 0:
+                                cIndex = _j * width + _i
+                                if cIndex < size and data[cIndex] == 0:
+                                    data[cIndex] = 1
+
+                            _i = i + 1
+                            if _i < width:
+                                cIndex = _j * width + _i
+                                if cIndex < size and data[cIndex] == 0:
+                                    data[cIndex] = 1
+
+                startY = -1
+
+        for j in range(height):
+            startX = -1
+            for i in range(width):
+                index = j * width + i
+                lastX = i - 1
+                if data[index] == stroke and i != (width - 1):
+                    if startX < 0:
+                        startX = i
+                    continue
+
+                if startX >= 0:
+                    if data[index] == stroke and i == (width - 1):
+                        lastX = i
+
+                    if lastX == startX:
+                        startX = -1
+                        continue
+
+                    crossNum = 0
+                    for _i in range(startX, lastX + 1):
+                        _j = j - 1
+                        if _j >= 0:
+                            cIndex = _j * width + _i
+                            if cIndex < size and data[cIndex] == stroke:
+                                crossNum = crossNum + 1
+
+                        _j = j + 1
+                        if _j < width:
+                            cIndex = _j * width + _i
+                            if cIndex < size and data[cIndex] == stroke:
+                                crossNum = crossNum + 1
+
+                        if crossNum > 2:
+                            break
+
+                    if crossNum > 2:
+                        for _i in range(startX, lastX + 1):
+                            _j = j - 1
+                            if _j >= 0:
+                                cIndex = _j * width + _i
+                                if cIndex < size and data[cIndex] == 0:
+                                    data[cIndex] = 1
+
+                            _j = j + 1
+                            if _j < width:
+                                cIndex = _j * width + _i
+                                if cIndex < size and data[cIndex] == 0:
+                                    data[cIndex] = 1
+
+                startX = -1
+                
+        for i in range(len(data)):
+            if data[i] == stroke:
+                data[i] = 1
+                
+        self._update_border_value(
+            data, width, height, stroke)
+
+    def _check_intersect(self, arr1, arr2) -> list[int]:
+        if arr1[0] >= arr2[1] or arr2[0] >= arr1[1]:
+            return None
+
+        def sort_data(a, b):
+            return a - b
+
+        tmp = arr1 + arr2
+        tmp.sort(key=cmp_to_key(sort_data))
+        return [tmp[1], tmp[2]]
+
+    def _find_original_points(self, original_data, data, width, xs, ys) -> float:
+        if xs[0] > xs[1]:
+            tmp = xs[0]
+            xs[0] = xs[1]
+            xs[1] = tmp
+
+        if ys[0] > ys[1]:
+            tmp = ys[0]
+            ys[0] = ys[1]
+            ys[1] = tmp
+
+        num = 0
+        for i in range(xs[0], xs[1] + 1):
+            for j in range(ys[0], ys[1] + 1):
+                value = original_data[j * width + i]
+                if value != 0:
+                    num = num + 1
+
+        weight = num / ((xs[1] - xs[0] + 1) * (ys[1] - ys[0] + 1))
+        if weight > 0.5:
+            size = len(data)
+            for i in range(xs[0], xs[1] + 1):
+                for j in range(ys[0], ys[1] + 1):
+                    nIndex = j * width + i
+                    if nIndex < size:
+                        data[nIndex] = 1
+        return weight
+
+    def _add_line(self, line, covertlines, allLines):
+        aLine = ALine()
+        if line.ishorizontal:
+            aLine.p0.y = line.y
+            aLine.p1.y = line.y
+            if line.findEnd:
+                aLine.p0.x = line.x[0]
+                aLine.p1.x = line.x[1]
+            else:
+                aLine.p0.x = line.x[1]
+                aLine.p1.x = line.x[0]
+            aLine.length = abs(line.x[1] - line.x[0])
+        else:
+            aLine.p0.x = line.x
+            aLine.p1.x = line.x
+            aLine.length = abs(line.y[1] - line.y[0])
+            if line.findEnd:
+                aLine.p0.y = line.y[0]
+                aLine.p1.y = line.y[1]
+            else:
+                aLine.p0.y = line.y[1]
+                aLine.p1.y = line.y[0]
+        covertlines.append(aLine)
+        allLines.append(line)
+
+    def _find_bounds(self, data, width, horizontalLines, verticalLines) -> list[Paths]:
+        paths = []
+        size = len(data)
+
+        while horizontalLines:
+            startLine = horizontalLines.pop(0)
+            startLine.findEnd = True
+            covertlines = []
+            allLines = []
+            self._add_line(startLine, covertlines, allLines)
+            while True:
+                lastLine = allLines[len(allLines) - 1]
+                if lastLine.ishorizontal:
+                    hasFind = False
+
+                    lines = verticalLines.copy()
+                    for i in range(len(lines)):
+                        vLine = lines[i]
+
+                        x = lastLine.x[0]
+                        if lastLine.findEnd:
+                            x = lastLine.x[1]
+                            
+                        if x == vLine.x:
+                            if lastLine.y == vLine.y[0]:
+                                vLine.findEnd = True
+                                self._add_line(
+                                    vLine, covertlines, allLines)
+                                del verticalLines[i]
+                                hasFind = True
+                                break
+                            elif lastLine.y == vLine.y[1]:
+                                vLine.findEnd = False
+                                self._add_line(
+                                    vLine, covertlines, allLines)
+                                del verticalLines[i]
+                                hasFind = True
+                                break
+                            elif lastLine.y > vLine.y[0] and lastLine.y < vLine.y[1]:
+                                if lastLine.findEnd:
+                                    nIndex = (lastLine.y + 1) * width + x - 1
+                                    if nIndex < size and data[nIndex] == 0:
+                                        vLine.y[1] = lastLine.y
+                                        vLine.findEnd = False
+                                    else:
+                                        vLine.y[0] = lastLine.y
+                                        vLine.findEnd = True
+                                else:
+                                    nIndex = (lastLine.y + 1) * width + x + 1
+                                    if nIndex < size and data[nIndex] == 0:
+                                        vLine.y[1] = lastLine.y
+                                        vLine.findEnd = False
+                                    else:
+                                        vLine.y[0] = lastLine.y
+                                        vLine.findEnd = True
+
+                                self._add_line(
+                                    vLine, covertlines, allLines)
+                                del verticalLines[i]
+                                hasFind = True
+                                break
+
+                    if not hasFind:
+                        break
+                else:
+                    hasFind = False
+                    _y = lastLine.y[0]
+                    if lastLine.findEnd:
+                        _y = lastLine.y[1]
+
+                    if _y == startLine.y and lastLine.x == startLine.x[0]:
+                        break
+
+                    lines = horizontalLines.copy()
+                    for i in range(len(lines)):
+                        hLine = lines[i]
+
+                        y = lastLine.y[0]
+                        if lastLine.findEnd:
+                            y = lastLine.y[1]
+
+                        if y == hLine.y:
+                            if lastLine.x == hLine.x[0]:
+                                hLine.findEnd = True
+                                self._add_line(
+                                    hLine, covertlines, allLines)
+                                del horizontalLines[i]
+                                hasFind = True
+                                break
+                            elif lastLine.x == hLine.x[1]:
+                                hLine.findEnd = False
+                                self._add_line(
+                                    hLine, covertlines, allLines)
+                                del horizontalLines[i]
+                                hasFind = True
+                                break
+                            elif lastLine.x > hLine.x[0] and lastLine.x < hLine.x[1]:
+                                if lastLine.findEnd:
+                                    nIndex = (y - 1) * width + lastLine.x - 1
+                                    if nIndex < size and data[nIndex] == 0:
+                                        hLine.x[0] = lastLine.x
+                                        hLine.findEnd = True
+                                    else:
+                                        hLine.x[1] = lastLine.x
+                                        hLine.findEnd = False
+                                else:
+                                    nIndex = (y + 1) * width + lastLine.x - 1
+                                    if nIndex < size and data[nIndex] == 0:
+                                        hLine.x[0] = lastLine.x
+                                        hLine.findEnd = True
+                                    else:
+                                        hLine.x[1] = lastLine.x
+                                        hLine.findEnd = False
+
+                                self._add_line(
+                                    hLine, covertlines, allLines)
+                                del horizontalLines[i]
+                                hasFind = True
+                                break
+
+                    if not hasFind:
+                        break
+                    
+            totalLength = 0
+            for i in range(len(covertlines)):
+                item = covertlines[i]
+                totalLength = totalLength + item.length
+
+            paths.append(Paths(
+                clines = covertlines,
+                alines = allLines,
+                length = totalLength
+            ))
+
+        return paths
+
+    def _fill_map_data_2(self, data, width, height):
+        while True:
+            first_point = self._find_first_empty_point(
+                data, width, height)
+            if first_point is None:
+                break
+
+            data[first_point[1] * width + first_point[0]] = 255
+            needFindPoints = [first_point]
+            while needFindPoints:
+                needFindPoints.extend(self._find_zero_point(data, width, height, needFindPoints.pop(0)))
+                
+        for i in range(len(data)):
+            if data[i] == 0:
+                data[i] = 3
+            elif data[i] == 255:
+                data[i] = 0
+
+    def _link_adjacent_areas(self, original_data, data, width, height, stroke):
+        horizontalLines = []
+        verticalLines = []
+        DIR_LEFT = 1
+        DIR_RIGHT = 2
+        DIR_TOP = 3
+        DIR_BOTTOM = 4
+        size = len(data)
+        for i in range(width):
+            startY = -1
+            for j in range(height):
+                index = j * width + i
+                lastY = j - 1
+                if data[index] == stroke and j != height - 1:
+                    isCross = False
+                    if (i != 0 and data[index - 1] == stroke) or (i != (width - 1) and data[index + 1] == stroke):
+                        isCross = True
+                    if startY < 0 and isCross:
+                        startY = j
+                        continue
+
+                    if not isCross:
+                        continue
+
+                    lastY = j
+
+                if startY >= 0:
+                    if j == (height - 1) and data[index] == stroke:
+                        lastY = j
+
+                    if lastY == startY:
+                        startY = -1
+                        continue
+
+                    isCross = False
+                    direction = DIR_LEFT
+                    lastIndex = lastY * width + i
+                    if data[lastIndex - 1] == stroke or data[lastIndex + 1] == stroke:
+                        isCross = True
+
+                    if i == 0:
+                        direction = DIR_LEFT
+                    elif i == (width - 1):
+                        direction = DIR_RIGHT
+                    elif data[lastIndex - 1] == stroke:
+                        if data[lastIndex + 1] != 0:
+                            direction = DIR_LEFT
+                        else:
+                            direction = DIR_RIGHT
+                    elif data[lastIndex + 1] == stroke:
+                        if data[lastIndex - 1] != 0:
+                            direction = DIR_RIGHT
+                        else:
+                            direction = DIR_LEFT
+
+                    if isCross:
+                        verticalLines.append(CLine(x = i, y = [startY, lastY], ishorizontal = False, direction = direction, length = (lastY - startY)))
+                        startY = lastY
+                        continue
+                startY = -1
+
+        for j in range(height):
+            startX = -1
+            for i in range(width):
+                index = j * width + i
+                lastX = i - 1
+                if data[index] == stroke and i != (width - 1):
+                    isCross = False
+                    nIndex = index - width
+                    nnIndex = index + width
+                    if data[nIndex] == stroke or data[nnIndex] == stroke:
+                        isCross = True
+                    if startX < 0 and isCross:
+                        startX = i
+                        continue
+                    if not isCross:
+                        continue
+
+                    lastX = i
+
+                if startX >= 0:
+                    if data[index] == stroke and i == (width - 1):
+                        lastX = i
+
+                    if lastX == startX:
+                        startX = -1
+                        continue
+
+                    isCross = False
+                    direction = DIR_TOP
+                    lastIndex = j * width + lastX
+                    nIndex = lastIndex - width
+                    nnIndex = lastIndex + width
+                    if (nIndex >= 0 and data[nIndex] == stroke) or (nnIndex < size and data[nnIndex] == stroke):
+                        isCross = True
+
+                    if j == 0:
+                        direction = DIR_BOTTOM
+                    elif j == (height - 1):
+                        direction = DIR_TOP
+                    elif data[nIndex] == stroke:
+                        if data[nnIndex] != 0:
+                            direction = DIR_BOTTOM
+                        else:
+                            direction = DIR_TOP
+                    elif data[nnIndex] == stroke:
+                        if data[nIndex] != 0:
+                            direction = DIR_TOP
+                        else:
+                            direction = DIR_BOTTOM
+
+                    if isCross:
+                        horizontalLines.append(CLine(x = [startX, lastX], y = j, ishorizontal = True, direction = direction, length = (lastX - startX)))
+                        startX = lastX
+                        continue
+
+                startX = -1
+        
+        paths = self._find_bounds(data, width, horizontalLines, verticalLines)
+        needFill = len(paths) > 1
+        while len(paths) > 1:
+            lines = paths.pop(0).alines
+
+            for l in range(len(lines)):
+                line = lines[l]
+                for i in range(len(paths)):
+                    nLines = paths[i].alines
+                    for j in range(len(nLines)):
+                        nLine = nLines[j]
+                        if line.ishorizontal == False and nLine.ishorizontal == False:
+                            if line.direction != nLine.direction:
+                                if (line.x > nLine.x and line.direction == DIR_LEFT) or (line.x < nLine.x and line.direction == DIR_RIGHT):
+                                    if abs(line.x - nLine.x) <= 10:
+                                        _ys = self._check_intersect(
+                                            line.y, nLine.y)
+                                        if _ys != None:
+                                            xs = [line.x + 1, nLine.x - 1]
+                                            if line.x > nLine.x:
+                                                xs = [nLine.x + 1, line.x - 1]
+                                            weight = self._find_original_points(
+                                                original_data, data, width, xs, _ys)
+                        elif line.ishorizontal == True and nLine.ishorizontal == True:
+                            if line.direction != nLine.direction:
+                                if (line.y > nLine.y and line.direction == DIR_BOTTOM) or (line.y < nLine.y and line.direction == DIR_TOP):
+                                    if abs(line.y - nLine.y) <= 10:
+                                        _xs = self._check_intersect(
+                                            line.x, nLine.x)
+                                        if _xs != None:
+                                            ys = [line.y + 1, nLine.y - 1]
+                                            if line.y > nLine.y:
+                                                ys = [nLine.y + 1, line.y - 1]
+                                            weight = self._find_original_points(
+                                                original_data, data, width, _xs, ys)
+
+        if needFill:
+            for i in range(len(data)):
+                if data[i] == stroke:
+                    data[i] = 1
+
+            self._fill_map_data_2(data, width, height)
+            self._update_border_value(
+                data, width, height, stroke)
+            self._fill_cross_line(
+                data, width, height, stroke)
+
+    def _fill_angle(self, data, width, stroke, angle):
+        bottom = 5
+        right = 6
+        top = 7
+        left = 8
+
+        l1 = angle.lines[0]
+        l2 = angle.lines[len(angle.lines) - 1]
+        if len(angle.lines) == 2 or len(angle.lines) > 22:
+            nextAngle = Angle(lines = [l2])
+            if l2.ishorizontal:
+                nextAngle.horizontalDir = right if l2.findEnd else left
+            else:
+                nextAngle.verticalDir = top if l2.findEnd else bottom
+            return nextAngle
+
+        minx = None
+        miny = None
+        maxx = None
+        maxy = None
+        if l1.ishorizontal:
+            if angle.horizontalDir == right:
+                minx = l1.x[1]
+            else:
+                maxx = l1.x[0]
+
+            if angle.verticalDir == top:
+                miny = l1.y
+            else:
+                maxy = l1.y
+
+            if l2.ishorizontal:
+                if angle.horizontalDir == right:
+                    maxx = l2.x[0]
+                else:
+                    minx = l2.x[1]
+
+                if angle.verticalDir == top:
+                    maxy = l2.y
+                else:
+                    miny = l2.y
+            else:
+                if angle.horizontalDir == right:
+                    maxx = l2.x
+                else:
+                    minx = l2.x
+                if angle.verticalDir == top:
+                    maxy = l2.y[0]
+                else:
+                    miny = l2.y[1]
+        else:
+            if angle.verticalDir == top:
+                miny = l1.y[1]
+            else:
+                maxy = l1.y[0]
+
+            if angle.horizontalDir == right:
+                minx = l1.x
+            else:
+                maxx = l1.x
+
+            if l2.ishorizontal:
+                if angle.horizontalDir == right:
+                    maxx = l2.x[0]
+                else:
+                    minx = l2.x[1]
+                if angle.verticalDir == top:
+                    maxy = l2.y
+                else:
+                    miny = l2.y
+
+            else:
+                if angle.horizontalDir == right:
+                    maxx = l2.x
+                else:
+                    minx = l2.x
+
+                if angle.verticalDir == top:
+                    maxy = l2.y[0]
+                else:
+                    miny = l2.y[1]
+
+        if minx is None or miny is None or maxx is None or maxy is None:
+            nextAngle = Angle(lines = [l2])
+            if (l2.ishorizontal):
+                nextAngle.horizontalDir = right if l2.findEnd else left
+            else:
+                nextAngle.verticalDir = top if l2.findEnd else bottom
+            return nextAngle
+
+        if l1.ishorizontal and l2.ishorizontal and ((maxy - miny) <= 3):
+            if angle.horizontalDir == right:
+                minx = l1.x[0]
+                maxx = l2.x[1]
+            else:
+                minx = l2.x[0]
+                maxx = l1.x[1]
+        elif not l1.ishorizontal and not l2.ishorizontal and ((maxx - minx) <= 3):
+            if angle.verticalDir == top:
+                miny = l1.y[0]
+                maxy = l2.y[1]
+            else:
+                miny = l2.y[0]
+                maxy = l1.y[1]
+        
+        num = 0
+        for i in range(minx, maxx + 1):
+            for j in range(miny, maxy + 1):
+                index = j * width + i
+                if data[index] == 0:
+                    num = num + 1
+
+        if num < 20 or num < (((maxx - minx + 1) * (maxy - miny + 1) * 2) / 3):
+            for i in range(minx, maxx + 1):
+                for j in range(miny, maxy + 1):
+                    index = j * width + i
+                    if index < len(data) and data[index] == 0:
+                        data[index] = stroke
+                        
+        nextAngle = Angle(lines = [l2])
+        if l2.ishorizontal:
+            nextAngle.horizontalDir = right if l2.findEnd else left
+        else:
+            nextAngle.verticalDir = top if l2.findEnd else bottom
+        return nextAngle
+
+    def _find_outline(self, data, width, height, stroke, first):
+        horizontalLines = []
+        verticalLines = []
+        size = len(data)
+
+        for i in range(width):
+            startY = -1
+            for j in range(height):
+                index = j * width + i
+                lastY = j - 1
+                if data[index] == stroke and j != (height - 1):
+                    isCross = False
+                    if (i != 0 and data[index - 1] == stroke) or (i != (width - 1) and data[index + 1] == stroke):
+                        isCross = True
+                    if startY < 0 and isCross:
+                        startY = j
+                        continue
+                    if not isCross:
+                        continue
+                    lastY = j
+
+                if startY >= 0:
+                    if j == (height - 1) and data[index] == stroke:
+                        lastY = j
+                    if lastY == startY:
+                        startY = -1
+                        continue
+                    isCross = False
+                    lastIndex = lastY * width + i
+                    if data[lastIndex - 1] == stroke or data[lastIndex + 1] == stroke:
+                        isCross = True
+
+                    if isCross:
+                        verticalLines.append(CLine(x = i, y = [startY, lastY], ishorizontal = False, length = (lastY - startY)))
+                        startY = lastY
+                        continue
+                startY = -1
+
+        for j in range(height):
+            startX = -1
+            for i in range(width):
+                index = j * width + i
+                lastX = i - 1
+                if data[index] == stroke and i != (width - 1):
+                    isCross = False
+                    if data[index - width] == stroke or data[index + width] == stroke:
+                        isCross = True
+                    if startX < 0 and isCross:
+                        startX = i
+                        continue
+                    if not isCross:
+                        continue
+
+                    lastX = i
+
+                if startX >= 0:
+                    if data[index] == stroke and i == (width - 1):
+                        lastX = i
+
+                    if lastX == startX:
+                        startX = -1
+                        continue
+                    isCross = False
+                    nIndex = lastIndex - width
+                    nnIndex = lastIndex + width
+                    if (nIndex >= 0 and data[nIndex] == stroke) or (nnIndex < size and data[nnIndex] == stroke):
+                        isCross = True
+
+                    if isCross:
+                        horizontalLines.append(CLine(x = [startX, lastX], y = j, ishorizontal = True, length = (lastX - startX)))
+                        startX = lastX
+                        continue
+                startX = -1
+
+        if not horizontalLines:
+            return False
+
+        paths = self._find_bounds(
+            data, width, horizontalLines, verticalLines)
+        
+        covertlines = None
+        allLines = None
+        totalLen = 0
+        tmp = []
+        for i in range(len(paths)):
+            item = paths[i]
+            plen = item.length
+            if plen > totalLen:
+                if covertlines and totalLen < 80:
+                    tmp.append(covertlines)
+                totalLen = plen
+                covertlines = item.clines
+                allLines = item.alines
+            else:
+                if plen < 80:
+                    tmp.append(item.clines)
+
+        if first and tmp:
+           clearPos = []
+           for i in range(len(tmp)):
+               clearPos.append([tmp[i][0].p0.x, tmp[i][0].p0.y])
+
+           while clearPos:
+               pos = clearPos.pop()
+               x = pos[0]
+               y = pos[1]
+               data[y * width + x] = 0
+               for _i in range(x - 1, x + 2):
+                   for _j in range(y - 1, y + 2):
+                       if _i == x or _j == y:
+                           index = (_j * width) + _i
+                           if index < len(data) and data[index] != 0:
+                               clearPos.append([_i, _j])
+
+        bottom = 5
+        right = 6
+        top = 7
+        left = 8
+        dirnone = 0
+
+        angle = Angle()
+        for i in range(len(allLines) + 1):
+            line = allLines[0 if i == len(allLines) else i]
+
+            if i == 0:
+                angle.lines.append(line)
+                angle.horizontalDir = right
+            else:
+                if line.ishorizontal:
+                    horizontalDir = right if line.findEnd else left
+                    if angle.horizontalDir != dirnone and angle.horizontalDir != horizontalDir:
+                        angle = self._fill_angle(
+                            data, width, stroke, angle)
+
+                    if angle.horizontalDir == dirnone:
+                        angle.horizontalDir = horizontalDir
+                    angle.lines.append(line)
+                else:
+                    verticalDir = top if line.findEnd else bottom
+                    if angle.verticalDir != dirnone and angle.verticalDir != verticalDir:
+                        angle = self._fill_angle(
+                            data, width, stroke, angle)
+                    if angle.verticalDir == dirnone:
+                        angle.verticalDir = verticalDir
+                    angle.lines.append(line)
+
+                if line.length >= 7 or i == len(allLines):
+                    angle = self._fill_angle(
+                        data, width, stroke, angle)
+
+        return True
+
+    def _find_obstacle_border(self, data, width, height, stroke):
+        size = len(data)
+        for j in range(height):
+            for i in range(width):
+                index = j * width + i
+                if data[index] == stroke:
+                    if j == 0 or j == (height - 1) or i == 0 or i == (width - 1):
+                        data[index] = 2
+                        continue
+                    hasFind = False
+                    for _i in range(i - 1, i + 2):
+                        for _j in range(j - 1, j + 2):
+                            nIndex = _j * width + _i
+                            if nIndex < size and data[nIndex] != stroke and data[nIndex] != 2:
+                                hasFind = True
+                                break
+                        if hasFind:
+                            break
+
+                    if hasFind:
+                        data[index] = 2
+
+    def _clean_small_obstacle(self, data, width, height, stroke):
+        for i in range(width):
+            startY = -1
+            for j in range(height):
+                index = j * width + i
+                if data[index] == stroke:
+                    if startY < 0:
+                        startY = j
+                    continue
+                if startY != -1 and (j - startY) <= 3:
+                    for k in range(startY, j):
+                        data[k * width + i] = 1
+                startY = -1
+        for j in range(height):
+            startX = -1
+            for i in range(width):
+                index = j * width + i
+                if data[index] == stroke:
+                    if startX < 0:
+                        startX = i
+                    continue
+                if startX != -1 and (i - startX) <= 3:
+                    for k in range(startX, i):
+                        data[j * width + k] = 1
+                startX = -1
+
+    def _calculate_charger_position(self, data, width, height, stroke, charger_position):
+        vLines = [] 
+        hLines = []
+        for i in range(width):
+            startY = -1
+            for j in range(height):
+                index = j * width + i
+                lastY = j - 1
+                if data[index] == stroke and j != (height - 1):
+                    isCross = False
+                    if (i != 0 and data[index - 1] == stroke) or (i != width - 1 and data[index + 1] == stroke):
+                        isCross = True
+                    if startY < 0 and isCross:
+                        startY = j
+                        continue
+                    if  not isCross:
+                        continue
+                    lastY = j
+                if startY >= 0:
+                    if j == height - 1 and data[index] == stroke:
+                        lastY = j
+                    if lastY == startY:
+                        startY = -1
+                        continue
+                    isCross = False
+                    lastIndex = lastY * width + i
+                    if data[lastIndex - 1] == stroke or data[lastIndex + 1] == stroke:
+                        isCross = True
+
+                    if isCross:
+                        vLines.append([[i, startY],[i, lastY]])
+                        startY = lastY
+                        continue
+                startY = -1
+
+        for j in range(height):
+            startX = -1
+            for i in range(width):
+                index = j * width + i
+                lastX = i - 1
+                if data[index] == stroke and i != width - 1:
+                    isCross = False
+                    if data[index - width] == stroke or data[index + width] == stroke:
+                        isCross = True
+                    if startX < 0 and isCross:
+                        startX = i
+                        continue
+                    if not isCross:
+                        continue
+                    lastX = i
+                if startX >= 0:
+                    if data[index] == stroke and i == width - 1:
+                        lastX = i
+
+                    if lastX == startX:
+                        startX = -1
+                        continue
+                    isCross = False
+                    lastIndex = j * width + lastX
+                    if data[lastIndex - width] == stroke or data[lastIndex + width] == stroke:
+                        isCross = True
+
+                    if isCross:
+                        hLines.append([[startX, j],[lastX, j]])
+
+                        startX = lastX
+                        continue
+                startX = -1
+
+        cX = math.floor(charger_position.x)
+        cY = math.floor(charger_position.y)
+        if abs(charger_position.a - 180) <= 30:
+            charger_position.a = 180
+            lastX = None
+            for i in range(len(vLines)):
+                line = vLines[i]
+                lx = line[0][0]
+                minY = line[0][1] if line[0][1] < line[1][1] else line[1][1]
+                maxY = line[0][1] if line[0][1] > line[1][1] else line[1][1]
+                if lx >= cX and cY >= minY and cY <= maxY:
+                    if lastX == None or lx < lastX:
+                        lastX = lx
+            if lastX != None:
+                if lastX - cX <= 11:
+                    charger_position.a = 180
+                    charger_position.x = lastX + 0.5
+        elif abs(charger_position.a - 360) <= 30 or abs(charger_position.a) <= 3:
+            charger_position.a = 360
+            lastX = None
+            for i in range(len(vLines)):
+                line = vLines[i]
+                lx = line[0][0]
+                minY = line[0][1] if line[0][1] < line[1][1] else line[1][1]
+                maxY = line[0][1] if line[0][1] > line[1][1] else line[1][1]
+                if lx <= cX and cY >= minY and cY <= maxY:
+                    if lastX == None or lx > lastX:
+                        lastX = lx
+            if lastX != None:
+                if cX - lastX <= 11:
+                    charger_position.a = 360
+                    charger_position.x = lastX + 0.5
+        elif abs(abs(charger_position.a - 270) <= 30):
+            lastY = None
+            for i in range(len(hLines)):
+                line = hLines[i]
+                ly = line[0][1]
+                minX = line[0][0] if line[0][0] < line[1][0] else line[1][0]
+                maxX = line[0][0] if line[0][0] > line[1][0] else line[1][0]
+                if ly >= cY and cX >= minX and cX <= maxX:
+                    if lastY == None or ly < lastY:
+                        lastY = ly
+            if lastY != None:
+                if lastY - cY <= 11:
+                    charger_position.a = 270
+                    charger_position.y = lastY + 0.5
+        elif abs(abs(charger_position.a - 90) <= 30):
+            lastY = None
+            for i in range(len(hLines)):
+                line = hLines[i]
+                ly = line[0][1]
+                minX = line[0][0] if line[0][0] < line[1][0] else line[1][0]
+                maxX = line[0][0] if line[0][0] > line[1][0] else line[1][0]
+                if ly <= cY and cX >= minX and cX <= maxX:
+                    if lastY == None or ly > lastY:
+                        lastY = ly
+            if lastY != None:
+                if cY - lastY <= 11:
+                    charger_position.a = 90
+                    charger_position.y = lastY + 0.5
+
+        return charger_position
+
+    def _merge_saved_map_data(self, map_data, saved_map_data, original_data = None):
+        if saved_map_data:
+            maxX = map_data.dimensions.left + \
+                (map_data.dimensions.width * map_data.dimensions.grid_size)
+            maxY = map_data.dimensions.top + \
+                (map_data.dimensions.height * map_data.dimensions.grid_size)
+
+            if maxX < saved_map_data.dimensions.left + (saved_map_data.dimensions.width * saved_map_data.dimensions.grid_size):
+                maxX = saved_map_data.dimensions.left + \
+                    (saved_map_data.dimensions.width *
+                        saved_map_data.dimensions.grid_size)
+
+            if maxY < saved_map_data.dimensions.top + (saved_map_data.dimensions.height * saved_map_data.dimensions.grid_size):
+                maxY = saved_map_data.dimensions.top + \
+                    (saved_map_data.dimensions.height *
+                        saved_map_data.dimensions.grid_size)
+
+            left = map_data.dimensions.left
+            top = map_data.dimensions.top
+
+            if saved_map_data.dimensions.left < left:
+                left = saved_map_data.dimensions.left
+
+            if saved_map_data.dimensions.top < top:
+                top = saved_map_data.dimensions.top
+
+            width = int((maxX - left) / saved_map_data.dimensions.grid_size)
+            height = int((maxY - top) / saved_map_data.dimensions.grid_size)
+            
+            si = int((saved_map_data.dimensions.left - left) /
+                        saved_map_data.dimensions.grid_size)
+            sj = int((saved_map_data.dimensions.top - top) /
+                        saved_map_data.dimensions.grid_size)
+
+            sim = (si + saved_map_data.dimensions.width)
+            sjm = (sj + saved_map_data.dimensions.height)
+
+            ni = int((map_data.dimensions.left - left) /
+                        map_data.dimensions.grid_size)
+            nj = int((map_data.dimensions.top - top) /
+                        map_data.dimensions.grid_size)
+
+            nim = ni + map_data.dimensions.width
+            njm = nj + map_data.dimensions.height
+            
+            pixel_type = np.zeros((width, height), np.uint8)
+            data = map_data.optimized_pixel_type if map_data.optimized_pixel_type is not None else map_data.pixel_type
+            
+            for j in range(height):
+                for i in range(width):
+                    if j >= sj and i >= si and j < sjm and i < sim:
+                        saved_value = int(saved_map_data.pixel_type[(i - si), (j - sj)])
+                    else:
+                        saved_value = 0
+
+                    if j >= nj and i >= ni and j < njm and i < nim:
+                        clean_value = int(data[(i - ni), (j - nj)])
+                    else:
+                        clean_value = 0
+                        
+                    if saved_value != 0:
+                        if saved_value != 255:
+                            pixel_type[i, j] = saved_value
+                        else:
+                            if clean_value != 0 and clean_value != 255:
+                                pixel_type[i, j] = 254
+                            else:
+                                pixel_type[i, j] = 255
+                    elif clean_value != 0:
+                        if clean_value == 255:
+                            pixel_type[i, j] = 255
+                        else:
+                            pixel_type[i, j] = 254
+
+            if original_data is not None:
+                for j in range(height):
+                    for i in range(width):
+                        if j >= nj and i >= ni and j < njm and i < nim:
+                            if original_data[(j - nj) * map_data.dimensions.width + (i - ni)] == 2 and pixel_type[i, j] != 0:
+                                dis = 3
+                                hasBorder = False
+                                for _j in range(j - dis, j + dis + 1):
+                                    for _i in range(i - dis, i + dis):
+                                        if _j < 0 or _i < 0 or _j >= height or _i >= width:
+                                            continue
+                                        if hasBorder:
+                                            break
+                                        if pixel_type[_i, _j] == 255:
+                                            hasBorder = True
+                                            break
+
+                                if not hasBorder:
+                                    pixel_type[i, j] = 251
+
+            map_data.optimized_pixel_type = pixel_type
+            map_data.optimized_dimensions = MapImageDimensions(top, left, height, width, map_data.dimensions.grid_size)
+
+    def optimize(self, map_data, saved_map_data = None, js_optimizer = True):
+        if map_data.saved_map:
+            return map_data
+
+        try:
+            now = time.time()
+            if js_optimizer:
+                if self._js_optimizer == None:                
+                    self._js_optimizer = MiniRacer()
+                    self._js_optimizer.eval(base64.b64decode(MAP_OPTIMIZER_JS))
+                    
+                data = map_data.pixel_type.tolist()
+                data_size = [map_data.dimensions.left, map_data.dimensions.top, map_data.dimensions.width, map_data.dimensions.height, map_data.dimensions.grid_size]
+                saved_data = saved_map_data.pixel_type.tolist() if saved_map_data else None
+                saved_data_size = [saved_map_data.dimensions.left, saved_map_data.dimensions.top, saved_map_data.dimensions.width, saved_map_data.dimensions.height, saved_map_data.dimensions.grid_size] if saved_map_data else None
+                charger_position = [map_data.charger_position.x, map_data.charger_position.y, map_data.charger_position.a] if map_data.charger_position else None
+
+                result = self._js_optimizer.call('optimize', data, data_size, saved_data, saved_data_size, charger_position)
+                if result and result[0]:
+                    map_data.optimized_pixel_type = np.array(result[0], dtype=np.uint8)
+            
+                    dimensions = result[1]
+                    map_data.optimized_dimensions = MapImageDimensions(dimensions[1], dimensions[0], dimensions[3], dimensions[2], map_data.dimensions.grid_size)
+
+                    if result[2]:
+                        charger = result[2]
+                        map_data.optimized_charger_position = Point(charger[0], charger[1], charger[2])
+            else:
+                width = map_data.dimensions.width
+                height = map_data.dimensions.height
+                clean_data = np.zeros((width * height), np.uint8).tolist()
+        
+                data_map = {255:2, 253:1, 250:3}
+                pointNum = 0
+                for j in range(height):
+                    for i in range(width):
+                        index = j * width + i
+                        clean_data[index] = int(map_data.pixel_type[i, j])
+                        if clean_data[index]:
+                            pointNum = pointNum + 1
+                            clean_data[index] = data_map.get(clean_data[index], 0)
+
+                original_data = clean_data.copy()
+                pixel_type = np.zeros((width, height), np.uint8)
+
+                self._clean_wall(clean_data, width, height)
+                self._fill_map_data(clean_data, width, height, 3)
+                self._denoise(clean_data, width, height)
+                self._update_border_value(clean_data, width, height, 5)
+                self._fill_cross_line(clean_data, width, height, 5)
+                self._link_adjacent_areas(original_data, clean_data, width, height, 5)
+        
+                result = self._find_outline(clean_data, width, height, 5, True)
+                if result:
+                    self._fill_map_data_2(clean_data, width, height)
+                    self._update_border_value(clean_data, width, height, 6)
+                    if map_data.charger_position:
+                        new_charger_position = copy.deepcopy(map_data.charger_position)
+                        new_charger_position.x = int((new_charger_position.x - map_data.dimensions.left) / map_data.dimensions.grid_size)
+                        new_charger_position.y = int((new_charger_position.y - map_data.dimensions.top) / map_data.dimensions.grid_size)
+                        if map_data.pixel_type[int(math.floor(new_charger_position.x)), int(math.floor(new_charger_position.y))]:
+                            new_charger_position = self._calculate_charger_position(clean_data, width, height, 6, new_charger_position)
+                            map_data.optimized_charger_position = Point(int(new_charger_position.x * map_data.dimensions.grid_size) + map_data.dimensions.left, int(new_charger_position.y * map_data.dimensions.grid_size) + map_data.dimensions.top, new_charger_position.a)
+                            
+                    self._find_outline(clean_data, width, height, 6, False)
+                    self._fill_map_data_2(clean_data, width, height)
+                    self._update_border_value(clean_data, width, height, 7)
+
+                    if saved_map_data:
+                        self._find_obstacle_border(clean_data, width, height, 3)
+                        self._obstacle_data(original_data, width, height)
+                    else:
+                        self._clean_small_obstacle(clean_data, width, height, 3)        
+        
+                    currentPointNum = 0
+                    data_map = {7:255, 2:255, 3:(0 if saved_map_data else 250)}
+                    for j in range(height):
+                        for i in range(width):
+                            clean_value = clean_data[j * width + i]
+                            if clean_value != 0:
+                                currentPointNum = currentPointNum + 1
+                                pixel_type[i, j] = data_map.get(clean_value, 253)
+
+                    if (not ((currentPointNum * 100) / pointNum) < 50 and pointNum > 2000):
+                        map_data.optimized_pixel_type = pixel_type
+
+                self._merge_saved_map_data(map_data, saved_map_data, original_data)
+
+            _LOGGER.info(
+                "Optimize Map Data: %s:%s took: %.2f",
+                map_data.map_id,
+                map_data.frame_id,
+                time.time() - now,
+            )
+        except Exception as ex:
+            _LOGGER.warning("Optimize map failed: %s", ex)
+
+            self._merge_saved_map_data(map_data, saved_map_data)
+                
+            #_LOGGER.warn(f"""
+            #var data = {map_data.pixel_type.tolist()};
+            #var data_size = {[map_data.dimensions.left, map_data.dimensions.top, map_data.dimensions.width, map_data.dimensions.height, map_data.dimensions.grid_size]};
+            #var saved_data = {saved_map_data.pixel_type.tolist() if saved_map_data else "undefined"};
+            #var saved_data_size = {[saved_map_data.dimensions.left, saved_map_data.dimensions.top, saved_map_data.dimensions.width, saved_map_data.dimensions.height, saved_map_data.dimensions.grid_size] if saved_map_data else "undefined"};
+            #var charger_position = {[map_data.charger_position.x, map_data.charger_position.y, map_data.charger_position.a] if map_data.charger_position else "undefined"};
+            #    """)
+
+        return map_data

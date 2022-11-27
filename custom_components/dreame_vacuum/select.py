@@ -182,7 +182,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         if device.status.selected_map
         and device.status.selected_map.rotation is not None
         else "",
-        exists_fn=lambda description, device: device.status.map_available and device.status.lidar_navigation,
+        exists_fn=lambda description, device: device.status.map_available,
         available_fn=lambda device: bool(
             device.status.selected_map is not None
             and device.status.selected_map.rotation is not None
@@ -203,7 +203,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         value_fn=lambda value, device: device.status.selected_map.map_name
         if device.status.selected_map and device.status.selected_map.map_name
         else "",
-        exists_fn=lambda description, device: device.status.map_available and device.status.lidar_navigation,
+        exists_fn=lambda description, device: device.status.map_available,# and device.status.lidar_navigation,
         available_fn=lambda device: bool(
             device.status.multi_map
             and not device.status.fast_mapping

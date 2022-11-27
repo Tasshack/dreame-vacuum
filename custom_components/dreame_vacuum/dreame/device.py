@@ -242,13 +242,13 @@ class DreameVacuumDevice:
         changed = False
         callbacks = []
         for prop in results:
-            if prop["code"] == 0:
+            if prop["code"] == 0 and "value" in prop:
                 did = int(prop["did"])
                 value = prop["value"]
                 
                 if did in self._dirty_data:
                     if self._dirty_data[did] != value:
-                        _LOGGER.info("Property %s Value Discarded: %s <- %s", DreameVacuumProperty(did).name, value, self._dirty_data[did])
+                        _LOGGER.info("Property %s Value Discarded: %s <- %s", DreameVacuumProperty(did).name, self._dirty_data[did], value)
                     del self._dirty_data[did]
                     continue
 
@@ -288,7 +288,7 @@ class DreameVacuumDevice:
 
         if status is DreameVacuumStatus.STANDBY:
             self._update_property(
-                DreameVacuumProperty.STATE, status.value
+                DreameVacuumProperty.STATE, DreameVacuumState.IDLE.value
             )
 
         self._update_property(
@@ -356,35 +356,36 @@ class DreameVacuumDevice:
     def _water_tank_changed(self, previous_water_tank: Any = None) -> None:
         """Update cleaning mode on device when water tank status is changed."""
         # App does not allow you to update cleaning mode when water tank or mop pad is not installed.
-        new_list = CLEANING_MODE_CODE_TO_NAME.copy()
-        if self.get_property(DreameVacuumProperty.AUTO_MOUNT_MOP) != 1:
-            water_tank = self.status.water_tank
-            if water_tank is DreameVacuumWaterTank.NOT_INSTALLED:
-                new_list.pop(DreameVacuumCleaningMode.MOPPING)
-                new_list.pop(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING)
-                if self.status.cleaning_mode != DreameVacuumCleaningMode.SWEEPING:
-                    # Store current cleaning mode for future use when water tank is reinstalled                
-                    if not self.status.started:
-                        self._previous_cleaning_mode = self.status.cleaning_mode
-                        self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING.value)
-            elif water_tank is DreameVacuumWaterTank.INSTALLED:
-                if not self.status.sweeping_with_mop_pad_available:
-                    new_list.pop(DreameVacuumCleaningMode.SWEEPING)
+        if self.get_property(DreameVacuumProperty.CLEANING_MODE) is not None:
+            new_list = CLEANING_MODE_CODE_TO_NAME.copy()
+            if self.get_property(DreameVacuumProperty.AUTO_MOUNT_MOP) != 1:
+                water_tank = self.status.water_tank
+                if water_tank is DreameVacuumWaterTank.NOT_INSTALLED:
+                    new_list.pop(DreameVacuumCleaningMode.MOPPING)
+                    new_list.pop(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING)
+                    if self.status.cleaning_mode != DreameVacuumCleaningMode.SWEEPING:
+                        # Store current cleaning mode for future use when water tank is reinstalled                
+                        if not self.status.started:
+                            self._previous_cleaning_mode = self.status.cleaning_mode
+                            self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING.value)
+                elif water_tank is DreameVacuumWaterTank.INSTALLED:
+                    if not self.status.sweeping_with_mop_pad_available:
+                        new_list.pop(DreameVacuumCleaningMode.SWEEPING)
 
-                    if not self.status.started and self.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING:
-                        if (
-                            self._previous_cleaning_mode is not None
-                            and self._previous_cleaning_mode
-                            != DreameVacuumCleaningMode.SWEEPING
-                        ):
-                            self.set_cleaning_mode(self._previous_cleaning_mode.value)
-                        else:
-                            self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING.value)
-                        # Store current cleaning mode for future use when water tank is removed
-                        self._previous_cleaning_mode = self.status.cleaning_mode
+                        if not self.status.started and self.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING:
+                            if (
+                                self._previous_cleaning_mode is not None
+                                and self._previous_cleaning_mode
+                                != DreameVacuumCleaningMode.SWEEPING
+                            ):
+                                self.set_cleaning_mode(self._previous_cleaning_mode.value)
+                            else:
+                                self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING.value)
+                            # Store current cleaning mode for future use when water tank is removed
+                            self._previous_cleaning_mode = self.status.cleaning_mode
 
-        self.status.cleaning_mode_list = {
-            v: k for k, v in new_list.items()}
+            self.status.cleaning_mode_list = {
+                v: k for k, v in new_list.items()}
 
     def _task_status_changed(self, previous_task_status: Any = None) -> None:
         """Task status is a very important property and must be listened to trigger necessary actions when a task started or ended"""
@@ -405,6 +406,7 @@ class DreameVacuumDevice:
                         task_status is DreameVacuumTaskStatus.AUTO_CLEANING
                         or task_status is DreameVacuumTaskStatus.ZONE_CLEANING
                         or task_status is DreameVacuumTaskStatus.SEGMENT_CLEANING
+                        or task_status is DreameVacuumTaskStatus.SPOT_CLEANING
                     ):
                         # Clear path on current map on cleaning start as implemented on the app
                         self._map_manager.editor.clear_path()
@@ -603,7 +605,7 @@ class DreameVacuumDevice:
     def _update_task(self) -> None:
         """Timer task for updating properties periodically"""
         self._update_timer = None
-
+        
         try:
             self.update()
             self._update_fail_count = 0
@@ -617,7 +619,7 @@ class DreameVacuumDevice:
                     _LOGGER.debug("Update Failed: %s", ex)
                     self.available = False
                     self._update_failed(ex)
-
+              
         self.schedule_update(self._update_interval)
 
     @staticmethod
@@ -662,9 +664,11 @@ class DreameVacuumDevice:
                     if key:
                         self._map_manager.set_aes_iv(key)
 
+                if not self.status.lidar_navigation:
+                    self._map_manager.set_vslam_map()
                 self._map_manager.set_update_interval(
                     self._map_update_interval)
-                self._map_manager.set_device_running(self.status.running)
+                self._map_manager.set_device_running(self.status.running, self.status.docked and not self.status.started)
 
                 if self.status.current_map is None:
                     self._map_manager.schedule_update(15)
@@ -708,7 +712,8 @@ class DreameVacuumDevice:
                     self.two_factor_url = None
                     self._property_changed()
 
-                self._map_manager.schedule_update(5)
+                if self._protocol.device.connected:
+                    self._map_manager.schedule_update(5)
                 self.token, self.host = self._protocol.cloud.get_info(
                     self.mac)
                 self._protocol.set_credentials(
@@ -789,11 +794,11 @@ class DreameVacuumDevice:
                 self._update_property(prop, current_value)
                 if prop.value in self._dirty_data:
                     del self._dirty_data[prop.value]
-                self.schedule_update(2)
+                self.schedule_update(1)
                 raise DeviceUpdateFailedException(
                     "Set property failed %s: %s", prop.name, ex) from None
 
-        self.schedule_update(2)
+        self.schedule_update(1)
         return False
 
     def get_map_for_render(self, map_index: int) -> MapData | None:
@@ -803,7 +808,17 @@ class DreameVacuumDevice:
 
         map_data = self.get_map(map_index)
         if map_data:
+            if map_data.need_optimization:
+                map_data = self._map_manager.optimizer.optimize(map_data, self._map_manager.selected_map if map_data.saved_map_status == 2 else None)
+                map_data.need_optimization = False
+            
             map_data = copy.deepcopy(map_data)
+            
+            if map_data.optimized_pixel_type is not None:
+                map_data.pixel_type = map_data.optimized_pixel_type
+                map_data.dimensions = map_data.optimized_dimensions
+                if map_data.optimized_charger_position is not None:
+                    map_data.charger_position = map_data.optimized_charger_position
 
             if (
                 self.status.started and not self.status.zone_cleaning
@@ -845,7 +860,7 @@ class DreameVacuumDevice:
 
             if map_data.charger_position == None and map_data.docked and map_data.robot_position:
                 map_data.charger_position = copy.deepcopy(map_data.robot_position)
-                if not self.status.self_wash_base_available:
+                if self.status.robot_shape != 2:
                     map_data.charger_position.a = map_data.robot_position.a + 180
 
             if map_data.saved_map:
@@ -866,52 +881,56 @@ class DreameVacuumDevice:
 
                 # Calculate charger angle
                 charger_angle = map_data.charger_position.a
-                if (
-                    charger_angle > -45
-                    and charger_angle < 45
-                ):
-                    charger_angle = 0
-                elif (
-                    charger_angle > -45
-                    and charger_angle <= 45
-                    or charger_angle > 315
-                    and charger_angle <= 405
-                ):
-                    charger_angle = 0
-                elif (
-                    charger_angle > 45
-                    and charger_angle <= 135
-                    or charger_angle > -315
-                    and charger_angle <= -225
-                ):
-                    charger_angle = 90
-                elif (
-                    charger_angle > 135
-                    and charger_angle <= 225
-                    or charger_angle > -225
-                    and charger_angle <= -135
-                ):
-                    charger_angle = 180
-                elif (
-                    charger_angle > 225
-                    and charger_angle <= 315
-                    or charger_angle > -135
-                    and charger_angle <= -45
-                ):
-                    charger_angle = 270
+                if self.status.robot_shape != 1:
+                    offset = 150
+                    if (
+                        charger_angle > -45
+                        and charger_angle < 45
+                    ):
+                        charger_angle = 0
+                    elif (
+                        charger_angle > -45
+                        and charger_angle <= 45
+                        or charger_angle > 315
+                        and charger_angle <= 405
+                    ):
+                        charger_angle = 0
+                    elif (
+                        charger_angle > 45
+                        and charger_angle <= 135
+                        or charger_angle > -315
+                        and charger_angle <= -225
+                    ):
+                        charger_angle = 90
+                    elif (
+                        charger_angle > 135
+                        and charger_angle <= 225
+                        or charger_angle > -225
+                        and charger_angle <= -135
+                    ):
+                        charger_angle = 180
+                    elif (
+                        charger_angle > 225
+                        and charger_angle <= 315
+                        or charger_angle > -135
+                        and charger_angle <= -45
+                    ):
+                        charger_angle = 270
+                else:
+                    offset = 250
 
                 # Calculate new robot position with an offset to the dock
                 map_data.robot_position.x = (
                     map_data.charger_position.x
-                    + 150 * math.cos(charger_angle * math.pi / 180)
+                    + offset * math.cos(charger_angle * math.pi / 180)
                 )
                 map_data.robot_position.y = (
                     map_data.charger_position.y
-                    + 150 * math.sin(charger_angle * math.pi / 180)
+                    + offset * math.sin(charger_angle * math.pi / 180)
                 )
 
                 # Robots with self-wash base parks in reverse therefore we don't need to modify the charger angle
-                if not self.status.self_wash_base_available:
+                if self.status.robot_shape != 2:
                     map_data.robot_position.a = charger_angle + 180
                 else:
                     map_data.robot_position.a = charger_angle
@@ -921,7 +940,7 @@ class DreameVacuumDevice:
     def get_map(self, map_index: int) -> MapData | None:
         """Get stored map data by index from map manager."""
         if self._map_manager:
-            if self.status.multi_map and self.status.lidar_navigation:
+            if self.status.multi_map:
                 return self._map_manager.get_map(map_index)
             if map_index == 1:
                 return self._map_manager.selected_map
@@ -1062,7 +1081,7 @@ class DreameVacuumDevice:
         if self._map_manager:
             self._map_manager.set_update_interval(self._map_update_interval)
             if changed:
-                self._map_manager.set_device_running(self.status.running)
+                self._map_manager.set_device_running(self.status.running, self.status.docked and not self.status.started)
 
         self._update_running = False
 
@@ -1138,8 +1157,8 @@ class DreameVacuumDevice:
             ):
                 self._last_settings_request = 0
 
-                # Schedule update for retrieving new properties after action sent
-                self.schedule_update(0.3)
+        # Schedule update for retrieving new properties after action sent
+        self.schedule_update(2)
         return result
 
     def send_command(self, command: str, parameters: dict[str, Any]) -> dict[str, Any] | None:
@@ -1149,9 +1168,9 @@ class DreameVacuumDevice:
         if command is "" or parameters is None:
             raise InvalidActionException("Invalid Command: (%s).", command)
 
-        self.schedule_update(5)
+        self.schedule_update(10)
         self._protocol.send(command, parameters, 1)
-        self.schedule_update(1)
+        self.schedule_update(2)
 
     def set_suction_level(self, suction_level: int) -> bool:
         """Set suction level."""
@@ -1260,7 +1279,9 @@ class DreameVacuumDevice:
         return self.call_action(DreameVacuumAction.LOCATE)
 
     def start(self) -> dict[str, Any] | None:
-        """Start or resume the cleaning task."""
+        """Start or resume the cleaning task."""            
+        self.schedule_update(10)
+
         if self.status.fast_mapping_paused:
             return self.start_custom(DreameVacuumStatus.FAST_MAPPING.value)
 
@@ -1292,6 +1313,8 @@ class DreameVacuumDevice:
 
     def stop(self) -> dict[str, Any] | None:
         """Stop the vacuum cleaner."""
+        self.schedule_update(10)
+
         if self.status.fast_mapping:
             return self.return_to_base()
                 
@@ -1320,8 +1343,8 @@ class DreameVacuumDevice:
             )
 
             # Clear active segments on current map data
-            if self._map_manager:
-                self._map_manager.editor.set_active_segments([])
+            #if self._map_manager:
+            #    self._map_manager.editor.set_active_segments([])
         if self._map_manager:
             self._map_manager.editor.refresh_map()
         return self.call_action(DreameVacuumAction.CHARGE)
@@ -1338,6 +1361,7 @@ class DreameVacuumDevice:
 
     def clean_zone(self, zones: list[int] | list[list[int]], cleaning_times: int) -> dict[str, Any] | None:
         """Clean selected area."""
+        self.schedule_update(10)
         if zones and not isinstance(zones[0], list):
             zones = [zones]
 
@@ -1361,7 +1385,7 @@ class DreameVacuumDevice:
                 ]
             )
 
-        if not self.status.started:
+        if not self.status.started or self.status.paused:
             if self._map_manager:
                 # Set active areas on current map data is implemented on the app
                 self._map_manager.editor.set_active_areas(zones)
@@ -1377,6 +1401,7 @@ class DreameVacuumDevice:
 
     def clean_segment(self, selected_segments: int | list[int], cleaning_times: int | list[int], suction_level: int | list[int], water_volume: int | list[int]) -> dict[str, Any] | None:
         """Clean selected segment using id."""
+        self.schedule_update(10)
         if not isinstance(selected_segments, list):
             selected_segments = [selected_segments]
 
@@ -1437,11 +1462,11 @@ class DreameVacuumDevice:
             )
             index = index + 1
 
-        if not self.status.started:
+        if not self.status.started or self.status.paused:
             if self._map_manager:
                 # Set active segments on current map data is implemented on the app
                 self._map_manager.editor.set_active_segments(selected_segments)
-
+                
             self._update_status(DreameVacuumTaskStatus.SEGMENT_CLEANING, DreameVacuumStatus.SEGMENT_CLEANING)
                 
         return self.start_custom(
@@ -1452,6 +1477,7 @@ class DreameVacuumDevice:
         )
 
     def clean_spot(self, points: list[int] | list[list[int]], cleaning_times: int | list[int], suction_level: int | list[int], water_volume: int | list[int]) -> dict[str, Any] | None:
+        self.schedule_update(10)
         if points and not isinstance(points[0], list):
             points = [points]
             
@@ -1473,7 +1499,7 @@ class DreameVacuumDevice:
                 ]
             )
 
-        if not self.status.started:
+        if not self.status.started or self.status.paused:
             if self._map_manager:
                 # Set active points on current map data is implemented on the app
                 self._map_manager.editor.set_active_points(points)
@@ -1489,6 +1515,7 @@ class DreameVacuumDevice:
 
     def start_fast_mapping(self) -> dict[str, Any] | None:
         """Fast map."""
+        self.schedule_update(10)
         if self.status.fast_mapping:
             return
 
@@ -1511,6 +1538,7 @@ class DreameVacuumDevice:
 
     def start_mapping(self) -> dict[str, Any] | None:
         """Create a new map by cleaning whole floor."""
+        self.schedule_update(10)
         if self._map_manager:
             self._map_manager.editor.reset_map()
             self._update_status(DreameVacuumTaskStatus.AUTO_CLEANING, DreameVacuumStatus.CLEANING)
@@ -1863,8 +1891,7 @@ class DreameVacuumDevice:
                     map_id = self._map_manager.selected_map.map_id
             else:
                 if (
-                    self._map_manager.selected_map
-                    and map_id == self._map_manager.selected_map.map_id
+                    (self._map_manager.selected_map and map_id == self._map_manager.selected_map.map_id)
                 ):
                     self._map_manager.editor.delete_map()
                 else:
@@ -1905,6 +1932,7 @@ class DreameVacuumDevice:
 
     def restore_map(self, map_id: int, map_url: str) -> dict[str, Any] | None:
         """Replace a map with previously saved version by device."""
+
         if not self.status.has_temporary_map:
             if self._map_manager:
                 self._map_manager.editor.restore_map(map_id, map_url)
@@ -1925,11 +1953,28 @@ class DreameVacuumDevice:
             raise InvalidActionException(
                 "Cannot edit segments when temporary map is present"
             )
+                
+        if segments:
+            if map_id == "":
+                map_id = None
 
-        if map_id != "" and segments:
             if self._map_manager:
+                if not map_id:
+                    if self.status.lidar_navigation and self._map_manager.selected_map:
+                        map_id = self._map_manager.selected_map.map_id
+                    else:
+                        map_id = 0
                 self._map_manager.editor.merge_segments(map_id, segments)
-            return self.update_map_data({"msr": [segments[0], segments[1]], "mapid": map_id})
+
+            if not map_id and self.status.lidar_navigation:
+                raise InvalidActionException(
+                    "Map ID is required"
+                )
+
+            data = { "msr": [segments[0], segments[1]] }
+            if map_id:
+                data["mapid"] = map_id
+            return self.update_map_data(data)
 
     def split_segments(self, map_id: int, segment: int, line: list[int]) -> dict[str, Any] | None:
         """Split segments on a map"""
@@ -1938,11 +1983,28 @@ class DreameVacuumDevice:
                 "Cannot edit segments when temporary map is present"
             )
 
-        if map_id != "" and segment and line is not None:
+        if segment and line is not None:
+            if map_id == "":
+                map_id = None
+
             if self._map_manager:
+                if not map_id:
+                    if self.status.lidar_navigation and self._map_manager.selected_map:
+                        map_id = self._map_manager.selected_map.map_id
+                    else:
+                        map_id = 0
                 self._map_manager.editor.split_segments(map_id, segment, line)
+
+            if not map_id and self.status.lidar_navigation:
+                raise InvalidActionException(
+                    "Map ID is required"
+                )
+
             line.append(segment)
-            return self.update_map_data({"dsrid": line, "mapid": map_id})
+            data = { "dsrid": line }
+            if map_id:
+                data["mapid"] = map_id
+            return self.update_map_data(data)
 
     def set_cleaning_sequence(self, cleaning_sequence: list[int]) -> dict[str, Any] | None:
         """Set cleaning sequence on current map. 
@@ -2506,8 +2568,8 @@ class DreameVacuumDeviceStatus:
     def robot_shape(self) -> int:  # TODO: Convert to enum
         """Robot shape for icon rendering."""
         if self.self_wash_base_available and not self.sweeping_with_mop_pad_available:
-            return 1
-        return 0
+            return 2
+        return 0 if self.lidar_navigation else 1
 
     @property
     def has_error(self) -> bool:
@@ -3097,23 +3159,7 @@ class DreameVacuumDeviceStatus:
     def current_map(self) -> MapData | None:
         """Return the current map data"""
         if self.map_available:
-            map_data = self._map_manager.get_map()
-            if map_data:
-                if not self.lidar_navigation and map_data.saved_map_status == 1 and 0 in self._map_manager.map_data_list and self.docked and not self.started:
-                    saved_map_data = self._map_manager.map_data_list[0]
-                    if saved_map_data:
-                        vslam_map_data = copy.deepcopy(map_data)
-                        vslam_map_data.segments = copy.deepcopy(saved_map_data.segments)
-                        vslam_map_data.data = saved_map_data.data
-                        vslam_map_data.pixel_type = saved_map_data.pixel_type
-                        vslam_map_data.dimensions = saved_map_data.dimensions
-                        vslam_map_data.charger_position = saved_map_data.charger_position
-                        vslam_map_data.robot_position = None
-                        vslam_map_data.docked = True
-                        vslam_map_data.restored_map = True
-                        vslam_map_data.path = None
-                        return vslam_map_data
-                return map_data
+            return self._map_manager.get_map()
 
     @property
     def map_list(self) -> list[int] | None:
@@ -3149,14 +3195,15 @@ class DreameVacuumDeviceStatus:
     @property
     def current_room(self) -> Segment | None:
         """Return the segment that device is currently on"""
-        current_map = self.current_map
-        if (
-            current_map
-            and current_map.segments
-            and current_map.robot_segment
-            and not current_map.empty_map
-        ):
-            return current_map.segments[current_map.robot_segment]
+        if self.lidar_navigation:
+            current_map = self.current_map
+            if (
+                current_map
+                and current_map.segments
+                and current_map.robot_segment
+                and not current_map.empty_map
+            ):
+                return current_map.segments[current_map.robot_segment]
 
     @property
     def active_segments(self) -> list[int] | None:        
@@ -3280,7 +3327,8 @@ class DreameVacuumDeviceStatus:
         
         if self.map_list:
             attributes[ATTR_ACTIVE_SEGMENTS] = self.active_segments
-            attributes[ATTR_CURRENT_SEGMENT] = self.current_room.segment_id if self.current_room else 0
+            if self.lidar_navigation:
+                attributes[ATTR_CURRENT_SEGMENT] = self.current_room.segment_id if self.current_room else 0
             attributes[ATTR_SELECTED_MAP] = self.selected_map.map_name if self.selected_map else None
             attributes[ATTR_ROOMS] = {}
             for (k, v) in self.map_data_list.items():

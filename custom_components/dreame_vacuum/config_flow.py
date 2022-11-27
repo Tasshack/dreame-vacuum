@@ -76,17 +76,17 @@ SUPPORTED_MODELS = [
     "dreame.vacuum.r2209",
     "dreame.vacuum.p2036",
 
-    ## Dreame Vslam Robots
-    #"dreame.vacuum.p2140q",
-    #"dreame.vacuum.p2140p",
-    #"dreame.vacuum.p2140o",
-    #"dreame.vacuum.p2140a",
-    #"dreame.vacuum.p2140",
-    #"dreame.vacuum.p2148o",
-    #"dreame.vacuum.p2156o",
-    #"dreame.vacuum.p2041o",
-    #"dreame.vacuum.p2041",
-    #"dreame.vacuum.p2008",
+    # Dreame Vslam Robots
+    "dreame.vacuum.p2140q",
+    "dreame.vacuum.p2140p",
+    "dreame.vacuum.p2140o",
+    "dreame.vacuum.p2140a",
+    "dreame.vacuum.p2140",
+    "dreame.vacuum.p2148o",
+    "dreame.vacuum.p2156o",
+    "dreame.vacuum.p2041o",
+    "dreame.vacuum.p2041",
+    "dreame.vacuum.p2008",
 ]
 
 WITH_MAP: Final = "With map (Automatic)"

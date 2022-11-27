@@ -94,7 +94,7 @@ vacuum_clean_spot:
           max: 3
 
 vacuum_set_dnd:
-  description: Enable/disable DnD functionallity and/or setting its start and end time.
+  description: Enable/disable DnD functionality and/or setting its start and end time.
   target:
     entity:
       domain: vacuum
@@ -263,12 +263,12 @@ vacuum_restore_map:
     map_id:
       description: ID of the map to be restored.
       example: 14
-      required: false
+      required: true
       selector:
         number:
           mode: box
     map_url:
-      description: "File url of the map"
+      description: "File Url of the map"
       required: true
       selector:
         text:
@@ -282,7 +282,7 @@ vacuum_merge_segments:
     map_id:
       description: "ID of the map"
       example: "14"
-      required: true
+      required: false
       selector:
         text:
     segments:
@@ -301,7 +301,7 @@ vacuum_split_segments:
     map_id:
       description: "ID of the map"
       example: "14"
-      required: true
+      required: false
       selector:
         text:
     segment:

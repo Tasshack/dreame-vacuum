@@ -77,6 +77,10 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         property_key=DreameVacuumProperty.MULTI_FLOOR_MAP,
         icon_fn=lambda value, device: "mdi:layers-off" if value is 0 else "mdi:layers",
         entity_category=EntityCategory.CONFIG,
+        #exists_fn=lambda description, device: bool(
+        #    DreameVacuumEntityDescription().exists_fn(description, device)
+        #    and device.status.lidar_navigation
+        #),
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.AUTO_DUST_COLLECTING,
