@@ -2289,7 +2289,10 @@ class DreameVacuumDeviceStatus:
                         return DreameVacuumCleaningMode.SWEEPING_AND_MOPPING
                     value = values[0]
 
-        if value is not None and value in DreameVacuumCleaningMode._value2member_map_:
+        if value is None:
+            return DreameVacuumCleaningMode.SWEEPING_AND_MOPPING if self.water_tank_installed else DreameVacuumCleaningMode.SWEEPING
+
+        if value in DreameVacuumCleaningMode._value2member_map_:
             return DreameVacuumCleaningMode(value)
         _LOGGER.debug("CLEANING_MODE not supported: %s", value)
         return DreameVacuumCleaningMode.UNKNOWN

@@ -635,7 +635,7 @@ PROPERTY_AVAILABILITY: Final = {
     DreameVacuumProperty.CARPET_BOOST: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
     DreameVacuumProperty.CARPET_AVOIDANCE: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
     DreameVacuumProperty.AUTO_EMPTY_FREQUENCY: lambda device: bool(device.get_property(DreameVacuumProperty.AUTO_DUST_COLLECTING)),
-    DreameVacuumProperty.CLEANING_TIME: lambda device: device.status.lidar_navigation and not device.status.fast_mapping,
+    DreameVacuumProperty.CLEANING_TIME: lambda device: not device.status.fast_mapping,
     DreameVacuumProperty.CLEANED_AREA: lambda device: not device.status.fast_mapping,
     DreameVacuumProperty.RELOCATION_STATUS: lambda device: not device.status.fast_mapping,
     DreameVacuumProperty.MOP_WASH_LEVEL: lambda device: device.status.water_tank_installed and not device.status.sweeping,
