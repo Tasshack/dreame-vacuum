@@ -2333,7 +2333,6 @@ class DreameVacuumMapDecoder:
                     map_data.pixel_type = saved_map_data.pixel_type
                     map_data.dimensions = saved_map_data.dimensions
                     
-                    _LOGGER.warn("TEST EMPTY MAP: %s", restored_map)
                     if map_data.empty_map:
                         map_data.restored_map = False
                         restored_map = True
@@ -4221,9 +4220,7 @@ class DreameVacuumMapRenderer:
                 .convert("RGBA")
                 .resize((size, size), resample=Image.Resampling.NEAREST)
             )
-
-            _LOGGER.warn("Size %s", size)
-
+            
             if self._robot_shape != 2:
                 enhancer = ImageEnhance.Brightness(self._robot_icon)
                 if self.color_scheme.dark:
