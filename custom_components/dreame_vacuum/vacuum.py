@@ -212,8 +212,8 @@ async def async_setup_entry(
                     ]
                 )
             ),
-            vol.Optional(INPUT_REPEATS): vol.All(
-                vol.Coerce(int), vol.Clamp(min=1, max=3)
+            vol.Optional(INPUT_REPEATS): vol.Any(
+                vol.Coerce(int), [vol.Coerce(int)]
             ),
         },
         DreameVacuum.async_clean_zone.__name__,
@@ -225,14 +225,14 @@ async def async_setup_entry(
             vol.Required(INPUT_SEGMENTS_ARRAY): vol.Any(
                 vol.Coerce(int), [vol.Coerce(int)]
             ),
-            vol.Optional(INPUT_REPEATS): vol.All(
-                vol.Coerce(int), vol.Clamp(min=1, max=3)
+            vol.Optional(INPUT_REPEATS): vol.Any(
+                vol.Coerce(int), [vol.Coerce(int)]
             ),
-            vol.Optional(INPUT_SUCTION_LEVEL): vol.All(
-                vol.Coerce(int), vol.Clamp(min=0, max=3)
+            vol.Optional(INPUT_SUCTION_LEVEL): vol.Any(
+                vol.Coerce(int), [vol.Coerce(int)]
             ),
-            vol.Optional(INPUT_WATER_VOLUME): vol.All(
-                vol.Coerce(int), vol.Clamp(min=1, max=3)
+            vol.Optional(INPUT_WATER_VOLUME): vol.Any(
+                vol.Coerce(int), [vol.Coerce(int)]
             ),
         },
         DreameVacuum.async_clean_segment.__name__,
@@ -244,14 +244,14 @@ async def async_setup_entry(
             vol.Required(INPUT_POINTS): vol.Any(
                 vol.Coerce(int), [vol.Coerce(int)]
             ),
-            vol.Optional(INPUT_REPEATS): vol.All(
-                vol.Coerce(int), vol.Clamp(min=1, max=3)
+            vol.Optional(INPUT_REPEATS): vol.Any(
+                vol.Coerce(int), [vol.Coerce(int)]
             ),
-            vol.Optional(INPUT_SUCTION_LEVEL): vol.All(
-                vol.Coerce(int), vol.Clamp(min=0, max=3)
+            vol.Optional(INPUT_SUCTION_LEVEL): vol.Any(
+                vol.Coerce(int), [vol.Coerce(int)]
             ),
-            vol.Optional(INPUT_WATER_VOLUME): vol.All(
-                vol.Coerce(int), vol.Clamp(min=1, max=3)
+            vol.Optional(INPUT_WATER_VOLUME): vol.Any(
+                vol.Coerce(int), [vol.Coerce(int)]
             ),
         },
         DreameVacuum.async_clean_spot.__name__,

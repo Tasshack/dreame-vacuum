@@ -6079,6 +6079,7 @@ class DreameVacuumMapOptimizer:
 
         try:
             now = time.time()
+
             if js_optimizer:
                 if self._js_optimizer == None:                
                     self._js_optimizer = MiniRacer()
@@ -6088,7 +6089,19 @@ class DreameVacuumMapOptimizer:
                 data_size = [map_data.dimensions.left, map_data.dimensions.top, map_data.dimensions.width, map_data.dimensions.height, map_data.dimensions.grid_size]
                 saved_data = saved_map_data.pixel_type.tolist() if saved_map_data else None
                 saved_data_size = [saved_map_data.dimensions.left, saved_map_data.dimensions.top, saved_map_data.dimensions.width, saved_map_data.dimensions.height, saved_map_data.dimensions.grid_size] if saved_map_data else None
-                charger_position = [map_data.charger_position.x, map_data.charger_position.y, map_data.charger_position.a] if map_data.charger_position else None
+                charger_position = None;
+                if map_data.charger_position:
+                    left = map_data.dimensions.left
+                    top = map_data.dimensions.top
+
+                    if saved_map_data:
+                        if saved_map_data.dimensions.left < left:
+                            left = saved_map_data.dimensions.left
+
+                        if saved_map_data.dimensions.top < top:
+                            top = saved_map_data.dimensions.top
+
+                    charger_position = [(map_data.charger_position.x - left) / map_data.dimensions.grid_size, (map_data.charger_position.y - top) / map_data.dimensions.grid_size, map_data.charger_position.a]
 
                 result = self._js_optimizer.call('optimize', data, data_size, saved_data, saved_data_size, charger_position)
                 if result and result[0]:
@@ -6096,10 +6109,10 @@ class DreameVacuumMapOptimizer:
             
                     dimensions = result[1]
                     map_data.optimized_dimensions = MapImageDimensions(dimensions[1], dimensions[0], dimensions[3], dimensions[2], map_data.dimensions.grid_size)
-
-                    if result[2]:
+                    
+                    if result[2] and map_data.charger_position:
                         charger = result[2]
-                        map_data.optimized_charger_position = Point(charger[0], charger[1], charger[2])
+                        map_data.optimized_charger_position = Point(charger[0] * map_data.dimensions.grid_size + left, charger[1] * map_data.dimensions.grid_size + top, charger[2])
             else:
                 width = map_data.dimensions.width
                 height = map_data.dimensions.height
@@ -6130,12 +6143,22 @@ class DreameVacuumMapOptimizer:
                     self._fill_map_data_2(clean_data, width, height)
                     self._update_border_value(clean_data, width, height, 6)
                     if map_data.charger_position:
+                        left = map_data.dimensions.left
+                        top = map_data.dimensions.top
+
+                        if saved_map_data:
+                            if saved_map_data.dimensions.left < left:
+                                left = saved_map_data.dimensions.left
+
+                            if saved_map_data.dimensions.top < top:
+                                top = saved_map_data.dimensions.top
+
                         new_charger_position = copy.deepcopy(map_data.charger_position)
-                        new_charger_position.x = int((new_charger_position.x - map_data.dimensions.left) / map_data.dimensions.grid_size)
-                        new_charger_position.y = int((new_charger_position.y - map_data.dimensions.top) / map_data.dimensions.grid_size)
-                        if map_data.pixel_type[int(math.floor(new_charger_position.x)), int(math.floor(new_charger_position.y))]:
+                        new_charger_position.x = int((new_charger_position.x - left) / map_data.dimensions.grid_size)
+                        new_charger_position.y = int((new_charger_position.y - top) / map_data.dimensions.grid_size)
+                        if new_charger_position.y >= 0 and new_charger_position.x >= 0 and new_charger_position.y < height and new_charger_position.x < width and clean_data[int(math.floor(new_charger_position.y)) * width + int(math.floor(new_charger_position.x))]:
                             new_charger_position = self._calculate_charger_position(clean_data, width, height, 6, new_charger_position)
-                            map_data.optimized_charger_position = Point(int(new_charger_position.x * map_data.dimensions.grid_size) + map_data.dimensions.left, int(new_charger_position.y * map_data.dimensions.grid_size) + map_data.dimensions.top, new_charger_position.a)
+                            map_data.optimized_charger_position = Point(int(new_charger_position.x * map_data.dimensions.grid_size) + left, int(new_charger_position.y * map_data.dimensions.grid_size) + top, new_charger_position.a)
                             
                     self._find_outline(clean_data, width, height, 6, False)
                     self._fill_map_data_2(clean_data, width, height)
