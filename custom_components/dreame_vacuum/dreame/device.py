@@ -1080,8 +1080,7 @@ class DreameVacuumDevice:
 
         if self._map_manager:
             self._map_manager.set_update_interval(self._map_update_interval)
-            if changed:
-                self._map_manager.set_device_running(self.status.running, self.status.docked and not self.status.started)
+            self._map_manager.set_device_running(self.status.running, self.status.docked and not self.status.started)
 
         self._update_running = False
 
