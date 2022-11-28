@@ -712,7 +712,7 @@ class DreameVacuumDevice:
                     self.two_factor_url = None
                     self._property_changed()
 
-                if self._protocol.device.connected:
+                if self._protocol.connected:
                     self._map_manager.schedule_update(5)
                 self.token, self.host = self._protocol.cloud.get_info(
                     self.mac)

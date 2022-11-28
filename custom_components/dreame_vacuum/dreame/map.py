@@ -2816,6 +2816,7 @@ class DreameVacuumMapDataRenderer:
             self._map_data
             and self._map_data == map_data
             and self._map_data.segments == map_data.segments
+            and self._map_data.frame_id == map_data.frame_id
             and self._map_data_json
         ):
             _LOGGER.debug("Skip render map data, not changed")
@@ -3555,7 +3556,8 @@ class DreameVacuumMapRenderer:
                 and self._map_data == map_data
                 and self._robot_status == robot_status
                 and self._map_data.segments == map_data.segments
-                and self._image
+                and self._map_data.frame_id == map_data.frame_id
+                and self._image 
             ):
                 self.render_complete = True
                 _LOGGER.info("Skip render frame, map data not changed")
