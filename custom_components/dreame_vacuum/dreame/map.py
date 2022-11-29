@@ -3600,8 +3600,8 @@ class DreameVacuumMapRenderer:
                     map_data.walls,
                     map_data.segments,
                     [14, 14, 14, 14],
-                    100,
-                    60,
+                    120,
+                    80,
                     scale
                 )
 
