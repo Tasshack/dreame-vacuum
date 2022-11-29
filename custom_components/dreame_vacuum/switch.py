@@ -40,7 +40,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.CARPET_BOOST,
-        icon_fn=lambda value, device: "mdi:upload-off" if value is 0 else "mdi:upload",
+        icon_fn=lambda value, device: "mdi:upload-off" if value == 0 else "mdi:upload",
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
@@ -56,7 +56,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.CHILD_LOCK,
-        icon_fn=lambda value, device: "mdi:lock-off" if value is 0 else "mdi:lock",
+        icon_fn=lambda value, device: "mdi:lock-off" if value == 0 else "mdi:lock",
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
@@ -75,7 +75,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.MULTI_FLOOR_MAP,
-        icon_fn=lambda value, device: "mdi:layers-off" if value is 0 else "mdi:layers",
+        icon_fn=lambda value, device: "mdi:layers-off" if value == 0 else "mdi:layers",
         entity_category=EntityCategory.CONFIG,
         #exists_fn=lambda description, device: bool(
         #    DreameVacuumEntityDescription().exists_fn(description, device)
@@ -85,7 +85,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.AUTO_DUST_COLLECTING,
         icon_fn=lambda value, device: "mdi:autorenew-off"
-        if value is 0
+        if value == 0
         else "mdi:autorenew",
         entity_category=EntityCategory.CONFIG,
     ),
@@ -107,6 +107,11 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.AUTO_WATER_REFILLING,
         icon="mdi:water-boiler-auto",
+        entity_category=EntityCategory.CONFIG,
+    ),    
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumProperty.AUTO_DRYING,
+        icon="mdi:hair-dryer",
         entity_category=EntityCategory.CONFIG,
     ),    
     DreameVacuumSwitchEntityDescription(

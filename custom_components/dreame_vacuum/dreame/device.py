@@ -372,7 +372,7 @@ class DreameVacuumDevice:
                     if not self.status.sweeping_with_mop_pad_available:
                         new_list.pop(DreameVacuumCleaningMode.SWEEPING)
 
-                        if not self.status.started and self.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING:
+                        if not self.status.started and self.status.sweeping:
                             if (
                                 self._previous_cleaning_mode is not None
                                 and self._previous_cleaning_mode
@@ -981,6 +981,7 @@ class DreameVacuumDevice:
                     DreameVacuumProperty.CARPET_AVOIDANCE,
                     DreameVacuumProperty.CLEANING_MODE,
                     DreameVacuumProperty.WATER_ELECTROLYSIS,
+                    DreameVacuumProperty.AUTO_DRYING,
                     DreameVacuumProperty.AUTO_WATER_REFILLING,
                     DreameVacuumProperty.AUTO_MOUNT_MOP,
                     DreameVacuumProperty.MOP_WASH_LEVEL,
@@ -2864,7 +2865,7 @@ class DreameVacuumDeviceStatus:
     @property
     def sweeping_with_mop_pad_available(self) -> bool:
         """Returns true when device has capability to only sweep while mop pad is attached."""
-        return bool(self.self_wash_base_available and self.auto_empty_base_available) # or self._get_property(DreameVacuumProperty.CARPET_AVOIDANCE) != None
+        return bool(self.self_wash_base_available and (self.auto_empty_base_available or (self._device.info and "r2216" in self._device.info.model))) # or self._get_property(DreameVacuumProperty.CARPET_AVOIDANCE) != None
     
     @property
     def ai_detection_available(self) -> bool:

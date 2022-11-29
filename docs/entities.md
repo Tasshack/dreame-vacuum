@@ -30,6 +30,7 @@
 | `multi_floor_map`   | Enable/Disable multi-floor map | Available on vacuums can store more than one map
 | `auto_dust_collecting`   | Enable/Disable automatic dust collecting when cleaning completed |  Available on vacuums with auto-empty station
 | `self_clean`   | Enable/Disable automatic self cleaning feature | Available on vacuums with self-wash base
+| `auto_drying`   | Enable/Disable automatic drying of the mop after the cleaning is completed | Available on vacuums with self-wash base
 | `water_electrolysis`   | Enable/Disable water electrolysis feature | Available on vacuums with water electrolysis feature
 | `auto_water_refilling`   | Enable/Disable external water input for self-wash base | Available on vacuums with self-wash base and external water input
 | `auto_mount_mop`   | Enable/Disable automatic assembly and disassembly of mop pads according selected cleaning mode | Available on vacuums with automatic mop assembly feature
