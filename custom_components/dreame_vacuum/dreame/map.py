@@ -1020,7 +1020,7 @@ class DreameMapVacuumMapManager:
     def set_device_running(self, running: bool, docked: bool) -> None:
         if self._device_running != running or self._device_docked != docked:            
             if self._vslam_map and not self._device_docked and docked and self._map_data and self._map_data.saved_map_status == 1:                
-                self._map_manager.request_next_map()
+                self.request_next_map()
             else:
                 self.schedule_update(2)
             self._device_running = running
