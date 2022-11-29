@@ -874,66 +874,9 @@ class DreameVacuumDevice:
                 map_data.obstacles = None
 
             elif map_data.charger_position and map_data.docked:
-                # Calculate robot position when it is docked as implemented on the app
                 if not map_data.robot_position:
                     map_data.robot_position = copy.deepcopy(
                         map_data.charger_position)
-
-                # Calculate charger angle
-                charger_angle = map_data.charger_position.a
-                if self.status.robot_shape != 1:
-                    offset = 150
-                    if (
-                        charger_angle > -45
-                        and charger_angle < 45
-                    ):
-                        charger_angle = 0
-                    elif (
-                        charger_angle > -45
-                        and charger_angle <= 45
-                        or charger_angle > 315
-                        and charger_angle <= 405
-                    ):
-                        charger_angle = 0
-                    elif (
-                        charger_angle > 45
-                        and charger_angle <= 135
-                        or charger_angle > -315
-                        and charger_angle <= -225
-                    ):
-                        charger_angle = 90
-                    elif (
-                        charger_angle > 135
-                        and charger_angle <= 225
-                        or charger_angle > -225
-                        and charger_angle <= -135
-                    ):
-                        charger_angle = 180
-                    elif (
-                        charger_angle > 225
-                        and charger_angle <= 315
-                        or charger_angle > -135
-                        and charger_angle <= -45
-                    ):
-                        charger_angle = 270
-                else:
-                    offset = 250
-
-                # Calculate new robot position with an offset to the dock
-                map_data.robot_position.x = (
-                    map_data.charger_position.x
-                    + offset * math.cos(charger_angle * math.pi / 180)
-                )
-                map_data.robot_position.y = (
-                    map_data.charger_position.y
-                    + offset * math.sin(charger_angle * math.pi / 180)
-                )
-
-                # Robots with self-wash base parks in reverse therefore we don't need to modify the charger angle
-                if self.status.robot_shape != 2:
-                    map_data.robot_position.a = charger_angle + 180
-                else:
-                    map_data.robot_position.a = charger_angle
 
         return map_data
 
@@ -1157,7 +1100,7 @@ class DreameVacuumDevice:
                 self._last_settings_request = 0
 
         # Schedule update for retrieving new properties after action sent
-        self.schedule_update(2)
+        self.schedule_update(3)
         return result
 
     def send_command(self, command: str, parameters: dict[str, Any]) -> dict[str, Any] | None:

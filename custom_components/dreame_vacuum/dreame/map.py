@@ -621,6 +621,12 @@ class DreameMapVacuumMapManager:
     def _add_map_data_file(self, object_name: str, timestamp) -> None:
         response, key = self._get_object_file_data(object_name, timestamp)
         if response is not None:
+            #_LOGGER.warn("RESPONSE TEST: %s", response.decode())
+            #mapstr = "eF7tm8mS8lpyx6vKL-KoNUToaNYX4UVBMYt5LG7cIJiHAgkBVQwd_Qxee-k38MIv4jfw3js_gTMPUMBBYigoxHV__9u3kc6Q-VNmnpQ6-vueHv79nyL_9fDx-PDwb48fj__5wD_868N_P-T-9z_-5wH1-Pj0RC_uQo-gp0d21C0hDYgddkv7OE9s7tj7H9SKBni-nD5txN7tg-0NXCLwscbZ935M7GLW-Pl62uAgDx35GlginiHW-tl62vH-uDdwSAiwuaH_subP1473HQ_n6woBAv87-drN1dbNCbpCwmjStw1uW99cn6bLcXaL9-JkXYqzmx8mW-fqOjiOxXOuboKzP-Kgy2mYTmOHYzNkL9zMWj9bx3Bshhx0E5yzosMaP187BHeBs2Nxz7fNkL2uhbPLs7lxHLLXFXDAwjFv5-BcynOCrxOWLHV3OKz1s3WCq984h7R79A7oRjgnrXq8USlTJ-ygra6Ac8KD3zJZ94dzzNed4Txu_Q_5w7oVzok8VynlYzgnn6yb4RxbstLlNL9xDuoEXw-nlzJr_WwdxzmrlC8F-iviHFuy0sUwv3EO6wRfD79PlrPuDOf04rmc5q-HgzTH1ix1BZyHo65Ox7nO0WKNMjoZ5irhOcPbUWEcWfvn6fRMnKL7wrmY5ro8V8A5oZhP1NNVjhbiYIT2qTBwZ-kK_3cf1drcZTRXCM1SS2u7NGce2_NWH5MNzrVC_z3t4Vz1cc_WXniuG_5ztZ8uV3GA54H9MHYTZ60tHJfLeak7w9nmYafc0P3i3APQDo77PLs4rgOxOC7zsDQu87Awj795tvWFcB88G4K74NkGuAOeHf_u8-y6d52H8e42jyOOOzysb5d59lxv8bgAtO_YVR47vy7y2Lp1j8feq2s8Dk7d4nHy6RKPo8stHpvZn5KzQ1d4Djl0geegP_d42OGlbs9z2NsWj9OS6-qIr1vzHHV1W57jrm7Kc4Krf2SeE1xtlhxYdC0dd7VZcWjVlXTM0Wb-4LKr6YijzfTBZdfTYUeb2S-xS66sg442k19il1xbhzxt5r7ELrm6DrjaTH2JXXJ9HfC1mXJccn0ddraZdVpxbR32tpl1WHB1HXS3mbSfv74O-tuatJv-CR1yeGjup-Ts02H4h3UMhxn9cTnx2A7eQA48dmM3kT2PzdCNZMuzP3Iz2fDsDdxS-zzs_W21x-Muzh6PyzhOPLuLbqgND2VwG4fhcR1nl8d9nG2etdglNxUL4zLOPg-74Ma6MxyWh52-ue4M5-54doDYOTd0ZzhbPOyMO_qNc1BfPFti19xSLAuKXXNDsSgo9_6QM0uCcvHPgLMoKBf_iDz7lwdQ7tHs_2UGN4Oz_3cH3KSx-asVrqbKLlnu0tw_jns8d4ZjWzu_cda6E5wn_Af_Y8fDLv5ZIcOW7HBuGaJjNF9iN_6AbAAY3RnOl-4NxyY-dGR_-JuiOWDdOmqfh-5eDS8PJrPgLC1LgvXqqH1vdDPa2JCxS87QeTT7OKvdFGJl6CKgM1icaZZT62v6t72_SfTl6hTte9mEdifK3-bZmDhFe04cgusWDrtgpe_SONlzEOvF6RjcBmfPi7s4u9Ghh8mexzUcdsVS36U5D2f90E_LzzRHmlvirECcSKjW3GeLNXRYa5Q7wUE_q58jOKyfE8Uauo7-3-AcDPp39W2crW-EK-oinOvzXIZzdZ7v4zz8RL4uxGHNXaq7w7mA5x8Ah_Vxhv76OEcO47VxaDfaFR3bnmH3bOnKOBufh8Tu2ujqOHtLdnWkd-7tP0f7hqlDO23GD-E4bD5NdoadcDay27XS8c2HZGv4iEVMGLtlLcfQnig7y0dMHqRhF58pO9NHjNptWevS6NAv5l37x0z-LM5eLRwxeSBXdC-K3XOOWJylTXbVl9jVO7oCzr6DwxbZ1Tuicwe3H9UezmGLNqtZOW8-RXYOnHnsVrNi95wlOwcX4ThvPkW2Dhwt2q7e1eHiOyK72nF-QvvVu_oBHKfwOKze1SU8DvadDDosZ-S0-wSxppZyMngaziWHizVFdRmO0-5TZFsPDgZt1-7rguJBF3s-nOzZLLWVw_ZTZIPjeDb2l9rKaftJ2vdxwBqz0l5XxXGMDRXO7ojduvxht50uxiQaO3BSd1DsxG44W0972TqAA9p43EO5Eg7Lwy45ritwbLTzjN-hubK2cdg5l_S0omLHv6O_PY-a_fHzr789j-vPvzjPcwt__u55Hky6jedfz1KzwdVllUj1hig_e57H1edff_whewj8w3vIn54_hNU1D9fi6lr480_Pc3dc7zerRt9sP_-ajD6anmcTbBPPs1EdgeXhqP7PYLDeomODERh-5mBg1AUc3vNcm4An4uHA0gTXZ728oKkeL89zmu4VeMHD6ZzHS0Rel3h1fSPoXlnSPF5B1r28BJw68EhwDbMK3Agwp6g6IYrkIbwOO2CXDIuJAEZENCLCKnllT-Bhqbq-kwS6bn2raLqqcR5R1MWvDWRpamsJIZzskYjO8-JqkNdwDZE86J_aBS8C-XoglU5rHglvgVXgVzMqgUfFC1mXJYg7T3Rh6cQrqXAlL_eDy_UOntdFlT4i3iK-zK0fjeheUZDWj6bqssbDhU40GWKAv4JHknUIjuTxIgqne1VtbRdMSSKBgHkJhgAiLHKCR-YoOoQYwwDJWj4LEig6PDBGUMBxosB-cKfKkFaVeuQ5xMNLCLpXxjWcLmKSeE7EOHCQTOBfI6BpCesBJwRVXz6JBPnmdJVuBwYBnx3yLkMKVCwFsEzn0Jeyirim6jxaRWJR0QWIpCZmYR4e0CvKGEM0ThRlWTuwT4NMQAIkSK9Ec0-g8CUJ-USFWiVQFnCzpCISRV9VCd7BFD4PjSrcr8bxRlSXWARQqAFh9eTSMnNExPIRtfUqFVcpy9LFZeLKyWrZshJWxmSaMBiBgyFh9cniyjVkEDINjwQhFzDkHvo0kEvYCaGAs76qAaJpUBAErUNFawoNFIRMVAjkC6lEOGMq-IND5iGQVaxVL5QbkUR8EEnxCJoAleyBDHO6ALdIBR7BOi_CicTMQbCJClmCIoT_FiFEEFCvjAlX6RnDqkQ0LD_4FfDxNbiQMUtAx8OvrMLZBN8cuJWh3MA6phrLG2IBiYWcLbfhORTBE4TAq3K6BulUICQaoGo04wRQIaceuOPw0MlY2eBCgrpSOc2jZWGD7BFUNMZz9ChxeHC8WDe0zujBV1cHmHYkiBjBetRkHVsbPIcib7cyRVXpyaH34FmlFxgsLGJOooeIF6kx2kSgMnldhmUSrQdIsbRuRTwN1qoHwdGiDRTCCmUJqzxw_mA_JAjOMFjjlwd3-ctpq5rGwuVX7WhZ0wQbKA_YcK_oGo-hwVnM3NIXdmKscKg1GCOwEA4GHFw8vrxEmxKcC0wyT3spgYIAVkVZbiccfV5hTSDhAo16gTSCVaQQhGXUaJAkDsucw7MO-dFoLWOtA6OIcYcCQRSIIZrBbEFJQKPTsATgl-MgyVhdXBZ6oAZMAjjFg-zFysYXDryKZFrjClYXZBz3EmxVIrYyeAiONjno0_CjSTrwQU-BadWDlcOLWDmijh1FRtcKLX7skITHeIE9eNtRM4KKdSh46C02JHxeD4GmBYcWfgV8QHocVYKvAPorY91hOr14tgQsfQ1POJY-1Am6hzBCBoTlDLxVYTNRMdsyXKk4BD7WtahAuYirzrs8ZPTB8LzSM6Bji4Bq4bCUJByn1Y2NFTswj4f_yxo6hijQ9x9PtuqdaF93EpKoHG3o9DBBgcAx1Dy4F_qOF8-fIGHxgTeMOnjleRoAPNLYEqRVK8SeqEur9unFVgengsPKw5OgY5mvZlQd2w99j9Iwr981AvVBXzYwBqWHrykCZ0NSsQSzXhmOqMhp-EBwIdCTCJXJIzuawCRwGDv65B4Nk03wcGPE4AXlgTTCG3TdjKE9rd7_OL0seyi-5cuEx0YgoQ1ghR4mKKvix3YorN84UKUyWb9vRGx_CjZfSDO2eogUDEra-sUjYrTWLy7oydj4YDF9TIwooKvQ4QSod1GAE0nTK2CIJHw1Y2uDOqAtBvs6vsE1qAYRX7z42QI_cGQgHhAu4IfFvIC1AsNwWuj3EZwpwYMvLZ5-LsjLshVxAnzw9EuCVgI0Yi_2cOxbPIfJFjB4GkYXvykUgnvwE4DHvg-HBfiVLMFSg08RUV--sMEWHgksZDxhgI-vUnzfgjVo-Dxmk4BvfAvhAcRzDf9CS4R8Q4uFDxl8XmxTXnocsBIxMNhEsFNDAYgSYmDAaa7VJafIYaFgh8B-hXsVfCGJWCYavhbpW0rmsBlidiAh-GAQQHh3KtjoYQ-cVR5fAxp8M0-6g-Z4Uh0MKwP4eIZXispBAai8BAnED-oBfD83g8oEPrXmPEm_dYxwJjhqp0YKMblubiK9yKLPrA3b7bdBfJHhzESyKBdznZTaatZfG3X_IlF_yU544cVfLOf74YUWyiykgHde1qVWexyZl8NaapAKz_zvaq6svw_43Kc2b1WihvreVweteaEStRS1UikntEK3T4RhNdPUeTWXzTQ_lYQaGBQjVszbJS_5j2RtUs6RMD9qE8OndcbjkdqoDZQoXxfkbndkVAuZpDmb9nq5UdqKRkOdxuTtQ7VSJt_PZ6tx_zCnhYv6Z6wnJxOxqiVblViqnn-rgVGLawxDWuvloxxPTEa1Ynw86OTfp7wwqZYzk4zVm_QKYnTU6kwmNbn3OaqahfCkGsxOZoaWqZXfufdqL9ThR3o0QqysnLJgW2jSKIxIUjIi3Wojncm-5ifJWN3QTCEXMRO1gFmtdHzespEtx5LVajCthPqFTyvWm5ak4bDwyic4q231GsNafWCKvUbMtMZma94rVvOT3CwybfS6k-G0lMi_m6KUIFZXi1abIU7uhSxftKT0C8nE66guRqO5qdgP9uvzUuHtLTztTqVEeRbK5URLHTWi_U8t2o8MihWjPjJ85keiOwoHc-VQsqxKvV6qlwm8FT4Ckbey-iYp83YpObfEdKdjzMaDXik44QthfzAel-MmCRRHndfQoBTg5uNIYdprL16tVFKdFD7nlXyz5A_F496E2Y_kR51wcBCO8PN6JD9dmPNePlP9CMSrZchFqV8TUpNUBRyXQ0Gx4AuMynVFDUze3sVcv8XFC62k4ve9G92xlQp9iBmzEPJNBrMpxE_tpS2uXE_6tObbLMVbYkbNtvO5uZnPBLjYxF9MpOtVks9_5nOimowVTX-krGSivVyhY3y8V4MZsb0w5okXs_5WXpRD3XwyHpfivUzMSAbqoYzZXxj-5GuEy5YXnXDnvRqNS9NeWk4FQnUZOMLd12Qrwvk7s46RgNm0OF28z3OdeUGUZx-5zkdBCvJ1UheGptKJtAM1Mi35My_hlBUbJ4IB0yxFEkot_TINZxsRM13i1aGvkQzWCsZHrNr1vog-w0gmkm-jcFysGaWoOOrwIXE4jiwWLX99LqT68ZdFCTAGobK0aFbFeuYzJXR4uMoNSpJq-UJxedasvpUNIyGNOvOImJnXynCVLLeMuRmekpoVGy6SIX9WSfWzicEg-Zq1goFpLuwbEn_7LTpqD8KV4tj66JO6mrX0ysRsjmoDNd2vVrVMwAjV89YiYw0T3fd8MdnPV5PE121aheB8oY6CHxMxEYx63ydJX6FZmORyzX40UxIgRw2-p_pys6LgM3uxUM8yWuPCTBqnc7Klpgu9fI30PivRtl_5NNJ1QTcarZmVmA5N4U38jPRDpNDOa95hoFhVO1Yz2k7OFs1h3GuK7-NsUp9HM5PCWzDVkI1-QNK45VgpCL1Cjc6avmTCGoXbxpvatUa-ri-dCQdb3UKu11YD_nE7ETONku8jEqz6Mi9jy1Bb8nChF33Fl8BrhpRa2bKmB5NyqDpNzl7exVq_Rvz1SnQ2ivhzmUGpaISn9Rjn731M4maKVF8yRtHIF-C8hIOhflOdy9b0LZ1NJsThIBbMpiIBpdQOdQPzfLoxjjUyYa1VTnfhZpToZLlY78NrVuaVipHnY_Hqp1VX09X3IJn2osKnr6jwn4lh5MUcDjPqK0llS1q6aVaq72bHbFrtYjj7OvKGk9N8o-4bRTuExOMx82Ws9Qvv0DSzXovzh2OtdOQjGchlI8EA6WlFf3qeSUTrI3lUHL8I_fE8H0yPhXf_OFGKz81-6LW4iBsmCbUhR2_xebOXhzh9FtqLqJzIxPWBGdFnVj30OSi_zjIBJTjIDWrdfEZUh1ou0IpKmve1q1RyC0VuKZ2aUVOUUmvBZzVBUCqplDFSVOWTa6stSUk0lTCptFKVeTo8mkUqFd07EZoKp8H6lvA6UCapsfZpqJrxKrSEkXfRVFTSGvrKrb719qHzg1RJrgVKUi1U4_spJaSMrZzCW6lSftZahFuCJpNGrUmi84pRqCRr3vonpwTg03Sk80pKLJaIJXgTM0GBV1lKLLfNWftfnv_-f7sHMvU="
+            #mapstr = "eF7tl1mOo0oWhjNL6pe7ipafQSIgmOrNs42xcWKDh6srC2M8YjB4wKbVz61eRi-g99E76W30CZzlxNRwK6ucWalW_vUAxHDOF3-cCGf9dveXD_XS_b_uxve_ffjn3b_v2Lt_3Dl3__nv3S_XPSjb9roiBI_Kdr2eUhC_DuMK4pdxZCl-DUYW4tdQvFGMbPdr6U1AvBmMK45s3yvqjWC8jYv8zWCkOLI9r6o3gvHEke14Xb0RjAtHtv2V9Y6R1hvB-MSRbX5tvWOk9Y6R1jtGWu8Yab1jpPWOkdYjxq_meMdI6cOHd4wnvWOk9Y6R1gXj13K8EYy7n8P4kG34Ud1niyMd-QNR6jvd_OFT75fHXOtPR2TdOKc4R768nz-v-5-tTxFIkNT7WZ8oHjGuZl3e7-8_fd8_NSRldRny57qKf8l_1oXijHGp2GTsUyc0pHt_REnmJOrnFBmMVJ7PMLINz9WjDY-vX8NIvl4S47Kd59cvUzya8XWMzxuerVSEa46nIcnnC2OkdcbItp6pMhip_nNLpuGn9KVgT_Zcer80LNGTr1fNt9AF41Kkn5tx1mVrbrtHidIUF4zrIRelRnxtyA_qCxRf53ga8pUBP6onisy9kRqTNDw-r5tvpBTE9W2d4XiBWkh0lf-sq0zZtNnvGyib_1HXmbJZs98_q2z2i15gwV9VNndar4eRzXytV-PIJr7S6-1KNnNaL3Uo78_nPaVs5iu9HEaG4rsxbsxzTv3h8p-Kb-uK45YkqeTfgfHEkVBnYv2EvseDtD7lvi3FMzFSuW9KQTCyub6h2-ZO6ZkU__cYz-PIzr-RfrhEb6vnYVwdlXSYn9XzKFLbcltj3gxGNtG39UL3149j3FTPxLjtVjzp2SclG-A2eh7GS5nx3KPyYhiJstm-ppel-G5DXm5TEn0nBymk7NRb6jsL5IUxvpPi5TGyCb-sLAb5zuorzd-hZxyUK4xsnJ9UNtu3dAVx3UUa0vE-G_ANPWPoWT_Kf2O9EYy7C0m2-dX0t1zouNvcx7_ltnbuI0PlpuTxdyq33i0muY853pmIiEei4FjcNEfltlbu4--_I4r8Yyn0xx9UbrG1XcfyXH-W-7gL9w6V8yEGonKeFUKETWj_FSba06RtHUKAHAMN4QLSslRuvIOILMVApB0Z36ERw3MUB1lVmpUQohh4MhSNZRXxYvJkeYrmBZUVMOmFPsQngwR4Y1TEIYoWJRUhluIlFeYiUaURJ1KcDKN4WaBYiI1hnsA_xiazSGwynIEJGNplipZhIosQT7HQIHEUz3doTuBkwBNkEhmjc2QCKwINjZCaECMsU9ABLxJQ8ZAHMRi6WZZkJqlVGkCgMSGAZgRhWU7leIEAqTSskQRHHIXIdMxIEJ6H1UIGzH1aN8wTAIyGhXJkxLlZJt6JIpuQCBKFkAQNkAAAsCrCSgVOlXhKBAoYBa3gDIyDSfDCQbxkdRzBFhHFAQ6GSeAjcetsGgsOEyTwEtYqqRLxWVRFTInELQgJM0RYD3emgs2D0DwxiYQVeKAiC5TJZkJWHjjARiTCSIHMh4UzKmQnNiaWMEkcgWwFRQKoIjwFuUPzYBrFidCSlAtBJAtnwV8sqjIlJMCCCB5jSkCESXxk4ggTsNCwL6QX4WRDiCcEAhE3OUblIJMsq-AVCzQsQPGEguwMJ8lkN3hECQKxh02KjadwstO8_JgIKotnKGIdn1gINQ7DWJUXZWI7q3IYYwrqi2ehALjzjpHspDSBjwNrJHy2IYlyKQGyOgFOjCpRrCqQKgNgsJT0wQsmTCoZndQdlDrsb7JMDEcAE0yOgdOcnCBSogxkFqHkVTiIxAaShthJgMn20MQ1cjqgWMlmYhXBB4mDYBqNhfN4MPPsGywdkdVilZUozMEKMRjOSVCCiMwUoYPkJWcoWSISiPUyTrZagE2UWeI8nGvwEGxWsUAsI4GAkGOhGxObRUIowdwkiARbK5ASBGiCAYdGJQcFoIg3LK-C30gWSOEKZH1McoqJ2QifO-HBQgayXoRJebKqRKbCuUBQx6SZnD2IQY6WDJ8MWEsSQjGDobDrkBeBMzwm02SyQIgjJcUmUuBAcpKw0IHNgOuKFfHjjQQ3ASL08A2MSWo41ZQADzi3NACzDBBDMUKlUAicYmWZ1Bw5WLARsirABUQ8gIVgRLyAGuFJYkSuG0xMlFmyoSwFCwBgWDwnI0xxxH0ATo4nm9xjpNCgSJLV4-TOIxtHTjQihQCjVRGKXAIKEog_XzGwKh5SwPUBlpC7CNzgYI5M7slPVzCc_4SRXOjnlUO5iKSIgRVOAiuTwofyTpYMKz7f1AiTYfBkEPyY7BZrZ7uz1pvRGn5VoH4kjAVJhO1gkl-aNfywOBVxxyL5xKKHwdyr6RV3np_QhbAf65uVZ53y8jjfVNnZzHabRZ2zZt3GpN9etrfdaUE1dov53IyOnUaklreC4wvatC4yneG4KYv7_KoQD8W4xXaVuMicdOWw8lhvOeLro1W8N2K6c-C1_mEUC5PRdssEG0m0mkft4I476pHecO7qNC_pNcbcdPjoNPFajh-cJnAaNamwXo24nV1rqfFa7Jnoge8KrVN1bwysSaegbwymsYurrGvStTK77Mx9s9Fm-Gi3Mafz465bqZn9oTlaltpWQ9vpC3nABv6Eq-u7vSUg1y33luv1CYfdXivYGYOdxRWa4qq1E_u9idztl3wU6EIraE0F1druVwvjAbVdfaysXaN33JhdockEAXJ8bjAqx7VNqVEfuMqm57Z3JYEfFoKBW-nZzfZpSxvK_GDqjbbFWHPhgelVRrLS9OnNxi0PTWvSdVZuu2QN9app9mmjIepuo6HV4tXAkDtVLPjrat_cblfjndpdIa88QPqmh-1APvm72rywcezqCm-DdYcOS3WpXB0rgVNmrIOir8Zya3s4tv3ViZFVeYwnerQ1y3wY5o-ng9e0h9FQiRtBVOgXtVJbcwyHZyu1QsWu4yaDHX4SnHxcD-e1yrpWZ0923Yhi_7Q0dGtfblpDW58jN5DpniByOL-ZewW35p-Odn0QxZhdGPPOvmz3BvZyrETzbklbljQh0I7y5oBG4_Ah2i9mzVVYcp2ZvC_3NQv6vEAJp7o9w4ap06hWbBfrsM3VXulBaC8sszNT9a0Wlpw2bdZK7U69unSUwnIQzIxBlQ1L3kNQ5IXFVJ1HHbeid0t2XWrYu-0mWkanVnltYx0Pq4uuZtcZbXkseNrKquh4FnunVt63B8MYeg2t2eSbS73haWW7qvtu7IE9dSj5eF6bryylyUdL4ClXbUG3nYZfq06QLQe-oo0WYZXXapJZyS87QQlbakGZd83jar9yi1K-XXMK6zruKEq16IRLZYyiIJjJUWyYxz6gKscwrpQlb1mW-JFiaw9xqaX3HGsw9voKDudsFW-29TieFu0T13abSjBqx3G31KT5dsXWjrWiFnfbLUmJVZs28yVtOmi3ms1YXElmJJRDeWi2FebYrRX4cB4do6jT1322OBgoqs-MC81mGdHW3DMN9rA-tXrTiVtjxCZaMqOHXtBc4-Vp2WuYel0y1kvdD5d6sGt15_rGaVjuQEb7I7PVVu4hsrxoGzQctNEadFAvLR3fmVtOncNKaRBFE3OMloeRMiuOFH3ZkQYL2p_QvFHryTO5xG4cMTxpOm1q1XG_hA2GCbbWYl-xvZPntzq6UWPpWqR4qFox6U6kVVqtRlgFmr6E48b-sY1vKKfqvKdF_M4360xF5CLDGBhm45THwbZ4mDTV-cycFXyzLOPJJh_mi62ym6eX00l7aOHWMe8PtEYodA8b2_fyXL-wr1f6JajRyFxvtPYg6tmtYhDz--6yly9baIiq9LhcbDV8cTlVFoU6EwfeqW_0ppViYbOpNGUjLMwLXjCroGihL7qbWUco00Ho1DqLbjBo9nqz1RD-6KWNkUR7x7loSiXOLRr-bl8e1mXf4hxXDpWZCUevv3L4RWcUqGxVNbzKpB8ZRQbrLfXIs0UvyLecJr32Z8dKtdKf7bdso2hxR33-wOvivAXbXu0U_HXgWFGvVlQ2DbfWGyOmJLWEzsxSFtLDcBEO193ygLE4xeerA6a4dMLKerkaLh8aLWHbszR93Zpt3UrBqZgztI0VWlMgI7Ljenc5UmeaZaz5Q3uLZHm942VPpPFUXFscx2HOG6GTPOJqYkObTj1hOj3kscexmB7VWiO4MwW7qspFaTrl6JHGMbInM6ODyoktdSc3h_BHZ4sd7fu0qHG02fcKQy8McFBCrKfzYk8XxKDLooNYDaVdN2TdZl_ip_HIQZMeNxk7I-U0XfZG67HciGXBGJ7kMKb5gzQ00eIkS8cjno6illi26kLu7_8DRDEIbw=="
+            #mapstr = "eF6dV8cO7EpuvTNeeOtvuOsnoJWlAWahnHO31KqNoNjKOQ8Mf5u_yR_w3NfGAPYDDBsuLQo8FAuFInlI_sOPP_9Q_vVP__b7n3_8_i-_PuTHP_34xx_17_XvP3786b-s_y79Av4g_6_rDwZ_OPDHj7_9XKsuX9a4G6Nu-fkXGKco9EGRJE7i9G8_0y_0-O3nOv_8y0-P_A0i9Mdvj5-_gGhos7-DX6BFvr_Av_2cq1-H_MfefdW5SK59Clm48HFLZEvKGO072SyynVxmO1QxtnfiD3UMqhQwjsQdyGBhBAGi-uHwFFtTrKrI_KfWNvgBFmc3aHVsYbilow-ZacGtVHY1kW4GP9GsW-wytWt_yIMiwwrePkibjygosqLjiiIIh6OMNEjr7j8Hy0WhUVcBEgQot1YWIv1P-8tGXnQu6wp0yLEwOoxlcubbNafH2SoMi0-udqlr0Bnjh7HNiw2-KuQUDY4Fm6d56h4EzPxxePNyY9eMr0NMNear0r2x_qrq2qnFw40zI_YOIY2FeKt0d6zjF8N_VSrFFP51YqjLjo9zmJXnL_BkuvrWCWX-8IrnC-yJyTbNdcRTXbBj4wycCZie_bzBwL9dKN0GajgWC09S7_Ox1wc7M1cwhW-WS6_AaFmmiIdnwDT069g8BmuoTOMY4uEgC6MSOyuiZ5NZg4EJR34dTBorRcAIeOBcEdnGgIPnctId8xhYOGbuEvDAbOf3FDDfu_LTg-21S3q_4_fT4ft4FoxDEZGYQT-Af1Gs3-D3IByECbbnGVbP8-4qTVyPwibjCV4g3Q0hGjwrK3FeIXdrgCm2IViCUTO9yBZgSnXfOtfoci2FaRv3RMFw4bg4cHyDrDlSyUIpUZrbGP9s7ziMqaaTzq7gPwaafTYYZUArnDrZDudylaA9fFvW00UCRni8pEiwwebzL7bjGRuNlydu2ZsA5DUpGIyUEOTOXoWOt9jZQLue7-paj75_pa_jpuCGgii6jy9ZddFHmola36Xisqqx2J_N61VceiiGtlGvgPHd9br1DRoUj95bquJbbtYBBfs3waT8sulAHj4P6LXU6QcG9zh6GrGqC0Gr5oAp0aOfa_HTA91Ap6u7xpCbr0KJT8J-VJvJuGu8PRTNi0lCXTy2MZC1Je5Tm--PlZtdYA80GEJ1ERCTvaQYaSb0hpRdUfAVaovoJTHh8-LDU9yfKtSI2rpgvZKt-4JSB_CoEqHcUNB18RRcVK9nYWuotc-v_t0m4ThrYktaXB68Zo-ZvFk_kZ6clvyzaoCj72ew2gy4YEfUjjYKNjdrdC8Y_445wG4eZEXD16TY2qOdnoeUri_WexldlyHm8SlnwsfqEmkNRrw2R-SeAEgp7jiw2rgN-wujLWE9KAyip9H2orge8GKWL8Lti4wyHfate2xb0GR1vme22HjpgRo7S5bTx_cQLJJ1cS_uKcAf-C4-rEraasHi77SEEtu3RsoeRcnJsGSH1KskXxrY2E5sZfvFh7V19YGvmmstSYFyLzs8zuLbFpDxhFS1DUlNbtDiMbe0l5TOjmqoUrQOmR8DqRt4taIfc-k7TDzSBfEJSybE9_SwO21W8UN_YICn-aXK5MJaAJit63uXEkjhiSjVsiOemHCELltFWE3XmxSRYpXuXbLKFg-RrZBTYm6vgHf8PFtZewkSIJyLlrdt_kacZOmFF_gM-FMPy_yoakO0lTDR9fdQLOBeWu2SwQxQCfFBaRoeEpBLApC3WbYlcq0g3mKK29StRjPOW3YhMZxAfjsx1hF29tC-1mZZuS9K6G16aO96XKT-nTDEu3TMZBawjlnwiOYCTHFyEQRpn4o78D7F8Y2xTevXNVu7gENehSjGLkFqKWlQwgbdMJSczQ32SMA9GAneMxSerXxijoAVbj6WT3jvpdMAJjaGi7qtl3MS60dEkL5xA0Qjd1fHDXoSFokqZkxQQVqjidI51vCLG5FTKSQb0I1RHxFihwtyodYuipIv4u5y1MRNZDV8-jlFp4Run9cFcgmHdKX7AEEEZGWwu-Z2D4exda5ye4ysT8iEBC7sDPNAc6E3h4-QByJXAcaGeH0fjJLcJPJqwCow_HUMV7oTdo3ZSHGsgL35IrTeMHdMDU2wapCB1AiO4SwAv-fmhj1L9_XW5q4AN7OkgLdt_2mnGWVNGZqaJ-09iyDzbb4EqowSXeijayf7HOLqwyeCjgKpHWlIzN3zLjKm8bnp3dSaWqrULELPqAcBs_FoK_EKBQH1mHDObEvY2W9loc356yGC5NtGM4N3YmcEokuPhcTRGClIXRXDcjrs0jqWtRqF5F1xiWItCCCwFSF3jL2Qub4gKVNts_ew-aFhDXKnnkVrvBS88VvFTb_hLmLuBrHcvQ-ya3fHzfSahIjhnlI6XRmEEXLDtBentvTT-lYtV1poWy0XHGRjqQPjhXflbtZjsVpnGrTh9fKT0ClyV0qfHzvoQ27t7q3Yr0_CyQSn2N83RD9c2nnLKpzh0kihcs2O3TabnixfdrhEugvebu5Hni6zp8CSS8iG8M2TgRMtUq5_yRdla-GFXYMkruerHdfx85S2MAgumcCW6Yo3Pd62IPs2F7Ky8MjAyNGiZrrrS3A8gCsBE_uSyFAgvq6pP8Q1IDPL2W6hXAvJJO8wfFxh-qz3hOxQnttfxtWTw2VUU4UnCcmINmBFL61ndZu5RTyRV-IuT4G-O8ZuD5U1Q6cGC1jPZ3FV3MTmsB6ooQN_Y6xz80_gNwOMhesrvTTr0TIjNgwt1CefAxrpXQXBC16ng_AYUo81FNKkglSl54jw0RGJY9tAhjf5rmztlAC0L8Gl_XRjq-OiB8Z_83XeBB0URhTuN9OW6NTn6bSUjPzOJEl8TlNBj6H22LahlN_VPVcH0hmN9s1fj5-fUx-69KpTb8bblphJOMRftsz2cxh-XBpB6Y8Xf-XlN3Vay2_dkVW-cnaO4AFnEyXQqgD1zNxs0rZiOS43y4TQqt-47u49HtmzeXXvVocXgGScOUtCIqdSDftm1gNIHOVWmQNGRUDnJ6q-XCNQWfvu135uBj_ClQ4Emr3cyuT6aUegEMdv-IqyEV7abdjlJK5gkXJMQgCNYeyGrAy0ALrsQG0l06naIXYB0wOx59pgV-lxYPpTVOqTvC4U4Eiq-fFpLC_3alXGb8g8UWvQtpaNyXF1AooUX1odn7a5EqZw0uLS799Su5BB1GUK0FTF2O3cDHstohqnuTrV3N9f-rJp6QzNWVhRHLHMLzWah5dztJstB3mUdr0_azv1xrBXObM5nsbcMr6tWWNrnPL4tL4dZBdUCU8dnmd7XVpLIIzUKKxs9fUGZZUZ7Sitjn7MPGx5c4HI_bzi4LWSzc1NsdAipQVTS9k_b_HJ-PkLbzB96XjI6QQYgXWAoKHZP53p6j3SNl4omnkkeL3dKGS23Kx6Dd4qBKIjQ5s2SPdIJTOgxxsawkZ_JDvnk_ezbYsXxXvOtn-W4CAZDm1G9LN1Pui37sBLOGmfL6StopMeJztjmiSb6s6ddZUUG28GWw7HDSH139yskEu1JhnBrXa3iVcrGlnFmTZ9xd2XKhNzpL6u-lbWgAwHMCZXOpmykABzO537CRo_JSQ5nvCyuui-8OwoZqQteZkW7N1fdoPa51Fepymula4_oxwNnoLbk344IOdFUEeTeGbYMBhPsHR9DGE2jW3iT-GsBj540PF9YXhrJgpfKVsdftVrpcxGXSwvA-0Va41o1oWg1WHnmovZ4FnKD50rO58YSqfchh7b2fz4aKd8qZMyLRajYVcX9PEj8ZIbhMzXLHm-9gX_oFJJDismM3xV1IeOMVM9BYeSFObgY0xki7uRMLtl47NWbCyHhf4MghzJ0jfpkweTc6qHODi18lNR4v17_bJEyVWUrL4zRzsGIKzhwYJUoeTlJt_Wd-xh9FOUGdpp5CPHTq7SouTz_kT5BY0DzVdeweq1oCkz_dEs-zspOrmDXKJq2kx7VqLhQ4cpyrkncf1jGNTx20sYzlDtCDNg9PXJyprDxVle-LXW9JC_a8LS2U-a_qds_R9khCM_Gm3zE54yqIENVYVww-P79NRD3Kzh_ymvKf4K_QRLvWQJKoQdsO0bhWfjf7JzzTVH0mGRNzZJZ5T6vSzlwuiizuvzwh6cApO6kjDc6R0XQTJ5fbPI3iLxtLDT5QO8yGSJW239l0PZGc_a1jyyUKOoZxMjAgyhC6neOJH1RfSd5TccyqOiRlCw9miEElC09gVK3h1JI8MdUdSL3iibhBA_yiObkFeIhvBDi7I2yvd3Tx70XvQjTaUFtOYRgXfdd36YqnEmN6xF5gsu0DnZJ7_r8W9jOJrFZHQI0b9Fu5iickEjD_HznoywnWxpKCr2iIrUO-yY469__fnP_w7_d8LC"
+            #mapstr = "eF7tlumS4sgRx7v3FRzhzw4-SxEq3ZoIh4NLXDpAB9d6QyGEAAkkISSQYGNfwO_ir34IP4qfwN_WVfQw3a05uhvo7hjv_CcYpKzM_GVlJTXz080_b1t___1vv__55k83__j93zfkTXKT3Uz--6__3LyOfioarqifoIq2O-tx5Qtrl-pT6q-rGHKpivm_pGLMhYIZb29vj5k_ft3pFlk_Wooxl-lT9uPfX9YrIb-lK-_zGcRXQD7J_M6Rx3F8Gnl7LeT9z79I-EzXQ55UJHym6yGLmb-qKyGfs7uTroN8VkNPugryRcT3Qd6rmOkFegHzIfGNkHfM02Mx0fP1EuQDXbLP85FnMu879VK9C7KY65l6B-TNi-7Yh_qB_LbOPsy3R579G7kEWcz0An03yIuYb4489ywvmJ_vC1lM9Xy9A_JM5iXIMzt7GbKY7Vm6AHnmJr8_5FnMH8gn9NbII-0s4mXI8_RHQZ7HvAhZTPY8vT3yzN_HUechz_1JHnUW8iLi-yDPYV4yPeciL2E-Ir6Afh0kOqEHSb-tqyBRj5_LvGh-7iCnFM9A3lV2AfHj-LwoxYXEE7Jofk0diUXj6wohi7ZX1rsgLxqFc_QuyHdo7LtM7BtD766CJ1QMulDPYRZjLtXTyGLExXoSWQy4WE81tuh_uZ4AfhV5_v3xUuLJcPaVhW67IqOgQsTJfPxn-kx9SvIVFZAn93Ma-6kzjwCf6VHMA_ei-UV6RPhMRe-Tf9H6Ev307dMsul_hTn6C-IXcXzE_VnFiHukx4HN9nuzOXszzAj0GfK6vEJ9APkrxUN9Y-qSvIV9TfwzkY-bbI781GdfUY2Zx9VX0A_lK-oF8FT0Evg3yMfE9kE_8v-Uaen_i6yOLwP9LZJF3-wN5HRV5tz-Q11GRd_v6yC8wix6vqHdAnphF82vq7Yk3CFq0XKBfSxt3lZQ-_FpKnNIHAivN0NdvWClIvWnpQ4lxXYG2XYFyCIEqYaXELn34-WcSA3d_fvkFK3mJs3LtcBXNSx_SzdbFShHMAbBSaG9ghvXG-QsMdGZHW-oFbpLawdoKIBWwrMABgiUIAGistPGgjcRKkxRCCIyAyVOUQucoBsMBy3ASyZEsRkgEBhhCwkkOgLs3kpXgB8MpTgICdCZJCcAgXpBIKAynJRx54iRLcxgD3ygOOtMwMwUzc8fMAnXMhQOaQ44cXKEk5miAaRiWPy2zcJkR7urAAUPBRe70doxlOOG0SKJI5vSGKqB4AcMFiRKQN1ymwMkZYuAyTWIUfEUb4E5xsDzAn96OCOo-KQ1zMJ8WUXEUTzwojqLumnSKJDnUD_QOEfT9EkkSn7LwyPF-F7C7PMGiCBydBAO_oYH8uEzRaJm6LxaauAcVwJNA7cFpAuNhsdDK88gHPjAMBKGGoCgWsBg4knmMhf6Qj7PQAcADBgQqFsCEBPRgWQz2TcLhUcNoSGcwioBHz9MYT0qohXBc4CmzMJIFOidAFMnCbSCkdN9JXgKwbpzTSZ6GMJqGZdCoW4AUMPiM-go7CGkCzMZQGBAIiScxkoQTgd4QREA9hP3gMRrthkZzCOAxoGppFIeOmoQrsBcYic4Hbpim4DeJoe3BRLAoCnqhOQMk2iTKQ9CoaInEeDQ2qHK4Q5pHdQsSAxc56A53zkMzB_cEO3oc-qMbqgEGs2iICdRLWAvqIfJjKYlH2-ch_DjfsDKJQz3j0S7hA4smEfUMZUQLcDpQUxlB4lABJDwtBiFogLqDw90A2AaKRZUcj1eApwtoiUVbhFaWQ0cI74FgA2-QEnqCv_YAProil5IAbGnQGy2shtlwvaSVt6mtXZ2mKwVU2KwSTVbzahzVx72e36gZsWYwKiUOssbULuflmB4tmnXHzQ9WJZvlOb5rTlN2lk975La7tPaL9doLs5FvT2YGNcGtbrLnVGu8dg87cmYdGpxlzRYzfhWsgKSn9hY2aTMC_CyegoELhEoTaDoQ5_pOldKptpLSzV5Y9ifSrE1lNJXiErwAgUgOl_Zq2ooORNWv-UaHiP04TegtTolpI-iv-_VhfsibqrRL84mpdvZbq2MNZGFOg31zM7SD5RjwVWa5J0lFGeV7W9TH0sQB61VD1GPVrVoV2U7S1B-aU8GJfdMBUb_T1Lus5waGrsdKp8muV-0NT_vhcpVubTLfxV21nS9AN2lEfLZq5CYwPCGifIOJhYOqgYOBd6rOeqKtx6uuUGNz3ZvUa_bYxw1lRFD7tQMM3e8oSyLcB4FttI0JqO1j3LMUPIJ2k1h2Up7w9Tlh9w113pFGSsuM2kti4S2HYZ1eeGYnF_vKIDHi7igRHJ7dedp8z_pBW25pJMFIAd8z7Yyp1kfT4LCvd2R7qcgRmFc9clyPPanDOXuGiKYTvyLa00E_90Wxmjjjcdjls6zbl7oeUONOtPK9RoMweyD3fXMTaiQj27GmkbNDy3aWhHfogHxmTavxdJDv51yXa637a8OrLlx_J_NOzoSgJcfTyYHfZpVhVZVU1zadVRJPh2hPQ15Xmx26l69DYLf1WofW8rFP2Ixb7ozG-bjGygHuRkNnSJT7me8fmhGxT-rw0YOPYO-0zOwQ580oz53WKDuw-crpd1s4YRGWkkejYaXX0Ece3Y0qk7ydBZ3dchxvK1TdaKti23SVaeb3Yjn2Uh8222eVTux5ZaJ5WO-aQsdfNBcNQds15lo6mJtaX9zUwl5cG7Feb7PIDFEEgyqt0T1mMh5C36XddpjMn--VeuBA-7jhGarTIlQ_r4Tq0hY1en4I90o5ckbjA1w1VVlmZF_rhGrdaWjR6hBW1VqL0MeHu3QyTEfzmtZxmJjhNC3hdCkRImam9YbVaTWSFvNtPaiow8GA1usSWU40jqXDRasOg21PWlmGHNsSWVNmy7HCL7KmirfMWe7KUhZWhWxs8DLAe_X1InD5bLDlWrNFsD6UFVk57JJq39J9y5ovZPkAKwOHcZ2XmU1SJjJKxbO2Kcjjg19dZoeu6khDZWnsVpuQHxpVWa4Pt02pXKsofMM3W4v5Eve1qJ5lxoztKC6zHgiTOTOyAnNm6DzVrTHVBk3Y3mDVSMzYr0RrpeH3TfgZNayqt1H39nS0OGz3RDKgV7vMTlpO3HbFttpRg7QSCesmrS_1dGv01F2s7lMhD2rUaN7MTba3a8ih1RzNxvMytwt7TlMaTmt5rPTWETWid628IfYXgYCvRdXmF4mbz-U8d9fJNuLqia5Ke1lb9EfjncMebM-09ma7KTINyYtX5rSfu5VA6Wxqy7DHe52NElT6urrflTebYYXW7H05XtWn9DTuDMp1OB9l3J9Nu2ObTb3KsAdvAjycaWYUlqmhmGgdvEqYznKjVJ1ZnkW03de8jA-bSa8Frz5SqQayCMeIayyG9WplHaya5NAcGAp8jkTZWm4qq8rcnq9A5mmesZ7r7IiON2pT94x4JJMDv24DQAETV4RuzSBjppnE9Yo2cSKyx5TBztrQpNGJernW2wi1mrKNdvZI0N2-aLR73HBZr4fNkFbTaM7QsBd-bT4ardwGk7ej9m4riuP-uo6bVrk9mrZYbxDTkmg7kbdMzB6zowbpvOuQ7D6IpZQpD7Vd0K7rvruZLoxlx-91ZDYZiGovhj8Q-KMemUw1IiuEOR5mccqkx7utRdUX8JZbmo7It3O9ZSlrK93teC7t8jk_a26tcCoI_JbxLWdnTRe47ocUgzcpK0vbvuXurBpJz5ocrtZES5x1d4d8Fs5Y1xctt5lTFiXigtD3rNC3-O5kQbkc3x8eKisDgAHlx6OdyDrw9ttJ9VDK0i63FKbkSh6KuOhvcDIP-LaBU83hISL64WbtDKtgKwaWl5DwY41VcTPL26RwCIX91KU2bJMKnLVt_rX02_8AbsHDjA=="
+            #self._add_raw_map_data(mapstr, timestamp, key)
             self._add_raw_map_data(response.decode(), timestamp, key)
 
     def _add_raw_map_data(self, raw_map: str, timestamp=None, key=None) -> bool:
@@ -1963,6 +1969,7 @@ class DreameVacuumMapDecoder:
 
     @staticmethod
     def decode_map_partial(raw_map, key=None) -> MapDataPartial | None:
+        _LOGGER.debug("raw_map: %s", raw_map)
         raw_map = raw_map.replace("_", "/").replace("-", "+")
 
         if "," in raw_map and key is None:
@@ -1982,7 +1989,7 @@ class DreameVacuumMapDecoder:
                 decryptor = cipher.decryptor()
                 raw_map = decryptor.update(raw_map) + decryptor.finalize()
             except Exception as ex:
-                _LOGGER.error("Map data decryption failed: %s. Private key might be missing, please report this issue with your device model https://github.com/Tasshack/dreame-vacuum/issues/new?assignees=Tasshack&labels=bug&template=bug_report.md&title=Map%20data%20decryption%20failed", ex)
+                _LOGGER.error(f"Map data decryption failed: {ex}. Private key might be missing, please report this issue with your device model https://github.com/Tasshack/dreame-vacuum/issues/new?assignees=Tasshack&labels=bug&template=bug_report.md&title=Map%20data%20decryption%20failed")
                 return None
 
         try:
@@ -3376,7 +3383,7 @@ class DreameVacuumMapRenderer:
         ]
 
         self._segment_icons = {}
-        for (k, v) in SEGMENT_TYPE_CODE_TO_ICON.items():
+        for (k, v) in SEGMENT_ICONS_DREAME.items():
             self._segment_icons[k] = Image.open(BytesIO(base64.b64decode(v))).convert(
                 "RGBA"
             )
@@ -3599,8 +3606,8 @@ class DreameVacuumMapRenderer:
                     map_data.walls,
                     map_data.segments,
                     [14, 14, 14, 14],
-                    140,
                     100,
+                    60,
                     scale
                 )
 
@@ -3776,7 +3783,19 @@ class DreameVacuumMapRenderer:
 
         line_width = 3
         border_width = 2
-
+        
+        if map_data.rotation == 0 or map_data.rotation == 180:
+            width = (map_data.dimensions.width) + ((map_data.dimensions.padding[0] + map_data.dimensions.padding[2] - map_data.dimensions.crop[0] - map_data.dimensions.crop[2]) / map_data.dimensions.scale)
+            robot_icon_size = width * 0.037
+            icon_size = width * 0.03
+        else:
+            height = (map_data.dimensions.height) + ((map_data.dimensions.padding[1] + map_data.dimensions.padding[3] - map_data.dimensions.crop[1] - map_data.dimensions.crop[3]) / map_data.dimensions.scale)
+            robot_icon_size = height * 0.037
+            icon_size = height * 0.03
+            
+        robot_icon_size = max(7, min(14, robot_icon_size))
+        icon_size = max(5, min(10, icon_size))
+            
         if map_data.path and self.config.path:
             if (
                 self._map_data is None
@@ -3913,7 +3932,7 @@ class DreameVacuumMapRenderer:
                             bool(map_data.cleanset),
                             layer,
                             map_data.dimensions,
-                            5 * map_data.dimensions.scale,
+                            int(icon_size * map_data.dimensions.scale),
                             map_data.rotation,
                             scale,
                         )
@@ -3935,7 +3954,7 @@ class DreameVacuumMapRenderer:
                     robot_status,
                     layer,
                     map_data.dimensions,
-                    int((7 * map_data.dimensions.scale * scale) * 1.2),
+                    int((robot_icon_size * map_data.dimensions.scale) * 1.2),
                     map_data.rotation,
                     scale,
                 )
@@ -3948,14 +3967,64 @@ class DreameVacuumMapRenderer:
                 or self._map_data.robot_position != map_data.robot_position
                 or self._map_data.rotation != map_data.rotation
                 or self._robot_status != robot_status
+                or self._map_data.docked != map_data.docked
                 or not self._layers.get(MapRendererLayer.ROBOT)
             ):
+                robot_position = map_data.robot_position
+
+                if map_data.docked:
+                    # Calculate charger angle
+                    charger_angle = map_data.charger_position.a
+                    if self._robot_shape != 1:
+                        offset = int(robot_icon_size * 21.42) # 150 #icon_size * 30 #int(robot_icon_size * 16.7)
+                        if (
+                            charger_angle > -45
+                            and charger_angle < 45
+                        ):
+                            charger_angle = 0
+                        elif (
+                            charger_angle > -45
+                            and charger_angle <= 45
+                            or charger_angle > 315
+                            and charger_angle <= 405
+                        ):
+                            charger_angle = 0
+                        elif (
+                            charger_angle > 45
+                            and charger_angle <= 135
+                            or charger_angle > -315
+                            and charger_angle <= -225
+                        ):
+                            charger_angle = 90
+                        elif (
+                            charger_angle > 135
+                            and charger_angle <= 225
+                            or charger_angle > -225
+                            and charger_angle <= -135
+                        ):
+                            charger_angle = 180
+                        elif (
+                            charger_angle > 225
+                            and charger_angle <= 315
+                            or charger_angle > -135
+                            and charger_angle <= -45
+                        ):
+                            charger_angle = 270
+                    else:
+                        offset = int(robot_icon_size * 35.71) # 250 #icon_size * 50 #int(robot_icon_size * 27.8)
+                        
+                    robot_position = Point(
+                        map_data.charger_position.x + offset * math.cos(charger_angle * math.pi / 180), 
+                        map_data.charger_position.y + offset * math.sin(charger_angle * math.pi / 180), 
+                        charger_angle + 180 if self._robot_shape != 2 else charger_angle
+                    )
+
                 self._layers[MapRendererLayer.ROBOT] = self.render_vacuum(
-                    map_data.robot_position,
+                    robot_position,
                     robot_status,
                     layer,
                     map_data.dimensions,
-                    int(7 * map_data.dimensions.scale * scale),
+                    int(robot_icon_size * map_data.dimensions.scale),
                     map_data.rotation,
                     scale,
                 )
@@ -3973,7 +4042,7 @@ class DreameVacuumMapRenderer:
                     map_data.obstacles,
                     layer,
                     map_data.dimensions,
-                    10 * map_data.dimensions.scale,
+                    int((icon_size * 2) * map_data.dimensions.scale),
                     map_data.rotation,
                     scale,
                 )
@@ -4143,17 +4212,18 @@ class DreameVacuumMapRenderer:
         self, charger_position, robot_status, layer, dimensions, size, map_rotation, scale
     ):
         new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
+        icon_size = int(size * scale)
         if self._charger_icon is None:
             if self._robot_shape == 1:
                 charger_image = MAP_CHARGER_VSLAM_IMAGE
-                size = int(size * 1.5)
+                icon_size = int(icon_size * 1.5)
             else:
-                charger_image = MAP_CHARGER_IMAGE            
+                charger_image = MAP_CHARGER_IMAGE
 
             self._charger_icon = (
                 Image.open(BytesIO(base64.b64decode(charger_image)))
                 .convert("RGBA")
-                .resize((size, size), resample=Image.Resampling.NEAREST)
+                .resize((icon_size, icon_size), resample=Image.Resampling.NEAREST)
             )
 
             if self.color_scheme.dark:
@@ -4176,7 +4246,7 @@ class DreameVacuumMapRenderer:
                     Image.open(
                         BytesIO(base64.b64decode(MAP_ROBOT_WASHING_IMAGE)))
                     .convert("RGBA")
-                    .resize((int(size * 1.25), int(size * 1.25)), resample=Image.Resampling.NEAREST)
+                    .resize((int(icon_size * 1.25), int(icon_size * 1.25)), resample=Image.Resampling.NEAREST)
                     .rotate(-map_rotation)
                 )
                 enhancer = ImageEnhance.Brightness(self._robot_washing_icon)
@@ -4187,7 +4257,7 @@ class DreameVacuumMapRenderer:
 
             icon_x = point.x * scale
             icon_y = point.y * scale
-            offset = (size * 1.5)
+            offset = (icon_size * 1.5)
             if map_rotation == 90:
                 icon_x = icon_x + offset
             elif map_rotation == 180:
@@ -4209,6 +4279,7 @@ class DreameVacuumMapRenderer:
         self, robot_position, robot_status, layer, dimensions, size, map_rotation, scale
     ):
         new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
+        icon_size = int(size * scale)
         if self._robot_icon is None:
             if self._robot_shape == 2:
                 robot_image = MAP_ROBOT_MOP_IMAGE
@@ -4220,7 +4291,7 @@ class DreameVacuumMapRenderer:
             self._robot_icon = (
                 Image.open(BytesIO(base64.b64decode(robot_image)))
                 .convert("RGBA")
-                .resize((size, size), resample=Image.Resampling.NEAREST)
+                .resize((icon_size, icon_size), resample=Image.Resampling.NEAREST)
             )
 
             if self._robot_shape != 2:
@@ -4240,7 +4311,7 @@ class DreameVacuumMapRenderer:
                     Image.open(
                         BytesIO(base64.b64decode(MAP_ROBOT_CLEANING_IMAGE)))
                     .convert("RGBA")
-                    .resize(((int(size * 1.25), int(size * 1.25))), resample=Image.Resampling.NEAREST)
+                    .resize(((int(icon_size * 1.25), int(icon_size * 1.25))), resample=Image.Resampling.NEAREST)
                 )
             status_icon = self._robot_cleaning_icon
         elif robot_status == 2:
@@ -4249,7 +4320,7 @@ class DreameVacuumMapRenderer:
                     Image.open(
                         BytesIO(base64.b64decode(MAP_ROBOT_CHARGING_IMAGE)))
                     .convert("RGBA")
-                    .resize(((int(size * 1.3), int(size * 1.3))), resample=Image.Resampling.NEAREST)
+                    .resize(((int(icon_size * 1.3), int(icon_size * 1.3))), resample=Image.Resampling.NEAREST)
                 )
             status_icon = self._robot_charging_icon
         elif robot_status == 3 or robot_status == 5 or robot_status == 6:
@@ -4258,7 +4329,7 @@ class DreameVacuumMapRenderer:
                     Image.open(
                         BytesIO(base64.b64decode(MAP_ROBOT_WARNING_IMAGE)))
                     .convert("RGBA")
-                    .resize(((int(size * 1.3), int(size * 1.3))), resample=Image.Resampling.NEAREST)
+                    .resize(((int(icon_size * 1.3), int(icon_size * 1.3))), resample=Image.Resampling.NEAREST)
                 )
             status_icon = self._robot_warning_icon
 
@@ -4293,12 +4364,12 @@ class DreameVacuumMapRenderer:
                     sleeping_icon = enhancer.enhance(0.7)
 
                 self._robot_sleeping_icon = [
-                    sleeping_icon.resize(((int(size * 0.3), int(size * 0.3))), resample=Image.Resampling.NEAREST),
+                    sleeping_icon.resize(((int(icon_size * 0.3), int(icon_size * 0.3))), resample=Image.Resampling.NEAREST),
                     sleeping_icon.resize(
-                        ((int(size * 0.35), int(size * 0.35))), resample=Image.Resampling.NEAREST),
+                        ((int(icon_size * 0.35), int(icon_size * 0.35))), resample=Image.Resampling.NEAREST),
                 ]
-
-            for k in [[19, 10, 0], [24, 24, 1]]:
+                
+            for k in [[int(icon_size * 0.34), int(icon_size * 0.18), 0], [int(icon_size * 0.43), int(icon_size * 0.43), 1]]:
                 status_icon = self._robot_sleeping_icon[k[2]]
                 if map_rotation == 90:
                     x = point.x + k[1]
@@ -4330,33 +4401,32 @@ class DreameVacuumMapRenderer:
         draw = ImageDraw.Draw(new_layer, "RGBA")
         if segment.x is not None and segment.y is not None:
             text = None
-            if segment.type == 0 or not self.config.icon:
-                text = segment.name
+            icon = self._segment_icons.get(segment.type) if self.config.icon else None
+            if segment.type == 0 or icon is None:
+                text = segment.name if self._robot_shape != 1 or segment.custom_name is not None else segment.letter
             elif segment.index > 0:
                 text = str(segment.index)
 
             text_font = None
-            order_font = None
-            icon = None
+            order_font = None            
             if text and self.config.name:
                 text_font = ImageFont.truetype(
                     BytesIO(self.font_file),
-                    (scale * 19) if segment.index or not self.config.icon > 0 else (scale * 17),
+                    int((size * 1.9)) if segment.index or icon is None else int((size * 1.7)),
                 )
 
             if segment.order and self.config.order:
                 order_font = ImageFont.truetype(
-                    BytesIO(self.font_file), (scale * 21)
+                    BytesIO(self.font_file), int((size * 2.1))
                 )
 
             p = Point(segment.x, segment.y).to_img(dimensions)
             x = p.x
-            y = p.y
+            y = p.y            
 
             if self.config.name or self.config.icon:
                 if segment.type != 0 or text_font or not self.config.name:
                     icon_size = size * 1.3
-                    icon = self._segment_icons.get(segment.type, 0)
                     x0 = x - size
                     y0 = y - size
                     x1 = x + size
@@ -4366,21 +4436,22 @@ class DreameVacuumMapRenderer:
                         tw, th = draw.textsize(text, text_font)
                         ws = tw / 4
 
-                        if segment.index > 0 or not self.config.icon:
+                        if segment.index > 0 or icon is None:
                             icon_size = size * 1.35
                             padding = icon_size / 2
                             text_offset = (icon_size / 2) + 2
                             icon_offset = 2
-                            th = scale * 23
+                            th = int(size * 2.3)
                         else:
                             icon_size = size * 1.15
                             padding = icon_size / 4
                             icon_offset = padding - 2
                             text_offset = icon_size / 2
-                            th = scale * 19
+                            th = int(size * 1.9)
 
-                        if not self.config.icon:
+                        if icon is None:
                             text_offset = 0
+                            padding = -(icon_size / 4)
 
                         if rotation == 90 or rotation == 270:
                             y0 = y0 - ws - padding
@@ -4453,12 +4524,12 @@ class DreameVacuumMapRenderer:
                             fill=self.color_scheme.icon_background,
                         )
 
-                    if self.config.icon:
+                    if icon is not None:
                         s = icon_size * scale
-                        icon = icon.resize((int(s), int(s))).rotate(-rotation)
+                        icon = icon.resize((int(s), int(s))).rotate(-rotation, expand=1)
                         new_layer.paste(
-                            icon, (int(x * scale - (s / 2)),
-                                   int(y * scale - (s / 2))), icon
+                            icon, (int(x * scale - (icon.size[0] / 2)),
+                                   int(y * scale - (icon.size[1] / 2))), icon
                         )
 
             custom = (

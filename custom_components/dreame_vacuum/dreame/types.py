@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from typing import Any, Dict, Final, List, Optional
 from enum import IntEnum, Enum
 from dataclasses import dataclass, field
@@ -871,6 +872,11 @@ class Segment(Zone):
     @property
     def center(self) -> List[int]:
         return [self.x, self.y]
+
+    @property
+    def letter(self) -> str:
+        letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        return f'{letters[((self.segment_id % 26) - 1)]}{math.floor(self.segment_id / 26)}' if self.segment_id > 26 else letters[self.segment_id - 1]
 
     def set_name(self) -> None:
         if self.custom_name is not None:
