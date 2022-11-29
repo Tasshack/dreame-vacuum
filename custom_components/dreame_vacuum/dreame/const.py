@@ -309,6 +309,7 @@ DEVICE_MAP_KEY: Final = {
     "p2114a": "6PFiLPYMHLylp7RR",
     "r2209": "qFKhvoAqRFTPfKN6",
     "r2254": "wRy05fYLQJMRH6Mj",
+    "r2216o": "4sCv3Q2BtbWVBIB2",
 }
 
 PROPERTY_TO_NAME: Final = {
