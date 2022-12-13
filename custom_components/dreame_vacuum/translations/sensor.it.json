@@ -24,7 +24,7 @@
       "cleaning": "Pulendo",
       "returning": "Ritorno alla stazione di ricarica",
       "spot_cleaning": "Pulizia spot",
-      "follow_wall_cleaning": "Follow wall cleaning",
+      "follow_wall_cleaning": "Pulizia del perimetro",
       "charging": "In carica",
       "ota": "OTA",
       "fct": "FCT",
@@ -164,7 +164,7 @@
     },
     "dreame_vacuum__relocation_status": {
       "unknown": "Sconosciuto",
-      "located": "Located",
+      "located": "Posizionato",
       "locating": "Posizionamento",
       "failed": "Posizionamento fallito",
       "success": "Posizionamento riuscito"
