@@ -17,9 +17,9 @@
       "wet": "Bagnato"
     },
     "dreame_vacuum__cleaning_mode": {
-      "sweeping": "Spazzare",
-      "mopping": "Lavare",
-      "sweeping_and_mopping": "Lavare e spazzare"
+      "sweeping": "Aspirazione",
+      "mopping": "Pulizia con panno",
+      "sweeping_and_mopping": "Pulizia con panno e aspirazione"
     },
     "dreame_vacuum__carpet_sensitivity": {
       "low": "Bassa",
@@ -34,8 +34,8 @@
     },
     "dreame_vacuum__mop_wash_level": {
       "water_saving": "Risparmio di acqua",
-      "daily": "Giornaliero",
-      "deep": "Profondo"
+      "daily": "Giornaliera",
+      "deep": "Profonda"
     }
   }
 }
