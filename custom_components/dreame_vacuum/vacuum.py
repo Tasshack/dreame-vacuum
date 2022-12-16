@@ -396,6 +396,7 @@ async def async_setup_entry(
     platform.async_register_entity_service(
         SERVICE_SET_CUSTOM_CLEANING,
         {
+            vol.Required(INPUT_SEGMENT_ID): cv.ensure_list,
             vol.Required(INPUT_SUCTION_LEVEL): cv.ensure_list,
             vol.Required(INPUT_WATER_VOLUME): cv.ensure_list,
             vol.Required(INPUT_REPEATS): cv.ensure_list,
@@ -705,10 +706,12 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
                 cleaning_sequence,
             )
 
-    async def async_set_custom_cleaning(self, suction_level, water_volume, repeats) -> None:
+    async def async_set_custom_cleaning(self, segment_id, suction_level, water_volume, repeats) -> None:
         """Set custom cleaning"""
         if (
-            suction_level != ""
+            segment_id != ""
+            and segment_id is not None
+            and suction_level != ""
             and suction_level is not None
             and water_volume != ""
             and water_volume is not None
@@ -718,6 +721,7 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
             await self._try_command(
                 "Unable to call set_custom_cleaning: %s",
                 self.device.set_custom_cleaning,
+                segment_id,
                 suction_level,
                 water_volume,
                 repeats,

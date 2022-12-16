@@ -449,7 +449,7 @@ class DreameVacuumProperty(IntEnum):
     TIMEZONE = 65
     SCHEDULE = 66
     SCHEDULE_ID = 67
-    SCHEDULE_CANCLE_REASON = 68
+    SCHEDULE_CANCEL_REASON = 68
     MAIN_BRUSH_TIME_LEFT = 69
     MAIN_BRUSH_LEFT = 70
     SIDE_BRUSH_TIME_LEFT = 71
@@ -471,8 +471,8 @@ class DreameVacuumProperty(IntEnum):
     MOP_PAD_TIME_LEFT = 87
     SILVER_ION_TIME_LEFT = 88
     SILVER_ION_LEFT = 89
-    DETERGENT_TIME_LEFT = 90
-    DETERGENT_LEFT = 91
+    DETERGENT_LEFT = 90
+    DETERGENT_TIME_LEFT = 91
 
 
 class DreameVacuumAction(IntEnum):
@@ -575,7 +575,7 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.TIMEZONE: {"siid": 8, "piid": 1},
     DreameVacuumProperty.SCHEDULE: {"siid": 8, "piid": 2},
     DreameVacuumProperty.SCHEDULE_ID: {"siid": 8, "piid": 3},
-    DreameVacuumProperty.SCHEDULE_CANCLE_REASON: {"siid": 8, "piid": 4},
+    DreameVacuumProperty.SCHEDULE_CANCEL_REASON: {"siid": 8, "piid": 4},
     DreameVacuumProperty.MAIN_BRUSH_TIME_LEFT: {"siid": 9, "piid": 1},
     DreameVacuumProperty.MAIN_BRUSH_LEFT: {"siid": 9, "piid": 2},
     DreameVacuumProperty.SIDE_BRUSH_TIME_LEFT: {"siid": 10, "piid": 1},
@@ -597,8 +597,8 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.MOP_PAD_TIME_LEFT: {"siid": 18, "piid": 2},
     DreameVacuumProperty.SILVER_ION_TIME_LEFT: {"siid": 19, "piid": 1},
     DreameVacuumProperty.SILVER_ION_LEFT: {"siid": 19, "piid": 2},
-    DreameVacuumProperty.DETERGENT_TIME_LEFT: {"siid": 20, "piid": 1},
-    DreameVacuumProperty.DETERGENT_LEFT: {"siid": 20, "piid": 2},
+    DreameVacuumProperty.DETERGENT_LEFT: {"siid": 20, "piid": 1},
+    DreameVacuumProperty.DETERGENT_TIME_LEFT: {"siid": 20, "piid": 2},
 }
 
 # Dreame Vacuum action mapping
@@ -952,25 +952,25 @@ class Segment(Zone):
         return attributes
 
     def __eq__(self: Segment, other: Segment) -> bool:
-        return (
-            other is not None
-            and self.x0 == other.x0
-            and self.y0 == other.y0
-            and self.x1 == other.x1
-            and self.y1 == other.y1
-            and self.x == other.x
-            and self.y == other.y
-            and self.name == other.name
-            and self.index == other.index
-            and self.type == other.type
-            and self.color_index == other.color_index
-            and self.icon == other.icon
-            and self.neighbors == other.neighbors
-            and self.order == other.order
-            and self.cleaning_times == other.cleaning_times
-            and self.suction_level == other.suction_level
-            and self.water_volume == other.water_volume
-            and self.cleaning_mode == other.cleaning_mode
+        return not (
+            other is None
+            or self.x0 != other.x0
+            or self.y0 != other.y0
+            or self.x1 != other.x1
+            or self.y1 != other.y1
+            or self.x != other.x
+            or self.y != other.y
+            or self.name != other.name
+            or self.index != other.index
+            or self.type != other.type
+            or self.color_index != other.color_index
+            or self.icon != other.icon
+            or self.neighbors != other.neighbors
+            or self.order != other.order
+            or self.cleaning_times != other.cleaning_times
+            or self.suction_level != other.suction_level
+            or self.water_volume != other.water_volume
+            or self.cleaning_mode != other.cleaning_mode
         )
 
     def __str__(self) -> str:
@@ -1346,6 +1346,7 @@ class MapRendererConfig:
     suction_level: bool = True
     water_volume: bool = True
     cleaning_times: bool = True
+    cleaning_mode: bool = True
     path: bool = True
     no_go: bool = True
     no_mop: bool = True
@@ -1354,6 +1355,7 @@ class MapRendererConfig:
     active_point: bool = True
     charger: bool = True
     robot: bool = True
+    cleaning_direction: bool = True
     obstacle: bool = True
     carpet: bool = True
 
@@ -1482,6 +1484,13 @@ MAP_COLOR_SCHEME_LIST: Final = {
     ),
 }
 
+MAP_ICON_SET_LIST: Final = {
+    "Dreame": 0,
+    "Dreame Old": 1,
+    "Mijia": 2,
+    "Material": 3
+}
+
 class MapRendererLayer(IntEnum):
     IMAGE = 0
     OBJECTS = 1
@@ -1523,8 +1532,8 @@ class CLine(Line):
 
 @dataclass
 class ALine():
-    p0: Line = Line()
-    p1: Line = Line()
+    p0: Line = field(default_factory=lambda: Line(0, 0, False, 0))
+    p1: Line = field(default_factory=lambda: Line(0, 0, False, 0))
     length: int = 0
 
 @dataclass

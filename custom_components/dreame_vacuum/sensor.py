@@ -241,9 +241,9 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.FIRST_CLEANING_DATE,
         icon="mdi:calendar-start",
-        device_class=SensorDeviceClass.DATE,
+        device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda value, device: datetime.fromtimestamp(value),
+        value_fn=lambda value, device: datetime.fromtimestamp(value).replace(tzinfo=datetime.now().astimezone().tzinfo),
         entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
@@ -283,15 +283,10 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         name="Cleaning History",
         key="cleaning_history",
         icon="mdi:clipboard-text-clock",
-        value_fn=lambda value, device: list(
-            device.status.cleaning_history.keys())[0]
-        if device.status.cleaning_history and len(device.status.cleaning_history)
-        else 0,
+        device_class=SensorDeviceClass.TIMESTAMP,
+        value_fn=lambda value, device: device.status.last_cleaning_time,
         exists_fn=lambda description, device: device.status.map_available,
-        available_fn=lambda device: bool(
-            device.status.cleaning_history and len(
-                device.status.cleaning_history)
-        ),
+        available_fn=lambda device: bool(device.status.last_cleaning_time is not None),
         attrs_fn=lambda device: device.status.cleaning_history,
         entity_category=EntityCategory.DIAGNOSTIC,
     ),

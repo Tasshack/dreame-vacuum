@@ -47,6 +47,7 @@ from .types import (
     MapRendererColorScheme,
     MapRendererConfig,
     MAP_COLOR_SCHEME_LIST,
+    MAP_ICON_SET_LIST,
     ALine,
     CLine,
     Paths,
@@ -788,6 +789,8 @@ class DreameMapVacuumMapManager:
                         if (
                             saved_map_data
                             != self._saved_map_data[saved_map_data.map_id]
+                            or saved_map_data.segments
+                            != self._saved_map_data[saved_map_data.map_id].segments
                         ):
                             saved_map_data.last_updated = time.time()
                             self._saved_map_data[saved_map_data.map_id] = saved_map_data
@@ -830,13 +833,15 @@ class DreameMapVacuumMapManager:
                             #map_data.restored_map = True
                             map_data.path = None
                             map_data.need_optimization = False
-                        elif map_data.robot_position is None and map_data.restored_map and not self._device_docked and self._map_data:
+                            map_data.saved_map_status = 2
+                        elif map_data.robot_position is None and map_data.restored_map and not self._device_docked and self._map_data and not map_data.docked:
                             map_data.robot_position = self._map_data.robot_position
 
                     changed = (
                         self._current_frame_id is None
                         or self._map_data is None
                         or map_data != self._map_data
+                        or map_data.segments != self._map_data.segments
                     )
 
                     if (
@@ -1018,13 +1023,31 @@ class DreameMapVacuumMapManager:
             self.schedule_update()
 
     def set_device_running(self, running: bool, docked: bool) -> None:
-        if self._device_running != running or self._device_docked != docked:            
-            if self._vslam_map and not self._device_docked and docked and self._map_data and self._map_data.saved_map_status == 1:                
-                self.request_next_map()
-            else:
-                self.schedule_update(2)
+        if self._device_running != running or self._device_docked != docked:
             self._device_running = running
-            self._device_docked = docked
+            if self._device_docked != docked:
+                if self._vslam_map and docked and self._map_data and self._map_data.saved_map_status == 1:
+                    saved_map_data = self._map_manager.selected_map
+                    self._map_data.segments = copy.deepcopy(saved_map_data.segments)
+                    self._map_data.data = copy.deepcopy(saved_map_data.data)
+                    self._map_data.pixel_type = copy.deepcopy(saved_map_data.pixel_type)
+                    self._map_data.dimensions = copy.deepcopy(saved_map_data.dimensions)
+                    self._map_data.charger_position = copy.deepcopy(saved_map_data.charger_position)
+                    self._map_data.no_go_areas = saved_map_data.no_go_areas
+                    self._map_data.no_mopping_areas = saved_map_data.no_mopping_areas
+                    self._map_data.walls = saved_map_data.walls
+                    self._map_data.robot_position = self._map_data.charger_position
+                    self._map_data.docked = True
+                    #self._map_data.restored_map = True
+                    self._map_data.path = None
+                    self._map_data.need_optimization = False
+                    self._map_data.saved_map_status = 2
+                    self._map_data.last_updated = time.time()
+                    self._map_data_changed()
+                    
+                self._device_docked = docked
+
+            self.schedule_update(2)
 
     def set_device_docked(self, device_docked: bool) -> None:
         if self._device_docked != device_docked:
@@ -2393,7 +2416,7 @@ class DreameVacuumMapDecoder:
                 DreameVacuumMapDecoder.set_segment_cleanset(
                     map_data, map_data.cleanset)
                 DreameVacuumMapDecoder.set_robot_segment(map_data)
-
+                
             if map_data.saved_map_status == 2 or map_data.saved_map:
                 DreameVacuumMapDecoder.set_segment_color_index(map_data)
 
@@ -3292,9 +3315,10 @@ class DreameVacuumMapDataRenderer:
 
 
 class DreameVacuumMapRenderer:
-    def __init__(self, color_scheme: str = None, map_objects: list[str] = None, robot_shape: int = 0) -> None:
+    def __init__(self, color_scheme: str = None, icon_set: str = None, map_objects: list[str] = None, robot_shape: int = 0) -> None:
         self.color_scheme: MapRendererColorScheme = MAP_COLOR_SCHEME_LIST.get(
             color_scheme, MapRendererColorScheme())
+        self.icon_set: int = MAP_ICON_SET_LIST.get(icon_set, 0)
         self.config: MapRendererConfig = MapRendererConfig()
         if map_objects is not None:
             for attr in self.config.__dict__.keys():
@@ -3324,6 +3348,7 @@ class DreameVacuumMapRenderer:
         self._robot_warning_icon = None
         self._robot_sleeping_icon = None
         self._robot_washing_icon = None
+        self._robot_cleaning_direction_icon = None
         self._obstacle_background = None
 
         default_map_image = Image.open(
@@ -3338,46 +3363,35 @@ class DreameVacuumMapRenderer:
             ),
             border=(50, 75, 50, 75),
         )
-
-        self._cleaning_times_icon = [
-            Image.open(BytesIO(base64.b64decode(
-                MAP_ICON_REPEATS_ONE))).convert("RGBA"),
-            Image.open(BytesIO(base64.b64decode(
-                MAP_ICON_REPEATS_TWO))).convert("RGBA"),
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_REPEATS_THREE))).convert(
-                "RGBA"
-            ),
-        ]
-
-        self._suction_level_icon = [
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_SUCTION_LEVEL_QUIET))).convert(
-                "RGBA"
-            ),
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_SUCTION_LEVEL_STANDART))).convert(
-                "RGBA"
-            ),
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_SUCTION_LEVEL_STRONG))).convert(
-                "RGBA"
-            ),
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_SUCTION_LEVEL_TURBO))).convert(
-                "RGBA"
-            ),
-        ]
-
-        self._water_volume_icon = [
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_WATER_VOLUME_LOW))).convert(
-                "RGBA"
-            ),
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_WATER_VOLUME_MEDIUM))).convert(
-                "RGBA"
-            ),
-            Image.open(BytesIO(base64.b64decode(MAP_ICON_WATER_VOLUME_HIGH))).convert(
-                "RGBA"
-            ),
-        ]
+        
+        icon_set = SEGMENT_ICONS_DREAME
+        repeats = MAP_ICON_REPEATS_DREAME
+        suction_level = MAP_ICON_SUCTION_LEVEL_DREAME
+        water_volume = MAP_ICON_WATER_VOLUME_DREAME
+        cleaning_mode = MAP_ICON_CLEANING_MODE_DREAME
 
         self._segment_icons = {}
-        for (k, v) in SEGMENT_ICONS_DREAME.items():
+        if self.icon_set == 1:
+            icon_set = SEGMENT_ICONS_DREAME_OLD
+        elif self.icon_set == 2:
+            icon_set = SEGMENT_ICONS_MIJIA
+            repeats = MAP_ICON_REPEATS_MIJIA
+            suction_level = MAP_ICON_SUCTION_LEVEL_MIJIA
+            water_volume = MAP_ICON_WATER_VOLUME_MIJIA
+            cleaning_mode = MAP_ICON_CLEANING_MODE_MIJIA
+        elif self.icon_set == 3:
+            icon_set = SEGMENT_ICONS_MATERIAL
+            repeats = MAP_ICON_REPEATS_MATERIAL
+            suction_level = MAP_ICON_SUCTION_LEVEL_MATERIAL
+            water_volume = MAP_ICON_WATER_VOLUME_MATERIAL
+            cleaning_mode = MAP_ICON_CLEANING_MODE_MATERIAL
+
+        self._cleaning_times_icon = [Image.open(BytesIO(base64.b64decode(icon))).convert("RGBA") for icon in repeats]
+        self._suction_level_icon = [Image.open(BytesIO(base64.b64decode(icon))).convert("RGBA") for icon in suction_level]
+        self._water_volume_icon = [Image.open(BytesIO(base64.b64decode(icon))).convert("RGBA") for icon in water_volume]
+        self._cleaning_mode_icon = [Image.open(BytesIO(base64.b64decode(icon))).convert("RGBA") for icon in cleaning_mode]
+
+        for (k, v) in icon_set.items():
             self._segment_icons[k] = Image.open(BytesIO(base64.b64decode(v))).convert(
                 "RGBA"
             )
@@ -3628,6 +3642,7 @@ class DreameVacuumMapRenderer:
                     self._robot_cleaning_icon = None
                     self._robot_warning_icon = None
                     self._robot_washing_icon = None
+                    self._robot_cleaning_direction_icon = None
 
             if (
                 self._map_data is None
@@ -3896,7 +3911,7 @@ class DreameVacuumMapRenderer:
             layer = Image.alpha_composite(
                 layer, self._layers[MapRendererLayer.ACTIVE_POINT])
 
-        if map_data.segments and (self.config.icon or self.config.name or self.config.order or self.config.suction_level or self.config.water_volume or self.config.cleaning_times):
+        if map_data.segments and (self.config.icon or self.config.name or self.config.order or self.config.suction_level or self.config.water_volume or self.config.cleaning_times or self.config.cleaning_mode):
             if (
                 self._map_data is None
                 or self._map_data.segments != map_data.segments
@@ -3943,8 +3958,135 @@ class DreameVacuumMapRenderer:
                 or bool(self._robot_status > 5) != bool(robot_status > 5)
                 or not self._layers.get(MapRendererLayer.CHARGER)
             ):
+                def correct_charger_position(chargerPos, pixel_type, width, height, x, y, gridWidth, borderValue):                 
+                    newChargerPos = copy.deepcopy(chargerPos)
+                    tmpAngle = newChargerPos.a % 360
+
+                    if tmpAngle < 0:
+                        tmpAngle += 360
+
+                    chargerX = int((newChargerPos.x - x) / gridWidth)
+                    chargerY = int((newChargerPos.y - y) / gridWidth)
+                    value = pixel_type[chargerX, chargerY]
+
+                    if value == borderValue or chargerX < 0 or chargerX >= width or chargerY < 0 or chargerY >= height:
+                        return chargerPos
+
+                    isChargerInMap = value != 0
+                    delta = 3
+
+                    for crossDelta in range(4):
+                        if tmpAngle > 45 and tmpAngle < 135 or tmpAngle > 225 and tmpAngle < 315:
+                            startY = 0 if ((chargerY - delta) < 0) else (chargerY - delta)
+                            endY = (height - 1) if ((chargerY + delta) > (height - 1)) else (chargerY + delta)
+
+                            if tmpAngle > 45 and tmpAngle < 135:
+                                if isChargerInMap:
+                                    endY = chargerY
+                                else:
+                                    startY = chargerY
+                            else:
+                                if isChargerInMap:
+                                    startY = chargerY
+                                else:
+                                    endY = chargerY
+
+                            findY = -1
+
+                            for j in range(startY, endY + 1):
+                                startX = -1
+
+                                for i in range(width):
+                                    leftIndex = (i - 1) if ((i - 1) >= 0) else -1
+                                    rightIndex = (i + 1) if ((i + 1) < width) else -1
+
+                                    if pixel_type[i, j] == borderValue and (i == 0 or leftIndex != -1 and pixel_type[leftIndex, j] != borderValue):
+                                        startX = i
+
+                                        if pixel_type[i + 1, j] != borderValue:
+                                            if (chargerX + crossDelta) >= startX and (chargerX - crossDelta) <= i:
+                                                if findY == -1:
+                                                    findY = j
+                                                elif abs(chargerY - j) < abs(findY - j):
+                                                    findY = j
+                                            startX = -1
+
+                                        continue
+
+                                    if pixel_type[i, j] == borderValue and startX != -1 and (i == (width - 1) or rightIndex != -1 and pixel_type[rightIndex, j] != borderValue):
+                                        if (chargerX + crossDelta) >= startX and (chargerX - crossDelta) <= i:
+                                            if findY == -1:
+                                                findY = j
+                                            elif abs(chargerY - j) < abs(findY - j):
+                                                findY = j
+
+                                        startX = -1
+                            if findY != -1:
+                                newChargerPos.y = y + findY * gridWidth
+                                break
+                        else:
+                            _startX = 0 if ((chargerX - delta) < 0) else (chargerX - delta)
+                            endX = (width - 1) if ((chargerX + delta) > (width - 1)) else (chargerX + delta)
+
+                            if tmpAngle >= 0 and tmpAngle <= 45 or tmpAngle >= 315 and tmpAngle < 360:
+                                if isChargerInMap:
+                                    endX = chargerX
+                                else:
+                                    _startX = chargerX
+                            else:
+                                if isChargerInMap:
+                                    _startX = chargerX
+                                else:
+                                    endX = chargerX
+
+                            findX = -1
+
+                            for _i in range(_startX, endX + 1):
+                                _startY = -1
+
+                                for _j in range(height):
+                                    topIndex = (_j - 1) if ((_j - 1) >= 0) else -1
+                                    bottomIndex = (_j + 1) if ((_j + 1) < height) else -1
+
+                                    if pixel_type[_i, _j] == borderValue and (_j == 0 or topIndex != -1 and pixel_type[_i, topIndex] != borderValue):
+                                        _startY = _j
+
+                                        if pixel_type[_i, (_j + 1)] != borderValue:
+                                            if ((chargerY + crossDelta) >= _startY) and ((chargerY - crossDelta) <= _j):
+                                                if findX == -1:
+                                                    findX = _i
+                                                elif abs(chargerX - _i) < abs(findX - _i):
+                                                    findX = _i
+                                            _startY = -1
+
+                                        continue
+
+                                    if pixel_type[_i, _j] == borderValue and _startY != -1 and (_j == height - 1 or bottomIndex != -1 and pixel_type[_i, bottomIndex] != borderValue):
+                                        if ((chargerY + crossDelta) >= _startY) and ((chargerY - crossDelta) <= _j):
+                                            if findX == -1:
+                                                findX = _i
+                                            elif abs(chargerX - _i) < abs(findX - _i):
+                                                findX = _i
+
+                                        _startY = -1
+
+                            if findX != -1:
+                                newChargerPos.x = x + findX * gridWidth
+                                break
+
+                    return newChargerPos
+
+                charger_position = map_data.charger_position;
+                if self._robot_shape != 1 and self.icon_set == 2:
+                    offset = int(robot_icon_size * 21.42)
+                    charger_position = Point(
+                        map_data.charger_position.x - offset * math.cos(charger_position.a * math.pi / 180), 
+                        map_data.charger_position.y - offset * math.sin(charger_position.a * math.pi / 180), 
+                        charger_position.a
+                    )
+
                 self._layers[MapRendererLayer.CHARGER] = self.render_charger(
-                    map_data.charger_position,
+                    charger_position,
                     robot_status,
                     layer,
                     map_data.dimensions,
@@ -3959,6 +4101,7 @@ class DreameVacuumMapRenderer:
             if (
                 self._map_data is None
                 or self._map_data.robot_position != map_data.robot_position
+                or self._map_data.charger_position != map_data.charger_position
                 or self._map_data.rotation != map_data.rotation
                 or self._robot_status != robot_status
                 or self._map_data.docked != map_data.docked
@@ -3970,42 +4113,44 @@ class DreameVacuumMapRenderer:
                     # Calculate charger angle
                     charger_angle = map_data.charger_position.a
                     if self._robot_shape != 1:
-                        offset = int(robot_icon_size * 21.42) # 150 #icon_size * 30 #int(robot_icon_size * 16.7)
-                        if (
-                            charger_angle > -45
-                            and charger_angle < 45
-                        ):
-                            charger_angle = 0
-                        elif (
-                            charger_angle > -45
-                            and charger_angle <= 45
-                            or charger_angle > 315
-                            and charger_angle <= 405
-                        ):
-                            charger_angle = 0
-                        elif (
-                            charger_angle > 45
-                            and charger_angle <= 135
-                            or charger_angle > -315
-                            and charger_angle <= -225
-                        ):
-                            charger_angle = 90
-                        elif (
-                            charger_angle > 135
-                            and charger_angle <= 225
-                            or charger_angle > -225
-                            and charger_angle <= -135
-                        ):
-                            charger_angle = 180
-                        elif (
-                            charger_angle > 225
-                            and charger_angle <= 315
-                            or charger_angle > -135
-                            and charger_angle <= -45
-                        ):
-                            charger_angle = 270
+                        offset = int(robot_icon_size * 21.42)
+
+                        if self.icon_set != 2:
+                            if (
+                                charger_angle > -45
+                                and charger_angle < 45
+                            ):
+                                charger_angle = 0
+                            elif (
+                                charger_angle > -45
+                                and charger_angle <= 45
+                                or charger_angle > 315
+                                and charger_angle <= 405
+                            ):
+                                charger_angle = 0
+                            elif (
+                                charger_angle > 45
+                                and charger_angle <= 135
+                                or charger_angle > -315
+                                and charger_angle <= -225
+                            ):
+                                charger_angle = 90
+                            elif (
+                                charger_angle > 135
+                                and charger_angle <= 225
+                                or charger_angle > -225
+                                and charger_angle <= -135
+                            ):
+                                charger_angle = 180
+                            elif (
+                                charger_angle > 225
+                                and charger_angle <= 315
+                                or charger_angle > -135
+                                and charger_angle <= -45
+                            ):
+                                charger_angle = 270
                     else:
-                        offset = int(robot_icon_size * 35.71) # 250 #icon_size * 50 #int(robot_icon_size * 27.8)
+                        offset = int(robot_icon_size * 35.71)
                         
                     robot_position = Point(
                         map_data.charger_position.x + offset * math.cos(charger_angle * math.pi / 180), 
@@ -4208,11 +4353,18 @@ class DreameVacuumMapRenderer:
         new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
         icon_size = int(size * scale)
         if self._charger_icon is None:
-            if self._robot_shape == 1:
-                charger_image = MAP_CHARGER_VSLAM_IMAGE
+            if self.icon_set == 3:
+                charger_image = MAP_CHARGER_IMAGE_MATERIAL
+                icon_size = int(icon_size * 1.2)
+            elif self.icon_set == 2:
+                charger_image = MAP_CHARGER_IMAGE_MIJIA
                 icon_size = int(icon_size * 1.5)
             else:
-                charger_image = MAP_CHARGER_IMAGE
+                if self._robot_shape == 1:
+                    charger_image = MAP_CHARGER_VSLAM_IMAGE_DREAME
+                    icon_size = int(icon_size * 1.5)
+                else:
+                    charger_image = MAP_CHARGER_IMAGE_DREAME
 
             self._charger_icon = (
                 Image.open(BytesIO(base64.b64decode(charger_image)))
@@ -4220,11 +4372,18 @@ class DreameVacuumMapRenderer:
                 .resize((icon_size, icon_size), resample=Image.Resampling.NEAREST)
             )
 
+            if self.icon_set == 3:
+                self._charger_icon = DreameVacuumMapRenderer._set_icon_color(
+                            self._charger_icon,
+                            icon_size,
+                            (0, 255, 126),
+                        )
+
             if self.color_scheme.dark:
                 enhancer = ImageEnhance.Brightness(self._charger_icon)
                 self._charger_icon = enhancer.enhance(0.7)
 
-        charger_icon = self._charger_icon.rotate(charger_position.a if self._robot_shape == 1 else (-map_rotation), expand=1)
+        charger_icon = self._charger_icon.rotate(charger_position.a if self._robot_shape == 1 or self.icon_set == 2 or self.icon_set == 3 else (-map_rotation), expand=1)
 
         point = charger_position.to_img(dimensions)
         new_layer.paste(
@@ -4275,20 +4434,36 @@ class DreameVacuumMapRenderer:
         new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
         icon_size = int(size * scale)
         if self._robot_icon is None:
-            if self._robot_shape == 2:
-                robot_image = MAP_ROBOT_MOP_IMAGE
-            elif self._robot_shape == 1:
-                robot_image = MAP_ROBOT_VSLAM_IMAGE
+            robot_icon_size = icon_size
+            if self.icon_set == 2:
+                robot_icon_size = int(icon_size * 1.4)
+                if self._robot_shape == 2:
+                    robot_image = MAP_ROBOT_MOP_IMAGE_MIJIA
+                elif self._robot_shape == 1:
+                    robot_image = MAP_ROBOT_VSLAM_IMAGE_MIJIA
+                else:
+                    robot_image = MAP_ROBOT_LIDAR_IMAGE_MIJIA
             else:
-                robot_image = MAP_ROBOT_IMAGE
+                if self._robot_shape == 2:
+                    robot_image = MAP_ROBOT_MOP_IMAGE_DREAME
+                elif self._robot_shape == 1:
+                    if self.icon_set == 3:
+                        robot_image = MAP_ROBOT_VSLAM_IMAGE_DREAME_LIGHT
+                    else:
+                        robot_image = MAP_ROBOT_VSLAM_IMAGE_DREAME_DARK
+                else:
+                    if self.icon_set == 3:
+                        robot_image = MAP_ROBOT_LIDAR_IMAGE_DREAME_LIGHT
+                    else:
+                        robot_image = MAP_ROBOT_LIDAR_IMAGE_DREAME_DARK
                 
             self._robot_icon = (
                 Image.open(BytesIO(base64.b64decode(robot_image)))
                 .convert("RGBA")
-                .resize((icon_size, icon_size), resample=Image.Resampling.NEAREST)
+                .resize((robot_icon_size, robot_icon_size), resample=Image.Resampling.NEAREST)
             )
 
-            if self._robot_shape != 2:
+            if self._robot_shape != 2 and self.icon_set != 2 and self.icon_set != 3:
                 enhancer = ImageEnhance.Brightness(self._robot_icon)
                 if self.color_scheme.dark:
                     self._robot_icon = enhancer.enhance(1.5)
@@ -4308,6 +4483,22 @@ class DreameVacuumMapRenderer:
                     .resize(((int(icon_size * 1.25), int(icon_size * 1.25))), resample=Image.Resampling.NEAREST)
                 )
             status_icon = self._robot_cleaning_icon
+
+            #if self._robot_cleaning_direction_icon is None:
+            #    self._robot_cleaning_direction_icon = (
+            #        Image.open(
+            #            BytesIO(base64.b64decode(MAP_ROBOT_CLEANING_DIRECTION_IMAGE)))
+            #        .convert("RGBA")
+            #        .resize(((int(icon_size * 1.5), int(icon_size * 1.5))), resample=Image.Resampling.NEAREST)
+            #    )
+                
+            #ic = self._robot_cleaning_direction_icon.rotate(robot_position.a, expand=1)
+            #new_layer.paste(ic,
+            #    (
+            #        int((point.x + int(icon_size / 2) * math.cos(robot_position.a * math.pi / 180)) * scale - (ic.size[0] / 2)),
+            #        int((point.y + int(icon_size / 2) * math.sin(robot_position.a * math.pi / 180)) * scale - (ic.size[1] / 2)),
+            #    )
+            #)
         elif robot_status == 2:
             if self._robot_charging_icon is None:
                 self._robot_charging_icon = (
@@ -4390,14 +4581,14 @@ class DreameVacuumMapRenderer:
 
     def render_segment(
         self, segment, cleanset, layer, dimensions, size, rotation, scale
-    ):
+    ):        
         new_layer = Image.new("RGBA", layer.size, (255, 255, 255, 0))
         draw = ImageDraw.Draw(new_layer, "RGBA")
         if segment.x is not None and segment.y is not None:
             text = None
             icon = self._segment_icons.get(segment.type) if self.config.icon else None
             if segment.type == 0 or icon is None:
-                text = segment.name if self._robot_shape != 1 or segment.custom_name is not None else segment.letter
+                text = segment.name if (self._robot_shape != 1 or icon is not None) or segment.custom_name is not None else segment.letter
             elif segment.index > 0:
                 text = str(segment.index)
 
@@ -4420,7 +4611,7 @@ class DreameVacuumMapRenderer:
 
             if self.config.name or self.config.icon:
                 if segment.type != 0 or text_font or not self.config.name:
-                    icon_size = size * 1.3
+                    icon_size = size * (1.75 if self.icon_set == 1 else 1.3)
                     x0 = x - size
                     y0 = y - size
                     x1 = x + size
@@ -4528,10 +4719,7 @@ class DreameVacuumMapRenderer:
 
             custom = (
                 cleanset
-                and segment.suction_level is not None
-                and segment.water_volume is not None
-                and segment.cleaning_times is not None
-                and (self.config.suction_level or self.config.water_volume or self.config.cleaning_times)
+                and (self.config.suction_level or self.config.water_volume or self.config.cleaning_times or self.config.cleaning_mode)
             )
             if order_font or custom:
                 offset = size * 2.7
@@ -4555,15 +4743,17 @@ class DreameVacuumMapRenderer:
                     arrow = (s + 2) * scale
 
                     if order_font:
-                        icon_count = 4
+                        icon_count = 5
                     else:
-                        icon_count = 3
+                        icon_count = 4
 
-                    if not self.config.suction_level:
+                    if not self.config.suction_level or segment.suction_level is None:
                         icon_count = icon_count - 1
-                    if not self.config.water_volume:
+                    if not self.config.water_volume or segment.water_volume is None:
                         icon_count = icon_count - 1
-                    if not self.config.cleaning_times:
+                    if not self.config.cleaning_times or segment.cleaning_times is None:
+                        icon_count = icon_count - 1
+                    if not self.config.cleaning_mode or segment.cleaning_mode is None or segment.cleaning_mode < 0 or segment.cleaning_mode > 2:
                         icon_count = icon_count - 1
                 else:
                     icon_count = 1
@@ -4640,10 +4830,50 @@ class DreameVacuumMapRenderer:
                     ellipse_x2 = ellipse_x1 + r
 
                 if custom:
-                    icon_size = size * 1.45
-                    s = icon_size * 0.85 * scale
+                    icon_size = size * 1.45                    
 
-                    if self.config.suction_level:
+                    if self.config.cleaning_mode and segment.cleaning_mode is not None and segment.cleaning_mode >= 0 and segment.cleaning_mode <= 2:
+                        if self.icon_set == 2:
+                            s = icon_size * 1.2 * scale
+                        else:
+                            s = icon_size * 0.85 * scale
+
+                        ico = DreameVacuumMapRenderer._set_icon_color(
+                            self._cleaning_mode_icon[segment.cleaning_mode],
+                            s,
+                            self.color_scheme.segment[segment.color_index][
+                                1
+                            ],
+                        )
+
+                        icon_draw.ellipse(
+                            [ellipse_x1, padding, ellipse_x2,
+                                (icon_h - padding)],
+                            fill=self.color_scheme.settings_icon_background,
+                        )
+                        icon.paste(
+                            ico,
+                            (
+                                int(
+                                    2
+                                    + ellipse_x1
+                                    + ((ellipse_x2 - ellipse_x1) / 2)
+                                    - ico.size[0] / 2
+                                ),
+                                int(((icon_h / 2) - ico.size[1] / 2)),
+                            ),
+                            ico,
+                        )
+
+                        ellipse_x1 = ellipse_x2 + (margin * 2)
+                        ellipse_x2 = ellipse_x1 + r
+
+                    if self.config.suction_level and segment.suction_level is not None:
+                        if self.icon_set == 2:
+                            s = icon_size * 1.2 * scale
+                        else:
+                            s = icon_size * 0.85 * scale
+
                         ico = DreameVacuumMapRenderer._set_icon_color(
                             self._suction_level_icon[segment.suction_level],
                             s,
@@ -4673,7 +4903,14 @@ class DreameVacuumMapRenderer:
                         ellipse_x1 = ellipse_x2 + (margin * 2)
                         ellipse_x2 = ellipse_x1 + r
 
-                    if self.config.water_volume:
+                    if self.config.water_volume and segment.water_volume is not None:    
+                        if self.icon_set == 3:
+                            s = icon_size * 0.95 * scale
+                        elif self.icon_set == 2:
+                            s = icon_size * 1.2 * scale
+                        else:
+                            s = icon_size * 0.85 * scale
+
                         ico = DreameVacuumMapRenderer._set_icon_color(
                             self._water_volume_icon[segment.water_volume - 1],
                             s,
@@ -4704,7 +4941,12 @@ class DreameVacuumMapRenderer:
                         ellipse_x1 = ellipse_x2 + (margin * 2)
                         ellipse_x2 = ellipse_x1 + r
 
-                    if self.config.cleaning_times:
+                    if self.config.cleaning_times and segment.cleaning_times is not None:  
+                        if self.icon_set == 3 or self.icon_set == 2:
+                            s = icon_size * 0.95 * scale
+                        else:
+                            s = icon_size * 0.85 * scale
+
                         ico = DreameVacuumMapRenderer._set_icon_color(
                             self._cleaning_times_icon[segment.cleaning_times - 1],
                             s,
@@ -4750,7 +4992,7 @@ class DreameVacuumMapRenderer:
 
         if self._obstacle_background is None:
             self._obstacle_background = (
-                Image.open(BytesIO(base64.b64decode(MAP_ICON_OBSTACLE_BG)))
+                Image.open(BytesIO(base64.b64decode(MAP_ICON_OBSTACLE_BG_DREAME)))
                 .convert("RGBA")
                 .rotate(-rotation)
             )

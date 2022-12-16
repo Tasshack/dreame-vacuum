@@ -15,6 +15,7 @@ from .types import (
     PROPERTY_AVAILABILITY,
     ACTION_AVAILABILITY,
     MAP_COLOR_SCHEME_LIST,
+    MAP_ICON_SET_LIST,
 )
 from .const import (
     SUCTION_LEVEL_CODE_TO_NAME,

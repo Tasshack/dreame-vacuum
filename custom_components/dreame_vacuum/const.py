@@ -7,7 +7,7 @@ LOGGER = logging.getLogger(__package__)
 UNIT_MINUTES: Final = "min"
 UNIT_HOURS: Final = "hr"
 UNIT_PERCENT: Final = "%"
-UNIT_DAYS: Final = "days"
+UNIT_DAYS: Final = "dy"
 UNIT_AREA: Final = "m²"
 UNIT_TIMES: Final = "x"
 
@@ -16,6 +16,7 @@ ATTR_CALIBRATION = "calibration_points"
 
 CONF_NOTIFY: Final = "notify"
 CONF_COLOR_SCHEME: Final = "color_scheme"
+CONF_ICON_SET: Final = "icon_set"
 CONF_COUNTRY: Final = "country"
 CONF_TYPE: Final = "configuration_type"
 CONF_MAC: Final = "mac"
@@ -24,7 +25,7 @@ CONF_PREFER_CLOUD: Final = "prefer_cloud"
 
 CONTENT_TYPE: Final = "image/png"
 
-MAP_OBJECTS: Final = { "color": "Room Colors", "icon": "Room Icons", "name": "Room Names", "order": "Room Order", "suction_level": "Room Suction Level", "water_volume": "Room Water Volume", "cleaning_times": "Room Cleaning Times", "path": "Path", "no_go": "No Go Zones", "no_mop": "No Mop Zones", "virtual_wall": "Virtual Walls", "active_area": "Active Areas", "active_point": "Active Points", "charger": "Charger Icon", "robot": "Robot Icon", "obstacle": "AI Obstacle", "carpet": "Carpet Area" }
+MAP_OBJECTS: Final = { "color": "Room Colors", "icon": "Room Icons", "name": "Room Names", "order": "Room Order", "suction_level": "Room Suction Level", "water_volume": "Room Water Volume", "cleaning_times": "Room Cleaning Times", "cleaning_mode": "Room Cleaning Mode", "path": "Path", "no_go": "No Go Zones", "no_mop": "No Mop Zones", "virtual_wall": "Virtual Walls", "active_area": "Active Areas", "active_point": "Active Points", "charger": "Charger Icon", "robot": "Robot Icon", "cleaning_direction": "Cleaning Direction",  "obstacle": "AI Obstacle", "carpet": "Carpet Area" }
 NOTIFICATION: Final = { "cleanup_completed": "Cleanup Completed", "consumable": "Consumable", "information": "Information", "warning": "Warning", "error": "Error" }
 
 FAN_SPEED_SILENT: Final = "Silent"

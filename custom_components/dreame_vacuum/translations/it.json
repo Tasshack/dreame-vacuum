@@ -46,6 +46,7 @@
         "data": {
           "name": "Nome",
           "color_scheme": "Schema colori della mappa",
+          "icon_set": "Set di icone",
           "notify": "Notifica",
           "map_objects": "Map objects"
         }
@@ -61,6 +62,7 @@
       "init": {
         "data": {
           "color_scheme": "Schema colori della mappa",
+          "icon_set": "Set di icone",
           "notify": "Notifica",
           "map_objects": "Map objects",
           "configuration_type": "Tipo di configurazione",

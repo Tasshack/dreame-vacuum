@@ -301,17 +301,7 @@ MAP_DATA_PARAMETER_FLOOR: Final = "floor"
 MAP_DATA_PARAMETER_WALL: Final = "wall"
 MAP_DATA_PARAMETER_SEGMENT: Final = "segment"
 
-DEVICE_MAP_KEY: Final = {
-    "p2114o": "6PFiLPYMHLylp7RR",
-    "p2149o": "RNO4p35b2QKaovHC",
-    "p2140o": "8qnS9dqgT3CppGe1",
-    "p2140p": "8qnS9dqgT3CppGe1",
-    "p2114a": "6PFiLPYMHLylp7RR",
-    "r2209": "qFKhvoAqRFTPfKN6",
-    "r2254": "wRy05fYLQJMRH6Mj",
-    "r2216o": "4sCv3Q2BtbWVBIB2",
-    "r2235": "NRwnBj5FsNPgBNbT",
-}
+DEVICE_MAP_KEY: Final = "H4sICLnrm2MEAGRldmljZWtleS50eHQAbc7BDoIgAIDhd+HcQREsu4UbWSohuZpHXWm5ppBN51rvnoy6ef4O//8GEto2asEauJzeI57FQTQ+5FIIsNCGPG2CHZB0cAGTMG/7wP+ZpW2lmqN3UVXq+FJur/bf5KyZXj7fe0JoeRMpGt76dqMETXkZMtcQRhMNYrRwmUXJPhaBG9eGbFefoM7vnQSSV3E+kR2Bxhw8ERNDQ2pMO8YrwooUfL5w7u9F+gAAAA=="
 
 PROPERTY_TO_NAME: Final = {
     DreameVacuumProperty.STATE: ["state", "State"],

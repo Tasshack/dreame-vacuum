@@ -361,14 +361,20 @@ vacuum_set_custom_cleaning:
     entity:
       domain: vacuum
   fields:
+    segment_id:
+      description: Room ids.
+      example: "[1,2,3,4,5]"
+      required: true
+      selector:
+        object:
     suction_level:
-      description: Clean modes for each room.
+      description: Suction level for each room.
       example: "[0,0,2,3,1]"
       required: true
       selector:
         object:
     water_volume:
-      description: Mopping modes for each room.
+      description: Water volume for each room.
       example: "[1,1,2,3,1]"
       required: true
       selector:

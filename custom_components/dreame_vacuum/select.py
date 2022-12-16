@@ -23,6 +23,7 @@ from homeassistant.helpers import entity_platform, entity_registry
 
 from .const import (
     DOMAIN,
+    UNIT_HOURS,
     UNIT_TIMES,
     INPUT_CYCLE,
     SERVICE_SELECT_NEXT,
@@ -135,6 +136,14 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         options=lambda device, segment: [f"{i}{UNIT_TIMES}" for i in range(1, 4)],
         entity_category=EntityCategory.CONFIG,
         value_fn=lambda value, device: f"{value}{UNIT_TIMES}",
+        value_int_fn=lambda value, device: int(value[0]),
+    ),
+    DreameVacuumSelectEntityDescription(
+        property_key=DreameVacuumProperty.DRYING_TIME, 
+        icon="mdi:hair-dryer",
+        options=lambda device, segment: [f"{i}h" for i in range(2, 5)],
+        entity_category=EntityCategory.CONFIG,
+        value_fn=lambda value, device: f"{value}h",
         value_int_fn=lambda value, device: int(value[0]),
     ),
     DreameVacuumSelectEntityDescription(

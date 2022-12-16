@@ -506,7 +506,7 @@ class DreameVacuumProtocol:
 
             if response is None:
                 self._connected = False
-                raise DeviceException("Unable to discover the device over cloud")
+                raise DeviceException("Unable to discover the device over cloud") from None
             self._connected = True
             return response
 

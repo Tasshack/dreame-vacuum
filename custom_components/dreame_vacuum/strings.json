@@ -46,6 +46,7 @@
         "data": {
           "name": "Name",
           "color_scheme": "Map color scheme",
+          "icon_set": "Map icon set",
           "notify": "Notification",
           "map_objects": "Map objects"
         }
@@ -61,6 +62,7 @@
       "init": {
         "data": {
           "color_scheme": "Map color scheme",
+          "icon_set": "Map icon set",
           "notify": "Notification",
           "map_objects": "Map objects",
           "configuration_type": "Configuration type",

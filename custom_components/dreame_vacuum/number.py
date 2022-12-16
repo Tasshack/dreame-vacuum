@@ -111,16 +111,6 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         + ":{:02d}".format(value),
         entity_registry_enabled_default=False,
     ),
-    DreameVacuumNumberEntityDescription(
-        property_key=DreameVacuumProperty.DRYING_TIME,
-        icon="mdi:hair-dryer",
-        mode=NumberMode.BOX,
-        native_unit_of_measurement=UNIT_MINUTES,
-        native_min_value=0,
-        native_max_value=255,
-        native_step=1,
-        entity_category=EntityCategory.CONFIG,
-    )
 )
 
 

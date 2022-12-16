@@ -4,8 +4,6 @@ from typing import Any, Final
 import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 from collections.abc import Mapping
-import logging
-from homeassistant import config_entries
 from homeassistant.const import (
     CONF_NAME,
     CONF_HOST,
@@ -23,12 +21,13 @@ from homeassistant.config_entries import (
     OptionsFlow,
 )
 
-from .dreame import DreameVacuumProtocol, MAP_COLOR_SCHEME_LIST
+from .dreame import DreameVacuumProtocol, MAP_COLOR_SCHEME_LIST, MAP_ICON_SET_LIST
 
 from .const import (
     DOMAIN,
     CONF_NOTIFY,
     CONF_COLOR_SCHEME,
+    CONF_ICON_SET,
     CONF_COUNTRY,
     CONF_TYPE,
     CONF_MAC,
@@ -125,6 +124,7 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
             data_schema = data_schema.extend(
                 {
                     vol.Required(CONF_COLOR_SCHEME, default=options[CONF_COLOR_SCHEME]): vol.In(list(MAP_COLOR_SCHEME_LIST.keys())),
+                    vol.Required(CONF_ICON_SET, default=options.get(CONF_ICON_SET, next(iter(MAP_ICON_SET_LIST)))): vol.In(list(MAP_ICON_SET_LIST.keys())),
                     vol.Required(CONF_MAP_OBJECTS, default=options.get(CONF_MAP_OBJECTS, list(MAP_OBJECTS.keys()))): cv.multi_select(MAP_OBJECTS),
                     vol.Required(CONF_PREFER_CLOUD, default=options.get(CONF_PREFER_CLOUD, False)): bool,
                 }
@@ -407,6 +407,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 options={
                     CONF_NOTIFY: user_input[CONF_NOTIFY],
                     CONF_COLOR_SCHEME: user_input.get(CONF_COLOR_SCHEME),
+                    CONF_ICON_SET: user_input.get(CONF_ICON_SET),
                     CONF_MAP_OBJECTS: user_input.get(CONF_MAP_OBJECTS),
                     CONF_PREFER_CLOUD: self.prefer_cloud,
                 },
@@ -423,6 +424,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             data_schema = data_schema.extend(
                 {
                     vol.Required(CONF_COLOR_SCHEME, default="Dreame Light"): vol.In(list(MAP_COLOR_SCHEME_LIST.keys())),
+                    vol.Required(CONF_ICON_SET, default=next(iter(MAP_ICON_SET_LIST))): vol.In(list(MAP_ICON_SET_LIST.keys())),
                     vol.Required(CONF_MAP_OBJECTS, default=list(MAP_OBJECTS.keys())): cv.multi_select(MAP_OBJECTS),
                 }
             )

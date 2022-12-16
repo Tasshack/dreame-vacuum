@@ -17,7 +17,7 @@ from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers import entity_registry
 
-from .const import DOMAIN, CONF_COLOR_SCHEME, CONF_MAP_OBJECTS, MAP_OBJECTS, ATTR_CALIBRATION, CONTENT_TYPE, LOGGER
+from .const import DOMAIN, CONF_COLOR_SCHEME, CONF_ICON_SET, CONF_MAP_OBJECTS, MAP_OBJECTS, ATTR_CALIBRATION, CONTENT_TYPE, LOGGER
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription
@@ -53,15 +53,16 @@ async def async_setup_entry(
     """Set up Dreame Vacuum Camera based on a config entry."""
     coordinator: DreameVacuumDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
     color_scheme = entry.options.get(CONF_COLOR_SCHEME)
+    icon_set = entry.options.get(CONF_ICON_SET)
     map_objects = entry.options.get(CONF_MAP_OBJECTS, MAP_OBJECTS.keys())
     if coordinator.device.status.map_available:
         async_add_entities(
-            DreameVacuumCameraEntity(coordinator, description, color_scheme, map_objects)
+            DreameVacuumCameraEntity(coordinator, description, color_scheme, icon_set, map_objects)
             for description in CAMERAS
         )
 
     update_map_cameras = partial(
-        async_update_map_cameras, coordinator, {}, async_add_entities, color_scheme, map_objects
+        async_update_map_cameras, coordinator, {}, async_add_entities, color_scheme, icon_set, map_objects
     )
     coordinator.async_add_listener(update_map_cameras)
     update_map_cameras()
@@ -73,6 +74,7 @@ def async_update_map_cameras(
     current: dict[str, list[DreameVacuumCameraEntity]],
     async_add_entities,
     color_scheme: str,
+    icon_set: str,
     map_objects: list[str],
 ) -> None:
     new_indexes = set(
@@ -92,6 +94,7 @@ def async_update_map_cameras(
                     icon="mdi:map-search",
                 ),
                 color_scheme,
+                icon_set,
                 map_objects,
                 map_index,
             )
@@ -123,6 +126,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         coordinator: DreameVacuumDataUpdateCoordinator,
         description: DreameVacuumCameraEntityDescription,
         color_scheme: str = None,
+        icon_set: str = None,
         map_objects: list[str] = None,
         map_index: int = 0,
     ) -> None:
@@ -144,7 +148,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         if description.map_data_json:
             self._renderer = DreameVacuumMapDataRenderer()
         else:
-            self._renderer = DreameVacuumMapRenderer(color_scheme, map_objects, self.device.status.robot_shape)
+            self._renderer = DreameVacuumMapRenderer(color_scheme, icon_set, map_objects, self.device.status.robot_shape)
 
         self._image = self._renderer.default_map_image
         self._default_map = True

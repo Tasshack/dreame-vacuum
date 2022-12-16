@@ -4,7 +4,8 @@ import time
 import json
 import re
 import copy
-import math
+import zlib
+import base64
 from datetime import datetime
 from random import randrange
 from threading import Timer
@@ -260,10 +261,16 @@ class DreameVacuumDevice:
                     if current_value is not None:
                         _LOGGER.info(
                             "Property %s Changed: %s -> %s", DreameVacuumProperty(did).name, current_value, value)
+                    else:
+                        _LOGGER.info(
+                            "Property %s Added: %s", DreameVacuumProperty(did).name, value)
                     self.data[did] = value
                     if did in self._property_update_callback:
                         for callback in self._property_update_callback[did]:
                             callbacks.append([callback, current_value])
+                            
+        if not self._ready:
+            self.status.update_static_properties()
 
         for callback in callbacks:
             callback[0](callback[1])
@@ -458,7 +465,7 @@ class DreameVacuumDevice:
                     DreameVacuumProperty.TOTAL_CLEANED_AREA,
                     DreameVacuumProperty.FIRST_CLEANING_DATE,
                     DreameVacuumProperty.SCHEDULE,
-                    DreameVacuumProperty.SCHEDULE_CANCLE_REASON,
+                    DreameVacuumProperty.SCHEDULE_CANCEL_REASON,
                 ]
 
                 if self._map_manager is not None:
@@ -586,6 +593,9 @@ class DreameVacuumDevice:
 
                     if self.status._cleaning_history != cleaning_history:
                         self.status._cleaning_history = cleaning_history
+                        if cleaning_history:
+                            self.status._last_cleaning_time = cleaning_history[0].date.replace(tzinfo=datetime.now().astimezone().tzinfo)
+
                         if self._ready:
                             self._property_changed()
             except:
@@ -648,7 +658,7 @@ class DreameVacuumDevice:
         self.info = DreameVacuumDeviceInfo(self._protocol.connect())
         if self.mac is None:
             self.mac = self.info.mac_address
-        _LOGGER.info("Connected to device")
+        _LOGGER.info("Connected to device: %s %s", self.info.model, self.info.firmware_version)
             
         self._last_settings_request = time.time()
         self._last_map_list_request = self._last_settings_request
@@ -660,7 +670,7 @@ class DreameVacuumDevice:
             if self._map_manager:
                 model = self.info.model.split('.')
                 if len(model) == 3:
-                    key = DEVICE_MAP_KEY.get(model[2])
+                    key = json.loads(zlib.decompress(base64.b64decode(DEVICE_MAP_KEY), zlib.MAX_WBITS | 32)).get(model[2])
                     if key:
                         self._map_manager.set_aes_iv(key)
 
@@ -1986,12 +1996,14 @@ class DreameVacuumDevice:
         if cleanset is not None:
             return self.update_map_data({"customeClean": cleanset})
 
-    def set_custom_cleaning(self, suction_level: list[int], water_volume: list[int], cleaning_times: list[int]) -> dict[str, Any] | None:
+    def set_custom_cleaning(self, segment_id: list[int], suction_level: list[int], water_volume: list[int], cleaning_times: list[int]) -> dict[str, Any] | None:
         """Set customized cleaning settings on current map. 
         Device will use these settings even you pass another setting for custom segment cleaning."""
 
         if (
-            suction_level != ""
+            segment_id != ""
+            and segment_id
+            and suction_level != ""
             and suction_level
             and water_volume != ""
             and water_volume
@@ -2002,7 +2014,8 @@ class DreameVacuumDevice:
             if segments:
                 count = len(segments.items())
                 if (
-                    len(suction_level) != count
+                    len(segment_id) != count
+                    or len(suction_level) != count
                     or len(water_volume) != count
                     or len(cleaning_times) != cleaning_times
                 ):
@@ -2010,10 +2023,10 @@ class DreameVacuumDevice:
 
             custom_cleaning = []
             index = 0
-            for mode in suction_level:
+            for segment in segment_id:
                 custom_cleaning.append(
                     # for some reason cleanset uses different int values for water volume
-                    [index + 1, mode, water_volume[index] + 1, cleaning_times[index]]
+                    [segment, suction_level[index], water_volume[index] + 1, cleaning_times[index]]
                 )
                 index = index + 1
 
@@ -2126,6 +2139,7 @@ class DreameVacuumDeviceStatus:
     Almost of the rules are extracted from mobile app that has a similar class with same purpose."""
 
     _cleaning_history = None
+    _last_cleaning_time = None
 
     suction_level_list = {v: k for k, v in SUCTION_LEVEL_CODE_TO_NAME.items()}
     water_volume_list = {v: k for k, v in WATER_VOLUME_CODE_TO_NAME.items()}
@@ -2144,9 +2158,25 @@ class DreameVacuumDeviceStatus:
     fluid_detection = None
     obstacle_picture = None
     ai_picture = None
+    lidar_navigation = None
+    ai_detection_available = None
+    self_wash_base_available = None
+    auto_empty_base_available = None
+    sweeping_with_mop_pad_available = None
+    customized_cleaning_available = None
+    robot_shape = None
 
     def __init__(self, device):
         self._device = device
+
+    def update_static_properties(self):
+        self.lidar_navigation = bool(self._get_property(DreameVacuumProperty.MAP_SAVING) is None)
+        self.ai_detection_available = bool(self._get_property(DreameVacuumProperty.AI_DETECTION) is not None)
+        self.self_wash_base_available = bool(self._get_property(DreameVacuumProperty.SELF_WASH_BASE_STATUS) is not None)
+        self.auto_empty_base_available = bool(self._get_property(DreameVacuumProperty.DUST_COLLECTION) is not None)
+        self.customized_cleaning_available = bool(self._get_property(DreameVacuumProperty.CUSTOMIZED_CLEANING) is not None)
+        self.sweeping_with_mop_pad_available = bool(self.self_wash_base_available and (self.auto_empty_base_available or (self._device.info and "r2216" in self._device.info.model))) # or self._get_property(DreameVacuumProperty.CARPET_AVOIDANCE) != None
+        self.robot_shape = 2 if self.self_wash_base_available and not self.sweeping_with_mop_pad_available else 0 if self.lidar_navigation else 1
 
     def _get_property(self, prop: DreameVacuumProperty) -> Any:
         """Helper function for accessing a property from device"""
@@ -2511,13 +2541,6 @@ class DreameVacuumDeviceStatus:
         return 0
 
     @property
-    def robot_shape(self) -> int:  # TODO: Convert to enum
-        """Robot shape for icon rendering."""
-        if self.self_wash_base_available and not self.sweeping_with_mop_pad_available:
-            return 2
-        return 0 if self.lidar_navigation else 1
-
-    @property
     def has_error(self) -> bool:
         """Returns true when an error is present."""
         error = self.error
@@ -2548,11 +2571,6 @@ class DreameVacuumDeviceStatus:
     def dust_collection_available(self) -> bool:        
         """Returns true when robot is docked and can start auto emptying."""
         return bool(self._get_property(DreameVacuumProperty.DUST_COLLECTION))
-
-    @property
-    def auto_empty_base_available(self) -> bool:        
-        """Returns true is robot has auto-empty station."""
-        return bool(self._get_property(DreameVacuumProperty.DUST_COLLECTION) is not None)
 
     @property
     def self_clean(self) -> bool:
@@ -2845,33 +2863,15 @@ class DreameVacuumDeviceStatus:
         )
 
     @property
-    def customized_cleaning_available(self) -> bool:
-        """Returns true when customized cleaning feature is present on the device."""
-        return bool(self._get_property(DreameVacuumProperty.CUSTOMIZED_CLEANING) is not None)
-
-    @property
     def multi_map(self) -> bool:
         """Returns true when multi floor map feature is enabled."""
         return bool(self._get_property(DreameVacuumProperty.MULTI_FLOOR_MAP))
 
     @property
-    def self_wash_base_available(self) -> bool:
-        """Returns true when device has a self-wash base for cleaning and drying the mop."""
-        return bool(
-            self._get_property(DreameVacuumProperty.SELF_WASH_BASE_STATUS)
-            is not None
-        )
-
-    @property
-    def sweeping_with_mop_pad_available(self) -> bool:
-        """Returns true when device has capability to only sweep while mop pad is attached."""
-        return bool(self.self_wash_base_available and (self.auto_empty_base_available or (self._device.info and "r2216" in self._device.info.model))) # or self._get_property(DreameVacuumProperty.CARPET_AVOIDANCE) != None
+    def last_cleaning_time(self) -> datetime | None:
+        if self._cleaning_history:
+            return self._last_cleaning_time
     
-    @property
-    def ai_detection_available(self) -> bool:
-        """Returns true when device has AI obstacle detection feature."""
-        return self._get_property(DreameVacuumProperty.AI_DETECTION) is not None
-
     @property
     def cleaning_history(self) -> dict[str, Any] | None:
         """Returns the cleaning history list as dict."""
@@ -2881,7 +2881,7 @@ class DreameVacuumDeviceStatus:
                 date = time.strftime(
                     "%Y-%m-%d %H:%M:%S", time.localtime(
                         history.date.timestamp())
-                )
+                )                
                 list[date] = {
                     ATTR_CLEANING_TIME: f"{history.cleaning_time} min",
                     ATTR_CLEANED_AREA: f"{history.cleaned_area} m²",
@@ -3042,12 +3042,7 @@ class DreameVacuumDeviceStatus:
         if segments:
             return list(sorted(segments, key=lambda segment_id: segments[segment_id].order if segments[segment_id].order else 99)) if self.custom_order else None
         return [] if self.custom_order else None
-
-    @property
-    def lidar_navigation(self) -> bool:
-        """Returns true when device has lidar sensor."""
-        return self._get_property(DreameVacuumProperty.MAP_SAVING) is None
-
+    
     @property
     def map_available(self) -> bool:
         """Returns true when mapping feature is available."""
