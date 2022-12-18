@@ -1,0 +1,77 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "L'appareil est déjà configuré",
+      "cannot_connect": "Impossible d'établir la connexion."
+    },
+    "error": {
+      "cannot_connect": "Impossible d'établir la connexion.",
+      "unsupported": "L'appareil n'est pas pris en charge.",
+      "wrong_token": "Erreur de somme de contrôle, mauvais jeton",
+      "2fa_required": "Connexion à double facteur requise\n{url}",
+      "credentials_incomplete": "Identifiants incomplets, merci de renseigner le nom d'utilisateur, le mot de passe et le pays",
+      "login_error": "Impossible de se connecter à Xiaomi Miio Cloud, vérifiez vos identifiants.",
+      "no_devices": "Aucun appareil pris en charge n'a été trouvé sur ce compte Xiaomi Miio cloud pour le pays sélectionné."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Type de configuration"
+        },
+        "description": "La fonctionnalité de cartographie nécessite une connexion au cloud et offre une configuration automatique. Si vous ne souhaitez pas utiliser la fonctionnalité de cartographie, vous pouvez sélectionner la configuration manuelle."
+      },
+      "without_map": {
+        "data": {
+          "host": "Hôte",
+          "token": "Jeton"
+        },
+        "description": "Vous aurez besoin d'un jeton d'API de 32 caractères, consultez https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token pour obtenir des instructions."
+      },
+      "with_map": {
+        "data": {
+          "username": "Nom d'utilisateur",
+          "password": "Mot de passe",
+          "country": "Pays du serveur",
+          "prefer_cloud": "Privilégier la connexion cloud"
+        },
+        "description": "Connexion à Xiaomi Miio cloud, consultez https://www.openhab.org/addons/bindings/miio/#country-servers pour déterminer le serveur cloud à utiliser."
+      },
+      "devices": {
+        "data": {
+          "devices": "Appareils pris en charge"
+        },
+        "description": "Merci de sélectionner l'aspirateur Dreame que vous souhaitez configurer."
+      },
+      "options": {
+        "data": {
+          "name": "Nom",
+          "color_scheme": "Palette de couleurs de la carte",
+          "icon_set": "Jeu d'icônes de la carte",
+          "notify": "Notification",
+          "map_objects": "Objets de la carte"
+        }
+      },
+      "reauth_confirm": {
+        "description": "L'intégration Dreame Vacuum a besoin de reconnecter votre compte afin de mettre à jour les jetons ou d'ajouter les informations d'identification manquantes.",
+        "title": "Reconnexion à l'intégration"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Palette de couleurs de la carte",
+          "icon_set": "Jeu d'icônes de la carte",
+          "notify": "Notification",
+          "map_objects": "Objets de la carte",
+          "configuration_type": "Type de configuration",
+          "prefer_cloud": "Privilégier la connexion cloud"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Identifiants cloud incomplets, merci de renseigner le nom d'utilisateur, le mot de passe et le pays"
+    }
+  }
+}
