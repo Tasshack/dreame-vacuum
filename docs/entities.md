@@ -35,6 +35,7 @@
 | `auto_water_refilling`   | Enable/Disable external water input for self-wash base | Available on vacuums with self-wash base and external water input
 | `auto_mount_mop`   | Enable/Disable automatic assembly and disassembly of mop pads according selected cleaning mode | Available on vacuums with automatic mop assembly feature
 | `carpet_avoidance`   | Avoid carpets if mop pads are attached | Available on vacuums with mop pad lifting feature
+| `auto_add_detergent`   | Use detergent cartridge for cleaning the mop pads | Available on vacuums with self-wash base and detergent cartridge
 | `map_saving`   | Map saving mode setting for VSLAM devices | Available on vacuums without lidar navigation
 | `ai_obstacle_detection`   | Enable/Disable AI obstacle detection | Available on S10 and L10s models
 | `ai_obstacle_image_upload`   | Enable/Disable uploading obstacle picture to cloud | Available on devices with front camera
@@ -95,8 +96,6 @@
 | `dnd_start_minute`   | Do not disturb start minute (00:XX -> 00:00) | Unavailable when do not disturb is disabled
 | `dnd_end_hour`   | Do not disturb end hour (00:00 -> XX:00) | Unavailable when do not disturb is disabled
 | `dnd_end_minute`   | Do not disturb end minute (00:00 -> 00:XX) | Unavailable when do not disturb is disabled
-| `drying_time`   | Mop drying time in minutes | Available on vacuums with self-wash base
-| `auto_add_detergent`   | *Undocumented* | Available on S10 and S10 Pro
 
 ## Button
 
@@ -128,6 +127,7 @@
 | `auto_empty_frequency`  | Auto empty frequency | Unavailable when automatic dust collection is disabled or not available
 | `self_clean_area`   | Select cleaning area before return to clean the mop pad | Available on vacuums with self-wash base
 | `mop_wash_level`   | Mop cleaning water usage level | Available on vacuums with self-wash base and external water input
+| `drying_time`   | Mop drying time in minutes | Available on vacuums with self-wash base
 | `map_rotation`   | Sets the rotation of selected map | Available with map feature and unavailable when current map is not one of the selected maps (Different map rotations can be for saved maps but only selected map is editable via this entity)
 | `selected_map`   | Currently selected map | Available with map feature and unavailable when multi-floor map is disabled or not available (Robot will end active job when selected map is changed)
 

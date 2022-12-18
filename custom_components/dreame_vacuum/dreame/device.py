@@ -366,8 +366,7 @@ class DreameVacuumDevice:
         if self.get_property(DreameVacuumProperty.CLEANING_MODE) is not None:
             new_list = CLEANING_MODE_CODE_TO_NAME.copy()
             if self.get_property(DreameVacuumProperty.AUTO_MOUNT_MOP) != 1:
-                water_tank = self.status.water_tank
-                if water_tank is DreameVacuumWaterTank.NOT_INSTALLED:
+                if not self.status.water_tank_installed:
                     new_list.pop(DreameVacuumCleaningMode.MOPPING)
                     new_list.pop(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING)
                     if self.status.cleaning_mode != DreameVacuumCleaningMode.SWEEPING:
@@ -375,7 +374,7 @@ class DreameVacuumDevice:
                         if not self.status.started:
                             self._previous_cleaning_mode = self.status.cleaning_mode
                             self.set_cleaning_mode(DreameVacuumCleaningMode.SWEEPING.value)
-                elif water_tank is DreameVacuumWaterTank.INSTALLED:
+                else:
                     if not self.status.sweeping_with_mop_pad_available:
                         new_list.pop(DreameVacuumCleaningMode.SWEEPING)
 
@@ -2175,7 +2174,7 @@ class DreameVacuumDeviceStatus:
         self.self_wash_base_available = bool(self._get_property(DreameVacuumProperty.SELF_WASH_BASE_STATUS) is not None)
         self.auto_empty_base_available = bool(self._get_property(DreameVacuumProperty.DUST_COLLECTION) is not None)
         self.customized_cleaning_available = bool(self._get_property(DreameVacuumProperty.CUSTOMIZED_CLEANING) is not None)
-        self.sweeping_with_mop_pad_available = bool(self.self_wash_base_available and (self.auto_empty_base_available or (self._device.info and "r2216" in self._device.info.model))) # or self._get_property(DreameVacuumProperty.CARPET_AVOIDANCE) != None
+        self.sweeping_with_mop_pad_available = bool((self.self_wash_base_available and self.auto_empty_base_available) or (self._device.info and "r2216" in self._device.info.model))
         self.robot_shape = 2 if self.self_wash_base_available and not self.sweeping_with_mop_pad_available else 0 if self.lidar_navigation else 1
 
     def _get_property(self, prop: DreameVacuumProperty) -> Any:
@@ -2307,8 +2306,14 @@ class DreameVacuumDeviceStatus:
     def water_tank(self) -> DreameVacuumWaterTank:
         """Return water tank of the device."""
         value = self._get_property(DreameVacuumProperty.WATER_TANK)
-        if value is not None and value in DreameVacuumWaterTank._value2member_map_:
-            return DreameVacuumWaterTank(value)
+        if value is not None:
+            if value == 3:
+                return DreameVacuumWaterTank.INSTALLED
+            if value == 2:
+                return DreameVacuumWaterTank.MOP_INSTALLED
+
+            if value in DreameVacuumWaterTank._value2member_map_:
+                return DreameVacuumWaterTank(value)
         _LOGGER.debug("WATER_TANK not supported: %s", value)
         return DreameVacuumWaterTank.UNKNOWN
 

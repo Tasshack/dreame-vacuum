@@ -127,6 +127,7 @@ Configurable map object rendering options:
 - **Room Suction Level**: Render customized cleaning suction level of the room
 - **Room Water Volume**: Render customized cleaning water volume of the room
 - **Room Cleaning Times**: Render customized cleaning times of the room
+- **Room Cleaning Mode**: Render customized cleaning cleaning mode of the room *(Only on supported devices)*
 - **Path**: Render path
 - **No Go Zones**: Render no go zones
 - **No Mop Zones**: Render no mop zones
@@ -135,7 +136,8 @@ Configurable map object rendering options:
 - **Active Points**: Render active points
 - **Charger Icon**: Render charger icon
 - **Robot Icon**: Render robot icon
-- **AI Obstacle**: Render obstacle icon *(Not supported yet)*
+- **Cleaning Direction**: Render cleaning direction *(Not supported yet)*
+- **AI Obstacle**: Render obstacle icon
 - **Carpet Area**: Render carpet areas *(Not supported yet)*
 
 ### Map recovery
