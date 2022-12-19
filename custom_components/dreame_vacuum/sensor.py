@@ -82,7 +82,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         property_key=DreameVacuumProperty.WATER_TANK,
         device_class=f"{DOMAIN}__water_tank_and_mop",
         icon_fn=lambda value, device: "mdi:water-pump-off"
-        if not device.status.water_tank_installed
+        if not device.status.water_tank_or_mop_installed
         else "mdi:water-pump",
         exists_fn=lambda description, device: not device.status.self_wash_base_available and DreameVacuumEntityDescription().exists_fn(description, device),
     ),

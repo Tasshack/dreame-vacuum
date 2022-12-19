@@ -39,7 +39,10 @@
       "standby": "Standby",
       "room_cleaning": "Room cleaning",
       "zone_cleaning": "Zone cleaning",
-      "fast_mapping": "Fast mapping"
+      "fast_mapping": "Fast mapping",
+      "monitor_cruise": "Camera monitoring",
+      "monitor_spot": "Camera spot monitoring",
+      "summon_clean": "Summon to clean"
     },
     "dreame_vacuum__task_status": {
       "unknown": "Unknown",
@@ -59,7 +62,14 @@
       "zone_mopping_paused": "Zone mopping paused",
       "room_mopping_paused": "Room mopping paused",
       "zone_docking_paused": "Zone docking paused",
-      "room_docking_paused": "Room docking paused"
+      "room_docking_paused": "Room docking paused",
+      "monitor_cruise": "Camera monitoring",
+      "monitor_cruise_pause": "Camera monitoring paused",
+      "monitor_spot": "Camera spot monitoring",
+      "monitor_spot_pause": "Camera spot monitoring paused",
+      "summon_clean_pause": "Summon to clean paused",
+      "returning_to_install_mop": "Returning to install mop",
+      "returning_to_remove_mop": "Returning to remove mop"
     },
     "dreame_vacuum__water_tank_and_mop": {
       "unknown": "Unknown",

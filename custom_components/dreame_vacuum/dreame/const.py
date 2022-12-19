@@ -17,6 +17,7 @@ from .types import (
     DreameVacuumCleaningMode,
     DreameVacuumSelfCleanArea,
     DreameVacuumMopWashLevel,
+    DreameVacuumMoppingType,
     DreameVacuumProperty,
     DreameVacuumAction,
 )
@@ -71,6 +72,13 @@ TASK_STATUS_MOPPING_PAUSE: Final = "mopping_paused"
 TASK_STATUS_ZONE_MOPPING_PAUSE: Final = "zone_mopping_paused"
 TASK_STATUS_SEGMENT_MOPPING_PAUSE: Final = "room_mopping_paused"
 TASK_STATUS_AUTO_MOPPING_PAUSE: Final = "mopping_paused"
+TASK_STATUS_MONITOR_CRUISE : Final = "monitor_cruise"
+TASK_STATUS_MONITOR_CRUISE_PAUSE : Final = "monitor_cruise_pause"
+TASK_STATUS_MONITOR_SPOT : Final = "monitor_spot"
+TASK_STATUS_MONITOR_SPOT_PAUSE : Final = "monitor_spot_pause"
+TASK_STATUS_SUMMON_CLEAN_PAUSE : Final = "summon_clean_pause"
+TASK_STATUS_RETURNING_INSTALL_MOP : Final = "returning_to_install_mop"
+TASK_STATUS_RETURNING_REMOVE_MOP : Final = "returning_to_remove_mop"
 
 STATUS_CLEANING: Final = "cleaning"
 STATUS_FOLLOW_WALL: Final = "follow_wall_cleaning"
@@ -90,6 +98,9 @@ STATUS_SEGMENT_CLEANING: Final = "room_cleaning"
 STATUS_ZONE_CLEANING: Final = "zone_cleaning"
 STATUS_SPOT_CLEANING: Final = "spot_cleaning"
 STATUS_FAST_MAPPING: Final = "fast_mapping"
+STATUS_MONITOR_CRUISE: Final = "monitor_cruise"
+STATUS_MONITOR_SPOT: Final = "monitor_spot"
+STATUS_SUMMON_CLEAN: Final = "summon_clean"
 
 RELOCATION_STATUS_LOCATED: Final = "located"
 RELOCATION_STATUS_LOCATING: Final = "locating"
@@ -122,6 +133,10 @@ SELF_AREA_CLEAN_SINGLE_ZONE: Final = "single_zone"
 MOP_WASH_LEVEL_DEEP: Final = "deep"
 MOP_WASH_LEVEL_DAILY: Final = "daily"
 MOP_WASH_LEVEL_WATER_SAVING: Final = "water_saving"
+
+MOPPING_TYPE_DEEP: Final = "deep"
+MOPPING_TYPE_DAILY: Final = "daily"
+MOPPING_TYPE_ACCURATE: Final = "accurate"
 
 WATER_TANK_INSTALLED: Final = "installed"
 WATER_TANK_NOT_INSTALLED: Final = "not_installed"
@@ -301,7 +316,7 @@ MAP_DATA_PARAMETER_FLOOR: Final = "floor"
 MAP_DATA_PARAMETER_WALL: Final = "wall"
 MAP_DATA_PARAMETER_SEGMENT: Final = "segment"
 
-DEVICE_MAP_KEY: Final = "H4sICLnrm2MEAGRldmljZWtleS50eHQAbc7BDoIgAIDhd+HcQREsu4UbWSohuZpHXWm5ppBN51rvnoy6ef4O//8GEto2asEauJzeI57FQTQ+5FIIsNCGPG2CHZB0cAGTMG/7wP+ZpW2lmqN3UVXq+FJur/bf5KyZXj7fe0JoeRMpGt76dqMETXkZMtcQRhMNYrRwmUXJPhaBG9eGbFefoM7vnQSSV3E+kR2Bxhw8ERNDQ2pMO8YrwooUfL5w7u9F+gAAAA=="
+DEVICE_MAP_KEY: Final = "H4sICGt+oGMEAGRldmljZWtleS50eHQAbc67DoIwAIXhd+nsQG8obhaDKFChEg0jBEGJgSIGgsZ3lwbcmL+c/OcDJIKQVGANdN+6u37k2W7/kEshwEIZMZQJfiQS0wQFTly1tjmZpmxVlycjrfMQm1LurvBvctbGXjzfeyKkGQPVlnNrq00trNDPHK6PRMlAneg1mkVucPCErXvFSFBXT0hjtjhA7JVczmzP0GiYDsRFV7KCWg33c8aTcJpBNUvLVAT4vdqYxTbdehX4/gAN9AoFFgEAAA=="
 
 PROPERTY_TO_NAME: Final = {
     DreameVacuumProperty.STATE: ["state", "State"],
@@ -529,6 +544,13 @@ TASK_STATUS_CODE_TO_NAME: Final = {
     DreameVacuumTaskStatus.AUTO_DOCKING_PAUSED: TASK_STATUS_DOCKING_PAUSE,
     DreameVacuumTaskStatus.ZONE_DOCKING_PAUSED: TASK_STATUS_DOCKING_PAUSE,
     DreameVacuumTaskStatus.SEGMENT_DOCKING_PAUSED: TASK_STATUS_DOCKING_PAUSE,
+    DreameVacuumTaskStatus.MONITOR_CRUISE: TASK_STATUS_MONITOR_CRUISE,
+    DreameVacuumTaskStatus.MONITOR_CRUISE_PAUSE: TASK_STATUS_MONITOR_CRUISE_PAUSE,
+    DreameVacuumTaskStatus.MONITOR_SPOT: TASK_STATUS_MONITOR_SPOT,
+    DreameVacuumTaskStatus.MONITOR_SPOT_PAUSE: TASK_STATUS_MONITOR_SPOT_PAUSE,
+    DreameVacuumTaskStatus.SUMMON_CLEAN_PAUSE: TASK_STATUS_SUMMON_CLEAN_PAUSE,
+    DreameVacuumTaskStatus.RETURNING_INSTALL_MOP: TASK_STATUS_RETURNING_INSTALL_MOP,
+    DreameVacuumTaskStatus.RETURNING_REMOVE_MOP: TASK_STATUS_RETURNING_REMOVE_MOP,
 }
 
 STATUS_CODE_TO_NAME: Final = {
@@ -554,6 +576,9 @@ STATUS_CODE_TO_NAME: Final = {
     DreameVacuumStatus.ZONE_CLEANING: STATUS_ZONE_CLEANING,
     DreameVacuumStatus.SPOT_CLEANING: STATUS_SPOT_CLEANING,
     DreameVacuumStatus.FAST_MAPPING: STATUS_FAST_MAPPING,
+    DreameVacuumStatus.MONITOR_CRUISE: STATUS_MONITOR_CRUISE,
+    DreameVacuumStatus.MONITOR_SPOT: STATUS_MONITOR_SPOT,
+    DreameVacuumStatus.SUMMON_CLEAN: STATUS_SUMMON_CLEAN,
 }
 
 RELOCATION_STATUS_CODE_TO_NAME: Final = {
@@ -690,6 +715,12 @@ MOP_WASH_LEVEL_TO_NAME: Final = {
     DreameVacuumMopWashLevel.DEEP: MOP_WASH_LEVEL_DEEP,
     DreameVacuumMopWashLevel.DAILY: MOP_WASH_LEVEL_DAILY,
     DreameVacuumMopWashLevel.WATER_SAVING: MOP_WASH_LEVEL_WATER_SAVING,
+}
+
+MOPPING_TYPE_TO_NAME: Final = {
+    DreameVacuumMoppingType.DEEP: MOPPING_TYPE_DEEP,
+    DreameVacuumMoppingType.DAILY: MOPPING_TYPE_DAILY,
+    DreameVacuumMoppingType.ACCURATE: MOPPING_TYPE_ACCURATE,
 }
 
 ERROR_CODE_TO_IMAGE_INDEX: Final = {

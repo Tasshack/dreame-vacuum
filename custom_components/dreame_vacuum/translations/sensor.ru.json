@@ -39,7 +39,10 @@
         "standby": "Ожидает",
         "room_cleaning": "Уборка комнаты",
         "zone_cleaning": "Уборка зоны",
-        "fast_mapping": "Быстрое построение карты"
+        "fast_mapping": "Быстрое построение карты",
+        "monitor_cruise": "Видеомониторинг",
+        "monitor_spot": "Видеоточечный мониторинг",
+        "summon_clean": "Позовите, чтобы очистить"
       },
       "dreame_vacuum__task_status": {
         "unknown": "Неизвестно",
@@ -59,7 +62,14 @@
         "zone_mopping_paused": "Зональная влажная уборка приостановлена",
         "room_mopping_paused": "Влажная уборка комнаты приостановлена",
         "zone_docking_paused": "Возврат на базу при уборке зоны приостановлен",
-        "room_docking_paused": "Возврат на базу при уборке комнаты приостановлен"
+        "room_docking_paused": "Возврат на базу при уборке комнаты приостановлен",
+        "monitor_cruise": "Видеомониторинг",
+        "monitor_cruise_pause": "Видеомониторинг приостановлен",
+        "monitor_spot": "Видеоточечный мониторинг",
+        "monitor_spot_pause": "Мониторинг видеорекламы приостановлен",
+        "summon_clean_pause": "Вызов для сброса приостановлен",
+        "returning_to_install_mop": "Возвращение для установки швабры",
+        "returning_to_remove_mop": "Выполняется очистка швабры. Подождите"
       },
       "dreame_vacuum__water_tank_and_mop": {
         "unknown": "Неизвестно",

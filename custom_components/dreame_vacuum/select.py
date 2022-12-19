@@ -47,6 +47,7 @@ from .dreame import (
     DreameVacuumMopPadHumidity,
     DreameVacuumCarpetSensitivity,
     DreameVacuumMopWashLevel,
+    DreameVacuumMoppingType,
     SUCTION_LEVEL_CODE_TO_NAME,
     WATER_VOLUME_CODE_TO_NAME,
     MOP_PAD_HUMIDITY_CODE_TO_NAME,
@@ -98,7 +99,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         device_class=f"{DOMAIN}__water_volume",
         icon_fn=lambda value, device: "mdi:water-off"
         if (
-            not device.status.water_tank_installed
+            not device.status.water_tank_or_mop_installed
             or device.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING
         )
         else WATER_VOLUME_TO_ICON.get(device.status.water_volume, "mdi:water"),
@@ -159,7 +160,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         device_class=f"{DOMAIN}__mop_pad_humidity",
         icon_fn=lambda value, device: "mdi:water-off"
         if (
-            not device.status.water_tank_installed
+            not device.status.water_tank_or_mop_installed
             or device.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING
         )
         else MOP_PAD_HUMIDITY_TO_ICON.get(device.status.mop_pad_humidity, "mdi:water-percent"),
@@ -167,13 +168,13 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         value_fn=lambda value, device: device.status.mop_pad_humidity_name,
         value_int_fn=lambda value, device: DreameVacuumMopPadHumidity[value.upper()],
         exists_fn=lambda description, device: device.status.self_wash_base_available,
-        available_fn=lambda device: device.status.water_tank_installed and not device.status.sweeping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping and not device.status.started,
+        available_fn=lambda device: device.status.water_tank_or_mop_installed and not device.status.sweeping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping and not device.status.started,
         set_fn=lambda device, map_id, value: device.set_mop_pad_humidity(value),
     ),
     DreameVacuumSelectEntityDescription(
         key="self_clean_area",
         device_class=f"{DOMAIN}__self_clean_area",
-        icon_fn=lambda value, device: "mdi:texture-box",
+        icon="mdi:texture-box",
         options=lambda device, segment: list(device.status.self_clean_area_list),
         entity_category=EntityCategory.CONFIG,
         value_fn=lambda value, device: device.status.self_clean_area_name,
@@ -181,6 +182,18 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         exists_fn=lambda description, device: device.status.self_wash_base_available,
         available_fn=lambda device: device.status.self_clean and not device.status.started and not device.status.fast_mapping and not device.status.cleaning_paused,
         set_fn=lambda device, map_id, value: device.set_self_clean_area(value),
+    ),
+    DreameVacuumSelectEntityDescription(
+        key="mopping_type",
+        device_class=f"{DOMAIN}__mopping_type",
+        icon="mdi:spray-bottle",
+        options=lambda device, segment: list(device.status.mopping_type_list),
+        entity_category=EntityCategory.CONFIG,
+        value_fn=lambda value, device: device.status.mopping_type_name,
+        value_int_fn=lambda value, device: DreameVacuumMoppingType[value.upper()],
+        exists_fn=lambda description, device: device.status.auto_switch_settings_available and device.status.mopping_type is not None,
+        available_fn=lambda device: not device.status.started and not device.status.fast_mapping and not device.status.cleaning_paused,
+        set_fn=lambda device, map_id, value: device.set_mopping_type(value),
     ),
     DreameVacuumSelectEntityDescription(
         key="map_rotation",

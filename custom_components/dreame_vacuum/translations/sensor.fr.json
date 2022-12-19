@@ -39,7 +39,10 @@
       "standby": "En veille",
       "room_cleaning": "Nettoyage d'une pièce",
       "zone_cleaning": "Nettoyage d'une zone",
-      "fast_mapping": "Cartographie rapide"
+      "fast_mapping": "Cartographie rapide",
+      "monitor_cruise": "Surveillance de la caméra",
+      "monitor_spot": "Surveillance des points de caméra",
+      "summon_clean": "Appeler pour nettoyer"
     },
     "dreame_vacuum__task_status": {
       "unknown": "Inconnu",
@@ -59,7 +62,14 @@
       "zone_mopping_paused": "Lavage d'une zone mis en pause",
       "room_mopping_paused": "Lavage d'une pièce mis en pause",
       "zone_docking_paused": "Retour à la station mis en pause",
-      "room_docking_paused": "Retour à la station mis en pause"
+      "room_docking_paused": "Retour à la station mis en pause",
+      "monitor_cruise": "Surveillance de la caméra",
+      "monitor_cruise_pause": "Surveillance de la caméra en pause",
+      "monitor_spot": "Surveillance des points de caméra",
+      "monitor_spot_pause": "Surveillance des spots de la caméra en pause",
+      "summon_clean_pause": "Appeler pour nettoyer en pause",
+      "returning_to_install_mop": "Retourner pour installer la serpillière",
+      "returning_to_remove_mop": "Retourner pour retirer la serpillière"
     },
     "dreame_vacuum__water_tank_and_mop": {
       "unknown": "Inconnu",

@@ -3958,130 +3958,130 @@ class DreameVacuumMapRenderer:
                 or bool(self._robot_status > 5) != bool(robot_status > 5)
                 or not self._layers.get(MapRendererLayer.CHARGER)
             ):
-                def correct_charger_position(chargerPos, pixel_type, width, height, x, y, gridWidth, borderValue):                 
-                    newChargerPos = copy.deepcopy(chargerPos)
-                    tmpAngle = newChargerPos.a % 360
+                #def correct_charger_position(chargerPos, pixel_type, width, height, x, y, gridWidth, borderValue):                 
+                #    newChargerPos = copy.deepcopy(chargerPos)
+                #    tmpAngle = newChargerPos.a % 360
 
-                    if tmpAngle < 0:
-                        tmpAngle += 360
+                #    if tmpAngle < 0:
+                #        tmpAngle += 360
 
-                    chargerX = int((newChargerPos.x - x) / gridWidth)
-                    chargerY = int((newChargerPos.y - y) / gridWidth)
-                    value = pixel_type[chargerX, chargerY]
+                #    chargerX = int((newChargerPos.x - x) / gridWidth)
+                #    chargerY = int((newChargerPos.y - y) / gridWidth)
+                #    value = pixel_type[chargerX, chargerY]
 
-                    if value == borderValue or chargerX < 0 or chargerX >= width or chargerY < 0 or chargerY >= height:
-                        return chargerPos
+                #    if value == borderValue or chargerX < 0 or chargerX >= width or chargerY < 0 or chargerY >= height:
+                #        return chargerPos
 
-                    isChargerInMap = value != 0
-                    delta = 3
+                #    isChargerInMap = value != 0
+                #    delta = 3
 
-                    for crossDelta in range(4):
-                        if tmpAngle > 45 and tmpAngle < 135 or tmpAngle > 225 and tmpAngle < 315:
-                            startY = 0 if ((chargerY - delta) < 0) else (chargerY - delta)
-                            endY = (height - 1) if ((chargerY + delta) > (height - 1)) else (chargerY + delta)
+                #    for crossDelta in range(4):
+                #        if tmpAngle > 45 and tmpAngle < 135 or tmpAngle > 225 and tmpAngle < 315:
+                #            startY = 0 if ((chargerY - delta) < 0) else (chargerY - delta)
+                #            endY = (height - 1) if ((chargerY + delta) > (height - 1)) else (chargerY + delta)
 
-                            if tmpAngle > 45 and tmpAngle < 135:
-                                if isChargerInMap:
-                                    endY = chargerY
-                                else:
-                                    startY = chargerY
-                            else:
-                                if isChargerInMap:
-                                    startY = chargerY
-                                else:
-                                    endY = chargerY
+                #            if tmpAngle > 45 and tmpAngle < 135:
+                #                if isChargerInMap:
+                #                    endY = chargerY
+                #                else:
+                #                    startY = chargerY
+                #            else:
+                #                if isChargerInMap:
+                #                    startY = chargerY
+                #                else:
+                #                    endY = chargerY
 
-                            findY = -1
+                #            findY = -1
 
-                            for j in range(startY, endY + 1):
-                                startX = -1
+                #            for j in range(startY, endY + 1):
+                #                startX = -1
 
-                                for i in range(width):
-                                    leftIndex = (i - 1) if ((i - 1) >= 0) else -1
-                                    rightIndex = (i + 1) if ((i + 1) < width) else -1
+                #                for i in range(width):
+                #                    leftIndex = (i - 1) if ((i - 1) >= 0) else -1
+                #                    rightIndex = (i + 1) if ((i + 1) < width) else -1
 
-                                    if pixel_type[i, j] == borderValue and (i == 0 or leftIndex != -1 and pixel_type[leftIndex, j] != borderValue):
-                                        startX = i
+                #                    if pixel_type[i, j] == borderValue and (i == 0 or leftIndex != -1 and pixel_type[leftIndex, j] != borderValue):
+                #                        startX = i
 
-                                        if pixel_type[i + 1, j] != borderValue:
-                                            if (chargerX + crossDelta) >= startX and (chargerX - crossDelta) <= i:
-                                                if findY == -1:
-                                                    findY = j
-                                                elif abs(chargerY - j) < abs(findY - j):
-                                                    findY = j
-                                            startX = -1
+                #                        if pixel_type[i + 1, j] != borderValue:
+                #                            if (chargerX + crossDelta) >= startX and (chargerX - crossDelta) <= i:
+                #                                if findY == -1:
+                #                                    findY = j
+                #                                elif abs(chargerY - j) < abs(findY - j):
+                #                                    findY = j
+                #                            startX = -1
 
-                                        continue
+                #                        continue
 
-                                    if pixel_type[i, j] == borderValue and startX != -1 and (i == (width - 1) or rightIndex != -1 and pixel_type[rightIndex, j] != borderValue):
-                                        if (chargerX + crossDelta) >= startX and (chargerX - crossDelta) <= i:
-                                            if findY == -1:
-                                                findY = j
-                                            elif abs(chargerY - j) < abs(findY - j):
-                                                findY = j
+                #                    if pixel_type[i, j] == borderValue and startX != -1 and (i == (width - 1) or rightIndex != -1 and pixel_type[rightIndex, j] != borderValue):
+                #                        if (chargerX + crossDelta) >= startX and (chargerX - crossDelta) <= i:
+                #                            if findY == -1:
+                #                                findY = j
+                #                            elif abs(chargerY - j) < abs(findY - j):
+                #                                findY = j
 
-                                        startX = -1
-                            if findY != -1:
-                                newChargerPos.y = y + findY * gridWidth
-                                break
-                        else:
-                            _startX = 0 if ((chargerX - delta) < 0) else (chargerX - delta)
-                            endX = (width - 1) if ((chargerX + delta) > (width - 1)) else (chargerX + delta)
+                #                        startX = -1
+                #            if findY != -1:
+                #                newChargerPos.y = y + findY * gridWidth
+                #                break
+                #        else:
+                #            _startX = 0 if ((chargerX - delta) < 0) else (chargerX - delta)
+                #            endX = (width - 1) if ((chargerX + delta) > (width - 1)) else (chargerX + delta)
 
-                            if tmpAngle >= 0 and tmpAngle <= 45 or tmpAngle >= 315 and tmpAngle < 360:
-                                if isChargerInMap:
-                                    endX = chargerX
-                                else:
-                                    _startX = chargerX
-                            else:
-                                if isChargerInMap:
-                                    _startX = chargerX
-                                else:
-                                    endX = chargerX
+                #            if tmpAngle >= 0 and tmpAngle <= 45 or tmpAngle >= 315 and tmpAngle < 360:
+                #                if isChargerInMap:
+                #                    endX = chargerX
+                #                else:
+                #                    _startX = chargerX
+                #            else:
+                #                if isChargerInMap:
+                #                    _startX = chargerX
+                #                else:
+                #                    endX = chargerX
 
-                            findX = -1
+                #            findX = -1
 
-                            for _i in range(_startX, endX + 1):
-                                _startY = -1
+                #            for _i in range(_startX, endX + 1):
+                #                _startY = -1
 
-                                for _j in range(height):
-                                    topIndex = (_j - 1) if ((_j - 1) >= 0) else -1
-                                    bottomIndex = (_j + 1) if ((_j + 1) < height) else -1
+                #                for _j in range(height):
+                #                    topIndex = (_j - 1) if ((_j - 1) >= 0) else -1
+                #                    bottomIndex = (_j + 1) if ((_j + 1) < height) else -1
 
-                                    if pixel_type[_i, _j] == borderValue and (_j == 0 or topIndex != -1 and pixel_type[_i, topIndex] != borderValue):
-                                        _startY = _j
+                #                    if pixel_type[_i, _j] == borderValue and (_j == 0 or topIndex != -1 and pixel_type[_i, topIndex] != borderValue):
+                #                        _startY = _j
 
-                                        if pixel_type[_i, (_j + 1)] != borderValue:
-                                            if ((chargerY + crossDelta) >= _startY) and ((chargerY - crossDelta) <= _j):
-                                                if findX == -1:
-                                                    findX = _i
-                                                elif abs(chargerX - _i) < abs(findX - _i):
-                                                    findX = _i
-                                            _startY = -1
+                #                        if pixel_type[_i, (_j + 1)] != borderValue:
+                #                            if ((chargerY + crossDelta) >= _startY) and ((chargerY - crossDelta) <= _j):
+                #                                if findX == -1:
+                #                                    findX = _i
+                #                                elif abs(chargerX - _i) < abs(findX - _i):
+                #                                    findX = _i
+                #                            _startY = -1
 
-                                        continue
+                #                        continue
 
-                                    if pixel_type[_i, _j] == borderValue and _startY != -1 and (_j == height - 1 or bottomIndex != -1 and pixel_type[_i, bottomIndex] != borderValue):
-                                        if ((chargerY + crossDelta) >= _startY) and ((chargerY - crossDelta) <= _j):
-                                            if findX == -1:
-                                                findX = _i
-                                            elif abs(chargerX - _i) < abs(findX - _i):
-                                                findX = _i
+                #                    if pixel_type[_i, _j] == borderValue and _startY != -1 and (_j == height - 1 or bottomIndex != -1 and pixel_type[_i, bottomIndex] != borderValue):
+                #                        if ((chargerY + crossDelta) >= _startY) and ((chargerY - crossDelta) <= _j):
+                #                            if findX == -1:
+                #                                findX = _i
+                #                            elif abs(chargerX - _i) < abs(findX - _i):
+                #                                findX = _i
 
-                                        _startY = -1
+                #                        _startY = -1
 
-                            if findX != -1:
-                                newChargerPos.x = x + findX * gridWidth
-                                break
+                #            if findX != -1:
+                #                newChargerPos.x = x + findX * gridWidth
+                #                break
 
-                    return newChargerPos
+                #    return newChargerPos
 
                 charger_position = map_data.charger_position;
                 if self._robot_shape != 1 and self.icon_set == 2:
                     offset = int(robot_icon_size * 21.42)
                     charger_position = Point(
-                        map_data.charger_position.x - offset * math.cos(charger_position.a * math.pi / 180), 
-                        map_data.charger_position.y - offset * math.sin(charger_position.a * math.pi / 180), 
+                        charger_position.x - offset * math.cos(charger_position.a * math.pi / 180), 
+                        charger_position.y - offset * math.sin(charger_position.a * math.pi / 180), 
                         charger_position.a
                     )
 
@@ -4115,40 +4115,40 @@ class DreameVacuumMapRenderer:
                     if self._robot_shape != 1:
                         offset = int(robot_icon_size * 21.42)
 
-                        if self.icon_set != 2:
-                            if (
-                                charger_angle > -45
-                                and charger_angle < 45
-                            ):
-                                charger_angle = 0
-                            elif (
-                                charger_angle > -45
-                                and charger_angle <= 45
-                                or charger_angle > 315
-                                and charger_angle <= 405
-                            ):
-                                charger_angle = 0
-                            elif (
-                                charger_angle > 45
-                                and charger_angle <= 135
-                                or charger_angle > -315
-                                and charger_angle <= -225
-                            ):
-                                charger_angle = 90
-                            elif (
-                                charger_angle > 135
-                                and charger_angle <= 225
-                                or charger_angle > -225
-                                and charger_angle <= -135
-                            ):
-                                charger_angle = 180
-                            elif (
-                                charger_angle > 225
-                                and charger_angle <= 315
-                                or charger_angle > -135
-                                and charger_angle <= -45
-                            ):
-                                charger_angle = 270
+                        #if self.icon_set != 2:
+                        #    if (
+                        #        charger_angle > -45
+                        #        and charger_angle < 45
+                        #    ):
+                        #        charger_angle = 0
+                        #    elif (
+                        #        charger_angle > -45
+                        #        and charger_angle <= 45
+                        #        or charger_angle > 315
+                        #        and charger_angle <= 405
+                        #    ):
+                        #        charger_angle = 0
+                        #    elif (
+                        #        charger_angle > 45
+                        #        and charger_angle <= 135
+                        #        or charger_angle > -315
+                        #        and charger_angle <= -225
+                        #    ):
+                        #        charger_angle = 90
+                        #    elif (
+                        #        charger_angle > 135
+                        #        and charger_angle <= 225
+                        #        or charger_angle > -225
+                        #        and charger_angle <= -135
+                        #    ):
+                        #        charger_angle = 180
+                        #    elif (
+                        #        charger_angle > 225
+                        #        and charger_angle <= 315
+                        #        or charger_angle > -135
+                        #        and charger_angle <= -45
+                        #    ):
+                        #        charger_angle = 270
                     else:
                         offset = int(robot_icon_size * 35.71)
                         
@@ -4484,21 +4484,26 @@ class DreameVacuumMapRenderer:
                 )
             status_icon = self._robot_cleaning_icon
 
-            #if self._robot_cleaning_direction_icon is None:
-            #    self._robot_cleaning_direction_icon = (
-            #        Image.open(
-            #            BytesIO(base64.b64decode(MAP_ROBOT_CLEANING_DIRECTION_IMAGE)))
-            #        .convert("RGBA")
-            #        .resize(((int(icon_size * 1.5), int(icon_size * 1.5))), resample=Image.Resampling.NEAREST)
-            #    )
+            if self.config.cleaning_direction:
+                if self._robot_cleaning_direction_icon is None:
+                    self._robot_cleaning_direction_icon = (
+                        Image.open(
+                            BytesIO(base64.b64decode(MAP_ROBOT_CLEANING_DIRECTION_IMAGE)))
+                        .convert("RGBA")
+                        .resize(((int(icon_size * 1.5), int(icon_size * 1.5))), resample=Image.Resampling.NEAREST)
+                    )
                 
-            #ic = self._robot_cleaning_direction_icon.rotate(robot_position.a, expand=1)
-            #new_layer.paste(ic,
-            #    (
-            #        int((point.x + int(icon_size / 2) * math.cos(robot_position.a * math.pi / 180)) * scale - (ic.size[0] / 2)),
-            #        int((point.y + int(icon_size / 2) * math.sin(robot_position.a * math.pi / 180)) * scale - (ic.size[1] / 2)),
-            #    )
-            #)
+                ico = self._robot_cleaning_direction_icon.rotate(robot_position.a, expand=1)
+
+                offset = int(icon_size / 2)
+                x = point.x + offset * math.cos(-robot_position.a * math.pi / 180) 
+                y = point.y + offset * math.sin(-robot_position.a * math.pi / 180)
+                new_layer.paste(ico,
+                    (
+                        int(x * scale - (ico.size[0] / 2)),
+                        int(y * scale - (ico.size[1] / 2)),
+                    )
+                )
         elif robot_status == 2:
             if self._robot_charging_icon is None:
                 self._robot_charging_icon = (

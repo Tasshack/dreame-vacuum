@@ -36,6 +36,11 @@
       "water_saving": "Oszczędzanie wody",
       "daily": "Codzienne",
       "deep": "Intesywnie"
+    },
+    "dreame_vacuum__mopping_type": {
+      "accurate": "Dokładny",
+      "daily": "Codzienne",
+      "deep": "Intesywnie"
     }
   }
 }

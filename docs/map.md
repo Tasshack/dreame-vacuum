@@ -115,6 +115,15 @@ Reverse engineered Valetudo map data generation with optimization features.
 
 **<a href="https://github.com/Tasshack/dreame-vacuum/blob/master/README.md#with-valetudo-map-card" target="_blank">For more info about valetudo map card</a>**
 
+### Map Icon Set
+
+Selectable room, vacuum and charger icon types:
+
+- **Dreame**: Icons from the official Dreame App.
+- **Dreame Old**: Icons from the old version of the official Dreame App for VSLAM robots.
+- **Mijia**: Icons from the official Mijia App.
+- **Material**: Icons from the Material Design.
+
 ### Map Objects
 
 Configurable map object rendering options: 

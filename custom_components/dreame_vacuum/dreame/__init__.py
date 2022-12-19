@@ -12,6 +12,7 @@ from .types import (
     DreameVacuumState,
     DreameVacuumSelfCleanArea,
     DreameVacuumMopWashLevel,
+    DreameVacuumMoppingType,
     PROPERTY_AVAILABILITY,
     ACTION_AVAILABILITY,
     MAP_COLOR_SCHEME_LIST,

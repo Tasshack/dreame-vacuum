@@ -39,7 +39,10 @@
       "standby": "Standby",
       "room_cleaning": "Raumreinigung",
       "zone_cleaning": "Zonenreinigung",
-      "fast_mapping": "Schnelles Mapping"
+      "fast_mapping": "Schnelles Mapping",
+      "monitor_cruise": "Kameraüberwachung",
+      "monitor_spot": "Kamera-Spot-Überwachung",
+      "summon_clean": "Reinigung rufen"
     },
     "dreame_vacuum__task_status": {
       "unknown": "Unbekannt",
@@ -59,7 +62,14 @@
       "zone_mopping_paused": "Zonenwischen pausiert",
       "room_mopping_paused": "Raumwischen pausiert",
       "zone_docking_paused": "Zonenwischen pausiert",
-      "room_docking_paused": "Raumdocking pausiert"
+      "room_docking_paused": "Raumdocking pausiert",
+      "monitor_cruise": "Kameraüberwachung",
+      "monitor_cruise_pause": "Kameraüberwachung angehalten",
+      "monitor_spot": "Kamera-Spot-Überwachung",
+      "monitor_spot_pause": "Kamera-Spot-Überwachung angehalten",
+      "summon_clean_pause": "Reinigung rufen angehalten",
+      "returning_to_install_mop": "Zurückkehren zum Installieren des Wischmopps",
+      "returning_to_remove_mop": "Zurückkehren zum Entfernen des Wischmopps"
     },
     "dreame_vacuum__water_tank_and_mop": {
       "unknown": "Unbekannt",

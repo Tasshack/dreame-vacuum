@@ -39,7 +39,10 @@
       "standby": "Gotowość",
       "room_cleaning": "Sprzątanie pokoju",
       "zone_cleaning": "Czyszczenie strefy",
-      "fast_mapping": "Szybkie mapowanie"
+      "fast_mapping": "Szybkie mapowanie",
+      "monitor_cruise": "Monitorowanie",
+      "monitor_spot": "Monitorowanie punktu kamery",
+      "summon_clean": "Powiedz, aby rozpocząć czyszczenie"
     },
     "dreame_vacuum__task_status": {
       "unknown": "Nieznany",
@@ -59,7 +62,14 @@
       "zone_mopping_paused": "Mopowanie strefy wstrzymane",
       "room_mopping_paused": "Mopowanie pokoju wstrzymane",
       "zone_docking_paused": "Dokowanie strefy wstrzymane",
-      "room_docking_paused": "Dokowanie pokoju wstrzymane"
+      "room_docking_paused": "Dokowanie pokoju wstrzymane",
+      "monitor_cruise": "Monitorowanie",
+      "monitor_cruise_pause": "Monitorowanie wstrzymane",
+      "monitor_spot": "Monitorowanie punktu kamery",
+      "monitor_spot_pause": "Monitorowanie punktu kamery zostało wstrzymane",
+      "summon_clean_pause": "Powiedz wstrzymanie sprzątania",
+      "returning_to_install_mop": "Powracanie w celu montażu podkładki mopa",
+      "returning_to_remove_mop": "Powracanie w celu demontażu podkładki mopa"
     },
     "dreame_vacuum__water_tank_and_mop": {
       "unknown": "Nieznany",

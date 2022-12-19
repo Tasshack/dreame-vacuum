@@ -36,6 +36,11 @@
       "water_saving": "Water saving",
       "daily": "Daily",
       "deep": "Deep"
+    },
+    "dreame_vacuum__moping_type": {
+      "accurate": "Accurate",
+      "daily": "Daily",
+      "deep": "Deep"
     }
   }
 }

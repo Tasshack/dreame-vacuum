@@ -36,6 +36,11 @@
       "water_saving": "Risparmio di acqua",
       "daily": "Giornaliera",
       "deep": "Profonda"
+    },
+    "dreame_vacuum__mopping_type": {
+      "accurate": "Accurata",
+      "daily": "Giornaliera",
+      "deep": "Profonda"
     }
   }
 }

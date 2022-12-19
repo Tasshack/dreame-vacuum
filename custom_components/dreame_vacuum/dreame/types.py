@@ -302,7 +302,13 @@ class DreameVacuumTaskStatus(IntEnum):
     AUTO_DOCKING_PAUSED = 16
     SEGMENT_DOCKING_PAUSED = 17
     ZONE_DOCKING_PAUSED = 18
-
+    MONITOR_CRUISE = 20
+    MONITOR_CRUISE_PAUSE = 21
+    MONITOR_SPOT = 22
+    MONITOR_SPOT_PAUSE = 23
+    SUMMON_CLEAN_PAUSE = 24
+    RETURNING_INSTALL_MOP = 25
+    RETURNING_REMOVE_MOP = 26
 
 class DreameVacuumStatus(IntEnum):
     """Dreame Vacuum status"""
@@ -330,6 +336,9 @@ class DreameVacuumStatus(IntEnum):
     ZONE_CLEANING = 19
     SPOT_CLEANING = 20
     FAST_MAPPING = 21
+    MONITOR_CRUISE = 22
+    MONITOR_SPOT = 23
+    SUMMON_CLEAN = 24
 
 
 class DreameVacuumDustCollection(IntEnum):
@@ -375,7 +384,15 @@ class DreameVacuumMopWashLevel(IntEnum):
 
     UNKNOWN = -1
     WATER_SAVING = 0
-    DAILY = 2
+    DAILY = 1
+    DEEP = 2
+
+class DreameVacuumMoppingType(IntEnum):
+    """Dreame Vacuum mopping type"""
+
+    UNKNOWN = -1
+    DAILY = 0
+    ACCURATE = 1
     DEEP = 2
 
 class DreameVacuumProperty(IntEnum):
@@ -403,77 +420,105 @@ class DreameVacuumProperty(IntEnum):
     MOP_CLEANING_REMAINDER = 19
     CLEANING_PAUSED = 20
     FAULTS = 21
-    RELOCATION_STATUS = 22
-    OBSTACLE_AVOIDANCE = 23
-    AI_DETECTION = 24
-    CLEANING_MODE = 25
-    SELF_WASH_BASE_STATUS = 26
-    CUSTOMIZED_CLEANING = 27
-    CHILD_LOCK = 28
-    CARPET_SENSITIVITY = 29
-    TIGHT_MOPPING = 30
-    CLEANING_CANCEL = 31
-    Y_CLEAN = 32
-    WATER_ELECTROLYSIS = 33
-    CARPET_RECOGNITION = 34
-    SELF_CLEAN = 35
-    WARN_STATUS = 36
-    CARPET_AVOIDANCE = 37
-    AUTO_ADD_DETERGENT = 38
-    CAPABILITY = 39
-    DRYING_TIME = 40
-    MOP_WASH_LEVEL = 41
-    AUTO_MOUNT_MOP = 42
-    SCHEDULED_CLEAN = 43
-    AUTO_DRYING = 44
-    AUTO_WATER_REFILLING = 45
-    DND = 46
-    DND_START = 47
-    DND_END = 48
-    MAP_DATA = 49
-    FRAME_INFO = 50
-    OBJECT_NAME = 51
-    MAP_EXTEND_DATA = 52
-    ROBOT_TIME = 53
-    RESULT_CODE = 54
-    MULTI_FLOOR_MAP = 55
-    MAP_LIST = 56
-    RECOVERY_MAP_LIST = 57
-    MAP_RECOVERY = 58
-    MAP_RECOVERY_STATUS = 59
-    OLD_MAP_DATA = 60
-    VOLUME = 61
-    VOICE_PACKET_ID = 62
-    VOICE_CHANGE_STATUS = 63
-    VOICE_CHANGE = 64
-    TIMEZONE = 65
-    SCHEDULE = 66
-    SCHEDULE_ID = 67
-    SCHEDULE_CANCEL_REASON = 68
-    MAIN_BRUSH_TIME_LEFT = 69
-    MAIN_BRUSH_LEFT = 70
-    SIDE_BRUSH_TIME_LEFT = 71
-    SIDE_BRUSH_LEFT = 72
-    FILTER_LEFT = 73
-    FILTER_TIME_LEFT = 74
-    FIRST_CLEANING_DATE = 75
-    TOTAL_CLEANING_TIME = 76
-    CLEANING_COUNT = 77
-    TOTAL_CLEANED_AREA = 78
-    MAP_SAVING = 79
-    AUTO_DUST_COLLECTING = 80
-    AUTO_EMPTY_FREQUENCY = 81
-    DUST_COLLECTION = 82
-    AUTO_EMPTY_STATUS = 83
-    SENSOR_DIRTY_LEFT = 84
-    SENSOR_DIRTY_TIME_LEFT = 85
-    MOP_PAD_LEFT = 86
-    MOP_PAD_TIME_LEFT = 87
-    SILVER_ION_TIME_LEFT = 88
-    SILVER_ION_LEFT = 89
-    DETERGENT_LEFT = 90
-    DETERGENT_TIME_LEFT = 91
-
+    NATION_MATCHED = 22
+    RELOCATION_STATUS = 23
+    OBSTACLE_AVOIDANCE = 24
+    AI_DETECTION = 25
+    CLEANING_MODE = 26
+    UPLOAD_MAP = 27
+    SELF_WASH_BASE_STATUS = 28
+    CUSTOMIZED_CLEANING = 29
+    CHILD_LOCK = 30
+    CARPET_SENSITIVITY = 31
+    TIGHT_MOPPING = 32
+    CLEANING_CANCEL = 33
+    Y_CLEAN = 34
+    WATER_ELECTROLYSIS = 35
+    CARPET_RECOGNITION = 36
+    SELF_CLEAN = 37
+    WARN_STATUS = 38
+    CARPET_AVOIDANCE = 39
+    AUTO_ADD_DETERGENT = 40
+    CAPABILITY = 41
+    SAVE_WATER_TIPS = 42
+    DRYING_TIME = 43
+    NO_WATER_WARNING = 44
+    MOP_WASH_LEVEL = 45
+    AUTO_MOUNT_MOP = 46
+    SCHEDULED_CLEAN = 47
+    QUICK_COMMAND = 48
+    INTELLIGENT_RECOGNITION = 49
+    AUTO_SWITCH_SETTINGS = 50
+    AUTO_WATER_REFILLING = 51
+    MOP_IN_STATION = 52
+    MOP_PAD_INSTALLED = 53
+    DND = 54
+    DND_START = 55
+    DND_END = 56
+    DND_TASK = 57
+    MAP_DATA = 58
+    FRAME_INFO = 59
+    OBJECT_NAME = 60
+    MAP_EXTEND_DATA = 61
+    ROBOT_TIME = 62
+    RESULT_CODE = 63
+    MULTI_FLOOR_MAP = 64
+    MAP_LIST = 65
+    RECOVERY_MAP_LIST = 66
+    MAP_RECOVERY = 67
+    MAP_RECOVERY_STATUS = 68
+    OLD_MAP_DATA = 69
+    BACKUP_MAP_STATUS = 70
+    WIFI_MAP = 71
+    VOLUME = 72
+    VOICE_PACKET_ID = 73
+    VOICE_CHANGE_STATUS = 74
+    VOICE_CHANGE = 75
+    TIMEZONE = 76
+    SCHEDULE = 77
+    SCHEDULE_ID = 78
+    SCHEDULE_CANCEL_REASON = 79
+    CRUISE_SCHEDULE = 80
+    MAIN_BRUSH_TIME_LEFT = 81
+    MAIN_BRUSH_LEFT = 82
+    SIDE_BRUSH_TIME_LEFT = 83
+    SIDE_BRUSH_LEFT = 84
+    FILTER_LEFT = 85
+    FILTER_TIME_LEFT = 86
+    FIRST_CLEANING_DATE = 87
+    TOTAL_CLEANING_TIME = 88
+    CLEANING_COUNT = 89
+    TOTAL_CLEANED_AREA = 90
+    MAP_SAVING = 91
+    AUTO_DUST_COLLECTING = 92
+    AUTO_EMPTY_FREQUENCY = 93
+    DUST_COLLECTION = 94
+    AUTO_EMPTY_STATUS = 95
+    SENSOR_DIRTY_LEFT = 96
+    SENSOR_DIRTY_TIME_LEFT = 97
+    MOP_PAD_LEFT = 98
+    MOP_PAD_TIME_LEFT = 99
+    SILVER_ION_TIME_LEFT = 100
+    SILVER_ION_LEFT = 101
+    DETERGENT_LEFT = 102
+    DETERGENT_TIME_LEFT = 103
+    STREAM_STATUS = 104
+    STREAM_AUDIO = 105
+    STREAM_RECORD = 106
+    TAKE_PHOTO = 107
+    STREAM_KEEP_ALIVE = 108
+    STREAM_FAULT = 109
+    CAMERA_BRIGHTNESS = 110
+    CAMERA_LIGHT = 111
+    STREAM_CRUISE_POINT = 112
+    STREAM_PROPERTY = 113
+    STREAM_TASK = 114
+    STREAM_UPLOAD = 115
+    STREAM_CODE = 116
+    STREAM_SET_CODE = 117
+    STREAM_VERIFY_CODE = 118
+    STREAM_RESET_CODE = 119
+    STREAM_SPACE = 120
 
 class DreameVacuumAction(IntEnum):
     """Dreame Vacuum actions"""
@@ -488,17 +533,24 @@ class DreameVacuumAction(IntEnum):
     GET_PHOTO_INFO = 8
     REQUEST_MAP = 9
     UPDATE_MAP_DATA = 10
-    LOCATE = 11
-    TEST_SOUND = 12
-    RESET_MAIN_BRUSH = 13
-    RESET_SIDE_BRUSH = 14
-    RESET_FILTER = 15
-    RESET_SENSOR = 16
-    START_AUTO_EMPTY = 17
-    RESET_MOP_PAD = 18
-    RESET_SILVER_ION = 19
-    RESET_DETERGENT = 20
-
+    BACKUP_MAP = 11
+    WIFI_MAP = 12
+    LOCATE = 13
+    TEST_SOUND = 14
+    DELETE_SCHEDULE = 15
+    DELETE_CRUISE_SCHEDULE = 16
+    RESET_MAIN_BRUSH = 17
+    RESET_SIDE_BRUSH = 18
+    RESET_FILTER = 19
+    RESET_SENSOR = 20
+    START_AUTO_EMPTY = 21
+    RESET_MOP_PAD = 22
+    RESET_SILVER_ION = 23
+    RESET_DETERGENT = 24
+    STREAM_CAMERA = 25
+    STREAM_AUDIO = 26
+    STREAM_PROPERTY = 27
+    STREAM_CODE = 28
 
 # Dreame Vacuum property mapping
 DreameVacuumPropertyMapping = {
@@ -524,12 +576,12 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.MOP_CLEANING_REMAINDER: {"siid": 4, "piid": 16},
     DreameVacuumProperty.CLEANING_PAUSED: {"siid": 4, "piid": 17},
     DreameVacuumProperty.FAULTS: {"siid": 4, "piid": 18},
-    # DreameVacuumProperty.NATION_MATCHED: {"siid": 4, "piid": 19},
+    DreameVacuumProperty.NATION_MATCHED: {"siid": 4, "piid": 19},
     DreameVacuumProperty.RELOCATION_STATUS: {"siid": 4, "piid": 20},
     DreameVacuumProperty.OBSTACLE_AVOIDANCE: {"siid": 4, "piid": 21},
     DreameVacuumProperty.AI_DETECTION: {"siid": 4, "piid": 22},
     DreameVacuumProperty.CLEANING_MODE: {"siid": 4, "piid": 23},
-    # DreameVacuumProperty.UPLOAD_MAP: {"siid": 4, "piid": 24},
+    DreameVacuumProperty.UPLOAD_MAP: {"siid": 4, "piid": 24},
     DreameVacuumProperty.SELF_WASH_BASE_STATUS: {"siid": 4, "piid": 25},
     DreameVacuumProperty.CUSTOMIZED_CLEANING: {"siid": 4, "piid": 26},
     DreameVacuumProperty.CHILD_LOCK: {"siid": 4, "piid": 27},
@@ -544,18 +596,23 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.CARPET_AVOIDANCE: {"siid": 4, "piid": 36},
     DreameVacuumProperty.AUTO_ADD_DETERGENT: {"siid": 4, "piid": 37},
     DreameVacuumProperty.CAPABILITY: {"siid": 4, "piid": 38},
-    # DreameVacuumProperty.SAVE_WATER_TIPS: {"siid": 4, "piid": 39},
+    DreameVacuumProperty.SAVE_WATER_TIPS: {"siid": 4, "piid": 39},
     DreameVacuumProperty.DRYING_TIME: {"siid": 4, "piid": 40},
-    # DreameVacuumProperty.NO_WATER_WARNING: {"siid": 4, "piid": 41},
+    DreameVacuumProperty.NO_WATER_WARNING: {"siid": 4, "piid": 41},
     DreameVacuumProperty.AUTO_MOUNT_MOP: {"siid": 4, "piid": 45},
     DreameVacuumProperty.MOP_WASH_LEVEL: {"siid": 4, "piid": 46},
     DreameVacuumProperty.SCHEDULED_CLEAN: {"siid": 4, "piid": 47},
-    DreameVacuumProperty.AUTO_DRYING: {"siid": 4, "piid": 49},
-    DreameVacuumProperty.AUTO_WATER_REFILLING: {"siid": 4, "piid": 51},
+    DreameVacuumProperty.QUICK_COMMAND: {"siid": 4, "piid": 48},
+    DreameVacuumProperty.INTELLIGENT_RECOGNITION: {"siid": 4, "piid": 49},
+    DreameVacuumProperty.AUTO_SWITCH_SETTINGS: {"siid": 4, "piid": 50},
+    DreameVacuumProperty.AUTO_WATER_REFILLING: {"siid": 4, "piid": 51},    
+    DreameVacuumProperty.MOP_IN_STATION: {"siid": 4, "piid": 52},
+    DreameVacuumProperty.MOP_PAD_INSTALLED: {"siid": 4, "piid": 53},
     # DreameVacuumProperty.COMBINED_DATA: {"siid": 4, "piid": 99},
     DreameVacuumProperty.DND: {"siid": 5, "piid": 1},
     DreameVacuumProperty.DND_START: {"siid": 5, "piid": 2},
     DreameVacuumProperty.DND_END: {"siid": 5, "piid": 3},
+    DreameVacuumProperty.DND_TASK: {"siid": 5, "piid": 4},
     DreameVacuumProperty.MAP_DATA: {"siid": 6, "piid": 1},
     DreameVacuumProperty.FRAME_INFO: {"siid": 6, "piid": 2},
     DreameVacuumProperty.OBJECT_NAME: {"siid": 6, "piid": 3},
@@ -567,7 +624,9 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.RECOVERY_MAP_LIST: {"siid": 6, "piid": 9},
     DreameVacuumProperty.MAP_RECOVERY: {"siid": 6, "piid": 10},
     DreameVacuumProperty.MAP_RECOVERY_STATUS: {"siid": 6, "piid": 11},
-    DreameVacuumProperty.OLD_MAP_DATA: {"siid": 6, "piid": 13},
+    DreameVacuumProperty.OLD_MAP_DATA: {"siid": 6, "piid": 13},    
+    DreameVacuumProperty.BACKUP_MAP_STATUS: {"siid": 6, "piid": 14},    
+    DreameVacuumProperty.WIFI_MAP: {"siid": 6, "piid": 15},    
     DreameVacuumProperty.VOLUME: {"siid": 7, "piid": 1},
     DreameVacuumProperty.VOICE_PACKET_ID: {"siid": 7, "piid": 2},
     DreameVacuumProperty.VOICE_CHANGE_STATUS: {"siid": 7, "piid": 3},
@@ -576,6 +635,7 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.SCHEDULE: {"siid": 8, "piid": 2},
     DreameVacuumProperty.SCHEDULE_ID: {"siid": 8, "piid": 3},
     DreameVacuumProperty.SCHEDULE_CANCEL_REASON: {"siid": 8, "piid": 4},
+    DreameVacuumProperty.CRUISE_SCHEDULE: {"siid": 8, "piid": 5},
     DreameVacuumProperty.MAIN_BRUSH_TIME_LEFT: {"siid": 9, "piid": 1},
     DreameVacuumProperty.MAIN_BRUSH_LEFT: {"siid": 9, "piid": 2},
     DreameVacuumProperty.SIDE_BRUSH_TIME_LEFT: {"siid": 10, "piid": 1},
@@ -599,6 +659,23 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.SILVER_ION_LEFT: {"siid": 19, "piid": 2},
     DreameVacuumProperty.DETERGENT_LEFT: {"siid": 20, "piid": 1},
     DreameVacuumProperty.DETERGENT_TIME_LEFT: {"siid": 20, "piid": 2},
+    DreameVacuumProperty.STREAM_STATUS: {"siid": 10001, "piid": 1},
+    DreameVacuumProperty.STREAM_AUDIO: {"siid": 10001, "piid": 2},
+    DreameVacuumProperty.STREAM_RECORD: {"siid": 10001, "piid": 4},
+    DreameVacuumProperty.TAKE_PHOTO: {"siid": 10001, "piid": 5},
+    DreameVacuumProperty.STREAM_KEEP_ALIVE: {"siid": 10001, "piid": 6},
+    DreameVacuumProperty.STREAM_FAULT: {"siid": 10001, "piid": 7},
+    DreameVacuumProperty.CAMERA_BRIGHTNESS: {"siid": 10001, "piid": 9},
+    DreameVacuumProperty.CAMERA_LIGHT: {"siid": 10001, "piid": 10},
+    DreameVacuumProperty.STREAM_CRUISE_POINT: {"siid": 10001, "piid": 101},
+    DreameVacuumProperty.STREAM_PROPERTY: {"siid": 10001, "piid": 99},
+    DreameVacuumProperty.STREAM_TASK: {"siid": 10001, "piid": 103},
+    DreameVacuumProperty.STREAM_UPLOAD: {"siid": 10001, "piid": 1003},
+    DreameVacuumProperty.STREAM_CODE: {"siid": 10001, "piid": 1100},
+    DreameVacuumProperty.STREAM_SET_CODE: {"siid": 10001, "piid": 1101},
+    DreameVacuumProperty.STREAM_VERIFY_CODE: {"siid": 10001, "piid": 1102},
+    DreameVacuumProperty.STREAM_RESET_CODE: {"siid": 10001, "piid": 1103},
+    DreameVacuumProperty.STREAM_SPACE: {"siid": 10001, "piid": 2003},
 }
 
 # Dreame Vacuum action mapping
@@ -613,8 +690,12 @@ DreameVacuumActionMapping = {
     DreameVacuumAction.GET_PHOTO_INFO: {"siid": 4, "aiid": 6},
     DreameVacuumAction.REQUEST_MAP: {"siid": 6, "aiid": 1},
     DreameVacuumAction.UPDATE_MAP_DATA: {"siid": 6, "aiid": 2},
+    DreameVacuumAction.BACKUP_MAP: {"siid": 6, "aiid": 3},
+    DreameVacuumAction.WIFI_MAP: {"siid": 6, "aiid": 4},
     DreameVacuumAction.LOCATE: {"siid": 7, "aiid": 1},
     DreameVacuumAction.TEST_SOUND: {"siid": 7, "aiid": 2},
+    DreameVacuumAction.DELETE_SCHEDULE: {"siid": 8, "aiid": 1},
+    DreameVacuumAction.DELETE_CRUISE_SCHEDULE: {"siid": 8, "aiid": 2},
     DreameVacuumAction.RESET_MAIN_BRUSH: {"siid": 9, "aiid": 1},
     DreameVacuumAction.RESET_SIDE_BRUSH: {"siid": 10, "aiid": 1},
     DreameVacuumAction.RESET_FILTER: {"siid": 11, "aiid": 1},
@@ -623,16 +704,20 @@ DreameVacuumActionMapping = {
     DreameVacuumAction.RESET_MOP_PAD: {"siid": 18, "aiid": 1},
     DreameVacuumAction.RESET_SILVER_ION: {"siid": 19, "aiid": 1},    
     DreameVacuumAction.RESET_DETERGENT: {"siid": 20, "aiid": 1},
+    DreameVacuumAction.STREAM_CAMERA: {"siid": 10001, "aiid": 1},
+    DreameVacuumAction.STREAM_AUDIO: {"siid": 10001, "aiid": 2},
+    DreameVacuumAction.STREAM_PROPERTY: {"siid": 10001, "aiid": 3},
+    DreameVacuumAction.STREAM_CODE: {"siid": 10001, "aiid": 4},
 }
 
 PROPERTY_AVAILABILITY: Final = {
     DreameVacuumProperty.CUSTOMIZED_CLEANING: lambda device: not device.status.started and (device.status.has_saved_map or device.status.current_map is None),
-    DreameVacuumProperty.TIGHT_MOPPING: lambda device: device.status.water_tank_installed,
+    DreameVacuumProperty.TIGHT_MOPPING: lambda device: device.status.water_tank_or_mop_installed,
     DreameVacuumProperty.MULTI_FLOOR_MAP: lambda device: not device.status.has_temporary_map,
     DreameVacuumProperty.DND_START: lambda device: device.status.dnd_enabled,
     DreameVacuumProperty.DND_END: lambda device: device.status.dnd_enabled,
     DreameVacuumProperty.SUCTION_LEVEL: lambda device: not device.status.mopping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping,
-    DreameVacuumProperty.WATER_VOLUME: lambda device: device.status.water_tank_installed and not device.status.sweeping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping,
+    DreameVacuumProperty.WATER_VOLUME: lambda device: device.status.water_tank_or_mop_installed and not device.status.sweeping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping,
     DreameVacuumProperty.CLEANING_MODE: lambda device: not device.status.started and not device.status.fast_mapping and not device.status.cleaning_paused and not device.status.scheduled_clean,
     DreameVacuumProperty.CARPET_SENSITIVITY: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_BOOST)),
     DreameVacuumProperty.CARPET_BOOST: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
@@ -641,7 +726,7 @@ PROPERTY_AVAILABILITY: Final = {
     DreameVacuumProperty.CLEANING_TIME: lambda device: not device.status.fast_mapping,
     DreameVacuumProperty.CLEANED_AREA: lambda device: not device.status.fast_mapping,
     DreameVacuumProperty.RELOCATION_STATUS: lambda device: not device.status.fast_mapping,
-    DreameVacuumProperty.MOP_WASH_LEVEL: lambda device: device.status.water_tank_installed and not device.status.sweeping,
+    DreameVacuumProperty.MOP_WASH_LEVEL: lambda device: device.status.water_tank_or_mop_installed and not device.status.sweeping,
     DreameVacuumProperty.AUTO_ADD_DETERGENT: lambda device: bool(device.get_property(DreameVacuumProperty.AUTO_ADD_DETERGENT) != 2),
 }
 

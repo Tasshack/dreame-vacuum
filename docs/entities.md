@@ -41,9 +41,13 @@
 | `ai_obstacle_image_upload`   | Enable/Disable uploading obstacle picture to cloud | Available on devices with front camera
 | `ai_obstacle_picture`   | Enable/Disable obstacle picture displaying | Available on devices with front camera
 | `ai_pet_detection`   | Enable/Disable AI pet detection | Available on devices with front camera
-| `ai_human_detection`   | Enable/Disable AI human detection | Available on devices with front camera
+| `ai_human_detection`   | Enable/Disable AI human detection | Available on S10 and S10 Pro
 | `ai_furniture_detection`   | Enable/Disable AI furniture detection | Available on devices with front camera
 | `ai_fluid_detection`   | Enable/Disable AI fluid detection | Available on devices with front camera
+| `fill_light`   | After turned on, it will automatically fill light in a poorly lit environment to improve the obstacle avoidance ability and the screen clarity in the video. | Available on devices with front camera and front light
+| `collision_avoidance`   | After it is turned on, the robot will reduce collisions with walls, furniture and obstacles, and the cleaning efficiency and coverage will be slightly reduced.  | Available on devices with this feature
+| `stain_avoidance`   | After it is turned on and when a stain is identified, the robot will avoid and do not clean the area. | Available on devices with AI fluid detection feature
+| `intelligent_recognition`   | Enable/Disable automatic map switching when multi-floor map is enabled | Available on devices with wifi map feature
 | `cleaning_sequence`   | Enable/Disable custom room cleaning sequence | Available with map feature (This a dynamically created entity and not actually tied to any setting directly, when turned of it actually deletes current cleaning order and regenerates with default order or restores previous order from memory when turned on again)
 
 ## Sensor
@@ -128,6 +132,7 @@
 | `self_clean_area`   | Select cleaning area before return to clean the mop pad | Available on vacuums with self-wash base
 | `mop_wash_level`   | Mop cleaning water usage level | Available on vacuums with self-wash base and external water input
 | `drying_time`   | Mop drying time in minutes | Available on vacuums with self-wash base
+| `mopping_type`   | Mopping type for deep or daily cleaning | Available on vacuums with AI fluid and stain detection feature
 | `map_rotation`   | Sets the rotation of selected map | Available with map feature and unavailable when current map is not one of the selected maps (Different map rotations can be for saved maps but only selected map is editable via this entity)
 | `selected_map`   | Currently selected map | Available with map feature and unavailable when multi-floor map is disabled or not available (Robot will end active job when selected map is changed)
 

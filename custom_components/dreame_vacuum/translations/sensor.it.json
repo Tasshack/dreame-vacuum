@@ -39,7 +39,10 @@
       "standby": "Standby",
       "room_cleaning": "Pulizia delle stanze",
       "zone_cleaning": "Pulizia delle zone",
-      "fast_mapping": "Mappatura rapida"
+      "fast_mapping": "Mappatura rapida",
+      "monitor_cruise": "Monitoraggio della Fotocamera",
+      "monitor_spot": "Monitoraggio spot della Fotocamera",
+      "summon_clean": "Evoca per pulire"
     },
     "dreame_vacuum__task_status": {
       "unknown": "Sconosciuta",
@@ -59,7 +62,14 @@
       "zone_mopping_paused": "Pulizia della zona col panno in pausa",
       "room_mopping_paused": "Pulizia della stanza col panno in pausa",
       "zone_docking_paused": "Zone docking paused",
-      "room_docking_paused": "Room docking paused"
+      "room_docking_paused": "Room docking paused",
+      "monitor_cruise": "Monitoraggio della Fotocamera",
+      "monitor_cruise_pause": "Il monitoraggio della fotocamera è stato sospeso",
+      "monitor_spot": "Monitoraggio spot della Fotocamera",
+      "monitor_spot_pause": "Il monitoraggio spot della fotocamera è stato sospeso",
+      "summon_clean_pause": "Evoca per pulire in pausa",
+      "returning_to_install_mop": "Sta tornando a installare il mocio",
+      "returning_to_remove_mop": "Sta tornando per rimuovere il mocio"
     },
     "dreame_vacuum__water_tank_and_mop": {
       "unknown": "Sconosciuto",
