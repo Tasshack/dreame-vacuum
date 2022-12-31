@@ -187,9 +187,9 @@ entities:
               pointer-events: {{ "${vars[10]}" if loop.index > 1 else 'none' }}
   {%- endfor %}
   - type: divider
-  - entity: switch.vacuum_customized_cleaning
+  - entity: switch.{{vacuum_name}}_customized_cleaning
     name: Customized Cleaning
-  - entity: switch.vacuum_cleaning_sequence
+  - entity: switch.{{vacuum_name}}_cleaning_sequence
     name: Cleaning Sequence
 ```
 
