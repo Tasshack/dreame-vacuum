@@ -48,7 +48,7 @@
           "color_scheme": "Schema colori della mappa",
           "icon_set": "Set di icone",
           "notify": "Notifica",
-          "map_objects": "Map objects"
+          "map_objects": "Oggetti della mappa"
         }
       },
       "reauth_confirm": {
@@ -64,7 +64,7 @@
           "color_scheme": "Schema colori della mappa",
           "icon_set": "Set di icone",
           "notify": "Notifica",
-          "map_objects": "Map objects",
+          "map_objects": "Oggetti della mappa",
           "configuration_type": "Tipo di configurazione",
           "prefer_cloud": "Preferisci la connessione cloud"
         }
