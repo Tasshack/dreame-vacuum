@@ -78,6 +78,7 @@ ATTR_MAP_INDEX: Final = "map_index"
 ATTR_ROOM_ID: Final = "room_id"
 ATTR_UNIQUE_ID: Final = "unique_id"
 ATTR_NAME: Final = "name"
+ATTR_LETTER: Final = "letter"
 ATTR_OUTLINE: Final = "outline"
 ATTR_CENTER: Final = "center"
 ATTR_ORDER: Final = "order"
@@ -498,27 +499,29 @@ class DreameVacuumProperty(IntEnum):
     SENSOR_DIRTY_TIME_LEFT = 97
     MOP_PAD_LEFT = 98
     MOP_PAD_TIME_LEFT = 99
-    SILVER_ION_TIME_LEFT = 100
-    SILVER_ION_LEFT = 101
-    DETERGENT_LEFT = 102
-    DETERGENT_TIME_LEFT = 103
-    STREAM_STATUS = 104
-    STREAM_AUDIO = 105
-    STREAM_RECORD = 106
-    TAKE_PHOTO = 107
-    STREAM_KEEP_ALIVE = 108
-    STREAM_FAULT = 109
-    CAMERA_BRIGHTNESS = 110
-    CAMERA_LIGHT = 111
-    STREAM_CRUISE_POINT = 112
-    STREAM_PROPERTY = 113
-    STREAM_TASK = 114
-    STREAM_UPLOAD = 115
-    STREAM_CODE = 116
-    STREAM_SET_CODE = 117
-    STREAM_VERIFY_CODE = 118
-    STREAM_RESET_CODE = 119
-    STREAM_SPACE = 120
+    SECONDARY_FILTER_LEFT = 100
+    SECONDARY_FILTER_TIME_LEFT = 101
+    SILVER_ION_TIME_LEFT = 102
+    SILVER_ION_LEFT = 103
+    DETERGENT_LEFT = 104
+    DETERGENT_TIME_LEFT = 105
+    STREAM_STATUS = 106
+    STREAM_AUDIO = 107
+    STREAM_RECORD = 108
+    TAKE_PHOTO = 109
+    STREAM_KEEP_ALIVE = 110
+    STREAM_FAULT = 111
+    CAMERA_BRIGHTNESS = 112
+    CAMERA_LIGHT = 113
+    STREAM_CRUISE_POINT = 114
+    STREAM_PROPERTY = 115
+    STREAM_TASK = 116
+    STREAM_UPLOAD = 117
+    STREAM_CODE = 118
+    STREAM_SET_CODE = 119
+    STREAM_VERIFY_CODE = 120
+    STREAM_RESET_CODE = 121
+    STREAM_SPACE = 122
 
 class DreameVacuumAction(IntEnum):
     """Dreame Vacuum actions"""
@@ -544,13 +547,14 @@ class DreameVacuumAction(IntEnum):
     RESET_FILTER = 19
     RESET_SENSOR = 20
     START_AUTO_EMPTY = 21
-    RESET_MOP_PAD = 22
-    RESET_SILVER_ION = 23
-    RESET_DETERGENT = 24
-    STREAM_CAMERA = 25
-    STREAM_AUDIO = 26
-    STREAM_PROPERTY = 27
-    STREAM_CODE = 28
+    RESET_SECONDARY_FILTER = 22
+    RESET_MOP_PAD = 23
+    RESET_SILVER_ION = 24
+    RESET_DETERGENT = 25
+    STREAM_CAMERA = 26
+    STREAM_AUDIO = 27
+    STREAM_PROPERTY = 28
+    STREAM_CODE = 29
 
 # Dreame Vacuum property mapping
 DreameVacuumPropertyMapping = {
@@ -653,6 +657,8 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.AUTO_EMPTY_STATUS: {"siid": 15, "piid": 5},
     DreameVacuumProperty.SENSOR_DIRTY_LEFT: {"siid": 16, "piid": 1},
     DreameVacuumProperty.SENSOR_DIRTY_TIME_LEFT: {"siid": 16, "piid": 2},    
+    DreameVacuumProperty.SECONDARY_FILTER_LEFT: {"siid": 17, "piid": 1},
+    DreameVacuumProperty.SECONDARY_FILTER_TIME_LEFT: {"siid": 17, "piid": 2},
     DreameVacuumProperty.MOP_PAD_LEFT: {"siid": 18, "piid": 1},
     DreameVacuumProperty.MOP_PAD_TIME_LEFT: {"siid": 18, "piid": 2},
     DreameVacuumProperty.SILVER_ION_TIME_LEFT: {"siid": 19, "piid": 1},
@@ -701,6 +707,7 @@ DreameVacuumActionMapping = {
     DreameVacuumAction.RESET_FILTER: {"siid": 11, "aiid": 1},
     DreameVacuumAction.RESET_SENSOR: {"siid": 16, "aiid": 1},
     DreameVacuumAction.START_AUTO_EMPTY: {"siid": 15, "aiid": 1},
+    DreameVacuumAction.RESET_SECONDARY_FILTER: {"siid": 17, "aiid": 1},
     DreameVacuumAction.RESET_MOP_PAD: {"siid": 18, "aiid": 1},
     DreameVacuumAction.RESET_SILVER_ION: {"siid": 19, "aiid": 1},    
     DreameVacuumAction.RESET_DETERGENT: {"siid": 20, "aiid": 1},
@@ -718,7 +725,7 @@ PROPERTY_AVAILABILITY: Final = {
     DreameVacuumProperty.DND_END: lambda device: device.status.dnd_enabled,
     DreameVacuumProperty.SUCTION_LEVEL: lambda device: not device.status.mopping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping,
     DreameVacuumProperty.WATER_VOLUME: lambda device: device.status.water_tank_or_mop_installed and not device.status.sweeping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping,
-    DreameVacuumProperty.CLEANING_MODE: lambda device: not device.status.started and not device.status.fast_mapping and not device.status.cleaning_paused and not device.status.scheduled_clean,
+    DreameVacuumProperty.CLEANING_MODE: lambda device: not device.status.fast_mapping and not device.status.cleaning_paused and not device.status.scheduled_clean,
     DreameVacuumProperty.CARPET_SENSITIVITY: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_BOOST)),
     DreameVacuumProperty.CARPET_BOOST: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
     DreameVacuumProperty.CARPET_AVOIDANCE: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
@@ -735,6 +742,7 @@ ACTION_AVAILABILITY: Final = {
     DreameVacuumAction.RESET_SIDE_BRUSH: lambda device: bool(device.status.side_brush_life < 100),
     DreameVacuumAction.RESET_FILTER: lambda device: bool(device.status.filter_life < 100),
     DreameVacuumAction.RESET_SENSOR: lambda device: bool(device.status.sensor_dirty_life < 100),
+    DreameVacuumAction.RESET_SECONDARY_FILTER: lambda device: bool(device.status.secondary_filter_life < 100),
     DreameVacuumAction.RESET_MOP_PAD: lambda device: bool(device.status.mop_life < 100),
     DreameVacuumAction.RESET_SILVER_ION: lambda device: bool(device.status.silver_ion_life < 100),
     DreameVacuumAction.RESET_DETERGENT: lambda device: bool(device.status.detergent_life < 100),
@@ -849,6 +857,12 @@ class Path(Point):
     def __init__(self, x: float, y: float, path_type: PathType) -> None:
         super().__init__(x, y)
         self.path_type = path_type
+
+    def as_dict(self) -> Dict[str, Any]:
+        attributes = {**super().as_dict()}
+        if self.path_type:
+            attributes[ATTR_TYPE] = self.path_type.value
+        return attributes
 
 
 class Obstacle(Point):
@@ -1032,7 +1046,8 @@ class Segment(Zone):
             attributes[ATTR_UNIQUE_ID] = self.unique_id
         if self.x is not None and self.y is not None:
             attributes[ATTR_X] = self.x
-            attributes[ATTR_Y] = self.y
+            attributes[ATTR_Y] = self.y        
+        attributes[ATTR_LETTER] = self.letter
 
         return attributes
 
@@ -1500,7 +1515,7 @@ MAP_COLOR_SCHEME_LIST: Final = {
             [(0, 106, 176, 255), (0, 96, 158, 255)],
             [(76, 107, 36, 255), (44, 107, 36, 255)],
         ),
-        settings_icon_background = (255, 255, 255, 185),
+        settings_icon_background = (255, 255, 255, 195),
         dark = True,
     ),        
     "Mijia Light": MapRendererColorScheme(
@@ -1536,7 +1551,7 @@ MAP_COLOR_SCHEME_LIST: Final = {
             [(88, 161, 176, 255), (62, 113, 123, 255)],
             [(195, 125, 87, 255), (138, 89, 62, 255)],
         ),
-        settings_icon_background = (255, 255, 255, 185),
+        settings_icon_background = (255, 255, 255, 195),
         dark = True,
     ),
     "Grayscale": MapRendererColorScheme(

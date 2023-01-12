@@ -436,6 +436,8 @@ PROPERTY_TO_NAME: Final = {
         "sensor_dirty_time_left",
         "Sensor Dirty Time Left",
     ],
+    DreameVacuumProperty.SECONDARY_FILTER_LEFT: ["secondary_filter_left", "Secondary Filter Left"],
+    DreameVacuumProperty.SECONDARY_FILTER_TIME_LEFT: ["secondary_filter_time_left", "Secondary Filter Time Left"],
     DreameVacuumProperty.MOP_PAD_LEFT: ["mop_pad_left", "Mop Pad Left"],
     DreameVacuumProperty.MOP_PAD_TIME_LEFT: ["mop_pad_time_left", "Mop Pad Time Left"],
     DreameVacuumProperty.SILVER_ION_LEFT: ["silver_ion_left", "Silver-ion Left"],

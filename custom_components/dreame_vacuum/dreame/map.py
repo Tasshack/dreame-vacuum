@@ -3466,46 +3466,45 @@ class DreameVacuumMapRenderer:
                 min_y = min(y_coords[0], min_y)
                 max_y = max(y_coords[1], max_y)
                 
-        if no_mopping_areas or no_go_areas or walls or active_areas:
-            if active_areas:
-                for area in active_areas:
-                    p = area.to_coord(dimensions)
-                    x_coords = sorted([p.x0, p.x1, p.x2, p.x3])
-                    y_coords = sorted([p.y0, p.y1, p.y2, p.y3])
-                    min_x = min(x_coords[0], min_x)
-                    max_x = max(x_coords[3], max_x)
-                    min_y = min(y_coords[0], min_y)
-                    max_y = max(y_coords[3], max_y)
+        if active_areas:
+            for area in active_areas:
+                p = area.to_coord(dimensions)
+                x_coords = sorted([p.x0, p.x1, p.x2, p.x3])
+                y_coords = sorted([p.y0, p.y1, p.y2, p.y3])
+                min_x = min(x_coords[0], min_x)
+                max_x = max(x_coords[3], max_x)
+                min_y = min(y_coords[0], min_y)
+                max_y = max(y_coords[3], max_y)
 
-            if no_mopping_areas:
-                for area in no_mopping_areas:
-                    p = area.to_coord(dimensions)
-                    x_coords = sorted([p.x0, p.x1, p.x2, p.x3])
-                    y_coords = sorted([p.y0, p.y1, p.y2, p.y3])
-                    min_x = min(x_coords[0], min_x)
-                    max_x = max(x_coords[3], max_x)
-                    min_y = min(y_coords[0], min_y)
-                    max_y = max(y_coords[3], max_y)
+        if no_mopping_areas:
+            for area in no_mopping_areas:
+                p = area.to_coord(dimensions)
+                x_coords = sorted([p.x0, p.x1, p.x2, p.x3])
+                y_coords = sorted([p.y0, p.y1, p.y2, p.y3])
+                min_x = min(x_coords[0], min_x)
+                max_x = max(x_coords[3], max_x)
+                min_y = min(y_coords[0], min_y)
+                max_y = max(y_coords[3], max_y)
 
-            if no_go_areas:
-                for area in no_go_areas:
-                    p = area.to_coord(dimensions)
-                    x_coords = sorted([p.x0, p.x1, p.x2, p.x3])
-                    y_coords = sorted([p.y0, p.y1, p.y2, p.y3])
-                    min_x = min(x_coords[0], min_x)
-                    max_x = max(x_coords[3], max_x)
-                    min_y = min(y_coords[0], min_y)
-                    max_y = max(y_coords[3], max_y)
+        if no_go_areas:
+            for area in no_go_areas:
+                p = area.to_coord(dimensions)
+                x_coords = sorted([p.x0, p.x1, p.x2, p.x3])
+                y_coords = sorted([p.y0, p.y1, p.y2, p.y3])
+                min_x = min(x_coords[0], min_x)
+                max_x = max(x_coords[3], max_x)
+                min_y = min(y_coords[0], min_y)
+                max_y = max(y_coords[3], max_y)
 
-            if walls:
-                for wall in walls:
-                    p = wall.to_coord(dimensions)
-                    x_coords = sorted([p.x0, p.x1])
-                    y_coords = sorted([p.y0, p.y1])
-                    min_x = min(x_coords[0], min_x)
-                    max_x = max(x_coords[1], max_x)
-                    min_y = min(y_coords[0], min_y)
-                    max_y = max(y_coords[1], max_y)
+        if walls:
+            for wall in walls:
+                p = wall.to_coord(dimensions)
+                x_coords = sorted([p.x0, p.x1])
+                y_coords = sorted([p.y0, p.y1])
+                min_x = min(x_coords[0], min_x)
+                max_x = max(x_coords[1], max_x)
+                min_y = min(y_coords[0], min_y)
+                max_y = max(y_coords[1], max_y)
 
         if min_x < 0:
             padding[0] = padding[0] + int(-min_x)
@@ -3556,7 +3555,6 @@ class DreameVacuumMapRenderer:
 
         if map_data.saved_map:
             robot_status = 0
-
         try:
             if (
                 self._map_data is None
@@ -3625,7 +3623,7 @@ class DreameVacuumMapRenderer:
                 map_data.dimensions.padding = self._map_data.dimensions.padding
 
             map_data.dimensions.scale = scale
-
+           
             if self._map_data and self._map_data.dimensions.scale != scale:
                 self._map_data = None
 
@@ -3656,10 +3654,10 @@ class DreameVacuumMapRenderer:
                 # as implemented on the app
                 area_colors[MapPixelType.OUTSIDE.value] = self.color_scheme.outside
                 area_colors[MapPixelType.WALL.value] = self.color_scheme.wall
-                area_colors[MapPixelType.OBSTACLE_WALL.value] = self.color_scheme.wall
                 area_colors[MapPixelType.FLOOR.value] = self.color_scheme.floor
-                area_colors[MapPixelType.UNKNOWN.value] = self.color_scheme.floor
                 area_colors[MapPixelType.NEW_SEGMENT.value] = self.color_scheme.new_segment
+                area_colors[MapPixelType.UNKNOWN.value] = self.color_scheme.floor
+                area_colors[MapPixelType.OBSTACLE_WALL.value] = self.color_scheme.wall
                 area_colors[MapPixelType.NEW_SEGMENT_UNKNOWN.value] = self.color_scheme.new_segment
                 
                 if map_data.segments is not None:
@@ -4257,11 +4255,10 @@ class DreameVacuumMapRenderer:
         mop = []
         sweep_path = []
         mop_path = []
+        path_type = ""
+
         for point in path:
             p = point.to_img(dimensions)
-            p.x = p.x
-            p.y = p.y
-
             if point.path_type == PathType.LINE:
                 l = [p.x * scale, p.y * scale]
                 if path_type == PathType.SWEEP_AND_MOP or path_type == PathType.SWEEP:
@@ -4770,7 +4767,7 @@ class DreameVacuumMapRenderer:
                     s = scale * 3
                     arrow = 5 * scale
 
-                if not icon:
+                if not icon and not self.config.icon:
                     arrow = 0
 
                 padding = s + arrow

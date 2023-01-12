@@ -388,7 +388,7 @@ class DreameVacuumDevice:
         # App does not allow you to update cleaning mode when water tank or mop pad is not installed.
         if self.get_property(DreameVacuumProperty.CLEANING_MODE) is not None:
             new_list = CLEANING_MODE_CODE_TO_NAME.copy()
-            if self.get_property(DreameVacuumProperty.AUTO_MOUNT_MOP) != 1:
+            if not self.status.auto_mount:
                 if not self.status.water_tank_or_mop_installed:
                     new_list.pop(DreameVacuumCleaningMode.MOPPING)
                     new_list.pop(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING)
@@ -476,6 +476,8 @@ class DreameVacuumDevice:
                     DreameVacuumProperty.FILTER_TIME_LEFT,
                     DreameVacuumProperty.SENSOR_DIRTY_LEFT,
                     DreameVacuumProperty.SENSOR_DIRTY_TIME_LEFT,
+                    DreameVacuumProperty.SECONDARY_FILTER_LEFT,
+                    DreameVacuumProperty.SECONDARY_FILTER_TIME_LEFT,
                     DreameVacuumProperty.MOP_PAD_LEFT,
                     DreameVacuumProperty.MOP_PAD_TIME_LEFT,
                     DreameVacuumProperty.SILVER_ION_TIME_LEFT,
@@ -1133,6 +1135,9 @@ class DreameVacuumDevice:
         elif action is DreameVacuumAction.RESET_SENSOR:
             self._consumable_reset = True
             self._update_property(DreameVacuumProperty.SENSOR_DIRTY_LEFT, 100)
+        elif action is DreameVacuumAction.RESET_SECONDARY_FILTER:
+            self._consumable_reset = True
+            self._update_property(DreameVacuumProperty.SECONDARY_FILTER_LEFT, 100)
         elif action is DreameVacuumAction.RESET_MOP_PAD:
             self._consumable_reset = True
             self._update_property(DreameVacuumProperty.MOP_PAD_LEFT, 100)
@@ -1203,25 +1208,26 @@ class DreameVacuumDevice:
                 "Cannot set cleaning mode while vacuum is running"
             )
 
-        if cleaning_mode is DreameVacuumCleaningMode.SWEEPING.value:
-            if self.status.water_tank_or_mop_installed and not self.status.mop_pad_lifting_available:
+        if not self.status.auto_mount:
+            if cleaning_mode is DreameVacuumCleaningMode.SWEEPING.value:
+                if self.status.water_tank_or_mop_installed and not self.status.mop_pad_lifting_available:
+                    if self.status.self_wash_base_available:
+                        raise InvalidActionException(
+                            "Cannot set sweeping while mop pads are installed"
+                        )
+                    else:
+                        raise InvalidActionException(
+                            "Cannot set sweeping while water tank is installed"
+                        )
+            elif not self.status.water_tank_or_mop_installed:
                 if self.status.self_wash_base_available:
                     raise InvalidActionException(
-                        "Cannot set sweeping while mop pads are installed"
+                        "Cannot set mopping while mop pads are not installed"
                     )
                 else:
                     raise InvalidActionException(
-                        "Cannot set sweeping while water tank is installed"
+                        "Cannot set mopping while water tank is not installed"
                     )
-        elif not self.status.water_tank_or_mop_installed:
-            if self.status.self_wash_base_available:
-                raise InvalidActionException(
-                    "Cannot set mopping while mop pads are not installed"
-                )
-            else:
-                raise InvalidActionException(
-                    "Cannot set mopping while water tank is not installed"
-                )
 
         if self.status.self_wash_base_available:
             values = DreameVacuumDevice.split_group_value(self.get_property(DreameVacuumProperty.CLEANING_MODE), self.status.mop_pad_lifting_available)
@@ -2752,6 +2758,10 @@ class DreameVacuumDeviceStatus:
         return bool(self._get_property(DreameVacuumProperty.SCHEDULED_CLEAN) == 1)
 
     @property
+    def auto_mount(self) -> bool:
+        return bool(self._get_property(DreameVacuumProperty.AUTO_MOUNT_MOP) == 1)
+
+    @property
     def dnd_remaining(self) -> bool:
         """Returns remaining seconds to DND period to end."""
         if self.dnd_enabled:
@@ -3168,6 +3178,11 @@ class DreameVacuumDeviceStatus:
     def sensor_dirty_life(self) -> int:
         """Returns sensor clean remaining life in percent."""
         return self._get_property(DreameVacuumProperty.SENSOR_DIRTY_LEFT)
+    
+    @property
+    def secondary_filter_life(self) -> int:
+        """Returns secondary filter remaining life in percent."""
+        return self._get_property(DreameVacuumProperty.SECONDARY_FILTER_LEFT)
 
     @property
     def mop_life(self) -> int:
@@ -3377,6 +3392,8 @@ class DreameVacuumDeviceStatus:
             DreameVacuumProperty.FILTER_TIME_LEFT,
             DreameVacuumProperty.SENSOR_DIRTY_LEFT,
             DreameVacuumProperty.SENSOR_DIRTY_TIME_LEFT,
+            DreameVacuumProperty.SECONDARY_FILTER_LEFT,
+            DreameVacuumProperty.SECONDARY_FILTER_TIME_LEFT,
             DreameVacuumProperty.MOP_PAD_LEFT,
             DreameVacuumProperty.MOP_PAD_TIME_LEFT,
             DreameVacuumProperty.SILVER_ION_LEFT,
