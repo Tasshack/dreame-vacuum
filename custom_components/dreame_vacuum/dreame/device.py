@@ -150,6 +150,7 @@ class DreameVacuumDevice:
         self._last_map_request: float = 0  # Last map request trigger time
         self._last_change: float = 0  # Last property change time
         self._last_update_failed: float = 0  # Last update failed time      
+        self._cleaning_history_update: float = 0  # Cleaning history update time
         self._update_fail_count: int = 0 # Update failed counter
         # Map Manager object. Only available when cloud connection is present
         self._map_manager: DreameMapVacuumMapManager = None
@@ -457,8 +458,8 @@ class DreameVacuumDevice:
                         # Mapping is completed, get the new map list from cloud
                         self._map_manager.request_next_map_list()
                 elif self.cleanup_completed is not None:
-                    self.cleanup_completed = True
-                    self._request_cleaning_history()
+                    self.cleanup_completed = True     
+                    self._cleaning_history_update = time.time()
             else:
                 self.cleanup_completed = None if self.status.fast_mapping else False
 
@@ -508,8 +509,13 @@ class DreameVacuumDevice:
             if previous_status in DreameVacuumStatus._value2member_map_:
                 previous_status = DreameVacuumStatus(previous_status)
 
-            if self._remote_control and self.status.status is not DreameVacuumStatus.REMOTE_CONTROL and previous_status is not DreameVacuumStatus.REMOTE_CONTROL:
+            status = self.status.status
+            if self._remote_control and status is not DreameVacuumStatus.REMOTE_CONTROL and previous_status is not DreameVacuumStatus.REMOTE_CONTROL:
                 self._remote_control = False
+
+            if status is DreameVacuumStatus.CHARGING and previous_status is DreameVacuumStatus.BACK_HOME:
+                self._cleaning_history_update = time.time()
+
         self._map_property_changed()
 
     def _charging_status_changed(self, previous_charging_status: Any = None) -> None:
@@ -580,7 +586,9 @@ class DreameVacuumDevice:
 
     def _request_cleaning_history(self) -> None:
         """Get and parse the cleaning history from cloud event data and set it to memory"""
-        if self.cloud_connected:
+        if self.cloud_connected and self._cleaning_history_update != 0 and (self._cleaning_history_update == -1 or self.status._cleaning_history is None or (time.time() - self._cleaning_history_update >= 5 and self.status.task_status is DreameVacuumTaskStatus.COMPLETED)):
+            self._cleaning_history_update = 0
+
             _LOGGER.debug("Get Cleaning History")
             try:
                 # Limit the results
@@ -649,7 +657,8 @@ class DreameVacuumDevice:
                         if history_size >= 20 or history_size >= total:
                             break
 
-                    if self.status._cleaning_history != cleaning_history:
+                    if self.status._cleaning_history != cleaning_history:                        
+                        _LOGGER.debug("Cleaning History Changed")
                         self.status._cleaning_history = cleaning_history
                         if cleaning_history:
                             self.status._last_cleaning_time = cleaning_history[0].date.replace(tzinfo=datetime.now().astimezone().tzinfo)
@@ -747,6 +756,7 @@ class DreameVacuumDevice:
                     self.update_map()
 
             if self.cloud_connected:
+                self._cleaning_history_update = -1
                 self._request_cleaning_history()
 
                 if self.status.ai_detection_available and not self.status.ai_policy_accepted:
@@ -772,7 +782,8 @@ class DreameVacuumDevice:
             self._protocol.cloud.login()            
             if self._protocol.cloud.logged_in is False:
                 if self._protocol.cloud.two_factor_url:
-                    self.two_factor_url = self._protocol.cloud.two_factor_url
+                    self.two_factor_url = self._protocol.cloud.two_factor_url                    
+                    self._property_changed()
                 self._map_manager.schedule_update(-1)
                 return
             elif self._protocol.cloud.logged_in:
@@ -1086,10 +1097,9 @@ class DreameVacuumDevice:
             properties.extend([DreameVacuumProperty.MAP_LIST,
                               DreameVacuumProperty.RECOVERY_MAP_LIST])
             self._last_map_list_request = time.time()
-
-        changed = False
+            
         try:
-            changed = self._request_properties(properties)
+            self._request_properties(properties)
         except Exception as ex:
             self._update_running = False
             raise DeviceUpdateFailedException(ex) from None
@@ -1100,6 +1110,9 @@ class DreameVacuumDevice:
         if self._map_manager:
             self._map_manager.set_update_interval(self._map_update_interval)
             self._map_manager.set_device_running(self.status.running, self.status.docked and not self.status.started)
+
+        if self.cloud_connected:            
+            self._request_cleaning_history()
 
         self._update_running = False
 
@@ -1186,7 +1199,7 @@ class DreameVacuumDevice:
         """Send a raw command to the device. This is mostly useful when trying out
         commands which are not implemented by a given device instance. (Not likely)"""
 
-        if command is "" or parameters is None:
+        if command == "" or parameters is None:
             raise InvalidActionException("Invalid Command: (%s).", command)
 
         self.schedule_update(10)
@@ -1433,10 +1446,10 @@ class DreameVacuumDevice:
         if not isinstance(selected_segments, list):
             selected_segments = [selected_segments]
 
-        if not suction_level or suction_level is "":
+        if not suction_level or suction_level == "":
             suction_level = self.status.suction_level.value
 
-        if not water_volume or water_volume is "":
+        if not water_volume or water_volume == "":
             if self.status.self_wash_base_available:
                 water_volume = self.status.mop_pad_humidity.value
             else:
@@ -1552,9 +1565,9 @@ class DreameVacuumDevice:
                 "Low battery capacity. Please start the robot for working after it being fully charged."
             )
 
-        if self.status.self_wash_base_available and self.status.water_tank:
+        if not self.status.self_wash_base_available and self.status.water_tank_or_mop_installed and not self.status.mop_pad_lifting_available:
             raise InvalidActionException(
-                "Low battery capacity. Please start the robot for working after it being fully charged."
+                "Please make sure the mop pad is not installed before fast mapping."
             )
 
         self._update_status(DreameVacuumTaskStatus.FAST_MAPPING, DreameVacuumStatus.FAST_MAPPING)
@@ -2120,7 +2133,7 @@ class DreameVacuumDevice:
                 "Cannot set cleaning sequence while vacuum is running"
             )
         
-        if cleaning_sequence is "" or not cleaning_sequence:
+        if cleaning_sequence == "" or not cleaning_sequence:
             cleaning_sequence = []
             
         if self._map_manager:
@@ -2493,7 +2506,7 @@ class DreameVacuumDeviceStatus:
             # Charging status complete is not present on older firmwares
             if (
                 value is DreameVacuumChargingStatus.CHARGING
-                and self.battery_level is 100
+                and self.battery_level == 100
             ):
                 return DreameVacuumChargingStatus.CHARGING_COMPLETED
             return value

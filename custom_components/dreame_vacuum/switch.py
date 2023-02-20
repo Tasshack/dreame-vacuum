@@ -46,7 +46,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.OBSTACLE_AVOIDANCE,
         icon_fn=lambda value, device: "mdi:video-3d-off"
-        if value is 0
+        if value == 0
         else "mdi:video-3d",
         entity_category=EntityCategory.CONFIG,
     ),

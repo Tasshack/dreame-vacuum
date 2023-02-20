@@ -138,16 +138,20 @@ class DreameVacuumCloudProtocol:
                 self._code = json_resp["code"]
                 self.two_factor_auth_url = None
             else:
-                if "notificationUrl" in json_resp:
-                    _LOGGER.error(
-                        "Additional authentication required. Open following URL using device that has the same public IP, as your Home Assistant instance: %s ",
-                        json_resp["notificationUrl"],
-                    )                    
+                if "notificationUrl" in json_resp and self.two_factor_url is None:
                     self.two_factor_url = json_resp["notificationUrl"]
                     if self.two_factor_url[:4] != 'http':
-                        self.two_factor_url = f'https://account.xiaomi.com{self.two_factor_url}'                    
+                        self.two_factor_url = f'https://account.xiaomi.com{self.two_factor_url}'    
+                        
+                    _LOGGER.error(
+                        "Additional authentication required. Open following URL using device that has the same public IP, as your Home Assistant instance: %s ",
+                        self.two_factor_url
+                    )
 
-                    successful = None
+                successful = False
+
+        if successful:
+            self.two_factor_url = None
 
         return successful
 

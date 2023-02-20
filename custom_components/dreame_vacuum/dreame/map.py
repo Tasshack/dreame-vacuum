@@ -1719,7 +1719,7 @@ class DreameMapVacuumMapEditor:
                 if segment_type == 0:
                     map_data.segments[segment_id].index = 0
                     if custom_name is not None:
-                        if custom_name is "":
+                        if custom_name == "":
                             custom_name = None
                         map_data.segments[segment_id].custom_name = custom_name
                 else:
@@ -1892,11 +1892,11 @@ class DreameVacuumMapDecoder:
             segment_id = pixel >> 2
 
             if 0 < segment_id < 64:
-                if segment_id is 63:
+                if segment_id == 63:
                     return MapPixelType.WALL.value
-                if segment_id is 62:
+                if segment_id == 62:
                     return MapPixelType.FLOOR.value
-                if segment_id is 61:
+                if segment_id == 61:
                     return MapPixelType.UNKNOWN.value
                 return segment_id
 
@@ -2245,13 +2245,13 @@ class DreameVacuumMapDecoder:
                                     map_data.empty_map = False
                                     segment_id = pixel >> 2
                                     if 0 < segment_id < 64:
-                                        if segment_id is 63:
+                                        if segment_id == 63:
                                             map_data.pixel_type[x,
                                                                 y] = MapPixelType.WALL.value
-                                        elif segment_id is 62:
+                                        elif segment_id == 62:
                                             map_data.pixel_type[x,
                                                                 y] = MapPixelType.FLOOR.value
-                                        elif segment_id is 61:
+                                        elif segment_id == 61:
                                             map_data.pixel_type[x,
                                                                 y] = MapPixelType.UNKNOWN.value
                                         else:
@@ -3440,12 +3440,12 @@ class DreameVacuumMapRenderer:
             max_y = 0
             for segment in segments.values():
                 p = segment.to_coord(dimensions)
-                x_coords = sorted([int(p.x0), int(p.x1)])
-                y_coords = sorted([int(p.y0), int(p.y1)])
-                min_x = min(x_coords[0], min_x)
-                max_x = max(x_coords[1], max_x)
-                min_y = min(y_coords[0], min_y)
-                max_y = max(y_coords[1], max_y)
+                x_coords = [int(p.x0), int(p.x1)]
+                y_coords = [int(p.y0), int(p.y1)]
+                min_x = min(min(x_coords), min_x)
+                max_x = max(max(x_coords), max_x)
+                min_y = min(min(y_coords), min_y)
+                max_y = max(max(y_coords), max_y)
 
             return [min_x, min_y, max_x, max_y]
 
@@ -3469,42 +3469,43 @@ class DreameVacuumMapRenderer:
         if active_areas:
             for area in active_areas:
                 p = area.to_coord(dimensions)
-                x_coords = sorted([p.x0, p.x1, p.x2, p.x3])
-                y_coords = sorted([p.y0, p.y1, p.y2, p.y3])
-                min_x = min(x_coords[0], min_x)
-                max_x = max(x_coords[3], max_x)
-                min_y = min(y_coords[0], min_y)
-                max_y = max(y_coords[3], max_y)
+                x_coords = [p.x0, p.x1, p.x2, p.x3]
+                y_coords = [p.y0, p.y1, p.y2, p.y3]
+                min_x = min(min(x_coords), min_x)
+                max_x = max(max(x_coords), max_x)
+                min_y = min(min(y_coords), min_y)
+                max_y = max(max(y_coords), max_y)
+
 
         if no_mopping_areas:
             for area in no_mopping_areas:
                 p = area.to_coord(dimensions)
-                x_coords = sorted([p.x0, p.x1, p.x2, p.x3])
-                y_coords = sorted([p.y0, p.y1, p.y2, p.y3])
-                min_x = min(x_coords[0], min_x)
-                max_x = max(x_coords[3], max_x)
-                min_y = min(y_coords[0], min_y)
-                max_y = max(y_coords[3], max_y)
+                x_coords = [p.x0, p.x1, p.x2, p.x3]
+                y_coords = [p.y0, p.y1, p.y2, p.y3]
+                min_x = min(min(x_coords), min_x)
+                max_x = max(max(x_coords), max_x)
+                min_y = min(min(y_coords), min_y)
+                max_y = max(max(y_coords), max_y)
 
         if no_go_areas:
             for area in no_go_areas:
                 p = area.to_coord(dimensions)
-                x_coords = sorted([p.x0, p.x1, p.x2, p.x3])
-                y_coords = sorted([p.y0, p.y1, p.y2, p.y3])
-                min_x = min(x_coords[0], min_x)
-                max_x = max(x_coords[3], max_x)
-                min_y = min(y_coords[0], min_y)
-                max_y = max(y_coords[3], max_y)
+                x_coords = [p.x0, p.x1, p.x2, p.x3]
+                y_coords = [p.y0, p.y1, p.y2, p.y3]
+                min_x = min(min(x_coords), min_x)
+                max_x = max(max(x_coords), max_x)
+                min_y = min(min(y_coords), min_y)
+                max_y = max(max(y_coords), max_y)
 
         if walls:
             for wall in walls:
                 p = wall.to_coord(dimensions)
-                x_coords = sorted([p.x0, p.x1])
-                y_coords = sorted([p.y0, p.y1])
-                min_x = min(x_coords[0], min_x)
-                max_x = max(x_coords[1], max_x)
-                min_y = min(y_coords[0], min_y)
-                max_y = max(y_coords[1], max_y)
+                x_coords = [p.x0, p.x1]
+                y_coords = [p.y0, p.y1]
+                min_x = min(min(x_coords), min_x)
+                max_x = max(max(x_coords), max_x)
+                min_y = min(min(y_coords), min_y)
+                max_y = max(max(y_coords), max_y)
 
         if min_x < 0:
             padding[0] = padding[0] + int(-min_x)
@@ -3623,7 +3624,7 @@ class DreameVacuumMapRenderer:
                 map_data.dimensions.padding = self._map_data.dimensions.padding
 
             map_data.dimensions.scale = scale
-           
+            
             if self._map_data and self._map_data.dimensions.scale != scale:
                 self._map_data = None
 
@@ -4074,7 +4075,7 @@ class DreameVacuumMapRenderer:
 
                 #    return newChargerPos
 
-                charger_position = map_data.charger_position;
+                charger_position = map_data.charger_position
                 if self._robot_shape != 1 and self.icon_set == 2:
                     offset = int(robot_icon_size * 21.42)
                     charger_position = Point(
@@ -6398,7 +6399,7 @@ class DreameVacuumMapOptimizer:
                 data_size = [map_data.dimensions.left, map_data.dimensions.top, map_data.dimensions.width, map_data.dimensions.height, map_data.dimensions.grid_size]
                 saved_data = saved_map_data.pixel_type.tolist() if saved_map_data else None
                 saved_data_size = [saved_map_data.dimensions.left, saved_map_data.dimensions.top, saved_map_data.dimensions.width, saved_map_data.dimensions.height, saved_map_data.dimensions.grid_size] if saved_map_data else None
-                charger_position = None;
+                charger_position = None
                 if map_data.charger_position:
                     left = map_data.dimensions.left
                     top = map_data.dimensions.top
@@ -6421,7 +6422,7 @@ class DreameVacuumMapOptimizer:
                     
                     if result[2] and map_data.charger_position:
                         charger = result[2]
-                        map_data.optimized_charger_position = Point(charger[0] * map_data.dimensions.grid_size + left, charger[1] * map_data.dimensions.grid_size + top, charger[2])
+                        #map_data.optimized_charger_position = Point(charger[0] * map_data.dimensions.grid_size + left, charger[1] * map_data.dimensions.grid_size + top, charger[2])
             else:
                 width = map_data.dimensions.width
                 height = map_data.dimensions.height

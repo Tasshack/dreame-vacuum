@@ -36,7 +36,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.VOLUME,
         icon_fn=lambda value, device: "mdi:volume-off"
-        if value is 0
+        if value == 0
         else "mdi:volume-high",
         mode=NumberMode.SLIDER,
         native_min_value=0,

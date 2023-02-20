@@ -982,7 +982,7 @@ class Segment(Zone):
     def set_name(self) -> None:
         if self.custom_name is not None:
             self.name = self.custom_name
-        elif self.type is not 0 and SEGMENT_TYPE_CODE_TO_NAME.get(self.type):
+        elif self.type != 0 and SEGMENT_TYPE_CODE_TO_NAME.get(self.type):
             self.name = SEGMENT_TYPE_CODE_TO_NAME[self.type]
             if self.index > 0:
                 self.name = f"{self.name} {self.index + 1}"
@@ -1003,12 +1003,15 @@ class Segment(Zone):
         return index
 
     def name_list(self, segments) -> dict[int, str]:
-        list = {k: v for k, v in SEGMENT_TYPE_CODE_TO_NAME.items()}
-        for k, v in list.items():
+        list = {}
+        for k, v in SEGMENT_TYPE_CODE_TO_NAME.items():
             index = self.next_type_index(k, segments)
+            name = f"{v}"
             if index > 0:
-                list[k] = f"{v} {index + 1}"
-
+                name = f"{name} {index + 1}"
+                
+            list[k] = name
+        
         name = f"Room {self.segment_id}"
         if self.type == 0:
             name = f"{self.name}"
