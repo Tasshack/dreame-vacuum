@@ -12,14 +12,14 @@
       "high": "Високий"
     },
     "dreame_vacuum__mop_pad_humidity": {
-      "slightly_dry": "Майже сухе",
-      "moist": "Вологе",
-      "wet": "Мокре"
+      "slightly_dry": "Майже суха",
+      "moist": "Волога",
+      "wet": "Мокра"
     },
     "dreame_vacuum__cleaning_mode": {
-      "sweeping": "Пилососити",
-      "mopping": "Мити",
-      "sweeping_and_mopping": "Пилососити та мити"
+      "sweeping": "Підмітання",
+      "mopping": "Миття",
+      "sweeping_and_mopping": "Підмітання та миття"
     },
     "dreame_vacuum__carpet_sensitivity": {
       "low": "Низька",
@@ -30,17 +30,16 @@
       "five_square_meters": "5m²",
       "ten_square_meters": "10m²",
       "fifteen_square_meters": "15m²",
-      "single_zone": "Кожна зона"
+      "single_zone": "Кожної зони"
     },
     "dreame_vacuum__mop_wash_level": {
       "water_saving": "Економія води",
       "daily": "Щоденно",
-      "deep": "Сильне зволоження"
+      "deep": "Інтенсивно"
     },
     "dreame_vacuum__moping_type": {
       "accurate": "Точний",
       "daily": "Щоденно",
-      "deep": "Сильне зволоження"
+      "deep": "Інтенсивно"
     }
-  }
 }
