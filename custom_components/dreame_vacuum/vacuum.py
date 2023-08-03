@@ -19,7 +19,7 @@ from homeassistant.components.vacuum import (
     STATE_IDLE,
     STATE_PAUSED,
     STATE_RETURNING,
-    VacuumEntity,
+    StateVacuumEntity,
     VacuumEntityFeature
 )
 
@@ -435,7 +435,7 @@ async def async_setup_entry(
     async_add_entities([DreameVacuum(coordinator)])
 
 
-class DreameVacuum(DreameVacuumEntity, VacuumEntity):
+class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     """Representation of a Dreame Vacuum cleaner robot."""
 
     def __init__(self, coordinator: DreameVacuumDataUpdateCoordinator) -> None:
