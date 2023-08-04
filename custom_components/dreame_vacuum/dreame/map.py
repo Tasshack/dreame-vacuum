@@ -4621,7 +4621,7 @@ class DreameVacuumMapRenderer:
                     y1 = y + size
 
                     if text_font:
-                        tw, th = draw.textsize(text, text_font)
+                        tw, th = draw.textlength(text, text_font)
                         ws = tw / 4
 
                         if segment.index > 0 or icon is None:
@@ -4816,7 +4816,7 @@ class DreameVacuumMapRenderer:
                         ][1],
                     )
                     text = str(segment.order)
-                    tw, th = icon_draw.textsize(text, order_font)
+                    tw, th = icon_draw.textlength(text, order_font)
                     icon_draw.text(
                         (
                             (icon_h - tw) / 2 + margin,
