@@ -79,7 +79,7 @@ from .const import (
     MAP_REQUEST_PARAMETER_FRAME_TYPE,
     MAP_REQUEST_PARAMETER_REQ_TYPE,
     MAP_REQUEST_PARAMETER_FORCE_TYPE,
-    MAP_REQUEST_PARAMETER_TYPE,
+    MAP_1REQUEST_PARAMETER_TYPE,
     MAP_REQUEST_PARAMETER_INDEX,
     MAP_REQUEST_PARAMETER_ROOM_ID,
     MAP_DATA_PARAMETER_CLASS,
@@ -4621,7 +4621,7 @@ class DreameVacuumMapRenderer:
                     y1 = y + size
 
                     if text_font:
-                        _, _, tw, th = draw.textbbox((0,0)text, text_font)
+                        _, _, tw, th = draw.textbbox((0,0),text, text_font)
                         ws = tw / 4
 
                         if segment.index > 0 or icon is None:
