@@ -362,7 +362,7 @@
           "mop_pad": "Das Wischtuch ist nicht richtig installiert.",
           "wet_mop_pad": "Der Wasserstand des Wischtuchs ist ungewöhnlich, bitte reinigen Sie den Wischtuch rechtzeitig.",
           "clean_mop_pad": "Die Reinigungsaufgabe ist abgeschlossen, bitte reinigen Sie das Wischtuch.",
-          "clean_tank_level": "Überprüfen und füllen Sie den Reinwassertank umgehend nach.",          
+          "clean_tank_level": "Überprüfen und füllen Sie den Reinwassertank umgehend nach.",
           "station_disconnected": "Basisstation nicht eingeschaltet",
           "dirty_tank_level": "Der Wasserstand im Brauchwassertank ist zu hoch.",
           "washboard_level": "Wasserstand im Waschbrett ist zu hoch.",
@@ -445,6 +445,324 @@
           "partial_paused": "Teilreinigung pausiert",
           "summon": "Rufen Sie die Reinigung an",
           "summon_paused": "Reinigung herbeirufen pausiert"
+        }
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "Clean Segment",
+      "description": "Start the cleaning operation in the selected rooms.",
+      "fields": {
+        "segments": {
+          "name": "Segments",
+          "description": "List of rooms to be cleaned. Only room's Character or an array of room's character, cleaning times, fan speed and mop mode to override the default values per room."
+        },
+        "repeats": {
+          "name": "Repeats",
+          "description": "Number of cleaning passes for every selected room (unless it is overridden by customized cleaning parameter)."
+        },
+        "suction_level": {
+          "name": "Suction Level",
+          "description": "Fan speed for every selected room (unless it is overridden by customized cleaning parameter)."
+        },
+        "water_volume": {
+          "name": "Water Volume",
+          "description": "Water level for every selected room (unless it is overridden by customized cleaning parameter)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "Clean Zone",
+      "description": "Start the cleaning operation in the selected area.",
+      "fields": {
+        "zone": {
+          "name": "Zone",
+          "description": "Coordinates."
+        },
+        "repeats": {
+          "name": "Repeats",
+          "description": "Number of cleaning passes for each zone between 1 and 3."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "Clean Spot",
+      "description": "Start the cleaning operation in the selected points on the map.",
+      "fields": {
+        "points": {
+          "name": "Points",
+          "description": "List of coordinates to be cleaned."
+        },
+        "repeats": {
+          "name": "Repeats",
+          "description": "Number of cleaning passes for every selected zone."
+        },
+        "suction_level": {
+          "name": "Suction Level",
+          "description": "Fan speed for every selected zone."
+        },
+        "water_volume": {
+          "name": "Water Volume",
+          "description": "Water level for every selected zone."
+        }
+      }
+    },
+    "vacuum_set_dnd": {
+      "name": "Set DnD",
+      "description": "Enable/disable DnD functionality and/or setting its start and end time.",
+      "fields": {
+        "dnd_enabled": {
+          "name": "DnD Enabled",
+          "description": "Enable or disable DnD feature."
+        },
+        "dnd_start": {
+          "name": "DnD Start",
+          "description": "Start time of DnD feature."
+        },
+        "dnd_end": {
+          "name": "Dnd End",
+          "description": "End time of DnD feature."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "Remote Control Move Step",
+      "description": "Remotely control move the bot one step.",
+      "fields": {
+        "rotation": {
+          "name": "Rotation",
+          "description": "Turn in binary degrees between -128 and 128."
+        },
+        "velocity": {
+          "name": "Velocity",
+          "description": "Move speed, from 100 (forward) to -300 (backward)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "Install Voice Pack",
+      "description": "Install official or custom voice pack.",
+      "fields": {
+        "lang_id": {
+          "name": "Language ID",
+          "description": "Language ID of this pack."
+        },
+        "url": {
+          "name": "URL",
+          "description": "Url of this pack it should be reachable by the vacuum bot."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "MD5 checksum of the language pack."
+        },
+        "size": {
+          "name": "Size",
+          "description": "Size of the language pack in bytes."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "Request Map",
+      "description": "Request map data"
+    },
+    "vacuum_select_map": {
+      "name": "Select Map",
+      "description": "Select current map. Used when having multiple maps/floors.",
+      "fields": {
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map to be selected."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "Delete map",
+      "description": "Delete a map.",
+      "fields": {
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map to be deleted."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "Save Temporary Map",
+      "description": "Save the temporary map."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "Discard Temporary Map",
+      "description": "Discard the temporary map."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "Replace Temporary Map",
+      "description": "Replace the temporary map with another saved map.",
+      "fields": {
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map to be replaced with."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "Rename map",
+      "description": "Rename a map.",
+      "fields": {
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map."
+        },
+        "map_name": {
+          "name": "Map Name",
+          "description": "New name of the map."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "Restore Map",
+      "description": "Restore a map.",
+      "fields": {
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map to be restored."
+        },
+        "map_url": {
+          "name": "Map URL",
+          "description": "File Url of the map."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Merge Segments",
+      "description": "Merge rooms.",
+      "fields": {
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map."
+        },
+        "segments": {
+          "name": "Segments",
+          "description": "Room IDs."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Split Segments",
+      "description": "Split rooms.",
+      "fields": {
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map."
+        },
+        "segment": {
+          "name": "Segment",
+          "description": "Room ID."
+        },
+        "line": {
+          "name": "Line",
+          "description": "Split line coordinates."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "Rename Segment",
+      "description": "Rename a segment.",
+      "fields": {
+        "segment_id": {
+          "name": "Segment ID",
+          "description": "ID of the segment"
+        },
+        "segment_name": {
+          "name": "Segment Name",
+          "description": "New name of the segment"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "Set Cleaning Sequence",
+      "description": "Set room cleaning sequence.",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "Cleanin sequence",
+          "description": "Segment ID list of cleaning sequence."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "Set Custom Cleaning",
+      "description": "Set custom cleaning parameters.",
+      "fields": {
+        "segment_id": {
+          "name": "Segment ID",
+          "description": "Room IDs."
+        },
+        "suction_level": {
+          "name": "Suction Level",
+          "description": "Suction level for each room."
+        },
+        "water_volume": {
+          "name": "Water Volume",
+          "description": "Water volume for each room."
+        },
+        "repeats": {
+          "name": "Repeats",
+          "description": "Cleaning times for each room."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Set Restriced Zone",
+      "description": "Define virtual walls, restricted zones, and/or no mop zones.",
+      "fields": {
+        "walls": {
+          "name": "Walls",
+          "description": "Virtual walls."
+        },
+        "zones": {
+          "name": "Zones",
+          "description": "No go zones."
+        },
+        "no_mops": {
+          "name": "No Mops",
+          "description": "No mop zones."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "Reset Consumable",
+      "description": "Reset a consumable.",
+      "fields": {
+        "consumable": {
+          "name": "Consumable",
+          "description": "Consumable type."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "Select Previous",
+      "description": "Select the previous options of an select entity.",
+      "fields": {
+        "cycle": {
+          "name": "Cycle",
+          "description": "If the option should cycle from the first to the last."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "Select First",
+      "description": "Select the first option of an select entity."
+    },
+    "select_select_last": {
+      "name": "Select Last",
+      "description": "Select the last option of an select entity."
+    },
+    "select_select_next": {
+      "name": "Select Next",
+      "description": "Select the next options of an select entity.",
+      "fields": {
+        "cycle": {
+          "name": "Cycle",
+          "description": "If the option should cycle from the first to the last."
         }
       }
     }
