@@ -1900,7 +1900,7 @@ class DreameVacuumMapDecoder:
                     return MapPixelType.UNKNOWN.value
                 return segment_id
 
-            segment_id = pixel & 0b00000011
+            segment_id = pixel & 0x3f
             # as implemented on the app
             if segment_id == 1 or segment_id == 3:
                 return MapPixelType.NEW_SEGMENT.value
@@ -1918,7 +1918,7 @@ class DreameVacuumMapDecoder:
             if pixel >> 7:
                 return MapPixelType.WALL.value
 
-            segment_id = pixel & 0b01111111
+            segment_id = pixel & 0x3f
             if segment_id > 0:
                 if map_data.saved_map_status == 1 or map_data.saved_map_status == 0:
                     # as implemented on the app
@@ -2145,35 +2145,32 @@ class DreameVacuumMapDecoder:
 
         if not map_data.saved_map and not map_data.recovery_map:
             map_data.index = 0
+            if data_json.get("tr"):
+                matches = [
+                    m.groupdict()
+                    for m in re.compile(
+                        r"(?P<operator>[MWSLl])(?P<x>-?\d+),(?P<y>-?\d+)"
+                    ).finditer(data_json["tr"])
+                ]
+                current_position = Point(0, 0)
+                map_data.path = []
+                for match in matches:
+                    operator = match["operator"]
+                    x = int(match["x"])
+                    y = int(match["y"])
 
-        if data_json.get("tr"):
-            matches = [
-                m.groupdict()
-                for m in re.compile(
-                    r"(?P<operator>[MWSLl])(?P<x>-?\d+),(?P<y>-?\d+)"
-                ).finditer(data_json["tr"])
-            ]
-            current_position = Point(0, 0)
-            map_data.path = []
-            for match in matches:
-                operator = match["operator"]
-                x = int(match["x"])
-                y = int(match["y"])
-
-                if operator == "L":
-                    current_position = Path(
-                        current_position.x + x,
-                        current_position.y + y,
-                        PathType.LINE
-                    )
-                elif operator == "l":
-                    # You will only get "l" paths with in a P frame.
-                    # It means path is connected with the path from previous frame and it should be rendered as a line.
-                    current_position = Path(
-                        x, y, PathType.LINE)
-                else:
-                    current_position = Path(
-                        x, y, PathType(operator))
+                    if operator == "L":
+                        current_position = Path(
+                            current_position.x + x,
+                            current_position.y + y,
+                            PathType.LINE
+                        )
+                    else:
+                        # You will only get "l" paths with in a P frame.
+                        # It means path is connected with the path from previous frame and it should be rendered as a line.
+                        if operator == "l":
+                            operator = "L"
+                        current_position = Path(x, y, PathType(operator))
 
                 map_data.path.append(current_position)
 
@@ -2258,7 +2255,7 @@ class DreameVacuumMapDecoder:
                                             map_data.pixel_type[x,
                                                                 y] = segment_id
                                     else:
-                                        segment_id = pixel & 0b00000011
+                                        segment_id = pixel & 0x3f
                                         if segment_id == 1 or segment_id == 3:
                                             map_data.pixel_type[x,
                                                                 y] = MapPixelType.NEW_SEGMENT.value
@@ -2272,7 +2269,7 @@ class DreameVacuumMapDecoder:
                         for y in range(height):
                             for x in range(width):
                                 segment_id = map_data.data[(
-                                    width * y) + x] & 0b01111111
+                                    width * y) + x] & 0x3f
                                 # as implemented on the app
                                 if segment_id == 1 or segment_id == 3:
                                     map_data.empty_map = False
@@ -2285,7 +2282,7 @@ class DreameVacuumMapDecoder:
                     elif vslam_map and not map_data.saved_map:
                         for y in range(height):
                             for x in range(width):
-                                segment_id = map_data.data[(width * y) + x] & 0b00000011
+                                segment_id = map_data.data[(width * y) + x] & 0x3f
                                 if segment_id == 1:
                                     map_data.empty_map = False
                                     map_data.pixel_type[x,
@@ -2308,7 +2305,7 @@ class DreameVacuumMapDecoder:
                                         map_data.pixel_type[x,
                                                             y] = MapPixelType.WALL.value
                                     else:
-                                        segment_id = pixel & 0b01111111
+                                        segment_id = pixel & 0x3f
                                         if segment_id > 0:
                                             map_data.pixel_type[x,
                                                                 y] = segment_id
@@ -2721,7 +2718,7 @@ class DreameVacuumMapDecoder:
                             0,
                         ]  # Cleanset returns empty on restored map but robot uses these default values when that happens
                         if map_data.segments[k].cleaning_mode is not None:
-                            cleanset[segment_id].append(-1)
+                            cleanset[segment_id].append(2)
 
                     item = cleanset[segment_id]
 
@@ -4114,40 +4111,40 @@ class DreameVacuumMapRenderer:
                     if self._robot_shape != 1:
                         offset = int(robot_icon_size * 21.42)
 
-                        #if self.icon_set != 2:
-                        #    if (
-                        #        charger_angle > -45
-                        #        and charger_angle < 45
-                        #    ):
-                        #        charger_angle = 0
-                        #    elif (
-                        #        charger_angle > -45
-                        #        and charger_angle <= 45
-                        #        or charger_angle > 315
-                        #        and charger_angle <= 405
-                        #    ):
-                        #        charger_angle = 0
-                        #    elif (
-                        #        charger_angle > 45
-                        #        and charger_angle <= 135
-                        #        or charger_angle > -315
-                        #        and charger_angle <= -225
-                        #    ):
-                        #        charger_angle = 90
-                        #    elif (
-                        #        charger_angle > 135
-                        #        and charger_angle <= 225
-                        #        or charger_angle > -225
-                        #        and charger_angle <= -135
-                        #    ):
-                        #        charger_angle = 180
-                        #    elif (
-                        #        charger_angle > 225
-                        #        and charger_angle <= 315
-                        #        or charger_angle > -135
-                        #        and charger_angle <= -45
-                        #    ):
-                        #        charger_angle = 270
+                        if self.icon_set != 2:
+                            if (
+                                charger_angle > -45
+                                and charger_angle < 45
+                            ):
+                                charger_angle = 0
+                            elif (
+                                charger_angle > -45
+                                and charger_angle <= 45
+                                or charger_angle > 315
+                                and charger_angle <= 405
+                            ):
+                                charger_angle = 0
+                            elif (
+                                charger_angle > 45
+                                and charger_angle <= 135
+                                or charger_angle > -315
+                                and charger_angle <= -225
+                            ):
+                                charger_angle = 90
+                            elif (
+                                charger_angle > 135
+                                and charger_angle <= 225
+                                or charger_angle > -225
+                                and charger_angle <= -135
+                            ):
+                                charger_angle = 180
+                            elif (
+                                charger_angle > 225
+                                and charger_angle <= 315
+                                or charger_angle > -135
+                                and charger_angle <= -45
+                            ):
+                                charger_angle = 270
                     else:
                         offset = int(robot_icon_size * 35.71)
                         
@@ -4298,23 +4295,6 @@ class DreameVacuumMapRenderer:
                 width=int(size),
                 fill=(color[0], color[1], color[2], 100),
                 joint='curve',
-            )
-            size = int(math.floor(size / 2))
-            draw.ellipse([
-                path[-2] - size,
-                path[-1] - size,
-                path[-2] + size,
-                path[-1] + size,
-            ],
-                fill=(color[0], color[1], color[2], 100),
-            )
-            draw.ellipse([
-                path[0] - size,
-                path[1] - size,
-                path[0] + size,
-                path[1] + size,
-            ],
-                fill=(color[0], color[1], color[2], 100),
             )
 
         for path in sweep:
@@ -4522,12 +4502,16 @@ class DreameVacuumMapRenderer:
             status_icon = self._robot_warning_icon
 
         if status_icon:
+            mask = Image.new("L", status_icon.size, 0)
+            draw = ImageDraw.Draw(mask)
+            draw.ellipse((0, 0, status_icon.size[0], status_icon.size[1]), fill=255)
             new_layer.paste(
                 status_icon,
                 (
                     int(point.x * scale - (status_icon.size[0] / 2)),
                     int(point.y * scale - (status_icon.size[1] / 2)),
                 ),
+                mask
             )
 
         new_layer.paste(
@@ -4613,7 +4597,7 @@ class DreameVacuumMapRenderer:
             y = p.y            
 
             if self.config.name or self.config.icon:
-                if segment.type != 0 or text_font or not self.config.name:
+                if segment.type or text_font or not self.config.name:
                     icon_size = size * (1.75 if self.icon_set == 1 else 1.3)
                     x0 = x - size
                     y0 = y - size
@@ -4621,7 +4605,7 @@ class DreameVacuumMapRenderer:
                     y1 = y + size
 
                     if text_font:
-                        tw, th = draw.textsize(text, text_font)
+                        left, top, tw, th = draw.textbbox((0, 0), text, text_font)
                         ws = tw / 4
 
                         if segment.index > 0 or icon is None:
@@ -4632,7 +4616,7 @@ class DreameVacuumMapRenderer:
                             th = int(size * 2.3)
                         else:
                             icon_size = size * 1.15
-                            padding = icon_size / 4
+                            padding = icon_size * 0.35
                             icon_offset = padding - 2
                             text_offset = icon_size / 2
                             th = int(size * 1.9)
@@ -4740,40 +4724,34 @@ class DreameVacuumMapRenderer:
 
                 x = p.x + x_offset
                 y = p.y + y_offset
-
+                cleaning_mode = None if segment.cleaning_mode is None or segment.cleaning_mode < 0 or segment.cleaning_mode > 3 else segment.cleaning_mode
                 if custom:
                     s = scale * 2
                     arrow = (s + 2) * scale
-
                     if order_font:
                         icon_count = 5
                     else:
                         icon_count = 4
-
                     if not self.config.suction_level or segment.suction_level is None:
                         icon_count = icon_count - 1
                     if not self.config.water_volume or segment.water_volume is None:
                         icon_count = icon_count - 1
                     if not self.config.cleaning_times or segment.cleaning_times is None:
                         icon_count = icon_count - 1
-                    if not self.config.cleaning_mode or segment.cleaning_mode is None or segment.cleaning_mode < 0 or segment.cleaning_mode > 2:
+                    if not self.config.cleaning_mode or cleaning_mode is None:
+                        icon_count = icon_count - 1
+                    if cleaning_mode == 0 or cleaning_mode == 1:
                         icon_count = icon_count - 1
                 else:
                     icon_count = 1
 
-                if icon_count == 1:
-                    s = scale * 3
-                    arrow = 5 * scale
-                else:
-                    s = scale * 3
-                    arrow = 5 * scale
-
                 if not icon and not self.config.icon:
                     arrow = 0
 
-                padding = s + arrow
-                margin = s if icon_count > 1 else 0
                 radius = size
+                arrow = int(round(radius * 0.6))
+                s = int(round(radius * 0.25))
+                margin = s if icon_count > 1 else 0
                 if custom:
                     radius = size - 2
 
@@ -4782,7 +4760,6 @@ class DreameVacuumMapRenderer:
                     (arrow * 2) + (margin * 2)
                 )
                 icon_h = ((radius * 2) * scale) + (arrow * 2)
-                r = icon_h - (padding * 2)
                 icon = Image.new("RGBA", (icon_w, icon_h),
                                  (255, 255, 255, 0))
                 icon_draw = ImageDraw.Draw(icon, "RGBA")
@@ -4790,7 +4767,6 @@ class DreameVacuumMapRenderer:
                 if arrow and (segment.type != 0 or text_font):
                     xx = icon_w / 2
                     yy = icon_h - 2
-
                     icon_draw.polygon(
                         [
                             (xx, yy),
@@ -4806,6 +4782,8 @@ class DreameVacuumMapRenderer:
                     radius=((icon_h - (arrow * 2)) / 2),
                 )
 
+                padding = s + arrow
+                r = icon_h - (padding * 2)
                 ellipse_x1 = padding + margin
                 ellipse_x2 = ellipse_x1 + r
                 if order_font:
@@ -4816,11 +4794,11 @@ class DreameVacuumMapRenderer:
                         ][1],
                     )
                     text = str(segment.order)
-                    tw, th = icon_draw.textsize(text, order_font)
+                    left, top, tw, th = icon_draw.textbbox((0, 0), text, order_font)
                     icon_draw.text(
                         (
                             (icon_h - tw) / 2 + margin,
-                            (icon_h - th - (4 * scale)) / 2,
+                            (icon_h - th - int(round(radius * 0.4))) / 2,
                         ),
                         text,
                         font=order_font,
@@ -4835,7 +4813,7 @@ class DreameVacuumMapRenderer:
                 if custom:
                     icon_size = size * 1.45                    
 
-                    if self.config.cleaning_mode and segment.cleaning_mode is not None and segment.cleaning_mode >= 0 and segment.cleaning_mode <= 2:
+                    if self.config.cleaning_mode and cleaning_mode is not None:
                         if self.icon_set == 2:
                             s = icon_size * 1.2 * scale
                         else:
@@ -4871,7 +4849,7 @@ class DreameVacuumMapRenderer:
                         ellipse_x1 = ellipse_x2 + (margin * 2)
                         ellipse_x2 = ellipse_x1 + r
 
-                    if self.config.suction_level and segment.suction_level is not None:
+                    if self.config.suction_level and segment.suction_level is not None and cleaning_mode != 1:
                         if self.icon_set == 2:
                             s = icon_size * 1.2 * scale
                         else:
@@ -4906,7 +4884,7 @@ class DreameVacuumMapRenderer:
                         ellipse_x1 = ellipse_x2 + (margin * 2)
                         ellipse_x2 = ellipse_x1 + r
 
-                    if self.config.water_volume and segment.water_volume is not None:    
+                    if self.config.water_volume and segment.water_volume is not None and cleaning_mode != 0:     
                         if self.icon_set == 3:
                             s = icon_size * 0.95 * scale
                         elif self.icon_set == 2:
@@ -5000,7 +4978,7 @@ class DreameVacuumMapRenderer:
                 .rotate(-rotation)
             )
             self._obstacle_background.thumbnail(
-                (size * scale * scale, size * scale * scale), Image.ANTIALIAS)
+                (size * scale * scale, size * scale * scale), Image.Resampling.LANCZOS)
 
         bg_size = int(round((size * scale * 0.5) / 2))
         offset = -8 * scale

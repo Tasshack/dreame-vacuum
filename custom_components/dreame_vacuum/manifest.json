@@ -11,9 +11,10 @@
     "pybase64",
     "requests",
     "pycryptodome",
-    "python-miio>=0.5.6",
-    "py-mini-racer"
+    "python-miio",
+    "py-mini-racer",
+    "tzlocal"
   ],
-  "version": "v0.16.4",
+  "version": "v1.0.0",
   "iot_class": "local_polling"
 }

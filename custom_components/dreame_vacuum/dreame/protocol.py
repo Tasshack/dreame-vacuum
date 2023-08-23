@@ -39,7 +39,6 @@ class DreameVacuumDeviceProtocol(MiIOProtocol):
 
 class DreameVacuumCloudProtocol:
     def __init__(self, username: str, password: str, country: str) -> None:
-        self.two_factor_auth_url = None
         self._username = username
         self._password = password
         self._country = country
@@ -61,9 +60,11 @@ class DreameVacuumCloudProtocol:
         
         self._fail_count = 0
         self._connected = False
-
-        timezone = datetime.datetime.now(tzlocal.get_localzone()).strftime("%z")
-        timezone = "GMT{0}:{1}".format(timezone[:-2], timezone[-2:])
+        try:
+            timezone = datetime.datetime.now(tzlocal.get_localzone()).strftime("%z")
+            timezone = "GMT{0}:{1}".format(timezone[:-2], timezone[-2:])
+        except:
+            timezone = "GMT+00:00"
         self._timezone = timezone
 
     def _api_call(self, url, params):
@@ -136,7 +137,7 @@ class DreameVacuumCloudProtocol:
                 self._passToken = json_resp["passToken"]
                 self._location = json_resp["location"]
                 self._code = json_resp["code"]
-                self.two_factor_auth_url = None
+                self.two_factor_url = None
             else:
                 if "notificationUrl" in json_resp and self.two_factor_url is None:
                     self.two_factor_url = json_resp["notificationUrl"]

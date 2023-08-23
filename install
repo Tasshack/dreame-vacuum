@@ -1,0 +1,45 @@
+#!/bin/bash
+# wget -O - https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/install | bash -
+set -e
+
+declare path
+declare -a paths=(
+    "$PWD"
+    "$PWD/config"
+    "/config"
+    "$HOME/.homeassistant"
+    "/usr/share/hassio/homeassistant"
+)
+
+for p in "${paths[@]}"; do
+    if [ -n "$path" ]; then
+        break
+    fi
+
+    if [ -f "$p/.HA_VERSION" ]; then
+        path="$p"
+    fi
+done
+
+if [ -n "$path" ]; then
+    cd "$path"
+    if [ ! -d "$path/custom_components" ]; then
+        mkdir "$path/custom_components"
+    fi
+    cd "$path/custom_components"
+    wget "https://github.com/Tasshack/dreame-vacuum/releases/latest/download/dreame_vacuum.zip"
+    if [ -d "$path/custom_components/dreame_vacuum" ]; then
+        rm -R "$path/custom_components/dreame_vacuum"
+    fi
+    mkdir "$path/custom_components/dreame_vacuum"
+    unzip "$path/custom_components/dreame_vacuum.zip" -d "$path/custom_components/dreame_vacuum" >/dev/null 2>&1
+    rm "$path/custom_components/dreame_vacuum.zip"
+    echo
+    echo "Installation complete"
+    echo "You need to restart Home Assistant before using the integration."
+else
+    echo
+    echo "Could not find the directory for Home Assistant"
+    echo "Manually change the directory to the root of your Home Assistant configuration with the user that is running Home Assistant and run the script again."
+    exit 1
+fi

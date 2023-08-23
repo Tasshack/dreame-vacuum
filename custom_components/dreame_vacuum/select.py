@@ -347,7 +347,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         options=lambda device, segment: [
             str(i) for i in range(1, len(device.status.segments.values()) + 1)
         ]
-        if device.status.segments and segment.order
+        if device.status.segments
         else [STATE_UNAVAILABLE],
         entity_category=EntityCategory.CONFIG,
         available_fn=lambda device: bool(

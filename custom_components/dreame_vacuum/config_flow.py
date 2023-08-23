@@ -39,53 +39,71 @@ from .const import (
     NOTIFICATION_2FA_LOGIN,
 )
 
-SUPPORTED_MODELS = [
-    ## Dreame Lidar Robots
+DREAME_MODELS = [
+    "dreame.vacuum.r2205",
+    "dreame.vacuum.r2243",
+    "dreame.vacuum.r2240",
+    "dreame.vacuum.r2250",
     "dreame.vacuum.p2009",
-    "dreame.vacuum.p2027",
-    "dreame.vacuum.p2028",
+    "dreame.vacuum.r2312",
+    "dreame.vacuum.p2259",
+    "dreame.vacuum.r2312a",
+    "dreame.vacuum.r2322",
+    "dreame.vacuum.p2187",
+    "dreame.vacuum.r2328",
     "dreame.vacuum.p2028a",
+    "dreame.vacuum.r2251a",
     "dreame.vacuum.p2029",
+    "dreame.vacuum.r2257o",
+    "dreame.vacuum.r2215o",
+    "dreame.vacuum.r2216o",
+    "dreame.vacuum.r2228o",
+    "dreame.vacuum.r2228",
+    "dreame.vacuum.r2246",
+    "dreame.vacuum.r2233",
+    "dreame.vacuum.r2247",
+    "dreame.vacuum.r2211o",
+    "dreame.vacuum.r2316",
+    "dreame.vacuum.r2316p",
+    "dreame.vacuum.r2313",
+    "dreame.vacuum.r2355",
+    "dreame.vacuum.r2332",
+    "dreame.vacuum.p2027",
     "dreame.vacuum.r2104",
-    "dreame.vacuum.p2114",
-    "dreame.vacuum.p2114o",
+    "dreame.vacuum.r2251o",
+    "dreame.vacuum.r2232a",
+    "dreame.vacuum.r2317",
+    "dreame.vacuum.r2345a",
+    "dreame.vacuum.r2345h",
+    "dreame.vacuum.r2215",
+    "dreame.vacuum.r2235",
+    "dreame.vacuum.r2263",
+    "dreame.vacuum.r2253",
+    "dreame.vacuum.p2028",
+    "dreame.vacuum.p2157",
+    "dreame.vacuum.p2156o",
+]
+
+MIJIA_MODELS = [
+    "dreame.vacuum.p2041",
+    "dreame.vacuum.p2036",
+    "dreame.vacuum.p2140",
+    "dreame.vacuum.p2140a",
     "dreame.vacuum.p2114a",
-    "dreame.vacuum.p2114b",
-    "dreame.vacuum.p2150o",
+    "dreame.vacuum.p2114o",
+    "dreame.vacuum.r2210",
+    "dreame.vacuum.p2149o",
     "dreame.vacuum.p2150a",
     "dreame.vacuum.p2150b",
-    "dreame.vacuum.p2149o",
-    "dreame.vacuum.p2157",
-    "dreame.vacuum.p2187",
-    "dreame.vacuum.r2205",
-    "dreame.vacuum.p2259",
-    "dreame.vacuum.r2228o",
-    "dreame.vacuum.r2215o",
-    "dreame.vacuum.r2233",
-    "dreame.vacuum.r2228",
-    "dreame.vacuum.r2251o",
-    "dreame.vacuum.r2215",
-    "dreame.vacuum.r2247",
-    "dreame.vacuum.r2246",
-    "dreame.vacuum.r2232a",
-    "dreame.vacuum.r2235",
-    "dreame.vacuum.r2216o",
-    "dreame.vacuum.r2211o",
-    "dreame.vacuum.r2254",
+    "dreame.vacuum.p2150o",
     "dreame.vacuum.r2209",
-    "dreame.vacuum.p2036",
-
-    # Dreame Vslam Robots
-    #"dreame.vacuum.p2140q",
-    #"dreame.vacuum.p2140p",
-    #"dreame.vacuum.p2140o",
-    #"dreame.vacuum.p2140a",
-    #"dreame.vacuum.p2140",
-    #"dreame.vacuum.p2148o",
-    #"dreame.vacuum.p2156o",
-    #"dreame.vacuum.p2041o",
-    #"dreame.vacuum.p2041",
     "dreame.vacuum.p2008",
+    "dreame.vacuum.p2148o",
+    "dreame.vacuum.p2140o",
+    "dreame.vacuum.r2254",
+    "dreame.vacuum.p2140p",
+    "dreame.vacuum.p2140q",
+    "dreame.vacuum.p2041o",
 ]
 
 WITH_MAP: Final = "With map (Automatic)"
@@ -244,7 +262,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                         }
                     )
 
-                if self.model in SUPPORTED_MODELS:
+                if self.model in DREAME_MODELS or self.model in MIJIA_MODELS:
                     if self.name is None:
                         self.name = self.model
                     return await self.async_step_options()
@@ -321,7 +339,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                         found = list(
                             filter(
                                 lambda d: not d.get("parent_id")
-                                and str(d["model"]) in SUPPORTED_MODELS,                                
+                                and (str(d["model"]) in DREAME_MODELS or str(d["model"]) in MIJIA_MODELS),                                
                                 devices["result"]["list"],
                             )
                         )
@@ -421,11 +439,21 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         )
 
         if self.with_map:
+            mijia = bool(self.model in MIJIA_MODELS)
+            default_objects = list(MAP_OBJECTS.keys())
+            if mijia:
+                default_color_scheme = "Mijia Light"
+                default_icon_set = "Mijia"
+                default_objects.pop(1) # Room icons
+            else:
+                default_color_scheme = "Dreame Light"
+                default_icon_set = "Dreame"
+
             data_schema = data_schema.extend(
                 {
-                    vol.Required(CONF_COLOR_SCHEME, default="Dreame Light"): vol.In(list(MAP_COLOR_SCHEME_LIST.keys())),
-                    vol.Required(CONF_ICON_SET, default=next(iter(MAP_ICON_SET_LIST))): vol.In(list(MAP_ICON_SET_LIST.keys())),
-                    vol.Required(CONF_MAP_OBJECTS, default=list(MAP_OBJECTS.keys())): cv.multi_select(MAP_OBJECTS),
+                    vol.Required(CONF_COLOR_SCHEME, default=default_color_scheme): vol.In(list(MAP_COLOR_SCHEME_LIST.keys())),
+                    vol.Required(CONF_ICON_SET, default=default_icon_set): vol.In(list(MAP_ICON_SET_LIST.keys())),
+                    vol.Required(CONF_MAP_OBJECTS, default=default_objects): cv.multi_select(MAP_OBJECTS),
                 }
             )
 

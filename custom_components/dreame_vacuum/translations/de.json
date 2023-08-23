@@ -73,5 +73,380 @@
     "error": {
       "cloud_credentials_incomplete": "Anmeldedaten unvollständig, bitte geben Sie Benutzername, Passwort und das Land ein"
     }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "state": {
+          "quiet": "Leise",
+          "standard": "Standard",
+          "strong": "Stark",
+          "turbo": "Turbo"
+        }
+      },
+      "water_volume": {
+        "state": {
+          "low": "Niedrig",
+          "medium": "Mittel",
+          "high": "Hoch"
+        }
+      },
+      "mop_pad_humidity": {
+        "state": {
+          "slightly_dry": "Leicht Trocken",
+          "moist": "Feucht",
+          "wet": "Nass"
+        }
+      },
+      "cleaning_mode": {
+        "state": {
+          "sweeping": "Saugen",
+          "mopping": "Wischen",
+          "sweeping_and_mopping": "Saugen und Wischen",
+          "mopping_after_sweeping": "Wischen nach dem Kehren"
+        }
+      },
+      "carpet_sensitivity": {
+        "state": {
+          "low": "Niedrig",
+          "medium": "Mittel",
+          "high": "Hoch"
+        }
+      },
+      "carpet_cleaning": {
+        "state": {
+          "avoidance": "Vermeidung",
+          "adaptation": "Anpassung",
+          "remove_mop": "Entfernen Sie den Mopp"
+        }
+      },
+      "mop_wash_level": {
+        "state": {
+          "water_saving": "Wassersparend",
+          "daily": "Täglich",
+          "deep": "Tief"
+        }
+      },
+      "mopping_type": {
+        "state": {
+          "accurate": "Genau",
+          "daily": "Täglich",
+          "deep": "Tief"
+        }
+      },
+      "wider_corner_coverage": {
+        "state": {
+          "off": "Aus",
+          "high_frequency": "Hochfrequenz",
+          "low_frequency": "Niederfrequenz"
+        }
+      },
+      "floor_material": {
+        "state": {
+          "none": "Keiner",
+          "tile": "Bodenfliese",
+          "wood": "Holzboden"
+        }
+      },
+      "voice_assistant_language": {
+        "state": {
+          "default": "Standard",
+          "english": "Englisch",
+          "german": "Deutsch",
+          "chinese": "Chinesisch"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "state": {
+          "unknown": "Unbekannt",
+          "sweeping": "Saugen",
+          "charging": "Aufladen",
+          "error": "Fehler",
+          "idle": "Inaktiv",
+          "paused": "Pausiert",
+          "returning": "Kehre zum Dock zurück",
+          "mopping": "Wischen",
+          "drying": "Trocknen",
+          "washing": "Waschen",
+          "returning_to_wash": "Zurückkehren zum Waschen",
+          "building": "Building",
+          "sweeping_and_mopping": "Saugen und Wischen",
+          "charging_completed": "Aufladen abgeschlossen",
+          "upgrading": "Upgrade durchführen",
+          "clean_summon": "Zum Putzen rufen",
+          "station_reset": "Zurücksetzen der Station",
+          "returning_install_mop": "Zurück zur Installation des Mopps",
+          "returning_remove_mop": "Zurückkommen, um den Mopp zu entfernen",
+          "water_check": "Wasserkontrolle",
+          "clean_add_water": "Reinigen und Wasser hinzufügen",
+          "washing_paused": "Der Waschvorgang wurde unterbrochen",
+          "auto_emptying": "Automatische Entleerung",
+          "remote_control": "Fernbedienung",
+          "smart_charging": "Intelligentes Laden",
+          "second_cleaning": "Zum zweiten Mal gereinigt",
+          "human_following": "Menschliche Gefolgschaft",
+          "spot_cleaning": "Punktuelle Reinigung",
+          "returning_auto_empty": "Rückkehr zur automatischen Entleerung",
+          "shortcut": "Abkürzung",
+          "monitoring": "Überwachung",
+          "monitoring_paused": "Überwachung pausiert"
+        }
+      },
+      "status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "idle": "Inaktiv",
+          "paused": "Pausiert",
+          "cleaning": "Reinigen",
+          "returning": "Kehre zum Dock zurück",
+          "spot_cleaning": "Spot Reinigung",
+          "follow_wall_cleaning": "Folge Wand Reinigung",
+          "charging": "Aufladen",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "WiFi einstellen",
+          "power_off": "Power aus",
+          "factory": "Factory",
+          "error": "Fehler",
+          "remote_control": "Ferngesteuert",
+          "sleeping": "schlafend",
+          "self_test": "Selbsttest",
+          "factory_test": "Werkstest",
+          "standby": "Standby",
+          "room_cleaning": "Raumreinigung",
+          "zone_cleaning": "Zonenreinigung",
+          "fast_mapping": "Schnelles Mapping",
+          "cruising_path": "Cruising auf dem Weg",
+          "cruising_point": "Eine Kreuzfahrt zu einem Punkt",
+          "summon_clean": "Reinigung rufen",
+          "shortcut": "Abkürzung",
+          "person_follow": "Person folgt",
+          "water_check": "Wasserkontrolle"
+        }
+      },
+      "task_status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "completed": "Erledigt",
+          "cleaning": "Reinigen",
+          "zone_cleaning": "Zonenreinigung",
+          "room_cleaning": "Raumreinigung",
+          "spot_cleaning": "Spotreinigung",
+          "fast_mapping": "Schnelles Mapping",
+          "cleaning_paused": "Reinigung pausiert",
+          "room_cleaning_paused": "Raumreinigung pausiert",
+          "zone_cleaning_paused": "Zonenreinigung pausiert",
+          "spot_cleaning_paused": "Spotreinigung pausiert",
+          "map_cleaning_paused": "Kartenreinigugn pausiert",
+          "docking_paused": "Docking pausiert",
+          "mopping_paused": "Wischen pausiert",
+          "zone_mopping_paused": "Zonenwischen pausiert",
+          "room_mopping_paused": "Raumwischen pausiert",
+          "zone_docking_paused": "Zonenwischen pausiert",
+          "room_docking_paused": "Raumdocking pausiert",
+          "cruising_path": "Cruising auf dem Weg",
+          "cruising_path_paused": "Die Fahrt auf dem Weg wurde unterbrochen",
+          "cruising_point": "Eine Kreuzfahrt zu einem Punkt",
+          "cruising_point_paused": "Die Fahrt zu einem Punkt wurde unterbrochen",
+          "summon_clean_paused": "Reinigung rufen angehalten",
+          "returning_to_install_mop": "Zurückkehren zum Installieren des Wischmopps",
+          "returning_to_remove_mop": "Zurückkehren zum Entfernen des Wischmopps"
+        }
+      },
+      "water_tank": {
+        "state": {
+          "unknown": "Unbekannt",
+          "installed": "Installiert",
+          "not_installed": "Nicht installiert",
+          "mop_installed": "Wassertank installiert",
+          "in_station": "Im Bahnhof"
+        }
+      },
+      "mop_pad": {
+        "state": {
+          "unknown": "Unbekannt",
+          "installed": "Installiert",
+          "not_installed": "Nicht installiert",
+          "mop_installed": "Wassertank installiert",
+          "in_station": "Im Bahnhof"
+        }
+      },
+      "dust_collection": {
+        "state": {
+          "unknown": "Unbekannt",
+          "not_available": "Nicht verfügbar",
+          "available": "Verfügbar"
+        }
+      },
+      "auto_empty_status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "idle": "Inaktiv",
+          "active": "Aktiv",
+          "not_performed": "Nicht durchgeführt"
+        }
+      },
+      "error": {
+        "state": {
+          "unknown": "Unbekannter Fehlercode",
+          "no_error": "Kein Fehler",
+          "drop": "Räder in der Luft",
+          "cliff": "Klippensensorfehler",
+          "bumper": "Aufprallsensor klemmt",
+          "gesture": "Roboter ist gekippt",
+          "bumper_repeat": "Kollisionssensor klemmt",
+          "drop_repeat": "Räder in der Luft",
+          "optical_flow": "Fehler des optischen Flow-Sensors",
+          "no_box": "Staubbehälter nicht installiert",
+          "no_tank_box": "Wassertank nicht installiertd",
+          "water_box_empty": "Wassertank ist leer",
+          "box_full": "Der Filter ist nicht trocken oder verstopft",
+          "brush": "Die Hauptbürste ist eingewickelt",
+          "side_brush": "Die Seitenbürste ist eingewickelt",
+          "fan": "Der Filter ist nicht trocken oder verstopft",
+          "left_wheel_motor": "Der Roboter steckt fest, oder sein linkes Rad ist möglicherweise durch Fremdkörper blockiert",
+          "right_wheel_motor": "Der Roboter steckt fest, oder sein rechtes Rad ist möglicherweise durch Fremdkörper blockiert",
+          "turn_suffocate": "Der Roboter steckt fest oder kann sich nicht drehen",
+          "forward_suffocate": "Der Roboter steckt fest oder kann nicht vorwärts fahren",
+          "charger_get": "Kann die Ladestation nicht finden",
+          "battery_low": "Batterie schwach",
+          "charge_fault": "Fehler beim Aufladen",
+          "battery_percentage": "Fehler beim Batteriestand",
+          "heart": "Interner Fehler",
+          "camera_occlusion": "Fehler des visuellen Positionssensors",
+          "move": "Fehler des Bewegungssensors",
+          "flow_shielding": "Optischer Sensorfehler",
+          "infrared_shielding": "Infrarotabschirmung Fehler",
+          "charge_no_electric": "Die Ladestation ist nicht eingeschaltet",
+          "battery_fault": "Batterie Fehler",
+          "fan_speed": "Fehler des Lüfterdrehzahlsensors",
+          "left_wheell_speed": "Linkes Rad ist möglicherweise durch Fremdkörper blockiert",
+          "right_wheell_speed": "Rechtes Rad ist möglicherweise durch Fremdkörper blockiert",
+          "bmi055_acce": "Beschleunigungssensor Fehler",
+          "bmi055_gyro": "Beschleunigungssensor Fehler",
+          "xv7001": "Beschleunigungssensor Fehler",
+          "left_magnet": "Fehler des linken Magnetsensors",
+          "right_magnet": "Fehler des rechten Magnetsensors",
+          "flow_error": "Durchflusssensor Fehler",
+          "infrared_fault": "Infrarotsensor Fehler",
+          "camera_fault": "Kamera Fehler",
+          "strong_magnet": "Starkes Magnetfeld festgestellt",
+          "water_pump": "Wasserpumpen Fehler",
+          "rtc": "RTC Fehler",
+          "auto_key_trig": "Interner Fehler",
+          "p3v3": "Interner Fehler",
+          "camera_idle": "Interner Fehler",
+          "blocked": "Reinigungsroute ist blockiert kehre zur Dock zurück",
+          "lds_error": "Laserentfernungssensors Fehler",
+          "lds_bumper": "Laserentfernungssensors (Bumper) Fehler",
+          "filter_blocked": "Der Filter ist nicht trocken oder verstopft",
+          "edge": "Kantensensor Fehler",
+          "carpet": "Bitte starten Sie den Roboter in einem Nicht-Teppich-Bereich.",
+          "laser": "Der 3D-Hindernisvermeidungssensor ist defekt.",
+          "ultrasonic": "Der Ultraschallsensor ist gestört.",
+          "no_go_zone": "No-Go-Zone oder virtuelle Wand erkannt.",
+          "route": "Die Reinigungsroute ist blockiert.",
+          "restricted": "Es wurde festgestellt, dass sich der Staubsauger in einem Sperrgebiet befindet.",
+          "remove_mop": "Wischen abgeschlossen. Bitte entfernen Sie den Mopp rechtzeitig und reinigen Sie ihn.",
+          "mop_removed": "Der Wischmopp hat sich während der Reinigung gelöst.",
+          "mop_pad_stop_rotate": "Der Wischmopp dreht sich nicht mehr",
+          "bin_full": "Der Staubsammelbeutel ist voll, oder der Luftkanal ist verstopft.",
+          "bin_open": "Die obere Abdeckung des automatischen Leergutbehälters ist nicht geschlossen, oder der Staubbeutel ist nicht installiert.",
+          "water_tank": "Der Frischwassertank ist nicht installiert.",
+          "dirty_water_tank": "Der Schmutzwassertank ist voll oder nicht installiert.",
+          "water_tank_dry": "Niedriger Wasserstand im Frischwassertank, bitte füllen Sie rechtzeitig Wasser nach.",
+          "dirty_water_tank_blocked": "Schmutzwassertank blockiert.",
+          "dirty_water_tank_pump": "Schmutzwassertank Pumpenfehler.",
+          "mop_pad": "Das Wischtuch ist nicht richtig installiert.",
+          "wet_mop_pad": "Der Wasserstand des Wischtuchs ist ungewöhnlich, bitte reinigen Sie den Wischtuch rechtzeitig.",
+          "clean_mop_pad": "Die Reinigungsaufgabe ist abgeschlossen, bitte reinigen Sie das Wischtuch.",
+          "clean_tank_level": "Überprüfen und füllen Sie den Reinwassertank umgehend nach.",          
+          "station_disconnected": "Basisstation nicht eingeschaltet",
+          "dirty_tank_level": "Der Wasserstand im Brauchwassertank ist zu hoch.",
+          "washboard_level": "Wasserstand im Waschbrett ist zu hoch.",
+          "no_mop_in_station": "Wischpad ist nicht in der Station.",
+          "dust_bag_full": "Der Staubbeutel ist voll oder die Lüftungsschlitze sind blockiert."
+        }
+      },
+      "charging_status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "charging": "Aufladen",
+          "not_charging": "Nicht Aufladen",
+          "return_to_charge": "Zum Aufladen zurückkehren",
+          "charging_completed": "Aufladen abgeschlossen"
+        }
+      },
+      "relocation_status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "located": "Lokalisiert",
+          "locating": "Lokalisieren",
+          "failed": "Fehlgeschlagen",
+          "success": "Erfolgreich"
+        }
+      },
+      "self_wash_base_status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "idle": "Inaktiv",
+          "washing": "Waschen",
+          "drying": "Trocknen",
+          "paused": "Pausiert",
+          "returning": "Zurückkehren zum Waschen",
+          "clean_add_water": "Reinigung und Wasser nachfüllen",
+          "adding_water": "Wasser nachfüllen"
+        }
+      },
+      "low_water_warning": {
+        "state": {
+          "no_warning": "Keine Warnung",
+          "no_water_left_dismiss": "Bitte überprüfen Sie den Frischwassertank.",
+          "no_water_left": "Das Wasser im Frischwassertank ist bald aufgebraucht. ",
+          "no_water_left_after_clean": "Wischpad wurde gereinigt. ",
+          "no_water_for_clean": "Niedriger Wasserstand im Frischwassertank. ",
+          "low_water": "Das Wasser geht mir bald aus. ",
+          "tank_not_installed": "Der Frischwassertank ist nicht installiert."
+        }
+      },
+      "stream_status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "idle": "Leerlauf",
+          "video": "Video",
+          "audio": "Audio",
+          "recording": "Aufzeichnung"
+        }
+      },
+      "drainage_status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "idle": "Leerlauf",
+          "draining": "Entleeren",
+          "draining_successful": "Entleerung erfolgreich",
+          "draining_failed": "Das Entleeren ist fehlgeschlagen"
+        }
+      },
+      "task_type": {
+        "state": {
+          "standard": "Standardreinigung",
+          "standard_paused": "Standardreinigung angehalten",
+          "custom": "Individuelle Reinigung",
+          "custom_paused": "Benutzerdefinierte Reinigung angehalten",
+          "shortcut": "Abkürzungsreinigung",
+          "shortcut_paused": "Verknüpfungsreinigung angehalten",
+          "scheduled": "Geplante Reinigung",
+          "scheduled_paused": "Geplante Reinigung pausiert",
+          "smart": "Intelligente Reinigung",
+          "smart_paused": "Intelligente Reinigung pausiert",
+          "partial": "Teilweise Reinigung",
+          "partial_paused": "Teilreinigung pausiert",
+          "summon": "Rufen Sie die Reinigung an",
+          "summon_paused": "Reinigung herbeirufen pausiert"
+        }
+      }
+    }
   }
 }

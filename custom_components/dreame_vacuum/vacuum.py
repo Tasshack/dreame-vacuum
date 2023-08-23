@@ -19,7 +19,7 @@ from homeassistant.components.vacuum import (
     STATE_IDLE,
     STATE_PAUSED,
     STATE_RETURNING,
-    VacuumEntity,
+    StateVacuumEntity,
     VacuumEntityFeature
 )
 
@@ -81,6 +81,7 @@ from .const import (
     CONSUMABLE_MAIN_BRUSH,
     CONSUMABLE_SIDE_BRUSH,
     CONSUMABLE_FILTER,
+    CONSUMABLE_SECONDARY_FILTER,
     CONSUMABLE_SENSOR,
     CONSUMABLE_MOP_PAD,
     CONSUMABLE_SILVER_ION,
@@ -112,7 +113,7 @@ STATE_CODE_TO_STATE: Final = {
     DreameVacuumState.CHARGING: STATE_DOCKED,
     DreameVacuumState.MOPPING: STATE_CLEANING,
     DreameVacuumState.DRYING: STATE_DOCKED,
-    DreameVacuumState.WASHING: STATE_DOCKED,
+    DreameVacuumState.WASHING: STATE_CLEANING,
     DreameVacuumState.RETURNING_WASHING: STATE_RETURNING,
     DreameVacuumState.BUILDING: STATE_DOCKED,
     DreameVacuumState.SWEEPING_AND_MOPPING: STATE_CLEANING,
@@ -131,6 +132,7 @@ CONSUMABLE_RESET_ACTION = {
     CONSUMABLE_MAIN_BRUSH: DreameVacuumAction.RESET_MAIN_BRUSH,
     CONSUMABLE_SIDE_BRUSH: DreameVacuumAction.RESET_SIDE_BRUSH,
     CONSUMABLE_FILTER: DreameVacuumAction.RESET_FILTER,
+    CONSUMABLE_SECONDARY_FILTER: DreameVacuumAction.RESET_SECONDARY_FILTER,
     CONSUMABLE_SENSOR: DreameVacuumAction.RESET_SENSOR,
     CONSUMABLE_MOP_PAD: DreameVacuumAction.RESET_MOP_PAD,
     CONSUMABLE_SILVER_ION: DreameVacuumAction.RESET_SILVER_ION,
@@ -422,6 +424,7 @@ async def async_setup_entry(
                     CONSUMABLE_MAIN_BRUSH,
                     CONSUMABLE_SIDE_BRUSH,
                     CONSUMABLE_FILTER,
+                    CONSUMABLE_SECONDARY_FILTER,
                     CONSUMABLE_SENSOR,
                     CONSUMABLE_MOP_PAD,
                     CONSUMABLE_SILVER_ION,
@@ -435,7 +438,7 @@ async def async_setup_entry(
     async_add_entities([DreameVacuum(coordinator)])
 
 
-class DreameVacuum(DreameVacuumEntity, VacuumEntity):
+class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     """Representation of a Dreame Vacuum cleaner robot."""
 
     def __init__(self, coordinator: DreameVacuumDataUpdateCoordinator) -> None:
@@ -455,9 +458,17 @@ class DreameVacuum(DreameVacuumEntity, VacuumEntity):
 
     def _set_attrs(self):
         if self.device.status.has_error:
-            self._attr_icon = "mdi:alert-circle"  # mdi:robot-vacuum-alert
+            self._attr_icon = "mdi:alert-octagon"
         elif self.device.status.has_warning:
-            self._attr_icon = "mdi:alert"  # mdi:robot-vacuum-alert
+            self._attr_icon = "mdi:robot-vacuum-alert"
+        elif self.device.status.returning_to_wash:
+            self._attr_icon = "mdi:water-circle"
+        elif self.device.status.washing:
+            self._attr_icon = "mdi:water-sync"
+        elif self.device.status.paused or self.device.status.washing_paused or self.device.status.returning_to_wash_paused:
+            self._attr_icon = "mdi:pause-circle"
+        elif self.device.status.drying:
+            self._attr_icon = "mdi:hair-dryer"
         elif self.device.status.sleeping:
             self._attr_icon = "mdi:sleep"
         elif self.device.status.charging:

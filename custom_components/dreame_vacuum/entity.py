@@ -77,6 +77,8 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
 
             if description.name is None and description.key is not None:
                 description.name = description.key.replace("_", " ").title()
+            elif description.key is None and description.name is not None:
+                description.key = description.name.lower().replace(" ", "_").replace("-", "_")
 
             if description.available_fn is None:
                 if description.property_key is not None:
@@ -88,6 +90,8 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
 
         super().__init__(coordinator=coordinator)
         if description:
+            if description.key is not None:
+                self._attr_translation_key = description.key
             self.entity_description = description
             self._set_id()
 
