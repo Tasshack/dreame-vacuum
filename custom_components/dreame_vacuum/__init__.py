@@ -1,5 +1,6 @@
 """The Dreame Vacuum component."""
 from __future__ import annotations
+import traceback
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
@@ -14,6 +15,7 @@ PLATFORMS = (
     Platform.NUMBER,
     Platform.SELECT,
     Platform.CAMERA,
+    Platform.TIME,
 )
 
 
@@ -34,10 +36,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Unload Dreame Vacuum config entry."""
     if unload_ok := await hass.config_entries.async_unload_platforms(entry, PLATFORMS):
-        coordinator: DreameVacuumDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+        coordinator: DreameVacuumDataUpdateCoordinator = hass.data[DOMAIN][
+            entry.entry_id
+        ]
         coordinator.device.listen(None)
         coordinator.device.disconnect()
-        del coordinator.device
+        del coordinator._device
         coordinator._device = None
         del hass.data[DOMAIN][entry.entry_id]
 

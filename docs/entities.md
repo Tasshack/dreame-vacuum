@@ -49,6 +49,24 @@
 | `stain_avoidance`   | After it is turned on and when a stain is identified, the robot will avoid and do not clean the area. | Available on devices with AI fluid detection feature
 | `intelligent_recognition`   | Enable/Disable automatic map switching when multi-floor map is enabled | Available on devices with wifi map feature
 | `cleaning_sequence`   | Enable/Disable custom room cleaning sequence | Available with map feature (This a dynamically created entity and not actually tied to any setting directly, when turned of it actually deletes current cleaning order and regenerates with default order or restores previous order from memory when turned on again)
+| `voice_assistant`   | TODO | 
+| `fuzzy_obstacle_detection`   | TODO | 
+| `ai_pet_avoidance`   | TODO | 
+| `pet_picture`   | TODO | 
+| `pet_focused_detection`   | TODO | 
+| `turbidity_detection`   | TODO | 
+| `floor_direction_cleaning`   | TODO | 
+| `pet_focused_cleaning`   | TODO | 
+| `second_cleaning`   | TODO | 
+| `mop_rewashing`   | TODO | 
+| `mop_pad_swing`   | TODO | 
+| `smart_charging`   | TODO | 
+| `human_follow`   | TODO | 
+| `max_suction_power`   | TODO | 
+| `smart_drying`   | TODO | 
+| `hot_washing`   | TODO | 
+| `camera_light_brightness_auto`   | TODO | 
+
 
 ## Sensor
 
@@ -89,6 +107,11 @@
 | `detergent_time_left`   | Detergent left in hours | Available on vacuums has detergent cartridge
 | `cleaning_history`   | Previous cleaning job details as attributes | Available with map feature
 | `current_room`   | Current room that vacuum currently in | Available with map feature
+| `stream_status`   | TODO | 
+| `drainage_status`   | TODO | 
+| `low_water_warning`   | TODO | 
+| `task_type`   | TODO | 
+| `cruising_history`   | TODO | 
 
 ## Number
 
@@ -96,10 +119,14 @@
 | ----------------------- | -------------------- | -------------------- |
 | `volume`   | Volume level |
 | `mop_cleaning_remainder`   | Mop cleaning remainder | 
-| `dnd_start_hour`   | Do not disturb start hour (XX:00 -> 00:00) | Unavailable when do not disturb is disabled
-| `dnd_start_minute`   | Do not disturb start minute (00:XX -> 00:00) | Unavailable when do not disturb is disabled
-| `dnd_end_hour`   | Do not disturb end hour (00:00 -> XX:00) | Unavailable when do not disturb is disabled
-| `dnd_end_minute`   | Do not disturb end minute (00:00 -> 00:XX) | Unavailable when do not disturb is disabled
+| `camera_light_brightness`   | TODO | 
+
+## Time
+
+| Name  | Description  | Notes |
+| ----------------------- | -------------------- | -------------------- |
+| `dnd_start`   | Do not disturb start | Unavailable when do not disturb is disabled
+| `dnd_end`   | Do not disturb end | Unavailable when do not disturb is disabled
 
 ## Button
 
@@ -119,6 +146,8 @@
 | `pause_washing`   | Pause mop washing | Available on vacuums with self-wash base, unavailable when robot is not currently washing mop
 | `start_drying`   | Manually start mop drying | Available on vacuums with self-wash base, unavailable when drying is not possible or already drying mop
 | `stop_drying`   | Stop mop drying | Available on vacuums with self-wash base, unavailable when robot is not currently drying mop
+| `water_tank_draining`   | TODO | 
+| `shortcut_{1-33}`   | TODO | 
 
 ## Select
 | Name  | Description  | Notes |
@@ -135,6 +164,8 @@
 | `mopping_type`   | Mopping type for deep or daily cleaning | Available on vacuums with AI fluid and stain detection feature
 | `map_rotation`   | Sets the rotation of selected map | Available with map feature and unavailable when current map is not one of the selected maps (Different map rotations can be for saved maps but only selected map is editable via this entity)
 | `selected_map`   | Currently selected map | Available with map feature and unavailable when multi-floor map is disabled or not available (Robot will end active job when selected map is changed)
+| `wider_corner_coverage`   | TODO | 
+| `voice_assistant_language`   | TODO | 
 
 ### Select Entities for rooms
 - Room select entities are only available with cloud connection. 
@@ -147,6 +178,8 @@
 | Name  | Description  | Notes |
 | ----------------------- | -------------------- | -------------------- |
 | `name`   | Room name from predefined types or current custom name | Unavailable when room does not exists on current map
+| `floor_material`   | TODO | 
+| `cleaning_mode`   | TODO | 
 | `suction_level`   | Suction level for the room | Unavailable if customized cleaning is disabled
 | `water_volume`   | Water volume for the room | Available on vacuums with water tank and unavailable if customized cleaning is disabled
 | `mop_pad_humidity`   | Humidity level of the mop pad for the room | Available on vacuums with self-wash base and unavailable if customized cleaning is disabled
@@ -164,6 +197,11 @@
 | `map_1`   | First saved map | Saved map at index 1
 | `map_2`   | Second saved map | Saved map at index 2, available if multi-floor map is enabled and there are at least two saved maps on map list
 | `map_3`   | Third saved map | Saved map at index 3, available if multi-floor map is enabled and there are at least three saved maps on map list
+| `map_4`   | Fourth saved map | Saved map at index 4, available if multi-floor map is enabled and there are at least four saved maps on map list (only available on vacuums with WiFi map)
+| `wifi_map_1`   | TODO | 
+| `wifi_map_2`   | TODO | 
+| `wifi_map_3`   | TODO | 
+| `wifi_map_4`   | TODO | 
 
 
 - Camera entities are only available with cloud connection. 

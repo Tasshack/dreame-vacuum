@@ -39,6 +39,7 @@ Five available color schemes for live and saved maps:
 Dynamically rendered icons and texts for:
 - Room type
 - Custom name
+- Cleaning mode
 - Cleaning order
 - suction level
 - Water level
@@ -119,6 +120,8 @@ Reverse engineered Valetudo map data generation with optimization features.
 
 Selectable room, vacuum and charger icon types:
 
+TODO
+
 - **Dreame**: Icons from the official Dreame App.
 - **Dreame Old**: Icons from the old version of the official Dreame App for VSLAM robots.
 - **Mijia**: Icons from the official Mijia App.
@@ -130,24 +133,42 @@ Configurable map object rendering options:
 
 > Map object can be selected from integration configuration options.
 - **Room Colors**: Render rooms with colors
-- **Room Icons**: Render room icons instead of names
+- **Room Icons**: Render room icons
 - **Room Names**: Render custom and default room names
+- **Room Name Background**: Render room name or icon background in room color
 - **Room Order**: Render cleaning sequence number of the room
 - **Room Suction Level**: Render customized cleaning suction level of the room
 - **Room Water Volume**: Render customized cleaning water volume of the room
 - **Room Cleaning Times**: Render customized cleaning times of the room
 - **Room Cleaning Mode**: Render customized cleaning cleaning mode of the room *(Only on supported devices)*
-- **Path**: Render path
+- **Path**: Render paths
 - **No Go Zones**: Render no go zones
 - **No Mop Zones**: Render no mop zones
 - **Virtual Walls**: Render virtual walls
+- **Pathways**: Render pathways *(Only on supported devices)*
 - **Active Areas**: Render active areas
 - **Active Points**: Render active points
 - **Charger Icon**: Render charger icon
 - **Robot Icon**: Render robot icon
-- **Cleaning Direction**: Render cleaning direction *(Not supported yet)*
-- **AI Obstacle**: Render obstacle icon
-- **Carpet Area**: Render carpet areas *(Not supported yet)*
+- **Cleaning Direction**: Render cleaning direction
+- **AI Obstacle**: Render obstacle icons *(Only on supported devices)*
+- **Pet**: Render pet icons *(Only on supported devices)*
+- **Carpet Area**: Render carpets *(Only on supported devices)*
+- **Floor Material**: Render floor material of the rooms *(Only on supported devices)*
+- **Furnitures**: Render 2D/3D furnitures *(Only on supported devices)*
+- **Cruise Point**: Render cruise points *(Only on supported devices)*
+
+### WiFi Map
+
+TODO
+
+### Square Map
+
+TODO
+
+### Low Resolution Map
+
+TODO
 
 ### Map recovery
 

@@ -217,39 +217,13 @@ Start selected spot cleaning with optional customized cleaning parameters.
     ```tity_id: vacuum.vacuum
     ```
 
-### `dreame_vacuum.vacuum_set_dnd`
+### `dreame_vacuum.vacuum_go_to`
 
-Set do not disturb settings. *(This service exists because the lack of **date_time** entity on Home Assistant)*
+TODO
 
-**Examples:**
+### `dreame_vacuum.vacuum_follow_path`
 
-- Set DND start time
-    ```yaml
-    service: dreame_vacuum.vacuum_set_dnd
-    data:
-      dnd_start: "20:00"
-    target:
-      entity_id: vacuum.vacuum
-    ```
-
-- Set DND start and end times
-    ```yaml
-    service: dreame_vacuum.vacuum_set_dnd
-    data:
-        dnd_start: "20:00"
-        dnd_end: "08:00"
-    target:
-        entity_id: vacuum.vacuum
-    ```
-
-- Disable DND feature
-    ```yaml
-    service: dreame_vacuum.vacuum_set_dnd
-    data:
-        dnd_enabled: false
-    target:
-        entity_id: vacuum.vacuum
-    ```
+TODO
 
 ### `dreame_vacuum.vacuum_remote_control_move_step`
 
@@ -587,6 +561,32 @@ Set custom name for a room in current map.
     target:
         entity_id: vacuum.vacuum
     ```
+
+### `dreame_vacuum.vacuum_rename_shortcut`
+
+TODO
+
+
+### `dreame_vacuum.vacuum_set_obstacle_ignore`
+
+TODO
+
+### `dreame_vacuum.vacuum_set_router_position`
+
+TODO
+
+### `dreame_vacuum.vacuum_set_pathway`
+
+TODO
+
+### `dreame_vacuum.vacuum_set_carpet_area`
+
+TODO
+
+### `dreame_vacuum.vacuum_set_predefined_points`
+
+TODO
+
 
 ## Other Services
 Integration adds <a href="https://www.home-assistant.io/integrations/input_select/#services" target="_blank_">**input_select** services</a> that are missing from the **select** entity to generated select entities for ease of use.
