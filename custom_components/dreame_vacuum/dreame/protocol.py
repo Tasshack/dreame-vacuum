@@ -503,7 +503,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                         "Accept-Language": "en-US;q=0.8",
                         "Accept-Encoding": "gzip, deflate",
                         self._strings[47]: self._strings[3],
-                        self._strings[48]: self._strings[4],
+                        #self._strings[48]: self._strings[4],
                         self._strings[49]: self._strings[5],
                         self._strings[50]: self._ti if self._ti else self._strings[6],
                         self._strings[51]: self._strings[52],
