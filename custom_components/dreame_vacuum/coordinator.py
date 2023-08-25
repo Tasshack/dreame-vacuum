@@ -498,7 +498,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
 
         if not self._ready:
             self._ready = True
-            if self._device.token != self._token or self._device.host != self._host:
+            if (self._device.token and self._device.token != self._token) or (self._device.host and self._device.host != self._host):
                 data = self._entry.data.copy()
                 self._host = self._device.host
                 self._token = self._device.token
@@ -519,11 +519,11 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
 
             self._two_factor_url = self._device.two_factor_url
 
-        self._available = self._device.available
+        self._available = self._device and self._device.available
         super().async_set_updated_data(self._device)
 
     @callback
     def async_set_update_error(self, ex) -> None:
         if self._available:
-            self._available = self._device.available
+            self._available = self._device and self._device.available
             super().async_set_update_error(ex)

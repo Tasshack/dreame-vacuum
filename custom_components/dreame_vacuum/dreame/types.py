@@ -1967,6 +1967,8 @@ class DeviceCapability:
         self.shortcuts = False
         self.drainage = False
         self.stream_status = False
+        self.fill_light = False
+        self.voice_assistant = False
         self.smart_settings = False
         self.hot_washing = False
         self.mop_pad_swing = False
@@ -1978,6 +1980,12 @@ class DeviceCapability:
         self._device = device
 
     def refresh(self):
+        model = (
+            self._device.info.model.replace("dreame.vacuum.", "")
+            if self._device.info
+            else ""
+        )
+
         self.lidar_navigation = bool(
             self._device.get_property(DreameVacuumProperty.MAP_SAVING) is None
         )
@@ -2004,6 +2012,12 @@ class DeviceCapability:
         )
         self.mop_pad_unmounting = bool(
             self._device.get_property(DreameVacuumProperty.AUTO_MOUNT_MOP) is not None
+            and (
+                "r2215" == model
+                or "r2235" == model
+                or "r2253" == model
+                or "r2263" == model
+            )
         )
         self.wifi_map = bool(
             self._device.get_property(DreameVacuumProperty.WIFI_MAP) is not None
@@ -2017,15 +2031,15 @@ class DeviceCapability:
         self.drainage = bool(
             self._device.get_property(DreameVacuumProperty.DRAINAGE_STATUS) is not None
             and (
-                self._device.info
-                and (
-                    "r2215" in self._device.info.model
-                    or "r2228" in self._device.info.model
-                    or "r2233" in self._device.info.model
-                    or "r2313" in self._device.info.model
-                    or "r2355" in self._device.info.model
-                )
+                "r2215" == model
+                or "r2228" == model
+                or "r2233" == model
+                or "r2313" == model
+                or "r2355" == model
             )
+        )
+        self.voice_assistant = bool(
+            self._device.get_property(DreameVacuumProperty.VOICE_ASSISTANT) is not None
         )
         self.smart_settings = bool(
             self._device.get_property(DreameVacuumProperty.PET_DETECTIVE) is not None
@@ -2033,53 +2047,50 @@ class DeviceCapability:
         self.mop_pad_lifting = bool(
             self.mop_pad_unmounting
             or (self.self_wash_base and self.auto_empty_base)
-            or (self._device.info and "r2216" in self._device.info.model)
+            or ("r2216" == model)
+        )
+        camera_light = self._device.get_property(
+            DreameVacuumProperty.CAMERA_LIGHT_BRIGHTNESS
         )
         self.stream_status = bool(
-            self._device.get_property(DreameVacuumProperty.CAMERA_LIGHT_BRIGHTNESS)
-            is not None
+            camera_light is not None
             or self._device.get_property(DreameVacuumProperty.CRUISE_SCHEDULE)
             is not None
+        )
+        self.fill_light = bool(
+            self.stream_status
+            and camera_light is not None
+            and len(camera_light) < 5
+            and str(camera_light).isnumeric()
         )
         self.hot_washing = bool(
             self.self_wash_base
             and self.smart_settings
             and (
-                self._device.info
-                and (
-                    "r2253" in self._device.info.model
-                    or "r2263" in self._device.info.model
-                    or "r2332" in self._device.info.model
-                    or "r2355" in self._device.info.model
-                )
+                "r2253" == model
+                or "r2263" == model
+                or "r2332" == model
+                or "r2355" == model
+                or "r2360" == model
             )
         )
         self.mop_pad_swing = bool(
             self.self_wash_base
             and self.smart_settings
             and self.mop_pad_lifting
-            and (
-                self._device.info
-                and (
-                    "r23" in self._device.info.model
-                    or "r2253" in self._device.info.model
-                    or "r2263" in self._device.info.model
-                )
-            )
+            and ("r23" in model or "r2253" == model or "r2263" == model)
         )
-        self.mopping_after_sweeping = self._device.info and (
-            "r2253" in self._device.info.model
-            or "r2263" in self._device.info.model
-            or "r2313" in self._device.info.model
-            or "r2316" in self._device.info.model
-            or "r2317" in self._device.info.model
-            or "r2332" in self._device.info.model
-            or "r2345" in self._device.info.model
-            or "r2355" in self._device.info.model
+        self.mopping_after_sweeping = (
+            "r2253" == model
+            or "r2263" == model
+            or "r2313" == model
+            or "r2316" == model
+            or "r2317" == model
+            or "r2332" == model
+            or "r2345" == model
+            or "r2355" == model
         )
-        self.max_suction_power = self._device.info and (
-            "r2253" in self._device.info.model or "r2263" in self._device.info.model
-        )
+        self.max_suction_power = "r2253" == model or "r2263" == model
         self.robot_type = (
             RobotType.SWEEPING_AND_MOPPING
             if self.self_wash_base and self.mop_pad_lifting

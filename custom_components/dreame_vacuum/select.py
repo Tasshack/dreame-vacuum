@@ -176,6 +176,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         property_key=DreameVacuumProperty.VOICE_ASSISTANT_LANGUAGE,
         icon="mdi:translate-variant",
         entity_category=EntityCategory.CONFIG,
+        exists_fn=lambda description, device: device.capability.voice_assistant,
     ),
     DreameVacuumSelectEntityDescription(
         key="mop_pad_humidity",

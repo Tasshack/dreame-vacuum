@@ -245,8 +245,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             self._image = self._renderer.default_map_image
 
         map_data = self._map_data
-        if map_data:
-            self._map_id = map_data.map_id
+        self._map_id = map_data.map_id if map_data else None
 
         if self.map_index:
             if map_data:

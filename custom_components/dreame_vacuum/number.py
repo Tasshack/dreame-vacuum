@@ -91,7 +91,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_min_value=40,
         native_max_value=100,
         native_step=1,
-        exists_fn=lambda description, device: device.capability.stream_status,  # and DreameVacuumEntityDescription().exists_fn(description, device),
+        exists_fn=lambda description, device: device.capability.stream_status and device.capability.fill_light,  # and DreameVacuumEntityDescription().exists_fn(description, device),
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.CONFIG,
     ),

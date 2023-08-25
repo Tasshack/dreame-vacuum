@@ -277,6 +277,11 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         icon_fn=lambda value, device: "mdi:lightbulb-off"
         if not value
         else "mdi:lightbulb",
+        exists_fn=lambda description, device: bool(
+            device.capability.smart_settings 
+            and device.capability.fill_light
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
@@ -394,7 +399,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         value_fn=lambda value, device: bool(
             device.status.camera_light_brightness == 101
         ),
-        exists_fn=lambda description, device: device.capability.stream_status,  # and DreameVacuumEntityDescription().exists_fn(description, device),
+        exists_fn=lambda description, device: device.capability.stream_status and device.capability.fill_light,  # and DreameVacuumEntityDescription().exists_fn(description, device),
         format_fn=lambda value, device: 101 if value else 40,
         entity_category=EntityCategory.CONFIG,
     ),

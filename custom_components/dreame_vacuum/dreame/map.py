@@ -1182,7 +1182,10 @@ class DreameMapVacuumMapManager:
                 if self._map_data is None or (
                     self._device_running
                     and (
-                        (self._map_data.last_updated and time.time() - (self._map_data.last_updated) > 60)
+                        (
+                            self._map_data.last_updated
+                            and time.time() - (self._map_data.last_updated) > 60
+                        )
                         or self._map_data.empty_map
                     )
                 ):
@@ -1588,8 +1591,8 @@ class DreameMapVacuumMapEditor:
         map_data = self._map_data
         if map_data is not None:
             map_data.path = None
-            #map_data.obstacles = None
-            #map_data.active_cruise_points = None
+            # map_data.obstacles = None
+            # map_data.active_cruise_points = None
             map_data.active_areas = None
             map_data.active_segments = None
             self._set_updated_frame_id(map_data.frame_id)
@@ -2576,6 +2579,9 @@ class DreameVacuumMapDecoder:
         _LOGGER.debug("raw_map: %s", raw_map)
         raw_map = raw_map.replace("_", "/").replace("-", "+")
 
+        if len(raw_map) < 3:
+            return None
+
         if "," in raw_map and key is None:
             values = raw_map.split(",")
             key = values[1]
@@ -2972,7 +2978,7 @@ class DreameVacuumMapDecoder:
                     router_position[1],
                 )
 
-        if map_data.saved_map and "whm" in data_json:
+        if map_data.saved_map and "whm" in data_json and len(data_json["whm"]) > 1:
             wifi_map_data = DreameVacuumMapDecoder.decode_saved_map(
                 data_json["whm"], False, map_data.rotation
             )
@@ -4714,43 +4720,43 @@ class DreameVacuumMapRenderer:
             self.config.obstacle = False
             self.config.pet = False
             self.config.furniture = False
-        else:
-            if self.icon_set == 2:
-                repeats = MAP_ICON_REPEATS_MIJIA
-                suction_level = MAP_ICON_SUCTION_LEVEL_MIJIA
-                water_volume = MAP_ICON_WATER_VOLUME_MIJIA
-                cleaning_mode = MAP_ICON_CLEANING_MODE_MIJIA
-            elif self.icon_set == 3:
-                repeats = MAP_ICON_REPEATS_MATERIAL
-                suction_level = MAP_ICON_SUCTION_LEVEL_MATERIAL
-                water_volume = MAP_ICON_WATER_VOLUME_MATERIAL
-                cleaning_mode = MAP_ICON_CLEANING_MODE_MATERIAL
-            else:
-                repeats = MAP_ICON_REPEATS_DREAME
-                suction_level = MAP_ICON_SUCTION_LEVEL_DREAME
-                water_volume = MAP_ICON_WATER_VOLUME_DREAME
-                cleaning_mode = MAP_ICON_CLEANING_MODE_DREAME
 
-            if self.config.cleaning_times:
-                self._cleaning_times_icon = [
-                    Image.open(BytesIO(base64.b64decode(icon))).convert("RGBA")
-                    for icon in repeats
-                ]
-            if self.config.suction_level:
-                self._suction_level_icon = [
-                    Image.open(BytesIO(base64.b64decode(icon))).convert("RGBA")
-                    for icon in suction_level
-                ]
-            if self.config.water_volume:
-                self._water_volume_icon = [
-                    Image.open(BytesIO(base64.b64decode(icon))).convert("RGBA")
-                    for icon in water_volume
-                ]
-            if self.config.cleaning_mode:
-                self._cleaning_mode_icon = [
-                    Image.open(BytesIO(base64.b64decode(icon))).convert("RGBA")
-                    for icon in cleaning_mode
-                ]
+        if self.icon_set == 2:
+            repeats = MAP_ICON_REPEATS_MIJIA
+            suction_level = MAP_ICON_SUCTION_LEVEL_MIJIA
+            water_volume = MAP_ICON_WATER_VOLUME_MIJIA
+            cleaning_mode = MAP_ICON_CLEANING_MODE_MIJIA
+        elif self.icon_set == 3:
+            repeats = MAP_ICON_REPEATS_MATERIAL
+            suction_level = MAP_ICON_SUCTION_LEVEL_MATERIAL
+            water_volume = MAP_ICON_WATER_VOLUME_MATERIAL
+            cleaning_mode = MAP_ICON_CLEANING_MODE_MATERIAL
+        else:
+            repeats = MAP_ICON_REPEATS_DREAME
+            suction_level = MAP_ICON_SUCTION_LEVEL_DREAME
+            water_volume = MAP_ICON_WATER_VOLUME_DREAME
+            cleaning_mode = MAP_ICON_CLEANING_MODE_DREAME
+
+        if self.config.cleaning_times:
+            self._cleaning_times_icon = [
+                Image.open(BytesIO(base64.b64decode(icon))).convert("RGBA")
+                for icon in repeats
+            ]
+        if self.config.suction_level:
+            self._suction_level_icon = [
+                Image.open(BytesIO(base64.b64decode(icon))).convert("RGBA")
+                for icon in suction_level
+            ]
+        if self.config.water_volume:
+            self._water_volume_icon = [
+                Image.open(BytesIO(base64.b64decode(icon))).convert("RGBA")
+                for icon in water_volume
+            ]
+        if self.config.cleaning_mode:
+            self._cleaning_mode_icon = [
+                Image.open(BytesIO(base64.b64decode(icon))).convert("RGBA")
+                for icon in cleaning_mode
+            ]
 
     @staticmethod
     def _to_buffer(image) -> bytes:

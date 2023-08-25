@@ -1195,7 +1195,9 @@ class DreameVacuumDevice:
                                 == DreameVacuumCleaningMode.MOPPING
                                 and not self.status.water_tank_or_mop_installed
                             ):
-                                new_cleaning_mode = DreameVacuumCleaningMode.SWEEPING.value
+                                new_cleaning_mode = (
+                                    DreameVacuumCleaningMode.SWEEPING.value
+                                )
                             elif (
                                 self.status.cleaning_mode
                                 == DreameVacuumCleaningMode.SWEEPING
@@ -1226,14 +1228,10 @@ class DreameVacuumDevice:
                     x = self.status.go_to_zone.x
                     y = self.status.go_to_zone.y
                     if (
-                        position.x
-                        >= x - size
-                        and position.x
-                        <= x + size
-                        and position.y
-                        >= y - size
-                        and position.y
-                        <= y + size
+                        position.x >= x - size
+                        and position.x <= x + size
+                        and position.y >= y - size
+                        and position.y <= y + size
                     ):
                         self._restore_go_to_zone(True)
 
@@ -1265,7 +1263,8 @@ class DreameVacuumDevice:
                 if self._update_fail_count <= 3:
                     _LOGGER.debug(
                         "Update failed, retrying %s: %s",
-                        self._update_fail_count, str(ex),
+                        self._update_fail_count,
+                        str(ex),
                     )
                 elif self._ready:
                     _LOGGER.warning("Update Failed: %s", str(ex))
@@ -1843,8 +1842,7 @@ class DreameVacuumDevice:
                 map_data.cleanset = None
 
             if map_data.segments and (
-                not self.status.custom_order
-                or map_data.saved_map
+                not self.status.custom_order or map_data.saved_map
             ):
                 for k, v in map_data.segments.items():
                     map_data.segments[k].order = None
@@ -1865,6 +1863,7 @@ class DreameVacuumDevice:
                 map_data.charger_position == None
                 and map_data.docked
                 and map_data.robot_position
+                and not map_data.saved_map
             ):
                 map_data.charger_position = copy.deepcopy(map_data.robot_position)
                 if (
@@ -2590,7 +2589,8 @@ class DreameVacuumDevice:
         if not self.status.paused and self.status.started:
             if self.status.cruising and not self.capability.cruising:
                 self._update_property(
-                    DreameVacuumProperty.STATE, DreameVacuumState.MONITORING_PAUSED.value
+                    DreameVacuumProperty.STATE,
+                    DreameVacuumState.MONITORING_PAUSED.value,
                 )
             else:
                 self._update_property(

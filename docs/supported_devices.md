@@ -30,6 +30,7 @@
 | S20 Plus                                  | r2316p |
 | S20 Pro                                   | r2313  |
 | S20 Pro (Hot Water)                       | r2355  |
+| S20 Pro Plus (Hot Water)                  | r2360  |
 | S20 Pro Plus                              | r2332  |
 | W10                                       | p2027  |
 | W10 Pro                                   | r2104  |
