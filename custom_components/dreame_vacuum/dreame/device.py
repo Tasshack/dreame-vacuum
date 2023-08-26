@@ -5855,9 +5855,10 @@ class DreameVacuumDeviceStatus:
     @property
     def job(self) -> dict[str, Any] | None:
         attributes = {
-            ATTR_CLEANING_MODE: self.cleaning_mode.name,
             ATTR_STATUS: self.status.name,
         }
+        if self._capability.custom_cleaning_mode:            
+            attributes[ATTR_CLEANING_MODE] = self.cleaning_mode.name
         attributes[
             ATTR_WATER_TANK if not self._capability.self_wash_base else ATTR_MOP_PAD
         ] = self.water_tank_or_mop_installed
