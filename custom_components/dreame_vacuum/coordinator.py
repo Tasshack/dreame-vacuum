@@ -473,7 +473,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             self.async_set_updated_data()
             return self._device
         except Exception as ex:
-            LOGGER.warning("Integration start failed: %s", str(ex))
+            LOGGER.warning("Integration start failed: %s", traceback.format_exc())
             if self._device is not None:
                 self._device.listen(None)
                 self._device.disconnect()

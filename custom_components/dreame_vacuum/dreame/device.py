@@ -1524,8 +1524,11 @@ class DreameVacuumDevice:
 
                     if self.status.current_map is None:
                         self._map_manager.schedule_update(15)
-                        self._map_manager.update()
-                        self._last_map_request = self._last_settings_request
+                        try:
+                            self._map_manager.update()
+                            self._last_map_request = self._last_settings_request
+                        except Exception as ex:
+                            _LOGGER.error("Initial map update failed! %s", str(ex))
                         self._map_manager.schedule_update()
                     else:
                         self.update_map()
@@ -6052,7 +6055,7 @@ class DreameVacuumDeviceStatus:
         if description:
             value = self._get_property(consumable_property)
             if value is not None and value >= 0 and value <= 5:
-                if value != 0 and len(description[1]) > 1:
+                if value != 0 and len(description) > 1:
                     return description[1]
                 return description[0]
 
