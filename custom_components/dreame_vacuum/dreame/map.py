@@ -2145,32 +2145,33 @@ class DreameVacuumMapDecoder:
 
         if not map_data.saved_map and not map_data.recovery_map:
             map_data.index = 0
-            if data_json.get("tr"):
-                matches = [
-                    m.groupdict()
-                    for m in re.compile(
-                        r"(?P<operator>[MWSLl])(?P<x>-?\d+),(?P<y>-?\d+)"
-                    ).finditer(data_json["tr"])
-                ]
-                current_position = Point(0, 0)
-                map_data.path = []
-                for match in matches:
-                    operator = match["operator"]
-                    x = int(match["x"])
-                    y = int(match["y"])
 
-                    if operator == "L":
-                        current_position = Path(
-                            current_position.x + x,
-                            current_position.y + y,
-                            PathType.LINE
-                        )
-                    else:
-                        # You will only get "l" paths with in a P frame.
-                        # It means path is connected with the path from previous frame and it should be rendered as a line.
-                        if operator == "l":
-                            operator = "L"
-                        current_position = Path(x, y, PathType(operator))
+        if data_json.get("tr"):
+            matches = [
+                m.groupdict()
+                for m in re.compile(
+                    r"(?P<operator>[MWSLl])(?P<x>-?\d+),(?P<y>-?\d+)"
+                ).finditer(data_json["tr"])
+            ]
+            current_position = Point(0, 0)
+            map_data.path = []
+            for match in matches:
+                operator = match["operator"]
+                x = int(match["x"])
+                y = int(match["y"])
+
+                if operator == "L":
+                    current_position = Path(
+                        current_position.x + x,
+                        current_position.y + y,
+                        PathType.LINE
+                    )
+                else:
+                    # You will only get "l" paths with in a P frame.
+                    # It means path is connected with the path from previous frame and it should be rendered as a line.
+                    if operator == "l":
+                        operator = "L"
+                    current_position = Path(x, y, PathType(operator))
 
                 map_data.path.append(current_position)
 
@@ -2282,7 +2283,7 @@ class DreameVacuumMapDecoder:
                     elif vslam_map and not map_data.saved_map:
                         for y in range(height):
                             for x in range(width):
-                                segment_id = map_data.data[(width * y) + x] & 0x3f
+                                segment_id = map_data.data[(width * y) + x] & 0b00000011
                                 if segment_id == 1:
                                     map_data.empty_map = False
                                     map_data.pixel_type[x,
@@ -4575,7 +4576,7 @@ class DreameVacuumMapRenderer:
             text = None
             icon = self._segment_icons.get(segment.type) if self.config.icon else None
             if segment.type == 0 or icon is None:
-                text = segment.name if (self._robot_shape != 1 or icon is not None) or segment.custom_name is not None else segment.letter
+                text = segment.name if (self._robot_shape != 1 or icon is not None) or segment.custom_name is not None else segment.letter if self.icon_set != 2 else None
             elif segment.index > 0:
                 text = str(segment.index)
 
@@ -4690,7 +4691,7 @@ class DreameVacuumMapRenderer:
                         icon_text = icon_text.rotate(-rotation, expand=1)
                         new_layer.paste(
                             icon_text, (int(tx), int(ty)), icon_text)
-                    else:
+                    elif icon is not None:
                         draw.ellipse(
                             [x0 * scale, y0 * scale, x1 * scale, y1 * scale],
                             fill=self.color_scheme.icon_background,
