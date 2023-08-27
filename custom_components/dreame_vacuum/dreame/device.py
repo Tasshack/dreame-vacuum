@@ -1701,6 +1701,10 @@ class DreameVacuumDevice:
                     self._update_property(prop, current_value)
                     if prop.value in self._dirty_data:
                         del self._dirty_data[prop.value]
+                else:
+                    _LOGGER.info(
+                        "Update Property: %s: %s -> %s", prop, current_value, value
+                    )
 
                 # Schedule the update for getting the updated property value from the device
                 # If property is actually updated nothing will happen otherwise it will return to previous value and notify its listeners. (Post optimistic approach)
@@ -2309,7 +2313,7 @@ class DreameVacuumDevice:
             if cleaning_mode is DreameVacuumCleaningMode.SWEEPING.value:
                 if (
                     self.status.water_tank_or_mop_installed
-                    and not self.status.auto_mount_mop
+                    and not self.capability.mop_pad_lifting
                 ):
                     if self.capability.self_wash_base:
                         raise InvalidActionException(

@@ -1990,7 +1990,7 @@ class DeviceCapability:
             self._device.get_property(DreameVacuumProperty.MAP_SAVING) is None
         )
         self.multi_floor_map = bool(
-            self._device.get_property(DreameVacuumProperty.MULTI_FLOOR_MAP) is not None
+            self._device.get_property(DreameVacuumProperty.MULTI_FLOOR_MAP) is not None and self.lidar_navigation
         )
         self.ai_detection = bool(
             self._device.get_property(DreameVacuumProperty.AI_DETECTION) is not None
