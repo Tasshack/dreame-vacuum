@@ -1279,19 +1279,19 @@ class DreameVacuumDevice:
                 self.get_property(DreameVacuumProperty.CLEANING_MODE),
                 self.capability.mop_pad_lifting,
             )
-            if values and len(values) == 3:
-                if self.capability.mop_pad_lifting:
-                    if cleaning_mode == 2:
-                        values[0] = 0
-                    elif cleaning_mode == 0:
-                        values[0] = 2
-                    else:
-                        values[0] = cleaning_mode
-                elif cleaning_mode == 2:
+            if not(values and len(values) == 3):                
+                return False
+            
+            if self.capability.mop_pad_lifting:
+                if cleaning_mode == 2:
                     values[0] = 0
-
-                cleaning_mode = DreameVacuumDevice.combine_group_value(values)
-            return False
+                elif cleaning_mode == 0:
+                    values[0] = 2
+                else:
+                    values[0] = cleaning_mode
+            elif cleaning_mode == 2:
+                values[0] = 0
+            cleaning_mode = DreameVacuumDevice.combine_group_value(values)
         elif self.capability.mop_pad_lifting:
             if cleaning_mode == 2:
                 cleaning_mode = 0
