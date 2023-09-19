@@ -160,7 +160,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
 
     async def _try_command(self, mask_error, func, *args, **kwargs) -> bool:
         """Call a vacuum command handling error messages."""
-        if not self.coordinator.available:
+        if not self.device.device_connected:
             raise HomeAssistantError("Device is not available") from None
 
         try:
@@ -170,7 +170,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
             LOGGER.error(mask_error, exc)
             raise HomeAssistantError(str(exc)) from None
         except (DeviceUpdateFailedException, DeviceException) as exc:
-            if self.coordinator.available:
+            if self.device.available:
                 raise HomeAssistantError(str(exc)) from None
             return False
 

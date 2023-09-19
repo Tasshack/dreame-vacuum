@@ -168,6 +168,10 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         icon="mdi:google-circles-group",
         entity_category=EntityCategory.CONFIG,
         format_fn=lambda value, device: int(value),
+        exists_fn=lambda description, device: bool(
+            device.capability.mop_pad_unmounting
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        )
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.VOICE_ASSISTANT,
@@ -297,11 +301,11 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         format_fn=lambda value, device: 2 if value else 1,
         entity_category=EntityCategory.CONFIG,
     ),
-    DreameVacuumSwitchEntityDescription(
-        property_key=DreameVacuumAutoSwitchProperty.TURBIDITY_DETECTION,
-        icon_fn=lambda value, device: "mdi:blur-off" if not value else "mdi:blur",
-        entity_category=EntityCategory.CONFIG,
-    ),
+    #DreameVacuumSwitchEntityDescription(
+    #    property_key=DreameVacuumAutoSwitchProperty.TURBIDITY_DETECTION,
+    #    icon_fn=lambda value, device: "mdi:blur-off" if not value else "mdi:blur",
+    #    entity_category=EntityCategory.CONFIG,
+    #),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumAutoSwitchProperty.FLOOR_DIRECTION_CLEANING,
         exists_fn=lambda description, device: bool(
@@ -339,15 +343,6 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        property_key=DreameVacuumAutoSwitchProperty.MOP_PAD_SWING,
-        icon="mdi:arrow-top-left-bottom-right-bold",
-        exists_fn=lambda description, device: bool(
-            device.capability.mop_pad_swing
-            and DreameVacuumEntityDescription().exists_fn(description, device)
-        ),
-        entity_category=EntityCategory.CONFIG,
-    ),
-    DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumAutoSwitchProperty.SMART_CHARGING,
         icon="mdi:battery-sync",
         exists_fn=lambda description, device: bool(
@@ -361,7 +356,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         icon_fn=lambda value, device: "mdi:account-off"
         if not value
         else "mdi:account-arrow-left",
-        # exists_fn=lambda description, device: bool(device.capability.mop_pad_swing and DreameVacuumEntityDescription().exists_fn(description, device)),
+        exists_fn=lambda description, device: bool(device.capability.mop_pad_swing and DreameVacuumEntityDescription().exists_fn(description, device)),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
@@ -377,7 +372,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         property_key=DreameVacuumAutoSwitchProperty.SMART_DRYING,
         icon="mdi:sun-thermometer-outline",
         exists_fn=lambda description, device: bool(
-            device.capability.smart_settings
+            device.capability.mop_pad_swing
             and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
         entity_category=EntityCategory.CONFIG,

@@ -153,6 +153,14 @@
           "low_frequency": "Low Frequency"
         }
       },
+      "mop_pad_swing": {
+        "state": {
+          "off": "Off",
+          "auto": "Auto",
+          "daily": "Daily",
+          "weekly": "Weekly"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "None",

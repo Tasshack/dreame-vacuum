@@ -276,7 +276,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         if low_water_warning.value > 0 and (
             not previous_value or low_water_warning.value > 1
         ):
-            low_water_warning = self._device.status.low_water_warning_description
+            low_water_warning = self._device.status.low_water_warning_name_description
             self._fire_event(
                 EVENT_LOW_WATER,
                 {EVENT_LOW_WATER: description[0], "code": low_water_warning.value},
@@ -378,8 +378,8 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             )
 
     def _create_persistent_notification(self, content, notification_id) -> None:
-        if self._notify:
-            if isinstance(self._notify, list):
+        if self._notify or notification_id == NOTIFICATION_ID_2FA_LOGIN:
+            if isinstance(self._notify, list) and notification_id != NOTIFICATION_ID_2FA_LOGIN:
                 if notification_id == NOTIFICATION_ID_CLEANUP_COMPLETED:
                     if NOTIFICATION_ID_CLEANUP_COMPLETED not in self._notify:
                         return
@@ -403,7 +403,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                     and notification_id != NOTIFICATION_ID_DRAINAGE_STATUS
                 ):
                     if NOTIFICATION_ID_CONSUMABLE not in self._notify:
-                        return
+                       return
 
             persistent_notification.async_create(
                 hass=self.hass,
@@ -484,11 +484,6 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
     @property
     def device(self) -> DreameVacuumDevice:
         return self._device
-
-    @property
-    def available(self) -> bool:
-        """Return True if device is available."""
-        return self._available
 
     @callback
     def async_set_updated_data(self, device=None) -> None:

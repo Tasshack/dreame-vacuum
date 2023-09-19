@@ -153,6 +153,14 @@
           "low_frequency": "Niska częstotliwość"
         }
       },
+      "mop_pad_swing": {
+        "state": {
+          "off": "Wyłączony",
+          "auto": "Automatyczny",
+          "daily": "Codziennie",
+          "weekly": "Co tydzień"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Nic",

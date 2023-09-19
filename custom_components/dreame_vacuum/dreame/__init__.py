@@ -19,6 +19,7 @@ from .types import (
     DreameVacuumStreamStatus,
     DreameVacuumVoiceAssistantLanguage,
     DreameVacuumWiderCornerCoverage,
+    DreameVacuumMopPadSwing,
     DreameVacuumFloorMaterial,
     DreameVacuumDrainageStatus,
     DreameVacuumLowWaterWarning,

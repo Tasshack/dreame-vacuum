@@ -688,20 +688,12 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         self._attr_state = STATE_CODE_TO_STATE.get(
             self.device.status.state, STATE_UNKNOWN
         )
-        self._attr_status = self.device.status.status_name.replace(
-            "_", " "
-        ).capitalize()
         self._attr_extra_state_attributes = self.device.status.attributes
 
     @property
     def state(self) -> str | None:
         """Return the state of the vacuum cleaner."""
         return self._attr_state
-
-    @property
-    def status(self) -> str | None:
-        """Return the status of the vacuum cleaner."""
-        return self._attr_status
 
     @property
     def supported_features(self) -> int:

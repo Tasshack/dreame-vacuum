@@ -153,6 +153,14 @@
           "low_frequency": "Низкая частота"
         }
       },
+      "mop_pad_swing": {
+        "state": {
+          "off": "Выключенный",
+          "auto": "Авто",
+          "daily": "Ежедневно",
+          "weekly": "Еженедельно"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Никто",

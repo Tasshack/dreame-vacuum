@@ -46,6 +46,7 @@ from .const import (
 )
 
 DREAME_MODELS = [
+    "dreame.vacuum.p2008",
     "dreame.vacuum.r2205",
     "dreame.vacuum.r2243",
     "dreame.vacuum.r2240",
@@ -64,6 +65,7 @@ DREAME_MODELS = [
     "dreame.vacuum.r2215o",
     "dreame.vacuum.r2216o",
     "dreame.vacuum.r2228o",
+    "dreame.vacuum.r2228d",
     "dreame.vacuum.r2228",
     "dreame.vacuum.r2246",
     "dreame.vacuum.r2233",
@@ -89,6 +91,22 @@ DREAME_MODELS = [
     "dreame.vacuum.p2157",
     "dreame.vacuum.p2156o",
     "dreame.vacuum.r2360",
+    "dreame.vacuum.r2253a",
+    "dreame.vacuum.r2253b",
+    "dreame.vacuum.r2253c",
+    "dreame.vacuum.r2253d",
+    "dreame.vacuum.r2253w",
+    "dreame.vacuum.r2253t",
+    "dreame.vacuum.r2253m",
+    "dreame.vacuum.r2260",
+    "dreame.vacuum.r2273",
+    "dreame.vacuum.r2273a",
+    "dreame.vacuum.r2386",
+    "dreame.vacuum.r2398",
+    "dreame.vacuum.r2375",
+    "dreame.vacuum.r2388",
+    "dreame.vacuum.r2361a",
+    "dreame.vacuum.r9301",
 ]
 
 MIJIA_MODELS = [
@@ -104,13 +122,13 @@ MIJIA_MODELS = [
     "dreame.vacuum.p2150b",
     "dreame.vacuum.p2150o",
     "dreame.vacuum.r2209",
-    "dreame.vacuum.p2008",
     "dreame.vacuum.p2148o",
     "dreame.vacuum.p2140o",
     "dreame.vacuum.r2254",
     "dreame.vacuum.p2140p",
     "dreame.vacuum.p2140q",
     "dreame.vacuum.p2041o",
+    "xiaomi.vacuum.c102cn"
 ]
 
 MIHOME: Final = "Xiaomi Home Account"
@@ -411,7 +429,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                                     str(d["model"]) in DREAME_MODELS
                                     or str(d["model"]) in MIJIA_MODELS
                                 ),
-                                devices["result"]["list"],
+                                devices,
                             )
                         )
 

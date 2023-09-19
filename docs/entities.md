@@ -54,12 +54,10 @@
 | `ai_pet_avoidance`   | TODO | 
 | `pet_picture`   | TODO | 
 | `pet_focused_detection`   | TODO | 
-| `turbidity_detection`   | TODO | 
 | `floor_direction_cleaning`   | TODO | 
 | `pet_focused_cleaning`   | TODO | 
 | `second_cleaning`   | TODO | 
 | `mop_rewashing`   | TODO | 
-| `mop_pad_swing`   | TODO | 
 | `smart_charging`   | TODO | 
 | `human_follow`   | TODO | 
 | `max_suction_power`   | TODO | 
@@ -164,7 +162,8 @@
 | `mopping_type`   | Mopping type for deep or daily cleaning | Available on vacuums with AI fluid and stain detection feature
 | `map_rotation`   | Sets the rotation of selected map | Available with map feature and unavailable when current map is not one of the selected maps (Different map rotations can be for saved maps but only selected map is editable via this entity)
 | `selected_map`   | Currently selected map | Available with map feature and unavailable when multi-floor map is disabled or not available (Robot will end active job when selected map is changed)
-| `wider_corner_coverage`   | TODO | 
+| `wider_corner_coverage`   | TODO |  
+| `mop_pad_swing`   | TODO |
 | `voice_assistant_language`   | TODO | 
 
 ### Select Entities for rooms

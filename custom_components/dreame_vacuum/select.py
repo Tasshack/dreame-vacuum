@@ -51,6 +51,7 @@ from .dreame import (
     DreameVacuumMopWashLevel,
     DreameVacuumMoppingType,
     DreameVacuumWiderCornerCoverage,
+    DreameVacuumMopPadSwing,
     DreameVacuumFloorMaterial,
     SUCTION_LEVEL_CODE_TO_NAME,
     WATER_VOLUME_CODE_TO_NAME,
@@ -209,6 +210,18 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         ],
         exists_fn=lambda description, device: bool(
             not device.capability.mop_pad_swing
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+    ),
+    DreameVacuumSelectEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.MOP_PAD_SWING,
+        icon="mdi:arrow-top-left-bottom-right-bold",
+        entity_category=EntityCategory.CONFIG,
+        value_int_fn=lambda value, device: DreameVacuumMopPadSwing[
+            value.upper()
+        ],
+        exists_fn=lambda description, device: bool(
+            device.capability.mop_pad_swing
             and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
     ),

@@ -405,11 +405,24 @@ class DreameVacuumDreameHomeCloudProtocol:
         return None
 
     def get_file_url(self, object_name: str = "") -> Any:
-        return self.get_interim_file_url(object_name)
+        api_response = self._api_call(
+            f"{self._strings[23]}/{self._strings[39]}/{self._strings[56]}",
+            {
+                "did": str(self._did),
+                "uid": str(self._uid),
+                self._strings[35]: self._model,
+                "filename": object_name[1:],
+                self._strings[21]: self._country,
+            },
+        )
+        if api_response is None or "data" not in api_response:
+            return None
+
+        return api_response["data"]
 
     def get_interim_file_url(self, object_name: str = "") -> str:
         api_response = self._api_call(
-            f"{self._strings[23]}/{self._strings[39]}",
+            f"{self._strings[23]}/{self._strings[39]}/{self._strings[55]}",
             {
                 "did": str(self._did),
                 self._strings[35]: self._model,
@@ -503,7 +516,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                         "Accept-Language": "en-US;q=0.8",
                         "Accept-Encoding": "gzip, deflate",
                         self._strings[47]: self._strings[3],
-                        #self._strings[48]: self._strings[4],
+                        # self._strings[48]: self._strings[4],
                         self._strings[49]: self._strings[5],
                         self._strings[50]: self._ti if self._ti else self._strings[6],
                         self._strings[51]: self._strings[52],
@@ -518,7 +531,8 @@ class DreameVacuumDreameHomeCloudProtocol:
                 response = None
                 if self._connected:
                     _LOGGER.warning(
-                        "Error while executing request: Read timed out. (read timeout=3): %s", data
+                        "Error while executing request: Read timed out. (read timeout=3): %s",
+                        data,
                     )
             except Exception as ex:
                 retries = retries + 1
@@ -575,6 +589,7 @@ class DreameVacuumMiHomeCloudProtocol:
         self.two_factor_url = None
         self._useragent = f"Android-7.1.1-1.0.0-ONEPLUS A3010-136-{DreameVacuumMiHomeCloudProtocol.get_random_agent_id()} APP/xiaomi.smarthome APPV/62830"
         self._locale = locale.getdefaultlocale()[0]
+        self._v3 = False
 
         self._fail_count = 0
         self._connected = False
@@ -754,8 +769,8 @@ class DreameVacuumMiHomeCloudProtocol:
         return None
 
     def get_file_url(self, object_name: str = "") -> Any:
-        api_response = self._api_call("home/getfileurl", {"obj_name": object_name})
-        _LOGGER.info("Get file url result: %s", api_response)
+        api_response = self._api_call(f'home/getfileurl{("_v3" if self._v3 else "")}', {"obj_name": object_name})
+        _LOGGER.debug("Get file url result: %s", api_response)
         if (
             api_response is None
             or "result" not in api_response
@@ -763,12 +778,12 @@ class DreameVacuumMiHomeCloudProtocol:
         ):
             return None
 
-        return api_response
+        return api_response["result"]["url"]
 
     def get_interim_file_url(self, object_name: str = "") -> str:
         _LOGGER.debug("Get interim file url: %s", object_name)
         api_response = self._api_call(
-            "v2/home/get_interim_file_url", {"obj_name": object_name}
+            f'v2/home/get_interim_file_url{("_pro" if self._v3 else "")}', {"obj_name": object_name}
         )
         if (
             api_response is None
@@ -826,26 +841,96 @@ class DreameVacuumMiHomeCloudProtocol:
         return api_response["result"]
 
     def get_info(self, mac: str) -> Tuple[Optional[str], Optional[str]]:
-        countries_to_check = ["cn", "de", "us", "ru", "tw", "sg", "in", "i2"]
-        if self._country is not None:
-            countries_to_check = [self._country]
-        for self._country in countries_to_check:
-            devices = self.get_devices()
-            if devices is None:
-                continue
-            found = list(
-                filter(lambda d: str(d["mac"]) == mac, devices["result"]["list"])
-            )
+        devices = self.get_devices()
+        if devices:
+            found = list(filter(lambda d: str(d["mac"]) == mac, devices))
+
             if len(found) > 0:
                 self._uid = found[0]["uid"]
                 self._did = found[0]["did"]
+                self._v3 = bool("model" in found[0] and "xiaomi.vacuum." in found[0]["model"])
                 return found[0]["token"], found[0]["localip"]
-        return None, None
 
     def get_devices(self) -> Any:
-        return self._api_call(
-            "home/device_list", {"getVirtualModel": False, "getHuamiDevices": 0}
+        device_list = []
+        response = self._api_call(
+            "v2/homeroom/gethome",
+            {
+                "fg": True,
+                "fetch_share": True,
+                "fetch_share_dev": True,
+                "limit": 100,
+                "app_ver": 7,
+            },
         )
+        if response and "result" in response and response["result"]:
+            homes = {}
+            for home in response["result"].get("homelist"):
+                homes[home["id"]] = self._userId
+
+            response = self._api_call(
+                "v2/user/get_device_cnt",
+                {
+                    "fetch_own": True,
+                    "fetch_share": True,
+                },
+            )
+            if (
+                response
+                and "result" in response
+                and response["result"]
+                and "share" in response["result"]
+                and response["result"]["share"]
+            ):
+                for device in response["result"]["share"].get("share_family"):
+                    homes[device["home_id"]] = device["home_owner"]
+
+            if homes:
+                for k, v in homes.items():
+                    response = self._api_call(
+                        "v2/home/home_device_list",
+                        {
+                            "home_id": int(k),
+                            "home_owner": v,
+                            "limit": 100,
+                            "get_split_device": True,
+                            "support_smart_home": True,
+                        },
+                    )
+                    if (
+                        response
+                        and "result" in response
+                        and response["result"]
+                        and "device_info" in response["result"]
+                        and response["result"]["device_info"]
+                    ):
+                        device_list.extend(response["result"]["device_info"])
+
+            response = self._api_call(
+                "home/device_list", {"getVirtualModel": False, "getHuamiDevices": 0}
+            )
+            if (
+                response
+                and "result" in response
+                and response["result"]
+                and "list" in response["result"]
+                and response["result"]["list"]
+            ):
+                for device in response["result"]["list"]:
+                    if (
+                        len(
+                            list(
+                                filter(
+                                    lambda d: str(d["mac"]) == device["mac"],
+                                    device_list,
+                                )
+                            )
+                        )
+                        == 0
+                    ):
+                        device_list.append(device)
+
+            return device_list
 
     def get_batch_device_datas(self, props) -> Any:
         api_response = self._api_call(
