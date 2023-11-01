@@ -122,7 +122,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         )
         
         hass.bus.async_listen(
-            persistent_notification.EVENT_PERSISTENT_NOTIFICATIONS_UPDATED,
+            persistent_notification.SIGNAL_PERSISTENT_NOTIFICATIONS_UPDATED,
             self._notification_dismiss_listener,
         )
 
