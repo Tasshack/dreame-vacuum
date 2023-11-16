@@ -10,8 +10,8 @@
       "wrong_token": "Erreur de somme de contrôle, mauvais jeton",
       "2fa_required": "Connexion à double facteur requise\n{url}",
       "credentials_incomplete": "Identifiants incomplets, merci de renseigner le nom d'utilisateur, le mot de passe et le pays",
-      "login_error": "Impossible de se connecter à Xiaomi Miio Cloud, vérifiez vos identifiants.",
-      "no_devices": "Aucun appareil pris en charge n'a été trouvé sur ce compte Xiaomi Miio cloud pour le pays sélectionné."
+      "login_error": "Impossible de se connecter, vérifiez vos identifiants.",
+      "no_devices": "Aucun appareil compatible n'a été trouvé sur ce compte pour le pays sélectionné."
     },
     "step": {
       "user": {
@@ -20,14 +20,14 @@
         },
         "description": "La fonctionnalité de cartographie nécessite une connexion au cloud et offre une configuration automatique. Si vous ne souhaitez pas utiliser la fonctionnalité de cartographie, vous pouvez sélectionner la configuration manuelle."
       },
-      "without_map": {
+      "local": {
         "data": {
           "host": "Hôte",
           "token": "Jeton"
         },
         "description": "Vous aurez besoin d'un jeton d'API de 32 caractères, consultez https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token pour obtenir des instructions."
       },
-      "with_map": {
+      "mi": {
         "data": {
           "username": "Nom d'utilisateur",
           "password": "Mot de passe",
@@ -35,6 +35,14 @@
           "prefer_cloud": "Privilégier la connexion cloud"
         },
         "description": "Connexion à Xiaomi Miio cloud, consultez https://www.openhab.org/addons/bindings/miio/#country-servers pour déterminer le serveur cloud à utiliser."
+      },
+      "dreame": {
+        "data": {
+          "username": "Nom d'utilisateur",
+          "password": "Mot de passe",
+          "country": "Pays du serveur"
+        },
+        "description": "Connexion à Dreamehome cloud."
       },
       "devices": {
         "data": {
@@ -48,7 +56,9 @@
           "color_scheme": "Palette de couleurs de la carte",
           "icon_set": "Jeu d'icônes de la carte",
           "notify": "Notification",
-          "map_objects": "Objets de la carte"
+          "map_objects": "Objets de la carte",
+          "low_resolution": "Carte basse résolution",
+          "square": "Carte carrée"
         }
       },
       "reauth_confirm": {
@@ -65,6 +75,8 @@
           "icon_set": "Jeu d'icônes de la carte",
           "notify": "Notification",
           "map_objects": "Objets de la carte",
+          "low_resolution": "Carte basse résolution",
+          "square": "Carte carrée",
           "configuration_type": "Type de configuration",
           "prefer_cloud": "Privilégier la connexion cloud"
         }
@@ -139,6 +151,14 @@
           "off": "Désactivé",
           "high_frequency": "Haute fréquence",
           "low_frequency": "Basse fréquence"
+        }
+      },
+      "mop_pad_swing": {
+        "state": {
+          "off": "Désactivé",
+          "auto": "Auto",
+          "daily": "Tous les jours",
+          "weekly": "Hebdomadaire"
         }
       },
       "floor_material": {
@@ -482,7 +502,15 @@
         },
         "repeats": {
           "name": "Repeats",
-          "description": "Number of cleaning passes for each zone between 1 and 3."
+          "description": "Number of cleaning passes for every selected zone."
+        },
+        "suction_level": {
+          "name": "Suction Level",
+          "description": "Fan speed for every selected zone."
+        },
+        "water_volume": {
+          "name": "Water Volume",
+          "description": "Water level for every selected zone."
         }
       }
     },
@@ -508,21 +536,27 @@
         }
       }
     },
-    "vacuum_set_dnd": {
-      "name": "Set DnD",
-      "description": "Enable/disable DnD functionality and/or setting its start and end time.",
+    "vacuum_goto": {
+      "name": "Go To",
+      "description": "Go to the coordinate of the map and stop.",
       "fields": {
-        "dnd_enabled": {
-          "name": "DnD Enabled",
-          "description": "Enable or disable DnD feature."
+        "x": {
+          "name": "X",
+          "description": "X Coordinate of the point."
         },
-        "dnd_start": {
-          "name": "DnD Start",
-          "description": "Start time of DnD feature."
-        },
-        "dnd_end": {
-          "name": "Dnd End",
-          "description": "End time of DnD feature."
+        "y": {
+          "name": "Y",
+          "description": "Y Coordinate of the point."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Follow Path",
+      "description": "Follow list of coordinates on the map and return to base. (Only supported on vacuums with camera)",
+      "fields": {
+        "points": {
+          "name": "Points",
+          "description": "List of coordinates of the path."
         }
       }
     },
@@ -680,7 +714,7 @@
     },
     "vacuum_set_cleaning_sequence": {
       "name": "Set Cleaning Sequence",
-      "description": "Set room cleaning sequence.",
+      "description": "Set room cleaning sequence. (Only on supported devices)",
       "fields": {
         "cleaning_sequence": {
           "name": "Cleanin sequence",
@@ -690,7 +724,7 @@
     },
     "vacuum_set_custom_cleaning": {
       "name": "Set Custom Cleaning",
-      "description": "Set custom cleaning parameters.",
+      "description": "Set custom cleaning parameters. (Only on supported devices)",
       "fields": {
         "segment_id": {
           "name": "Segment ID",
@@ -703,6 +737,10 @@
         "water_volume": {
           "name": "Water Volume",
           "description": "Water volume for each room."
+        },
+        "cleaning_mode": {
+          "name": "Cleaning Mode",
+          "description": "Cleaning for each room (only supported on vacuums with mop pad lifting feature)."
         },
         "repeats": {
           "name": "Repeats",
@@ -735,6 +773,90 @@
         "consumable": {
           "name": "Consumable",
           "description": "Consumable type."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Rename Shortcut",
+      "description": "Rename a shortcut. (Only on supported devices)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Shortcut ID",
+          "description": "ID of the shortcut."
+        },
+        "shortcut_name": {
+          "name": "Shortcut Name",
+          "description": "New name of the shortcut."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Set Carpet Area",
+      "description": "Define carpets and ignored carpets. (Only on supported devices)",
+      "fields": {
+        "carpets": {
+          "name": "Carpets",
+          "description": "Carpet areas."
+        },
+        "ignored_carpets": {
+          "name": "Ignored Carpets",
+          "description": "Ignored carpet areas for deleting the automatically detected carpets."
+        }
+      }
+    },
+    "vacuum_set_pathway": {
+      "name": "Set Pathway",
+      "description": "Define pathways.",
+      "fields": {
+        "pathways": {
+          "name": "Pathways",
+          "description": "Pathway line coordinates."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Set Predefined Points",
+      "description": "Define predefined coordinates on current map. (Only supported on vacuums with camera)",
+      "fields": {
+        "points": {
+          "name": "Points",
+          "description": "List of coordinates to be saved."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Set Obstacle Ignore",
+      "description": "Set ignore status of an obstacle. (Only supported on vacuums with AI Obstacle detection feature)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X Coordinate of the obstacle."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y Coordinate of the obstacle."
+        },
+        "obstacle_type": {
+          "name": "Obstacle Type",
+          "description": "Type of the obstacle that will be ignored."
+        },
+        "obstacle_ignored": {
+          "name": "Obstacle Ignored",
+          "description": "Obstacle is ignored or not."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Set router position",
+      "description": "Set router position on current map. (Only supported on vacuums with WiFi map feature)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X Coordinate of the router."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y Coordinate of the router."
         }
       }
     },

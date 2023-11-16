@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Callable
 
 from homeassistant.components.number import (
     NumberEntity,
@@ -13,9 +14,8 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.exceptions import HomeAssistantError
-from homeassistant.helpers import entity_platform
 
-from .const import DOMAIN, UNIT_MINUTES
+from .const import DOMAIN, UNIT_MINUTES, UNIT_AREA, UNIT_PERCENT
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription
@@ -30,6 +30,7 @@ class DreameVacuumNumberEntityDescription(
 
     mode: NumberMode = NumberMode.AUTO
     post_action: DreameVacuumAction = None
+    set_fn: Callable[[object, int]] = None
 
 
 NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
@@ -42,6 +43,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_min_value=0,
         native_max_value=100,
         native_step=1,
+        native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.CONFIG,
         post_action=DreameVacuumAction.TEST_SOUND,
     ),
@@ -54,62 +56,44 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_max_value=180,
         native_step=15,
         entity_category=EntityCategory.CONFIG,
+        exists_fn=lambda description, device: not device.capability.self_wash_base
+        and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumNumberEntityDescription(
-        property_key=DreameVacuumProperty.DND_START,
-        key="dnd_start_hour",
-        icon="mdi:clock-start",
-        mode=NumberMode.BOX,
-        native_min_value=0,
-        native_max_value=23,
+        key="self_clean_area",
+        icon_fn=lambda value, device: "mdi:texture-box"
+        if device.status.self_clean_area
+        or (device.status.current_map and not device.status.has_saved_map)
+        or ()
+        else "mdi:checkbox-blank-off-outline",
+        mode=NumberMode.SLIDER,
+        native_unit_of_measurement=UNIT_AREA,
+        exists_fn=lambda description, device: device.capability.self_wash_base
+        and device.status.self_clean_area is not None,
+        native_min_value=10,
+        native_max_value=35,
         native_step=1,
-        entity_category=EntityCategory.CONFIG,
-        value_fn=lambda value, device: value.split(":")[0],
-        format_fn=lambda value, device: "{:02d}:".format(value)
-        + device.status.dnd_start.split(":")[1],
-        entity_registry_enabled_default=False,
+        entity_category=None,
+        value_fn=lambda value, device: (
+            10
+            if device.status.self_clean_area < 10
+            else 35
+            if device.status.self_clean_area > 35
+            else device.status.self_clean_area
+        )
+        if device.status.self_clean_area > 0
+        else 20,
     ),
     DreameVacuumNumberEntityDescription(
-        property_key=DreameVacuumProperty.DND_START,
-        key="dnd_start_minute",
-        icon="mdi:clock-start",
-        mode=NumberMode.BOX,
-        native_min_value=0,
-        native_max_value=59,
+        property_key=DreameVacuumProperty.CAMERA_LIGHT_BRIGHTNESS,
+        icon="mdi:brightness-percent",
+        mode=NumberMode.SLIDER,
+        native_min_value=40,
+        native_max_value=100,
         native_step=1,
+        exists_fn=lambda description, device: device.capability.stream_status and device.capability.fill_light,  # and DreameVacuumEntityDescription().exists_fn(description, device),
+        native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.CONFIG,
-        value_fn=lambda value, device: value.split(":")[1],
-        format_fn=lambda value, device: device.status.dnd_start.split(":")[0]
-        + ":{:02d}".format(value),
-        entity_registry_enabled_default=False,
-    ),
-    DreameVacuumNumberEntityDescription(
-        property_key=DreameVacuumProperty.DND_END,
-        key="dnd_end_hour",
-        icon="mdi:clock-end",
-        mode=NumberMode.BOX,
-        native_min_value=0,
-        native_max_value=23,
-        native_step=1,
-        entity_category=EntityCategory.CONFIG,
-        value_fn=lambda value, device: value.split(":")[0],
-        format_fn=lambda value, device: "{:02d}:".format(value)
-        + device.status.dnd_end.split(":")[1],
-        entity_registry_enabled_default=False,
-    ),
-    DreameVacuumNumberEntityDescription(
-        property_key=DreameVacuumProperty.DND_END,
-        key="dnd_end_minute",
-        icon="mdi:clock-end",
-        mode=NumberMode.BOX,
-        native_min_value=0,
-        native_max_value=59,
-        native_step=1,
-        entity_category=EntityCategory.CONFIG,
-        value_fn=lambda value, device: value.split(":")[1],
-        format_fn=lambda value, device: device.status.dnd_end.split(":")[0]
-        + ":{:02d}".format(value),
-        entity_registry_enabled_default=False,
     ),
 )
 
@@ -136,7 +120,17 @@ class DreameVacuumNumberEntity(DreameVacuumEntity, NumberEntity):
         coordinator: DreameVacuumDataUpdateCoordinator,
         description: DreameVacuumNumberEntityDescription,
     ) -> None:
-        """Initialize Dreame Vacuum ."""
+        """Initialize Dreame Vacuum number."""
+        if description.set_fn is None and (
+            description.property_key is not None or description.key is not None
+        ):
+            if description.property_key is not None:
+                prop = f"set_{description.property_key.name.lower()}"
+            else:
+                prop = f"set_{description.key.lower()}"
+            if hasattr(coordinator.device, prop):
+                description.set_fn = lambda device, value: getattr(device, prop)(value)
+
         super().__init__(coordinator, description)
         self._attr_mode = description.mode
         self._attr_native_value = super().native_value
@@ -158,18 +152,26 @@ class DreameVacuumNumberEntity(DreameVacuumEntity, NumberEntity):
         if value is None:
             raise HomeAssistantError("Invalid value")
 
-        if await self._try_command(
-            "Unable to call %s",
-            self.device.set_property,
-            self.entity_description.property_key,
-            value,
-        ):
-            if self.entity_description.post_action is not None:
-                await self._try_command(
-                    "Unable to call %s",
-                    self.device.call_action,
-                    self.entity_description.post_action,
-                )
+        result = False
+
+        if self.entity_description.set_fn is not None:
+            result = await self._try_command(
+                "Unable to call: %s", self.entity_description.set_fn, self.device, value
+            )
+        elif self.entity_description.property_key is not None:
+            result = await self._try_command(
+                "Unable to call: %s",
+                self.device.set_property,
+                self.entity_description.property_key,
+                value,
+            )
+
+        if result and self.entity_description.post_action is not None:
+            await self._try_command(
+                "Unable to call %s",
+                self.device.call_action,
+                self.entity_description.post_action,
+            )
 
     @property
     def native_value(self) -> int | None:

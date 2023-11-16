@@ -20,7 +20,12 @@ from .const import DOMAIN
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription
-from .dreame import DreameVacuumProperty
+from .dreame import (
+    DreameVacuumProperty,
+    DreameVacuumAutoSwitchProperty,
+    DreameVacuumStrAIProperty,
+    DreameVacuumAIProperty,
+)
 
 
 @dataclass
@@ -63,32 +68,34 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         property_key=DreameVacuumProperty.TIGHT_MOPPING,
         icon="mdi:heating-coil",
         entity_category=EntityCategory.CONFIG,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.status.mopping_type is None
+        ),
     ),
     DreameVacuumSwitchEntityDescription(
-        property_key=DreameVacuumProperty.DND,
-        name="DND",
+        key="dnd",
+        name="DnD",
         icon_fn=lambda value, device: "mdi:minus-circle-off-outline"
         if not value
         else "mdi:minus-circle-outline",
-        format_fn=lambda value, device: bool(value),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.MULTI_FLOOR_MAP,
         icon_fn=lambda value, device: "mdi:layers-off" if value == 0 else "mdi:layers",
         entity_category=EntityCategory.CONFIG,
-        set_fn=lambda device, value: device.set_multi_map(value),
-        #exists_fn=lambda description, device: bool(
-        #    DreameVacuumEntityDescription().exists_fn(description, device)
-        #    and device.status.lidar_navigation
-        #),
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.capability.lidar_navigation
+        ),
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.AUTO_DUST_COLLECTING,
         icon_fn=lambda value, device: "mdi:autorenew-off"
         if value == 0
         else "mdi:autorenew",
-        entity_category=EntityCategory.CONFIG,
+        entity_category=None,
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.CARPET_RECOGNITION,
@@ -97,45 +104,56 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.SELF_CLEAN,
-        icon="mdi:water-sync",
-        entity_category=EntityCategory.CONFIG,
+        icon_fn=lambda value, device: "mdi:water-off-outline"
+        if value == 0
+        else "mdi:water-sync",
+        entity_category=None,
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.WATER_ELECTROLYSIS,
-        icon="mdi:lightning-bolt",
+        icon_fn=lambda value, device: "mdi:lightning-bolt-outline"
+        if value == 0
+        else "mdi:lightning-bolt",
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.AUTO_WATER_REFILLING,
-        icon="mdi:water-boiler-auto",
+        icon_fn=lambda value, device: "mdi:water-boiler-off"
+        if value == 0
+        else "mdi:water-boiler-auto",
         entity_category=EntityCategory.CONFIG,
-    ),    
-    DreameVacuumSwitchEntityDescription(
-        property_key=DreameVacuumProperty.INTELLIGENT_RECOGNITION,
-        icon="mdi:wifi-marker",
-        entity_category=EntityCategory.CONFIG,
-        exists_fn=lambda description, device: device.status.auto_switch_settings_available and DreameVacuumEntityDescription().exists_fn(description, device),
-        available_fn=lambda device: device.status.multi_map,
-    ), 
-    DreameVacuumSwitchEntityDescription(
-        key="auto_drying",
-        icon="mdi:hair-dryer",
-        entity_category=EntityCategory.CONFIG,
-        value_fn=lambda value, device: bool(device.status.auto_drying),
-        exists_fn=lambda description, device: device.status.auto_drying is not None,
-        set_fn=lambda device, value: device.set_auto_drying(value),
+        exists_fn=lambda description, device: device.capability.drainage
+        and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSwitchEntityDescription(
-        property_key=DreameVacuumProperty.CARPET_AVOIDANCE,
+        property_key=DreameVacuumProperty.INTELLIGENT_RECOGNITION,
+        icon_fn=lambda value, device: "mdi:wifi-remove"
+        if value == 0
+        else "mdi:wifi-marker",
+        entity_category=EntityCategory.CONFIG,
+        exists_fn=lambda description, device: device.capability.wifi_map
+        and DreameVacuumEntityDescription().exists_fn(description, device),
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.AUTO_DRYING,
+        icon_fn=lambda value, device: "mdi:weather-sunny-off"
+        if not value
+        else "mdi:weather-sunny",
+        entity_category=None,
+        exists_fn=lambda description, device: device.capability.self_wash_base,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        key="carpet_avoidance",
+        property_key=DreameVacuumProperty.CARPET_CLEANING,
         icon="mdi:close-box-outline",
         entity_category=EntityCategory.CONFIG,
-        value_fn=lambda value, device: device.status.carpet_avoidance,
         format_fn=lambda value, device: 1 if value else 2,
+        exists_fn=lambda description, device: not device.capability.mop_pad_unmounting
+        and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.AUTO_ADD_DETERGENT,
         icon="mdi:chart-bubble",
-        value_fn=lambda value, device: device.status.auto_add_detergent,
         entity_category=EntityCategory.CONFIG,
         format_fn=lambda value, device: int(value),
     ),
@@ -150,114 +168,234 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         icon="mdi:google-circles-group",
         entity_category=EntityCategory.CONFIG,
         format_fn=lambda value, device: int(value),
+        exists_fn=lambda description, device: bool(
+            device.capability.mop_pad_unmounting
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        )
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumProperty.VOICE_ASSISTANT,
+        icon_fn=lambda value, device: "mdi:microphone-message-off"
+        if not value
+        else "mdi:microphone-message",
+        entity_category=EntityCategory.CONFIG,
+        format_fn=lambda value, device: int(value),
     ),
     DreameVacuumSwitchEntityDescription(
         key="cleaning_sequence",
         icon="mdi:order-numeric-ascending",
         value_fn=lambda value, device: device.status.custom_order,
-        exists_fn=lambda description, device: device.status.customized_cleaning_available and device.status.map_available,
-        available_fn=lambda device: bool(
-            not device.status.started
-            and device.status.has_saved_map
-            and device.status.segments
-            and next(iter(device.status.segments.values())).order is not None
+        exists_fn=lambda description, device: device.capability.customized_cleaning
+        and device.capability.map,
+        set_fn=lambda device, value: device.set_segment_order(
+            next(iter(device.status.current_segments.values())).segment_id, value
         ),
-        set_fn=lambda device, value: device.set_segment_order(next(iter(device.status.segments.values())).segment_id, value),
         format_fn=lambda value, device: int(value),
-        entity_category=EntityCategory.CONFIG,
+        entity_category=None,
     ),
     DreameVacuumSwitchEntityDescription(
-        name="AI Obstacle Detection",
-        key="ai_obstacle_detection",
+        key="self_clean_by_zone",
+        icon_fn=lambda value, device: "mdi:texture-box"
+        if not value
+        else "mdi:home-switch",
+        value_fn=lambda value, device: bool(not device.status.self_clean_area),
+        exists_fn=lambda description, device: device.capability.self_wash_base
+        and device.status.self_clean_area is not None,
+        set_fn=lambda device, value: device.set_self_clean_area(value),
+        format_fn=lambda value, device: 0
+        if value
+        else device.status.previous_self_clean_area
+        if device.status.previous_self_clean_area
+        else 20,
+        entity_category=None,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAIProperty.AI_OBSTACLE_DETECTION,
         icon_fn=lambda value, device: "mdi:robot-off" if not value else "mdi:robot",
-        value_fn=lambda value, device: device.status.ai_obstacle_detection,
-        exists_fn=lambda description, device: device.status.ai_detection_available,
-        set_fn=lambda device, value: device.set_ai_obstacle_detection(value),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        name="AI Image Upload",
-        key="ai_obstacle_image_upload",
+        property_key=DreameVacuumAIProperty.AI_OBSTACLE_IMAGE_UPLOAD,
         icon="mdi:cloud-upload",
-        value_fn=lambda value, device: device.status.obstacle_image_upload,
-        exists_fn=lambda description, device: bool(device.status.ai_detection_available and device.status.obstacle_image_upload is not None),
-        available_fn=lambda device: device.status.ai_obstacle_detection,
-        set_fn=lambda device, value: device.set_obstacle_image_upload(value),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        name="AI Obstacle Picture",
-        key="ai_obstacle_picture",
+        property_key=DreameVacuumAIProperty.AI_OBSTACLE_PICTURE,
         icon_fn=lambda value, device: "mdi:camera-off" if not value else "mdi:camera",
-        value_fn=lambda value, device: device.status.obstacle_picture,
-        exists_fn=lambda description, device: device.status.ai_detection_available and device.status.obstacle_picture is not None,
-        available_fn=lambda device: device.status.ai_obstacle_detection,
-        set_fn=lambda device, value: device.set_obstacle_picture(value),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        name="AI Pet Detection",
-        key="ai_pet_detection",
-        icon_fn=lambda value, device: "mdi:dog-side-off" if not value else "mdi:dog-side",
-        value_fn=lambda value, device: device.status.pet_detection,
-        exists_fn=lambda description, device: bool(device.status.ai_detection_available and device.status.pet_detection is not None),
-        available_fn=lambda device: device.status.ai_obstacle_detection,
-        set_fn=lambda device, value: device.set_pet_detection(value),
+        property_key=DreameVacuumAIProperty.AI_PET_DETECTION,
+        icon_fn=lambda value, device: "mdi:dog-side-off"
+        if not value
+        else "mdi:dog-side",
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        name="AI Human Detection",
-        key="ai_human_detection",
+        property_key=DreameVacuumStrAIProperty.AI_HUMAN_DETECTION,
         icon_fn=lambda value, device: "mdi:account-off" if not value else "mdi:account",
-        value_fn=lambda value, device: device.status.human_detection,
-        exists_fn=lambda description, device: bool(device.status.ai_detection_available and device.status.human_detection is not None),
-        available_fn=lambda device: device.status.ai_obstacle_detection,
-        set_fn=lambda device, value: device.set_human_detection(value),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        name="AI Furniture Detection",
-        key="ai_furniture_detection",
+        property_key=DreameVacuumAIProperty.AI_FURNITURE_DETECTION,
         icon="mdi:table-furniture",
-        value_fn=lambda value, device: device.status.furniture_detection,
-        exists_fn=lambda description, device: bool(device.status.ai_detection_available and device.status.furniture_detection is not None),
-        available_fn=lambda device: device.status.ai_obstacle_detection,
-        set_fn=lambda device, value: device.set_furniture_detection(value),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        name="AI Fluid Detection",
-        key="ai_fluid_detection",
-        icon_fn=lambda value, device: "mdi:water-off-outline" if not value else "mdi:water-outline",
-        value_fn=lambda value, device: device.status.fluid_detection,
-        exists_fn=lambda description, device: bool(device.status.ai_detection_available and device.status.fluid_detection is not None),
-        available_fn=lambda device: device.status.ai_obstacle_detection,
-        set_fn=lambda device, value: device.set_fluid_detection(value),
+        property_key=DreameVacuumAIProperty.AI_FLUID_DETECTION,
+        icon_fn=lambda value, device: "mdi:water-off-outline"
+        if not value
+        else "mdi:water-outline",
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        key="fill_light",
-        icon_fn=lambda value, device: "mdi:brightness-2" if not value else "mdi:brightness-auto",
-        value_fn=lambda value, device: device.status.fill_light,
-        exists_fn=lambda description, device: bool(device.status.auto_switch_settings_available and device.status.fill_light is not None),
-        set_fn=lambda device, value: device.set_fill_light(value),
+        property_key=DreameVacuumAIProperty.FUZZY_OBSTACLE_DETECTION,
+        icon="mdi:blur-linear",
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        key="collision_avoidance",
-        icon_fn=lambda value, device: "mdi:sign-direction-remove" if not value else "mdi:sign-direction",
-        value_fn=lambda value, device: device.status.collision_avoidance,
-        exists_fn=lambda description, device: bool(device.status.auto_switch_settings_available and device.status.collision_avoidance is not None),
-        set_fn=lambda device, value: device.set_collision_avoidance(value),
+        property_key=DreameVacuumAIProperty.AI_PET_AVOIDANCE,
+        icon="mdi:dog-service",
+        exists_fn=lambda description, device: bool(
+            device.capability.smart_settings
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        key="stain_avoidance",
+        property_key=DreameVacuumAIProperty.PET_PICTURE,
+        icon="mdi:cat",
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAIProperty.PET_FOCUSED_DETECTION,
+        icon="mdi:dog",
+        exists_fn=lambda description, device: bool(
+            device.capability.smart_settings
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.FILL_LIGHT,
+        icon_fn=lambda value, device: "mdi:lightbulb-off"
+        if not value
+        else "mdi:lightbulb",
+        exists_fn=lambda description, device: bool(
+            device.capability.smart_settings 
+            and device.capability.fill_light
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.COLLISION_AVOIDANCE,
+        icon_fn=lambda value, device: "mdi:sign-direction-remove"
+        if not value
+        else "mdi:sign-direction",
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.STAIN_AVOIDANCE,
         icon="mdi:liquid-spot",
-        value_fn=lambda value, device: bool(device.status.stain_avoidance == 2),
-        exists_fn=lambda description, device: device.status.ai_detection_available and device.status.auto_switch_settings_available and device.status.stain_avoidance is not None,
-        set_fn=lambda device, value: device.set_stain_avoidance(2 if value else 1),
-        available_fn=lambda device: device.status.fluid_detection,
+        format_fn=lambda value, device: 2 if value else 1,
+        entity_category=EntityCategory.CONFIG,
+    ),
+    #DreameVacuumSwitchEntityDescription(
+    #    property_key=DreameVacuumAutoSwitchProperty.TURBIDITY_DETECTION,
+    #    icon_fn=lambda value, device: "mdi:blur-off" if not value else "mdi:blur",
+    #    entity_category=EntityCategory.CONFIG,
+    #),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.FLOOR_DIRECTION_CLEANING,
+        exists_fn=lambda description, device: bool(
+            device.capability.mop_pad_swing
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+        icon="mdi:arrow-decision-auto",
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.PET_FOCUSED_CLEANING,
+        exists_fn=lambda description, device: bool(
+            device.capability.smart_settings
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+        icon="mdi:paw",
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.SECOND_CLEANING,
+        icon="mdi:numeric-2-circle-outline",
+        exists_fn=lambda description, device: bool(
+            device.capability.smart_settings
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.MOP_REWASHING,
+        icon="mdi:repeat-variant",
+        exists_fn=lambda description, device: bool(
+            device.capability.smart_settings
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.SMART_CHARGING,
+        icon="mdi:battery-sync",
+        exists_fn=lambda description, device: bool(
+            device.capability.mop_pad_swing
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.HUMAN_FOLLOW,
+        icon_fn=lambda value, device: "mdi:account-off"
+        if not value
+        else "mdi:account-arrow-left",
+        exists_fn=lambda description, device: bool(device.capability.mop_pad_swing and DreameVacuumEntityDescription().exists_fn(description, device)),
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.MAX_SUCTION_POWER,
+        icon="mdi:speedometer",
+        exists_fn=lambda description, device: bool(
+            device.capability.max_suction_power
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.SMART_DRYING,
+        icon="mdi:sun-thermometer-outline",
+        exists_fn=lambda description, device: bool(
+            device.capability.mop_pad_swing
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.HOT_WASHING,
+        icon="mdi:hydraulic-oil-temperature",
+        exists_fn=lambda description, device: bool(
+            device.capability.hot_washing
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        key="camera_light_brightness_auto",
+        icon_fn=lambda value, device: "mdi:brightness-percent"
+        if not value
+        else "mdi:brightness-auto",
+        value_fn=lambda value, device: bool(
+            device.status.camera_light_brightness == 101
+        ),
+        exists_fn=lambda description, device: device.capability.stream_status and device.capability.fill_light,  # and DreameVacuumEntityDescription().exists_fn(description, device),
+        format_fn=lambda value, device: 101 if value else 40,
         entity_category=EntityCategory.CONFIG,
     ),
 )
@@ -288,6 +426,16 @@ class DreameVacuumSwitchEntity(DreameVacuumEntity, SwitchEntity):
         description: DreameVacuumSwitchEntityDescription,
     ) -> None:
         """Initialize a Dreame Vacuum switch entity."""
+        if description.set_fn is None and (
+            description.property_key is not None or description.key is not None
+        ):
+            if description.property_key is not None:
+                prop = f"set_{description.property_key.name.lower()}"
+            else:
+                prop = f"set_{description.key.lower()}"
+            if hasattr(coordinator.device, prop):
+                description.set_fn = lambda device, value: getattr(device, prop)(value)
+
         super().__init__(coordinator, description)
         self._attr_is_on = bool(self.native_value)
 
@@ -313,14 +461,14 @@ class DreameVacuumSwitchEntity(DreameVacuumEntity, SwitchEntity):
         if self.entity_description.format_fn is not None:
             value = self.entity_description.format_fn(state, self.device)
 
-        if self.entity_description.property_key is not None:
+        if self.entity_description.set_fn is not None:
+            await self._try_command(
+                "Unable to call: %s", self.entity_description.set_fn, self.device, value
+            )
+        elif self.entity_description.property_key is not None:
             await self._try_command(
                 "Unable to call: %s",
                 self.device.set_property,
                 self.entity_description.property_key,
                 value,
-            )
-        elif self.entity_description.set_fn is not None:
-            await self._try_command(
-                "Unable to call: %s", self.entity_description.set_fn, self.device, value
             )

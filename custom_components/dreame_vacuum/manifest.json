@@ -6,7 +6,7 @@
   ],
   "config_flow": true,
   "documentation": "https://github.com/Tasshack/dreame-vacuum",
-  "iot_class": "local_polling",
+  "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Tasshack/dreame-vacuum/issues",
   "requirements": [
     "pillow",
@@ -18,5 +18,5 @@
     "py-mini-racer",
     "tzlocal"
   ],
-  "version": "v1.0.1"
+  "version": "v2.0.0b6"
 }

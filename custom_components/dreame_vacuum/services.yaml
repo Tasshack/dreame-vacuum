@@ -1,6 +1,7 @@
 vacuum_clean_segment:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     segments:
@@ -33,6 +34,7 @@ vacuum_clean_segment:
 vacuum_clean_zone:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     zone:
@@ -41,6 +43,20 @@ vacuum_clean_zone:
       selector:
         object:
     repeats:
+      example: "[1,2] or 1" 
+      required: false
+      selector:
+        number:
+          min: 1
+          max: 3
+    suction_level:
+      example: "[0,3] or 0" 
+      required: false
+      selector:
+        number:
+          min: 0
+          max: 3
+    water_volume:
       example: "[1,3] or 1"
       required: false
       selector:
@@ -51,6 +67,7 @@ vacuum_clean_zone:
 vacuum_clean_spot:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     points:
@@ -80,30 +97,41 @@ vacuum_clean_spot:
           min: 1
           max: 3
 
-vacuum_set_dnd:
+vacuum_goto:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
-    dnd_enabled:
-      example: "true"
+    x:
+      example: 819
       required: true
       selector:
-        boolean:
-    dnd_start:
-      example: "22:00"
+        number:
+          mode: box
+    y:
+      example: -263
+      required: true
+      selector:
+        number:
+          mode: box
+
+vacuum_follow_path:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    points:
+      example: "[819,-263] or [[819,-263],[900,-463]]" 
       required: false
       selector:
-        text:
-    dnd_end:
-      example: "6:30"
-      required: false
-      selector:
-        text:
+        object:
 
 vacuum_remote_control_move_step:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     rotation:
@@ -126,6 +154,7 @@ vacuum_remote_control_move_step:
 vacuum_install_voice_pack:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     lang_id:
@@ -153,11 +182,13 @@ vacuum_install_voice_pack:
 vacuum_request_map:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
 
 vacuum_select_map:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     map_id:
@@ -170,6 +201,7 @@ vacuum_select_map:
 vacuum_delete_map:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     map_id:
@@ -182,16 +214,19 @@ vacuum_delete_map:
 vacuum_save_temporary_map:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
 
 vacuum_discard_temporary_map:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
 
 vacuum_replace_temporary_map:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     map_id:
@@ -204,13 +239,15 @@ vacuum_replace_temporary_map:
 vacuum_rename_map:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     map_id:
       example: "14"
       required: true
       selector:
-        text:
+        number:
+          mode: box
     map_name:
       example: "Ground Floor"
       required: true
@@ -220,6 +257,7 @@ vacuum_rename_map:
 vacuum_restore_map:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     map_id:
@@ -236,13 +274,15 @@ vacuum_restore_map:
 vacuum_merge_segments:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     map_id:
       example: "14"
       required: false
       selector:
-        text:
+        number:
+          mode: box
     segments:
       example: "[3,2]"
       required: true
@@ -252,13 +292,15 @@ vacuum_merge_segments:
 vacuum_split_segments:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     map_id:
       example: "14"
       required: false
       selector:
-        text:
+        number:
+          mode: box
     segment:
       example: "3"
       required: true
@@ -276,6 +318,7 @@ vacuum_split_segments:
 vacuum_rename_segment:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     segment_id:
@@ -295,6 +338,7 @@ vacuum_rename_segment:
 vacuum_set_cleaning_sequence:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     cleaning_sequence:
@@ -306,6 +350,7 @@ vacuum_set_cleaning_sequence:
 vacuum_set_custom_cleaning:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     segment_id:
@@ -323,6 +368,11 @@ vacuum_set_custom_cleaning:
       required: true
       selector:
         object:
+    cleaning_mode:
+      example: "[2,2,0,1,0]"
+      required: false
+      selector:
+        object:
     repeats:
       example: "[2,2,1,3,1]"
       required: true
@@ -332,27 +382,29 @@ vacuum_set_custom_cleaning:
 vacuum_set_restricted_zone:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     walls:
       example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
       required: false
       selector:
-        text:
+        object:
     zones:
       example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
       required: false
       selector:
-        text:
+        object:
     no_mops:
       example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
       required: false
       selector:
-        text:
+        object:
 
 vacuum_reset_consumable:
   target:
     entity:
+      integration: dreame_vacuum
       domain: vacuum
   fields:
     consumable:
@@ -367,6 +419,114 @@ vacuum_reset_consumable:
             - "mop_pad"
             - "silver_ion"
             - "detergent"
+
+vacuum_rename_shortcut:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    shortcut_id:
+      example: "32"
+      required: true
+      selector:
+        number:
+          mode: box
+    shortcut_name:
+      example: "Mopping after sweeping"
+      required: true
+      selector:
+        text:
+
+vacuum_set_carpet_area:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    carpets:
+      example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
+      required: false
+      selector:
+        object:
+    ignored_carpets:
+      example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
+      required: false
+      selector:
+        object:    
+
+vacuum_set_pathway:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    pathways:
+      example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
+      required: false
+      selector:
+        object:
+
+vacuum_set_predefined_points:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    points:
+      example: "[819,-263] or [[819,-263],[900,-463]]" 
+      required: false
+      selector:
+        object:
+
+vacuum_set_obstacle_ignore:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    x:
+      example: 819
+      required: true
+      selector:
+        number:
+          mode: box
+    y:
+      example: -263
+      required: true
+      selector:
+        number:
+          mode: box
+    obstacle_type:
+      example: 132
+      required: true
+      selector:
+        number:
+          mode: box
+    obstacle_ignored:
+      example: "false"
+      required: true
+      selector:
+        boolean:
+
+vacuum_set_router_position:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    x:
+      example: 819
+      required: true
+      selector:
+        number:
+          mode: box
+    y:
+      example: -263
+      required: true
+      selector:
+        number:
+          mode: box
 
 select_select_previous:
   target:

@@ -141,6 +141,14 @@
           "low_frequency": "Низька частота"
         }
       },
+      "mop_pad_swing": {
+        "state": {
+          "off": "Вимкнено",
+          "auto": "Авто",
+          "daily": "Щодня",
+          "weekly": "Щотижня"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Не вибрано",

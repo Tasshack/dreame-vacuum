@@ -56,9 +56,24 @@ Fires when there is a fault code on the device.
 - `error`: Error description
 - `code`: Fault code of the error
 
+### Low Water
+Fires when there is low water warning.
+
+#### `dreame_vacuum_low_water`
+- `entity_id`: Vacuum entity
+- `low_water`: Low water warning description
+- `code`: Fault code of the low water warning
+
+### Drainage Status
+Fires when water tank drainage is completed or failed.
+
+#### `dreame_vacuum_drainage_status`
+- `entity_id`: Vacuum entity
+- `drainage_status`: Drainage is successful or not
+
 ### 2FA Login Required
 Fires when there two factor authentication is required to login.
 
-#### `dreame_vacuum_2fa_login_`
+#### `dreame_vacuum_2fa_login`
 - `entity_id`: Vacuum entity
 - `url`: 2FA login URL
