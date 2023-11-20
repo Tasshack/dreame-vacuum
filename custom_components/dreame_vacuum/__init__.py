@@ -41,6 +41,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         ]
         coordinator.device.listen(None)
         coordinator.device.disconnect()
+        coordinator.async_set_updated_data()
         del coordinator._device
         coordinator._device = None
         del hass.data[DOMAIN][entry.entry_id]

@@ -56,14 +56,18 @@
 | `pet_focused_detection`   | TODO | 
 | `floor_direction_cleaning`   | TODO | 
 | `pet_focused_cleaning`   | TODO | 
-| `second_cleaning`   | TODO | 
-| `mop_rewashing`   | TODO | 
 | `smart_charging`   | TODO | 
 | `human_follow`   | TODO | 
 | `max_suction_power`   | TODO | 
 | `smart_drying`   | TODO | 
 | `hot_washing`   | TODO | 
+| `uv_sterilization`   | TODO | 
 | `camera_light_brightness_auto`   | TODO | 
+| `off_peak_charging`   | TODO | 
+| `mopping_under_furnitures`   | TODO | 
+| `gap_cleaning_extension`   | TODO | 
+| `intensive_carpet_cleaning`   | TODO | 
+| `large_particles_boost`   | TODO | 
 
 
 ## Sensor
@@ -110,6 +114,12 @@
 | `low_water_warning`   | TODO | 
 | `task_type`   | TODO | 
 | `cruising_history`   | TODO | 
+| `squeegee_left`   | TODO | 
+| `squeegee_time_left`   | TODO | 
+| `dirty_water_tank_left`   | TODO | 
+| `dirty_water_tank_time_left`   | TODO | 
+| `onboard_dirty_water_tank_left`   | TODO | 
+| `onboard_dirty_water_tank_time_left`   | TODO | 
 
 ## Number
 
@@ -118,6 +128,8 @@
 | `volume`   | Volume level |
 | `mop_cleaning_remainder`   | Mop cleaning remainder | 
 | `camera_light_brightness`   | TODO | 
+| `self_clean_area`   | TODO | 
+| `self_clean_time`   | TODO | 
 
 ## Time
 
@@ -125,6 +137,8 @@
 | ----------------------- | -------------------- | -------------------- |
 | `dnd_start`   | Do not disturb start | Unavailable when do not disturb is disabled
 | `dnd_end`   | Do not disturb end | Unavailable when do not disturb is disabled
+| `off_peak_charging_start`   | TODO | 
+| `off_peak_charging_end`   | TODO | 
 
 ## Button
 
@@ -135,7 +149,11 @@
 | `reset_filter`   | Reset filter remaining life left |
 | `reset_sensor`   | Reset sensor cleaning remaining left | Available on vacuums with line laser
 | `reset_mop_pad`   | Reset mop pad remaining life left | Available on vacuums with self-wash base
-| `reset_silver_ion`   | Reset silver-ion remaining life left | Available on W10 Pro
+| `reset_silver_ion`   | Reset silver-ion remaining life left | Available on vacuums with silver-ion feature
+| `reset_detergent`   | Reset detergent remaining life left | Available on vacuums with self-wash base has detergent cartridge
+| `reset_squeegee`   | TODO | 
+| `reset_dirty_water_tank`   | TODO | 
+| `reset_onboard_dirty_water_tank`   | TODO | 
 | `start_auto_empty`   | Start auto-emptying | Available on vacuums with auto-empty station
 | `clear_warning`   | Clear warning | Unavailable when there is no warning to clear
 | `start_fast_mapping`   | Start fast mapping | Unavailable when maximum map count reached
@@ -145,7 +163,13 @@
 | `start_drying`   | Manually start mop drying | Available on vacuums with self-wash base, unavailable when drying is not possible or already drying mop
 | `stop_drying`   | Stop mop drying | Available on vacuums with self-wash base, unavailable when robot is not currently drying mop
 | `water_tank_draining`   | TODO | 
+| `base_station_self_repair`   | TODO | 
 | `shortcut_{1-33}`   | TODO | 
+| `backup_map_1`   | TODO | 
+| `backup_map_2`   | TODO | 
+| `backup_map_3`   | TODO | 
+| `backup_map_4`   | TODO | 
+
 
 ## Select
 | Name  | Description  | Notes |
@@ -165,6 +189,12 @@
 | `wider_corner_coverage`   | TODO |  
 | `mop_pad_swing`   | TODO |
 | `voice_assistant_language`   | TODO | 
+| `auto_empty_mode`   | TODO |
+| `cleangenius`   | TODO |
+| `auto_rewashing`   | TODO |
+| `auto_recleaning`   | TODO |
+| `cleaning_route`   | TODO |
+| `self_clean_frequency`   | TODO |
 
 ### Select Entities for rooms
 - Room select entities are only available with cloud connection. 
@@ -177,13 +207,15 @@
 | Name  | Description  | Notes |
 | ----------------------- | -------------------- | -------------------- |
 | `name`   | Room name from predefined types or current custom name | Unavailable when room does not exists on current map
-| `floor_material`   | TODO | 
 | `cleaning_mode`   | TODO | 
 | `suction_level`   | Suction level for the room | Unavailable if customized cleaning is disabled
 | `water_volume`   | Water volume for the room | Available on vacuums with water tank and unavailable if customized cleaning is disabled
 | `mop_pad_humidity`   | Humidity level of the mop pad for the room | Available on vacuums with self-wash base and unavailable if customized cleaning is disabled
 | `cleaning times`   | Cleaning times of the room | Unavailable when cleaning job is active or customized cleaning is disabled
 | `order`   | Cleaning order of the room | Unavailable when cleaning job is active or cleaning sequence is disabled
+| `floor_material`   | TODO |
+| `floor_material_direction`   | TODO | 
+| `visibility`   | TODO |
 
 #### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/room_entities/map.md" target="_blank">For more info about customized cleaning feature</a>
 

@@ -20,14 +20,14 @@
         },
         "description": "Функція мапи потребує підключення до хмари та надає автоматичну конфігурацію. Якщо ви не хочете використовувати функцію мапи, ви можете вибрати ручну конфігурацію."
       },
-      "without_map": {
+      "local": {
         "data": {
           "host": "Хост",
           "token": "Токен"
         },
         "description": "Вам знадобиться 32-знаковий API-токен, див. https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token для інструкцій."
       },
-      "with_map": {
+      "mi": {
         "data": {
           "username": "Ім'я користувача",
           "password": "Пароль",
@@ -35,6 +35,14 @@
           "prefer_cloud": "Перевага хмарного з'єднання"
         },
         "description": "Увійдіть до хмари Xiaomi, див. https://www.openhab.org/addons/bindings/miio/#country-servers для використання хмарного сервера."
+      },
+      "dreame": {
+        "data": {
+          "username": "Ім'я користувача",
+          "password": "Пароль",
+          "country": "Країна сервера"
+        },
+        "description": "Увійдіть у хмару Dreamehome."
       },
       "devices": {
         "data": {
@@ -48,7 +56,9 @@
           "color_scheme": "Колірна схема мапи",
           "icon_set": "Набір піктограм для мапи",
           "notify": "Сповіщення",
-          "map_objects": "Об'єкти мапи"
+          "map_objects": "Об'єкти мапи",
+          "low_resolution": "Карта низької роздільної здатності",
+          "square": "Квадратна карта"
         }
       },
       "reauth_confirm": {
@@ -65,6 +75,8 @@
           "icon_set": "Набір піктограм для мапи",
           "notify": "Сповіщення",
           "map_objects": "Об'єкти мапи",
+          "low_resolution": "Карта низької роздільної здатності",
+          "square": "Квадратна карта",
           "configuration_type": "Тип конфігурації",
           "prefer_cloud": "Перевага хмарного з'єднання"
         }
@@ -117,7 +129,8 @@
         "state": {
           "avoidance": "Уникання килима",
           "adaptation": "Адаптація до килиму",
-          "remove_mop": "Видалення швабри"
+          "remove_mop": "Видалення швабри",
+          "adaptation_without_route": "Адаптація без маршруту"
         }
       },
       "mop_wash_level": {
@@ -162,6 +175,67 @@
           "english": "Англійська",
           "german": "Німецька",
           "chinese": "Китайська"
+        }
+      },
+      "order": {
+        "state": {
+          "not_set": "Не встановлено"
+        }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "За площею",
+          "by_time": "За часом",
+          "by_room": "По кімнаті"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Вимкнено",
+          "standard": "Стандартний",
+          "high_frequency": "Висока частота",
+          "low_frequency": "Низька частота"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Вертикальний",
+          "horizontal": "Горизонтальний"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Видно",
+          "hidden": "Прихований"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Вимкнено",
+          "routine_cleaning": "Регулярне прибирання",
+          "deep_cleaning": "Глибоке очищення"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Вимкнено",
+          "in_deep_mode": "У глибокому режимі",
+          "in_all_modes": "У всіх режимах"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Вимкнено",
+          "in_deep_mode": "У глибокому режимі",
+          "in_all_modes": "У всіх режимах"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "швидко",
+          "standard": "Стандартний",
+          "intensive": "Інтенсивний",
+          "deep": "Глибокий"
         }
       }
     },
@@ -375,7 +449,13 @@
           "dirty_tank_level": "Рівень води в резервуарі для використаної води занадто високий.",
           "washboard_level": "Рівень води в резервуарі для чистої води занадто високий.",
           "no_mop_in_station": "Швабри нема на станції.",
-          "dust_bag_full": "Мішок для пилу заповнений або вентиляційні отвори заблоковані."
+          "dust_bag_full": "Мішок для пилу заповнений або вентиляційні отвори заблоковані.",
+          "mop_install_failed": "Не вдалося встановити моп.",
+          "low_battery_turn_off": "Низький заряд батареї. ",
+          "dirty_tank_not_installed": "Бак для використаної води робота не встановлено.",
+          "robot_in_hidden_room": "Прихована зона. ",
+          "washboard_not_working": "Пральна дошка перестає працювати.",
+          "return_to_charge_failed": "Не вдалося повернутися до зарядки."
         }
       },
       "charging_status": {
@@ -459,318 +539,440 @@
   },
   "services": {
     "vacuum_clean_segment": {
-      "name": "Clean Segment",
-      "description": "Start the cleaning operation in the selected rooms.",
+      "name": "Чистий сегмент",
+      "description": "Почніть прибирання у вибраних кімнатах.",
       "fields": {
         "segments": {
-          "name": "Segments",
-          "description": "List of rooms to be cleaned. Only room's Character or an array of room's character, cleaning times, fan speed and mop mode to override the default values per room."
+          "name": "Сегменти",
+          "description": "Список приміщень, що підлягають прибиранню. "
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Number of cleaning passes for every selected room (unless it is overridden by customized cleaning parameter)."
+          "name": "Повтори",
+          "description": "Кількість проходів прибирання для кожної вибраної кімнати (якщо це не перевизначено спеціальним параметром прибирання)."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Fan speed for every selected room (unless it is overridden by customized cleaning parameter)."
+          "name": "Рівень всмоктування",
+          "description": "Швидкість вентилятора для кожної вибраної кімнати (якщо вона не перевизначена індивідуальним параметром прибирання)."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water level for every selected room (unless it is overridden by customized cleaning parameter)."
+          "name": "Об'єм води",
+          "description": "Рівень води для кожної вибраної кімнати (якщо він не перекривається індивідуальним параметром очищення)."
         }
       }
     },
     "vacuum_clean_zone": {
-      "name": "Clean Zone",
-      "description": "Start the cleaning operation in the selected area.",
+      "name": "Чиста зона",
+      "description": "Почніть операцію очищення у вибраній зоні.",
       "fields": {
         "zone": {
-          "name": "Zone",
-          "description": "Coordinates."
+          "name": "зона",
+          "description": "Координати."
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Number of cleaning passes for each zone between 1 and 3."
+          "name": "Повтори",
+          "description": "Кількість проходів очищення для кожної вибраної зони."
+        },
+        "suction_level": {
+          "name": "Рівень всмоктування",
+          "description": "Швидкість вентилятора для кожної вибраної зони."
+        },
+        "water_volume": {
+          "name": "Об'єм води",
+          "description": "Рівень води для кожної вибраної зони."
         }
       }
     },
     "vacuum_clean_spot": {
-      "name": "Clean Spot",
-      "description": "Start the cleaning operation in the selected points on the map.",
+      "name": "Чисте місце",
+      "description": "Почніть операцію з очищення у вибраних точках на карті.",
       "fields": {
         "points": {
-          "name": "Points",
-          "description": "List of coordinates to be cleaned."
+          "name": "Очки",
+          "description": "Список координат для очищення."
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Number of cleaning passes for every selected zone."
+          "name": "Повтори",
+          "description": "Кількість проходів очищення для кожної вибраної зони."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Fan speed for every selected zone."
+          "name": "Рівень всмоктування",
+          "description": "Швидкість вентилятора для кожної вибраної зони."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water level for every selected zone."
+          "name": "Об'єм води",
+          "description": "Рівень води для кожної вибраної зони."
         }
       }
     },
-    "vacuum_set_dnd": {
-      "name": "Set DnD",
-      "description": "Enable/disable DnD functionality and/or setting its start and end time.",
+    "vacuum_goto": {
+      "name": "Йти до",
+      "description": "Перейдіть до координати карти і зупиніться.",
       "fields": {
-        "dnd_enabled": {
-          "name": "DnD Enabled",
-          "description": "Enable or disable DnD feature."
+        "x": {
+          "name": "X",
+          "description": "X Координата точки."
         },
-        "dnd_start": {
-          "name": "DnD Start",
-          "description": "Start time of DnD feature."
-        },
-        "dnd_end": {
-          "name": "Dnd End",
-          "description": "End time of DnD feature."
+        "y": {
+          "name": "Ю",
+          "description": "Y Координата точки."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Дотримуйтесь шляху",
+      "description": "Дотримуйтеся списку координат на карті та повертайтеся на базу. ",
+      "fields": {
+        "points": {
+          "name": "Очки",
+          "description": "Список координат шляху."
         }
       }
     },
     "vacuum_remote_control_move_step": {
-      "name": "Remote Control Move Step",
-      "description": "Remotely control move the bot one step.",
+      "name": "Крок переміщення пульта дистанційного керування",
+      "description": "Дистанційне керування переміщення бота на один крок.",
       "fields": {
         "rotation": {
-          "name": "Rotation",
-          "description": "Turn in binary degrees between -128 and 128."
+          "name": "Обертання",
+          "description": "Переведіть у двійкові градуси від -128 до 128."
         },
         "velocity": {
-          "name": "Velocity",
-          "description": "Move speed, from 100 (forward) to -300 (backward)."
+          "name": "швидкість",
+          "description": "Швидкість пересування від 100 (вперед) до -300 (назад)."
         }
       }
     },
     "vacuum_install_voice_pack": {
-      "name": "Install Voice Pack",
-      "description": "Install official or custom voice pack.",
+      "name": "Встановіть Voice Pack",
+      "description": "Встановіть офіційний або спеціальний голосовий пакет.",
       "fields": {
         "lang_id": {
-          "name": "Language ID",
-          "description": "Language ID of this pack."
+          "name": "ID мови",
+          "description": "Ідентифікатор мови цього пакета."
         },
         "url": {
           "name": "URL",
-          "description": "Url of this pack it should be reachable by the vacuum bot."
+          "description": "URL-адреса цього пакета має бути доступна для вакуумного бота."
         },
         "md5": {
           "name": "MD5",
-          "description": "MD5 checksum of the language pack."
+          "description": "Контрольна сума MD5 мовного пакета."
         },
         "size": {
-          "name": "Size",
-          "description": "Size of the language pack in bytes."
+          "name": "Розмір",
+          "description": "Розмір мовного пакета в байтах."
         }
       }
     },
     "vacuum_request_map": {
-      "name": "Request Map",
-      "description": "Request map data"
+      "name": "Карта запиту",
+      "description": "Запит картографічних даних"
     },
     "vacuum_select_map": {
-      "name": "Select Map",
-      "description": "Select current map. Used when having multiple maps/floors.",
+      "name": "Виберіть Карта",
+      "description": "Виберіть поточну карту. ",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be selected."
+          "name": "ID карти",
+          "description": "ID карти, яку потрібно вибрати."
         }
       }
     },
     "vacuum_delete_map": {
-      "name": "Delete map",
-      "description": "Delete a map.",
+      "name": "Видалити карту",
+      "description": "Видалити карту.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be deleted."
+          "name": "ID карти",
+          "description": "ID карти, яку потрібно видалити."
         }
       }
     },
     "vacuum_save_temporary_map": {
-      "name": "Save Temporary Map",
-      "description": "Save the temporary map."
+      "name": "Зберегти тимчасову карту",
+      "description": "Збережіть тимчасову карту."
     },
     "vacuum_discard_temporary_map": {
-      "name": "Discard Temporary Map",
-      "description": "Discard the temporary map."
+      "name": "Видалити тимчасову карту",
+      "description": "Відмовтеся від тимчасової карти."
     },
     "vacuum_replace_temporary_map": {
-      "name": "Replace Temporary Map",
-      "description": "Replace the temporary map with another saved map.",
+      "name": "Замінити тимчасову карту",
+      "description": "Замініть тимчасову карту іншою збереженою.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be replaced with."
+          "name": "ID карти",
+          "description": "ID карти, на яку потрібно замінити."
         }
       }
     },
     "vacuum_rename_map": {
-      "name": "Rename map",
-      "description": "Rename a map.",
+      "name": "Перейменувати карту",
+      "description": "Перейменувати карту.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map."
+          "name": "ID карти",
+          "description": "ID карти."
         },
         "map_name": {
-          "name": "Map Name",
-          "description": "New name of the map."
+          "name": "Назва карти",
+          "description": "Нова назва карти."
         }
       }
     },
     "vacuum_restore_map": {
-      "name": "Restore Map",
-      "description": "Restore a map.",
+      "name": "Відновити карту",
+      "description": "Відновити карту.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be restored."
+          "name": "ID карти",
+          "description": "ID карти, яку потрібно відновити."
         },
-        "map_url": {
-          "name": "Map URL",
-          "description": "File Url of the map."
+        "recovery_map_index": {
+          "name": "Індекс карти відновлення",
+          "description": "Індекс збереженої карти відновлення"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Відновити карту з файлу",
+      "description": "Відновити карту з файлу.",
+      "fields": {
+        "map_id": {
+          "name": "ID карти",
+          "description": "ID карти, яку потрібно відновити."
+        },
+        "file_url": {
+          "name": "URL-адреса файлу",
+          "description": "URL-адреса збереженого файлу bz2.gz або tar.gz"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Резервна карта",
+      "description": "Резервне копіювання карти в хмару.",
+      "fields": {
+        "map_id": {
+          "name": "ID карти",
+          "description": "ID карти, яку потрібно відновити."
         }
       }
     },
     "vacuum_merge_segments": {
-      "name": "Merge Segments",
-      "description": "Merge rooms.",
+      "name": "Об’єднати сегменти",
+      "description": "Об'єднати кімнати.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map."
+          "name": "ID карти",
+          "description": "ID карти."
         },
         "segments": {
-          "name": "Segments",
-          "description": "Room IDs."
+          "name": "Сегменти",
+          "description": "Ідентифікатори кімнат."
         }
       }
     },
     "vacuum_split_segments": {
-      "name": "Split Segments",
-      "description": "Split rooms.",
+      "name": "Розбиті сегменти",
+      "description": "Розділені кімнати.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map."
+          "name": "ID карти",
+          "description": "ID карти."
         },
         "segment": {
-          "name": "Segment",
-          "description": "Room ID."
+          "name": "Відрізок",
+          "description": "ID кімнати."
         },
         "line": {
-          "name": "Line",
-          "description": "Split line coordinates."
+          "name": "лінія",
+          "description": "Координати розбитої лінії."
         }
       }
     },
     "vacuum_rename_segment": {
-      "name": "Rename Segment",
-      "description": "Rename a segment.",
+      "name": "Перейменувати сегмент",
+      "description": "Перейменувати сегмент.",
       "fields": {
         "segment_id": {
-          "name": "Segment ID",
-          "description": "ID of the segment"
+          "name": "Ідентифікатор сегмента",
+          "description": "ID сегмента"
         },
         "segment_name": {
-          "name": "Segment Name",
-          "description": "New name of the segment"
+          "name": "Назва сегмента",
+          "description": "Нова назва сегмента"
         }
       }
     },
     "vacuum_set_cleaning_sequence": {
-      "name": "Set Cleaning Sequence",
-      "description": "Set room cleaning sequence.",
+      "name": "Встановіть послідовність очищення",
+      "description": "Встановити послідовність прибирання приміщення. ",
       "fields": {
         "cleaning_sequence": {
-          "name": "Cleanin sequence",
-          "description": "Segment ID list of cleaning sequence."
+          "name": "Послідовність очищення",
+          "description": "Список ідентифікаторів сегментів послідовності очищення."
         }
       }
     },
     "vacuum_set_custom_cleaning": {
-      "name": "Set Custom Cleaning",
-      "description": "Set custom cleaning parameters.",
+      "name": "Встановити спеціальне очищення",
+      "description": "Встановіть власні параметри очищення. ",
       "fields": {
         "segment_id": {
-          "name": "Segment ID",
-          "description": "Room IDs."
+          "name": "Ідентифікатор сегмента",
+          "description": "Ідентифікатори кімнат."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Suction level for each room."
+          "name": "Рівень всмоктування",
+          "description": "Рівень всмоктування для кожної кімнати."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water volume for each room."
+          "name": "Об'єм води",
+          "description": "Обсяг води для кожної кімнати."
+        },
+        "cleaning_mode": {
+          "name": "Режим очищення",
+          "description": "Прибирання для кожної кімнати (підтримується лише на пилососах із функцією підйому мочалки)."
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Cleaning times for each room."
+          "name": "Повтори",
+          "description": "Час прибирання для кожної кімнати."
         }
       }
     },
     "vacuum_set_restricted_zone": {
-      "name": "Set Restriced Zone",
-      "description": "Define virtual walls, restricted zones, and/or no mop zones.",
+      "name": "Встановити заборонену зону",
+      "description": "Визначте віртуальні стіни, зони обмеження та/або зони без швабри.",
       "fields": {
         "walls": {
-          "name": "Walls",
-          "description": "Virtual walls."
+          "name": "Стіни",
+          "description": "Віртуальні стіни."
         },
         "zones": {
-          "name": "Zones",
-          "description": "No go zones."
+          "name": "Зони",
+          "description": "Зони заборонені."
         },
         "no_mops": {
-          "name": "No Mops",
-          "description": "No mop zones."
+          "name": "Без швабр",
+          "description": "Без зон для швабри."
         }
       }
     },
     "vacuum_reset_consumable": {
-      "name": "Reset Consumable",
-      "description": "Reset a consumable.",
+      "name": "Скидання витратних матеріалів",
+      "description": "Скинути витратний матеріал.",
       "fields": {
         "consumable": {
-          "name": "Consumable",
-          "description": "Consumable type."
+          "name": "Витратний матеріал",
+          "description": "Тип витратного матеріалу."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Перейменувати ярлик",
+      "description": "Перейменувати ярлик. ",
+      "fields": {
+        "shortcut_id": {
+          "name": "Ідентифікатор ярлика",
+          "description": "ID ярлика."
+        },
+        "shortcut_name": {
+          "name": "Назва ярлика",
+          "description": "Нова назва ярлика."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Встановити килимову зону",
+      "description": "Визначте килими та ігноровані килими. ",
+      "fields": {
+        "carpets": {
+          "name": "Килими",
+          "description": "Килимові зони."
+        },
+        "ignored_carpets": {
+          "name": "Ігноровані килими",
+          "description": "Ігноровані ділянки килима для видалення автоматично виявлених килимів."
+        }
+      }
+    },
+    "vacuum_set_pathway": {
+      "name": "Встановити шлях",
+      "description": "Визначте шляхи.",
+      "fields": {
+        "pathways": {
+          "name": "Шляхи",
+          "description": "Координати лінії шляху."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Встановіть попередньо визначені точки",
+      "description": "Визначте попередньо визначені координати на поточній карті. ",
+      "fields": {
+        "points": {
+          "name": "Очки",
+          "description": "Список координат для збереження."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Встановити ігнорування перешкод",
+      "description": "Встановити статус ігнорування перешкоди. ",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X Координата перешкоди."
+        },
+        "y": {
+          "name": "Ю",
+          "description": "Y Координата перешкоди."
+        },
+        "obstacle_ignored": {
+          "name": "Перешкода проігнорована",
+          "description": "Перешкода ігнорується чи ні."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Встановіть положення маршрутизатора",
+      "description": "Встановити положення маршрутизатора на поточній карті. ",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X Координата маршрутизатора."
+        },
+        "y": {
+          "name": "Ю",
+          "description": "Y Координата маршрутизатора."
         }
       }
     },
     "select_select_previous": {
-      "name": "Select Previous",
-      "description": "Select the previous options of an select entity.",
+      "name": "Виберіть Назад",
+      "description": "Виберіть попередні параметри вибраної сутності.",
       "fields": {
         "cycle": {
-          "name": "Cycle",
-          "description": "If the option should cycle from the first to the last."
+          "name": "Цикл",
+          "description": "Якщо параметр має циклічно переходити від першого до останнього."
         }
       }
     },
     "select_select_first": {
-      "name": "Select First",
-      "description": "Select the first option of an select entity."
+      "name": "Виберіть Перший",
+      "description": "Виберіть перший параметр вибраної сутності."
     },
     "select_select_last": {
-      "name": "Select Last",
-      "description": "Select the last option of an select entity."
+      "name": "Виберіть Останній",
+      "description": "Виберіть останню опцію вибраної сутності."
     },
     "select_select_next": {
-      "name": "Select Next",
-      "description": "Select the next options of an select entity.",
+      "name": "Виберіть Далі",
+      "description": "Виберіть наступні параметри вибраної сутності.",
       "fields": {
         "cycle": {
-          "name": "Cycle",
-          "description": "If the option should cycle from the first to the last."
+          "name": "Цикл",
+          "description": "Якщо параметр має циклічно переходити від першого до останнього."
         }
       }
     }

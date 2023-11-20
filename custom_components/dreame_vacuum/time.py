@@ -6,6 +6,7 @@ from datetime import time
 from typing import Callable
 
 from homeassistant.components.time import (
+    ENTITY_ID_FORMAT,
     TimeEntity,
     TimeEntityDescription,
 )
@@ -36,12 +37,28 @@ TIMES: tuple[DreameVacuumTimeEntityDescription, ...] = (
         name="DnD Start",
         icon="mdi:clock-start",
         entity_category=EntityCategory.CONFIG,
+        exists_fn=lambda description, device: device.capability.dnd,
     ),
     DreameVacuumTimeEntityDescription(
         key="dnd_end",
         name="DnD End",
         icon="mdi:clock-end",
         entity_category=EntityCategory.CONFIG,
+        exists_fn=lambda description, device: device.capability.dnd,
+    ),
+    DreameVacuumTimeEntityDescription(
+        key="off_peak_charging_start",
+        name="Off-Peak Charging Start",
+        icon="mdi:battery-lock-open",
+        entity_category=EntityCategory.CONFIG,
+        exists_fn=lambda description, device: device.capability.off_peak_charging,
+    ),
+    DreameVacuumTimeEntityDescription(
+        key="off_peak_charging_end",
+        name="Off-Peak Charging End",
+        icon="mdi:battery-lock",
+        entity_category=EntityCategory.CONFIG,
+        exists_fn=lambda description, device: device.capability.off_peak_charging,
     ),
 )
 
@@ -80,10 +97,13 @@ class DreameVacuumTimeEntity(DreameVacuumEntity, TimeEntity):
                 description.set_fn = lambda device, value: getattr(device, prop)(value)
 
         super().__init__(coordinator, description)
+        self._generate_entity_id(ENTITY_ID_FORMAT)
         value = super().native_value
         if value:
             values = value.split(":")
             self._attr_native_value = time(int(values[0]), int(values[1]), 0)
+        else:
+            self._attr_native_value = None
 
     @callback
     def _handle_coordinator_update(self) -> None:

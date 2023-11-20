@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from typing import Callable
 
 from homeassistant.components.number import (
+    ENTITY_ID_FORMAT,
     NumberEntity,
     NumberEntityDescription,
     NumberMode,
@@ -62,27 +63,45 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
     DreameVacuumNumberEntityDescription(
         key="self_clean_area",
         icon_fn=lambda value, device: "mdi:texture-box"
-        if device.status.self_clean_area
+        if device.status.self_clean_value
         or (device.status.current_map and not device.status.has_saved_map)
-        or ()
         else "mdi:checkbox-blank-off-outline",
         mode=NumberMode.SLIDER,
         native_unit_of_measurement=UNIT_AREA,
-        exists_fn=lambda description, device: device.capability.self_wash_base
-        and device.status.self_clean_area is not None,
+        exists_fn=lambda description, device: device.capability.self_wash_base,
         native_min_value=10,
         native_max_value=35,
         native_step=1,
         entity_category=None,
         value_fn=lambda value, device: (
             10
-            if device.status.self_clean_area < 10
+            if device.status.self_clean_value < 10
             else 35
-            if device.status.self_clean_area > 35
-            else device.status.self_clean_area
+            if device.status.self_clean_value > 35
+            else device.status.self_clean_value
         )
-        if device.status.self_clean_area > 0
+        if device.status.self_clean_value and device.status.self_clean_value > 0
         else 20,
+    ),
+    DreameVacuumNumberEntityDescription(
+        key="self_clean_time",
+        icon="mdi:table-clock",
+        mode=NumberMode.SLIDER,
+        native_unit_of_measurement=UNIT_MINUTES,
+        exists_fn=lambda description, device: device.capability.self_clean_frequency,
+        native_min_value=10,
+        native_max_value=50,
+        native_step=1,
+        entity_category=None,
+        value_fn=lambda value, device: (
+            10
+            if device.status.self_clean_value < 10
+            else 50
+            if device.status.self_clean_value > 50
+            else device.status.self_clean_value
+        )
+        if device.status.self_clean_value and device.status.self_clean_value > 0
+        else 25,
     ),
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.CAMERA_LIGHT_BRIGHTNESS,
@@ -132,6 +151,7 @@ class DreameVacuumNumberEntity(DreameVacuumEntity, NumberEntity):
                 description.set_fn = lambda device, value: getattr(device, prop)(value)
 
         super().__init__(coordinator, description)
+        self._generate_entity_id(ENTITY_ID_FORMAT)
         self._attr_mode = description.mode
         self._attr_native_value = super().native_value
 

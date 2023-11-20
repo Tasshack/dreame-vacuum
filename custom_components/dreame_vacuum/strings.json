@@ -129,7 +129,8 @@
         "state": {
           "avoidance": "Avoidance",
           "adaptation": "Adaptation",
-          "remove_mop": "Remove Mop"
+          "remove_mop": "Remove Mop",
+          "adaptation_without_route": "Adaptation Without Route"
         }
       },
       "mop_wash_level": {
@@ -164,8 +165,8 @@
       "floor_material": {
         "state": {
           "none": "None",
-          "tile": "Floor tile",
-          "wood": "Wood floor"
+          "tile": "Floor Tile",
+          "wood": "Wood Floor"
         }
       },
       "voice_assistant_language": {
@@ -174,6 +175,67 @@
           "english": "English",
           "german": "German",
           "chinese": "Chinese"
+        }
+      },
+      "order": {
+        "state": {
+          "not_set": "Not Set"
+        }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "By Area",
+          "by_time": "By Time",
+          "by_room": "By Room"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Off",
+          "standard": "Standard",
+          "high_frequency": "High Frequency",
+          "low_frequency": "Low Frequency"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Vertical",
+          "horizontal": "Horizontal"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Visible",
+          "hidden": "Hidden"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Off",
+          "routine_cleaning": "Routine Cleaning",
+          "deep_cleaning": "Deep Cleaning"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Off",
+          "in_deep_mode": "In Deep Mode",
+          "in_all_modes": "In All Modes"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Off",
+          "in_deep_mode": "In Deep Mode",
+          "in_all_modes": "In All Modes"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "Quick",
+          "standard": "Standard",
+          "intensive": "Intensive",
+          "deep": "Deep"
         }
       }
     },
@@ -232,7 +294,7 @@
           "error": "Error",
           "remote_control": "Remote control",
           "sleeping": "Sleeping",
-          "self_test": "Self test",
+          "self_repair": "Self repair",
           "factory_test": "Factory test",
           "standby": "Standby",
           "room_cleaning": "Room cleaning",
@@ -387,7 +449,13 @@
           "dirty_tank_level": "The water level in the used water tank is too high.",
           "washboard_level": "Water level in the washboard is too high.",
           "no_mop_in_station": "Mop pad is not in the station.",
-          "dust_bag_full": "Dust bag is full or vents are blocked."
+          "dust_bag_full": "Dust bag is full or vents are blocked.",
+          "mop_install_failed": "Mop pad installation failed.",
+          "low_battery_turn_off": "Low battery. Robot will shut down soon.",
+          "dirty_tank_not_installed": "The used water tank of robot is not installed.",
+          "robot_in_hidden_room": "Hidden area. Please move the robot to the appropriate area and retry.",
+          "washboard_not_working": "Washboard stops working.",
+          "return_to_charge_failed": "Failed to return to charge."
         }
       },
       "charging_status": {
@@ -660,9 +728,33 @@
           "name": "Map ID",
           "description": "ID of the map to be restored."
         },
-        "map_url": {
-          "name": "Map URL",
-          "description": "File Url of the map."
+        "recovery_map_index": {
+          "name": "Recovery Map Index",
+          "description": "Index of the saved recovery map"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Restore Map From File",
+      "description": "Restore a map from file.",
+      "fields": {
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map to be restored."
+        },
+        "file_url": {
+          "name": "File Url",
+          "description": "Url of the saved bz2.gz or tar.gz file"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Backup Map",
+      "description": "Backup a map to cloud.",
+      "fields": {
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map to be restored."
         }
       }
     },
@@ -835,10 +927,6 @@
         "y": {
           "name": "Y",
           "description": "Y Coordinate of the obstacle."
-        },
-        "obstacle_type": {
-          "name": "Obstacle Type",
-          "description": "Type of the obstacle that will be ignored."
         },
         "obstacle_ignored": {
           "name": "Obstacle Ignored",

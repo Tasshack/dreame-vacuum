@@ -129,7 +129,8 @@
         "state": {
           "avoidance": "Evitar",
           "adaptation": "Adaptação",
-          "remove_mop": "Remover pano"
+          "remove_mop": "Remover pano",
+          "adaptation_without_route": "Adaptação Sem rota"
         }
       },
       "mop_wash_level": {
@@ -174,6 +175,67 @@
           "english": "Inglês",
           "german": "Alemão",
           "chinese": "Chinês"
+        }
+      },
+      "order": {
+        "state": {
+          "not_set": "Não configurado"
+        }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "Por área",
+          "by_time": "Por tempo",
+          "by_room": "Por quarto"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Desligado",
+          "standard": "Padrão",
+          "high_frequency": "Alta frequência",
+          "low_frequency": "Baixa frequência"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Vertical",
+          "horizontal": "Horizontal"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Visível",
+          "hidden": "Escondido"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Desligado",
+          "routine_cleaning": "Limpeza de rotina",
+          "deep_cleaning": "Limpeza profunda"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Desligado",
+          "in_deep_mode": "No modo profundo",
+          "in_all_modes": "Em todos os modos"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Desligado",
+          "in_deep_mode": "No modo profundo",
+          "in_all_modes": "Em todos os modos"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "Rápido",
+          "standard": "Padrão",
+          "intensive": "Intensivo",
+          "deep": "Profundo"
         }
       }
     },
@@ -387,7 +449,13 @@
           "dirty_tank_level": "O nível de água no tanque de água suja está muito alto.",
           "washboard_level": "O nível de água na placa de lavagem está muito alto.",
           "no_mop_in_station": "O pano de limpeza não está na estação.",
-          "dust_bag_full": "O saco de coleta de poeira está cheio ou as saídas de ar estão bloqueadas."
+          "dust_bag_full": "O saco de coleta de poeira está cheio ou as saídas de ar estão bloqueadas.",
+          "mop_install_failed": "A instalação do esfregão falhou.",
+          "low_battery_turn_off": "Bateria Fraca. ",
+          "dirty_tank_not_installed": "O tanque de água usado do robô não está instalado.",
+          "robot_in_hidden_room": "Área escondida. ",
+          "washboard_not_working": "A tábua de lavar para de funcionar.",
+          "return_to_charge_failed": "Falha ao retornar à cobrança."
         }
       },
       "charging_status": {
@@ -660,9 +728,33 @@
           "name": "ID do mapa",
           "description": "ID do mapa a ser restaurado."
         },
-        "map_url": {
-          "name": "URL do mapa",
-          "description": "URL do arquivo do mapa."
+        "recovery_map_index": {
+          "name": "Índice do mapa de recuperação",
+          "description": "Índice do mapa de recuperação salvo"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Restaurar mapa do arquivo",
+      "description": "Restaure um mapa do arquivo.",
+      "fields": {
+        "map_id": {
+          "name": "ID do mapa",
+          "description": "ID do mapa a ser restaurado."
+        },
+        "file_url": {
+          "name": "URL do arquivo",
+          "description": "URL do arquivo bz2.gz ou tar.gz salvo"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Mapa de backup",
+      "description": "Faça backup de um mapa na nuvem.",
+      "fields": {
+        "map_id": {
+          "name": "ID do mapa",
+          "description": "ID do mapa a ser restaurado."
         }
       }
     },
@@ -835,10 +927,6 @@
         "y": {
           "name": "Y",
           "description": "Coordenada Y do obstáculo."
-        },
-        "obstacle_type": {
-          "name": "Tipo de obstáculo",
-          "description": "Tipo de obstáculo que será ignorado."
         },
         "obstacle_ignored": {
           "name": "Obstáculo ignorado",

@@ -20,7 +20,14 @@ from .types import (
     DreameVacuumVoiceAssistantLanguage,
     DreameVacuumWiderCornerCoverage,
     DreameVacuumMopPadSwing,
+    DreameVacuumSecondCleaning,
+    DreameVacuumCleaningRoute,
+    DreameVacuumSelfCleanFrequency,
+    DreameVacuumAutoEmptyMode,
+    DreameVacuumCleanGenius,
     DreameVacuumFloorMaterial,
+    DreameVacuumFloorMaterialDirection,
+    DreameVacuumSegmentVisibility,
     DreameVacuumDrainageStatus,
     DreameVacuumLowWaterWarning,
     DreameVacuumTaskType,
@@ -35,9 +42,12 @@ from .const import (
     MOP_PAD_HUMIDITY_CODE_TO_NAME,
     CLEANING_MODE_CODE_TO_NAME,
     FLOOR_MATERIAL_CODE_TO_NAME,
+    FLOOR_MATERIAL_DIRECTION_CODE_TO_NAME,    
+    SEGMENT_VISIBILITY_CODE_TO_NAME,
     PROPERTY_TO_NAME,
     ACTION_TO_NAME,
     SUCTION_LEVEL_QUIET,
+    STATUS_CODE_TO_NAME,
 )
 from .device import DreameVacuumDevice
 from .protocol import DreameVacuumProtocol

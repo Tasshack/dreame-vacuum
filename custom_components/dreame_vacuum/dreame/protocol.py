@@ -35,6 +35,9 @@ class DreameVacuumDeviceProtocol(MiIOProtocol):
     def _api_task(self):
         while True:
             item = self._queue.get()
+            if len(item) == 0:
+                self._queue.task_done()
+                return
             response = self.send(item[1], item[2], item[3])
             if item[0]:
                 item[0](response)
@@ -42,7 +45,8 @@ class DreameVacuumDeviceProtocol(MiIOProtocol):
 
     def send_async(self, callback, command, parameters=None, retry_count=2):
         if self._thread is None:
-            self._thread = Thread(target=self._api_task, daemon=True).start()
+            self._thread = Thread(target=self._api_task, daemon=True)
+            self._thread.start()
 
         self._queue.put((callback, command, parameters, retry_count))
 
@@ -64,7 +68,7 @@ class DreameVacuumDeviceProtocol(MiIOProtocol):
     def disconnect(self):
         self._discovered = False
         if self._thread:
-            del self._thread
+            self._queue.put([])
 
 
 class DreameVacuumDreameHomeCloudProtocol:
@@ -80,7 +84,7 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._session = requests.session()
         self._queue = queue.Queue()
         self._thread = None
-        self._id = 1
+        self._id = random.randint(1, 10000)
         self._host = None
         self._model = None
         self._ti = None
@@ -89,6 +93,7 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._client_connected = False
         self._client = None
         self._message_callback = None
+        self._connected_callback = None
         self._logged_in = None
         self._stream_key = None
         self._client_key = None
@@ -102,13 +107,17 @@ class DreameVacuumDreameHomeCloudProtocol:
     def _api_task(self):
         while True:
             item = self._queue.get()
+            if len(item) == 0:
+                self._queue.task_done()
+                return
             item[0](self._api_call(item[1], item[2], item[3]))
             sleep(0.1)
             self._queue.task_done()
 
     def _api_call_async(self, callback, url, params=None, retry_count=2):
         if self._thread is None:
-            self._thread = Thread(target=self._api_task, daemon=True).start()
+            self._thread = Thread(target=self._api_task, daemon=True)
+            self._thread.start()
 
         self._queue.put((callback, url, params, retry_count))
 
@@ -156,6 +165,11 @@ class DreameVacuumDreameHomeCloudProtocol:
             client.subscribe(
                 f"/{self._strings[7]}/{self._did}/{self._uid}/{self._model}/{self._country}/"
             )
+            if not self._client_connected and self._connected_callback:
+                try:
+                    self._connected_callback()
+                except:
+                    pass
             self._client_connected = True
         else:
             if not self._set_client_key():
@@ -194,12 +208,13 @@ class DreameVacuumDreameHomeCloudProtocol:
             if self._strings[11] in prop:
                 self._stream_key = prop[self._strings[11]]
 
-    def connect(self, callback=None):
+    def connect(self, message_callback=None, connected_callback=None):
         if self._logged_in:
             info = self.get_device_info()
             if info:
-                if callback:
-                    self._message_callback = callback
+                if message_callback:
+                    self._message_callback = message_callback
+                    self._connected_callback = connected_callback
                     if self._client is None:
                         _LOGGER.info("Connecting to the device client")
                         try:
@@ -260,7 +275,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                     self._strings[50]: self._ti if self._ti else self._strings[6],
                 },
                 data=data,
-                timeout=3,
+                timeout=10,
             )
             if response.status_code == 200:
                 response = json.loads(response.text)
@@ -278,7 +293,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                 _LOGGER.error("Login failed: %s", response.text)
         except requests.exceptions.Timeout:
             response = None
-            _LOGGER.warning("Login Failed: Read timed out. (read timeout=3)")
+            _LOGGER.warning("Login Failed: Read timed out. (read timeout=10)")
         except Exception as ex:
             response = None
             _LOGGER.error("Login failed: %s", str(ex))
@@ -395,7 +410,7 @@ class DreameVacuumDreameHomeCloudProtocol:
             retry_count = 0
         while retries < retry_count + 1:
             try:
-                response = self._session.get(url, timeout=3)
+                response = self._session.get(url, timeout=10)
             except Exception as ex:
                 response = None
                 _LOGGER.warning("Unable to get file at %s: %s", url, ex)
@@ -523,7 +538,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                         self._strings[46]: self._key,
                     },
                     data=data,
-                    timeout=3,
+                    timeout=5,
                 )
                 break
             except requests.exceptions.Timeout:
@@ -531,7 +546,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                 response = None
                 if self._connected:
                     _LOGGER.warning(
-                        "Error while executing request: Read timed out. (read timeout=3): %s",
+                        "Error while executing request: Read timed out. (read timeout=5): %s",
                         data,
                     )
             except Exception as ex:
@@ -558,13 +573,17 @@ class DreameVacuumDreameHomeCloudProtocol:
         return None
 
     def disconnect(self):
+        self._session.close()
         self._connected = False
         self._logged_in = False
         if self._client is not None:
             self._client.loop_stop()
             self._client.disconnect()
-        if self._thread:
-            del self._thread
+            self._client = None
+        if self._thread:            
+            self._queue.put([])
+        self._message_callback = None
+        self._connected_callback = None
 
 
 class DreameVacuumMiHomeCloudProtocol:
@@ -603,13 +622,17 @@ class DreameVacuumMiHomeCloudProtocol:
     def _api_task(self):
         while True:
             item = self._queue.get()
+            if len(item) == 0:
+                self._queue.task_done()
+                return
             item[0](self._api_call(item[1], item[2], item[3]))
             sleep(0.1)
             self._queue.task_done()
 
     def _api_call_async(self, callback, url, params=None, retry_count=2):
         if self._thread is None:
-            self._thread = Thread(target=self._api_task, daemon=True).start()
+            self._thread = Thread(target=self._api_task, daemon=True)
+            self._thread.start()
 
         self._queue.put((callback, url, params, retry_count))
 
@@ -649,7 +672,7 @@ class DreameVacuumMiHomeCloudProtocol:
         cookies = {"userId": self._username}
         try:
             response = self._session.get(
-                url, headers=headers, cookies=cookies, timeout=3
+                url, headers=headers, cookies=cookies, timeout=5
             )
         except:
             response = None
@@ -681,7 +704,7 @@ class DreameVacuumMiHomeCloudProtocol:
 
         try:
             response = self._session.post(
-                url, headers=headers, params=fields, timeout=3
+                url, headers=headers, params=fields, timeout=5
             )
         except:
             response = None
@@ -725,7 +748,7 @@ class DreameVacuumMiHomeCloudProtocol:
             "Content-Type": "application/x-www-form-urlencoded",
         }
         try:
-            response = self._session.get(self._location, headers=headers, timeout=3)
+            response = self._session.get(self._location, headers=headers, timeout=5)
         except:
             response = None
         successful = (
@@ -759,7 +782,7 @@ class DreameVacuumMiHomeCloudProtocol:
             retry_count = 0
         while retries < retry_count + 1:
             try:
-                response = self._session.get(url, timeout=3)
+                response = self._session.get(url, timeout=5)
             except Exception as ex:
                 response = None
                 _LOGGER.warning("Unable to get file at %s: %s", url, ex)
@@ -769,7 +792,9 @@ class DreameVacuumMiHomeCloudProtocol:
         return None
 
     def get_file_url(self, object_name: str = "") -> Any:
-        api_response = self._api_call(f'home/getfileurl{("_v3" if self._v3 else "")}', {"obj_name": object_name})
+        api_response = self._api_call(
+            f'home/getfileurl{("_v3" if self._v3 else "")}', {"obj_name": object_name}
+        )
         _LOGGER.debug("Get file url result: %s", api_response)
         if (
             api_response is None
@@ -783,7 +808,8 @@ class DreameVacuumMiHomeCloudProtocol:
     def get_interim_file_url(self, object_name: str = "") -> str:
         _LOGGER.debug("Get interim file url: %s", object_name)
         api_response = self._api_call(
-            f'v2/home/get_interim_file_url{("_pro" if self._v3 else "")}', {"obj_name": object_name}
+            f'v2/home/get_interim_file_url{("_pro" if self._v3 else "")}',
+            {"obj_name": object_name},
         )
         if (
             api_response is None
@@ -848,8 +874,11 @@ class DreameVacuumMiHomeCloudProtocol:
             if len(found) > 0:
                 self._uid = found[0]["uid"]
                 self._did = found[0]["did"]
-                self._v3 = bool("model" in found[0] and "xiaomi.vacuum." in found[0]["model"])
+                self._v3 = bool(
+                    "model" in found[0] and "xiaomi.vacuum." in found[0]["model"]
+                )
                 return found[0]["token"], found[0]["localip"]
+        return None, None
 
     def get_devices(self) -> Any:
         device_list = []
@@ -979,7 +1008,7 @@ class DreameVacuumMiHomeCloudProtocol:
         while retries < retry_count + 1:
             try:
                 response = self._session.post(
-                    url, headers=headers, cookies=cookies, data=fields, timeout=3
+                    url, headers=headers, cookies=cookies, data=fields, timeout=5
                 )
                 break
             except Exception as ex:
@@ -997,7 +1026,7 @@ class DreameVacuumMiHomeCloudProtocol:
                 decoded = self.decrypt_rc4(
                     self.signed_nonce(fields["_nonce"]), response.text
                 )
-                return json.loads(decoded)
+                return json.loads(decoded) if decoded else None
             _LOGGER.warn("Execute api call failed with response: %s", response.text)
 
         if self._fail_count == 5:
@@ -1016,10 +1045,11 @@ class DreameVacuumMiHomeCloudProtocol:
         return base64.b64encode(hash_object.digest()).decode("utf-8")
 
     def disconnect(self):
+        self._session.close()
         self._connected = False
         self._logged_in = False
         if self._thread:
-            del self._thread
+            self._queue.put([])
 
     @staticmethod
     def generate_nonce():
@@ -1171,7 +1201,7 @@ class DreameVacuumProtocol:
         else:
             self.device = None
 
-    def connect(self, callback=None, retry_count=1) -> Any:
+    def connect(self, message_callback=None, connected_callback=None, retry_count=1) -> Any:
         if self._account_type == "mi":
             response = self.send("miIO.info", retry_count=retry_count)
             if (
@@ -1182,7 +1212,7 @@ class DreameVacuumProtocol:
                 self._connected = True
             return response
         else:
-            info = self.cloud.connect(callback)
+            info = self.cloud.connect(message_callback, connected_callback)
             if info:
                 self._connected = True
             return info

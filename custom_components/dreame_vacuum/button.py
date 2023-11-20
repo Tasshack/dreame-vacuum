@@ -8,6 +8,7 @@ from functools import partial
 import copy
 
 from homeassistant.components.button import (
+    ENTITY_ID_FORMAT,
     ButtonEntity,
     ButtonEntityDescription,
 )
@@ -100,6 +101,33 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         ),
     ),
     DreameVacuumButtonEntityDescription(
+        action_key=DreameVacuumAction.RESET_SQUEEGEE,
+        icon="mdi:squeegee",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.status.squeegee_life is not None
+        ),
+    ),
+    DreameVacuumButtonEntityDescription(
+        action_key=DreameVacuumAction.RESET_ONBOARD_DIRTY_WATER_TANK,
+        icon="mdi:train-car-tank",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.status.onboard_dirty_water_tank_life is not None
+        ),
+    ),
+    DreameVacuumButtonEntityDescription(
+        action_key=DreameVacuumAction.RESET_DIRTY_WATER_TANK,
+        icon="mdi:cup",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.status.dirty_water_tank_life is not None
+        ),
+    ),
+    DreameVacuumButtonEntityDescription(
         action_key=DreameVacuumAction.START_AUTO_EMPTY,
         icon_fn=lambda value, device: "mdi:delete-off"
         if not device.status.dust_collection_available
@@ -162,6 +190,15 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         exists_fn=lambda description, device: device.capability.self_wash_base
         and device.capability.drainage,
     ),
+    DreameVacuumButtonEntityDescription(
+        key="base_station_self_repair",
+        icon_fn=lambda value, device: "mdi:wrench-clock"
+        if device.status.self_repairing
+        else "mdi:wrench-cog",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        action_fn=lambda device: device.start_self_repairing(),
+        exists_fn=lambda description, device: device.capability.self_wash_base,
+    ),
 )
 
 
@@ -178,61 +215,92 @@ async def async_setup_entry(
         if description.exists_fn(description, coordinator.device)
     )
 
-    if coordinator.device.capability.shortcuts:
-        update_shortcut_buttons = partial(
-            async_update_shortcut_buttons, coordinator, {}, async_add_entities
+    if (
+        coordinator.device.capability.shortcuts
+        or coordinator.device.capability.backup_map
+    ):
+        update_buttons = partial(
+            async_update_buttons, coordinator, {}, {}, async_add_entities
         )
-        coordinator.async_add_listener(update_shortcut_buttons)
-        update_shortcut_buttons()
+        coordinator.async_add_listener(update_buttons)
+        update_buttons()
 
 
 @callback
-def async_update_shortcut_buttons(
+def async_update_buttons(
     coordinator: DreameVacuumDataUpdateCoordinator,
-    current: dict[str, list[DreameVacuumButtonEntity]],
+    current_shortcut: dict[str, list[DreameVacuumShortcutButtonEntity]],
+    current_map: dict[str, list[DreameVacuumMapButtonEntity]],
     async_add_entities,
 ) -> None:
-    if coordinator.device.status.shortcuts:
-        new_ids = set([k for k, v in coordinator.device.status.shortcuts.items()])
-    else:
-        new_ids = set([])
-
-    current_ids = set(current)
     new_entities = []
+    if coordinator.device.capability.shortcuts:
+        if coordinator.device.status.shortcuts:
+            new_ids = set([k for k, v in coordinator.device.status.shortcuts.items()])
+        else:
+            new_ids = set([])
 
-    for shortcut_id in current_ids - new_ids:
-        async_remove_shortcut_buttons(shortcut_id, coordinator, current)
+        current_ids = set(current_shortcut)
 
-    for shortcut_id in new_ids - current_ids:
-        current[shortcut_id] = [
-            DreameVacuumShortcutButtonEntity(
-                coordinator,
-                DreameVacuumButtonEntityDescription(
-                    icon="mdi:play-speed",
-                    available_fn=lambda device: not device.status.started
-                    and not device.status.shortcut_task
-                    and not device.status.draining,
-                ),
-                shortcut_id,
-            )
-        ]
-        new_entities = new_entities + current[shortcut_id]
+        for shortcut_id in current_ids - new_ids:
+            async_remove_buttons(shortcut_id, coordinator, current_shortcut)
+
+        for shortcut_id in new_ids - current_ids:
+            current_shortcut[shortcut_id] = [
+                DreameVacuumShortcutButtonEntity(
+                    coordinator,
+                    DreameVacuumButtonEntityDescription(
+                        icon="mdi:play-speed",
+                        available_fn=lambda device: not device.status.started
+                        and not device.status.shortcut_task
+                        and not device.status.draining
+                        and not device.status.self_repairing,
+                    ),
+                    shortcut_id,
+                )
+            ]
+            new_entities = new_entities + current_shortcut[shortcut_id]
+
+    if coordinator.device.capability.backup_map:
+        new_indexes = set(
+            [k for k in range(1, len(coordinator.device.status.map_list) + 1)]
+        )
+        current_ids = set(current_map)
+
+        for map_index in current_ids - new_indexes:
+            async_remove_buttons(map_index, coordinator, current_map)
+
+        for map_index in new_indexes - current_ids:
+            current_map[map_index] = [
+                DreameVacuumMapButtonEntity(
+                    coordinator,
+                    DreameVacuumButtonEntityDescription(
+                        entity_category=EntityCategory.DIAGNOSTIC,
+                        icon="mdi:content-save",
+                        available_fn=lambda device: not device.status.started
+                        and not device.status.map_backup_status
+                    ),
+                    map_index,
+                )
+            ]
+
+            new_entities = new_entities + current_map[map_index]
 
     if new_entities:
         async_add_entities(new_entities)
 
 
-def async_remove_shortcut_buttons(
-    shortcut_id: str,
+def async_remove_buttons(
+    id: str,
     coordinator: DreameVacuumDataUpdateCoordinator,
     current: dict[str, DreameVacuumButtonEntity],
 ) -> None:
     registry = entity_registry.async_get(coordinator.hass)
-    entities = current[shortcut_id]
+    entities = current[id]
     for entity in entities:
         if entity.entity_id in registry.entities:
             registry.async_remove(entity.entity_id)
-    del current[shortcut_id]
+    del current[id]
 
 
 class DreameVacuumButtonEntity(DreameVacuumEntity, ButtonEntity):
@@ -245,6 +313,7 @@ class DreameVacuumButtonEntity(DreameVacuumEntity, ButtonEntity):
     ) -> None:
         """Initialize a Dreame Vacuum Button entity."""
         super().__init__(coordinator, description)
+        self._generate_entity_id(ENTITY_ID_FORMAT)
 
     async def async_press(self, **kwargs: Any) -> None:
         """Press the button."""
@@ -266,7 +335,7 @@ class DreameVacuumButtonEntity(DreameVacuumEntity, ButtonEntity):
 
 
 class DreameVacuumShortcutButtonEntity(DreameVacuumEntity, ButtonEntity):
-    """Defines a Dreame Vacuum Button entity."""
+    """Defines a Dreame Vacuum Shortcut Button entity."""
 
     def __init__(
         self,
@@ -334,4 +403,55 @@ class DreameVacuumShortcutButtonEntity(DreameVacuumEntity, ButtonEntity):
             "Unable to call %s",
             self.device.start_shortcut,
             self.shortcut_id,
+        )
+
+
+class DreameVacuumMapButtonEntity(DreameVacuumEntity, ButtonEntity):
+    """Defines a Dreame Vacuum Map Button entity."""
+
+    def __init__(
+        self,
+        coordinator: DreameVacuumDataUpdateCoordinator,
+        description: DreameVacuumButtonEntityDescription,
+        map_index: int,
+    ) -> None:
+        """Initialize a Dreame Vacuum Map Button entity."""
+        self.map_index = map_index
+        map_data = coordinator.device.get_map(self.map_index)
+        self._map_name = map_data.custom_name if map_data else None
+        super().__init__(coordinator, description)
+        self._attr_translation_key = None
+        self._set_id()
+        self._attr_unique_id = f"{self.device.mac}_backup_map_{self.map_index}"
+        self.entity_id = (
+            f"button.{self.device.name.lower()}_backup_map_{self.map_index}"
+        )
+
+    def _set_id(self) -> None:
+        """Set name of the entity"""
+        name = (
+            f"{self.map_index}"
+            if self._map_name is None
+            else f"{self._map_name.replace('_', ' ').replace('-', ' ').title()}"
+        )
+        self._attr_name = f"{self.device.name} Backup Saved Map {name}"
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        map_data = self.device.get_map(self.map_index)
+        if map_data and self._map_name != map_data.custom_name:
+            self._map_name = map_data.custom_name
+            self._set_id()
+
+        self.async_write_ha_state()
+
+    async def async_press(self, **kwargs: Any) -> None:
+        """Press the button."""
+        if not self.available:
+            raise HomeAssistantError("Entity unavailable")
+
+        await self._try_command(
+            "Unable to call %s",
+            self.device.backup_map,
+            self.device.get_map(self.map_index).map_id,
         )

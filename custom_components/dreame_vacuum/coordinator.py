@@ -52,6 +52,9 @@ from .const import (
     NOTIFICATION_ID_REPLACE_MOP,
     NOTIFICATION_ID_SILVER_ION,
     NOTIFICATION_ID_REPLACE_DETERGENT,
+    NOTIFICATION_ID_REPLACE_SQUEEGEE,
+    NOTIFICATION_ID_CLEAN_ONBOARD_DIRTY_WATER_TANK,
+    NOTIFICATION_ID_CLEAN_DIRTY_WATER_TANK,
     NOTIFICATION_ID_CLEANUP_COMPLETED,
     NOTIFICATION_ID_WARNING,
     NOTIFICATION_ID_ERROR,
@@ -77,6 +80,9 @@ from .const import (
     CONSUMABLE_MOP_PAD,
     CONSUMABLE_SILVER_ION,
     CONSUMABLE_DETERGENT,
+    CONSUMABLE_SQUEEGEE,
+    CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
+    CONSUMABLE_DIRTY_WATER_TANK,
 )
 
 
@@ -151,14 +157,6 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             persistent_notification.SIGNAL_PERSISTENT_NOTIFICATIONS_UPDATED,
             self._notification_dismiss_listener,
         )
-
-    def __del__(self):
-        if self._device is not None:
-            self._device.listen(None)
-            self._device.disconnect()
-            del self._device
-            self._device = None
-        super().__del__()
 
     def _dust_collection_changed(self, previous_value=None) -> None:
         if self._device.status.auto_emptying_not_performed:
@@ -276,15 +274,15 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         if low_water_warning.value > 0 and (
             not previous_value or low_water_warning.value > 1
         ):
-            low_water_warning = self._device.status.low_water_warning_name_description
+            low_water_warning_description = self._device.status.low_water_warning_name_description
             self._fire_event(
                 EVENT_LOW_WATER,
-                {EVENT_LOW_WATER: description[0], "code": low_water_warning.value},
+                {EVENT_LOW_WATER: low_water_warning_description[0], "code": low_water_warning.value},
             )
 
-            description = f"### {low_water_warning[0]}"
-            if len(low_water_warning[1]) > 2:
-                description = f"{description}\n{low_water_warning[1]}"
+            description = f"### {low_water_warning_description[0]}"
+            if len(low_water_warning_description[1]) > 2:
+                description = f"{description}\n{low_water_warning_description[1]}"
             self._create_persistent_notification(description, NOTIFICATION_ID_LOW_WATER)
         elif self._low_water:
             self._remove_persistent_notification(NOTIFICATION_ID_LOW_WATER)
@@ -322,10 +320,15 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
     def _check_consumable(self, consumable, notification_id, property):
         description = self._device.status.consumable_life_warning_description(property)
         if description:
+            image = CONSUMABLE_IMAGE.get(consumable)
+            notification = f"### {description[0]}\n{description[1]}"
+            if image:
+                notification = f"{notification}\n![image](data:{CONTENT_TYPE};base64,{image})"
             self._create_persistent_notification(
-                f"### {description[0]}\n{description[1]}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(consumable)})",
+                notification,
                 notification_id,
             )
+            
             self._fire_event(
                 EVENT_CONSUMABLE,
                 {
@@ -365,6 +368,21 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             NOTIFICATION_ID_REPLACE_MOP,
             DreameVacuumProperty.MOP_PAD_LEFT,
         )
+        self._check_consumable(
+            CONSUMABLE_SQUEEGEE,
+            NOTIFICATION_ID_REPLACE_SQUEEGEE,
+            DreameVacuumProperty.SQUEEGEE_LEFT,
+        )
+        self._check_consumable(
+            CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
+            NOTIFICATION_ID_CLEAN_ONBOARD_DIRTY_WATER_TANK,
+            DreameVacuumProperty.ONBOARD_DIRTY_WATER_TANK_LEFT,
+        )
+        self._check_consumable(
+            CONSUMABLE_DIRTY_WATER_TANK,
+            NOTIFICATION_ID_CLEAN_DIRTY_WATER_TANK,
+            DreameVacuumProperty.DIRTY_WATER_TANK_LEFT,
+        )
         if self._device.capability.self_wash_base:
             self._check_consumable(
                 CONSUMABLE_SILVER_ION,
@@ -376,6 +394,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 NOTIFICATION_ID_REPLACE_DETERGENT,
                 DreameVacuumProperty.DETERGENT_LEFT,
             )
+
 
     def _create_persistent_notification(self, content, notification_id) -> None:
         if self._notify or notification_id == NOTIFICATION_ID_2FA_LOGIN:
@@ -418,7 +437,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         )
 
     def _notification_dismiss_listener(self, type, data) -> None:
-        if type == persistent_notification.UpdateType.REMOVED:
+        if type == persistent_notification.UpdateType.REMOVED and self._device:
             notifications = self.hass.data.get(persistent_notification.DOMAIN)
             if self._has_warning:
                 if (

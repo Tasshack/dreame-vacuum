@@ -62,15 +62,17 @@ entities:
       - >- 
         states['{{ vacuum_entity }}']
       - >-
-        (vars[6].attributes.rooms && vars[6].attributes.selected_map ? vars[6].attributes.rooms[vars[6].attributes.selected_map].length : 1)
+        (vars[6].attributes.rooms && vars[6].attributes.selected_map ? vars[6].attributes.rooms[vars[6].attributes.selected_map].filter(function (e) { return states['select.{{ vacuum_name }}_room_' + e.id + '_order'] && states['select.{{ vacuum_name }}_room_' + e.id + '_order'].state != 'not_set' }).length : 0)
       - >-
         ({{ current_room }} ? 'var(--state-icon-active-color)' : 'var(--text-primary-color)')
       - >-
         (vars[6].attributes.cleaning_sequence ? 'inherit' : 'none')
       - >-
-        (vars[5].state != 'unavailable' ? 'inherit' : 'none')
+        (vars[5] && vars[5].state != 'unavailable' ? 'inherit' : 'none')
       - >-
         (vars[6].attributes.customized_cleaning && (!vars[6].attributes.active_segments || states['{{ vacuum_entity }}'].attributes.active_segments.includes(vars[0])) ? 'inherit' : 'none')        
+      - >-
+        (vars[5] && vars[5].state != 'not_set' ? 'inherit' : 'hidden')
       {%- if custom_cleaning_mode %}
       - states['select.{{ vacuum_name }}_room_' + vars[0] + '_cleaning_mode']
       {%- endif %}
@@ -82,7 +84,7 @@ entities:
       - ${vars[5].entity_id}
       - ${vars[6].entity_id}
       {%- if custom_cleaning_mode %}
-      - ${vars[12].entity_id}
+      - ${vars[13].entity_id}
       {%- endif %}
     card:
       type: conditional
@@ -96,27 +98,27 @@ entities:
         name: ${vars[1].state}
         entities:
         {%- if custom_cleaning_mode %}
-          - icon: ${vars[12].attributes.icon}
-            entity: ${vars[12].entity_id}
+          - icon: ${vars[13].attributes.icon}
+            entity: ${vars[13].entity_id}
             name: ' '
             tap_action: 
               action: call-service
               service: dreame_vacuum.select_select_next
               service_data:
-                entity_id: ${vars[12].entity_id}
+                entity_id: ${vars[13].entity_id}
             double_tap_action:
               action: call-service
               service: dreame_vacuum.select_select_previous
               service_data:
-                entity_id: ${vars[12].entity_id}
+                entity_id: ${vars[13].entity_id}
             hold_action:
               action: more-info
             styles:
               display: ${vars[11]}
               pointer-events: >-
-                ${vars[12].state != 'unavailable' ? 'inherit' : 'none'}
+                ${vars[13].state != 'unavailable' ? 'inherit' : 'none'}
               width: 28px
-              '--paper-item-icon-color': ${vars[7]}
+              '--paper-item-icon-color': ${vars[8]}
         {%- endif %}
           - icon: ${vars[2].attributes.icon}
             entity: ${vars[2].entity_id}
@@ -138,7 +140,7 @@ entities:
               pointer-events: >-
                 ${vars[2].state != 'unavailable' ? 'inherit' : 'none'}
               width: 28px
-              '--paper-item-icon-color': ${vars[7]}
+              '--paper-item-icon-color': ${vars[8]}
           - icon: ${vars[3].attributes.icon}
             entity: ${vars[3].entity_id}
             name: ' '
@@ -192,6 +194,7 @@ entities:
               action: more-info
             styles:
               display: ${vars[9]}
+              visibility: ${vars[12]}
               margin-right: 0
               margin-left: 8px
               '--paper-item-icon-color': >-
@@ -211,6 +214,7 @@ entities:
               action: more-info
             styles:
               display: ${vars[9]}
+              visibility: ${vars[12]}
               '--paper-item-icon-color': {{ 'var(--primary-color)' if loop.index > 1 else 'var(--state-unavailable-color)' }}
               pointer-events: {{ "${vars[10]}" if loop.index > 1 else 'none' }}
   {%- endfor %}

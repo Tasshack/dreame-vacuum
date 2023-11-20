@@ -22,21 +22,37 @@
 | L10 Ultra                                 | dreame.vacuum.r2257o |
 | L10s Pro                                  | dreame.vacuum.r2215o |
 | L10s Pro                                  | dreame.vacuum.r2216o |
+| L10s Prime                                | dreame.vacuum.r2232b |
+| L10s Prime                                | dreame.vacuum.r2232c |
+| L10s Prime                                | dreame.vacuum.r2232d |
 | L10s Ultra                                | dreame.vacuum.r2228o |
 | L10s Ultra SE                             | dreame.vacuum.r2228d |
 | L20 Ultra                                 | dreame.vacuum.r2253b |
 | L20 Ultra                                 | dreame.vacuum.r2253t |
 | L20 Ultra                                 | dreame.vacuum.r2253m |
+| ~~L20 Ultra~~                             | ~~dreame.vacuum.r2394a~~ |
+| ~~L20 Ultra~~                             | ~~dreame.vacuum.r2394l~~ |
+| ~~L20 Ultra~~                             | ~~dreame.vacuum.r2394f~~ |
+| ~~L20 Ultra~~                             | ~~dreame.vacuum.r2394s~~ |
 | L20 Ultra (White)                         | dreame.vacuum.r2253w |
 | L20 Ultra Complete                        | dreame.vacuum.r2253c |
 | L20 Ultra Complete (White)                | dreame.vacuum.r2253d |
+| ~~L20 Ultra Complete~~                    | ~~dreame.vacuum.r2394u~~ |
+| ~~L20 Ultra Complete~~                    | ~~dreame.vacuum.r2394k~~ |
+| ~~L20 Ultra Complete~~                    | ~~dreame.vacuum.r2394j~~ |
 | L30 Ultra                                 | dreame.vacuum.r2361a |
+| Master One                                | dreame.vacuum.r2310  |
+| Master Pro                                | dreame.vacuum.r2310a |
 | S10                                       | dreame.vacuum.r2228  |
 | S10 Plus                                  | dreame.vacuum.r2246  |
 | S10 Pro                                   | dreame.vacuum.r2233  |
+| S10 Pro (Mop Pad Swing)                   | dreame.vacuum.r9311  |
 | S10 Pro Plus                              | dreame.vacuum.r2247  |
+| S10 Pro Plus (Mop Pad Swing)              | dreame.vacuum.r9305  |
+| S10 Pro Ultra (Mop Pad Swing)             | dreame.vacuum.r9304  |
 | S10+                                      | dreame.vacuum.r2211o |
 | S20                                       | dreame.vacuum.r2316  |
+| S20 (Mop Pad Swing)                       | dreame.vacuum.r9302  |
 | S20 Plus                                  | dreame.vacuum.r2316p |
 | S20 Plus (Hot Water)                      | dreame.vacuum.r2398  |
 | S20 Pro                                   | dreame.vacuum.r2313  |
@@ -56,6 +72,8 @@
 | X20 Pro                                   | dreame.vacuum.r2273  |
 | X20 Pro Plus                              | dreame.vacuum.r2273a |
 | X20 Pro Plus                              | dreame.vacuum.r2253  |
+| X30                                       | dreame.vacuum.r2375  |
+| X30 Pro                                   | dreame.vacuum.r9301  |
 | Z10 Pro                                   | dreame.vacuum.p2028  |
 
 ## Mijia
@@ -84,7 +102,30 @@
 ## Mova
 | Name	                                  | Model  |
 |-------------------------------------------|--------|
-| 10 Robot Vacuum and Mop                   | dreame.vacuum.2388  |
+| 10 Robot Vacuum and Mop                   | dreame.vacuum.r2388  |
 | 免洗10                                    | dreame.vacuum.p2386  |
 | Z500                                      | dreame.vacuum.p2156o |
 | L600                                      | dreame.vacuum.p2157  |
+
+
+# Unsupported Devices
+
+## Mijia
+| Name	                                  | Model  |
+|-------------------------------------------|--------|
+| 1C                                        | dreame.vacuum.ma1808 |
+| 1C                                        | dreame.vacuum.md1808 |
+| 2C                                        | dreame.vacuum.mb1808 |
+| 2C                                        | dreame.vacuum.mc1808 |
+| 3C                                        | ijai.vacuum.v18      |
+| Mi Robot Vacuum-Mop Pro                   | ijai.vacuum.v1       |
+| Mi Robot Vacuum-Mop 2                     | ijai.vacuum.v2       |
+| Mi Robot Vacuum-Mop 2 Pro                 | ijai.vacuum.v13      |
+| Mi Robot Vacuum-Mop 2 Pro                 | ijai.vacuum.v3       |
+| Mi Robot Vacuum-Mop 2 Pro                 | ijai.vacuum.v15      |
+| Mi Robot Vacuum-Mop 2 Lite                | ijai.vacuum.v10      |
+| Mi Robot Vacuum-Mop 2S                    | ijai.vacuum.v19      |
+| Mi Robot Vacuum-Mop 2i                    | ijai.vacuum.v16      |
+| Mi Robot Vacuum M1                        | ijai.vacuum.v14      |
+| Mi Robot Vacuum S10                       | ijai.vacuum.v17      |
+| 米家免洗扫拖机器人 2                       | xiaomi.vacuum.c101   |

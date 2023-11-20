@@ -3,7 +3,7 @@
 ![GitHub issues](https://img.shields.io/github/issues/Tasshack/dreame-vacuum)
 [![HACS](https://img.shields.io/badge/HACS-Default-orange.svg?logo=HomeAssistantCommunityStore&logoColor=white)](https://github.com/hacs/integration)
 [![Community Forum](https://img.shields.io/static/v1.svg?label=Community&message=Forum&color=41bdf5&logo=HomeAssistant&logoColor=white)](https://community.home-assistant.io/t/custom-component-dreame-vacuum/473026)
-[![Ko-Fi](https://img.shields.io/static/v1.svg?label=%20&message=Ko-Fi&color=F16061&logo=ko-fi&logoColor=white)](https://www.ko-fi/Tasshack)
+[![Ko-Fi](https://img.shields.io/static/v1.svg?label=%20&message=Ko-Fi&color=F16061&logo=ko-fi&logoColor=white)](https://www.ko-fi.com/Tasshack)
 [![PayPal.Me](https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal)](https://paypal.me/Tasshackk)
 
 ![dreame Logo](https://cdn.shopify.com/s/files/1/0302/5276/1220/files/rsz_logo_-01_400x_2ecfe8c0-2756-4bd1-a3f4-593b1f73e335_284x.jpg "dreame Logo")
@@ -18,13 +18,18 @@ Complete app replacement with Home Assistant for Dreame robot vacuums.
 
 ## Features
 
-- [Supported Devices](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/supported_devices.md)
+- [Supported devices](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/supported_devices.md)
 - [Auto generated device entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md)
 - [Live and multi floor map support](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md)
+- [Map obstacle photos](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#obstacle-photos)
+- [Cleaning and cruising history maps](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#cleaning-and-cruising-history-maps)
+- [Cloud and local map backup/recovery](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#backup-and-recovery)
+- [Saved WiFi maps](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#wifi-map)
 - [Customized room cleaning entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/room_entities.md)
 - [Services for device and map with examples](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md)
 - [Persistent notifications and error reporting](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md)
 - [Events for automations](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/events.md)
+- Dreamehome account support
 
 
 ## Configuration
@@ -240,7 +245,7 @@ attributes:
 
 #### With Dreame Vacuum Card
 
-*Coming Soon*
+*Work in progress*
 
 
 ## Thanks To

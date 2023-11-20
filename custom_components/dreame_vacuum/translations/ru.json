@@ -127,9 +127,10 @@
       },
       "carpet_cleaning": {
         "state": {
-          "off": "Выключенный",
-          "high_frequency": "Высокая частота",
-          "low_frequency": "Низкая частота"
+          "avoidance": "Избегание",
+          "adaptation": "Приспособление",
+          "remove_mop": "Удалить швабру",
+          "adaptation_without_route": "Адаптация без маршрута"
         }
       },
       "mop_wash_level": {
@@ -174,6 +175,67 @@
           "english": "Английский",
           "german": "Немецкий",
           "chinese": "Китайский"
+        }
+      },
+      "order": {
+        "state": {
+          "not_set": "Не задано"
+        }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "По площади",
+          "by_time": "По времени",
+          "by_room": "По комнате"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Выключенный",
+          "standard": "Стандартный",
+          "high_frequency": "Высокая частота",
+          "low_frequency": "Низкая частота"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Вертикальный",
+          "horizontal": "Горизонтальный"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Видимый",
+          "hidden": "Скрытый"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Выключенный",
+          "routine_cleaning": "Регулярная уборка",
+          "deep_cleaning": "Глубокая очистка"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Выключенный",
+          "in_deep_mode": "В глубоком режиме",
+          "in_all_modes": "Во всех режимах"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Выключенный",
+          "in_deep_mode": "В глубоком режиме",
+          "in_all_modes": "Во всех режимах"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "Быстрый",
+          "standard": "Стандартный",
+          "intensive": "Интенсивный",
+          "deep": "Глубокий"
         }
       }
     },
@@ -387,7 +449,13 @@
           "dirty_tank_level": "Уровень воды в резервуаре для использованной воды слишком высок.",
           "washboard_level": "Уровень воды в стиральной доске слишком высок.",
           "no_mop_in_station": "Швабры нет на станции.",
-          "dust_bag_full": "Пылесборник полон или забиты вентиляционные отверстия."
+          "dust_bag_full": "Пылесборник полон или забиты вентиляционные отверстия.",
+          "mop_install_failed": "Не вдалося встановити моп.",
+          "low_battery_turn_off": "Низький заряд батареї. ",
+          "dirty_tank_not_installed": "Бак для використаної води робота не встановлено.",
+          "robot_in_hidden_room": "Прихована зона. ",
+          "washboard_not_working": "Пральна дошка перестає працювати.",
+          "return_to_charge_failed": "Не вдалося повернутися до зарядки."
         }
       },
       "charging_status": {
@@ -471,420 +539,440 @@
   },
   "services": {
     "vacuum_clean_segment": {
-      "name": "Clean Segment",
-      "description": "Start the cleaning operation in the selected rooms.",
+      "name": "Очистить сегмент",
+      "description": "Запустите операцию уборки в выбранных комнатах.",
       "fields": {
         "segments": {
-          "name": "Segments",
-          "description": "List of rooms to be cleaned. Only room's Character or an array of room's character, cleaning times, fan speed and mop mode to override the default values per room."
+          "name": "Сегменты",
+          "description": "Список помещений, подлежащих уборке. "
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Number of cleaning passes for every selected room (unless it is overridden by customized cleaning parameter)."
+          "name": "Повторы",
+          "description": "Количество проходов уборки для каждой выбранной комнаты (если оно не переопределено настраиваемым параметром уборки)."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Fan speed for every selected room (unless it is overridden by customized cleaning parameter)."
+          "name": "Уровень всасывания",
+          "description": "Скорость вентилятора для каждой выбранной комнаты (если она не изменена пользовательским параметром очистки)."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water level for every selected room (unless it is overridden by customized cleaning parameter)."
+          "name": "Объем воды",
+          "description": "Уровень воды для каждой выбранной комнаты (если он не изменен настраиваемым параметром очистки)."
         }
       }
     },
     "vacuum_clean_zone": {
-      "name": "Clean Zone",
-      "description": "Start the cleaning operation in the selected area.",
+      "name": "Чистая зона",
+      "description": "Запустите операцию очистки в выбранной области.",
       "fields": {
         "zone": {
-          "name": "Zone",
-          "description": "Coordinates."
+          "name": "Зона",
+          "description": "Координаты."
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Number of cleaning passes for every selected zone."
+          "name": "Повторы",
+          "description": "Количество проходов очистки для каждой выбранной зоны."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Fan speed for every selected zone."
+          "name": "Уровень всасывания",
+          "description": "Скорость вентилятора для каждой выбранной зоны."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water level for every selected zone."
+          "name": "Объем воды",
+          "description": "Уровень воды для каждой выбранной зоны."
         }
       }
     },
     "vacuum_clean_spot": {
-      "name": "Clean Spot",
-      "description": "Start the cleaning operation in the selected points on the map.",
+      "name": "Чистое место",
+      "description": "Начните операцию по очистке в выбранных точках на карте.",
       "fields": {
         "points": {
-          "name": "Points",
-          "description": "List of coordinates to be cleaned."
+          "name": "Точки",
+          "description": "Список координат, подлежащих очистке."
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Number of cleaning passes for every selected zone."
+          "name": "Повторы",
+          "description": "Количество проходов очистки для каждой выбранной зоны."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Fan speed for every selected zone."
+          "name": "Уровень всасывания",
+          "description": "Скорость вентилятора для каждой выбранной зоны."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water level for every selected zone."
+          "name": "Объем воды",
+          "description": "Уровень воды для каждой выбранной зоны."
         }
       }
     },
     "vacuum_goto": {
-      "name": "Go To",
-      "description": "Go to the coordinate of the map and stop.",
+      "name": "Идти к",
+      "description": "Идите к координате карты и остановитесь.",
       "fields": {
         "x": {
-          "name": "X",
-          "description": "X Coordinate of the point."
+          "name": "Икс",
+          "description": "X Координата точки."
         },
         "y": {
-          "name": "Y",
-          "description": "Y Coordinate of the point."
+          "name": "Да",
+          "description": "Y Координата точки."
         }
       }
     },
     "vacuum_follow_path": {
-      "name": "Follow Path",
-      "description": "Follow list of coordinates on the map and return to base. (Only supported on vacuums with camera)",
+      "name": "Следовать по пути",
+      "description": "Следуйте списку координат на карте и вернитесь на базу. ",
       "fields": {
         "points": {
-          "name": "Points",
-          "description": "List of coordinates of the path."
+          "name": "Точки",
+          "description": "Список координат пути."
         }
       }
     },
     "vacuum_remote_control_move_step": {
-      "name": "Remote Control Move Step",
-      "description": "Remotely control move the bot one step.",
+      "name": "Шаг перемещения пульта дистанционного управления",
+      "description": "Дистанционное управление перемещением бота на один шаг.",
       "fields": {
         "rotation": {
-          "name": "Rotation",
-          "description": "Turn in binary degrees between -128 and 128."
+          "name": "Вращение",
+          "description": "Поверните в двоичных градусах от -128 до 128."
         },
         "velocity": {
-          "name": "Velocity",
-          "description": "Move speed, from 100 (forward) to -300 (backward)."
+          "name": "Скорость",
+          "description": "Скорость перемещения от 100 (вперед) до -300 (назад)."
         }
       }
     },
     "vacuum_install_voice_pack": {
-      "name": "Install Voice Pack",
-      "description": "Install official or custom voice pack.",
+      "name": "Установить голосовой пакет",
+      "description": "Установите официальный или собственный голосовой пакет.",
       "fields": {
         "lang_id": {
-          "name": "Language ID",
-          "description": "Language ID of this pack."
+          "name": "Идентификатор языка",
+          "description": "Идентификатор языка этого пакета."
         },
         "url": {
-          "name": "URL",
-          "description": "Url of this pack it should be reachable by the vacuum bot."
+          "name": "URL-адрес",
+          "description": "URL-адрес этого пакета должен быть доступен вакуумному боту."
         },
         "md5": {
           "name": "MD5",
-          "description": "MD5 checksum of the language pack."
+          "description": "Контрольная сумма MD5 языкового пакета."
         },
         "size": {
-          "name": "Size",
-          "description": "Size of the language pack in bytes."
+          "name": "Размер",
+          "description": "Размер языкового пакета в байтах."
         }
       }
     },
     "vacuum_request_map": {
-      "name": "Request Map",
-      "description": "Request map data"
+      "name": "Запросить карту",
+      "description": "Запросить данные карты"
     },
     "vacuum_select_map": {
-      "name": "Select Map",
-      "description": "Select current map. Used when having multiple maps/floors.",
+      "name": "Выберите карту",
+      "description": "Выберите текущую карту. ",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be selected."
+          "name": "Идентификатор карты",
+          "description": "Идентификатор карты, которую нужно выбрать."
         }
       }
     },
     "vacuum_delete_map": {
-      "name": "Delete map",
-      "description": "Delete a map.",
+      "name": "Удалить карту",
+      "description": "Удалить карту.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be deleted."
+          "name": "Идентификатор карты",
+          "description": "Идентификатор карты, которую нужно удалить."
         }
       }
     },
     "vacuum_save_temporary_map": {
-      "name": "Save Temporary Map",
-      "description": "Save the temporary map."
+      "name": "Сохранить временную карту",
+      "description": "Сохраните временную карту."
     },
     "vacuum_discard_temporary_map": {
-      "name": "Discard Temporary Map",
-      "description": "Discard the temporary map."
+      "name": "Сбросить временную карту",
+      "description": "Откажитесь от временной карты."
     },
     "vacuum_replace_temporary_map": {
-      "name": "Replace Temporary Map",
-      "description": "Replace the temporary map with another saved map.",
+      "name": "Заменить временную карту",
+      "description": "Замените временную карту другой сохраненной картой.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be replaced with."
+          "name": "Идентификатор карты",
+          "description": "Идентификатор карты, на которую будет заменена."
         }
       }
     },
     "vacuum_rename_map": {
-      "name": "Rename map",
-      "description": "Rename a map.",
+      "name": "Переименовать карту",
+      "description": "Переименуйте карту.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map."
+          "name": "Идентификатор карты",
+          "description": "Идентификатор карты."
         },
         "map_name": {
-          "name": "Map Name",
-          "description": "New name of the map."
+          "name": "Название карты",
+          "description": "Новое название карты."
         }
       }
     },
     "vacuum_restore_map": {
-      "name": "Restore Map",
-      "description": "Restore a map.",
+      "name": "Восстановить карту",
+      "description": "Восстановить карту.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be restored."
+          "name": "Идентификатор карты",
+          "description": "Идентификатор восстанавливаемой карты."
         },
-        "map_url": {
-          "name": "Map URL",
-          "description": "File Url of the map."
+        "recovery_map_index": {
+          "name": "Индекс карты восстановления",
+          "description": "Индекс сохраненной карты восстановления"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Восстановить карту из файла",
+      "description": "Восстановить карту из файла.",
+      "fields": {
+        "map_id": {
+          "name": "Идентификатор карты",
+          "description": "Идентификатор восстанавливаемой карты."
+        },
+        "file_url": {
+          "name": "URL-адрес файла",
+          "description": "URL сохраненного файла bz2.gz или tar.gz"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Резервная карта",
+      "description": "Резервное копирование карты в облако.",
+      "fields": {
+        "map_id": {
+          "name": "Идентификатор карты",
+          "description": "Идентификатор восстанавливаемой карты."
         }
       }
     },
     "vacuum_merge_segments": {
-      "name": "Merge Segments",
-      "description": "Merge rooms.",
+      "name": "Объединить сегменты",
+      "description": "Объединить комнаты.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map."
+          "name": "Идентификатор карты",
+          "description": "Идентификатор карты."
         },
         "segments": {
-          "name": "Segments",
-          "description": "Room IDs."
+          "name": "Сегменты",
+          "description": "Идентификаторы комнат."
         }
       }
     },
     "vacuum_split_segments": {
-      "name": "Split Segments",
-      "description": "Split rooms.",
+      "name": "Разделить сегменты",
+      "description": "Разделенные комнаты.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map."
+          "name": "Идентификатор карты",
+          "description": "Идентификатор карты."
         },
         "segment": {
-          "name": "Segment",
-          "description": "Room ID."
+          "name": "Сегмент",
+          "description": "Идентификатор комнаты."
         },
         "line": {
-          "name": "Line",
-          "description": "Split line coordinates."
+          "name": "Линия",
+          "description": "Координаты линии разделения."
         }
       }
     },
     "vacuum_rename_segment": {
-      "name": "Rename Segment",
-      "description": "Rename a segment.",
+      "name": "Переименовать сегмент",
+      "description": "Переименуйте сегмент.",
       "fields": {
         "segment_id": {
-          "name": "Segment ID",
-          "description": "ID of the segment"
+          "name": "Идентификатор сегмента",
+          "description": "Идентификатор сегмента"
         },
         "segment_name": {
-          "name": "Segment Name",
-          "description": "New name of the segment"
+          "name": "Имя сегмента",
+          "description": "Новое название сегмента"
         }
       }
     },
     "vacuum_set_cleaning_sequence": {
-      "name": "Set Cleaning Sequence",
-      "description": "Set room cleaning sequence. (Only on supported devices)",
+      "name": "Установить последовательность очистки",
+      "description": "Установите порядок уборки помещения. ",
       "fields": {
         "cleaning_sequence": {
-          "name": "Cleanin sequence",
-          "description": "Segment ID list of cleaning sequence."
+          "name": "Последовательность очистки",
+          "description": "Список идентификаторов сегментов последовательности очистки."
         }
       }
     },
     "vacuum_set_custom_cleaning": {
-      "name": "Set Custom Cleaning",
-      "description": "Set custom cleaning parameters. (Only on supported devices)",
+      "name": "Установить пользовательскую очистку",
+      "description": "Установите индивидуальные параметры очистки. ",
       "fields": {
         "segment_id": {
-          "name": "Segment ID",
-          "description": "Room IDs."
+          "name": "Идентификатор сегмента",
+          "description": "Идентификаторы комнат."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Suction level for each room."
+          "name": "Уровень всасывания",
+          "description": "Уровень всасывания для каждой комнаты."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water volume for each room."
+          "name": "Объем воды",
+          "description": "Объем воды для каждой комнаты."
         },
         "cleaning_mode": {
-          "name": "Cleaning Mode",
-          "description": "Cleaning for each room (only supported on vacuums with mop pad lifting feature)."
+          "name": "Режим очистки",
+          "description": "Уборка каждой комнаты (поддерживается только для пылесосов с функцией подъема подушечки швабры)."
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Cleaning times for each room."
+          "name": "Повторы",
+          "description": "Время уборки в каждой комнате."
         }
       }
     },
     "vacuum_set_restricted_zone": {
-      "name": "Set Restriced Zone",
-      "description": "Define virtual walls, restricted zones, and/or no mop zones.",
+      "name": "Установить зону ограниченного доступа",
+      "description": "Определите виртуальные стены, зоны с ограниченным доступом и/или зоны без швабры.",
       "fields": {
         "walls": {
-          "name": "Walls",
-          "description": "Virtual walls."
+          "name": "Стены",
+          "description": "Виртуальные стены."
         },
         "zones": {
-          "name": "Zones",
-          "description": "No go zones."
+          "name": "Зоны",
+          "description": "Нет ходовых зон."
         },
         "no_mops": {
-          "name": "No Mops",
-          "description": "No mop zones."
+          "name": "Нет швабр",
+          "description": "Нет зон для швабры."
         }
       }
     },
     "vacuum_reset_consumable": {
-      "name": "Reset Consumable",
-      "description": "Reset a consumable.",
+      "name": "Сбросить расходные материалы",
+      "description": "Сбросьте расходный материал.",
       "fields": {
         "consumable": {
-          "name": "Consumable",
-          "description": "Consumable type."
+          "name": "Расходный материал",
+          "description": "Тип расходного материала."
         }
       }
     },
     "vacuum_rename_shortcut": {
-      "name": "Rename Shortcut",
-      "description": "Rename a shortcut. (Only on supported devices)",
+      "name": "Переименовать ярлык",
+      "description": "Переименуйте ярлык. ",
       "fields": {
         "shortcut_id": {
-          "name": "Shortcut ID",
-          "description": "ID of the shortcut."
+          "name": "Идентификатор ярлыка",
+          "description": "Идентификатор ярлыка."
         },
         "shortcut_name": {
-          "name": "Shortcut Name",
-          "description": "New name of the shortcut."
+          "name": "Имя ярлыка",
+          "description": "Новое имя ярлыка."
         }
       }
     },
     "vacuum_set_carpet_area": {
-      "name": "Set Carpet Area",
-      "description": "Define carpets and ignored carpets. (Only on supported devices)",
+      "name": "Установить площадь ковра",
+      "description": "Дайте определение коврам и игнорируемым коврам. ",
       "fields": {
         "carpets": {
-          "name": "Carpets",
-          "description": "Carpet areas."
+          "name": "Ковры",
+          "description": "Ковровые зоны."
         },
         "ignored_carpets": {
-          "name": "Ignored Carpets",
-          "description": "Ignored carpet areas for deleting the automatically detected carpets."
+          "name": "Игнорируемые ковры",
+          "description": "Игнорируемые области ковров для удаления автоматически обнаруженных ковров."
         }
       }
     },
     "vacuum_set_pathway": {
-      "name": "Set Pathway",
-      "description": "Define pathways.",
+      "name": "Установить путь",
+      "description": "Определите пути.",
       "fields": {
         "pathways": {
-          "name": "Pathways",
-          "description": "Pathway line coordinates."
+          "name": "Пути",
+          "description": "Координаты линии пути."
         }
       }
     },
     "vacuum_set_predefined_points": {
-      "name": "Set Predefined Points",
-      "description": "Define predefined coordinates on current map. (Only supported on vacuums with camera)",
+      "name": "Установить предопределенные точки",
+      "description": "Определите предопределенные координаты на текущей карте. ",
       "fields": {
         "points": {
-          "name": "Points",
-          "description": "List of coordinates to be saved."
+          "name": "Точки",
+          "description": "Список координат, которые необходимо сохранить."
         }
       }
     },
     "vacuum_set_obstacle_ignore": {
-      "name": "Set Obstacle Ignore",
-      "description": "Set ignore status of an obstacle. (Only supported on vacuums with AI Obstacle detection feature)",
+      "name": "Установить игнорирование препятствий",
+      "description": "Установить статус игнорирования препятствия. ",
       "fields": {
         "x": {
-          "name": "X",
-          "description": "X Coordinate of the obstacle."
+          "name": "Икс",
+          "description": "X Координата препятствия."
         },
         "y": {
-          "name": "Y",
-          "description": "Y Coordinate of the obstacle."
-        },
-        "obstacle_type": {
-          "name": "Obstacle Type",
-          "description": "Type of the obstacle that will be ignored."
+          "name": "Да",
+          "description": "Y Координата препятствия."
         },
         "obstacle_ignored": {
-          "name": "Obstacle Ignored",
-          "description": "Obstacle is ignored or not."
+          "name": "Препятствие игнорируется",
+          "description": "Препятствие игнорируется или нет."
         }
       }
     },
     "vacuum_set_router_position": {
-      "name": "Set router position",
-      "description": "Set router position on current map. (Only supported on vacuums with WiFi map feature)",
+      "name": "Установить положение маршрутизатора",
+      "description": "Установите положение маршрутизатора на текущей карте. ",
       "fields": {
         "x": {
-          "name": "X",
-          "description": "X Coordinate of the router."
+          "name": "Икс",
+          "description": "X Координата маршрутизатора."
         },
         "y": {
-          "name": "Y",
-          "description": "Y Coordinate of the router."
+          "name": "Да",
+          "description": "Y Координата маршрутизатора."
         }
       }
     },
     "select_select_previous": {
-      "name": "Select Previous",
-      "description": "Select the previous options of an select entity.",
+      "name": "Выбрать предыдущий",
+      "description": "Выберите предыдущие параметры выбранной сущности.",
       "fields": {
         "cycle": {
-          "name": "Cycle",
-          "description": "If the option should cycle from the first to the last."
+          "name": "Цикл",
+          "description": "Если опция должна циклически изменяться от первой к последней."
         }
       }
     },
     "select_select_first": {
-      "name": "Select First",
-      "description": "Select the first option of an select entity."
+      "name": "Выберите сначала",
+      "description": "Выберите первый вариант выбранного объекта."
     },
     "select_select_last": {
-      "name": "Select Last",
-      "description": "Select the last option of an select entity."
+      "name": "Выбрать последний",
+      "description": "Выберите последнюю опцию выбранного объекта."
     },
     "select_select_next": {
-      "name": "Select Next",
-      "description": "Select the next options of an select entity.",
+      "name": "Выберите Далее",
+      "description": "Выберите следующие параметры выбранного объекта.",
       "fields": {
         "cycle": {
-          "name": "Cycle",
-          "description": "If the option should cycle from the first to the last."
+          "name": "Цикл",
+          "description": "Если опция должна циклически изменяться от первой к последней."
         }
       }
     }

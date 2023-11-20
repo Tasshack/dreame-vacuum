@@ -1,6 +1,9 @@
 # Events
 Integration tracks certain device properties and notifies HA on specific events similar to the notification feature but events always will be fired even notifications are disabled from integration options.
 
+<a href="https://my.home-assistant.io/redirect/developer_events/" target="_blank"><img src="https://my.home-assistant.io/badges/developer_events.svg" alt="Open your Home Assistant instance and show your event developer tools." /></a>
+
+
 ### Cleanup started or finished
 Fires when cleanup job is completed or canceled/ended.
 
@@ -30,6 +33,9 @@ Fires when consumable life is ended.
   - `mop_pad`: Mop pads must be replaced
   - `silver_ion`: Silver-ion must be replaced
   - `detergent`: Detergent must be replaced
+  - `squeege`: Squeege must be replaced
+  - `dirty_water_tank`: Dirty water tank must be cleaned
+  - `onboard_dirty_water_tank`: Onboard dirty water tank must be cleaned
 
 ### Information
 Fires when certain job cannot be executed due to the user settings.

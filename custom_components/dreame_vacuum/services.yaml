@@ -167,6 +167,7 @@ vacuum_install_voice_pack:
       required: true
       selector:
         text:
+          type: url
     md5:
       example: "d25986c1f608c0897475707e77d856f9"
       required: true
@@ -260,16 +261,51 @@ vacuum_restore_map:
       integration: dreame_vacuum
       domain: vacuum
   fields:
-    map_id:
-      example: 14
+    recovery_map_index:
       required: true
       selector:
         number:
+          min: 1
+          max: 4
           mode: box
-    map_url:
+    map_id:
+      example: 14
+      required: false
+      selector:
+        number:
+          mode: box
+
+vacuum_restore_map_from_file:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    file_url:
+      example: "http://192.168.1.10/local/2023-11-04-1724223415-423528451_284320462.1156.mb.tbz2"
       required: true
       selector:
         text:
+          type: url
+    map_id:
+      example: 14
+      required: false
+      selector:
+        number:
+          mode: box
+
+vacuum_backup_map:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    map_id:
+      example: 14
+      required: false
+      selector:
+        number:
+          mode: box
 
 vacuum_merge_segments:
   target:
@@ -419,6 +455,9 @@ vacuum_reset_consumable:
             - "mop_pad"
             - "silver_ion"
             - "detergent"
+            - "squeegee"
+            - "onboard_dirty_water_tank"
+            - "dirty_water_tank"
 
 vacuum_rename_shortcut:
   target:
@@ -493,12 +532,6 @@ vacuum_set_obstacle_ignore:
           mode: box
     y:
       example: -263
-      required: true
-      selector:
-        number:
-          mode: box
-    obstacle_type:
-      example: 132
       required: true
       selector:
         number:

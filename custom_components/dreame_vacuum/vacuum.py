@@ -11,7 +11,6 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import config_validation as cv, entity_platform
 from homeassistant.exceptions import HomeAssistantError
-from homeassistant.const import STATE_UNKNOWN
 from homeassistant.components.vacuum import (
     STATE_CLEANING,
     STATE_DOCKED,
@@ -22,7 +21,9 @@ from homeassistant.components.vacuum import (
     StateVacuumEntity,
     VacuumEntityFeature,
 )
+from .recorder import VACUUM_UNRECORDED_ATTRIBUTES
 
+from .dreame.const import STATE_UNKNOWN
 from .dreame import (
     DreameVacuumState,
     DreameVacuumSuctionLevel,
@@ -42,7 +43,8 @@ from .const import (
     INPUT_LINE,
     INPUT_MAP_ID,
     INPUT_MAP_NAME,
-    INPUT_MAP_URL,
+    INPUT_FILE_URL,
+    INPUT_RECOVERY_MAP_INDEX,
     INPUT_MD5,
     INPUT_MOP_ARRAY,
     INPUT_REPEATS,
@@ -68,7 +70,6 @@ from .const import (
     INPUT_PATHWAY_ARRAY,
     INPUT_X,
     INPUT_Y,
-    INPUT_OBSTACLE_TYPE,
     INPUT_OBSTACLE_IGNORED,
     SERVICE_CLEAN_ZONE,
     SERVICE_CLEAN_SEGMENT,
@@ -84,6 +85,8 @@ from .const import (
     SERVICE_SELECT_MAP,
     SERVICE_DELETE_MAP,
     SERVICE_RESTORE_MAP,
+    SERVICE_RESTORE_MAP_FROM_FILE,
+    SERVICE_BACKUP_MAP,
     SERVICE_SET_CLEANING_SEQUENCE,
     SERVICE_SET_CUSTOM_CLEANING,
     SERVICE_SET_RESTRICTED_ZONE,
@@ -106,6 +109,9 @@ from .const import (
     CONSUMABLE_MOP_PAD,
     CONSUMABLE_SILVER_ION,
     CONSUMABLE_DETERGENT,
+    CONSUMABLE_SQUEEGEE,
+    CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
+    CONSUMABLE_DIRTY_WATER_TANK,    
 )
 
 SUPPORT_DREAME = (
@@ -168,6 +174,9 @@ CONSUMABLE_RESET_ACTION = {
     CONSUMABLE_MOP_PAD: DreameVacuumAction.RESET_MOP_PAD,
     CONSUMABLE_SILVER_ION: DreameVacuumAction.RESET_SILVER_ION,
     CONSUMABLE_DETERGENT: DreameVacuumAction.RESET_DETERGENT,
+    CONSUMABLE_SQUEEGEE: DreameVacuumAction.RESET_SQUEEGEE,
+    CONSUMABLE_ONBOARD_DIRTY_WATER_TANK: DreameVacuumAction.RESET_ONBOARD_DIRTY_WATER_TANK,
+    CONSUMABLE_DIRTY_WATER_TANK: DreameVacuumAction.RESET_DIRTY_WATER_TANK,
 }
 
 
@@ -460,7 +469,7 @@ async def async_setup_entry(
         SERVICE_INSTALL_VOICE_PACK,
         {
             vol.Required(INPUT_LANGUAGE_ID): cv.string,
-            vol.Required(INPUT_URL): cv.string,
+            vol.Required(INPUT_URL): cv.url,
             vol.Required(INPUT_MD5): cv.string,
             vol.Required(INPUT_SIZE): cv.positive_int,
         },
@@ -475,13 +484,31 @@ async def async_setup_entry(
         },
         DreameVacuum.async_rename_map.__name__,
     )
+
     platform.async_register_entity_service(
         SERVICE_RESTORE_MAP,
         {
-            vol.Required(INPUT_MAP_ID): cv.positive_int,
-            vol.Required(INPUT_MAP_URL): cv.string,
+            vol.Required(INPUT_RECOVERY_MAP_INDEX): cv.positive_int,
+            vol.Optional(INPUT_MAP_ID): cv.positive_int,
         },
         DreameVacuum.async_restore_map.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_RESTORE_MAP_FROM_FILE,
+        {
+            vol.Required(INPUT_FILE_URL): cv.url,
+            vol.Optional(INPUT_MAP_ID): cv.positive_int,
+        },
+        DreameVacuum.async_restore_map_from_file.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_BACKUP_MAP,
+        {
+            vol.Optional(INPUT_MAP_ID): cv.positive_int,
+        },
+        DreameVacuum.async_backup_map.__name__,
     )
 
     platform.async_register_entity_service(
@@ -555,6 +582,9 @@ async def async_setup_entry(
                     CONSUMABLE_MOP_PAD,
                     CONSUMABLE_SILVER_ION,
                     CONSUMABLE_DETERGENT,
+                    CONSUMABLE_SQUEEGEE,
+                    CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
+                    CONSUMABLE_DIRTY_WATER_TANK,
                 ]
             ),
         },
@@ -573,9 +603,8 @@ async def async_setup_entry(
     platform.async_register_entity_service(
         SERVICE_SET_OBSTACLE_IGNORE,
         {
-            vol.Required(INPUT_X): vol.All(vol.Coerce(int)),
-            vol.Required(INPUT_Y): vol.All(vol.Coerce(int)),
-            vol.Optional(INPUT_OBSTACLE_TYPE): cv.positive_int,
+            vol.Required(INPUT_X): vol.All(vol.Coerce(float)),
+            vol.Required(INPUT_Y): vol.All(vol.Coerce(float)),
             vol.Required(INPUT_OBSTACLE_IGNORED): vol.All(vol.Coerce(bool)),
         },
         DreameVacuum.async_set_obstacle_ignore.__name__,
@@ -596,13 +625,16 @@ async def async_setup_entry(
 class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     """Representation of a Dreame Vacuum cleaner robot."""
 
+    _unrecorded_attributes = frozenset(VACUUM_UNRECORDED_ATTRIBUTES)
+
     def __init__(self, coordinator: DreameVacuumDataUpdateCoordinator) -> None:
-        """Initialize the button entity."""
+        """Initialize the vacuum entity."""
         super().__init__(coordinator)
 
         self._attr_device_class = DOMAIN
         self._attr_name = coordinator.device.name
         self._attr_unique_id = f"{coordinator.device.mac}_" + DOMAIN
+
         self._set_attrs()
 
     @callback
@@ -919,15 +951,33 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 map_name,
             )
 
-    async def async_restore_map(self, map_id, map_url) -> None:
+    async def async_restore_map(self, recovery_map_index, map_id=None) -> None:
         """Restore a map"""
-        if map_url and map_url != "":
+        if recovery_map_index and recovery_map_index != "":
             await self._try_command(
                 "Unable to call restore_map: %s",
                 self.device.restore_map,
+                recovery_map_index,
                 map_id,
-                map_url,
             )
+
+    async def async_restore_map_from_file(self, file_url, map_id=None) -> None:
+        """Restore a map from file"""
+        if file_url and file_url != "":
+            await self._try_command(
+                "Unable to call restore_map_from_file: %s",
+                self.device.restore_map_from_file,
+                file_url,
+                map_id,
+            )
+
+    async def async_backup_map(self, map_id=None) -> None:
+        """Backup a map"""
+        await self._try_command(
+            "Unable to call backup_map: %s",
+            self.device.backup_map,
+            map_id,
+        )
 
     async def async_rename_segment(self, segment_id, segment_name="") -> None:
         """Rename a segment"""
@@ -1032,7 +1082,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             )
 
     async def async_set_obstacle_ignore(
-        self, x, y, obstacle_type, obstacle_ignored
+        self, x, y, obstacle_ignored
     ) -> None:
         """Set obstacle ignore status"""
         if x is not None and x != "" and y is not None and y != "":
@@ -1041,7 +1091,6 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 self.device.set_obstacle_ignore,
                 x,
                 y,
-                obstacle_type,
                 obstacle_ignored,
             )
 

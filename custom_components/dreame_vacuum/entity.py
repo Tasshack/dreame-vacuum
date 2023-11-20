@@ -7,12 +7,15 @@ from functools import partial
 
 from homeassistant.core import callback
 from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC
+from homeassistant.helpers import entity_registry
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers.entity import async_generate_entity_id
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
-from .const import DOMAIN, LOGGER, ATTR_VALUE
+from .const import DOMAIN, LOGGER
+from .dreame.const import ATTR_VALUE
 from .dreame import (
     DreameVacuumDevice,
     DreameVacuumProperty,
@@ -29,7 +32,6 @@ from .dreame import (
     PROPERTY_AVAILABILITY,
     ACTION_AVAILABILITY,
 )
-
 
 @dataclass
 class DreameVacuumEntityDescription:
@@ -133,7 +135,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
                         description.available_fn = ACTION_AVAILABILITY[description.key]
 
         super().__init__(coordinator=coordinator)
-        if description:
+        if description:            
             if description.key is not None:
                 self._attr_translation_key = description.key
             self.entity_description = description
@@ -152,6 +154,12 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
                 name = self.entity_description.name_fn(self.native_value, self.device)
 
             self._attr_name = f"{self.device.name} {name}"
+
+    def _generate_entity_id(self, format) -> None:
+        if self.entity_description.key:
+            self.entity_id = async_generate_entity_id(
+                format, f"{self.device.name} {self.entity_description.key}", hass=self.coordinator.hass
+            )
 
     @callback
     def _handle_coordinator_update(self) -> None:

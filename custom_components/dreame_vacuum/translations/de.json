@@ -129,7 +129,8 @@
         "state": {
           "avoidance": "Vermeidung",
           "adaptation": "Intelligent",
-          "remove_mop": "Wischpad demontieren"
+          "remove_mop": "Wischpad demontieren",
+          "adaptation_without_route": "Intelligent ohne Route"
         }
       },
       "mop_wash_level": {
@@ -174,6 +175,67 @@
           "english": "Englisch",
           "german": "Deutsch",
           "chinese": "Chinesisch"
+        }
+      },
+      "order": {
+        "state": {
+          "not_set": "Nicht eingestellt"
+        }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "Nach Gebiet",
+          "by_time": "Zum Zeitpunkt",
+          "by_room": "Nach Zimmer"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Aus",
+          "standard": "Standard",
+          "high_frequency": "Hochfrequenz",
+          "low_frequency": "Niederfrequenz"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Vertikal",
+          "horizontal": "Horizontal"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Sichtbar",
+          "hidden": "Versteckt"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Aus",
+          "routine_cleaning": "Routinereinigung",
+          "deep_cleaning": "Gründliche Reinigung"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Aus",
+          "in_deep_mode": "Im Deep-Modus",
+          "in_all_modes": "In allen Modi"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Aus",
+          "in_deep_mode": "Im Deep-Modus",
+          "in_all_modes": "In allen Modi"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "Schnell",
+          "standard": "Standard",
+          "intensive": "Intensiv",
+          "deep": "Tief"
         }
       }
     },
@@ -387,7 +449,13 @@
           "dirty_tank_level": "Der Wasserstand im Schmutzwassertank ist zu hoch.",
           "washboard_level": "Wasserstand im Waschbrett ist zu hoch.",
           "no_mop_in_station": "Wischpad ist nicht in der Station.",
-          "dust_bag_full": "Der Staubbeutel ist voll oder die Lüftungsschlitze sind blockiert."
+          "dust_bag_full": "Der Staubbeutel ist voll oder die Lüftungsschlitze sind blockiert.",
+          "mop_install_failed": "Die Installation des Wischpads ist fehlgeschlagen.",
+          "low_battery_turn_off": "Niedriger Batteriestatus. ",
+          "dirty_tank_not_installed": "Der Altwassertank des Roboters ist nicht installiert.",
+          "robot_in_hidden_room": "Versteckter Bereich. ",
+          "washboard_not_working": "Waschbrett funktioniert nicht mehr.",
+          "return_to_charge_failed": "Rückkehr zum Laden fehlgeschlagen."
         }
       },
       "charging_status": {
@@ -660,9 +728,33 @@
           "name": "Karten-ID",
           "description": "ID der wiederherzustellenden Karte."
         },
-        "map_url": {
-          "name": "Karten-URL",
-          "description": "Datei-URL der Karte."
+        "recovery_map_index": {
+          "name": "Wiederherstellungskartenindex",
+          "description": "Index der gespeicherten Wiederherstellungskarte"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Karte aus Datei wiederherstellen",
+      "description": "Stellen Sie eine Karte aus einer Datei wieder her.",
+      "fields": {
+        "map_id": {
+          "name": "Karten-ID",
+          "description": "ID der wiederherzustellenden Karte."
+        },
+        "file_url": {
+          "name": "Datei-URL",
+          "description": "URL der gespeicherten bz2.gz- oder tar.gz-Datei"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Backup-Karte",
+      "description": "Sichern Sie eine Karte in der Cloud.",
+      "fields": {
+        "map_id": {
+          "name": "Karten-ID",
+          "description": "ID der wiederherzustellenden Karte."
         }
       }
     },
@@ -835,10 +927,6 @@
         "y": {
           "name": "Y",
           "description": "Y-Koordinate des Hindernisses."
-        },
-        "obstacle_type": {
-          "name": "Hindernistyp",
-          "description": "Typ des Hindernisses, das ignoriert werden soll."
         },
         "obstacle_ignored": {
           "name": "Hindernis ignorieren",

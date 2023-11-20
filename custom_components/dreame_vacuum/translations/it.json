@@ -129,7 +129,8 @@
         "state": {
           "avoidance": "Evitare",
           "adaptation": "Adattamento",
-          "remove_mop": "Rimuovi la scopa"
+          "remove_mop": "Rimuovi la scopa",
+          "adaptation_without_route": "Adattamento senza percorso"
         }
       },
       "mop_wash_level": {
@@ -174,6 +175,67 @@
           "english": "Inglese",
           "german": "Tedesco",
           "chinese": "Cinese"
+        }
+      },
+      "order": {
+        "state": {
+          "not_set": "Non impostato"
+        }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "Per zona",
+          "by_time": "Col tempo",
+          "by_room": "Per stanza"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Spento",
+          "standard": "Standard",
+          "high_frequency": "Alta frequenza",
+          "low_frequency": "Bassa frequenza"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Verticale",
+          "horizontal": "Orizzontale"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Visibile",
+          "hidden": "Nascosto"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Spento",
+          "routine_cleaning": "Pulizia ordinaria",
+          "deep_cleaning": "Pulizia profonda"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Spento",
+          "in_deep_mode": "In modalità profonda",
+          "in_all_modes": "In tutte le modalità"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Spento",
+          "in_deep_mode": "In modalità profonda",
+          "in_all_modes": "In tutte le modalità"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "Presto",
+          "standard": "Standard",
+          "intensive": "Intensivo",
+          "deep": "Profondo"
         }
       }
     },
@@ -387,7 +449,13 @@
           "dirty_tank_level": "Il serbatoio dell'acqua sporca è quasi pieno, controlla il livello per tempo.",
           "washboard_level": "Il livello dell'acqua nella base di lavaggio è troppo elevato.",
           "no_mop_in_station": "Mop pad non è nella stazione.",
-          "dust_bag_full": "Il sacchetto per la polvere è pieno o le prese d'aria sono ostruite."
+          "dust_bag_full": "Il sacchetto per la polvere è pieno o le prese d'aria sono ostruite.",
+          "mop_install_failed": "L'installazione del tampone per la pulizia non è riuscita.",
+          "low_battery_turn_off": "Batteria scarica. ",
+          "dirty_tank_not_installed": "Il serbatoio dell'acqua usata del robot non è installato.",
+          "robot_in_hidden_room": "Zona nascosta. ",
+          "washboard_not_working": "Washboard smette di funzionare.",
+          "return_to_charge_failed": "Impossibile tornare alla carica."
         }
       },
       "charging_status": {
@@ -471,420 +539,440 @@
   },
   "services": {
     "vacuum_clean_segment": {
-      "name": "Clean Segment",
-      "description": "Start the cleaning operation in the selected rooms.",
+      "name": "Segmento pulito",
+      "description": "Avviare l'operazione di pulizia nelle stanze selezionate.",
       "fields": {
         "segments": {
-          "name": "Segments",
-          "description": "List of rooms to be cleaned. Only room's Character or an array of room's character, cleaning times, fan speed and mop mode to override the default values per room."
+          "name": "Segmenti",
+          "description": "Elenco delle stanze da pulire. "
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Number of cleaning passes for every selected room (unless it is overridden by customized cleaning parameter)."
+          "name": "Si ripete",
+          "description": "Numero di passaggi di pulizia per ogni stanza selezionata (a meno che non venga sovrascritto dal parametro di pulizia personalizzato)."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Fan speed for every selected room (unless it is overridden by customized cleaning parameter)."
+          "name": "Livello di aspirazione",
+          "description": "Velocità della ventola per ogni stanza selezionata (a meno che non venga sovrascritta dal parametro di pulizia personalizzato)."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water level for every selected room (unless it is overridden by customized cleaning parameter)."
+          "name": "Volume d'acqua",
+          "description": "Livello dell'acqua per ogni stanza selezionata (a meno che non venga ignorato dal parametro di pulizia personalizzato)."
         }
       }
     },
     "vacuum_clean_zone": {
-      "name": "Clean Zone",
-      "description": "Start the cleaning operation in the selected area.",
+      "name": "Zona Pulita",
+      "description": "Avviare l'operazione di pulizia nell'area selezionata.",
       "fields": {
         "zone": {
-          "name": "Zone",
-          "description": "Coordinates."
+          "name": "Zona",
+          "description": "Coordinate."
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Number of cleaning passes for every selected zone."
+          "name": "Si ripete",
+          "description": "Numero di passaggi di pulizia per ogni zona selezionata."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Fan speed for every selected zone."
+          "name": "Livello di aspirazione",
+          "description": "Velocità della ventola per ogni zona selezionata."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water level for every selected zone."
+          "name": "Volume d'acqua",
+          "description": "Livello dell'acqua per ogni zona selezionata."
         }
       }
     },
     "vacuum_clean_spot": {
-      "name": "Clean Spot",
-      "description": "Start the cleaning operation in the selected points on the map.",
+      "name": "Posto pulito",
+      "description": "Avvia l'operazione di pulizia nei punti selezionati sulla mappa.",
       "fields": {
         "points": {
-          "name": "Points",
-          "description": "List of coordinates to be cleaned."
+          "name": "Punti",
+          "description": "Elenco delle coordinate da pulire."
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Number of cleaning passes for every selected zone."
+          "name": "Si ripete",
+          "description": "Numero di passaggi di pulizia per ogni zona selezionata."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Fan speed for every selected zone."
+          "name": "Livello di aspirazione",
+          "description": "Velocità della ventola per ogni zona selezionata."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water level for every selected zone."
+          "name": "Volume d'acqua",
+          "description": "Livello dell'acqua per ogni zona selezionata."
         }
       }
     },
     "vacuum_goto": {
-      "name": "Go To",
-      "description": "Go to the coordinate of the map and stop.",
+      "name": "Vai a",
+      "description": "Vai alle coordinate della mappa e fermati.",
       "fields": {
         "x": {
           "name": "X",
-          "description": "X Coordinate of the point."
+          "description": "Coordinata X del punto."
         },
         "y": {
           "name": "Y",
-          "description": "Y Coordinate of the point."
+          "description": "Coordinata Y del punto."
         }
       }
     },
     "vacuum_follow_path": {
-      "name": "Follow Path",
-      "description": "Follow list of coordinates on the map and return to base. (Only supported on vacuums with camera)",
+      "name": "Segui il percorso",
+      "description": "Segui l'elenco delle coordinate sulla mappa e torna alla base. ",
       "fields": {
         "points": {
-          "name": "Points",
-          "description": "List of coordinates of the path."
+          "name": "Punti",
+          "description": "Elenco delle coordinate del percorso."
         }
       }
     },
     "vacuum_remote_control_move_step": {
-      "name": "Remote Control Move Step",
-      "description": "Remotely control move the bot one step.",
+      "name": "Passaggio di spostamento del telecomando",
+      "description": "Controlla da remoto e muovi il bot di un passo.",
       "fields": {
         "rotation": {
-          "name": "Rotation",
-          "description": "Turn in binary degrees between -128 and 128."
+          "name": "Rotazione",
+          "description": "Ruota in gradi binari tra -128 e 128."
         },
         "velocity": {
-          "name": "Velocity",
-          "description": "Move speed, from 100 (forward) to -300 (backward)."
+          "name": "Velocità",
+          "description": "Velocità di movimento, da 100 (avanti) a -300 (indietro)."
         }
       }
     },
     "vacuum_install_voice_pack": {
-      "name": "Install Voice Pack",
-      "description": "Install official or custom voice pack.",
+      "name": "Installa il pacchetto vocale",
+      "description": "Installa il pacchetto vocale ufficiale o personalizzato.",
       "fields": {
         "lang_id": {
-          "name": "Language ID",
-          "description": "Language ID of this pack."
+          "name": "Identificativo della lingua",
+          "description": "ID lingua di questo pacchetto."
         },
         "url": {
           "name": "URL",
-          "description": "Url of this pack it should be reachable by the vacuum bot."
+          "description": "L'URL di questo pacchetto dovrebbe essere raggiungibile dal robot dell'aspirapolvere."
         },
         "md5": {
           "name": "MD5",
-          "description": "MD5 checksum of the language pack."
+          "description": "Checksum MD5 del pacchetto lingua."
         },
         "size": {
-          "name": "Size",
-          "description": "Size of the language pack in bytes."
+          "name": "Misurare",
+          "description": "Dimensioni del pacchetto lingua in byte."
         }
       }
     },
     "vacuum_request_map": {
-      "name": "Request Map",
-      "description": "Request map data"
+      "name": "Richiedi mappa",
+      "description": "Richiedi dati cartografici"
     },
     "vacuum_select_map": {
-      "name": "Select Map",
-      "description": "Select current map. Used when having multiple maps/floors.",
+      "name": "Seleziona Mappa",
+      "description": "Seleziona la mappa corrente. ",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be selected."
+          "name": "Identificativo della mappa",
+          "description": "ID della mappa da selezionare."
         }
       }
     },
     "vacuum_delete_map": {
-      "name": "Delete map",
-      "description": "Delete a map.",
+      "name": "Elimina mappa",
+      "description": "Elimina una mappa.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be deleted."
+          "name": "Identificativo della mappa",
+          "description": "ID della mappa da eliminare."
         }
       }
     },
     "vacuum_save_temporary_map": {
-      "name": "Save Temporary Map",
-      "description": "Save the temporary map."
+      "name": "Salva mappa temporanea",
+      "description": "Salva la mappa temporanea."
     },
     "vacuum_discard_temporary_map": {
-      "name": "Discard Temporary Map",
-      "description": "Discard the temporary map."
+      "name": "Scarta la mappa temporanea",
+      "description": "Elimina la mappa temporanea."
     },
     "vacuum_replace_temporary_map": {
-      "name": "Replace Temporary Map",
-      "description": "Replace the temporary map with another saved map.",
+      "name": "Sostituisci mappa temporanea",
+      "description": "Sostituisci la mappa temporanea con un'altra mappa salvata.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be replaced with."
+          "name": "Identificativo della mappa",
+          "description": "ID della mappa con cui sostituire."
         }
       }
     },
     "vacuum_rename_map": {
-      "name": "Rename map",
-      "description": "Rename a map.",
+      "name": "Rinomina mappa",
+      "description": "Rinominare una mappa.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map."
+          "name": "Identificativo della mappa",
+          "description": "ID della mappa."
         },
         "map_name": {
-          "name": "Map Name",
-          "description": "New name of the map."
+          "name": "Nome della mappa",
+          "description": "Nuovo nome della mappa."
         }
       }
     },
     "vacuum_restore_map": {
-      "name": "Restore Map",
-      "description": "Restore a map.",
+      "name": "Ripristina mappa",
+      "description": "Ripristina una mappa.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be restored."
+          "name": "Identificativo della mappa",
+          "description": "ID della mappa da ripristinare."
         },
-        "map_url": {
-          "name": "Map URL",
-          "description": "File Url of the map."
+        "recovery_map_index": {
+          "name": "Indice della mappa di ripristino",
+          "description": "Indice della mappa di ripristino salvata"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Ripristina mappa da file",
+      "description": "Ripristina una mappa da un file.",
+      "fields": {
+        "map_id": {
+          "name": "Identificativo della mappa",
+          "description": "ID della mappa da ripristinare."
+        },
+        "file_url": {
+          "name": "URL del file",
+          "description": "URL del file bz2.gz o tar.gz salvato"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Mappa di backup",
+      "description": "Esegui il backup di una mappa sul cloud.",
+      "fields": {
+        "map_id": {
+          "name": "Identificativo della mappa",
+          "description": "ID della mappa da ripristinare."
         }
       }
     },
     "vacuum_merge_segments": {
-      "name": "Merge Segments",
-      "description": "Merge rooms.",
+      "name": "Unisci segmenti",
+      "description": "Unisci stanze.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map."
+          "name": "Identificativo della mappa",
+          "description": "ID della mappa."
         },
         "segments": {
-          "name": "Segments",
-          "description": "Room IDs."
+          "name": "Segmenti",
+          "description": "Identificativi delle stanze."
         }
       }
     },
     "vacuum_split_segments": {
-      "name": "Split Segments",
-      "description": "Split rooms.",
+      "name": "Segmenti divisi",
+      "description": "Camere divise.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map."
+          "name": "Identificativo della mappa",
+          "description": "ID della mappa."
         },
         "segment": {
-          "name": "Segment",
-          "description": "Room ID."
+          "name": "Segmento",
+          "description": "Identificativo della stanza."
         },
         "line": {
-          "name": "Line",
-          "description": "Split line coordinates."
+          "name": "Linea",
+          "description": "Coordinate della linea di divisione."
         }
       }
     },
     "vacuum_rename_segment": {
-      "name": "Rename Segment",
-      "description": "Rename a segment.",
+      "name": "Rinomina segmento",
+      "description": "Rinominare un segmento.",
       "fields": {
         "segment_id": {
-          "name": "Segment ID",
-          "description": "ID of the segment"
+          "name": "Identificativo del segmento",
+          "description": "ID del segmento"
         },
         "segment_name": {
-          "name": "Segment Name",
-          "description": "New name of the segment"
+          "name": "Nome del segmento",
+          "description": "Nuovo nome del segmento"
         }
       }
     },
     "vacuum_set_cleaning_sequence": {
-      "name": "Set Cleaning Sequence",
-      "description": "Set room cleaning sequence. (Only on supported devices)",
+      "name": "Imposta la sequenza di pulizia",
+      "description": "Imposta la sequenza di pulizia della stanza. ",
       "fields": {
         "cleaning_sequence": {
-          "name": "Cleanin sequence",
-          "description": "Segment ID list of cleaning sequence."
+          "name": "Sequenza di pulizia",
+          "description": "Elenco ID segmento della sequenza di pulizia."
         }
       }
     },
     "vacuum_set_custom_cleaning": {
-      "name": "Set Custom Cleaning",
-      "description": "Set custom cleaning parameters. (Only on supported devices)",
+      "name": "Imposta la pulizia personalizzata",
+      "description": "Imposta parametri di pulizia personalizzati. ",
       "fields": {
         "segment_id": {
-          "name": "Segment ID",
-          "description": "Room IDs."
+          "name": "Identificativo del segmento",
+          "description": "Identificativi delle stanze."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Suction level for each room."
+          "name": "Livello di aspirazione",
+          "description": "Livello di aspirazione per ogni stanza."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water volume for each room."
+          "name": "Volume d'acqua",
+          "description": "Volume d'acqua per ogni stanza."
         },
         "cleaning_mode": {
-          "name": "Cleaning Mode",
-          "description": "Cleaning for each room (only supported on vacuums with mop pad lifting feature)."
+          "name": "Modalità di pulizia",
+          "description": "Pulizia per ogni stanza (supportata solo sugli aspirapolvere con funzione di sollevamento del panno)."
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Cleaning times for each room."
+          "name": "Si ripete",
+          "description": "Orari di pulizia per ogni camera."
         }
       }
     },
     "vacuum_set_restricted_zone": {
-      "name": "Set Restriced Zone",
-      "description": "Define virtual walls, restricted zones, and/or no mop zones.",
+      "name": "Imposta zona riservata",
+      "description": "Definisci muri virtuali, zone limitate e/o zone senza spazzolone.",
       "fields": {
         "walls": {
-          "name": "Walls",
-          "description": "Virtual walls."
+          "name": "Muri",
+          "description": "Muri virtuali."
         },
         "zones": {
-          "name": "Zones",
-          "description": "No go zones."
+          "name": "Zone",
+          "description": "Zone vietate."
         },
         "no_mops": {
-          "name": "No Mops",
-          "description": "No mop zones."
+          "name": "Niente spazzoloni",
+          "description": "Nessuna zona per lo spazzolone."
         }
       }
     },
     "vacuum_reset_consumable": {
-      "name": "Reset Consumable",
-      "description": "Reset a consumable.",
+      "name": "Reimposta i materiali di consumo",
+      "description": "Reimposta un materiale di consumo.",
       "fields": {
         "consumable": {
-          "name": "Consumable",
-          "description": "Consumable type."
+          "name": "Consumabile",
+          "description": "Tipo di materiale di consumo."
         }
       }
     },
     "vacuum_rename_shortcut": {
-      "name": "Rename Shortcut",
-      "description": "Rename a shortcut. (Only on supported devices)",
+      "name": "Rinomina collegamento",
+      "description": "Rinominare una scorciatoia. ",
       "fields": {
         "shortcut_id": {
-          "name": "Shortcut ID",
-          "description": "ID of the shortcut."
+          "name": "ID della scorciatoia",
+          "description": "ID del collegamento."
         },
         "shortcut_name": {
-          "name": "Shortcut Name",
-          "description": "New name of the shortcut."
+          "name": "Nome della scorciatoia",
+          "description": "Nuovo nome della scorciatoia."
         }
       }
     },
     "vacuum_set_carpet_area": {
-      "name": "Set Carpet Area",
-      "description": "Define carpets and ignored carpets. (Only on supported devices)",
+      "name": "Imposta l'area del tappeto",
+      "description": "Definisci i tappeti e i tappeti ignorati. ",
       "fields": {
         "carpets": {
-          "name": "Carpets",
-          "description": "Carpet areas."
+          "name": "Tappeti",
+          "description": "Aree di moquette."
         },
         "ignored_carpets": {
-          "name": "Ignored Carpets",
-          "description": "Ignored carpet areas for deleting the automatically detected carpets."
+          "name": "Tappeti ignorati",
+          "description": "Aree del tappeto ignorate per eliminare i tappeti rilevati automaticamente."
         }
       }
     },
     "vacuum_set_pathway": {
-      "name": "Set Pathway",
-      "description": "Define pathways.",
+      "name": "Imposta il percorso",
+      "description": "Definire percorsi.",
       "fields": {
         "pathways": {
-          "name": "Pathways",
-          "description": "Pathway line coordinates."
+          "name": "Percorsi",
+          "description": "Coordinate della linea del percorso."
         }
       }
     },
     "vacuum_set_predefined_points": {
-      "name": "Set Predefined Points",
-      "description": "Define predefined coordinates on current map. (Only supported on vacuums with camera)",
+      "name": "Imposta punti predefiniti",
+      "description": "Definire le coordinate predefinite sulla mappa corrente. ",
       "fields": {
         "points": {
-          "name": "Points",
-          "description": "List of coordinates to be saved."
+          "name": "Punti",
+          "description": "Elenco delle coordinate da salvare."
         }
       }
     },
     "vacuum_set_obstacle_ignore": {
-      "name": "Set Obstacle Ignore",
-      "description": "Set ignore status of an obstacle. (Only supported on vacuums with AI Obstacle detection feature)",
+      "name": "Impostare Ignora ostacolo",
+      "description": "Imposta lo stato di ignoranza di un ostacolo. ",
       "fields": {
         "x": {
           "name": "X",
-          "description": "X Coordinate of the obstacle."
+          "description": "X Coordinata dell'ostacolo."
         },
         "y": {
           "name": "Y",
-          "description": "Y Coordinate of the obstacle."
-        },
-        "obstacle_type": {
-          "name": "Obstacle Type",
-          "description": "Type of the obstacle that will be ignored."
+          "description": "Y Coordinata dell'ostacolo."
         },
         "obstacle_ignored": {
-          "name": "Obstacle Ignored",
-          "description": "Obstacle is ignored or not."
+          "name": "Ostacolo ignorato",
+          "description": "L'ostacolo viene ignorato o meno."
         }
       }
     },
     "vacuum_set_router_position": {
-      "name": "Set router position",
-      "description": "Set router position on current map. (Only supported on vacuums with WiFi map feature)",
+      "name": "Imposta la posizione del router",
+      "description": "Imposta la posizione del router sulla mappa corrente. ",
       "fields": {
         "x": {
           "name": "X",
-          "description": "X Coordinate of the router."
+          "description": "Coordinata X del router."
         },
         "y": {
           "name": "Y",
-          "description": "Y Coordinate of the router."
+          "description": "Coordinata Y del router."
         }
       }
     },
     "select_select_previous": {
-      "name": "Select Previous",
-      "description": "Select the previous options of an select entity.",
+      "name": "Seleziona Precedente",
+      "description": "Seleziona le opzioni precedenti di un'entità selezionata.",
       "fields": {
         "cycle": {
-          "name": "Cycle",
-          "description": "If the option should cycle from the first to the last."
+          "name": "Ciclo",
+          "description": "Se l'opzione deve scorrere dal primo all'ultimo."
         }
       }
     },
     "select_select_first": {
-      "name": "Select First",
-      "description": "Select the first option of an select entity."
+      "name": "Seleziona Prima",
+      "description": "Seleziona la prima opzione di un'entità selezionata."
     },
     "select_select_last": {
-      "name": "Select Last",
-      "description": "Select the last option of an select entity."
+      "name": "Seleziona Ultimo",
+      "description": "Seleziona l'ultima opzione di un'entità selezionata."
     },
     "select_select_next": {
-      "name": "Select Next",
-      "description": "Select the next options of an select entity.",
+      "name": "Seleziona Avanti",
+      "description": "Seleziona le opzioni successive di un'entità selezionata.",
       "fields": {
         "cycle": {
-          "name": "Cycle",
-          "description": "If the option should cycle from the first to the last."
+          "name": "Ciclo",
+          "description": "Se l'opzione deve scorrere dal primo all'ultimo."
         }
       }
     }

@@ -80,6 +80,9 @@ DREAME_MODELS = [
     "dreame.vacuum.r2104",
     "dreame.vacuum.r2251o",
     "dreame.vacuum.r2232a",
+    "dreame.vacuum.r2232b",
+    "dreame.vacuum.r2232c",
+    "dreame.vacuum.r2232d",
     "dreame.vacuum.r2317",
     "dreame.vacuum.r2345a",
     "dreame.vacuum.r2345h",
@@ -107,6 +110,19 @@ DREAME_MODELS = [
     "dreame.vacuum.r2388",
     "dreame.vacuum.r2361a",
     "dreame.vacuum.r9301",
+    "dreame.vacuum.r9302",
+    "dreame.vacuum.r9304",
+    "dreame.vacuum.r9305",
+    "dreame.vacuum.r9311",
+    "dreame.vacuum.r2310",
+    "dreame.vacuum.r2310a",
+    #"dreame.vacuum.r2394u",
+    #"dreame.vacuum.r2394k",
+    #"dreame.vacuum.r2394s",
+    #"dreame.vacuum.r2394j",
+    #"dreame.vacuum.r2394a",
+    #"dreame.vacuum.r2394l",
+    #"dreame.vacuum.r2394f",
 ]
 
 MIJIA_MODELS = [
@@ -164,7 +180,7 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
         data_schema = vol.Schema(
             {vol.Required(CONF_NOTIFY, default=notify): cv.multi_select(NOTIFICATION)}
         )
-        if data[CONF_USERNAME]:
+        if data[CONF_USERNAME]:          
             data_schema = data_schema.extend(
                 {
                     vol.Required(
