@@ -7387,11 +7387,11 @@ class DreameVacuumMapRenderer:
     ):
         new_layer = Image.new("RGBA", layer_size, (255, 255, 255, 0))
         if self.icon_set == 3:
-            icon_size = int(icon_size * 1.2)
+            icon_size = int(size * 1.2)
         elif self.icon_set == 2:
-            icon_size = int(icon_size * 1.5)
+            icon_size = int(size * 1.5)
         elif self._robot_type == RobotType.VSLAM:
-            icon_size = int(icon_size * 1.5)
+            icon_size = int(size * 1.5)
         else:
             icon_size = int(size * scale)
 
