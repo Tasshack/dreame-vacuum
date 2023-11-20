@@ -54,9 +54,12 @@
         "data": {
           "name": "Name",
           "color_scheme": "Map color scheme",
+          "color_scheme_background": "Background Map Color scheme",
           "icon_set": "Map icon set",
           "notify": "Notification",
           "map_objects": "Map objects",
+          "map_objects_overlay": "Overlay Map objects",
+          "map_objects_background": "Background Map objects",
           "low_resolution": "Low resolution map",
           "square": "Square map"
         }
@@ -72,9 +75,12 @@
       "init": {
         "data": {
           "color_scheme": "Map color scheme",
+          "color_scheme_background": "Background Map Color scheme",
           "icon_set": "Map icon set",
           "notify": "Notification",
           "map_objects": "Map objects",
+          "map_objects_overlay": "Overlay Map objects",
+          "map_objects_background": "Background Map objects",
           "low_resolution": "Low resolution map",
           "square": "Square map",
           "configuration_type": "Configuration type",
