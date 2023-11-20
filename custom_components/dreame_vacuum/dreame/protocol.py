@@ -37,6 +37,9 @@ class DreameVacuumDeviceProtocol(MiIOProtocol):
     def connected(self) -> bool:
         return self._discovered
 
+    def disconnect(self):
+        self._discovered = False
+
 class DreameVacuumCloudProtocol:
     def __init__(self, username: str, password: str, country: str) -> None:
         self._username = username
@@ -355,6 +358,11 @@ class DreameVacuumCloudProtocol:
         )
         return base64.b64encode(hash_object.digest()).decode("utf-8")
 
+    def disconnect(self):
+        self._session.close()
+        self._connected = False
+        self._logged_in = False
+
     @staticmethod
     def generate_nonce():
         millis = int(round(time.time() * 1000))
@@ -488,6 +496,15 @@ class DreameVacuumProtocol:
         if (self.prefer_cloud or not self.device) and self.device_cloud and response:
             self._connected = True
         return response
+
+    def disconnect(self):
+        if self.device is not None:
+            self.device.disconnect()
+        if self.cloud is not None:
+            self.cloud.disconnect()
+        if self.device_cloud is not None:
+            self.device_cloud.disconnect()
+        self._connected = False
 
     def send(self, method, parameters: Any = None, retry_count: int = 1) -> Any:
         if (self.prefer_cloud or not self.device) and self.device_cloud:

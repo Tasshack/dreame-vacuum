@@ -48,12 +48,14 @@
           "color_scheme": "Farbschema der Karte",
           "icon_set": "Kartensymbol gesetzt",
           "notify": "Benachrichtigung",
-          "map_objects": "Karten objekte"
+          "map_objects": "Karten-Objekte",
+          "low_resolution": "Karte mit niedriger Auflösung",
+          "square": "Quadratische Karte"
         }
       },
       "reauth_confirm": {
-        "description": "Die Dreame Wischroboter-Integration benötigt eine erneute Authentifizierung Ihres Kontos, um die Token zu aktualisieren oder um die fehlende Cloud-Anmeldeinformationen hinzuzufügen",
-        "title": "Reauthentifiziere Integration"
+        "description": "Die Dreame Wischroboter-Integration benötigt eine erneute Authentifizierung deines Kontos, um die Token zu aktualisieren oder um die fehlenden Cloud-Anmeldeinformationen hinzuzufügen",
+        "title": "Integration erneut authentifizieren"
       }
     }
   },
@@ -64,14 +66,16 @@
           "color_scheme": "Farbschema der Karte",
           "icon_set": "Kartensymbol gesetzt",
           "notify": "Benachrichtigung",
-          "map_objects": "Karten objekte",
+          "map_objects": "Karten-Objekte",
+          "low_resolution": "Karte mit niedriger Auflösung",
+          "square": "Quadratische Karte",
           "configuration_type": "Konfigurationstyp",
-          "prefer_cloud": "Bevorzugen Sie eine Cloud-Verbindung"
+          "prefer_cloud": "Cloud-Verbindung bevorzugen"
         }
       }
     },
     "error": {
-      "cloud_credentials_incomplete": "Anmeldedaten unvollständig, bitte geben Sie Benutzername, Passwort und das Land ein"
+      "cloud_credentials_incomplete": "Anmeldedaten unvollständig, bitte Benutzername, Passwort und das Land eingeben"
     }
   },
   "entity": {
@@ -103,7 +107,7 @@
           "sweeping": "Saugen",
           "mopping": "Wischen",
           "sweeping_and_mopping": "Saugen und Wischen",
-          "mopping_after_sweeping": "Wischen nach dem Kehren"
+          "mopping_after_sweeping": "Wischen nach dem Saugen"
         }
       },
       "carpet_sensitivity": {
@@ -116,22 +120,22 @@
       "carpet_cleaning": {
         "state": {
           "avoidance": "Vermeidung",
-          "adaptation": "Anpassung",
-          "remove_mop": "Entfernen Sie den Mopp"
+          "adaptation": "Intelligent",
+          "remove_mop": "Wischpad demontieren"
         }
       },
       "mop_wash_level": {
         "state": {
           "water_saving": "Wassersparend",
           "daily": "Täglich",
-          "deep": "Tief"
+          "deep": "Tiefenreinigung"
         }
       },
       "mopping_type": {
         "state": {
           "accurate": "Genau",
           "daily": "Täglich",
-          "deep": "Tief"
+          "deep": "Tiefenreinigung"
         }
       },
       "wider_corner_coverage": {
@@ -141,9 +145,17 @@
           "low_frequency": "Niederfrequenz"
         }
       },
+      "mop_pad_swing": {
+        "state": {
+          "off": "Aus",
+          "auto": "Auto",
+          "daily": "Täglich",
+          "weekly": "Wöchentlich"
+        }
+      },
       "floor_material": {
         "state": {
-          "none": "Keiner",
+          "none": "Kein Material",
           "tile": "Bodenfliese",
           "wood": "Holzboden"
         }
@@ -154,6 +166,11 @@
           "english": "Englisch",
           "german": "Deutsch",
           "chinese": "Chinesisch"
+        }
+      },
+      "order": {
+        "state": {
+          "not_set": "Nicht eingestellt"
         }
       }
     },
@@ -171,25 +188,25 @@
           "drying": "Trocknen",
           "washing": "Waschen",
           "returning_to_wash": "Zurückkehren zum Waschen",
-          "building": "Building",
+          "building": "Zusammenbauen",
           "sweeping_and_mopping": "Saugen und Wischen",
           "charging_completed": "Aufladen abgeschlossen",
           "upgrading": "Upgrade durchführen",
           "clean_summon": "Zum Putzen rufen",
           "station_reset": "Zurücksetzen der Station",
-          "returning_install_mop": "Zurück zur Installation des Mopps",
-          "returning_remove_mop": "Zurückkommen, um den Mopp zu entfernen",
+          "returning_install_mop": "Zurück zur Installation des Wischpads",
+          "returning_remove_mop": "Zurück zum Entfernen des Wischpads",
           "water_check": "Wasserkontrolle",
           "clean_add_water": "Reinigen und Wasser hinzufügen",
           "washing_paused": "Der Waschvorgang wurde unterbrochen",
           "auto_emptying": "Automatische Entleerung",
-          "remote_control": "Fernbedienung",
+          "remote_control": "Fernsteuerung",
           "smart_charging": "Intelligentes Laden",
           "second_cleaning": "Zum zweiten Mal gereinigt",
-          "human_following": "Menschliche Gefolgschaft",
-          "spot_cleaning": "Punktuelle Reinigung",
+          "human_following": "Person folgen",
+          "spot_cleaning": "Spotreinigung",
           "returning_auto_empty": "Rückkehr zur automatischen Entleerung",
-          "shortcut": "Abkürzung",
+          "shortcut": "Verknüpfung",
           "monitoring": "Überwachung",
           "monitoring_paused": "Überwachung pausiert"
         }
@@ -201,7 +218,7 @@
           "paused": "Pausiert",
           "cleaning": "Reinigen",
           "returning": "Kehre zum Dock zurück",
-          "spot_cleaning": "Spot Reinigung",
+          "spot_cleaning": "Spotreinigung",
           "follow_wall_cleaning": "Folge Wand Reinigung",
           "charging": "Aufladen",
           "ota": "OTA",
@@ -220,9 +237,9 @@
           "fast_mapping": "Schnelles Mapping",
           "cruising_path": "Cruising auf dem Weg",
           "cruising_point": "Eine Kreuzfahrt zu einem Punkt",
-          "summon_clean": "Reinigung rufen",
-          "shortcut": "Abkürzung",
-          "person_follow": "Person folgt",
+          "summon_clean": "Zur Reinigung rufen",
+          "shortcut": "Verknüpfung",
+          "person_follow": "Person folgen",
           "water_check": "Wasserkontrolle"
         }
       },
@@ -239,7 +256,7 @@
           "room_cleaning_paused": "Raumreinigung pausiert",
           "zone_cleaning_paused": "Zonenreinigung pausiert",
           "spot_cleaning_paused": "Spotreinigung pausiert",
-          "map_cleaning_paused": "Kartenreinigugn pausiert",
+          "map_cleaning_paused": "Kartenreinigung pausiert",
           "docking_paused": "Docking pausiert",
           "mopping_paused": "Wischen pausiert",
           "zone_mopping_paused": "Zonenwischen pausiert",
@@ -247,12 +264,12 @@
           "zone_docking_paused": "Zonenwischen pausiert",
           "room_docking_paused": "Raumdocking pausiert",
           "cruising_path": "Cruising auf dem Weg",
-          "cruising_path_paused": "Die Fahrt auf dem Weg wurde unterbrochen",
-          "cruising_point": "Eine Kreuzfahrt zu einem Punkt",
+          "cruising_path_paused": "Die Fahrt wurde auf dem Weg unterbrochen",
+          "cruising_point": "Eine Fahrt zu einem Punkt",
           "cruising_point_paused": "Die Fahrt zu einem Punkt wurde unterbrochen",
-          "summon_clean_paused": "Reinigung rufen angehalten",
-          "returning_to_install_mop": "Zurückkehren zum Installieren des Wischmopps",
-          "returning_to_remove_mop": "Zurückkehren zum Entfernen des Wischmopps"
+          "summon_clean_paused": "Zur Reinigung rufen wurde angehalten",
+          "returning_to_install_mop": "Zurückkehren zum Installieren des Wischpads",
+          "returning_to_remove_mop": "Zurückkehren zum Entfernen des Wischpads"
         }
       },
       "water_tank": {
@@ -261,7 +278,7 @@
           "installed": "Installiert",
           "not_installed": "Nicht installiert",
           "mop_installed": "Wassertank installiert",
-          "in_station": "Im Bahnhof"
+          "in_station": "In der Station"
         }
       },
       "mop_pad": {
@@ -270,7 +287,7 @@
           "installed": "Installiert",
           "not_installed": "Nicht installiert",
           "mop_installed": "Wassertank installiert",
-          "in_station": "Im Bahnhof"
+          "in_station": "In der Station"
         }
       },
       "dust_collection": {
@@ -300,7 +317,7 @@
           "drop_repeat": "Räder in der Luft",
           "optical_flow": "Fehler des optischen Flow-Sensors",
           "no_box": "Staubbehälter nicht installiert",
-          "no_tank_box": "Wassertank nicht installiertd",
+          "no_tank_box": "Wassertank nicht installiert",
           "water_box_empty": "Wassertank ist leer",
           "box_full": "Der Filter ist nicht trocken oder verstopft",
           "brush": "Die Hauptbürste ist eingewickelt",
@@ -343,28 +360,28 @@
           "lds_bumper": "Laserentfernungssensors (Bumper) Fehler",
           "filter_blocked": "Der Filter ist nicht trocken oder verstopft",
           "edge": "Kantensensor Fehler",
-          "carpet": "Bitte starten Sie den Roboter in einem Nicht-Teppich-Bereich.",
+          "carpet": "Bitte den Roboter in einem Bereich ohne Teppich starten.",
           "laser": "Der 3D-Hindernisvermeidungssensor ist defekt.",
           "ultrasonic": "Der Ultraschallsensor ist gestört.",
           "no_go_zone": "No-Go-Zone oder virtuelle Wand erkannt.",
           "route": "Die Reinigungsroute ist blockiert.",
           "restricted": "Es wurde festgestellt, dass sich der Staubsauger in einem Sperrgebiet befindet.",
-          "remove_mop": "Wischen abgeschlossen. Bitte entfernen Sie den Mopp rechtzeitig und reinigen Sie ihn.",
-          "mop_removed": "Der Wischmopp hat sich während der Reinigung gelöst.",
-          "mop_pad_stop_rotate": "Der Wischmopp dreht sich nicht mehr",
+          "remove_mop": "Wischen abgeschlossen. Bitte das Wischpad rechtzeitig entfernen und reinigen.",
+          "mop_removed": "Der Wischpad hat sich während der Reinigung gelöst.",
+          "mop_pad_stop_rotate": "Der Wischpad dreht sich nicht mehr",
           "bin_full": "Der Staubsammelbeutel ist voll, oder der Luftkanal ist verstopft.",
           "bin_open": "Die obere Abdeckung des automatischen Leergutbehälters ist nicht geschlossen, oder der Staubbeutel ist nicht installiert.",
           "water_tank": "Der Frischwassertank ist nicht installiert.",
           "dirty_water_tank": "Der Schmutzwassertank ist voll oder nicht installiert.",
-          "water_tank_dry": "Niedriger Wasserstand im Frischwassertank, bitte füllen Sie rechtzeitig Wasser nach.",
+          "water_tank_dry": "Niedriger Wasserstand im Frischwassertank, bitte rechtzeitig Wasser nachfüllen.",
           "dirty_water_tank_blocked": "Schmutzwassertank blockiert.",
           "dirty_water_tank_pump": "Schmutzwassertank Pumpenfehler.",
-          "mop_pad": "Das Wischtuch ist nicht richtig installiert.",
-          "wet_mop_pad": "Der Wasserstand des Wischtuchs ist ungewöhnlich, bitte reinigen Sie den Wischtuch rechtzeitig.",
-          "clean_mop_pad": "Die Reinigungsaufgabe ist abgeschlossen, bitte reinigen Sie das Wischtuch.",
-          "clean_tank_level": "Überprüfen und füllen Sie den Reinwassertank umgehend nach.",
+          "mop_pad": "Der Wischpad ist nicht richtig installiert.",
+          "wet_mop_pad": "Der Wasserstand des Wischpads ist ungewöhnlich, bitte den Wischpad rechtzeitig reinigen.",
+          "clean_mop_pad": "Die Reinigungsaufgabe ist abgeschlossen, bitte den Wischpad reinigen.",
+          "clean_tank_level": "Bitte den Frischwassertank umgehend überprüfen und nachfüllen.",
           "station_disconnected": "Basisstation nicht eingeschaltet",
-          "dirty_tank_level": "Der Wasserstand im Brauchwassertank ist zu hoch.",
+          "dirty_tank_level": "Der Wasserstand im Schmutzwassertank ist zu hoch.",
           "washboard_level": "Wasserstand im Waschbrett ist zu hoch.",
           "no_mop_in_station": "Wischpad ist nicht in der Station.",
           "dust_bag_full": "Der Staubbeutel ist voll oder die Lüftungsschlitze sind blockiert."
@@ -403,11 +420,11 @@
       "low_water_warning": {
         "state": {
           "no_warning": "Keine Warnung",
-          "no_water_left_dismiss": "Bitte überprüfen Sie den Frischwassertank.",
-          "no_water_left": "Das Wasser im Frischwassertank ist bald aufgebraucht. ",
-          "no_water_left_after_clean": "Wischpad wurde gereinigt. ",
-          "no_water_for_clean": "Niedriger Wasserstand im Frischwassertank. ",
-          "low_water": "Das Wasser geht mir bald aus. ",
+          "no_water_left_dismiss": "Bitte den Frischwassertank überprüfen.",
+          "no_water_left": "Das Wasser im Frischwassertank ist bald aufgebraucht.",
+          "no_water_left_after_clean": "Wischpad wurde gereinigt.",
+          "no_water_for_clean": "Niedriger Wasserstand im Frischwassertank.",
+          "low_water": "Das Wasser geht mir bald aus.",
           "tank_not_installed": "Der Frischwassertank ist nicht installiert."
         }
       },
@@ -443,7 +460,7 @@
           "smart_paused": "Intelligente Reinigung pausiert",
           "partial": "Teilweise Reinigung",
           "partial_paused": "Teilreinigung pausiert",
-          "summon": "Rufen Sie die Reinigung an",
+          "summon": "Zur Reinigung heranrufen",
           "summon_paused": "Reinigung herbeirufen pausiert"
         }
       }
@@ -451,318 +468,444 @@
   },
   "services": {
     "vacuum_clean_segment": {
-      "name": "Clean Segment",
-      "description": "Start the cleaning operation in the selected rooms.",
+      "name": "Reinige Segment",
+      "description": "Starte den Reinigungsvorgang in den ausgewählten Räumen.",
       "fields": {
         "segments": {
-          "name": "Segments",
-          "description": "List of rooms to be cleaned. Only room's Character or an array of room's character, cleaning times, fan speed and mop mode to override the default values per room."
+          "name": "Segmente",
+          "description": "Liste der Räume, die gereinigt werden sollen. Entweder der Raumname oder ein Array mit Raumnamen, Reinigungszeiten, Lüftergeschwindigkeiten und Wischmodus, um die Standardwerte pro Raum zu überschreiben."
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Number of cleaning passes for every selected room (unless it is overridden by customized cleaning parameter)."
+          "name": "Wiederholungen",
+          "description": "Anzahl der Reinigungsdurchgänge für jeden ausgewählten Raum (sofern nicht durch benutzerdefinierte Reinigungsparameter überschrieben)."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Fan speed for every selected room (unless it is overridden by customized cleaning parameter)."
+          "name": "Saugstufe",
+          "description": "Lüftergeschwindigkeit für jeden ausgewählten Raum (sofern nicht durch benutzerdefinierte Reinigungsparameter überschrieben)."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water level for every selected room (unless it is overridden by customized cleaning parameter)."
+          "name": "Wassermenge",
+          "description": "Wasserstand für jeden ausgewählten Raum (sofern nicht durch benutzerdefinierte Reinigungsparameter überschrieben)."
         }
       }
     },
     "vacuum_clean_zone": {
-      "name": "Clean Zone",
-      "description": "Start the cleaning operation in the selected area.",
+      "name": "Bereich reinigen",
+      "description": "Starte den Reinigungsvorgang im ausgewählten Bereich.",
       "fields": {
         "zone": {
-          "name": "Zone",
-          "description": "Coordinates."
+          "name": "Bereich",
+          "description": "Koordinaten."
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Number of cleaning passes for each zone between 1 and 3."
+          "name": "Wiederholungen",
+          "description": "Anzahl der Reinigungsdurchgänge für jeden ausgewählten Bereich."
+        },
+        "suction_level": {
+          "name": "Saugstufe",
+          "description": "Lüftergeschwindigkeit für jeden ausgewählten Bereich."
+        },
+        "water_volume": {
+          "name": "Wassermenge",
+          "description": "Wasserstand für jeden ausgewählten Bereich."
         }
       }
     },
     "vacuum_clean_spot": {
-      "name": "Clean Spot",
-      "description": "Start the cleaning operation in the selected points on the map.",
+      "name": "Punkt reinigen",
+      "description": "Starte den Reinigungsvorgang an den ausgewählten Punkten auf der Karte.",
       "fields": {
         "points": {
-          "name": "Points",
-          "description": "List of coordinates to be cleaned."
+          "name": "Punkte",
+          "description": "Liste von Koordinaten, die gereinigt werden sollen."
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Number of cleaning passes for every selected zone."
+          "name": "Wiederholungen",
+          "description": "Anzahl der Reinigungsdurchgänge für jeden ausgewählten Bereich."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Fan speed for every selected zone."
+          "name": "Saugstufe",
+          "description": "Lüftergeschwindigkeit für jeden ausgewählten Bereich."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water level for every selected zone."
+          "name": "Wassermenge",
+          "description": "Wasserstand für jeden ausgewählten Bereich."
         }
       }
     },
-    "vacuum_set_dnd": {
-      "name": "Set DnD",
-      "description": "Enable/disable DnD functionality and/or setting its start and end time.",
+    "vacuum_goto": {
+      "name": "Gehe zu",
+      "description": "Gehe zu den Koordinaten auf der Karte und stoppe.",
       "fields": {
-        "dnd_enabled": {
-          "name": "DnD Enabled",
-          "description": "Enable or disable DnD feature."
+        "x": {
+          "name": "X",
+          "description": "X-Koordinate des Punktes."
         },
-        "dnd_start": {
-          "name": "DnD Start",
-          "description": "Start time of DnD feature."
-        },
-        "dnd_end": {
-          "name": "Dnd End",
-          "description": "End time of DnD feature."
+        "y": {
+          "name": "Y",
+          "description": "Y-Koordinate des Punktes."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Pfad verfolgen",
+      "description": "Folge einer Liste von Koordinaten auf der Karte und kehre zur Basis zurück. (Nur bei Staubsaugern mit Kamera unterstützt)",
+      "fields": {
+        "points": {
+          "name": "Punkte",
+          "description": "Liste von Koordinaten des Pfads."
         }
       }
     },
     "vacuum_remote_control_move_step": {
-      "name": "Remote Control Move Step",
-      "description": "Remotely control move the bot one step.",
+      "name": "Schrittweise Fernbedienung",
+      "description": "Bewege den Roboter ferngesteuert einen Schritt.",
       "fields": {
         "rotation": {
           "name": "Rotation",
-          "description": "Turn in binary degrees between -128 and 128."
+          "description": "Drehung in binären Grad zwischen -128 und 128."
         },
         "velocity": {
-          "name": "Velocity",
-          "description": "Move speed, from 100 (forward) to -300 (backward)."
+          "name": "Geschwindigkeit",
+          "description": "Bewegungsgeschwindigkeit, von 100 (vorwärts) bis -300 (rückwärts)."
         }
       }
     },
     "vacuum_install_voice_pack": {
-      "name": "Install Voice Pack",
-      "description": "Install official or custom voice pack.",
+      "name": "Sprachpaket installieren",
+      "description": "Installiere ein offizielles oder benutzerdefiniertes Sprachpaket.",
       "fields": {
         "lang_id": {
-          "name": "Language ID",
-          "description": "Language ID of this pack."
+          "name": "Sprach-ID",
+          "description": "Sprach-ID dieses Paketes."
         },
         "url": {
           "name": "URL",
-          "description": "Url of this pack it should be reachable by the vacuum bot."
+          "description": "URL dieses Paketes, das vom Staubsaugerroboter erreichbar sein sollte."
         },
         "md5": {
           "name": "MD5",
-          "description": "MD5 checksum of the language pack."
+          "description": "MD5-Prüfsumme des Sprachpakets."
         },
         "size": {
-          "name": "Size",
-          "description": "Size of the language pack in bytes."
+          "name": "Größe",
+          "description": "Größe des Sprachpakets in Bytes."
         }
       }
     },
     "vacuum_request_map": {
-      "name": "Request Map",
-      "description": "Request map data"
+      "name": "Karte anfordern",
+      "description": "Fordere Kartendaten an."
     },
     "vacuum_select_map": {
-      "name": "Select Map",
-      "description": "Select current map. Used when having multiple maps/floors.",
+      "name": "Karte auswählen",
+      "description": "Wähle die aktuelle Karte aus. Wird verwendet, wenn mehrere Karten/Etagen vorhanden sind.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be selected."
+          "name": "Karten-ID",
+          "description": "ID der auszuwählenden Karte."
         }
       }
     },
     "vacuum_delete_map": {
-      "name": "Delete map",
-      "description": "Delete a map.",
+      "name": "Karte löschen",
+      "description": "Lösche eine Karte.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be deleted."
+          "name": "Karten-ID",
+          "description": "ID der zu löschenden Karte."
         }
       }
     },
     "vacuum_save_temporary_map": {
-      "name": "Save Temporary Map",
-      "description": "Save the temporary map."
+      "name": "Temporäre Karte speichern",
+      "description": "Speichere die temporäre Karte."
     },
     "vacuum_discard_temporary_map": {
-      "name": "Discard Temporary Map",
-      "description": "Discard the temporary map."
+      "name": "Temporäre Karte verwerfen",
+      "description": "Verwerfe die temporäre Karte."
     },
     "vacuum_replace_temporary_map": {
-      "name": "Replace Temporary Map",
-      "description": "Replace the temporary map with another saved map.",
+      "name": "Temporäre Karte ersetzen",
+      "description": "Ersetze die temporäre Karte durch eine andere gespeicherte Karte.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be replaced with."
+          "name": "Karten-ID",
+          "description": "ID der Karte, die ersetzt werden soll."
         }
       }
     },
     "vacuum_rename_map": {
-      "name": "Rename map",
-      "description": "Rename a map.",
+      "name": "Karte umbenennen",
+      "description": "Benenne eine Karte um.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map."
+          "name": "Karten-ID",
+          "description": "ID der Karte."
         },
         "map_name": {
-          "name": "Map Name",
-          "description": "New name of the map."
+          "name": "Kartenname",
+          "description": "Neuer Name der Karte."
         }
       }
     },
     "vacuum_restore_map": {
-      "name": "Restore Map",
-      "description": "Restore a map.",
+      "name": "Karte wiederherstellen",
+      "description": "Stelle eine Karte wieder her.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map to be restored."
+          "name": "Karten-ID",
+          "description": "ID der wiederherzustellenden Karte."
         },
-        "map_url": {
-          "name": "Map URL",
-          "description": "File Url of the map."
+        "recovery_map_index": {
+          "name": "Wiederherstellungskartenindex",
+          "description": "Index der gespeicherten Wiederherstellungskarte"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Karte aus Datei wiederherstellen",
+      "description": "Stellen Sie eine Karte aus einer Datei wieder her.",
+      "fields": {
+        "map_id": {
+          "name": "Karten-ID",
+          "description": "ID der wiederherzustellenden Karte."
+        },
+        "file_url": {
+          "name": "Datei-URL",
+          "description": "URL der gespeicherten bz2.gz- oder tar.gz-Datei"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Backup-Karte",
+      "description": "Sichern Sie eine Karte in der Cloud.",
+      "fields": {
+        "map_id": {
+          "name": "Karten-ID",
+          "description": "ID der wiederherzustellenden Karte."
         }
       }
     },
     "vacuum_merge_segments": {
-      "name": "Merge Segments",
-      "description": "Merge rooms.",
+      "name": "Segmente zusammenführen",
+      "description": "Räume zusammenführen.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map."
+          "name": "Karten-ID",
+          "description": "ID der Karte."
         },
         "segments": {
-          "name": "Segments",
-          "description": "Room IDs."
+          "name": "Segmente",
+          "description": "Raum-IDs."
         }
       }
     },
     "vacuum_split_segments": {
-      "name": "Split Segments",
-      "description": "Split rooms.",
+      "name": "Segmente aufteilen",
+      "description": "Räume aufteilen.",
       "fields": {
         "map_id": {
-          "name": "Map ID",
-          "description": "ID of the map."
+          "name": "Karten-ID",
+          "description": "ID der Karte."
         },
         "segment": {
           "name": "Segment",
-          "description": "Room ID."
+          "description": "Raum-ID."
         },
         "line": {
-          "name": "Line",
-          "description": "Split line coordinates."
+          "name": "Linie",
+          "description": "Koordinaten der Aufteilungslinie."
         }
       }
     },
     "vacuum_rename_segment": {
-      "name": "Rename Segment",
-      "description": "Rename a segment.",
+      "name": "Segment umbenennen",
+      "description": "Benenne ein Segment um.",
       "fields": {
         "segment_id": {
-          "name": "Segment ID",
-          "description": "ID of the segment"
+          "name": "Segment-ID",
+          "description": "ID des Segments"
         },
         "segment_name": {
-          "name": "Segment Name",
-          "description": "New name of the segment"
+          "name": "Segmentname",
+          "description": "Neuer Name des Segments"
         }
       }
     },
     "vacuum_set_cleaning_sequence": {
-      "name": "Set Cleaning Sequence",
-      "description": "Set room cleaning sequence.",
+      "name": "Reihenfolge der Reinigung festlegen",
+      "description": "Reihenfolge der Raumreinigung festlegen. (Nur bei unterstützten Geräten)",
       "fields": {
         "cleaning_sequence": {
-          "name": "Cleanin sequence",
-          "description": "Segment ID list of cleaning sequence."
+          "name": "Reinigungsreihenfolge",
+          "description": "Segment-ID-Liste für die Reinigungsreihenfolge."
         }
       }
     },
     "vacuum_set_custom_cleaning": {
-      "name": "Set Custom Cleaning",
-      "description": "Set custom cleaning parameters.",
+      "name": "Benutzerdefinierte Reinigung festlegen",
+      "description": "Benutzerdefinierte Reinigungsparameter festlegen. (Nur bei unterstützten Geräten)",
       "fields": {
         "segment_id": {
-          "name": "Segment ID",
-          "description": "Room IDs."
+          "name": "Segment-ID",
+          "description": "Raum-IDs."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Suction level for each room."
+          "name": "Saugstufe",
+          "description": "Saugstufe für jeden Raum."
         },
         "water_volume": {
-          "name": "Water Volume",
-          "description": "Water volume for each room."
+          "name": "Wassermenge",
+          "description": "Wassermenge für jeden Raum."
+        },
+        "cleaning_mode": {
+          "name": "Reinigungsmodus",
+          "description": "Reinigungsmodus für jeden Raum (nur bei Staubsaugern mit Wischpad-Hebefunktion unterstützt)."
         },
         "repeats": {
-          "name": "Repeats",
-          "description": "Cleaning times for each room."
+          "name": "Wiederholungen",
+          "description": "Reinigungszeiten für jeden Raum."
         }
       }
     },
     "vacuum_set_restricted_zone": {
-      "name": "Set Restriced Zone",
-      "description": "Define virtual walls, restricted zones, and/or no mop zones.",
+      "name": "Eingeschränkten Bereich festlegen",
+      "description": "Virtuelle Wände, eingeschränkte Bereiche und/oder Nicht-Wischzonen definieren.",
       "fields": {
         "walls": {
-          "name": "Walls",
-          "description": "Virtual walls."
+          "name": "Wände",
+          "description": "Virtuelle Wände."
         },
         "zones": {
-          "name": "Zones",
-          "description": "No go zones."
+          "name": "Zonen",
+          "description": "Nicht-Bereichszonen."
         },
         "no_mops": {
-          "name": "No Mops",
-          "description": "No mop zones."
+          "name": "Kein Wischen",
+          "description": "Nicht-Wischzonen."
         }
       }
     },
     "vacuum_reset_consumable": {
-      "name": "Reset Consumable",
-      "description": "Reset a consumable.",
+      "name": "Verbrauchsmaterial zurücksetzen",
+      "description": "Ein Verbrauchsmaterial zurücksetzen.",
       "fields": {
         "consumable": {
-          "name": "Consumable",
-          "description": "Consumable type."
+          "name": "Verbrauchsmaterial",
+          "description": "Verbrauchsmaterialtyp."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Verknüpfung umbenennen",
+      "description": "Benenne eine Verknüpfung um. (Nur bei unterstützten Geräten)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Verknüpfungs-ID",
+          "description": "ID der Verknüpfung."
+        },
+        "shortcut_name": {
+          "name": "Verknüpfungsname",
+          "description": "Neuer Name der Verknüpfung."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Teppichbereich festlegen",
+      "description": "Teppiche und ignorierte Teppiche definieren. (Nur bei unterstützten Geräten)",
+      "fields": {
+        "carpets": {
+          "name": "Teppiche",
+          "description": "Teppichbereiche."
+        },
+        "ignored_carpets": {
+          "name": "Ignorierte Teppiche",
+          "description": "Bereiche von ignorierten Teppichen zum Löschen der automatisch erkannten Teppiche."
+        }
+      }
+    },
+    "vacuum_set_pathway": {
+      "name": "Weg festlegen",
+      "description": "Wege definieren.",
+      "fields": {
+        "pathways": {
+          "name": "Wege",
+          "description": "Koordinaten der Weglinien."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Vordefinierte Punkte festlegen",
+      "description": "Vordefinierte Koordinaten auf der aktuellen Karte festlegen. (Nur bei Staubsaugern mit Kamera unterstützt)",
+      "fields": {
+        "points": {
+          "name": "Punkte",
+          "description": "Liste von Koordinaten zum Speichern."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Hindernis ignorieren festlegen",
+      "description": "Den Ignorierstatus eines Hindernisses festlegen. (Nur bei Staubsaugern mit AI-Hinderniserkennungsfunktion unterstützt)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X-Koordinate des Hindernisses."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y-Koordinate des Hindernisses."
+        },
+        "obstacle_type": {
+          "name": "Hindernistyp",
+          "description": "Typ des Hindernisses, das ignoriert werden soll."
+        },
+        "obstacle_ignored": {
+          "name": "Hindernis ignorieren",
+          "description": "Ob das Hindernis ignoriert wird oder nicht."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Routerposition festlegen",
+      "description": "Die Position des Routers auf der aktuellen Karte festlegen. (Nur bei Staubsaugern mit WLAN-Kartierungsfunktion unterstützt)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X-Koordinate des Routers."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y-Koordinate des Routers."
         }
       }
     },
     "select_select_previous": {
-      "name": "Select Previous",
-      "description": "Select the previous options of an select entity.",
+      "name": "Vorheriges auswählen",
+      "description": "Wähle die vorherigen Optionen eines Auswahlelements aus.",
       "fields": {
         "cycle": {
-          "name": "Cycle",
-          "description": "If the option should cycle from the first to the last."
+          "name": "Zyklus",
+          "description": "Ob die Option vom ersten bis zum letzten Element durchlaufen soll."
         }
       }
     },
     "select_select_first": {
-      "name": "Select First",
-      "description": "Select the first option of an select entity."
+      "name": "Erstes auswählen",
+      "description": "Wähle die erste Option eines Auswahlelements aus."
     },
     "select_select_last": {
-      "name": "Select Last",
-      "description": "Select the last option of an select entity."
+      "name": "Letztes auswählen",
+      "description": "Wähle die letzte Option eines Auswahlelements aus."
     },
     "select_select_next": {
-      "name": "Select Next",
-      "description": "Select the next options of an select entity.",
+      "name": "Nächstes auswählen",
+      "description": "Wähle die nächsten Optionen eines Auswahlelements aus.",
       "fields": {
         "cycle": {
-          "name": "Cycle",
-          "description": "If the option should cycle from the first to the last."
+          "name": "Zyklus",
+          "description": "Ob die Option vom ersten bis zum letzten Element durchlaufen soll."
         }
       }
     }

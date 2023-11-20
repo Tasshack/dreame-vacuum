@@ -14,6 +14,7 @@ from homeassistant.const import (
     ATTR_ENTITY_ID
 )
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import generate_entity_id
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 from .dreame import DreameVacuumDevice, DreameVacuumProperty
@@ -52,6 +53,8 @@ from .const import (
     NOTIFICATION_ID_CLEANUP_COMPLETED,
     NOTIFICATION_ID_WARNING,
     NOTIFICATION_ID_ERROR,
+    NOTIFICATION_ID_INFORMATION,
+    NOTIFICATION_ID_CONSUMABLE,
     NOTIFICATION_ID_REPLACE_TEMPORARY_MAP,
     NOTIFICATION_ID_2FA_LOGIN,
     EVENT_TASK_STATUS,
@@ -120,9 +123,9 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             LOGGER,
             name=DOMAIN,
         )
-        
-        hass.bus.async_listen(
-            persistent_notification.EVENT_PERSISTENT_NOTIFICATIONS_UPDATED,
+        async_dispatcher_connect(
+            hass,
+            persistent_notification.SIGNAL_PERSISTENT_NOTIFICATIONS_UPDATED,
             self._notification_dismiss_listener,
         )
 
@@ -255,52 +258,60 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 NOTIFICATION_ID_REPLACE_TEMPORARY_MAP)
 
     def _create_persistent_notification(self, content, notification_id) -> None:
-        if self._notify:
-            if isinstance(self._notify, list):
+        if self._notify or notification_id == NOTIFICATION_ID_2FA_LOGIN:
+            if isinstance(self._notify, list) and notification_id != NOTIFICATION_ID_2FA_LOGIN:
                 if notification_id == NOTIFICATION_ID_CLEANUP_COMPLETED:
                     if NOTIFICATION_ID_CLEANUP_COMPLETED not in self._notify:
                         return
-                elif NOTIFICATION_ID_WARNING in notification_id:
+                elif (
+                    NOTIFICATION_ID_WARNING in notification_id
+                ):
                     if NOTIFICATION_ID_WARNING not in self._notify:
                         return
                 elif NOTIFICATION_ID_ERROR in notification_id:
                     if NOTIFICATION_ID_ERROR not in self._notify:
                         return
-                elif notification_id == NOTIFICATION_ID_DUST_COLLECTION or notification_id == NOTIFICATION_ID_CLEANING_PAUSED:
-                    if "information" not in self._notify:
+                elif (
+                    notification_id == NOTIFICATION_ID_DUST_COLLECTION
+                    or notification_id == NOTIFICATION_ID_CLEANING_PAUSED
+                ):
+                    if NOTIFICATION_ID_INFORMATION not in self._notify:
                         return
-                elif notification_id != NOTIFICATION_ID_REPLACE_TEMPORARY_MAP: 
-                    if "consumable" not in self._notify:
-                        return
+                elif (
+                    notification_id != NOTIFICATION_ID_REPLACE_TEMPORARY_MAP
+                ):
+                    if NOTIFICATION_ID_CONSUMABLE not in self._notify:
+                       return
+
 
             persistent_notification.async_create(
                 self.hass,
                 content,
                 title=self.device.name,
-                notification_id=f"{DOMAIN}_{notification_id}",
+                notification_id=f"{DOMAIN}_{self.device.mac}_{notification_id}"
             )
 
     def _remove_persistent_notification(self, notification_id) -> None:
         persistent_notification.async_dismiss(
-            self.hass, f"{DOMAIN}_{notification_id}")
+            self.hass, f"{DOMAIN}_{self.device.mac}_{notification_id}")
 
-    def _notification_dismiss_listener(self, event) -> None:
-        notifications = self.hass.data.get(persistent_notification.DOMAIN)
-
-        if self._has_warning:
-            if (
-                f"{persistent_notification.DOMAIN}.{DOMAIN}_{NOTIFICATION_ID_WARNING}"
-                not in notifications
-            ):
-                self._has_warning = False
-                self.device.clear_warning()
-
-        if self._two_factor_url:
-            if (
-                f"{persistent_notification.DOMAIN}.{DOMAIN}_{NOTIFICATION_ID_2FA_LOGIN}"
-                not in notifications
-            ):
-                self._two_factor_url = None
+    def _notification_dismiss_listener(self, type, data) -> None:
+        if type == persistent_notification.UpdateType.REMOVED and self.device:
+            notifications = self.hass.data.get(persistent_notification.DOMAIN)
+            if self._has_warning:
+                if (
+                    f"{DOMAIN}_{self.device.mac}_{NOTIFICATION_ID_WARNING}"
+                    not in notifications
+                ):
+                    if NOTIFICATION_ID_WARNING in self._notify:
+                        self.device.clear_warning()
+                    self._has_warning = self.device.status.has_warning
+            if self._two_factor_url:
+                if (
+                    f"{DOMAIN}_{self.device.mac}_{NOTIFICATION_ID_2FA_LOGIN}"
+                    not in notifications
+                ):
+                    self._two_factor_url = None
 
     def _fire_event(self, event_id, data) -> None:
         event_data =  {ATTR_ENTITY_ID: generate_entity_id("vacuum.{}", self.device.name, hass=self.hass)}
@@ -311,12 +322,18 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
     async def _async_update_data(self) -> DreameVacuumDevice:
         """Handle device update. This function is only called once when the integration is added to Home Assistant."""
         try:
+            LOGGER.info("Integration starting...")
             await self.hass.async_add_executor_job(self.device.update)
             self.device.schedule_update()
             self.async_set_updated_data()
             return self.device
         except Exception as ex:
-            LOGGER.error("Update failed: %s", traceback.format_exc())
+            LOGGER.warning("Integration start failed: %s", traceback.format_exc())
+            if self.device is not None:
+                self.device.listen(None)
+                self.device.disconnect()
+                del self.device
+                self.device = None
             raise UpdateFailed(ex) from ex
 
     @callback

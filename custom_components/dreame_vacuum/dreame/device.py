@@ -802,6 +802,7 @@ class DreameVacuumDevice:
         """Disconnect from device and cancel timers"""
         _LOGGER.info("Disconnect")
         self.schedule_update(-1)
+        self._protocol.disconnect()
         if self._map_manager:
             self._map_manager.schedule_update(-1)
 

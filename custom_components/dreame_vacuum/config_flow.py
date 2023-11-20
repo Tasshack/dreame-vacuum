@@ -52,7 +52,7 @@ DREAME_MODELS = [
     "dreame.vacuum.p2187",
     "dreame.vacuum.r2328",
     "dreame.vacuum.p2028a",
-    "dreame.vacuum.r2251a",
+    #"dreame.vacuum.r2251a", Map private key missing
     "dreame.vacuum.p2029",
     "dreame.vacuum.r2257o",
     "dreame.vacuum.r2215o",
@@ -91,7 +91,7 @@ MIJIA_MODELS = [
     "dreame.vacuum.p2140a",
     "dreame.vacuum.p2114a",
     "dreame.vacuum.p2114o",
-    "dreame.vacuum.r2210",
+    #"dreame.vacuum.r2210", Map private key missing
     "dreame.vacuum.p2149o",
     "dreame.vacuum.p2150a",
     "dreame.vacuum.p2150b",

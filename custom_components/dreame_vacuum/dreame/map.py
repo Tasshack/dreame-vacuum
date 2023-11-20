@@ -171,6 +171,7 @@ class DreameMapVacuumMapManager:
         self._map_request_time: int = None
         self._map_request_count: int = 0
         self._new_map_request_time: int = None
+        self._aes_iv: str = None
 
     def _request_map_from_cloud(self) -> bool:
         if self._current_timestamp_ms is not None:
@@ -599,7 +600,7 @@ class DreameMapVacuumMapManager:
         return url
 
     def _decode_map_partial(self, raw_map, timestamp=None, key=None) -> MapDataPartial | None:
-        partial_map = DreameVacuumMapDecoder.decode_map_partial(raw_map, key)
+        partial_map = DreameVacuumMapDecoder.decode_map_partial(raw_map, self._aes_iv, key)
         if partial_map is not None:
             # After restart or unsuccessful start robot returns timestamp_ms as uptime and that messes up with the latest map/frame id detection.
             # I could not figure out how app handles with this issue but i have added this code to update time stamp as request/object time.
@@ -1012,7 +1013,7 @@ class DreameMapVacuumMapManager:
 
     def set_aes_iv(self, aes_iv: str) -> None:
         if aes_iv:
-            DreameVacuumMapDecoder.AES_IV = aes_iv
+            self._aes_iv = aes_iv
 
     def set_vslam_map(self) -> None:
         self._vslam_map = True
@@ -1130,7 +1131,7 @@ class DreameMapVacuumMapManager:
                         if v.get(MAP_PARAMETER_MAP):
                             saved_map_data = DreameVacuumMapDecoder.decode_saved_map(
                                 v[MAP_PARAMETER_MAP], self._vslam_map, int(v[MAP_PARAMETER_ANGLE]) if v.get(
-                                    MAP_PARAMETER_ANGLE) else 0
+                                    MAP_PARAMETER_ANGLE) else 0, self._aes_iv
                             )
                             if saved_map_data is not None:
                                 name = v.get(MAP_PARAMETER_NAME)
@@ -1216,7 +1217,7 @@ class DreameMapVacuumMapManager:
                                     "Get recovery map file url result: %s", response)
                                 map_url = response[MAP_PARAMETER_RESULT][MAP_PARAMETER_URL]
                                 recovery_map_data = DreameVacuumMapDecoder.decode_saved_map(
-                                    map_info[MAP_PARAMETER_THB], self._vslam_map, self._saved_map_data[map_id].rotation)
+                                    map_info[MAP_PARAMETER_THB], self._vslam_map, self._saved_map_data[map_id].rotation, self._aes_iv)
                                 # TODO: store recovery map
 
     @property
@@ -1846,7 +1847,6 @@ class DreameMapVacuumMapEditor:
 
 class DreameVacuumMapDecoder:
     HEADER_SIZE = 27
-    AES_IV = ""
 
     @staticmethod
     def _read_int_8(data: bytes, offset: int = 0) -> int:
@@ -1985,7 +1985,7 @@ class DreameVacuumMapDecoder:
             
 
     @staticmethod
-    def decode_map_partial(raw_map, key=None) -> MapDataPartial | None:
+    def decode_map_partial(raw_map, iv=None, key=None) -> MapDataPartial | None:
         _LOGGER.debug("raw_map: %s", raw_map)
         raw_map = raw_map.replace("_", "/").replace("-", "+")
 
@@ -1997,12 +1997,13 @@ class DreameVacuumMapDecoder:
         raw_map = base64.decodebytes(raw_map.encode("utf8"))
 
         if key is not None:
+            if iv is None:
+                iv = ""
             try:
                 key = hashlib.sha256(key.encode()).hexdigest()[
                     0:32].encode('utf8')
-                iv = DreameVacuumMapDecoder.AES_IV.encode('utf8')
                 cipher = Cipher(algorithms.AES(key), modes.CBC(
-                    iv), backend=default_backend())
+                    iv.encode("utf8")), backend=default_backend())
                 decryptor = cipher.decryptor()
                 raw_map = decryptor.update(raw_map) + decryptor.finalize()
             except Exception as ex:
@@ -2040,14 +2041,14 @@ class DreameVacuumMapDecoder:
         return partial_map
 
     @staticmethod
-    def decode_map(raw_map: str, vslam_map: bool, rotation: int = 0) -> Tuple[MapData, Optional[MapData]]:
+    def decode_map(raw_map: str, vslam_map: bool, rotation: int = 0, iv: str = None, key: str = None) -> Tuple[MapData, Optional[MapData]]:
         return DreameVacuumMapDecoder.decode_map_data_from_partial(
-            DreameVacuumMapDecoder.decode_map_partial(raw_map), vslam_map, rotation
+            DreameVacuumMapDecoder.decode_map_partial(raw_map, iv, key), vslam_map, rotation
         )
 
     @staticmethod
-    def decode_saved_map(raw_map: str, vslam_map: bool, rotation: int = 0) -> MapData | None:
-        return DreameVacuumMapDecoder.decode_map(raw_map, vslam_map, rotation)[0]
+    def decode_saved_map(raw_map: str, vslam_map: bool, rotation: int = 0, iv: str = None) -> MapData | None:
+        return DreameVacuumMapDecoder.decode_map(raw_map, vslam_map, rotation, iv)[0]
 
     @staticmethod
     def decode_map_data_from_partial(
