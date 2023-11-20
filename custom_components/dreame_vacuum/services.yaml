@@ -217,22 +217,6 @@ vacuum_rename_map:
       selector:
         text:
 
-vacuum_restore_map:
-  target:
-    entity:
-      domain: vacuum
-  fields:
-    map_id:
-      example: 14
-      required: true
-      selector:
-        number:
-          mode: box
-    map_url:
-      required: true
-      selector:
-        text:
-
 vacuum_merge_segments:
   target:
     entity:

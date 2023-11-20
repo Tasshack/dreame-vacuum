@@ -533,6 +533,24 @@
         }
       }
     },
+    "vacuum_set_dnd": {
+      "name": "Set DnD",
+      "description": "Enable/disable DnD functionality and/or setting its start and end time.",
+      "fields": {
+        "dnd_enabled": {
+          "name": "DnD Enabled",
+          "description": "Enable or disable DnD feature."
+        },
+        "dnd_start": {
+          "name": "DnD Start",
+          "description": "Start time of DnD feature."
+        },
+        "dnd_end": {
+          "name": "Dnd End",
+          "description": "End time of DnD feature."
+        }
+      }
+    },
     "vacuum_goto": {
       "name": "Aller à",
       "description": "Allez aux coordonnées de la carte et arrêtez-vous.",

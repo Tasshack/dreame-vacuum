@@ -48,7 +48,9 @@
           "color_scheme": "Map color scheme",
           "icon_set": "Map icon set",
           "notify": "Notification",
-          "map_objects": "Map objects"
+          "map_objects": "Map objects",
+          "low_resolution": "Low resolution map",
+          "square": "Square map"
         }
       },
       "reauth_confirm": {
@@ -65,6 +67,8 @@
           "icon_set": "Map icon set",
           "notify": "Notification",
           "map_objects": "Map objects",
+          "low_resolution": "Low resolution map",
+          "square": "Square map",
           "configuration_type": "Configuration type",
           "prefer_cloud": "Prefer cloud connection"
         }
@@ -141,6 +145,14 @@
           "low_frequency": "Low Frequency"
         }
       },
+      "mop_pad_swing": {
+        "state": {
+          "off": "Off",
+          "auto": "Auto",
+          "daily": "Daily",
+          "weekly": "Weekly"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "None",
@@ -155,6 +167,11 @@
           "german": "German",
           "chinese": "Chinese"
         }
+      },
+      "order": {
+        "state": {
+          "not_set": "Not Set"
+        }
       }
     },
     "sensor": {
@@ -164,8 +181,8 @@
           "sweeping": "Sweeping",
           "charging": "Charging",
           "error": "Error",
-          "idle": "[%key:common::state::idle%]",
-          "paused": "[%key:common::state::paused%]",
+          "idle": "Idle",
+          "paused": "Paused",
           "returning": "Returning to dock",
           "mopping": "Mopping",
           "drying": "Drying",
@@ -197,8 +214,8 @@
       "status": {
         "state": {
           "unknown": "Unknown",
-          "idle": "[%key:common::state::idle%]",
-          "paused": "[%key:common::state::paused%]",
+          "idle": "Idle",
+          "paused": "Paused",
           "cleaning": "Cleaning",
           "returning": "Returning to dock",
           "spot_cleaning": "Spot cleaning",
@@ -255,7 +272,7 @@
           "returning_to_remove_mop": "Returning to remove mop"
         }
       },
-      "mop": {
+      "water_tank": {
         "state": {
           "unknown": "Unknown",
           "installed": "Installed",
@@ -264,7 +281,7 @@
           "in_station": "In station"
         }
       },
-      "water_tank": {
+      "mop_pad": {
         "state": {
           "unknown": "Unknown",
           "installed": "Installed",
@@ -283,7 +300,7 @@
       "auto_empty_status": {
         "state": {
           "unknown": "Unknown",
-          "idle": "[%key:common::state::idle%]",
+          "idle": "Idle",
           "active": "Active",
           "not_performed": "Not performed"
         }
@@ -391,7 +408,7 @@
       "self_wash_base_status": {
         "state": {
           "unknown": "Unknown",
-          "idle": "[%key:common::state::idle%]",
+          "idle": "Idle",
           "washing": "Washing",
           "drying": "Drying",
           "paused": "Paused",
@@ -414,7 +431,7 @@
       "stream_status": {
         "state": {
           "unknown": "Unknown",
-          "idle": "[%key:common::state::idle%]",
+          "idle": "Idle",
           "video": "Video",
           "audio": "Audio",
           "recording": "Recording"
@@ -423,7 +440,7 @@
       "drainage_status": {
         "state": {
           "unknown": "Unknown",
-          "idle": "[%key:common::state::idle%]",
+          "idle": "Idle",
           "draining": "Draining",
           "draining_successful": "Draining successful",
           "draining_failed": "Draining failed"
@@ -482,7 +499,15 @@
         },
         "repeats": {
           "name": "Repeats",
-          "description": "Number of cleaning passes for each zone between 1 and 3."
+          "description": "Number of cleaning passes for every selected zone."
+        },
+        "suction_level": {
+          "name": "Suction Level",
+          "description": "Fan speed for every selected zone."
+        },
+        "water_volume": {
+          "name": "Water Volume",
+          "description": "Water level for every selected zone."
         }
       }
     },
@@ -523,6 +548,30 @@
         "dnd_end": {
           "name": "Dnd End",
           "description": "End time of DnD feature."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "Go To",
+      "description": "Go to the coordinate of the map and stop.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X Coordinate of the point."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y Coordinate of the point."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Follow Path",
+      "description": "Follow list of coordinates on the map and return to base. (Only supported on vacuums with camera)",
+      "fields": {
+        "points": {
+          "name": "Points",
+          "description": "List of coordinates of the path."
         }
       }
     },
@@ -626,9 +675,33 @@
           "name": "Map ID",
           "description": "ID of the map to be restored."
         },
-        "map_url": {
-          "name": "Map URL",
-          "description": "File Url of the map."
+        "recovery_map_index": {
+          "name": "Recovery Map Index",
+          "description": "Index of the saved recovery map"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Restore Map From File",
+      "description": "Restore a map from file.",
+      "fields": {
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map to be restored."
+        },
+        "file_url": {
+          "name": "File Url",
+          "description": "Url of the saved bz2.gz or tar.gz file"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Backup Map",
+      "description": "Backup a map to cloud.",
+      "fields": {
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map to be restored."
         }
       }
     },
@@ -680,7 +753,7 @@
     },
     "vacuum_set_cleaning_sequence": {
       "name": "Set Cleaning Sequence",
-      "description": "Set room cleaning sequence.",
+      "description": "Set room cleaning sequence. (Only on supported devices)",
       "fields": {
         "cleaning_sequence": {
           "name": "Cleanin sequence",
@@ -690,7 +763,7 @@
     },
     "vacuum_set_custom_cleaning": {
       "name": "Set Custom Cleaning",
-      "description": "Set custom cleaning parameters.",
+      "description": "Set custom cleaning parameters. (Only on supported devices)",
       "fields": {
         "segment_id": {
           "name": "Segment ID",
@@ -703,6 +776,10 @@
         "water_volume": {
           "name": "Water Volume",
           "description": "Water volume for each room."
+        },
+        "cleaning_mode": {
+          "name": "Cleaning Mode",
+          "description": "Cleaning for each room (only supported on vacuums with mop pad lifting feature)."
         },
         "repeats": {
           "name": "Repeats",
@@ -735,6 +812,90 @@
         "consumable": {
           "name": "Consumable",
           "description": "Consumable type."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Rename Shortcut",
+      "description": "Rename a shortcut. (Only on supported devices)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Shortcut ID",
+          "description": "ID of the shortcut."
+        },
+        "shortcut_name": {
+          "name": "Shortcut Name",
+          "description": "New name of the shortcut."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Set Carpet Area",
+      "description": "Define carpets and ignored carpets. (Only on supported devices)",
+      "fields": {
+        "carpets": {
+          "name": "Carpets",
+          "description": "Carpet areas."
+        },
+        "ignored_carpets": {
+          "name": "Ignored Carpets",
+          "description": "Ignored carpet areas for deleting the automatically detected carpets."
+        }
+      }
+    },
+    "vacuum_set_pathway": {
+      "name": "Set Pathway",
+      "description": "Define pathways.",
+      "fields": {
+        "pathways": {
+          "name": "Pathways",
+          "description": "Pathway line coordinates."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Set Predefined Points",
+      "description": "Define predefined coordinates on current map. (Only supported on vacuums with camera)",
+      "fields": {
+        "points": {
+          "name": "Points",
+          "description": "List of coordinates to be saved."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Set Obstacle Ignore",
+      "description": "Set ignore status of an obstacle. (Only supported on vacuums with AI Obstacle detection feature)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X Coordinate of the obstacle."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y Coordinate of the obstacle."
+        },
+        "obstacle_type": {
+          "name": "Obstacle Type",
+          "description": "Type of the obstacle that will be ignored."
+        },
+        "obstacle_ignored": {
+          "name": "Obstacle Ignored",
+          "description": "Obstacle is ignored or not."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Set router position",
+      "description": "Set router position on current map. (Only supported on vacuums with WiFi map feature)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X Coordinate of the router."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y Coordinate of the router."
         }
       }
     },

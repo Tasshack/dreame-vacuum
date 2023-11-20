@@ -447,10 +447,6 @@ Rename a map.
         entity_id: vacuum.vacuum
     ```
 
-### `dreame_vacuum.vacuum_restore_map`
-
-Restore a map from previous state that are created and uploaded by the device.
-
 ### `dreame_vacuum.vacuum_set_restricted_zone`
 
 Set invisible walls, no go and no mopping zones on current map.

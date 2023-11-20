@@ -533,6 +533,24 @@
         }
       }
     },
+    "vacuum_set_dnd": {
+      "name": "Set DnD",
+      "description": "Enable/disable DnD functionality and/or setting its start and end time.",
+      "fields": {
+        "dnd_enabled": {
+          "name": "DnD Enabled",
+          "description": "Enable or disable DnD feature."
+        },
+        "dnd_start": {
+          "name": "DnD Start",
+          "description": "Start time of DnD feature."
+        },
+        "dnd_end": {
+          "name": "Dnd End",
+          "description": "End time of DnD feature."
+        }
+      }
+    },
     "vacuum_goto": {
       "name": "Gehe zu",
       "description": "Gehe zu den Koordinaten auf der Karte und stoppe.",
@@ -646,20 +664,6 @@
         "map_name": {
           "name": "Kartenname",
           "description": "Neuer Name der Karte."
-        }
-      }
-    },
-    "vacuum_restore_map": {
-      "name": "Karte wiederherstellen",
-      "description": "Stelle eine Karte wieder her.",
-      "fields": {
-        "map_id": {
-          "name": "Karten-ID",
-          "description": "ID der wiederherzustellenden Karte."
-        },
-        "recovery_map_index": {
-          "name": "Wiederherstellungskartenindex",
-          "description": "Index der gespeicherten Wiederherstellungskarte"
         }
       }
     },

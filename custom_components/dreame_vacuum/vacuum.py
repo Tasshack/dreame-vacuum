@@ -68,7 +68,6 @@ from .const import (
     SERVICE_REQUEST_MAP,
     SERVICE_SELECT_MAP,
     SERVICE_DELETE_MAP,
-    SERVICE_RESTORE_MAP,
     SERVICE_SET_CLEANING_SEQUENCE,
     SERVICE_SET_CUSTOM_CLEANING,
     SERVICE_SET_DND,
@@ -336,15 +335,6 @@ async def async_setup_entry(
             vol.Required(INPUT_MAP_NAME): cv.string,
         },
         DreameVacuum.async_rename_map.__name__,
-    )
-
-    platform.async_register_entity_service(
-        SERVICE_RESTORE_MAP,
-        {
-            vol.Required(INPUT_MAP_ID): cv.positive_int,
-            vol.Required(INPUT_MAP_URL): cv.string,
-        },
-        DreameVacuum.async_restore_map.__name__,
     )
 
     platform.async_register_entity_service(
@@ -664,16 +654,6 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 self.device.rename_map,
                 map_id,
                 map_name,
-            )
-
-    async def async_restore_map(self, map_id, map_url) -> None:
-        """Restore a map"""
-        if map_url and map_url != "":
-            await self._try_command(
-                "Unable to call restore_map: %s",
-                self.device.restore_map,
-                map_id,
-                map_url,
             )
 
     async def async_rename_segment(self, segment_id, segment_name="") -> None:
