@@ -31,11 +31,16 @@ from .recorder import CAMERA_UNRECORDED_ATTRIBUTES
 from .const import (
     DOMAIN,
     CONF_COLOR_SCHEME,
+    CONF_COLOR_SCHEME_BACKGROUND,
     CONF_ICON_SET,
     CONF_MAP_OBJECTS,
+    CONF_MAP_OBJECTS_OVERLAY,
+    CONF_MAP_OBJECTS_BACKGROUND,
     CONF_LOW_RESOLUTION,
     CONF_SQUARE,
     MAP_OBJECTS,
+    MAP_OBJECTS_OVERLAY,
+    MAP_OBJECTS_BACKGROUND,
     LOGGER,
 )
 
@@ -79,6 +84,8 @@ class DreameVacuumMapType(IntEnum):
     FLOOR_MAP = 0
     WIFI_MAP = 1
     JSON_MAP_DATA = 2
+    OVERLAY_MAP = 3
+    BACKGROUND_MAP = 4
 
 
 @dataclass
@@ -99,6 +106,18 @@ CAMERAS: tuple[CameraEntityDescription, ...] = (
         icon=MAP_ICON,
         entity_category=EntityCategory.CONFIG,
         map_type=DreameVacuumMapType.JSON_MAP_DATA,
+        entity_registry_enabled_default=False,
+    ),
+    DreameVacuumCameraEntityDescription(
+        key="map_overlay", 
+        icon=MAP_ICON,
+        map_type=DreameVacuumMapType.OVERLAY_MAP,
+        entity_registry_enabled_default=False,
+    ),
+    DreameVacuumCameraEntityDescription(
+        key="map_background", 
+        icon=MAP_ICON,
+        map_type=DreameVacuumMapType.BACKGROUND_MAP,
         entity_registry_enabled_default=False,
     ),
 )
@@ -322,18 +341,21 @@ async def async_setup_entry(
     coordinator: DreameVacuumDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
     if coordinator.device.capability.map:
         color_scheme = entry.options.get(CONF_COLOR_SCHEME)
+        color_scheme_background = entry.options.get(CONF_COLOR_SCHEME_BACKGROUND)
         icon_set = entry.options.get(CONF_ICON_SET)
         low_resolution = entry.options.get(CONF_LOW_RESOLUTION, False)
         square = entry.options.get(CONF_SQUARE, False)
         map_objects = entry.options.get(CONF_MAP_OBJECTS, MAP_OBJECTS.keys())
+        map_objects_overlay = entry.options.get(CONF_MAP_OBJECTS_OVERLAY, MAP_OBJECTS_OVERLAY.keys())
+        map_objects_background = entry.options.get(CONF_MAP_OBJECTS_BACKGROUND, MAP_OBJECTS_BACKGROUND.keys())
 
         async_add_entities(
             DreameVacuumCameraEntity(
                 coordinator,
                 description,
-                color_scheme,
+                color_scheme_background if description.map_type == DreameVacuumMapType.BACKGROUND_MAP or description.map_type == DreameVacuumMapType.OVERLAY_MAP else color_scheme,
                 icon_set,
-                map_objects,
+                map_objects_overlay if description.map_type == DreameVacuumMapType.OVERLAY_MAP else map_objects_background if description.map_type == DreameVacuumMapType.BACKGROUND_MAP else map_objects,
                 low_resolution,
                 square,
             )
