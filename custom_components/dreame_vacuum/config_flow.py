@@ -29,6 +29,7 @@ from .const import (
     DOMAIN,
     CONF_NOTIFY,
     CONF_COLOR_SCHEME,
+    CONF_COLOR_SCHEME_BACKGROUND,
     CONF_ICON_SET,
     CONF_COUNTRY,
     CONF_TYPE,
@@ -36,11 +37,15 @@ from .const import (
     CONF_MAC,
     CONF_DID,
     CONF_MAP_OBJECTS,
+    CONF_MAP_OBJECTS_OVERLAY,
+    CONF_MAP_OBJECTS_BACKGROUND,
     CONF_PREFER_CLOUD,
     CONF_LOW_RESOLUTION,
     CONF_SQUARE,
     NOTIFICATION,
     MAP_OBJECTS,
+    MAP_OBJECTS_OVERLAY,
+    MAP_OBJECTS_BACKGROUND,
     NOTIFICATION_ID_2FA_LOGIN,
     NOTIFICATION_2FA_LOGIN,
 )
@@ -187,6 +192,9 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
                         CONF_COLOR_SCHEME, default=options[CONF_COLOR_SCHEME]
                     ): vol.In(list(MAP_COLOR_SCHEME_LIST.keys())),
                     vol.Required(
+                        CONF_COLOR_SCHEME_BACKGROUND, default=options[CONF_COLOR_SCHEME]
+                    ): vol.In(list(MAP_COLOR_SCHEME_LIST.keys())),
+                    vol.Required(
                         CONF_ICON_SET,
                         default=options.get(
                             CONF_ICON_SET, next(iter(MAP_ICON_SET_LIST))
@@ -196,6 +204,14 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
                         CONF_MAP_OBJECTS,
                         default=options.get(CONF_MAP_OBJECTS, list(MAP_OBJECTS.keys())),
                     ): cv.multi_select(MAP_OBJECTS),
+                    vol.Required(
+                        CONF_MAP_OBJECTS_OVERLAY,
+                        default=options.get(CONF_MAP_OBJECTS_OVERLAY, list(MAP_OBJECTS_OVERLAY.keys())),
+                    ): cv.multi_select(MAP_OBJECTS_OVERLAY),
+                    vol.Required(
+                        CONF_MAP_OBJECTS_BACKGROUND,
+                        default=options.get(CONF_MAP_OBJECTS_BACKGROUND, list(MAP_OBJECTS_BACKGROUND.keys())),
+                    ): cv.multi_select(MAP_OBJECTS_BACKGROUND),
                     vol.Required(
                         CONF_SQUARE, default=options.get(CONF_SQUARE, False)
                     ): bool,
@@ -616,7 +632,10 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                     CONF_NOTIFY: user_input[CONF_NOTIFY],
                     CONF_COLOR_SCHEME: user_input.get(CONF_COLOR_SCHEME),
                     CONF_ICON_SET: user_input.get(CONF_ICON_SET),
+                    CONF_COLOR_SCHEME_BACKGROUND: user_input.get(CONF_COLOR_SCHEME_BACKGROUND),
                     CONF_MAP_OBJECTS: user_input.get(CONF_MAP_OBJECTS),
+                    CONF_MAP_OBJECTS_OVERLAY: user_input.get(CONF_MAP_OBJECTS_OVERLAY),
+                    CONF_MAP_OBJECTS_BACKGROUND: user_input.get(CONF_MAP_OBJECTS_BACKGROUND),
                     CONF_SQUARE: user_input.get(CONF_SQUARE),
                     CONF_LOW_RESOLUTION: user_input.get(CONF_LOW_RESOLUTION),
                     CONF_PREFER_CLOUD: self.prefer_cloud,
@@ -653,12 +672,21 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                     vol.Required(
                         CONF_COLOR_SCHEME, default=default_color_scheme
                     ): vol.In(list(MAP_COLOR_SCHEME_LIST.keys())),
+                    vol.Required(
+                        CONF_COLOR_SCHEME_BACKGROUND, default=default_color_scheme
+                    ): vol.In(list(MAP_COLOR_SCHEME_LIST.keys())),
                     vol.Required(CONF_ICON_SET, default=default_icon_set): vol.In(
                         list(MAP_ICON_SET_LIST.keys())
                     ),
                     vol.Required(
                         CONF_MAP_OBJECTS, default=default_objects
                     ): cv.multi_select(MAP_OBJECTS),
+                    vol.Required(
+                        CONF_MAP_OBJECTS_OVERLAY, default=default_objects
+                    ): cv.multi_select(MAP_OBJECTS_OVERLAY),
+                    vol.Required(
+                        CONF_MAP_OBJECTS_BACKGROUND, default=default_objects
+                    ): cv.multi_select(MAP_OBJECTS_BACKGROUND),
                     vol.Required(CONF_SQUARE, default=False): bool,
                     vol.Required(CONF_LOW_RESOLUTION, default=False): bool,
                 }
