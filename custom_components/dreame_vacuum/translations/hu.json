@@ -1,0 +1,980 @@
+{
+  "config":{
+    "abort":{
+      "already_configured":"Az eszköz már be van állítva",
+      "cannot_connect":"Nem sikerült csatlakozni."
+    },
+    "error":{
+      "cannot_connect":"Nem sikerült csatlakozni.",
+      "unsupported":"Az eszköz nem támogatott",
+      "wrong_token":"Ellenőrzőösszeg hiba, helytelen token",
+      "2fa_required":"2FA bejelentkezés szükséges\n{url}",
+      "credentials_incomplete":"A hitelesítési adatok hiányosak, kérjük, töltse ki a felhasználónevét, jelszavát és a szerver régiót",
+      "login_error":"Nem sikerült bejelentkezni, ellenőrizze a hitelesítési adatokat.",
+      "no_devices":"Nincs támogatott eszköz ezen a fiókon a választott szerver régióban."
+    },
+    "step":{
+      "user":{
+        "data":{
+          "configuration_type":"Konfigurációs típus"
+        },
+        "description":"A térképfunkció felhőkapcsolatot igényel és automatikus konfigurációt biztosít. Amennyiben nem szeretné használni a térképfunkciót, választhatja a manuális konfigurációt."
+      },
+      "local":{
+        "data":{
+          "host":"Hoszt",
+          "token":"Token"
+        },
+        "description":"Szüksége lesz a 32 karakteres API Tokenre, lásd: https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token a részletekért."
+      },
+      "mi":{
+        "data":{
+          "username":"Felhasználónév",
+          "password":"Jelszó",
+          "country":"Szerver régió",
+          "prefer_cloud":"Felhőkapcsolatot részesítse előnyben"
+        },
+        "description":"Jelentkezzen be a Xiaomi Miio felhőbe, lásd: https://www.openhab.org/addons/bindings/miio/#country-servers a felhőszerver használatához."
+      },
+      "dreame":{
+        "data":{
+          "username":"Felhasználónév",
+          "password":"Jelszó",
+          "country":"Szerver régió"
+        },
+        "description":"Jelentkezzen be a Dreamehome felhőbe."
+      },
+      "devices":{
+        "data":{
+          "devices":"Támogatott eszközök"
+        },
+        "description":"Válassza ki a beállítani kívánt Dreame Vacuum eszközt."
+      },
+      "options":{
+        "data":{
+          "name":"Név",
+          "color_scheme":"Térkép színséma",
+          "icon_set":"Térkép ikonkészlet",
+          "notify":"Értesítés",
+          "map_objects":"Térkép objektumok",
+          "low_resolution":"Alacsony felbontású térkép",
+          "square":"Négyzet alakú térkép"
+        }
+      },
+      "reauth_confirm":{
+        "description":"A Dreame Vacuum integrációnak újra kell hitelesítenie a fiókját a tokenek frissítéséhez vagy a hiányzó felhő hitelesítési adatok hozzáadásához.",
+        "title":"Integráció újrahitelesítése"
+      }
+    }
+  },
+  "options":{
+    "step":{
+      "init":{
+        "data":{
+          "color_scheme":"Térkép színséma",
+          "icon_set":"Térkép ikonkészlet",
+          "notify":"Értesítés",
+          "map_objects":"Térkép objektumok",
+          "low_resolution":"Alacsony felbontású térkép",
+          "square":"Négyzet alakú térkép",
+          "configuration_type":"Konfigurációs típus",
+          "prefer_cloud":"Felhőkapcsolatot részesítse előnyben"
+        }
+      }
+    },
+    "error":{
+      "cloud_credentials_incomplete":"A felhő hitelesítési adatok hiányosak, kérjük, töltse ki a felhasználónevet, jelszót és a régiót"
+    }
+  },
+  "entity":{
+    "select":{
+      "suction_level":{
+        "state":{
+          "quiet":"Csendes",
+          "standard":"Alapértelmezett",
+          "strong":"Erős",
+          "turbo":"Turbo"
+        }
+      },
+      "water_volume":{
+        "state":{
+          "low":"Alacsony",
+          "medium":"Közepes",
+          "high":"Magas"
+        }
+      },
+      "mop_pad_humidity":{
+        "state":{
+          "slightly_dry":"Kissé száraz",
+          "moist":"Nedves",
+          "wet":"Vizes"
+        }
+      },
+      "cleaning_mode":{
+        "state":{
+          "sweeping":"Porszívózás",
+          "mopping":"Felmosás",
+          "sweeping_and_mopping":"Porszívózás és felmosás",
+          "mopping_after_sweeping":"Felmosás, a porszívózás után"
+        }
+      },
+      "carpet_sensitivity":{
+        "state":{
+          "low":"Alacsony",
+          "medium":"Közepes",
+          "high":"Magas"
+        }
+      },
+      "carpet_cleaning":{
+        "state":{
+          "avoidance":"Elkerülés",
+          "adaptation":"Adaptáció",
+          "remove_mop":"Felmosó eltávolítása",
+          "adaptation_without_route":"Útvonal nélküli adaptáció"
+        }
+      },
+      "mop_wash_level":{
+        "state":{
+          "water_saving":"Víztakarékos",
+          "daily":"Napi",
+          "deep":"Alapos"
+        }
+      },
+      "mopping_type":{
+        "state":{
+          "accurate":"Precíz",
+          "daily":"Napi",
+          "deep":"Alapos"
+        }
+      },
+      "wider_corner_coverage":{
+        "state":{
+          "off":"Kikapcsolva",
+          "high_frequency":"Magas gyakoriság",
+          "low_frequency":"Alacsony gyakoriság"
+        }
+      },
+      "mop_pad_swing":{
+        "state":{
+          "off":"Kikapcsolva",
+          "auto":"Automata",
+          "daily":"Napi",
+          "weekly":"Heti"
+        }
+      },
+      "floor_material":{
+        "state":{
+          "none":"Nincs",
+          "tile":"Csempe",
+          "wood":"Fa"
+        }
+      },
+      "voice_assistant_language":{
+        "state":{
+          "default":"Alapértelmezett",
+          "english":"Angol",
+          "german":"Német",
+          "chinese":"Kínai"
+        }
+      },
+      "order":{
+        "state":{
+          "not_set":"Nincs beállítva"
+        }
+      },
+      "self_clean_frequency":{
+        "state":{
+          "by_area":"Terület szerint",
+          "by_time":"Idő szerint",
+          "by_room":"Szoba szerint"
+        }
+      },
+      "auto_empty_mode":{
+        "state":{
+          "off":"Kikapcsolva",
+          "standard":"Alapértelmezett",
+          "high_frequency":"Magas gyakoriság",
+          "low_frequency":"Alacsony gyakoriság"
+        }
+      },
+      "floor_material_direction":{
+        "state":{
+          "vertical":"Függőleges",
+          "horizontal":"Vízszintes"
+        }
+      },
+      "visibility":{
+        "state":{
+          "visible":"Látható",
+          "hidden":"Rejtett"
+        }
+      },
+      "cleangenius":{
+        "state":{
+          "off":"Kikapcsolt",
+          "routine_cleaning":"Rendszeres takarítás",
+          "deep_cleaning":"Alapos takarítás"
+        }
+      },
+      "auto_recleaning":{
+        "state":{
+          "off":"Kikapcsolt",
+          "in_deep_mode":"Alapos módban",
+          "in_all_modes":"Összes módban"
+        }
+      },
+      "auto_rewashing":{
+        "state":{
+          "off":"Kikapcsolt",
+          "in_deep_mode":"Alapos módban",
+          "in_all_modes":"Összes módban"
+        }
+      },
+      "cleaning_route":{
+        "state":{
+          "quick":"Gyors",
+          "standard":"Alapértelmezett",
+          "intensive":"Intenzív",
+          "deep":"Alapos"
+        }
+      }
+    },
+    "sensor":{
+      "state":{
+        "state":{
+          "unknown":"Ismeretlen",
+          "sweeping":"Porszívózás",
+          "charging":"Töltés",
+          "error":"Hiba",
+          "idle":"Tétlen",
+          "paused":"Szüneteltetve",
+          "returning":"Dokkhoz visszatérés",
+          "mopping":"Felmosás",
+          "drying":"Szárítás",
+          "washing":"Mosás",
+          "returning_to_wash":"Mosáshoz visszatérés",
+          "building":"Építés",
+          "sweeping_and_mopping":"Porszívózás és felmosás",
+          "charging_completed":"Töltés befejezve",
+          "upgrading":"Frissítés",
+          "clean_summon":"Takarításra hívás",
+          "station_reset":"Állomás visszaállítása",
+          "returning_install_mop":"Felmosó felszerelésére visszatérés",
+          "returning_remove_mop":"Felmosó leszerelésére visszatérés",
+          "water_check":"Vízellenőrzés",
+          "clean_add_water":"Takarítás és vízpótlás",
+          "washing_paused":"Mosás szüneteltetve",
+          "auto_emptying":"Automatikus ürítés",
+          "remote_control":"Távirányítás",
+          "smart_charging":"Okos töltés",
+          "second_cleaning":"Második takarítás",
+          "human_following":"Ember követése",
+          "spot_cleaning":"Pozíció takítás",
+          "returning_auto_empty":"Automatikus ürítéshez visszatérés",
+          "shortcut":"Gyorsindítás",
+          "monitoring":"Felügyelet",
+          "monitoring_paused":"Felügyelet szüneteltetve"
+        }
+      },
+      "status":{
+        "state":{
+          "unknown":"Ismeretlen",
+          "idle":"Tétlen",
+          "paused":"Szüneteltetve",
+          "cleaning":"Takarítás",
+          "returning":"Dokkhoz visszatérés",
+          "spot_cleaning":"Pozíció takrítás",
+          "follow_wall_cleaning":"Falkövető takarítás",
+          "charging":"Töltés",
+          "ota":"OTA",
+          "fct":"FCT",
+          "wifi_set":"WiFi beállítás",
+          "power_off":"Kikapcsolás",
+          "factory":"Gyári",
+          "error":"Hiba",
+          "remote_control":"Távirányítás",
+          "sleeping":"Alvás",
+          "self_test":"Önteszt",
+          "factory_test":"Gyári teszt",
+          "standby":"Készenléti állapot",
+          "room_cleaning":"Szoba takarítás",
+          "zone_cleaning":"Zóna takarítás",
+          "fast_mapping":"Gyors térképezés",
+          "cruising_path":"Haladás útvonalon",
+          "cruising_point":"Haladás egy pontra",
+          "summon_clean":"Takarításra hívás",
+          "shortcut":"Gyorsindítás",
+          "person_follow":"Személy követése",
+          "water_check":"Vízellenőrzés"
+        }
+      },
+      "task_status":{
+        "state":{
+          "unknown":"Ismeretlen",
+          "completed":"Befejezve",
+          "cleaning":"Takarítás",
+          "zone_cleaning":"Zóna takarítás",
+          "room_cleaning":"Szoba takarítás",
+          "spot_cleaning":"Pozíció takarítás",
+          "fast_mapping":"Gyors térképezés",
+          "cleaning_paused":"Takarítás szüneteltetve",
+          "room_cleaning_paused":"Szoba takarítás szüneteltetve",
+          "zone_cleaning_paused":"Zóna takarítás szüneteltetve",
+          "spot_cleaning_paused":"Pozíció takarítás szüneteltetve",
+          "map_cleaning_paused":"Térképes takarítás szüneteltetve",
+          "docking_paused":"Dokkolás szüneteltetve",
+          "mopping_paused":"Felmosás szüneteltetve",
+          "zone_mopping_paused":"Zóna felmosás szüneteltetve",
+          "room_mopping_paused":"Szoba felmosás szüneteltetve",
+          "zone_docking_paused":"Zóna dokkolás szüneteltetve",
+          "room_docking_paused":"Szoba dokkolás szüneteltetve",
+          "cruising_path":"Haladás útvonalon",
+          "cruising_path_paused":"Útvonalon haladás szüneteltetve",
+          "cruising_point":"Haladás egy pontra",
+          "cruising_point_paused":"Pontra haladás szüneteltetve",
+          "summon_clean_paused":"Takarításra hívás szüneteltetve",
+          "returning_to_install_mop":"Felmosó felszerelésére visszatérés",
+          "returning_to_remove_mop":"Felmosó leszerelésére visszatérés"
+        }
+      },
+      "water_tank":{
+        "state":{
+          "unknown":"Ismeretlen",
+          "installed":"Felszerelve",
+          "not_installed":"Nincs felszerelve",
+          "mop_installed":"Felmosó felszerelve",
+          "in_station":"Állomáson"
+        }
+      },
+      "mop_pad":{
+        "state":{
+          "unknown":"Ismeretlen",
+          "installed":"Felszerelve",
+          "not_installed":"Nincs felszerelve",
+          "mop_installed":"Felmosó felszerelve",
+          "in_station":"Állomáson"
+        }
+      },
+      "dust_collection":{
+        "state":{
+          "unknown":"Ismeretlen",
+          "not_available":"Nem elérhető",
+          "available":"Elérhető"
+        }
+      },
+      "auto_empty_status":{
+        "state":{
+          "unknown":"Ismeretlen",
+          "idle":"Tétlen",
+          "active":"Aktív",
+          "not_performed":"Nem teljesített"
+        }
+      },
+      "error":{
+        "state":{
+          "unknown":"Ismeretlen hibakód",
+          "no_error":"Nincs hiba",
+          "drop":"A kerekek elakadtak",
+          "cliff":"Esésérzékelő hiba",
+          "bumper":"Ütközésérzékelő beragadt",
+          "gesture":"A robot döntött",
+          "bumper_repeat":"Ütközésérzékelő beragadt",
+          "drop_repeat":"A kerekek elakadtak",
+          "optical_flow":"Optikai áramlásérzékelő hiba",
+          "no_box":"Porzsák nincs telepítve",
+          "no_tank_box":"Víztartály nincs telepítve",
+          "water_box_empty":"Víztartály üres",
+          "box_full":"A szűrő nedves vagy eltömődött",
+          "brush":"A főkefe elakadt",
+          "side_brush":"Az oldalkefe elakadt",
+          "fan":"A szűrő nedves vagy eltömődött",
+          "left_wheel_motor":"A robot elakadt vagy bal kerék idegen tárgyak által blokkolva",
+          "right_wheel_motor":"A robot elakadt vagy jobb kerék idegen tárgyak által blokkolva",
+          "turn_suffocate":"A robot elakadt, nem tud fordulni",
+          "forward_suffocate":"A robot elakadt, nem tud előre menni",
+          "charger_get":"Nem találja a dokkolót",
+          "battery_low":"Alacsony akkumulátor szint",
+          "charge_fault":"Töltési hiba",
+          "battery_percentage":"Akkumulátor szint hiba",
+          "heart":"Belső hiba",
+          "camera_occlusion":"Vizuális pozícionáló érzékelő hiba",
+          "move":"Mozgásérzékelő hiba",
+          "flow_shielding":"Optikai érzékelő hiba",
+          "infrared_shielding":"Infravörös pajzs hiba",
+          "charge_no_electric":"A töltő dokk nem kapcsolt be",
+          "battery_fault":"Akkumulátor hiba",
+          "fan_speed_error":"Ventilátor sebesség érzékelő hiba",
+          "left_wheell_speed":"A bal kerék idegen tárgyak által lehet blokkolva",
+          "right_wheell_speed":"A jobb kerék idegen tárgyak által lehet blokkolva",
+          "bmi055_acce":"Gyorsulásmérő hiba",
+          "bmi055_gyro":"Giroszkóp hiba",
+          "xv7001":"Giroszkóp hiba",
+          "left_magnet":"Bal oldali mágnes érzékelő hiba",
+          "right_magnet":"Jobb oldali mágnes érzékelő hiba",
+          "flow_error":"Áramlásérzékelő hiba",
+          "infrared_fault":"Infravörös hiba",
+          "camera_fault":"Kamera hiba",
+          "strong_magnet":"Erős mágneses mező észlelve",
+          "water_pump":"Vízpumpa hiba",
+          "rtc":"Valós idejű óra hiba",
+          "auto_key_trig":"Belső hiba",
+          "p3v3":"Belső hiba",
+          "camera_idle":"Belső hiba",
+          "blocked":"Takarítási útvonal blokkolva, visszatérés a dokkolóhoz.",
+          "lds_error":"Lézer távolságmérő érzékelő hiba",
+          "lds_bumper":"Lézer távolságmérő ütközés érzékelő hiba",
+          "filter_blocked":"A szűrő nedves vagy eltömődött",
+          "edge":"Szegélyérzékelő hiba",
+          "carpet":"Kérjük, indítsa el a robotot nem szőnyeges területen.",
+          "laser":"A 3D akadályelkerülő érzékelő hibás.",
+          "ultrasonic":"Az ultrahangos érzékelő hibás.",
+          "no_go_zone":"No-Go zóna vagy virtuális fal észlelve.",
+          "route":"Takarítási útvonal blokkolva.",
+          "restricted":"Észlelve, hogy a porszívó-felmosó korlátozott területen van.",
+          "remove_mop":"Felmosás befejezve. Kérjük, időben távolítsa el és tisztítsa meg a felmosót.",
+          "mop_removed":"A felmosóbetét leesett a takarítás során.",
+          "mop_pad_stop_rotate":"A felmosóbetét forgása megállt.",
+          "bin_full":"A porzsák tele van vagy a légcsatorna blokkolva van.",
+          "bin_open":"Az automatikus ürítő dokk felső fedele nincs lezárva vagy a porzsák nincs telepítve.",
+          "water_tank":"A tiszta víztartály nincs telepítve.",
+          "dirty_water_tank":"A szennyezett víztartály tele van vagy nincs telepítve.",
+          "water_tank_dry":"Alacsony vízszint a tiszta víztartályban, kérjük, időben töltse fel vízzel.",
+          "dirty_water_tank_blocked":"Szennyezett víztartály blokkolva.",
+          "dirty_water_tank_pump":"Szennyezett víztartály szivattyú hiba.",
+          "mop_pad":"A felmosóbetét nincs megfelelően telepítve.",
+          "wet_mop_pad":"A felmosóbetét vízszintje rendellenes, kérjük, időben tisztítsa meg a mosódeszkát.",
+          "clean_mop_pad":"A takarítási feladat befejeződött, kérjük, tisztítsa meg a felmosóbetét mosódeszkáját.",
+          "clean_tank_level":"Ellenőrizze és töltse fel a tiszta víztartályt.",
+          "station_disconnected":"A dokkoló nincs bekapcsolva",
+          "dirty_tank_level":"A szennyezet víztartály vízszintje túl magas.",
+          "washboard_level":"A mosódeszka vízszintje túl magas.",
+          "no_mop_in_station":"A felmosóbetét nincs az állomáson.",
+          "dust_bag_full":"A porzsák tele van vagy a szellőzők blokkolva vannak.",
+          "mop_install_failed":"A felmosóbetét telepítése sikertelen.",
+          "low_battery_turn_off":"Alacsony akkumulátor szint. A robot hamarosan leáll.",
+          "dirty_tank_not_installed":"A robot szennyezet víztartálya nincs telepítve.",
+          "robot_in_hidden_room":"Rejtett terület. Kérjük, mozgassa a robotot megfelelő területre és próbálja újra.",
+          "washboard_not_working":"A mosódeszka nem működik.",
+          "return_to_charge_failed":"A töltésre való visszatérés sikertelen."
+        }
+      },
+      "charging_status":{
+        "state":{
+          "unknown":"Ismeretlen",
+          "charging":"Töltés",
+          "not_charging":"Nincs töltés",
+          "return_to_charge":"Visszatérés a töltésre",
+          "charging_completed":"Töltés befejezve"
+        }
+      },
+      "relocation_status":{
+        "state":{
+          "unknown":"Ismeretlen",
+          "located":"Megtalálva",
+          "locating":"Lokalizálás",
+          "failed":"Sikertelen",
+          "success":"Sikeres"
+        }
+      },
+      "self_wash_base_status":{
+        "state":{
+          "unknown":"Ismeretlen",
+          "idle":"Tétlen",
+          "washing":"Mosás",
+          "drying":"Szárítás",
+          "paused":"Szüneteltetve",
+          "returning":"Visszatérés a mosáshoz",
+          "clean_add_water":"Tisztítás és víz hozzáadása",
+          "adding_water":"Víz hozzáadása"
+        }
+      },
+      "low_water_warning":{
+        "state":{
+          "no_warning":"Nincs figyelmeztetés",
+          "no_water_left_dismiss":"Kérjük, ellenőrizze a tiszta víztartályt.",
+          "no_water_left":"A tiszta víztartályban lévő víz hamarosan elfogy. Ellenőrizze és töltse fel időben a tiszta víztartályt.",
+          "no_water_left_after_clean":"A felmosóbetét tisztítva. Észleltük, hogy a tiszta víztartályban lévő víz nem elegendő, kérjük, töltse fel a tiszta víztartályt és ürítse ki a szennyezett víztartályt.",
+          "no_water_for_clean":"Alacsony vízszint a tiszta víztartályban. A robot porszívó módba váltott.",
+          "low_water":"A víz hamarosan elfogy. Kérjük, töltse fel a tiszta víztartályt.",
+          "tank_not_installed":"A tiszta víztartály nincs telepítve."
+        }
+      },
+      "stream_status":{
+        "state":{
+          "unknown":"Ismeretlen",
+          "idle":"Tétlen",
+          "video":"Videó",
+          "audio":"Audió",
+          "recording":"Felvétel"
+        }
+      },
+      "drainage_status":{
+        "state":{
+          "unknown":"Ismeretlen",
+          "idle":"Tétlen",
+          "draining":"Leeresztés",
+          "draining_successful":"Leeresztés sikeres",
+          "draining_failed":"Leeresztés sikertelen"
+        }
+      },
+      "task_type":{
+        "state":{
+          "standard":"Normál takarítás",
+          "standard_paused":"Normál takarítás szüneteltetve",
+          "custom":"Egyéni takarítás",
+          "custom_paused":"Egyéni takarítás szüneteltetve",
+          "shortcut":"Gyors takarítás",
+          "shortcut_paused":"Gyors takarítás szüneteltetve",
+          "scheduled":"Időzített takarítás",
+          "scheduled_paused":"Időzített takarítás szüneteltetve",
+          "smart":"Intelligens takarítás",
+          "smart_paused":"Intelligens takarítás szüneteltetve",
+          "partial":"Részleges takarítás",
+          "partial_paused":"Részleges takarítás szüneteltetve",
+          "summon":"Hívásos takarítás",
+          "summon_paused":"Hívásos takarítás szüneteltetve"
+        }
+      }
+    }
+  },
+  "services":{
+    "vacuum_clean_segment":{
+      "name":"Szegmens takarítása",
+      "description":"Indítsa el a takarítást a kiválasztott szobákban.",
+      "fields":{
+        "segments":{
+          "name":"Szegmensek",
+          "description":"A takarítandó helyiségek listája. Csak a helyiség karaktere vagy a helyiség karakterének, a tisztítási időnek, a ventilátor sebességének és a felmosási módnak a tömbje az alapértelmezett értékek felülbírálásához helyiségenként."
+        },
+        "repeats":{
+          "name":"Ismétlések",
+          "description":"A tisztítási menetek száma minden kiválasztott helyiséghez (kivéve, ha egyéni tisztítási paraméter felülírja)."
+        },
+        "suction_level":{
+          "name":"Szívószint",
+          "description":"A ventilátor sebessége minden kiválasztott helyiséghez (kivéve, ha egyéni takarítási paraméter felülírja)."
+        },
+        "water_volume":{
+          "name":"Vízmennyiség",
+          "description":"Vízszint minden kiválasztott helyiségben (kivéve, ha egyéni tisztítási paraméter felülírja)."
+        }
+      }
+    },
+    "vacuum_clean_zone":{
+      "name":"Zóna takarítása",
+      "description":"Indítsa el a takarítást a kiválasztott területen.",
+      "fields":{
+        "zone":{
+          "name":"Zóna",
+          "description":"Koordináták."
+        },
+        "repeats":{
+          "name":"Ismétlések",
+          "description":"A tisztítási menetszám minden kiválasztott zónához."
+        },
+        "suction_level":{
+          "name":"Szívószint",
+          "description":"Ventilátor sebesség minden kiválasztott zónához."
+        },
+        "water_volume":{
+          "name":"Vízmennyiség",
+          "description":"Vízszint minden kiválasztott zónához."
+        }
+      }
+    },
+    "vacuum_clean_spot":{
+      "name":"Pozíció takarítás",
+      "description":"Indítsa el a takarítási műveletet a térképen kiválasztott pontokon.",
+      "fields":{
+        "points":{
+          "name":"Pontok",
+          "description":"Takarítandó koordináták listája."
+        },
+        "repeats":{
+          "name":"Ismétlések",
+          "description":"A tisztítási menetszám minden kiválasztott zónához."
+        },
+        "suction_level":{
+          "name":"Szívószint",
+          "description":"Ventilátor sebessége minden kiválasztott zónához."
+        },
+        "water_volume":{
+          "name":"Vízmennyiség",
+          "description":"Vízszint minden kiválasztott zónához."
+        }
+      }
+    },
+    "vacuum_goto":{
+      "name":"Koordinátára küldés",
+      "description":"Menjen a térkép koordinátájára és álljon meg.",
+      "fields":{
+        "x":{
+          "name":"X",
+          "description":"A pont X koordinátája."
+        },
+        "y":{
+          "name":"Y",
+          "description":"A pont Y koordinátája."
+        }
+      }
+    },
+    "vacuum_follow_path":{
+      "name":"Kövesse az útvonalat",
+      "description":"Kövesse a térképen lévő koordináták listáját és térjen vissza az alapállapotba. (Csak kamerás porszívókon támogatott)",
+      "fields":{
+        "points":{
+          "name":"Pontok",
+          "description":"Az útvonal koordinátáinak listája."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step":{
+      "name":"Távirányítású mozgatás",
+      "description":"Távolról irányított egy lépéses mozgatás.",
+      "fields":{
+        "rotation":{
+          "name":"Forgás",
+          "description":"Forgás bináris fokokban -128 és 128 között."
+        },
+        "velocity":{
+          "name":"Sebesség",
+          "description":"Mozgási sebesség, 100-tól (előre) -300-ig (hátra)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack":{
+      "name":"Hangcsomag telepítése",
+      "description":"Hivatalos vagy egyéni hangcsomag telepítése.",
+      "fields":{
+        "lang_id":{
+          "name":"Nyelvazonosító",
+          "description":"A csomag nyelvazonosítója."
+        },
+        "url":{
+          "name":"URL",
+          "description":"A csomag URL-je, amely elérhető kell, hogy legyen a porszívó számára."
+        },
+        "md5":{
+          "name":"MD5",
+          "description":"A nyelvi csomag MD5 ellenőrzőösszege."
+        },
+        "size":{
+          "name":"Méret",
+          "description":"A nyelvi csomag mérete byte-ban."
+        }
+      }
+    },
+    "vacuum_request_map":{
+      "name":"Térkép kérése",
+      "description":"Térképadatok kérése"
+    },
+    "vacuum_select_map":{
+      "name":"Térkép kiválasztása",
+      "description":"Jelenlegi térkép kiválasztása. Több térkép/emelet esetén használatos.",
+      "fields":{
+        "map_id":{
+          "name":"Térképazonosító",
+          "description":"A kiválasztandó térkép azonosítója."
+        }
+      }
+    },
+    "vacuum_delete_map":{
+      "name":"Térkép törlése",
+      "description":"Térkép törlése.",
+      "fields":{
+        "map_id":{
+          "name":"Térképazonosító",
+          "description":"A törlendő térkép azonosítója."
+        }
+      }
+    },
+    "vacuum_save_temporary_map":{
+      "name":"Ideiglenes térkép mentése",
+      "description":"Az ideiglenes térkép mentése."
+    },
+    "vacuum_discard_temporary_map":{
+      "name":"Ideiglenes térkép eldobása",
+      "description":"Az ideiglenes térkép eldobása."
+    },
+    "vacuum_replace_temporary_map":{
+      "name":"Ideiglenes térkép cseréje",
+      "description":"Az ideiglenes térkép cseréje egy másik mentett térképre.",
+      "fields":{
+        "map_id":{
+          "name":"Térképazonosító",
+          "description":"A cserélendő térkép azonosítója."
+        }
+      }
+    },
+    "vacuum_rename_map":{
+      "name":"Térkép átnevezése",
+      "description":"Térkép átnevezése.",
+      "fields":{
+        "map_id":{
+          "name":"Térképazonosító",
+          "description":"A térkép azonosítója."
+        },
+        "map_name":{
+          "name":"Térkép neve",
+          "description":"A térkép új neve."
+        }
+      }
+    },
+    "vacuum_restore_map":{
+      "name":"Térkép visszaállítása",
+      "description":"Térkép visszaállítása.",
+      "fields":{
+        "map_id":{
+          "name":"Térképazonosító",
+          "description":"A visszaállítandó térkép azonosítója."
+        },
+        "recovery_map_index":{
+          "name":"Visszaállítandó térkép index",
+          "description":"A mentett visszaállítandó térkép indexe."
+        }
+      }
+    },
+    "vacuum_restore_map_from_file":{
+      "name":"Térkép visszaállítása fájlból",
+      "description":"Térkép visszaállítása fájlból.",
+      "fields":{
+        "map_id":{
+          "name":"Térképazonosító",
+          "description":"A visszaállítandó térkép azonosítója."
+        },
+        "file_url":{
+          "name":"Fájl URL",
+          "description":"A mentett bz2.gz vagy tar.gz fájl URL-je."
+        }
+      }
+    },
+    "vacuum_backup_map":{
+      "name":"Térkép biztonsági mentése",
+      "description":"Térkép biztonsági mentése felhőbe.",
+      "fields":{
+        "map_id":{
+          "name":"Térképazonosító",
+          "description":"A mentendő térkép azonosítója."
+        }
+      }
+    },
+    "vacuum_merge_segments":{
+      "name":"Szegmensek összevonása",
+      "description":"Helyiségek összevonása.",
+      "fields":{
+        "map_id":{
+          "name":"Térképazonosító",
+          "description":"A térkép azonosítója."
+        },
+        "segments":{
+          "name":"Szegmensek",
+          "description":"Helyiség azonosítók."
+        }
+      }
+    },
+    "vacuum_split_segments":{
+      "name":"Szegmensek Felosztása",
+      "description":"Helyiségek felosztása.",
+      "fields":{
+        "map_id":{
+          "name":"Térképazonosító",
+          "description":"A térkép azonosítója."
+        },
+        "segment":{
+          "name":"Szegmens",
+          "description":"Helyiség azonsoítók."
+        },
+        "line":{
+          "name":"Vonal",
+          "description":"Felosztó vonal koordinátái."
+        }
+      }
+    },
+    "vacuum_rename_segment":{
+      "name":"Szegmens átnevezése",
+      "description":"Szegmens átnevezése.",
+      "fields":{
+        "segment_id":{
+          "name":"Szegmensazonosító",
+          "description":"A szegmens azonosítója."
+        },
+        "segment_name":{
+          "name":"Szegmens neve",
+          "description":"A szegmens új neve."
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence":{
+      "name":"Takarítási sorrend beállítása",
+      "description":"Szobák takarítási sorrendjének beállítása. (Csak támogatott készülékeken)",
+      "fields":{
+        "cleaning_sequence":{
+          "name":"Takarítási sorrend",
+          "description":"A takarítási sorrendben lévő szegmensazonosítók listája."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning":{
+      "name":"Egyéni takarítás beállítása",
+      "description":"Egyéni takarítási paraméterek beállítása. (Csak támogatott készülékeken)",
+      "fields":{
+        "segment_id":{
+          "name":"Szegmensazonosító",
+          "description":"Helyiség azonosítók."
+        },
+        "suction_level":{
+          "name":"Szívószint",
+          "description":"Szívószint minden egyes helyiséghez."
+        },
+        "water_volume":{
+          "name":"Vízmennyiség",
+          "description":"Vízmennyiség minden egyes helyiséghez."
+        },
+        "cleaning_mode":{
+          "name":"Takarítási mód",
+          "description":"Takarítás minden egyes helyiséghez (csak felmosó funkcióval rendelkező porszívókon támogatott)."
+        },
+        "repeats":{
+          "name":"Ismétlések",
+          "description":"A takarítási menetszám minden egyes helyiséghez."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone":{
+      "name":"Korlátozott zóna beállítása",
+      "description":"Virtuális falak, korlátozott zónák és/vagy nem felmosó zónák meghatározása.",
+      "fields":{
+        "walls":{
+          "name":"Falak",
+          "description":"Virtuális falak."
+        },
+        "zones":{
+          "name":"Zónák",
+          "description":"Nem megközelíthető zónák."
+        },
+        "no_mops":{
+          "name":"Tiltott felmosás",
+          "description":"Tiltott felmosási zónák."
+        }
+      }
+    },
+    "vacuum_reset_consumable":{
+      "name":"Elhasználódott kellék visszaállítása",
+      "description":"Elhasználódott kellék visszaállítása.",
+      "fields":{
+        "consumable":{
+          "name":"Elhasználódott kellék",
+          "description":"Elhasználódott kellék típusa."
+        }
+      }
+    },
+    "vacuum_rename_shortcut":{
+      "name":"Gyorsgomb átnevezése",
+      "description":"Gyorsgomb átnevezése. (Csak támogatott készülékeken)",
+      "fields":{
+        "shortcut_id":{
+          "name":"Gyorsgomb azonosító",
+          "description":"A gyorsgomb azonosítója."
+        },
+        "shortcut_name":{
+          "name":"Gyorsgomb neve",
+          "description":"A gyorsgomb új neve."
+        }
+      }
+    },
+    "vacuum_set_carpet_area":{
+      "name":"Szőnyegterület beállítása",
+      "description":"Szőnyegek és figyelmen kívül hagyott szőnyegek meghatározása. (Csak támogatott készülékeken)",
+      "fields":{
+        "carpets":{
+          "name":"Szőnyegek",
+          "description":"Szőnyegterületek."
+        },
+        "ignored_carpets":{
+          "name":"Figyelmen kívül hagyott szőnyegek",
+          "description":"Figyelmen kívül hagyott szőnyegterületek az automatikusan észlelt szőnyegek törléséhez."
+        }
+      }
+    },
+    "vacuum_set_pathway":{
+      "name":"Útvonal beállítása",
+      "description":"Útvonalak meghatározása.",
+      "fields":{
+        "pathways":{
+          "name":"Útvonalak",
+          "description":"Útvonalvonalak koordinátái."
+        }
+      }
+    },
+    "vacuum_set_predefined_points":{
+      "name":"Előre meghatározott pontok beállítása",
+      "description":"Előre meghatározott koordináták meghatározása a jelenlegi térképen. (Csak kamerás porszívókon támogatott)",
+      "fields":{
+        "points":{
+          "name":"Pontok",
+          "description":"Menteni kívánt koordináták listája."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore":{
+      "name":"Akadály figyelmen kívül helyezése",
+      "description":"Az akadály figyelmen kívül hagyásának beállítása. (Csak AI akadályérzékelő funkcióval rendelkező porszívókon támogatott)",
+      "fields":{
+        "x":{
+          "name":"X",
+          "description":"Az akadály X koordinátája."
+        },
+        "y":{
+          "name":"Y",
+          "description":"Az akadály Y koordinátája."
+        },
+        "obstacle_ignored":{
+          "name":"Figyelmen kívül hagyott akadály",
+          "description":"Az akadály figyelmen kívül van-e hagyva."
+        }
+      }
+    },
+    "vacuum_set_router_position":{
+      "name":"Router pozíciójának beállítása",
+      "description":"Router pozíciójának beállítása a jelenlegi térképen. (Csak WiFi térképes porszívókon támogatott)",
+      "fields":{
+        "x":{
+          "name":"X",
+          "description":"A router X koordinátája."
+        },
+        "y":{
+          "name":"Y",
+          "description":"A router Y koordinátája."
+        }
+      }
+    },
+    "select_select_previous":{
+      "name":"Előző kiválasztása",
+      "description":"Egy választó entitás előző opcióinak kiválasztása.",
+      "fields":{
+        "cycle":{
+          "name":"Ciklus",
+          "description":"Az opcióknak az elsőtől az utolsóig való ciklusos váltása."
+        }
+      }
+    },
+    "select_select_first":{
+      "name":"Első kiválasztása",
+      "description":"Egy választó entitás első opciójának kiválasztása."
+    },
+    "select_select_last":{
+      "name":"Utolsó kiválasztása",
+      "description":"Egy választó entitás utolsó opciójának kiválasztása."
+    },
+    "select_select_next":{
+      "name":"Következő kiválasztása",
+      "description":"Egy választó entitás következő opcióinak kiválasztása.",
+      "fields":{
+        "cycle":{
+          "name":"Ciklus",
+          "description":"Az opcióknak az elsőtől az utolsóig való ciklusos váltása."
+        }
+      }
+    }
+  }
+}
