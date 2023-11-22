@@ -84,7 +84,7 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._session = requests.session()
         self._queue = queue.Queue()
         self._thread = None
-        self._id = random.randint(1, 10000)
+        self._id = random.randint(1, 1000)
         self._host = None
         self._model = None
         self._ti = None

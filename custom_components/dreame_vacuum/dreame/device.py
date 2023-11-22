@@ -645,14 +645,19 @@ class DreameVacuumDevice:
     ) -> None:
         if previous_map_recovery_status and self.status.map_recovery_status:
             if (
-                self.status.previous_map_recovery_status
+                self.status.map_recovery_status
                 == DreameMapRecoveryStatus.SUCCESS.value
             ):
                 if not self._protocol.dreame_cloud:
                     self._last_map_list_request = 0
                 self._map_manager.request_next_map()
                 self._map_manager.request_next_recovery_map_list()
-            self._request_properties([DreameVacuumProperty.MAP_RECOVERY_STATUS])
+
+            if (
+                self.status.map_recovery_status
+                != DreameMapRecoveryStatus.RUNNING.value
+            ):
+                self._request_properties([DreameVacuumProperty.MAP_RECOVERY_STATUS])
 
     def _map_backup_status_changed(
         self, previous_map_backup_status: Any = None
@@ -662,7 +667,8 @@ class DreameVacuumDevice:
                 if not self._protocol.dreame_cloud:
                     self._last_map_list_request = 0
                 self._map_manager.request_next_recovery_map_list()
-            self._request_properties([DreameVacuumProperty.MAP_BACKUP_STATUS])
+            if self.status.map_backup_status != DreameMapBackupStatus.RUNNING.value:
+                self._request_properties([DreameVacuumProperty.MAP_BACKUP_STATUS])
 
     def _cleaning_mode_changed(self, previous_cleaning_mode: Any = None) -> None:
         value = self.get_property(DreameVacuumProperty.CLEANING_MODE)
@@ -2075,9 +2081,9 @@ class DreameVacuumDevice:
                         render_map_data.furnitures = {}
 
                 if render_map_data.segments:
-                    if (
-                        render_map_data.task_cruise_points
-                        or render_map_data.cleanup_method.value != 2
+                    if render_map_data.task_cruise_points or (
+                        render_map_data.cleanup_method is not None
+                        and render_map_data.cleanup_method.value != 2
                     ):
                         for k, v in render_map_data.segments.items():
                             render_map_data.segments[k].order = None
@@ -2355,9 +2361,6 @@ class DreameVacuumDevice:
 
         if self.capability.backup_map:
             properties.append(DreameVacuumProperty.MAP_BACKUP_STATUS)
-
-        if self.status.map_recovery_status:
-            properties.append(DreameVacuumProperty.MAP_RECOVERY_STATUS)
 
         now = time.time()
         if self.status.active:
@@ -3154,6 +3157,11 @@ class DreameVacuumDevice:
 
         self.schedule_update(10, True)
         if not isinstance(zones, list):
+            raise InvalidActionException(
+                f"Invalid zone coordinates: %s", zones
+            )
+
+        if not isinstance(zones[0], list):
             zones = [zones]
 
         if suction_level is None or suction_level == "":
@@ -3179,6 +3187,11 @@ class DreameVacuumDevice:
         cleanlist = []
         index = 0
         for zone in zones:
+            if not isinstance(zone, list) or len(zone) != 4:
+                raise InvalidActionException(
+                    f"Invalid zone coordinates: %s", zone
+                )
+
             if isinstance(cleaning_times, list):
                 if index < len(cleaning_times):
                     repeat = cleaning_times[index]
@@ -6343,7 +6356,10 @@ class DreameVacuumDeviceStatus:
     @property
     def resume_cleaning(self) -> bool:
         """Returns true when resume_cleaning is enabled."""
-        return bool(self._get_property(DreameVacuumProperty.RESUME_CLEANING) == (2 if self._capability.smart_charging else 1))
+        return bool(
+            self._get_property(DreameVacuumProperty.RESUME_CLEANING)
+            == (2 if self._capability.smart_charging else 1)
+        )
 
     @property
     def carpet_recognition(self) -> bool:

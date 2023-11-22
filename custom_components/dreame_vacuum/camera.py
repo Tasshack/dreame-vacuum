@@ -562,18 +562,18 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                     self._frame_id = None
                     self._last_updated = None
 
-            if self._default_map == True or self._frame_id != map_data.frame_id:
+            if self._default_map == True or self._frame_id != map_data.frame_id or self._last_updated != map_data.last_updated:
                 self._frame_id = map_data.frame_id
                 if (
                     not self.device.status.active
-                    or self._task_status != self.device.status.task_status
+                    #or self._task_status != self.device.status.task_status
                     or self._error != self.device.status.error
                     or self._last_updated is None
                 ):
                     self.update()
             elif (
-                self._task_status != self.device.status.task_status
-                or self._error != self.device.status.error
+                self._error != self.device.status.error
+                #or self._task_status != self.device.status.task_status
             ):
                 self.update()
 

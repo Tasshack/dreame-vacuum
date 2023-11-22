@@ -8742,6 +8742,13 @@ class DreameVacuumMapRenderer:
                         int(math.ceil((carpet.y0 - top) / dimensions.grid_size)),
                         int(math.ceil((carpet.y2 - top) / dimensions.grid_size)),
                     ):
+                        if (
+                            y < 0
+                            or y >= dimensions.height
+                            or x < 0
+                            or x >= dimensions.width
+                        ):
+                            continue
                         value = int(pixel_type[x, y])
                         if value > 0 and value != 255:
                             if value != 254 and carpet.segments:
