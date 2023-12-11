@@ -199,13 +199,13 @@
           "water_check": "Water checking",
           "clean_add_water": "Cleaning and adding water",
           "washing_paused": "Washing paused",
-          "auto_emptying": "Auto-Emptying",
+          "auto_emptying": "Auto-emptying",
           "remote_control": "Remote controlling",
           "smart_charging": "Smart charging",
           "second_cleaning": "Second time cleaning",
           "human_following": "Human following",
           "spot_cleaning": "Spot cleaning",
-          "returning_auto_empty": "Returning to Auto-Empty",
+          "returning_auto_empty": "Returning to auto-empty",
           "shortcut": "Shortcut",
           "monitoring": "Monitoring",
           "monitoring_paused": "Monitoring paused"
@@ -223,7 +223,7 @@
           "charging": "Charging",
           "ota": "OTA",
           "fct": "FCT",
-          "wifi_set": "WiFi set",
+          "wifi_set": "Wi-Fi set",
           "power_off": "Power off",
           "factory": "Factory",
           "error": "Error",
@@ -355,36 +355,36 @@
           "auto_key_trig": "Internal error",
           "p3v3": "Internal error",
           "camera_idle": "Internal error",
-          "blocked": "Cleanup route is blocked, returning to the dock.",
+          "blocked": "Cleanup route is blocked, returning to the dock",
           "lds_error": "Laser distance sensor error",
           "lds_bumper": "Laser distance sensor bumper error",
-          "filter_blocked": "The filter not dry or blocked",
+          "filter_blocked": "The filter is moist or blocked",
           "edge": "Edge sensor error",
-          "carpet": "Please start the robot in non-carpet area.",
-          "laser": "The 3D obstacle avoidance sensor is malfunctioning.",
-          "ultrasonic": "The ultrasonic sensor is malfunctioning.",
-          "no_go_zone": "No-Go zone or virtual wall detected.",
-          "route": "Cleanup route is blocked.",
-          "restricted": "Detected that the vacuum-mop is in a restricted area.",
-          "remove_mop": "Mopping completed. Please remove and clean the mop in time.",
-          "mop_removed": "The mop pad comes off during the cleaning task.",
-          "mop_pad_stop_rotate": "The mop pad has stopped rotating.",
+          "carpet": "Please start the robot in non-carpet area",
+          "laser": "The 3D obstacle avoidance sensor is malfunctioning",
+          "ultrasonic": "The ultrasonic sensor is malfunctioning",
+          "no_go_zone": "No-Go zone or virtual wall detected",
+          "route": "Cleanup route is blocked",
+          "restricted": "Detected that the vacuum-mop is in a restricted area",
+          "remove_mop": "Mopping completed. Please remove and clean the mop in time",
+          "mop_removed": "The mop pad has come off during the cleaning task",
+          "mop_pad_stop_rotate": "The mop pad has stopped rotating",
           "bin_full": "The dust collection bag is full, or the air duct is blocked.",
-          "bin_open": "The upper cover of auto-empty base is not closed, or the dust collection bag is not installed.",
+          "bin_open": "The upper cover of auto-empty base is not closed, or the dust collection bag is not installed",
           "water_tank": "The clean water tank is not installed.",
           "dirty_water_tank": "The dirty water tank is full or not installed.",
-          "water_tank_dry": "Low water level in the clean water tank, please fill with water timely.",
-          "dirty_water_tank_blocked": "Dirty water tank blocked.",
-          "dirty_water_tank_pump": "Dirty water tank pump error.",
-          "mop_pad": "The washboard is not installed properly.",
-          "wet_mop_pad": "The water level of the washboard is abnormal, please clean the washboard timely.",
-          "clean_mop_pad": "The cleaning task is complete, please clean the mop pad washboard.",
-          "clean_tank_level": "Check and fill the clean water tank.",
+          "water_tank_dry": "Low water level in the clean water tank, please fill with water timely",
+          "dirty_water_tank_blocked": "Dirty water tank blocked",
+          "dirty_water_tank_pump": "Dirty water tank pump error",
+          "mop_pad": "The washboard is not installed properly",
+          "wet_mop_pad": "The water level of the washboard is abnormal, please clean the washboard timely",
+          "clean_mop_pad": "The cleaning task is complete, please clean the mop pad washboard",
+          "clean_tank_level": "Check and fill the clean water tank",
           "station_disconnected": "Base station not powered on",
-          "dirty_tank_level": "The water level in the used water tank is too high.",
-          "washboard_level": "Water level in the washboard is too high.",
-          "no_mop_in_station": "Mop pad is not in the station.",
-          "dust_bag_full": "Dust bag is full or vents are blocked."
+          "dirty_tank_level": "The water level in the used water tank is too high",
+          "washboard_level": "Water level in the washboard is too high",
+          "no_mop_in_station": "Mop pad is not in the station",
+          "dust_bag_full": "Dust bag is full or vents are blocked"
         }
       },
       "charging_status": {
@@ -419,7 +419,7 @@
       },
       "low_water_warning": {
         "state": {
-          "no_warning": "No warning",
+          "no_warning": "No warning.",
           "no_water_left_dismiss": "Please check the clean water tank.",
           "no_water_left": "The water in the clean water tank is about to be used up. Check and fill the clean water tank promptly.",
           "no_water_left_after_clean": "Mop pad has been cleaned. Detected that the water in the clean water tank is insufficient, please fill the clean water tank and empty the used water tank.",
@@ -557,17 +557,17 @@
       "fields": {
         "x": {
           "name": "X",
-          "description": "X Coordinate of the point."
+          "description": "X-coordinate of the point."
         },
         "y": {
           "name": "Y",
-          "description": "Y Coordinate of the point."
+          "description": "Y-coordinate of the point."
         }
       }
     },
     "vacuum_follow_path": {
       "name": "Follow Path",
-      "description": "Follow list of coordinates on the map and return to base. (Only supported on vacuums with camera)",
+      "description": "Follow list of coordinates on the map and return to base (only supported on vacuums with camera).",
       "fields": {
         "points": {
           "name": "Points",
@@ -577,7 +577,7 @@
     },
     "vacuum_remote_control_move_step": {
       "name": "Remote Control Move Step",
-      "description": "Remotely control move the bot one step.",
+      "description": "Remotely move the bot one step.",
       "fields": {
         "rotation": {
           "name": "Rotation",
@@ -599,7 +599,7 @@
         },
         "url": {
           "name": "URL",
-          "description": "Url of this pack it should be reachable by the vacuum bot."
+          "description": "URL of the language pack - it should be reachable by the vacuum bot."
         },
         "md5": {
           "name": "MD5",
@@ -613,7 +613,7 @@
     },
     "vacuum_request_map": {
       "name": "Request Map",
-      "description": "Request map data"
+      "description": "Request map data."
     },
     "vacuum_select_map": {
       "name": "Select Map",
@@ -691,7 +691,7 @@
         },
         "file_url": {
           "name": "File Url",
-          "description": "Url of the saved bz2.gz or tar.gz file"
+          "description": "Url of the saved .bz2.gz or .tar.gz file"
         }
       }
     },
@@ -701,7 +701,7 @@
       "fields": {
         "map_id": {
           "name": "Map ID",
-          "description": "ID of the map to be restored."
+          "description": "ID of the map to be backed-up."
         }
       }
     },
@@ -747,13 +747,13 @@
         },
         "segment_name": {
           "name": "Segment Name",
-          "description": "New name of the segment"
+          "description": "New name of the segment."
         }
       }
     },
     "vacuum_set_cleaning_sequence": {
       "name": "Set Cleaning Sequence",
-      "description": "Set room cleaning sequence. (Only on supported devices)",
+      "description": "Set room cleaning sequence (only on supported devices).",
       "fields": {
         "cleaning_sequence": {
           "name": "Cleanin sequence",
@@ -763,7 +763,7 @@
     },
     "vacuum_set_custom_cleaning": {
       "name": "Set Custom Cleaning",
-      "description": "Set custom cleaning parameters. (Only on supported devices)",
+      "description": "Set custom cleaning parameters (only on supported devices).",
       "fields": {
         "segment_id": {
           "name": "Segment ID",
@@ -797,11 +797,11 @@
         },
         "zones": {
           "name": "Zones",
-          "description": "No go zones."
+          "description": "No-go zones."
         },
         "no_mops": {
           "name": "No Mops",
-          "description": "No mop zones."
+          "description": "No-mop zones."
         }
       }
     },
@@ -831,7 +831,7 @@
     },
     "vacuum_set_carpet_area": {
       "name": "Set Carpet Area",
-      "description": "Define carpets and ignored carpets. (Only on supported devices)",
+      "description": "Define carpets and ignored carpets (only on supported devices).",
       "fields": {
         "carpets": {
           "name": "Carpets",
@@ -855,7 +855,7 @@
     },
     "vacuum_set_predefined_points": {
       "name": "Set Predefined Points",
-      "description": "Define predefined coordinates on current map. (Only supported on vacuums with camera)",
+      "description": "Define predefined coordinates on current map (only supported on vacuums with camera).",
       "fields": {
         "points": {
           "name": "Points",
@@ -865,15 +865,15 @@
     },
     "vacuum_set_obstacle_ignore": {
       "name": "Set Obstacle Ignore",
-      "description": "Set ignore status of an obstacle. (Only supported on vacuums with AI Obstacle detection feature)",
+      "description": "Set ignore status of an obstacle (only supported on vacuums with AI Obstacle detection feature).",
       "fields": {
         "x": {
           "name": "X",
-          "description": "X Coordinate of the obstacle."
+          "description": "X-coordinate of the obstacle."
         },
         "y": {
           "name": "Y",
-          "description": "Y Coordinate of the obstacle."
+          "description": "Y-coordinate of the obstacle."
         },
         "obstacle_type": {
           "name": "Obstacle Type",
@@ -887,15 +887,15 @@
     },
     "vacuum_set_router_position": {
       "name": "Set router position",
-      "description": "Set router position on current map. (Only supported on vacuums with WiFi map feature)",
+      "description": "Set router position on current map (only supported on vacuums with Wi-Fi map feature).",
       "fields": {
         "x": {
           "name": "X",
-          "description": "X Coordinate of the router."
+          "description": "X-coordinate of the router."
         },
         "y": {
           "name": "Y",
-          "description": "Y Coordinate of the router."
+          "description": "Y-coordinate of the router."
         }
       }
     },
@@ -911,15 +911,15 @@
     },
     "select_select_first": {
       "name": "Select First",
-      "description": "Select the first option of an select entity."
+      "description": "Select the first option of a selected entity."
     },
     "select_select_last": {
       "name": "Select Last",
-      "description": "Select the last option of an select entity."
+      "description": "Select the last option of a selected entity."
     },
     "select_select_next": {
       "name": "Select Next",
-      "description": "Select the next options of an select entity.",
+      "description": "Select the next option of a selected entity.",
       "fields": {
         "cycle": {
           "name": "Cycle",
