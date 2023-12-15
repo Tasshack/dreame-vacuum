@@ -9,7 +9,7 @@ import zlib
 import ssl
 import tzlocal
 import queue
-from threading import Thread
+from threading import Thread, Timer
 from time import sleep
 import time, locale, datetime
 from paho.mqtt.client import Client
@@ -84,13 +84,15 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._session = requests.session()
         self._queue = queue.Queue()
         self._thread = None
-        self._id = random.randint(1, 1000)
+        self._id = random.randint(1, 100)
+        self._reconnect_timer = None
         self._host = None
         self._model = None
         self._ti = None
         self._fail_count = 0
         self._connected = False
         self._client_connected = False
+        self._client_connecting = False
         self._client = None
         self._message_callback = None
         self._connected_callback = None
@@ -151,6 +153,18 @@ class DreameVacuumDreameHomeCloudProtocol:
     def connected(self) -> bool:
         return self._connected and self._client_connected
 
+    def _reconnect_timer_cancel(self):
+        if self._reconnect_timer is not None:
+            self._reconnect_timer.cancel()
+            del self._reconnect_timer
+            self._reconnect_timer = None
+
+    def _reconnect_timer_task(self):
+        self._reconnect_timer_cancel()
+        if self._client_connecting and self._client_connected:
+            self._client_connected = False
+            _LOGGER.warn("Device client reconnect failed! Retrying...")
+
     def _set_client_key(self) -> bool:
         if self._client_key != self._key:
             self._client_key = self._key
@@ -160,32 +174,37 @@ class DreameVacuumDreameHomeCloudProtocol:
 
     @staticmethod
     def _on_client_connect(client, self, flags, rc):
+        self._client_connecting = False
+        self._reconnect_timer_cancel()
         if rc == 0:
-            _LOGGER.info("Connected to the device client")
+            if not self._client_connected:
+                self._client_connected = True
+                _LOGGER.info("Connected to the device client")
             client.subscribe(
                 f"/{self._strings[7]}/{self._did}/{self._uid}/{self._model}/{self._country}/"
             )
-            if not self._client_connected and self._connected_callback:
+            if self._connected_callback:
                 try:
                     self._connected_callback()
                 except:
                     pass
-            self._client_connected = True
         else:
+            _LOGGER.warn("Device client connection failed: %s", rc)
             if not self._set_client_key():
-                _LOGGER.info("Device client connection failed: %s", rc)
                 self._client_connected = False
 
     @staticmethod
     def _on_client_disconnect(client, self, rc):
-        if not self._set_client_key():
+        if rc != 0 and not self._set_client_key():
             if rc == 5 and self._key_expire:
                 self.login()
-            self._client_connected = False
-            if rc == 16 or rc == 0:
-                _LOGGER.debug("Device client disconnected: %s", rc)
-            else:
-                _LOGGER.info("Device client disconnected: %s", rc)
+            if self._client_connected:
+                if not self._client_connecting:
+                    self._client_connecting = True
+                    _LOGGER.info("Device Client disconnected (%s) Reconnecting...", rc)
+                self._reconnect_timer_cancel()
+                self._reconnect_timer = Timer(10, self._reconnect_timer_task)
+                self._reconnect_timer.start()
 
     @staticmethod
     def _on_client_message(client, self, message):
@@ -233,10 +252,11 @@ class DreameVacuumDreameHomeCloudProtocol:
                             self._client.on_message = (
                                 DreameVacuumDreameHomeCloudProtocol._on_client_message
                             )
+                            self._client.reconnect_delay_set(1, 15)
                             self._client.tls_set(cert_reqs=ssl.CERT_NONE)
                             self._client.tls_insecure_set(True)
                             self._set_client_key()
-                            self._client.connect(host[0], int(host[1]), 15)
+                            self._client.connect(host[0], int(host[1]), 50)
                             self._client.loop_start()
                         except:
                             pass
@@ -410,7 +430,7 @@ class DreameVacuumDreameHomeCloudProtocol:
             retry_count = 0
         while retries < retry_count + 1:
             try:
-                response = self._session.get(url, timeout=10)
+                response = self._session.get(url, timeout=6)
             except Exception as ex:
                 response = None
                 _LOGGER.warning("Unable to get file at %s: %s", url, ex)
@@ -580,7 +600,9 @@ class DreameVacuumDreameHomeCloudProtocol:
             self._client.loop_stop()
             self._client.disconnect()
             self._client = None
-        if self._thread:            
+            self._client_connected = False
+            self._client_connecting = False
+        if self._thread:
             self._queue.put([])
         self._message_callback = None
         self._connected_callback = None
@@ -782,7 +804,7 @@ class DreameVacuumMiHomeCloudProtocol:
             retry_count = 0
         while retries < retry_count + 1:
             try:
-                response = self._session.get(url, timeout=5)
+                response = self._session.get(url, timeout=6)
             except Exception as ex:
                 response = None
                 _LOGGER.warning("Unable to get file at %s: %s", url, ex)
@@ -1201,7 +1223,9 @@ class DreameVacuumProtocol:
         else:
             self.device = None
 
-    def connect(self, message_callback=None, connected_callback=None, retry_count=1) -> Any:
+    def connect(
+        self, message_callback=None, connected_callback=None, retry_count=1
+    ) -> Any:
         if self._account_type == "mi":
             response = self.send("miIO.info", retry_count=retry_count)
             if (

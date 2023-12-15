@@ -10,8 +10,8 @@
       "wrong_token": "Erro de checksum, token incorreto",
       "2fa_required": "Login de 2FA necessário\n{url}",
       "credentials_incomplete": "Credenciais incompletas, por favor preencha o nome de usuário, senha e país",
-      "login_error": "Não foi possível fazer login na Xiaomi Miio Cloud, verifique as credenciais.",
-      "no_devices": "Nenhum dispositivo suportado encontrado nesta conta da Xiaomi Miio Cloud no país selecionado."
+      "login_error": "Não foi possível fazer login, verifique as credenciais.",
+      "no_devices": "Nenhum dispositivo compatível encontrado nesta conta no país selecionado."
     },
     "step": {
       "user": {
@@ -237,6 +237,14 @@
           "intensive": "Intensivo",
           "deep": "Profundo"
         }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Desligado",
+          "standard": "Padrão",
+          "intensive": "Intensivo",
+          "deep": "Profundo"
+        }
       }
     },
     "sensor": {
@@ -305,6 +313,15 @@
           "summon_clean": "Chamar para limpar",
           "shortcut": "Atalho",
           "person_follow": "Seguir pessoa",
+          "returning_to_auto_empty": "Voltando ao esvaziamento automático",
+          "waiting_for_task": "Aguardando tarefa",
+          "station_cleaning": "Limpeza de estação",
+          "returning_to_drain": "Voltando para drenar",
+          "draining": "Drenagem",
+          "auto_water_draining": "Drenagem automática de água",
+          "shortcut_task": "Tarefa de atalho",
+          "streaming": "Transmissão",
+          "streaming_paused": "Transmissão pausada",
           "water_check": "Verificação de água"
         }
       },
@@ -450,6 +467,7 @@
           "washboard_level": "O nível de água na placa de lavagem está muito alto.",
           "no_mop_in_station": "O pano de limpeza não está na estação.",
           "dust_bag_full": "O saco de coleta de poeira está cheio ou as saídas de ar estão bloqueadas.",
+          "self_test_failed": "Descarga anormal de água do tanque de água limpa dos módulos de água superior e inferior.",
           "mop_install_failed": "A instalação do esfregão falhou.",
           "low_battery_turn_off": "Bateria Fraca. ",
           "dirty_tank_not_installed": "O tanque de água usado do robô não está instalado.",
@@ -532,7 +550,9 @@
           "partial": "Limpeza parcial",
           "partial_paused": "Limpeza parcial pausada",
           "summon": "Limpeza por chamada",
-          "summon_paused": "Limpeza por chamada pausada"
+          "summon_paused": "Limpeza por chamada pausada",
+          "water_stain": "Limpeza de manchas de água",
+          "water_stain_paused": "Limpeza de manchas de água pausada"
         }
       }
     }

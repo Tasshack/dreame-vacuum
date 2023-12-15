@@ -237,6 +237,14 @@
           "intensive": "Intensif",
           "deep": "Profond"
         }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Désactivé",
+          "standard": "Standard",
+          "intensive": "Intensif",
+          "deep": "Profond"
+        }
       }
     },
     "sensor": {
@@ -305,6 +313,15 @@
           "summon_clean": "Appeler pour nettoyer",
           "shortcut": "Raccourci",
           "person_follow": "Suivre une personne",
+          "returning_to_auto_empty": "Revenir au vidage automatique",
+          "waiting_for_task": "En attente de tâche",
+          "station_cleaning": "Nettoyage des gares",
+          "returning_to_drain": "Retour à l'égout",
+          "draining": "Évacuation",
+          "auto_water_draining": "Vidange automatique de l'eau",
+          "shortcut_task": "Tâche de raccourci",
+          "streaming": "Streaming",
+          "streaming_paused": "Diffusion interrompue",
           "water_check": "Vérification de l'eau"
         }
       },
@@ -450,6 +467,7 @@
           "washboard_level": "Le niveau d'eau du dispositif de nettoyage de la serpillière est trop élevé.",
           "no_mop_in_station": "Le tampon de vadrouille n'est pas dans la station.",
           "dust_bag_full": "Le sac à poussière est plein ou les évents sont obstrués.",
+          "self_test_failed": "Décharge d'eau anormale du réservoir d'eau propre des modules d'eau supérieur et inférieur.",
           "mop_install_failed": "L'installation du tampon de vadrouille a échoué.",
           "low_battery_turn_off": "Batterie faible. ",
           "dirty_tank_not_installed": "Le réservoir d'eau usée du robot n'est pas installé.",
@@ -532,7 +550,9 @@
           "partial": "Nettoyage partiel",
           "partial_paused": "Nettoyage partiel en pause",
           "summon": "Invoquer le nettoyage",
-          "summon_paused": "Nettoyage d'invocation suspendu"
+          "summon_paused": "Nettoyage d'invocation suspendu",
+          "water_stain": "Nettoyage des taches d'eau",
+          "water_stain_paused": "Nettoyage des taches d'eau interrompu"
         }
       }
     }

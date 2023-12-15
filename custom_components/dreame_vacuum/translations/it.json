@@ -237,6 +237,14 @@
           "intensive": "Intensivo",
           "deep": "Profondo"
         }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Spento",
+          "standard": "Standard",
+          "intensive": "Intensivo",
+          "deep": "Profondo"
+        }
       }
     },
     "sensor": {
@@ -305,6 +313,15 @@
           "summon_clean": "Evoca per pulire",
           "shortcut": "Scorciatoia",
           "person_follow": "La persona segue",
+          "returning_to_auto_empty": "Ritorno allo svuotamento automatico",
+          "waiting_for_task": "In attesa del compito",
+          "station_cleaning": "Pulizia della stazione",
+          "returning_to_drain": "Ritornando allo scarico",
+          "draining": "Drenante",
+          "auto_water_draining": "Scarico automatico dell'acqua",
+          "shortcut_task": "Compito di scelta rapida",
+          "streaming": "Streaming",
+          "streaming_paused": "Lo streaming è stato sospeso",
           "water_check": "Controllo dell'acqua"
         }
       },
@@ -450,6 +467,7 @@
           "washboard_level": "Il livello dell'acqua nella base di lavaggio è troppo elevato.",
           "no_mop_in_station": "Mop pad non è nella stazione.",
           "dust_bag_full": "Il sacchetto per la polvere è pieno o le prese d'aria sono ostruite.",
+          "self_test_failed": "Scarico anomalo dell'acqua dal serbatoio dell'acqua pulita dei moduli dell'acqua superiore e inferiore.",
           "mop_install_failed": "L'installazione del tampone per la pulizia non è riuscita.",
           "low_battery_turn_off": "Batteria scarica. ",
           "dirty_tank_not_installed": "Il serbatoio dell'acqua usata del robot non è installato.",
@@ -532,7 +550,9 @@
           "partial": "Pulizia parziale",
           "partial_paused": "Pulizia parziale sospesa",
           "summon": "Chiamare la pulizia",
-          "summon_paused": "Richiamare la pulizia in pausa"
+          "summon_paused": "Richiamare la pulizia in pausa",
+          "water_stain": "Pulizia delle macchie d'acqua",
+          "water_stain_paused": "Pulizia delle macchie d'acqua in pausa"
         }
       }
     }

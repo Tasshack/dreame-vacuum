@@ -414,13 +414,33 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
             device.capability.hot_washing
             and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
-        entity_category=EntityCategory.CONFIG,
+        entity_category=None,
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumAutoSwitchProperty.UV_STERILIZATION,
         icon="mdi:sun-wireless",
         exists_fn=lambda description, device: bool(
             device.capability.uv_sterilization
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+        entity_category=None,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.ULTRA_CLEAN_MODE,
+        icon="mdi:silverware-clean",
+        exists_fn=lambda description, device: bool(
+            device.capability.ultra_clean_mode
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.STREAMING_VOICE_PROMPT,
+        icon_fn=lambda value, device: "mdi:account-tie-voice-off"
+        if not value
+        else "mdi:account-tie-voice",
+        exists_fn=lambda description, device: bool(
+            device.capability.stream_status
             and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
         entity_category=EntityCategory.CONFIG,

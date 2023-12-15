@@ -29,6 +29,7 @@ Fires when consumable life is ended.
   - `main_brush`: Main brush must be replaced
   - `side_brush`: Side brush must be replaced
   - `filter`: Filter must be replaced
+  - `tank_filter`: Tank filter must be replaced
   - `sensor`: Sensors must be cleaned
   - `mop_pad`: Mop pads must be replaced
   - `silver_ion`: Silver-ion must be replaced

@@ -87,155 +87,163 @@
     }
   },
   "entity":{
-    "select":{
-      "suction_level":{
-        "state":{
-          "quiet":"Csendes",
-          "standard":"Alapértelmezett",
-          "strong":"Erős",
-          "turbo":"Turbo"
+    "select": {
+      "suction_level": {
+        "state": {
+          "quiet": "Csendes",
+          "standard": "Alapértelmezett",
+          "strong": "Erős",
+          "turbo": "Turbo"
         }
       },
-      "water_volume":{
-        "state":{
-          "low":"Alacsony",
-          "medium":"Közepes",
-          "high":"Magas"
+      "water_volume": {
+        "state": {
+          "low": "Alacsony",
+          "medium": "Közepes",
+          "high": "Magas"
         }
       },
-      "mop_pad_humidity":{
-        "state":{
-          "slightly_dry":"Kissé száraz",
-          "moist":"Nedves",
-          "wet":"Vizes"
+      "mop_pad_humidity": {
+        "state": {
+          "slightly_dry": "Kissé száraz",
+          "moist": "Nedves",
+          "wet": "Vizes"
         }
       },
-      "cleaning_mode":{
-        "state":{
-          "sweeping":"Porszívózás",
-          "mopping":"Felmosás",
-          "sweeping_and_mopping":"Porszívózás és felmosás",
-          "mopping_after_sweeping":"Felmosás, a porszívózás után"
+      "cleaning_mode": {
+        "state": {
+          "sweeping": "Porszívózás",
+          "mopping": "Felmosás",
+          "sweeping_and_mopping": "Porszívózás és felmosás",
+          "mopping_after_sweeping": "Felmosás, a porszívózás után"
         }
       },
-      "carpet_sensitivity":{
-        "state":{
-          "low":"Alacsony",
-          "medium":"Közepes",
-          "high":"Magas"
+      "carpet_sensitivity": {
+        "state": {
+          "low": "Alacsony",
+          "medium": "Közepes",
+          "high": "Magas"
         }
       },
-      "carpet_cleaning":{
-        "state":{
-          "avoidance":"Elkerülés",
-          "adaptation":"Adaptáció",
-          "remove_mop":"Felmosó eltávolítása",
-          "adaptation_without_route":"Útvonal nélküli adaptáció"
+      "carpet_cleaning": {
+        "state": {
+          "avoidance": "Elkerülés",
+          "adaptation": "Adaptáció",
+          "remove_mop": "Felmosó eltávolítása",
+          "adaptation_without_route": "Útvonal nélküli adaptáció"
         }
       },
-      "mop_wash_level":{
-        "state":{
-          "water_saving":"Víztakarékos",
-          "daily":"Napi",
-          "deep":"Alapos"
+      "mop_wash_level": {
+        "state": {
+          "water_saving": "Víztakarékos",
+          "daily": "Napi",
+          "deep": "Alapos"
         }
       },
-      "mopping_type":{
-        "state":{
-          "accurate":"Precíz",
-          "daily":"Napi",
-          "deep":"Alapos"
+      "mopping_type": {
+        "state": {
+          "accurate": "Precíz",
+          "daily": "Napi",
+          "deep": "Alapos"
         }
       },
-      "wider_corner_coverage":{
-        "state":{
-          "off":"Kikapcsolva",
-          "high_frequency":"Magas gyakoriság",
-          "low_frequency":"Alacsony gyakoriság"
+      "wider_corner_coverage": {
+        "state": {
+          "off": "Kikapcsolva",
+          "high_frequency": "Magas gyakoriság",
+          "low_frequency": "Alacsony gyakoriság"
         }
       },
-      "mop_pad_swing":{
-        "state":{
-          "off":"Kikapcsolva",
-          "auto":"Automata",
-          "daily":"Napi",
-          "weekly":"Heti"
+      "mop_pad_swing": {
+        "state": {
+          "off": "Kikapcsolva",
+          "auto": "Automata",
+          "daily": "Napi",
+          "weekly": "Heti"
         }
       },
-      "floor_material":{
-        "state":{
-          "none":"Nincs",
-          "tile":"Csempe",
-          "wood":"Fa"
+      "floor_material": {
+        "state": {
+          "none": "Nincs",
+          "tile": "Csempe",
+          "wood": "Fa"
         }
       },
-      "voice_assistant_language":{
-        "state":{
-          "default":"Alapértelmezett",
-          "english":"Angol",
-          "german":"Német",
-          "chinese":"Kínai"
+      "voice_assistant_language": {
+        "state": {
+          "default": "Alapértelmezett",
+          "english": "Angol",
+          "german": "Német",
+          "chinese": "Kínai"
         }
       },
-      "order":{
-        "state":{
-          "not_set":"Nincs beállítva"
+      "order": {
+        "state": {
+          "not_set": "Nincs beállítva"
         }
       },
-      "self_clean_frequency":{
-        "state":{
-          "by_area":"Terület szerint",
-          "by_time":"Idő szerint",
-          "by_room":"Szoba szerint"
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "Terület szerint",
+          "by_time": "Idő szerint",
+          "by_room": "Szoba szerint"
         }
       },
-      "auto_empty_mode":{
-        "state":{
-          "off":"Kikapcsolva",
-          "standard":"Alapértelmezett",
-          "high_frequency":"Magas gyakoriság",
-          "low_frequency":"Alacsony gyakoriság"
+      "auto_empty_mode": {
+        "state": {
+          "off": "Kikapcsolva",
+          "standard": "Alapértelmezett",
+          "high_frequency": "Magas gyakoriság",
+          "low_frequency": "Alacsony gyakoriság"
         }
       },
-      "floor_material_direction":{
-        "state":{
-          "vertical":"Függőleges",
-          "horizontal":"Vízszintes"
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Függőleges",
+          "horizontal": "Vízszintes"
         }
       },
-      "visibility":{
-        "state":{
-          "visible":"Látható",
-          "hidden":"Rejtett"
+      "visibility": {
+        "state": {
+          "visible": "Látható",
+          "hidden": "Rejtett"
         }
       },
-      "cleangenius":{
-        "state":{
-          "off":"Kikapcsolt",
-          "routine_cleaning":"Rendszeres takarítás",
-          "deep_cleaning":"Alapos takarítás"
+      "cleangenius": {
+        "state": {
+          "off": "Kikapcsolt",
+          "routine_cleaning": "Rendszeres takarítás",
+          "deep_cleaning": "Alapos takarítás"
         }
       },
-      "auto_recleaning":{
-        "state":{
-          "off":"Kikapcsolt",
-          "in_deep_mode":"Alapos módban",
-          "in_all_modes":"Összes módban"
+      "auto_recleaning": {
+        "state": {
+          "off": "Kikapcsolt",
+          "in_deep_mode": "Alapos módban",
+          "in_all_modes": "Összes módban"
         }
       },
-      "auto_rewashing":{
-        "state":{
-          "off":"Kikapcsolt",
-          "in_deep_mode":"Alapos módban",
-          "in_all_modes":"Összes módban"
+      "auto_rewashing": {
+        "state": {
+          "off": "Kikapcsolt",
+          "in_deep_mode": "Alapos módban",
+          "in_all_modes": "Összes módban"
         }
       },
-      "cleaning_route":{
-        "state":{
-          "quick":"Gyors",
-          "standard":"Alapértelmezett",
-          "intensive":"Intenzív",
-          "deep":"Alapos"
+      "cleaning_route": {
+        "state": {
+          "quick": "Gyors",
+          "standard": "Alapértelmezett",
+          "intensive": "Intenzív",
+          "deep": "Alapos"
+        }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Kikapcsolt",
+          "standard": "Alapértelmezett",
+          "intensive": "Intenzív",
+          "deep": "Alapos"
         }
       }
     },
@@ -305,6 +313,15 @@
           "summon_clean":"Takarításra hívás",
           "shortcut":"Gyorsindítás",
           "person_follow":"Személy követése",
+          "returning_to_auto_empty": "Visszatérés az automatikus kiürítéshez",
+          "waiting_for_task": "Várakozás a feladatra",
+          "station_cleaning": "Állomás takarítás",
+          "returning_to_drain": "Visszatérve a lefolyóba",
+          "draining": "Leeresztés",
+          "auto_water_draining": "Automatikus vízelvezetés",
+          "shortcut_task": "Gyorsbillentyű feladat",
+          "streaming": "Folyó",
+          "streaming_paused": "A streamelés szünetel",
           "water_check":"Vízellenőrzés"
         }
       },
@@ -450,6 +467,7 @@
           "washboard_level":"A mosódeszka vízszintje túl magas.",
           "no_mop_in_station":"A felmosóbetét nincs az állomáson.",
           "dust_bag_full":"A porzsák tele van vagy a szellőzők blokkolva vannak.",
+          "self_test_failed": "Rendellenes vízkibocsátás a felső és alsó vízmodul tisztavíz-tartályából.",
           "mop_install_failed":"A felmosóbetét telepítése sikertelen.",
           "low_battery_turn_off":"Alacsony akkumulátor szint. A robot hamarosan leáll.",
           "dirty_tank_not_installed":"A robot szennyezet víztartálya nincs telepítve.",
@@ -532,7 +550,9 @@
           "partial":"Részleges takarítás",
           "partial_paused":"Részleges takarítás szüneteltetve",
           "summon":"Hívásos takarítás",
-          "summon_paused":"Hívásos takarítás szüneteltetve"
+          "summon_paused":"Hívásos takarítás szüneteltetve",
+          "water_stain": "Vízfolt tisztítás",
+          "water_stain_paused": "A vízfoltok tisztítása szünetel"
         }
       }
     }

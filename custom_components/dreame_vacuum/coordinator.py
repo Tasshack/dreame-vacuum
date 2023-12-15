@@ -47,7 +47,7 @@ from .const import (
     NOTIFICATION_ID_REPLACE_MAIN_BRUSH,
     NOTIFICATION_ID_REPLACE_SIDE_BRUSH,
     NOTIFICATION_ID_REPLACE_FILTER,
-    NOTIFICATION_ID_REPLACE_SECONDARY_FILTER,
+    NOTIFICATION_ID_REPLACE_TANK_FILTER,
     NOTIFICATION_ID_CLEAN_SENSOR,
     NOTIFICATION_ID_REPLACE_MOP,
     NOTIFICATION_ID_SILVER_ION,
@@ -75,7 +75,7 @@ from .const import (
     CONSUMABLE_MAIN_BRUSH,
     CONSUMABLE_SIDE_BRUSH,
     CONSUMABLE_FILTER,
-    CONSUMABLE_SECONDARY_FILTER,
+    CONSUMABLE_TANK_FILTER,
     CONSUMABLE_SENSOR,
     CONSUMABLE_MOP_PAD,
     CONSUMABLE_SILVER_ION,
@@ -354,15 +354,16 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             DreameVacuumProperty.FILTER_LEFT,
         )
         self._check_consumable(
-            CONSUMABLE_SECONDARY_FILTER,
-            NOTIFICATION_ID_REPLACE_SECONDARY_FILTER,
-            DreameVacuumProperty.SECONDARY_FILTER_LEFT,
+            CONSUMABLE_TANK_FILTER,
+            NOTIFICATION_ID_REPLACE_TANK_FILTER,
+            DreameVacuumProperty.TANK_FILTER_LEFT,
         )
-        self._check_consumable(
-            CONSUMABLE_SENSOR,
-            NOTIFICATION_ID_CLEAN_SENSOR,
-            DreameVacuumProperty.SENSOR_DIRTY_LEFT,
-        )
+        if self.device.capability.sensor_cleaning:
+            self._check_consumable(
+                CONSUMABLE_SENSOR,
+                NOTIFICATION_ID_CLEAN_SENSOR,
+                DreameVacuumProperty.SENSOR_DIRTY_LEFT,
+            )
         self._check_consumable(
             CONSUMABLE_MOP_PAD,
             NOTIFICATION_ID_REPLACE_MOP,

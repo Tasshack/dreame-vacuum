@@ -237,6 +237,14 @@
           "intensive": "Intensive",
           "deep": "Deep"
         }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Off",
+          "standard": "Standard",
+          "intensive": "Intensive",
+          "deep": "Deep"
+        }
       }
     },
     "sensor": {
@@ -305,6 +313,15 @@
           "summon_clean": "Summon to clean",
           "shortcut": "Shortcut",
           "person_follow": "Person follow",
+          "returning_to_auto_empty": "Returning to auto empty",
+          "waiting_for_task": "Waiting for task",
+          "station_cleaning": "Station cleaning",
+          "returning_to_drain": "Returning to drain",
+          "draining": "Draining",
+          "auto_water_draining": "Auto water draining",
+          "shortcut_task": "Shortcut task",
+          "streaming": "Streaming",
+          "streaming_paused": "Streaming paused",
           "water_check": "Water checking"
         }
       },
@@ -532,7 +549,9 @@
           "partial": "Partial cleaning",
           "partial_paused": "Partial cleaning paused",
           "summon": "Summon cleaning",
-          "summon_paused": "Summon cleaning paused"
+          "summon_paused": "Summon cleaning paused",
+          "water_stain": "Water stain cleaning",
+          "water_stain_paused": "Water stain cleaning paused"
         }
       }
     }
