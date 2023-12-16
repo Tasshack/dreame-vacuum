@@ -801,32 +801,31 @@ class DreameVacuumDevice:
                                 )
                             except:
                                 pass
-                else:
-                    if not self.capability.mop_pad_lifting:
-                        new_list.pop(DreameVacuumCleaningMode.SWEEPING)
-                        if (
+                elif not self.capability.mop_pad_lifting:
+                    new_list.pop(DreameVacuumCleaningMode.SWEEPING)
+                    if (
+                        DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING
+                        in new_list
+                    ):
+                        new_list.pop(
                             DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING
-                            in new_list
-                        ):
-                            new_list.pop(
-                                DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING
-                            )
-                        if self.status.sweeping:
-                            if self._ready and not self.status.scheduled_clean:
-                                if (
-                                    self._previous_cleaning_mode is not None
-                                    and self._previous_cleaning_mode
-                                    is not DreameVacuumCleaningMode.SWEEPING
-                                ):
-                                    self._update_cleaning_mode(
-                                        self._previous_cleaning_mode.value
-                                    )
-                                else:
-                                    self._update_cleaning_mode(
-                                        DreameVacuumCleaningMode.SWEEPING_AND_MOPPING.value
-                                    )
-                            # Store current cleaning mode for future use when water tank is removed
-                            self._previous_cleaning_mode = self.status.cleaning_mode
+                        )
+                    if self.status.sweeping:
+                        if self._ready and not self.status.scheduled_clean:
+                            if (
+                                self._previous_cleaning_mode is not None
+                                and self._previous_cleaning_mode
+                                is not DreameVacuumCleaningMode.SWEEPING
+                            ):
+                                self._update_cleaning_mode(
+                                    self._previous_cleaning_mode.value
+                                )
+                            else:
+                                self._update_cleaning_mode(
+                                    DreameVacuumCleaningMode.SWEEPING_AND_MOPPING.value
+                                )
+                        # Store current cleaning mode for future use when water tank is removed
+                        self._previous_cleaning_mode = self.status.cleaning_mode
             except:
                 pass
 
@@ -2801,7 +2800,7 @@ class DreameVacuumDevice:
         #if not self.status.auto_mount_mop:  # or not self.status.mop_in_station:
         if cleaning_mode is DreameVacuumCleaningMode.SWEEPING.value:
             if (
-                self.status.water_tank_or_mop_installed
+                self.status.water_tank_or_mop_installed and not self.capability.mop_pad_lifting
             ):
                 if self.capability.self_wash_base:
                     raise InvalidActionException(
@@ -3740,9 +3739,8 @@ class DreameVacuumDevice:
             )
 
         if (
-            not self.capability.self_wash_base
-            and self.status.water_tank_or_mop_installed
-            and not self.status.auto_mount_mop
+            self.status.water_tank_or_mop_installed
+            and not self.capability.mop_pad_lifting
         ):
             raise InvalidActionException(
                 "Please make sure the mop pad is not installed before fast mapping."
