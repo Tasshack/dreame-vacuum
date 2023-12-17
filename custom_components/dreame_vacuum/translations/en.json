@@ -237,6 +237,14 @@
           "intensive": "Intensive",
           "deep": "Deep"
         }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Off",
+          "standard": "Standard",
+          "intensive": "Intensive",
+          "deep": "Deep"
+        }
       }
     },
     "sensor": {
@@ -305,6 +313,15 @@
           "summon_clean": "Summon to clean",
           "shortcut": "Shortcut",
           "person_follow": "Person follow",
+          "returning_to_auto_empty": "Returning to auto empty",
+          "waiting_for_task": "Waiting for task",
+          "station_cleaning": "Station cleaning",
+          "returning_to_drain": "Returning to drain",
+          "draining": "Draining",
+          "auto_water_draining": "Auto water draining",
+          "shortcut_task": "Shortcut task",
+          "streaming": "Streaming",
+          "streaming_paused": "Streaming paused",
           "water_check": "Water checking"
         }
       },
@@ -450,6 +467,7 @@
           "washboard_level": "Water level in the washboard is too high.",
           "no_mop_in_station": "Mop pad is not in the station.",
           "dust_bag_full": "Dust bag is full or vents are blocked.",
+          "self_test_failed": "Abnormal water discharge from the clean water tank of the upper and lower water modules.",
           "mop_install_failed": "Mop pad installation failed.",
           "low_battery_turn_off": "Low battery. Robot will shut down soon.",
           "dirty_tank_not_installed": "The used water tank of robot is not installed.",
@@ -532,7 +550,9 @@
           "partial": "Partial cleaning",
           "partial_paused": "Partial cleaning paused",
           "summon": "Summon cleaning",
-          "summon_paused": "Summon cleaning paused"
+          "summon_paused": "Summon cleaning paused",
+          "water_stain": "Water stain cleaning",
+          "water_stain_paused": "Water stain cleaning paused"
         }
       }
     }

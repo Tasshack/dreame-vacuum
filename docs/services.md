@@ -167,7 +167,7 @@ Start selected spot cleaning with optional customized cleaning parameters.
 
 **Examples:**
 
-- Clean selected zone
+- Clean selected spot
     ```yaml
     service: dreame_vacuum.vacuum_clean_spot
     data:
@@ -177,7 +177,7 @@ Start selected spot cleaning with optional customized cleaning parameters.
     target:
       entity_id: vacuum.vacuum
     ```
-- Clean multiple zones
+- Clean multiple spots
     ```yaml
     service: dreame_vacuum.vacuum_clean_spot
     data:
@@ -189,7 +189,7 @@ Start selected spot cleaning with optional customized cleaning parameters.
     target:
       entity_id: vacuum.vacuum
     ```
-- Clean selected zone two times
+- Clean selected spot two times
     ```yaml
     service: dreame_vacuum.vacuum_clean_spot
     data:
@@ -201,7 +201,7 @@ Start selected spot cleaning with optional customized cleaning parameters.
       entity_id: vacuum.vacuum
     ```
 
-- Clean first zone two times second zone three times
+- Clean first spot two times second spot three times
     ```yaml
     service: dreame_vacuum.vacuum_clean_spot
     data:
@@ -298,6 +298,7 @@ Reset a consumable life by type.
 >  - `main_brush`
 >  - `side_brush`
 >  - `filter`
+>  - `tank_filter`
 >  - `sensor`
 >  - `mop_pad`
 >  - `silver_ion`
@@ -339,11 +340,11 @@ Send command service can be used to send raw api requests that are not available
     service: vacuum.send_command
     data:
         entity_id: vacuum.vacuum
-        command: "action"
+        command: action
         params: 
             did: "15.1"
             siid: 15
-            aaid: 1
+            aiid: 1
             in: []
     ```
 
@@ -352,7 +353,7 @@ Send command service can be used to send raw api requests that are not available
     service: vacuum.send_command
     data:
         entity_id: vacuum.vacuum
-        command: "set_properties"
+        command: set_properties
         params: 
           - did: "4.29"
             siid: 4

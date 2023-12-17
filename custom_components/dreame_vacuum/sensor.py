@@ -147,7 +147,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.TASK_TYPE,
         icon="mdi:sitemap",
-        exists_fn=lambda description, device: device.status.task_type.value > 0,
+        exists_fn=lambda description, device: device.capability.task_type,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.STREAM_STATUS,
@@ -228,6 +228,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
         #entity_registry_enabled_default=False,
+        exists_fn=lambda description, device: device.capability.sensor_cleaning,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.SENSOR_DIRTY_TIME_LEFT,
@@ -235,16 +236,17 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         native_unit_of_measurement=UNIT_HOURS,
         entity_category=EntityCategory.DIAGNOSTIC,
         #entity_registry_enabled_default=False,
+        exists_fn=lambda description, device: device.capability.sensor_cleaning,
     ),
     DreameVacuumSensorEntityDescription(
-        property_key=DreameVacuumProperty.SECONDARY_FILTER_LEFT,
+        property_key=DreameVacuumProperty.TANK_FILTER_LEFT,
         icon="mdi:air-filter",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
         #entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
-        property_key=DreameVacuumProperty.SECONDARY_FILTER_TIME_LEFT,
+        property_key=DreameVacuumProperty.TANK_FILTER_TIME_LEFT,
         icon="mdi:air-filter",
         native_unit_of_measurement=UNIT_HOURS,
         entity_category=EntityCategory.DIAGNOSTIC,
@@ -392,6 +394,18 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         and device.capability.cruising,
         attrs_fn=lambda device: device.status.cruising_history,
         entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.CLEANING_PROGRESS,
+        icon="mdi:home-percent",
+        native_unit_of_measurement=UNIT_PERCENT,
+        entity_category=None,
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.DRYING_PROGRESS,
+        icon="mdi:water-percent",
+        native_unit_of_measurement=UNIT_PERCENT,
+        entity_category=None,
     ),
 )
 

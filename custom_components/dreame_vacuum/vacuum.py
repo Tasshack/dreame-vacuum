@@ -104,14 +104,14 @@ from .const import (
     CONSUMABLE_MAIN_BRUSH,
     CONSUMABLE_SIDE_BRUSH,
     CONSUMABLE_FILTER,
-    CONSUMABLE_SECONDARY_FILTER,
+    CONSUMABLE_TANK_FILTER,
     CONSUMABLE_SENSOR,
     CONSUMABLE_MOP_PAD,
     CONSUMABLE_SILVER_ION,
     CONSUMABLE_DETERGENT,
     CONSUMABLE_SQUEEGEE,
     CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
-    CONSUMABLE_DIRTY_WATER_TANK,    
+    CONSUMABLE_DIRTY_WATER_TANK,
 )
 
 SUPPORT_DREAME = (
@@ -169,7 +169,7 @@ CONSUMABLE_RESET_ACTION = {
     CONSUMABLE_MAIN_BRUSH: DreameVacuumAction.RESET_MAIN_BRUSH,
     CONSUMABLE_SIDE_BRUSH: DreameVacuumAction.RESET_SIDE_BRUSH,
     CONSUMABLE_FILTER: DreameVacuumAction.RESET_FILTER,
-    CONSUMABLE_SECONDARY_FILTER: DreameVacuumAction.RESET_SECONDARY_FILTER,
+    CONSUMABLE_TANK_FILTER: DreameVacuumAction.RESET_TANK_FILTER,
     CONSUMABLE_SENSOR: DreameVacuumAction.RESET_SENSOR,
     CONSUMABLE_MOP_PAD: DreameVacuumAction.RESET_MOP_PAD,
     CONSUMABLE_SILVER_ION: DreameVacuumAction.RESET_SILVER_ION,
@@ -286,8 +286,7 @@ async def async_setup_entry(
     platform.async_register_entity_service(
         SERVICE_CLEAN_SPOT,
         {
-            vol.Optional(INPUT_POINTS): vol.All(
-                list,
+            vol.Required(INPUT_POINTS): vol.Any(
                 [
                     vol.ExactSequence(
                         [
@@ -296,6 +295,12 @@ async def async_setup_entry(
                         ]
                     )
                 ],
+                vol.ExactSequence(
+                    [
+                        vol.Coerce(int),
+                        vol.Coerce(int),
+                    ]
+                ),
             ),
             vol.Optional(INPUT_REPEATS): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
             vol.Optional(INPUT_SUCTION_LEVEL): vol.Any(
@@ -577,7 +582,7 @@ async def async_setup_entry(
                     CONSUMABLE_MAIN_BRUSH,
                     CONSUMABLE_SIDE_BRUSH,
                     CONSUMABLE_FILTER,
-                    CONSUMABLE_SECONDARY_FILTER,
+                    CONSUMABLE_TANK_FILTER,
                     CONSUMABLE_SENSOR,
                     CONSUMABLE_MOP_PAD,
                     CONSUMABLE_SILVER_ION,
@@ -1081,9 +1086,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 shortcut_name,
             )
 
-    async def async_set_obstacle_ignore(
-        self, x, y, obstacle_ignored
-    ) -> None:
+    async def async_set_obstacle_ignore(self, x, y, obstacle_ignored) -> None:
         """Set obstacle ignore status"""
         if x is not None and x != "" and y is not None and y != "":
             await self._try_command(

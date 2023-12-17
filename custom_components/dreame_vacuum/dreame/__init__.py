@@ -22,6 +22,7 @@ from .types import (
     DreameVacuumMopPadSwing,
     DreameVacuumSecondCleaning,
     DreameVacuumCleaningRoute,
+    DreameVacuumCustomMoppingRoute,
     DreameVacuumSelfCleanFrequency,
     DreameVacuumAutoEmptyMode,
     DreameVacuumCleanGenius,
@@ -48,6 +49,8 @@ from .const import (
     ACTION_TO_NAME,
     SUCTION_LEVEL_QUIET,
     STATUS_CODE_TO_NAME,
+    CUSTOM_MOPPING_ROUTE_TO_NAME,
+    CLEANING_ROUTE_TO_NAME,
 )
 from .device import DreameVacuumDevice
 from .protocol import DreameVacuumProtocol

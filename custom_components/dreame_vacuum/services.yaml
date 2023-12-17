@@ -451,6 +451,7 @@ vacuum_reset_consumable:
             - "main_brush"
             - "side_brush"
             - "filter"
+            - "tank_filter"
             - "sensor"
             - "mop_pad"
             - "silver_ion"

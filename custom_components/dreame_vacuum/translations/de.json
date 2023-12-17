@@ -237,6 +237,14 @@
           "intensive": "Intensiv",
           "deep": "Tief"
         }
+      },
+      "custom_mopping_route": {
+        "state": {          
+          "off": "Aus",
+          "standard": "Standard",
+          "intensive": "Intensiv",
+          "deep": "Tief"
+        }
       }
     },
     "sensor": {
@@ -305,6 +313,15 @@
           "summon_clean": "Zur Reinigung rufen",
           "shortcut": "Verknüpfung",
           "person_follow": "Person folgen",
+          "returning_to_auto_empty": "Rückkehr zur automatischen Entleerung",
+          "waiting_for_task": "Warten auf Aufgabe",
+          "station_cleaning": "Stationsreinigung",
+          "returning_to_drain": "Rückkehr zum Abfluss",
+          "draining": "Entleeren",
+          "auto_water_draining": "Automatische Wasserentleerung",
+          "shortcut_task": "Verknüpfungsaufgabe",
+          "streaming": "Streaming",
+          "streaming_paused": "Streaming pausiert",
           "water_check": "Wasserkontrolle"
         }
       },
@@ -450,6 +467,7 @@
           "washboard_level": "Wasserstand im Waschbrett ist zu hoch.",
           "no_mop_in_station": "Wischpad ist nicht in der Station.",
           "dust_bag_full": "Der Staubbeutel ist voll oder die Lüftungsschlitze sind blockiert.",
+          "self_test_failed": "Ungewöhnlicher Wasseraustritt aus dem Frischwassertank des oberen und unteren Wassermoduls.",
           "mop_install_failed": "Die Installation des Wischpads ist fehlgeschlagen.",
           "low_battery_turn_off": "Niedriger Batteriestatus. ",
           "dirty_tank_not_installed": "Der Altwassertank des Roboters ist nicht installiert.",
@@ -532,7 +550,9 @@
           "partial": "Teilweise Reinigung",
           "partial_paused": "Teilreinigung pausiert",
           "summon": "Zur Reinigung heranrufen",
-          "summon_paused": "Reinigung herbeirufen pausiert"
+          "summon_paused": "Reinigung herbeirufen pausiert",
+          "water_stain": "Reinigung von Wasserflecken",
+          "water_stain_paused": "Die Reinigung von Wasserflecken wurde angehalten"
         }
       }
     }

@@ -68,6 +68,8 @@
 | `gap_cleaning_extension`   | TODO | 
 | `intensive_carpet_cleaning`   | TODO | 
 | `large_particles_boost`   | TODO | 
+| `ultra_clean_mode`   | TODO | 
+| `streaming_voice_prompt`   | TODO | 
 
 
 ## Sensor
@@ -99,6 +101,8 @@
 | `side_brush_time_left`   | Side brush life left in hours |
 | `filter_left`   | Filter life left in percent |
 | `filter_time_left`   | Filter life left in hours |
+| `tank_filter_left`   | Tank filter life left in percent |
+| `tank_filter_time_left`   | Tank filter life left in hours |
 | `sensor_dirty_left`   | Time left to clean the sensors in percent  | Available on vacuums with line laser
 | `sensor_dirty_time_left`   | Time left to clean the sensors in hours | Available on vacuums with line laser
 | `mop_pad_left`   | Mop life left in percent | Available on vacuums with self-wash base
@@ -114,6 +118,8 @@
 | `low_water_warning`   | TODO | 
 | `task_type`   | TODO | 
 | `cruising_history`   | TODO | 
+| `cleaning_progress`   | TODO | 
+| `drying_progress`   | TODO | 
 | `squeegee_left`   | TODO | 
 | `squeegee_time_left`   | TODO | 
 | `dirty_water_tank_left`   | TODO | 
@@ -164,6 +170,8 @@
 | `stop_drying`   | Stop mop drying | Available on vacuums with self-wash base, unavailable when robot is not currently drying mop
 | `water_tank_draining`   | TODO | 
 | `base_station_self_repair`   | TODO | 
+| `start_recleaning`   | TODO | 
+| `empty_water_tank`   | TODO | 
 | `shortcut_{1-33}`   | TODO | 
 | `backup_map_1`   | TODO | 
 | `backup_map_2`   | TODO | 
@@ -194,6 +202,7 @@
 | `auto_rewashing`   | TODO |
 | `auto_recleaning`   | TODO |
 | `cleaning_route`   | TODO |
+| `custom_mopping_route`   | TODO |
 | `self_clean_frequency`   | TODO |
 
 ### Select Entities for rooms
@@ -213,6 +222,8 @@
 | `mop_pad_humidity`   | Humidity level of the mop pad for the room | Available on vacuums with self-wash base and unavailable if customized cleaning is disabled
 | `cleaning times`   | Cleaning times of the room | Unavailable when cleaning job is active or customized cleaning is disabled
 | `order`   | Cleaning order of the room | Unavailable when cleaning job is active or cleaning sequence is disabled
+| `cleaning_route`   | TODO |
+| `custom_mopping_route`   | TODO |
 | `floor_material`   | TODO |
 | `floor_material_direction`   | TODO | 
 | `visibility`   | TODO |

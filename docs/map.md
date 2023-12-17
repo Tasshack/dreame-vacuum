@@ -162,13 +162,14 @@ Configurable map object rendering options:
 
 Cleaning and cruising history maps can be displayed via `Current Map` entity camera proxy.
 
-`/api/camera_history_map_proxy/{entity_id}?token={access_token}&index={history_index}&cruising={is_cruising_history}&info={info_text}`
+`/api/camera_history_map_proxy/{entity_id}?token={access_token}&index={history_index}&cruising={is_cruising_history}&info={info_text}&dirty={dirty_map}`
 
 - **entity_id**: Id of the current map entity (`camera.{vacuum_name}_map`)
 - **access_token**: Camera entity access token (Can be acquired from `camera.{vacuum_name}_map` entity attributes)
 - **history_index (optional, default = 1)**: Index of the history entry from 1 to 25 (Can be acquired from `sensor.{vacuum_name}_cleaning_history` entity attributes)
 - **is_cruising_history (optional, default = 0)**: Can be set to 1 for getting the cruising history instead of the cleaning history (Only on devices with the cruising capability)
 - **info_text (optional, default = 1)**: Can be set to 0 for rendering the map image transparent and without the top header text
+- **dirty_map (optional, default = 0)**: Can be set to 1 for rendering the dirty map image of CleanGenius and second cleaning feature
 
 > Returns `404` if the requested history map does not exists.
 

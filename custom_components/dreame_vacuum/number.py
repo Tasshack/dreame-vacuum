@@ -32,6 +32,8 @@ class DreameVacuumNumberEntityDescription(
     mode: NumberMode = NumberMode.AUTO
     post_action: DreameVacuumAction = None
     set_fn: Callable[[object, int]] = None
+    max_value_fn: Callable[[object], int] = None
+    min_value_fn: Callable[[object], int] = None
 
 
 NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
@@ -69,19 +71,19 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         mode=NumberMode.SLIDER,
         native_unit_of_measurement=UNIT_AREA,
         exists_fn=lambda description, device: device.capability.self_wash_base,
-        native_min_value=10,
-        native_max_value=35,
+        min_value_fn=lambda device: device.capability.self_clean_area_min,
+        max_value_fn=lambda device: device.capability.self_clean_area_max,
         native_step=1,
         entity_category=None,
         value_fn=lambda value, device: (
-            10
-            if device.status.self_clean_value < 10
-            else 35
-            if device.status.self_clean_value > 35
+            device.capability.self_clean_area_min
+            if device.status.self_clean_value < device.capability.self_clean_area_min
+            else device.capability.self_clean_area_max
+            if device.status.self_clean_value > device.capability.self_clean_area_max
             else device.status.self_clean_value
         )
         if device.status.self_clean_value and device.status.self_clean_value > 0
-        else 20,
+        else device.capability.self_clean_area_default,
     ),
     DreameVacuumNumberEntityDescription(
         key="self_clean_time",
@@ -149,6 +151,11 @@ class DreameVacuumNumberEntity(DreameVacuumEntity, NumberEntity):
                 prop = f"set_{description.key.lower()}"
             if hasattr(coordinator.device, prop):
                 description.set_fn = lambda device, value: getattr(device, prop)(value)
+
+        if description.min_value_fn:
+            description.native_min_value = description.min_value_fn(coordinator.device)
+        if description.max_value_fn:
+            description.native_max_value = description.max_value_fn(coordinator.device)
 
         super().__init__(coordinator, description)
         self._generate_entity_id(ENTITY_ID_FORMAT)

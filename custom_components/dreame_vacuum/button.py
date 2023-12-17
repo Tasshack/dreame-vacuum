@@ -68,10 +68,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         action_key=DreameVacuumAction.RESET_SENSOR,
         icon="mdi:radar",
         entity_category=EntityCategory.DIAGNOSTIC,
-        exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.status.sensor_dirty_life is not None
-        ),
+        exists_fn=lambda description, device: device.capability.sensor_cleaning,
     ),
     DreameVacuumButtonEntityDescription(
         action_key=DreameVacuumAction.RESET_MOP_PAD,
@@ -191,6 +188,14 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         and device.capability.drainage,
     ),
     DreameVacuumButtonEntityDescription(
+        key="empty_water_tank",
+        icon="mdi:waves-arrow-up",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        action_fn=lambda device: device.start_draining(True),
+        exists_fn=lambda description, device: device.capability.self_wash_base
+        and device.capability.empty_water_tank,
+    ),
+    DreameVacuumButtonEntityDescription(
         key="base_station_self_repair",
         icon_fn=lambda value, device: "mdi:wrench-clock"
         if device.status.self_repairing
@@ -198,6 +203,14 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         action_fn=lambda device: device.start_self_repairing(),
         exists_fn=lambda description, device: device.capability.self_wash_base,
+    ),
+    DreameVacuumButtonEntityDescription(
+        key="start_recleaning",
+        name="Start Re-Cleaning",
+        icon="mdi:refresh-circle",
+        entity_category=None,
+        action_fn=lambda device: device.start_recleaning(),
+        exists_fn=lambda description, device: device.capability.second_cleaning and device.capability.map,
     ),
 )
 
