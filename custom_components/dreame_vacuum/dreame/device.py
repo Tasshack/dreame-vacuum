@@ -6233,7 +6233,7 @@ class DreameVacuumDeviceStatus:
                     list[date] = {
                         ATTR_TIMESTAMP: history.date.timestamp(),
                         ATTR_CLEANING_TIME: f"{history.cleaning_time} min",
-                        ATTR_CLEANED_AREA: f"{history.cleaned_area} m²",
+                        ATTR_CLEANED_AREA: f"{history.cleaned_area} sqm",
                     }
                     if history.status is not None:
                         list[date][ATTR_STATUS] = (

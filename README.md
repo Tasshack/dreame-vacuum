@@ -155,7 +155,7 @@ stats:
       subtitle: Sensors
   cleaning:
     - attribute: cleaned_area
-      unit: m2
+      unit: m²
       subtitle: Cleaned area
     - attribute: cleaning_time
       unit: min
