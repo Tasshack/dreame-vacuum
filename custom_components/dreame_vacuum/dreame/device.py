@@ -6233,7 +6233,7 @@ class DreameVacuumDeviceStatus:
                     list[date] = {
                         ATTR_TIMESTAMP: history.date.timestamp(),
                         ATTR_CLEANING_TIME: f"{history.cleaning_time} min",
-                        ATTR_CLEANED_AREA: f"{history.cleaned_area} mÂ²",
+                        ATTR_CLEANED_AREA: f"{history.cleaned_area} m²",
                     }
                     if history.status is not None:
                         list[date][ATTR_STATUS] = (
@@ -7069,7 +7069,7 @@ class DreameVacuumDeviceInfo:
     @property
     def manufacturer(self) -> str:
         """Manufacturer name."""
-        return "Dreametechâ„¢"
+        return "Dreametech™"
 
     @property
     def raw(self) -> dict[str, Any]:
