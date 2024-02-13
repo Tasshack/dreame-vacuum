@@ -4,6 +4,8 @@ import traceback
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
+from homeassistant.components.frontend import DATA_EXTRA_MODULE_URL
+from pathlib import Path
 from .const import DOMAIN
 from .coordinator import DreameVacuumDataUpdateCoordinator
 
@@ -27,6 +29,18 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
 
     entry.async_on_unload(entry.add_update_listener(update_listener))
+
+    # Register frontend
+    #frontend_js = f"/{DOMAIN}/frontend.js"
+    #if DATA_EXTRA_MODULE_URL not in hass.data:
+    #    hass.data[DATA_EXTRA_MODULE_URL] = set()
+    #if frontend_js not in (
+    #    hass.data[DATA_EXTRA_MODULE_URL].urls
+    #    if hasattr(hass.data[DATA_EXTRA_MODULE_URL], "urls")
+    #    else hass.data[DATA_EXTRA_MODULE_URL]
+    #):
+    #    hass.data[DATA_EXTRA_MODULE_URL].add(frontend_js)
+    #    hass.http.register_static_path(frontend_js, str(Path(Path(__file__).parent / "frontend.js")), True)
 
     # Set up all platforms for this device/entry.
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)

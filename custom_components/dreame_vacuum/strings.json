@@ -130,7 +130,9 @@
           "avoidance": "Avoidance",
           "adaptation": "Adaptation",
           "remove_mop": "Remove Mop",
-          "adaptation_without_route": "Adaptation Without Route"
+          "adaptation_without_route": "Adaptation Without Route",
+          "vacuum_and_mop": "Vacuum and Mop",
+          "ignore": "Ignore"
         }
       },
       "mop_wash_level": {
@@ -279,6 +281,11 @@
           "human_following": "Human following",
           "spot_cleaning": "Spot cleaning",
           "returning_auto_empty": "Returning to Auto-Empty",
+          "waiting_for_task": "Waiting for task",
+          "station_cleaning": "Station cleaning",
+          "returning_to_drain": "Returning to drain",
+          "draining": "Draining",
+          "auto_water_draining": "Auto water draining",
           "shortcut": "Shortcut",
           "monitoring": "Monitoring",
           "monitoring_paused": "Monitoring paused"
@@ -313,15 +320,6 @@
           "summon_clean": "Summon to clean",
           "shortcut": "Shortcut",
           "person_follow": "Person follow",
-          "returning_to_auto_empty": "Returning to auto empty",
-          "waiting_for_task": "Waiting for task",
-          "station_cleaning": "Station cleaning",
-          "returning_to_drain": "Returning to drain",
-          "draining": "Draining",
-          "auto_water_draining": "Auto water draining",
-          "shortcut_task": "Shortcut task",
-          "streaming": "Streaming",
-          "streaming_paused": "Streaming paused",
           "water_check": "Water checking"
         }
       },

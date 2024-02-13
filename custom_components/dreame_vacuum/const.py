@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 from typing import Final
 
 DOMAIN = "dreame_vacuum"

@@ -1,11 +1,11 @@
-[![version](https://img.shields.io/github/manifest-json/v/Tasshack/dreame-vacuum/dev?filename=custom_components%2Fdreame_vacuum%2Fmanifest.json&color=slateblue&label=version)](https://github.com/Tasshack/dreame-vacuum/releases)
+﻿[![version](https://img.shields.io/github/manifest-json/v/Tasshack/dreame-vacuum/dev?filename=custom_components%2Fdreame_vacuum%2Fmanifest.json&color=slateblue&label=version)](https://github.com/Tasshack/dreame-vacuum/releases)
 ![GitHub all releases](https://img.shields.io/github/downloads/Tasshack/dreame-vacuum/total)
 [![HACS](https://img.shields.io/badge/HACS-Default-orange.svg?logo=HomeAssistantCommunityStore&logoColor=white)](https://github.com/hacs/integration)
 [![Community Forum](https://img.shields.io/static/v1.svg?label=Community&message=Forum&color=41bdf5&logo=HomeAssistant&logoColor=white)](https://community.home-assistant.io/t/custom-component-dreame-vacuum/473026)
 [![Ko-Fi](https://img.shields.io/static/v1.svg?label=%20&message=Ko-Fi&color=F16061&logo=ko-fi&logoColor=white)](https://www.ko-fi.com/Tasshack)
 [![PayPal.Me](https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal)](https://paypal.me/Tasshackk)
 
-![Dreame Logo](https://raw.githubusercontent.com/Tasshack/dreame-vacuum/dev/docs/media/logo.png "Dreame")
+![Logo](https://raw.githubusercontent.com/Tasshack/dreame-vacuum/dev/docs/media/logo.png)
 
 # Dreame vacuum integration for Home Assistant
 
@@ -155,7 +155,7 @@ stats:
       subtitle: Sensors
   cleaning:
     - attribute: cleaned_area
-      unit: m�
+      unit: m²
       subtitle: Cleaned area
     - attribute: cleaning_time
       unit: min

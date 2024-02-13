@@ -130,7 +130,9 @@
           "avoidance": "Evitare",
           "adaptation": "Adattamento",
           "remove_mop": "Rimuovi la scopa",
-          "adaptation_without_route": "Adattamento senza percorso"
+          "adaptation_without_route": "Adattamento senza percorso",
+          "vacuum_and_mop": "Aspira e lava",
+          "ignore": "Ignorare"
         }
       },
       "mop_wash_level": {
@@ -279,6 +281,11 @@
           "human_following": "Seguito umano",
           "spot_cleaning": "Pulizia delle macchie",
           "returning_auto_empty": "Ritorno allo svuotamento automatico",
+          "waiting_for_task": "In attesa del compito",
+          "station_cleaning": "Pulizia della stazione",
+          "returning_to_drain": "Ritornando allo scarico",
+          "draining": "Drenante",
+          "auto_water_draining": "Scarico automatico dell'acqua",
           "shortcut": "Scorciatoia",
           "monitoring": "Monitoraggio",
           "monitoring_paused": "Monitoraggio in pausa"
@@ -313,15 +320,6 @@
           "summon_clean": "Evoca per pulire",
           "shortcut": "Scorciatoia",
           "person_follow": "La persona segue",
-          "returning_to_auto_empty": "Ritorno allo svuotamento automatico",
-          "waiting_for_task": "In attesa del compito",
-          "station_cleaning": "Pulizia della stazione",
-          "returning_to_drain": "Ritornando allo scarico",
-          "draining": "Drenante",
-          "auto_water_draining": "Scarico automatico dell'acqua",
-          "shortcut_task": "Compito di scelta rapida",
-          "streaming": "Streaming",
-          "streaming_paused": "Lo streaming è stato sospeso",
           "water_check": "Controllo dell'acqua"
         }
       },

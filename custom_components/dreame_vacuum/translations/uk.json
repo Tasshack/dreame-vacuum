@@ -130,7 +130,9 @@
           "avoidance": "Уникання килима",
           "adaptation": "Адаптація до килиму",
           "remove_mop": "Видалення швабри",
-          "adaptation_without_route": "Адаптація без маршруту"
+          "adaptation_without_route": "Адаптація без маршруту",
+          "vacuum_and_mop": "Пилосос і швабра",
+          "ignore": "Ігнорувати"
         }
       },
       "mop_wash_level": {
@@ -279,6 +281,11 @@
           "human_following": "Слідкування за людиною",
           "spot_cleaning": "Точкове прибирання",
           "returning_auto_empty": "Повернення для автоматичного спорожнення",
+          "waiting_for_task": "Очікування завдання",
+          "station_cleaning": "Прибирання вокзалу",
+          "returning_to_drain": "Повернення до зливу",
+          "draining": "Злив",
+          "auto_water_draining": "Автоматичний злив води",
           "shortcut": "Шорткат",
           "monitoring": "Моніторинг",
           "monitoring_paused": "Моніторинг призупинено"
@@ -313,15 +320,6 @@
           "summon_clean": "Викликати на очищення",
           "shortcut": "Шорткат",
           "person_follow": "Слідкування за особою",
-          "returning_to_auto_empty": "Повернення до автоматичного порожнього",
-          "waiting_for_task": "Очікування завдання",
-          "station_cleaning": "Прибирання вокзалу",
-          "returning_to_drain": "Повернення до зливу",
-          "draining": "Злив",
-          "auto_water_draining": "Автоматичний злив води",
-          "shortcut_task": "Швидке завдання",
-          "streaming": "Потокове передавання",
-          "streaming_paused": "Потокове передавання призупинено",
           "water_check": "Перевірка води"
         }
       },

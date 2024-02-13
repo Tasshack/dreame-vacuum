@@ -33,6 +33,7 @@ from .dreame import (
     ACTION_AVAILABILITY,
 )
 
+
 @dataclass
 class DreameVacuumEntityDescription:
     key: str = None
@@ -41,10 +42,7 @@ class DreameVacuumEntityDescription:
     property_key: DreameVacuumProperty = None
     action_key: DreameVacuumAction = None
     exists_fn: Callable[[object, object], bool] = lambda description, device: bool(
-        (
-            description.action_key is not None
-            and description.action_key in device.action_mapping
-        )
+        (description.action_key is not None and description.action_key in device.action_mapping)
         or description.property_key is None
         or (
             isinstance(description.property_key, DreameVacuumProperty)
@@ -101,41 +99,29 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
             if description.name is None and description.key is not None:
                 description.name = description.key.replace("_", " ").title()
             elif description.key is None and description.name is not None:
-                description.key = (
-                    description.name.lower().replace(" ", "_").replace("-", "_")
-                )
+                description.key = description.name.lower().replace(" ", "_").replace("-", "_")
 
-            if description.value_fn is None and (
-                description.property_key is not None or description.key is not None
-            ):
+            if description.value_fn is None and (description.property_key is not None or description.key is not None):
                 if description.property_key is not None:
                     prop = description.property_key.name.lower()
                 else:
                     prop = description.key.lower()
                 if hasattr(coordinator.device.status, prop):
-                    description.value_fn = lambda value, device: getattr(
-                        device.status, prop
-                    )
+                    description.value_fn = lambda value, device: getattr(device.status, prop)
 
             if description.available_fn is None:
                 if description.property_key is not None:
-                    description.available_fn = PROPERTY_AVAILABILITY.get(
-                        description.property_key.name
-                    )
+                    description.available_fn = PROPERTY_AVAILABILITY.get(description.property_key.name)
                 elif description.action_key is not None:
-                    description.available_fn = ACTION_AVAILABILITY.get(
-                        description.action_key.name
-                    )
+                    description.available_fn = ACTION_AVAILABILITY.get(description.action_key.name)
                 elif description.key is not None:
                     if description.key in PROPERTY_AVAILABILITY:
-                        description.available_fn = PROPERTY_AVAILABILITY[
-                            description.key
-                        ]
+                        description.available_fn = PROPERTY_AVAILABILITY[description.key]
                     elif description.key in ACTION_AVAILABILITY:
                         description.available_fn = ACTION_AVAILABILITY[description.key]
 
         super().__init__(coordinator=coordinator)
-        if description:            
+        if description:
             if description.key is not None:
                 self._attr_translation_key = description.key
             self.entity_description = description
@@ -145,9 +131,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
     def _set_id(self) -> None:
         if self.entity_description:
             if self.entity_description.icon_fn is not None:
-                self._attr_icon = self.entity_description.icon_fn(
-                    self.native_value, self.device
-                )
+                self._attr_icon = self.entity_description.icon_fn(self.native_value, self.device)
 
             name = self.entity_description.name
             if self.entity_description.name_fn is not None:
@@ -164,7 +148,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
     @callback
     def _handle_coordinator_update(self) -> None:
         self._set_id()
-        super()._handle_coordinator_update()
+        self.async_write_ha_state()
 
     async def _try_command(self, mask_error, func, *args, **kwargs) -> bool:
         """Call a vacuum command handling error messages."""
@@ -221,22 +205,11 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
         attrs = None
         if self.entity_description.attrs_fn is not None:
             attrs = self.entity_description.attrs_fn(self.device)
-        elif (
-            self.entity_description.value_fn is not None
-            or self.entity_description.value_int_fn is not None
-        ):
+        elif self.entity_description.value_fn is not None or self.entity_description.value_int_fn is not None:
             if self.entity_description.property_key is not None:
-                attrs = {
-                    ATTR_VALUE: self.device.get_property(
-                        self.entity_description.property_key
-                    )
-                }
+                attrs = {ATTR_VALUE: self.device.get_property(self.entity_description.property_key)}
             elif self.entity_description.value_int_fn is not None:
-                attrs = {
-                    ATTR_VALUE: self.entity_description.value_int_fn(
-                        self.native_value, self
-                    )
-                }
+                attrs = {ATTR_VALUE: self.entity_description.value_int_fn(self.native_value, self)}
         return attrs
 
     @property

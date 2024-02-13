@@ -130,7 +130,9 @@
           "avoidance": "Vermeidung",
           "adaptation": "Intelligent",
           "remove_mop": "Wischpad demontieren",
-          "adaptation_without_route": "Intelligent ohne Route"
+          "adaptation_without_route": "Intelligent ohne Route",
+          "vacuum_and_mop": "Staubsaugen und wischen",
+          "ignore": "Ignorieren"
         }
       },
       "mop_wash_level": {
@@ -279,6 +281,11 @@
           "human_following": "Person folgen",
           "spot_cleaning": "Spotreinigung",
           "returning_auto_empty": "Rückkehr zur automatischen Entleerung",
+          "waiting_for_task": "Warten auf Aufgabe",
+          "station_cleaning": "Stationsreinigung",
+          "returning_to_drain": "Rückkehr zum Abfluss",
+          "draining": "Entleeren",
+          "auto_water_draining": "Automatische Wasserentleerung",
           "shortcut": "Verknüpfung",
           "monitoring": "Überwachung",
           "monitoring_paused": "Überwachung pausiert"
@@ -313,15 +320,6 @@
           "summon_clean": "Zur Reinigung rufen",
           "shortcut": "Verknüpfung",
           "person_follow": "Person folgen",
-          "returning_to_auto_empty": "Rückkehr zur automatischen Entleerung",
-          "waiting_for_task": "Warten auf Aufgabe",
-          "station_cleaning": "Stationsreinigung",
-          "returning_to_drain": "Rückkehr zum Abfluss",
-          "draining": "Entleeren",
-          "auto_water_draining": "Automatische Wasserentleerung",
-          "shortcut_task": "Verknüpfungsaufgabe",
-          "streaming": "Streaming",
-          "streaming_paused": "Streaming pausiert",
           "water_check": "Wasserkontrolle"
         }
       },

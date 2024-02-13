@@ -107,6 +107,10 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         property_key=DreameVacuumProperty.CARPET_RECOGNITION,
         icon="mdi:rug",
         entity_category=EntityCategory.CONFIG,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and not device.capability.auto_carpet_cleaning and not device.capability.mop_pad_lifting_plus
+        ),        
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.SELF_CLEAN,
@@ -128,7 +132,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         if value == 0
         else "mdi:water-boiler-auto",
         entity_category=EntityCategory.CONFIG,
-        exists_fn=lambda description, device: device.capability.drainage
+        exists_fn=lambda description, device: device.capability.water_check
         and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSwitchEntityDescription(
@@ -370,10 +374,10 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
-        property_key=DreameVacuumAutoSwitchProperty.SMART_CHARGING,
+        property_key=DreameVacuumAutoSwitchProperty.AUTO_CHARGING,
         icon="mdi:battery-sync",
         exists_fn=lambda description, device: bool(
-            device.capability.smart_charging
+            device.capability.auto_charging
             and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
         entity_category=EntityCategory.CONFIG,
@@ -440,7 +444,16 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         if not value
         else "mdi:account-tie-voice",
         exists_fn=lambda description, device: bool(
-            device.capability.stream_status
+            device.capability.camera_streaming
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+        entity_category=EntityCategory.CONFIG,
+    ),
+        DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumProperty.CLEAN_CARPETS_FIRST,
+        icon="mdi:order-bool-descending-variant",
+        exists_fn=lambda description, device: bool(
+            device.capability.clean_carpets_first
             and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
         entity_category=EntityCategory.CONFIG,
@@ -453,7 +466,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         value_fn=lambda value, device: bool(
             device.status.camera_light_brightness == 101
         ),
-        exists_fn=lambda description, device: device.capability.stream_status
+        exists_fn=lambda description, device: device.capability.camera_streaming
         and device.capability.fill_light,  # and DreameVacuumEntityDescription().exists_fn(description, device),
         format_fn=lambda value, device: 101 if value else 40,
         entity_category=EntityCategory.CONFIG,

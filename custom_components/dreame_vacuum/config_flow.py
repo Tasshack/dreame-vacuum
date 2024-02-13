@@ -46,105 +46,116 @@ from .const import (
 )
 
 DREAME_MODELS = [
-    "dreame.vacuum.p2008",
-    "dreame.vacuum.r2205",
-    "dreame.vacuum.r2243",
-    "dreame.vacuum.r2240",
-    "dreame.vacuum.r2250",
     "dreame.vacuum.p2009",
-    "dreame.vacuum.r2312",
-    "dreame.vacuum.p2259",
-    "dreame.vacuum.r2312a",
-    "dreame.vacuum.r2322",
-    "dreame.vacuum.p2187",
-    "dreame.vacuum.r2328",
-    "dreame.vacuum.p2028a",
-    "dreame.vacuum.r2251a",
-    "dreame.vacuum.p2029",
-    "dreame.vacuum.r2257o",
-    "dreame.vacuum.r2215o",
-    "dreame.vacuum.r2216o",
-    "dreame.vacuum.r2228o",
-    "dreame.vacuum.r2228d",
-    "dreame.vacuum.r2228",
-    "dreame.vacuum.r2246",
-    "dreame.vacuum.r2233",
-    "dreame.vacuum.r2247",
-    "dreame.vacuum.r2211o",
-    "dreame.vacuum.r2316",
-    "dreame.vacuum.r2316p",
-    "dreame.vacuum.r2313",
-    "dreame.vacuum.r2355",
-    "dreame.vacuum.r2332",
     "dreame.vacuum.p2027",
+    "dreame.vacuum.p2028",
+    "dreame.vacuum.p2028a",
+    "dreame.vacuum.p2029",
+    "dreame.vacuum.p2156o",
+    "dreame.vacuum.p2157",
+    "dreame.vacuum.p2187",
+    "dreame.vacuum.p2259",
     "dreame.vacuum.r2104",
-    "dreame.vacuum.r2251o",
+    "dreame.vacuum.r2205",
+    "dreame.vacuum.r2212",
+    "dreame.vacuum.r2215",
+    "dreame.vacuum.r2216o",
+    "dreame.vacuum.r2228",
+    "dreame.vacuum.r2228d",
+    "dreame.vacuum.r2228o",
     "dreame.vacuum.r2232a",
     "dreame.vacuum.r2232b",
     "dreame.vacuum.r2232c",
     "dreame.vacuum.r2232d",
-    "dreame.vacuum.r2317",
-    "dreame.vacuum.r2345a",
-    "dreame.vacuum.r2345h",
-    "dreame.vacuum.r2215",
+    "dreame.vacuum.r2233",
     "dreame.vacuum.r2235",
-    "dreame.vacuum.r2263",
+    "dreame.vacuum.r2240",
+    "dreame.vacuum.r2243",
+    "dreame.vacuum.r2246",
+    "dreame.vacuum.r2247",
+    "dreame.vacuum.r2250",
+    "dreame.vacuum.r2251a",
+    "dreame.vacuum.r2251o",
     "dreame.vacuum.r2253",
-    "dreame.vacuum.p2028",
-    "dreame.vacuum.p2157",
-    "dreame.vacuum.p2156o",
-    "dreame.vacuum.r2360",
-    "dreame.vacuum.r2253a",
     "dreame.vacuum.r2253b",
     "dreame.vacuum.r2253c",
     "dreame.vacuum.r2253d",
-    "dreame.vacuum.r2253w",
-    "dreame.vacuum.r2253t",
     "dreame.vacuum.r2253m",
+    "dreame.vacuum.r2253t",
+    "dreame.vacuum.r2253u",
+    "dreame.vacuum.r2253w",
+    "dreame.vacuum.r2257o",
     "dreame.vacuum.r2260",
+    "dreame.vacuum.r2263",
     "dreame.vacuum.r2273",
     "dreame.vacuum.r2273a",
-    "dreame.vacuum.r2386",
-    "dreame.vacuum.r2398",
-    "dreame.vacuum.r2375",
-    "dreame.vacuum.r2388",
+    "dreame.vacuum.r2310",
+    "dreame.vacuum.r2310a",
+    "dreame.vacuum.r2310b",
+    "dreame.vacuum.r2310f",
+    "dreame.vacuum.r2310g",
+    "dreame.vacuum.r2312",
+    "dreame.vacuum.r2312a",
+    "dreame.vacuum.r2313",
+    "dreame.vacuum.r2316",
+    "dreame.vacuum.r2316p",
+    "dreame.vacuum.r2317",
+    "dreame.vacuum.r2322",
+    "dreame.vacuum.r2328",
+    "dreame.vacuum.r2332",
+    "dreame.vacuum.r2338",
+    "dreame.vacuum.r2338a",
+    "dreame.vacuum.r2345a",
+    "dreame.vacuum.r2345h",
+    "dreame.vacuum.r2355",
+    "dreame.vacuum.r2360",
+    "dreame.vacuum.r2360w",
     "dreame.vacuum.r2361a",
+    "dreame.vacuum.r2367",
+    "dreame.vacuum.r2375",
+    "dreame.vacuum.r2377",
+    "dreame.vacuum.r2380",
+    "dreame.vacuum.r2380r",
+    "dreame.vacuum.r2386",
+    "dreame.vacuum.r2388",
+    "dreame.vacuum.r2394a",
+    "dreame.vacuum.r2394f",
+    "dreame.vacuum.r2394j",
+    "dreame.vacuum.r2394k",
+    "dreame.vacuum.r2394l",
+    "dreame.vacuum.r2394s",
+    "dreame.vacuum.r2394u",
+    "dreame.vacuum.r2398",
+    "dreame.vacuum.r2421",
     "dreame.vacuum.r9301",
     "dreame.vacuum.r9302",
     "dreame.vacuum.r9304",
     "dreame.vacuum.r9305",
     "dreame.vacuum.r9311",
-    "dreame.vacuum.r2310",
-    "dreame.vacuum.r2310a",
-    #"dreame.vacuum.r2394u",
-    #"dreame.vacuum.r2394k",
-    #"dreame.vacuum.r2394s",
-    #"dreame.vacuum.r2394j",
-    #"dreame.vacuum.r2394a",
-    #"dreame.vacuum.r2394l",
-    #"dreame.vacuum.r2394f",
 ]
 
 MIJIA_MODELS = [
-    "dreame.vacuum.p2041",
+    "dreame.vacuum.p2008",
     "dreame.vacuum.p2036",
-    "dreame.vacuum.p2140",
-    "dreame.vacuum.p2140a",
+    "dreame.vacuum.p2041",
+    "dreame.vacuum.p2041o",
     "dreame.vacuum.p2114a",
     "dreame.vacuum.p2114o",
-    "dreame.vacuum.r2210",
+    "dreame.vacuum.p2140",
+    "dreame.vacuum.p2140a",
+    "dreame.vacuum.p2140o",
+    "dreame.vacuum.p2140p",
+    "dreame.vacuum.p2140q",
+    "dreame.vacuum.p2148o",
     "dreame.vacuum.p2149o",
     "dreame.vacuum.p2150a",
     "dreame.vacuum.p2150b",
     "dreame.vacuum.p2150o",
     "dreame.vacuum.r2209",
-    "dreame.vacuum.p2148o",
-    "dreame.vacuum.p2140o",
+    "dreame.vacuum.r2210",
+    "dreame.vacuum.r2211o",
     "dreame.vacuum.r2254",
-    "dreame.vacuum.p2140p",
-    "dreame.vacuum.p2140q",
-    "dreame.vacuum.p2041o",
-    "xiaomi.vacuum.c102cn"
+    "xiaomi.vacuum.c102cn",
 ]
 
 MIHOME: Final = "Xiaomi Home Account"
@@ -159,9 +170,7 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
         """Initialize Dreame Vacuum options flow."""
         self.config_entry = config_entry
 
-    async def async_step_init(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    async def async_step_init(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Manage Dreame Vacuum options."""
         errors = {}
         data = self.config_entry.data
@@ -177,28 +186,22 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
             else:
                 notify = []
 
-        data_schema = vol.Schema(
-            {vol.Required(CONF_NOTIFY, default=notify): cv.multi_select(NOTIFICATION)}
-        )
-        if data[CONF_USERNAME]:          
+        data_schema = vol.Schema({vol.Required(CONF_NOTIFY, default=notify): cv.multi_select(NOTIFICATION)})
+        if data[CONF_USERNAME]:
             data_schema = data_schema.extend(
                 {
-                    vol.Required(
-                        CONF_COLOR_SCHEME, default=options[CONF_COLOR_SCHEME]
-                    ): vol.In(list(MAP_COLOR_SCHEME_LIST.keys())),
+                    vol.Required(CONF_COLOR_SCHEME, default=options[CONF_COLOR_SCHEME]): vol.In(
+                        list(MAP_COLOR_SCHEME_LIST.keys())
+                    ),
                     vol.Required(
                         CONF_ICON_SET,
-                        default=options.get(
-                            CONF_ICON_SET, next(iter(MAP_ICON_SET_LIST))
-                        ),
+                        default=options.get(CONF_ICON_SET, next(iter(MAP_ICON_SET_LIST))),
                     ): vol.In(list(MAP_ICON_SET_LIST.keys())),
                     vol.Required(
                         CONF_MAP_OBJECTS,
                         default=options.get(CONF_MAP_OBJECTS, list(MAP_OBJECTS.keys())),
                     ): cv.multi_select(MAP_OBJECTS),
-                    vol.Required(
-                        CONF_SQUARE, default=options.get(CONF_SQUARE, False)
-                    ): bool,
+                    vol.Required(CONF_SQUARE, default=options.get(CONF_SQUARE, False)): bool,
                     vol.Required(
                         CONF_LOW_RESOLUTION,
                         default=options.get(CONF_LOW_RESOLUTION, False),
@@ -254,9 +257,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         """Get the options flow for this handler."""
         return DreameVacuumOptionsFlowHandler(config_entry)
 
-    async def async_step_user(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    async def async_step_user(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Handle a flow initialized by the user."""
         if user_input is not None:
             config_type = user_input.get(CONF_TYPE, MIHOME)
@@ -268,13 +269,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(
             step_id="user",
-            data_schema=vol.Schema(
-                {
-                    vol.Required(CONF_TYPE, default=MIHOME): vol.In(
-                        [MIHOME, DREAMEHOME, LOCAL]
-                    )
-                }
-            ),
+            data_schema=vol.Schema({vol.Required(CONF_TYPE, default=MIHOME): vol.In([MIHOME, DREAMEHOME, LOCAL])}),
             errors={},
         )
 
@@ -290,17 +285,13 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         self.account_type = user_input.get(CONF_ACCOUNT_TYPE, MIHOME)
         return await self.async_step_reauth_confirm()
 
-    async def async_step_reauth_confirm(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    async def async_step_reauth_confirm(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Dialog that informs the user that reauth is required."""
         if user_input is not None:
             return await self.async_step_cloud()
         return self.async_show_form(step_id="reauth_confirm")
 
-    async def async_step_connect(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    async def async_step_connect(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Connect to a Dreame Vacuum device."""
         errors: dict[str, str] = {}
         if self.prefer_cloud or (self.token and len(self.token) == 32):
@@ -316,21 +307,13 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                         self.account_type,
                     )
                 else:
-                    self.protocol.set_credentials(
-                        self.host, self.token, account_type=self.account_type
-                    )
+                    self.protocol.set_credentials(self.host, self.token, account_type=self.account_type)
 
                 if self.protocol.device_cloud:
                     self.protocol.device_cloud._did = self.device_id
 
-                if (
-                    self.account_type != "dreame"
-                    or self.mac is None
-                    or self.model is None
-                ):
-                    info = await self.hass.async_add_executor_job(
-                        self.protocol.connect, 5
-                    )
+                if self.account_type != "dreame" or self.mac is None or self.model is None:
+                    info = await self.hass.async_add_executor_job(self.protocol.connect, 5)
                     if info:
                         self.mac = info["mac"]
                         self.model = info["model"]
@@ -430,21 +413,14 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 elif self.protocol.cloud.logged_in is False:
                     errors["base"] = "login_error"
                 elif self.protocol.cloud.logged_in:
-                    persistent_notification.dismiss(
-                        self.hass, f"{DOMAIN}_{NOTIFICATION_ID_2FA_LOGIN}"
-                    )
+                    persistent_notification.dismiss(self.hass, f"{DOMAIN}_{NOTIFICATION_ID_2FA_LOGIN}")
 
-                    devices = await self.hass.async_add_executor_job(
-                        self.protocol.cloud.get_devices
-                    )
+                    devices = await self.hass.async_add_executor_job(self.protocol.cloud.get_devices)
                     if devices:
                         found = list(
                             filter(
                                 lambda d: not d.get("parent_id")
-                                and (
-                                    str(d["model"]) in DREAME_MODELS
-                                    or str(d["model"]) in MIJIA_MODELS
-                                ),
+                                and (str(d["model"]) in DREAME_MODELS or str(d["model"]) in MIJIA_MODELS),
                                 devices,
                             )
                         )
@@ -520,18 +496,13 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 if self.protocol.cloud.logged_in is False:
                     errors["base"] = "login_error"
                 elif self.protocol.cloud.logged_in:
-                    persistent_notification.dismiss(
-                        self.hass, f"{DOMAIN}_{NOTIFICATION_ID_2FA_LOGIN}"
-                    )
+                    persistent_notification.dismiss(self.hass, f"{DOMAIN}_{NOTIFICATION_ID_2FA_LOGIN}")
 
-                    devices = await self.hass.async_add_executor_job(
-                        self.protocol.cloud.get_devices
-                    )
+                    devices = await self.hass.async_add_executor_job(self.protocol.cloud.get_devices)
                     if devices:
                         found = list(
                             filter(
-                                lambda d: str(d["model"]) in DREAME_MODELS
-                                or str(d["model"]) in MIJIA_MODELS,
+                                lambda d: str(d["model"]) in DREAME_MODELS or str(d["model"]) in MIJIA_MODELS,
                                 devices["page"]["records"],
                             )
                         )
@@ -540,8 +511,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                         for device in found:
                             name = (
                                 device["customName"]
-                                if device["customName"]
-                                and len(device["customName"]) > 0
+                                if device["customName"] and len(device["customName"]) > 0
                                 else device["deviceInfo"]["displayName"]
                             )
                             model = device["model"]
@@ -564,18 +534,14 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 {
                     vol.Required(CONF_USERNAME, default=self.username): str,
                     vol.Required(CONF_PASSWORD, default=self.password): str,
-                    vol.Required(CONF_COUNTRY, default=self.country): vol.In(
-                        ["cn", "eu", "us", "ru", "sg"]
-                    ),
+                    vol.Required(CONF_COUNTRY, default=self.country): vol.In(["cn", "eu", "us", "ru", "sg"]),
                 }
             ),
             description_placeholders=placeholders,
             errors=errors,
         )
 
-    async def async_step_devices(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    async def async_step_devices(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Handle multiple Dreame Vacuum devices found."""
         errors: dict[str, str] = {}
         if user_input is not None:
@@ -584,15 +550,11 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(
             step_id="devices",
-            data_schema=vol.Schema(
-                {vol.Required("devices"): vol.In(list(self.devices))}
-            ),
+            data_schema=vol.Schema({vol.Required("devices"): vol.In(list(self.devices))}),
             errors=errors,
         )
 
-    async def async_step_options(
-        self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    async def async_step_options(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Handle Dreame Vacuum options step."""
         errors = {}
 
@@ -626,9 +588,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         data_schema = vol.Schema(
             {
                 vol.Required(CONF_NAME, default=self.name): str,
-                vol.Required(
-                    CONF_NOTIFY, default=list(NOTIFICATION.keys())
-                ): cv.multi_select(NOTIFICATION),
+                vol.Required(CONF_NOTIFY, default=list(NOTIFICATION.keys())): cv.multi_select(NOTIFICATION),
             }
         )
 
@@ -650,23 +610,17 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         if self.account_type != "local":
             data_schema = data_schema.extend(
                 {
-                    vol.Required(
-                        CONF_COLOR_SCHEME, default=default_color_scheme
-                    ): vol.In(list(MAP_COLOR_SCHEME_LIST.keys())),
-                    vol.Required(CONF_ICON_SET, default=default_icon_set): vol.In(
-                        list(MAP_ICON_SET_LIST.keys())
+                    vol.Required(CONF_COLOR_SCHEME, default=default_color_scheme): vol.In(
+                        list(MAP_COLOR_SCHEME_LIST.keys())
                     ),
-                    vol.Required(
-                        CONF_MAP_OBJECTS, default=default_objects
-                    ): cv.multi_select(MAP_OBJECTS),
+                    vol.Required(CONF_ICON_SET, default=default_icon_set): vol.In(list(MAP_ICON_SET_LIST.keys())),
+                    vol.Required(CONF_MAP_OBJECTS, default=default_objects): cv.multi_select(MAP_OBJECTS),
                     vol.Required(CONF_SQUARE, default=False): bool,
                     vol.Required(CONF_LOW_RESOLUTION, default=False): bool,
                 }
             )
 
-        return self.async_show_form(
-            step_id="options", data_schema=data_schema, errors=errors
-        )
+        return self.async_show_form(step_id="options", data_schema=data_schema, errors=errors)
 
     def extract_info(self, device_info: dict[str, Any]) -> None:
         """Extract the device info."""

@@ -130,7 +130,9 @@
           "avoidance": "Evitar",
           "adaptation": "Adaptação",
           "remove_mop": "Remover pano",
-          "adaptation_without_route": "Adaptação Sem rota"
+          "adaptation_without_route": "Adaptação Sem rota",
+          "vacuum_and_mop": "Aspirador e esfregão",
+          "ignore": "Ignorar"
         }
       },
       "mop_wash_level": {
@@ -279,6 +281,11 @@
           "human_following": "Seguindo humano",
           "spot_cleaning": "Limpeza localizada",
           "returning_auto_empty": "Retornando ao esvaziamento automático",
+          "waiting_for_task": "Aguardando tarefa",
+          "station_cleaning": "Limpeza de estação",
+          "returning_to_drain": "Voltando para drenar",
+          "draining": "Drenagem",
+          "auto_water_draining": "Drenagem automática de água",
           "shortcut": "Atalho",
           "monitoring": "Monitoramento",
           "monitoring_paused": "Monitoramento pausado"
@@ -313,15 +320,6 @@
           "summon_clean": "Chamar para limpar",
           "shortcut": "Atalho",
           "person_follow": "Seguir pessoa",
-          "returning_to_auto_empty": "Voltando ao esvaziamento automático",
-          "waiting_for_task": "Aguardando tarefa",
-          "station_cleaning": "Limpeza de estação",
-          "returning_to_drain": "Voltando para drenar",
-          "draining": "Drenagem",
-          "auto_water_draining": "Drenagem automática de água",
-          "shortcut_task": "Tarefa de atalho",
-          "streaming": "Transmissão",
-          "streaming_paused": "Transmissão pausada",
           "water_check": "Verificação de água"
         }
       },

@@ -130,7 +130,9 @@
           "avoidance": "Évitement",
           "adaptation": "Adaptation",
           "remove_mop": "Retirer la vadrouille",
-          "adaptation_without_route": "Adaptation sans itinéraire"
+          "adaptation_without_route": "Adaptation sans itinéraire",
+          "vacuum_and_mop": "Aspirateur et vadrouille",
+          "ignore": "Ignorer"
         }
       },
       "mop_wash_level": {
@@ -279,6 +281,13 @@
           "human_following": "Suivi humain",
           "spot_cleaning": "Nettoyage des taches",
           "returning_auto_empty": "Retour à Vider automatiquement",
+          "waiting_for_task": "En attente de tâche",
+          "station_cleaning": "Nettoyage des gares",
+          "returning_to_drain": "Retour à l'égout",
+          "draining": "Évacuation",
+          "auto_water_draining": "Vidange automatique de l'eau",
+          "streaming": "Streaming",
+          "streaming_paused": "Diffusion interrompue",
           "shortcut": "Raccourci",
           "monitoring": "Surveillance",
           "monitoring_paused": "Surveillance en pause"
@@ -313,15 +322,6 @@
           "summon_clean": "Appeler pour nettoyer",
           "shortcut": "Raccourci",
           "person_follow": "Suivre une personne",
-          "returning_to_auto_empty": "Revenir au vidage automatique",
-          "waiting_for_task": "En attente de tâche",
-          "station_cleaning": "Nettoyage des gares",
-          "returning_to_drain": "Retour à l'égout",
-          "draining": "Évacuation",
-          "auto_water_draining": "Vidange automatique de l'eau",
-          "shortcut_task": "Tâche de raccourci",
-          "streaming": "Streaming",
-          "streaming_paused": "Diffusion interrompue",
           "water_check": "Vérification de l'eau"
         }
       },

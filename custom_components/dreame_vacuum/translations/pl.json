@@ -130,7 +130,9 @@
           "avoidance": "Unikanie",
           "adaptation": "Dostosowanie",
           "remove_mop": "Usuń Mopa",
-          "adaptation_without_route": "Dostosowanie Bez trasy"
+          "adaptation_without_route": "Dostosowanie Bez trasy",
+          "vacuum_and_mop": "Odkurz i mopuj",
+          "ignore": "Ignorować"
         }
       },
       "mop_wash_level": {
@@ -279,6 +281,11 @@
           "human_following": "Podążanie za człowiekiem",
           "spot_cleaning": "Czyszczenie punktowe",
           "returning_auto_empty": "Powrót do automatycznego opróżniania",
+          "waiting_for_task": "Oczekiwanie na zadanie",
+          "station_cleaning": "Sprzątanie stacji",
+          "returning_to_drain": "Wracając do drenażu",
+          "draining": "Opróżnianie",
+          "auto_water_draining": "Automatyczne odprowadzanie wody",
           "shortcut": "Skrót",
           "monitoring": "Monitorowanie",
           "monitoring_paused": "Monitorowanie zostało wstrzymane"
@@ -313,15 +320,6 @@
           "summon_clean": "Powiedz, aby rozpocząć czyszczenie",
           "shortcut": "Skrót",
           "person_follow": "Obserwuj osobę",
-          "returning_to_auto_empty": "Powrót do automatycznego opróżniania",
-          "waiting_for_task": "Oczekiwanie na zadanie",
-          "station_cleaning": "Sprzątanie stacji",
-          "returning_to_drain": "Wracając do drenażu",
-          "draining": "Opróżnianie",
-          "auto_water_draining": "Automatyczne odprowadzanie wody",
-          "shortcut_task": "Zadanie skrótu",
-          "streaming": "Transmisja strumieniowa",
-          "streaming_paused": "Transmisja wstrzymana",
           "water_check": "Sprawdzanie wody"
         }
       },

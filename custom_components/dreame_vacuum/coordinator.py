@@ -89,8 +89,6 @@ from .const import (
 class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice]):
     """Class to manage fetching Dreame Vacuum data from single endpoint."""
 
-    _device: DreameVacuumDevice = None
-
     def __init__(
         self,
         hass: HomeAssistant,
@@ -98,6 +96,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         entry: ConfigEntry,
     ) -> None:
         """Initialize global Dreame Vacuum data updater."""
+        self._device: DreameVacuumDevice = None
         self._token = entry.data[CONF_TOKEN]
         self._host = entry.data[CONF_HOST]
         self._notify = entry.options.get(CONF_NOTIFY, True)
@@ -125,20 +124,12 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             entry.data.get(CONF_DID),
         )
 
-        self._device.listen(
-            self._dust_collection_changed, DreameVacuumProperty.DUST_COLLECTION
-        )
+        self._device.listen(self._dust_collection_changed, DreameVacuumProperty.DUST_COLLECTION)
         self._device.listen(self._error_changed, DreameVacuumProperty.ERROR)
         self._device.listen(self._task_status_changed, DreameVacuumProperty.TASK_STATUS)
-        self._device.listen(
-            self._cleaning_paused_changed, DreameVacuumProperty.CLEANING_PAUSED
-        )
-        self._device.listen(
-            self._low_water_warning_changed, DreameVacuumProperty.LOW_WATER_WARNING
-        )
-        self._device.listen(
-            self._drainage_status_changed, DreameVacuumProperty.DRAINAGE_STATUS
-        )
+        self._device.listen(self._cleaning_paused_changed, DreameVacuumProperty.CLEANING_PAUSED)
+        self._device.listen(self._low_water_warning_changed, DreameVacuumProperty.LOW_WATER_WARNING)
+        self._device.listen(self._drainage_status_changed, DreameVacuumProperty.DRAINAGE_STATUS)
         self._device.listen(
             self._self_wash_base_status_changed,
             DreameVacuumProperty.SELF_WASH_BASE_STATUS,
@@ -160,9 +151,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
 
     def _dust_collection_changed(self, previous_value=None) -> None:
         if self._device.status.auto_emptying_not_performed:
-            self._fire_event(
-                EVENT_INFORMATION, {EVENT_INFORMATION: NOTIFICATION_ID_DUST_COLLECTION}
-            )
+            self._fire_event(EVENT_INFORMATION, {EVENT_INFORMATION: NOTIFICATION_ID_DUST_COLLECTION})
 
             self._create_persistent_notification(
                 NOTIFICATION_DUST_COLLECTION_NOT_PERFORMED,
@@ -190,9 +179,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                     {EVENT_INFORMATION: NOTIFICATION_ID_CLEANING_PAUSED},
                 )
 
-            self._create_persistent_notification(
-                notification, NOTIFICATION_ID_CLEANING_PAUSED
-            )
+            self._create_persistent_notification(notification, NOTIFICATION_ID_CLEANING_PAUSED)
         else:
             self._remove_persistent_notification(NOTIFICATION_ID_CLEANING_PAUSED)
 
@@ -200,16 +187,10 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         if previous_value is not None:
             if self._device.cleanup_completed:
                 self._fire_event(EVENT_TASK_STATUS, self._device.status.job)
-                self._create_persistent_notification(
-                    NOTIFICATION_CLEANUP_COMPLETED, NOTIFICATION_ID_CLEANUP_COMPLETED
-                )
+                self._create_persistent_notification(NOTIFICATION_CLEANUP_COMPLETED, NOTIFICATION_ID_CLEANUP_COMPLETED)
                 self._check_consumables()
 
-            elif (
-                previous_value == 0
-                and not self._device.status.fast_mapping
-                and not self._device.status.cruising
-            ):
+            elif previous_value == 0 and not self._device.status.fast_mapping and not self._device.status.cruising:
                 self._fire_event(EVENT_TASK_STATUS, self._device.status.job)
         else:
             self._check_consumables()
@@ -244,36 +225,26 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             image = self._device.status.error_image
             if image:
                 content = f"{content}![image](data:{CONTENT_TYPE};base64,{image})"
-            self._create_persistent_notification(
-                content, f"{NOTIFICATION_ID_ERROR}_{self._device.status.error.value}"
-            )
+            self._create_persistent_notification(content, f"{NOTIFICATION_ID_ERROR}_{self._device.status.error.value}")
 
         self._has_warning = has_warning
 
     def _has_temporary_map_changed(self, previous_value=None) -> None:
         if self._device.status.has_temporary_map:
-            self._fire_event(
-                EVENT_WARNING, {EVENT_WARNING: NOTIFICATION_REPLACE_MULTI_MAP}
-            )
+            self._fire_event(EVENT_WARNING, {EVENT_WARNING: NOTIFICATION_REPLACE_MULTI_MAP})
 
             self._create_persistent_notification(
-                NOTIFICATION_REPLACE_MULTI_MAP
-                if self._device.status.multi_map
-                else NOTIFICATION_REPLACE_MAP,
+                NOTIFICATION_REPLACE_MULTI_MAP if self._device.status.multi_map else NOTIFICATION_REPLACE_MAP,
                 NOTIFICATION_ID_REPLACE_TEMPORARY_MAP,
             )
         else:
-            self._fire_event(
-                EVENT_WARNING, {EVENT_WARNING: NOTIFICATION_ID_REPLACE_TEMPORARY_MAP}
-            )
+            self._fire_event(EVENT_WARNING, {EVENT_WARNING: NOTIFICATION_ID_REPLACE_TEMPORARY_MAP})
 
             self._remove_persistent_notification(NOTIFICATION_ID_REPLACE_TEMPORARY_MAP)
 
     def _low_water_warning_changed(self, previous_value=None) -> None:
         low_water_warning = self._device.status.low_water_warning
-        if low_water_warning.value > 0 and (
-            not previous_value or low_water_warning.value > 1
-        ):
+        if low_water_warning.value > 0 and (not previous_value or low_water_warning.value > 1):
             low_water_warning_description = self._device.status.low_water_warning_name_description
             self._fire_event(
                 EVENT_LOW_WATER,
@@ -295,25 +266,19 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             if success:
                 description = f"{NOTIFICATION_DRAINAGE_COMPLETED}\n![image](data:{CONTENT_TYPE};base64,{DRAINAGE_STATUS_SUCCESS})"
             else:
-                description = f"{NOTIFICATION_DRAINAGE_FAILED}\n![image](data:{CONTENT_TYPE};base64,{DRAINAGE_STATUS_FAIL})"
+                description = (
+                    f"{NOTIFICATION_DRAINAGE_FAILED}\n![image](data:{CONTENT_TYPE};base64,{DRAINAGE_STATUS_FAIL})"
+                )
 
             self._fire_event(EVENT_DRAINAGE_STATUS, {EVENT_DRAINAGE_STATUS: success})
-            self._create_persistent_notification(
-                description, NOTIFICATION_ID_DRAINAGE_STATUS
-            )
+            self._create_persistent_notification(description, NOTIFICATION_ID_DRAINAGE_STATUS)
         elif self._drainage_status:
             self._remove_persistent_notification(NOTIFICATION_ID_DRAINAGE_STATUS)
 
         self._drainage_status = self._device.status.draining_complete
 
-    def _self_wash_base_status_changed(
-        self, previous_self_wash_base_status=None
-    ) -> None:
-        if (
-            self._washing is not None
-            and self._device.status.washing != self._washing
-            and self._device.status.started
-        ):
+    def _self_wash_base_status_changed(self, previous_self_wash_base_status=None) -> None:
+        if self._washing is not None and self._device.status.washing != self._washing and self._device.status.started:
             self._check_consumables()
         self._washing = self._device.status.washing
 
@@ -328,7 +293,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 notification,
                 notification_id,
             )
-            
+
             self._fire_event(
                 EVENT_CONSUMABLE,
                 {
@@ -358,7 +323,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             NOTIFICATION_ID_REPLACE_TANK_FILTER,
             DreameVacuumProperty.TANK_FILTER_LEFT,
         )
-        if self.device.capability.sensor_cleaning:
+        if not self.device.capability.disable_sensor_cleaning:
             self._check_consumable(
                 CONSUMABLE_SENSOR,
                 NOTIFICATION_ID_CLEAN_SENSOR,
@@ -396,17 +361,13 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 DreameVacuumProperty.DETERGENT_LEFT,
             )
 
-
     def _create_persistent_notification(self, content, notification_id) -> None:
         if self._notify or notification_id == NOTIFICATION_ID_2FA_LOGIN:
             if isinstance(self._notify, list) and notification_id != NOTIFICATION_ID_2FA_LOGIN:
                 if notification_id == NOTIFICATION_ID_CLEANUP_COMPLETED:
                     if NOTIFICATION_ID_CLEANUP_COMPLETED not in self._notify:
                         return
-                elif (
-                    NOTIFICATION_ID_WARNING in notification_id
-                    or NOTIFICATION_ID_LOW_WATER in notification_id
-                ):
+                elif NOTIFICATION_ID_WARNING in notification_id or NOTIFICATION_ID_LOW_WATER in notification_id:
                     if NOTIFICATION_ID_WARNING not in self._notify:
                         return
                 elif NOTIFICATION_ID_ERROR in notification_id:
@@ -423,7 +384,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                     and notification_id != NOTIFICATION_ID_DRAINAGE_STATUS
                 ):
                     if NOTIFICATION_ID_CONSUMABLE not in self._notify:
-                       return
+                        return
 
             persistent_notification.async_create(
                 hass=self.hass,
@@ -433,53 +394,35 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             )
 
     def _remove_persistent_notification(self, notification_id) -> None:
-        persistent_notification.async_dismiss(
-            self.hass, f"{DOMAIN}_{self._device.mac}_{notification_id}"
-        )
+        persistent_notification.async_dismiss(self.hass, f"{DOMAIN}_{self._device.mac}_{notification_id}")
 
     def _notification_dismiss_listener(self, type, data) -> None:
         if type == persistent_notification.UpdateType.REMOVED and self._device:
             notifications = self.hass.data.get(persistent_notification.DOMAIN)
             if self._has_warning:
-                if (
-                    f"{DOMAIN}_{self._device.mac}_{NOTIFICATION_ID_WARNING}"
-                    not in notifications
-                ):
+                if f"{DOMAIN}_{self._device.mac}_{NOTIFICATION_ID_WARNING}" not in notifications:
                     if NOTIFICATION_ID_WARNING in self._notify:
                         self._device.clear_warning()
                     self._has_warning = self._device.status.has_warning
 
             if self._two_factor_url:
-                if (
-                    f"{DOMAIN}_{self._device.mac}_{NOTIFICATION_ID_2FA_LOGIN}"
-                    not in notifications
-                ):
+                if f"{DOMAIN}_{self._device.mac}_{NOTIFICATION_ID_2FA_LOGIN}" not in notifications:
                     self._two_factor_url = None
 
             if self._low_water:
-                if (
-                    f"{DOMAIN}_{self._device.mac}_{NOTIFICATION_ID_LOW_WATER}"
-                    not in notifications
-                ):
+                if f"{DOMAIN}_{self._device.mac}_{NOTIFICATION_ID_LOW_WATER}" not in notifications:
                     if NOTIFICATION_ID_WARNING in self._notify:
                         self._device.clear_warning()
                     self._low_water = self._device.status.low_water
 
             if self._drainage_status:
-                if (
-                    f"{DOMAIN}_{self._device.mac}_{NOTIFICATION_ID_DRAINAGE_STATUS}"
-                    not in notifications
-                ):
+                if f"{DOMAIN}_{self._device.mac}_{NOTIFICATION_ID_DRAINAGE_STATUS}" not in notifications:
                     if NOTIFICATION_ID_WARNING in self._notify:
                         self._device.clear_warning()
                     self._drainage_status = self._device.status.draining_complete
 
     def _fire_event(self, event_id, data) -> None:
-        event_data = {
-            ATTR_ENTITY_ID: generate_entity_id(
-                "vacuum.{}", self._device.name, hass=self.hass
-            )
-        }
+        event_data = {ATTR_ENTITY_ID: generate_entity_id("vacuum.{}", self._device.name, hass=self.hass)}
         if data:
             event_data.update(data)
         self.hass.bus.fire(f"{DOMAIN}_{event_id}", event_data)
@@ -513,7 +456,9 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
 
         if not self._ready:
             self._ready = True
-            if (self._device.token and self._device.token != self._token) or (self._device.host and self._device.host != self._host):
+            if (self._device.token and self._device.token != self._token) or (
+                self._device.host and self._device.host != self._host
+            ):
                 data = self._entry.data.copy()
                 self._host = self._device.host
                 self._token = self._device.token

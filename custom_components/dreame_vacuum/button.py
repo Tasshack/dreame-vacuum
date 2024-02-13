@@ -28,9 +28,7 @@ from .dreame import DreameVacuumAction
 
 
 @dataclass
-class DreameVacuumButtonEntityDescription(
-    DreameVacuumEntityDescription, ButtonEntityDescription
-):
+class DreameVacuumButtonEntityDescription(DreameVacuumEntityDescription, ButtonEntityDescription):
     """Describes Dreame Vacuum Button entity."""
 
     action_fn: Callable[[object]] = None
@@ -60,23 +58,21 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:air-filter",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.status.filter_life is not None
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.status.filter_life is not None
         ),
     ),
     DreameVacuumButtonEntityDescription(
         action_key=DreameVacuumAction.RESET_SENSOR,
         icon="mdi:radar",
         entity_category=EntityCategory.DIAGNOSTIC,
-        exists_fn=lambda description, device: device.capability.sensor_cleaning,
+        exists_fn=lambda description, device: not device.capability.disable_sensor_cleaning,
     ),
     DreameVacuumButtonEntityDescription(
         action_key=DreameVacuumAction.RESET_MOP_PAD,
         icon="mdi:hydro-power",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.status.mop_life is not None
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.status.mop_life is not None
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -93,8 +89,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:chart-bubble",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.status.detergent_life is not None
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.status.detergent_life is not None
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -102,8 +97,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:squeegee",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.status.squeegee_life is not None
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.status.squeegee_life is not None
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -132,8 +126,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         if device.status.auto_emptying
         else "mdi:delete-empty",
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.capability.auto_empty_base
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.auto_empty_base
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -158,9 +151,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         exists_fn=lambda description, device: device.capability.lidar_navigation,
     ),
     DreameVacuumButtonEntityDescription(
-        name_fn=lambda value, device: "Self-Clean Pause"
-        if device.status.washing
-        else "Self-Clean",
+        name_fn=lambda value, device: "Self-Clean Pause" if device.status.washing else "Self-Clean",
         key="self_clean",
         icon_fn=lambda value, device: "mdi:washing-machine-off"
         if device.status.washing or not device.status.washing_available
@@ -169,9 +160,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         exists_fn=lambda description, device: device.capability.self_wash_base,
     ),
     DreameVacuumButtonEntityDescription(
-        name_fn=lambda value, device: "Stop Drying"
-        if device.status.drying
-        else "Start Drying",
+        name_fn=lambda value, device: "Stop Drying" if device.status.drying else "Start Drying",
         key="manual_drying",
         icon_fn=lambda value, device: "mdi:weather-sunny-off"
         if device.status.drying or not device.status.drying_available
@@ -184,22 +173,18 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:pump",
         entity_category=EntityCategory.DIAGNOSTIC,
         action_fn=lambda device: device.start_draining(),
-        exists_fn=lambda description, device: device.capability.self_wash_base
-        and device.capability.drainage,
+        exists_fn=lambda description, device: device.capability.self_wash_base and device.capability.drainage,
     ),
     DreameVacuumButtonEntityDescription(
         key="empty_water_tank",
         icon="mdi:waves-arrow-up",
         entity_category=EntityCategory.DIAGNOSTIC,
         action_fn=lambda device: device.start_draining(True),
-        exists_fn=lambda description, device: device.capability.self_wash_base
-        and device.capability.empty_water_tank,
+        exists_fn=lambda description, device: device.capability.self_wash_base and device.capability.empty_water_tank,
     ),
     DreameVacuumButtonEntityDescription(
         key="base_station_self_repair",
-        icon_fn=lambda value, device: "mdi:wrench-clock"
-        if device.status.self_repairing
-        else "mdi:wrench-cog",
+        icon_fn=lambda value, device: "mdi:wrench-clock" if device.status.self_repairing else "mdi:wrench-cog",
         entity_category=EntityCategory.DIAGNOSTIC,
         action_fn=lambda device: device.start_self_repairing(),
         exists_fn=lambda description, device: device.capability.self_wash_base,
@@ -210,7 +195,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:refresh-circle",
         entity_category=None,
         action_fn=lambda device: device.start_recleaning(),
-        exists_fn=lambda description, device: device.capability.second_cleaning and device.capability.map,
+        exists_fn=lambda description, device: device.capability.auto_recleaning and device.capability.map,
     ),
 )
 
@@ -228,13 +213,8 @@ async def async_setup_entry(
         if description.exists_fn(description, coordinator.device)
     )
 
-    if (
-        coordinator.device.capability.shortcuts
-        or coordinator.device.capability.backup_map
-    ):
-        update_buttons = partial(
-            async_update_buttons, coordinator, {}, {}, async_add_entities
-        )
+    if coordinator.device.capability.shortcuts or coordinator.device.capability.backup_map:
+        update_buttons = partial(async_update_buttons, coordinator, {}, {}, async_add_entities)
         coordinator.async_add_listener(update_buttons)
         update_buttons()
 
@@ -275,9 +255,7 @@ def async_update_buttons(
             new_entities = new_entities + current_shortcut[shortcut_id]
 
     if coordinator.device.capability.backup_map:
-        new_indexes = set(
-            [k for k in range(1, len(coordinator.device.status.map_list) + 1)]
-        )
+        new_indexes = set([k for k in range(1, len(coordinator.device.status.map_list) + 1)])
         current_ids = set(current_map)
 
         for map_index in current_ids - new_indexes:
@@ -290,8 +268,7 @@ def async_update_buttons(
                     DreameVacuumButtonEntityDescription(
                         entity_category=EntityCategory.DIAGNOSTIC,
                         icon="mdi:content-save",
-                        available_fn=lambda device: not device.status.started
-                        and not device.status.map_backup_status
+                        available_fn=lambda device: not device.status.started and not device.status.map_backup_status,
                     ),
                     map_index,
                 )
@@ -436,9 +413,7 @@ class DreameVacuumMapButtonEntity(DreameVacuumEntity, ButtonEntity):
         self._attr_translation_key = None
         self._set_id()
         self._attr_unique_id = f"{self.device.mac}_backup_map_{self.map_index}"
-        self.entity_id = (
-            f"button.{self.device.name.lower()}_backup_map_{self.map_index}"
-        )
+        self.entity_id = f"button.{self.device.name.lower()}_backup_map_{self.map_index}"
 
     def _set_id(self) -> None:
         """Set name of the entity"""
@@ -451,10 +426,11 @@ class DreameVacuumMapButtonEntity(DreameVacuumEntity, ButtonEntity):
 
     @callback
     def _handle_coordinator_update(self) -> None:
-        map_data = self.device.get_map(self.map_index)
-        if map_data and self._map_name != map_data.custom_name:
-            self._map_name = map_data.custom_name
-            self._set_id()
+        if self.device:
+            map_data = self.device.get_map(self.map_index)
+            if map_data and self._map_name != map_data.custom_name:
+                self._map_name = map_data.custom_name
+                self._set_id()
 
         self.async_write_ha_state()
 

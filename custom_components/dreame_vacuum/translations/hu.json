@@ -130,7 +130,9 @@
           "avoidance": "Elkerülés",
           "adaptation": "Adaptáció",
           "remove_mop": "Felmosó eltávolítása",
-          "adaptation_without_route": "Útvonal nélküli adaptáció"
+          "adaptation_without_route": "Útvonal nélküli adaptáció",
+          "vacuum_and_mop": "Porszívó és felmosó",
+          "ignore": "Figyelmen kívül hagyni"
         }
       },
       "mop_wash_level": {
@@ -279,6 +281,11 @@
           "human_following":"Ember követése",
           "spot_cleaning":"Pozíció takítás",
           "returning_auto_empty":"Automatikus ürítéshez visszatérés",
+          "waiting_for_task": "Várakozás a feladatra",
+          "station_cleaning": "Állomás takarítás",
+          "returning_to_drain": "Visszatérve a lefolyóba",
+          "draining": "Leeresztés",
+          "auto_water_draining": "Automatikus vízelvezetés",
           "shortcut":"Gyorsindítás",
           "monitoring":"Felügyelet",
           "monitoring_paused":"Felügyelet szüneteltetve"
@@ -313,15 +320,6 @@
           "summon_clean":"Takarításra hívás",
           "shortcut":"Gyorsindítás",
           "person_follow":"Személy követése",
-          "returning_to_auto_empty": "Visszatérés az automatikus kiürítéshez",
-          "waiting_for_task": "Várakozás a feladatra",
-          "station_cleaning": "Állomás takarítás",
-          "returning_to_drain": "Visszatérve a lefolyóba",
-          "draining": "Leeresztés",
-          "auto_water_draining": "Automatikus vízelvezetés",
-          "shortcut_task": "Gyorsbillentyű feladat",
-          "streaming": "Folyó",
-          "streaming_paused": "A streamelés szünetel",
           "water_check":"Vízellenőrzés"
         }
       },

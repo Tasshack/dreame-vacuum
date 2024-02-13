@@ -70,6 +70,7 @@
 | `large_particles_boost`   | TODO | 
 | `ultra_clean_mode`   | TODO | 
 | `streaming_voice_prompt`   | TODO | 
+| `clean_carpets_first`   | TODO | 
 
 
 ## Sensor
@@ -117,6 +118,7 @@
 | `drainage_status`   | TODO | 
 | `low_water_warning`   | TODO | 
 | `task_type`   | TODO | 
+| `firmware_version`   | TODO | 
 | `cruising_history`   | TODO | 
 | `cleaning_progress`   | TODO | 
 | `drying_progress`   | TODO | 
@@ -136,6 +138,7 @@
 | `camera_light_brightness`   | TODO | 
 | `self_clean_area`   | TODO | 
 | `self_clean_time`   | TODO | 
+| `wetness_level`   | TODO | 
 
 ## Time
 
@@ -222,6 +225,7 @@
 | `mop_pad_humidity`   | Humidity level of the mop pad for the room | Available on vacuums with self-wash base and unavailable if customized cleaning is disabled
 | `cleaning times`   | Cleaning times of the room | Unavailable when cleaning job is active or customized cleaning is disabled
 | `order`   | Cleaning order of the room | Unavailable when cleaning job is active or cleaning sequence is disabled
+| `wetness_level`   | TODO | 
 | `cleaning_route`   | TODO |
 | `custom_mopping_route`   | TODO |
 | `floor_material`   | TODO |

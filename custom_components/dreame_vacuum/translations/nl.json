@@ -130,7 +130,9 @@
           "avoidance": "Vermijden",
           "adaptation": "Aanpassen",
           "remove_mop": "Dweil Verwijderen",
-          "adaptation_without_route": "Aanpassing Zonder Route"
+          "adaptation_without_route": "Aanpassing Zonder Route",
+          "vacuum_and_mop": "Stofzuigen en dweilen",
+          "ignore": "Negeren"
         }
       },
       "mop_wash_level": {
@@ -279,6 +281,14 @@
           "human_following": "Mens volgen",
           "spot_cleaning": "Plek schoonmaken",
           "returning_auto_empty": "Terugkeren voor automatisch legen",
+          "waiting_for_task": "Wachten op taak",
+          "station_cleaning": "Station schoonmaken",
+          "returning_to_drain": "Terugkeren om te legen",
+          "draining": "Legen",
+          "auto_water_draining": "Automatisch water legen",
+          "shortcut_task": "Snelkoppelingstaak",
+          "streaming": "Streamen",
+          "streaming_paused": "Streamen gepauzeerd",
           "shortcut": "Snelkoppeling",
           "monitoring": "Monitoren",
           "monitoring_paused": "Monitoren gepauzeerd"
@@ -313,15 +323,6 @@
           "summon_clean": "Oproepen om schoon te maken",
           "shortcut": "Snelkoppeling",
           "person_follow": "Persoon volgen",
-          "returning_to_auto_empty": "Terugkeren naar automatisch legen",
-          "waiting_for_task": "Wachten op taak",
-          "station_cleaning": "Station schoonmaken",
-          "returning_to_drain": "Terugkeren om te legen",
-          "draining": "Legen",
-          "auto_water_draining": "Automatisch water legen",
-          "shortcut_task": "Snelkoppelingstaak",
-          "streaming": "Streamen",
-          "streaming_paused": "Streamen gepauzeerd",
           "water_check": "Watercontrole"
         }
       },
