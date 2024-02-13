@@ -1,4 +1,4 @@
-﻿# Supported Devices
+# Supported Devices
 
 ## Dreame
 | Name	                            | Model  |

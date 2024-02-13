@@ -1,4 +1,4 @@
-﻿# Map Support
+# Map Support
 
 Completely reverse engineered map data handling, decoding and rendering for live and multiple saved map support with all features provided with the official App.
 

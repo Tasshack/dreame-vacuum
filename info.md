@@ -1,4 +1,4 @@
-﻿[![version](https://img.shields.io/github/manifest-json/v/Tasshack/dreame-vacuum/dev?filename=custom_components%2Fdreame_vacuum%2Fmanifest.json&color=slateblue&label=version)](https://github.com/Tasshack/dreame-vacuum/releases)
+[![version](https://img.shields.io/github/manifest-json/v/Tasshack/dreame-vacuum/dev?filename=custom_components%2Fdreame_vacuum%2Fmanifest.json&color=slateblue&label=version)](https://github.com/Tasshack/dreame-vacuum/releases)
 ![GitHub all releases](https://img.shields.io/github/downloads/Tasshack/dreame-vacuum/total)
 ![GitHub issues](https://img.shields.io/github/issues/Tasshack/dreame-vacuum)
 [![HACS](https://img.shields.io/badge/HACS-Default-orange.svg?logo=HomeAssistantCommunityStore&logoColor=white)](https://github.com/hacs/integration)
