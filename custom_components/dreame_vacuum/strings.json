@@ -788,7 +788,7 @@
       }
     },
     "vacuum_set_restricted_zone": {
-      "name": "Set Restriced Zone",
+      "name": "Set Restricted Zone",
       "description": "Define virtual walls, restricted zones, and/or no mop zones.",
       "fields": {
         "walls": {
