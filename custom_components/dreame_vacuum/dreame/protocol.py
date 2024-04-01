@@ -290,19 +290,19 @@ class DreameVacuumDreameHomeCloudProtocol:
                 timeout=10,
             )
             if response.status_code == 200:
-                response = json.loads(response.text)
-                if self._strings[18] in response:
-                    self._key = response.get(self._strings[18])
-                    self._secondary_key = response.get(self._strings[19])
-                    self._key_expire = time.time() + response.get(self._strings[20]) - 120
+                data = json.loads(response.text)
+                if self._strings[18] in data:
+                    self._key = data.get(self._strings[18])
+                    self._secondary_key = data.get(self._strings[19])
+                    self._key_expire = time.time() + data.get(self._strings[20]) - 120
                     self._logged_in = True
-                    self._uuid = response.get("uid")
-                    self._location = response.get(self._strings[21], self._location)
-                    self._ti = response.get(self._strings[22], self._ti)
+                    self._uuid = data.get("uid")
+                    self._location = data.get(self._strings[21], self._location)
+                    self._ti = data.get(self._strings[22], self._ti)
             else:
                 try:
-                    response = json.loads(response.text)
-                    if "error_description" in response and "refresh token" in response["error_description"]:
+                    data = json.loads(response.text)
+                    if "error_description" in data and "refresh token" in data["error_description"]:
                         self._secondary_key = None
                         return self.login()
                 except:

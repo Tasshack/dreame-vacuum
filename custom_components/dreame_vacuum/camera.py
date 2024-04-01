@@ -45,6 +45,7 @@ from .dreame.const import (
     STATE_UNKNOWN,
     STATUS_CODE_TO_NAME,
     ATTR_CALIBRATION,
+    ATTR_SELECTED,
     ATTR_CLEANING_HISTORY_PICTURE,
     ATTR_CRUISING_HISTORY_PICTURE,
     ATTR_OBSTACLE_PICTURE,
@@ -353,6 +354,7 @@ def async_update_map_cameras(
             DreameVacuumCameraEntity(
                 coordinator,
                 DreameVacuumCameraEntityDescription(
+                    key="saved_map",
                     entity_category=EntityCategory.CONFIG,
                     icon="mdi:map-search",
                 ),
@@ -370,6 +372,7 @@ def async_update_map_cameras(
                 DreameVacuumCameraEntity(
                     coordinator,
                     DreameVacuumCameraEntityDescription(
+                        key="wifi_map",
                         entity_category=EntityCategory.CONFIG,
                         icon="mdi:wifi-settings",
                         map_type=DreameVacuumMapType.WIFI_MAP,
@@ -501,13 +504,13 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         """Fetch state from the device."""
         self._last_map_request = 0
         map_data = self._map_data
-        if map_data and self.device.cloud_connected and (self.map_index > 0 or self.device.status.located):
+        if map_data and self.device.cloud_connected and (self.map_index > 0 or self.device.status.located):            
             if map_data.last_updated:
                 self._state = datetime.fromtimestamp(int(map_data.last_updated))
             elif map_data.timestamp_ms:
-                self._state = datetime.fromtimestamp(int(map_data.timestamp_ms))
+                self._state = datetime.fromtimestamp(int(map_data.timestamp_ms / 1000))
             else:
-                self._state = STATE_UNAVAILABLE
+                self._state = datetime.now()
 
             if self.map_index > 0:
                 if self._map_name != map_data.custom_name:
@@ -613,6 +616,10 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         map_data = self._map_data
         if map_data and self.device.cloud_connected and (self.map_index > 0 or self.device.status.located):
             self._device_active = self.device.status.active
+            if map_data.last_updated:
+                self._state = datetime.fromtimestamp(int(map_data.last_updated))
+            elif map_data.timestamp_ms:
+                self._state = datetime.fromtimestamp(int(map_data.timestamp_ms / 1000))
 
             if (
                 self.map_index == 0
@@ -638,6 +645,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                     )
                 )
         elif not self._default_map:
+            self._state = STATE_UNAVAILABLE
             self._image = self._default_map_image
             self._default_map = True
             self._frame_id = -1
@@ -865,9 +873,11 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             if not attributes:
                 attributes = {}
 
+            if self.map_index:
+                attributes[ATTR_SELECTED] = self.device.status.selected_map and self.device.status.selected_map.map_index == self.map_index
+
             token = self.access_tokens[-1]
             if self.map_index == 0:
-
                 def get_key(index, history):
                     return f"{index}: {time.strftime('%m/%d %H:%M', time.localtime(history.date.timestamp()))} - {'Second ' if history.second_cleaning else ''}{STATUS_CODE_TO_NAME.get(history.status, STATE_UNKNOWN).replace('_', ' ').title()} {'(Completed)' if history.completed else '(Interrupted)'}"
 

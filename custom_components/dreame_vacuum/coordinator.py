@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import math
+import time
 import traceback
 from homeassistant.components import persistent_notification
 from homeassistant.config_entries import ConfigEntry
@@ -140,7 +141,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         super().__init__(
             hass,
             LOGGER,
-            name=DOMAIN,
+            name=DOMAIN
         )
 
         async_dispatcher_connect(
@@ -185,7 +186,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
 
     def _task_status_changed(self, previous_value=None) -> None:
         if previous_value is not None:
-            if self._device.cleanup_completed:
+            if self._device.status.cleanup_completed:
                 self._fire_event(EVENT_TASK_STATUS, self._device.status.job)
                 self._create_persistent_notification(NOTIFICATION_CLEANUP_COMPLETED, NOTIFICATION_ID_CLEANUP_COMPLETED)
                 self._check_consumables()
@@ -362,11 +363,12 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             )
 
     def _create_persistent_notification(self, content, notification_id) -> None:
-        if self._notify or notification_id == NOTIFICATION_ID_2FA_LOGIN:
+        if not self.device.disconnected and self.device.device_connected and (self._notify or notification_id == NOTIFICATION_ID_2FA_LOGIN):
             if isinstance(self._notify, list) and notification_id != NOTIFICATION_ID_2FA_LOGIN:
                 if notification_id == NOTIFICATION_ID_CLEANUP_COMPLETED:
                     if NOTIFICATION_ID_CLEANUP_COMPLETED not in self._notify:
                         return
+                    notification_id = f'{notification_id}_{int(time.time())}'
                 elif NOTIFICATION_ID_WARNING in notification_id or NOTIFICATION_ID_LOW_WATER in notification_id:
                     if NOTIFICATION_ID_WARNING not in self._notify:
                         return
@@ -432,9 +434,10 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         try:
             LOGGER.info("Integration starting...")
             await self.hass.async_add_executor_job(self._device.update)
-            self._device.schedule_update()
-            self.async_set_updated_data()
-            return self._device
+            if self._device and not self._device.disconnected:
+                self._device.schedule_update()
+                self.async_set_updated_data()
+                return self._device
         except Exception as ex:
             LOGGER.warning("Integration start failed: %s", traceback.format_exc())
             if self._device is not None:
@@ -467,17 +470,17 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 LOGGER.info("Update Host Config: %s", self._host)
                 self.hass.config_entries.async_update_entry(self._entry, data=data)
 
-        if self._two_factor_url != self._device.two_factor_url:
-            if self._device.two_factor_url:
-                self._create_persistent_notification(
-                    f"{NOTIFICATION_2FA_LOGIN}[{self._device.two_factor_url}]({self._device.two_factor_url})",
-                    NOTIFICATION_ID_2FA_LOGIN,
-                )
+        if self._device.two_factor_url:
+            self._create_persistent_notification(
+                f"{NOTIFICATION_2FA_LOGIN}[Click for 2FA Login]({self._device.two_factor_url})",
+                NOTIFICATION_ID_2FA_LOGIN,
+            )
+            if self._two_factor_url != self._device.two_factor_url:
                 self._fire_event(EVENT_2FA_LOGIN, {"url": self._device.two_factor_url})
-            else:
-                self._remove_persistent_notification(NOTIFICATION_ID_2FA_LOGIN)
+        else:
+            self._remove_persistent_notification(NOTIFICATION_ID_2FA_LOGIN)
 
-            self._two_factor_url = self._device.two_factor_url
+        self._two_factor_url = self._device.two_factor_url
 
         self._available = self._device and self._device.available
         super().async_set_updated_data(self._device)

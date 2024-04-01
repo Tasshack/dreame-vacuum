@@ -1,7 +1,7 @@
 # Supported Devices
 
 ## Dreame
-| Name	                            | Model  |
+| Name                                | Model  |
 |-------------------------------------|--------|
 | C9                                  | dreame.vacuum.r2260  |
 | D10 Plus                            | dreame.vacuum.r2205  |
@@ -19,10 +19,13 @@
 | L10 Prime                           | dreame.vacuum.r2251a |
 | L10 Pro                             | dreame.vacuum.p2029  |
 | L10 Ultra                           | dreame.vacuum.r2257o |
-| L10s Prime                          | dreame.vacuum.r2232d |
-| L10s Prime                          | dreame.vacuum.r2232c |
+| L10s Plus                           | dreame.vacuum.r2363a |
 | L10s Prime                          | dreame.vacuum.r2232b |
+| L10s Prime                          | dreame.vacuum.r2232c |
+| L10s Prime                          | dreame.vacuum.r2232d |
 | L10s Pro                            | dreame.vacuum.r2216o |
+| L10s Pro Gen 2                      | dreame.vacuum.r2364a |
+| L10s Pro Ultra                      | dreame.vacuum.r9309a |
 | L10s Pro Ultra Heat                 | dreame.vacuum.r2338a |
 | L10s Pro Ultra Heat                 | dreame.vacuum.r2377  |
 | L10s Ultra                          | dreame.vacuum.r2228d |
@@ -43,9 +46,11 @@
 | L20 Ultra Complete                  | dreame.vacuum.r2394j |
 | L20 Ultra Complete                  | dreame.vacuum.r2394k |
 | L20 Ultra Complete                  | dreame.vacuum.r2394u |
+| L30 Pro Ultra                       | dreame.vacuum.r9317a |
 | L30 Ultra                           | dreame.vacuum.r2361a |
 | Master One                          | dreame.vacuum.r2310a |
 | Master Pro                          | dreame.vacuum.r2310  |
+| P10s Pro                            | dreame.vacuum.r2462  |
 | S10                                 | dreame.vacuum.r2228  |
 | S10 Plus                            | dreame.vacuum.r2246  |
 | S10 Pro                             | dreame.vacuum.r2233  |
@@ -54,6 +59,7 @@
 | S10 Pro Max (Hot Water)             | dreame.vacuum.r2360w |
 | S10 Pro Plus                        | dreame.vacuum.r2247  |
 | S10 Pro Plus (Mop Pad Swing)        | dreame.vacuum.r9305  |
+| S10 Pro Ultra (Double Roller Brush) | dreame.vacuum.r9312  |
 | S10 Pro Ultra (Mop Pad Swing)       | dreame.vacuum.r9304  |
 | S10 Pro Ultra (Ultra-Thin embedded) | dreame.vacuum.r2310b |
 | S20                                 | dreame.vacuum.r2316  |
@@ -65,6 +71,9 @@
 | S20 Pro (Ultra-Thin embedded)       | dreame.vacuum.r2310f |
 | S20 Pro Plus                        | dreame.vacuum.r2332  |
 | S20 Pro Plus (Hot Water)            | dreame.vacuum.r2360  |
+| S30 Pro                             | dreame.vacuum.r2412  |
+| S30 Pro Ultra                       | dreame.vacuum.r2424  |
+| S30 Pro Ultra (Ultra-Thin embedded) | dreame.vacuum.r2310d |
 | ~~TROUVER M1~~                      | ~~dreame.vacuum.r2380r~~ |
 | W10                                 | dreame.vacuum.p2027  |
 | W10 Pro                             | dreame.vacuum.r2104  |
@@ -80,13 +89,24 @@
 | X20 Pro Plus                        | dreame.vacuum.r2253  |
 | X20 Pro Plus                        | dreame.vacuum.r2273a |
 | X30                                 | dreame.vacuum.r2375  |
+| X30 Master                          | dreame.vacuum.r2450m |
 | X30 Pro                             | dreame.vacuum.r9301  |
 | X30 Pro (Ultra-Thin embedded)       | dreame.vacuum.r2310g |
+| X30 Ultra                           | dreame.vacuum.r9316k |
+| X30 Ultra                           | dreame.vacuum.r9316h |
+| X40                                 | dreame.vacuum.r2426  |
+| X40 Pro                             | dreame.vacuum.r2416  |
+| X40 Pro (Ultra-Thin embedded)       | dreame.vacuum.r2310e |
+| X40 Ultra                           | dreame.vacuum.r2416h |
+| X40 Ultra                           | dreame.vacuum.r2416c |
+| X40 Ultra                           | dreame.vacuum.r2416n |
+| X40 Ultra                           | dreame.vacuum.r2416a |
+| X40 Ultra Complete                  | dreame.vacuum.r2449k |
+| X40 Ultra Complete                  | dreame.vacuum.r2449a |
 | Z10 Pro                             | dreame.vacuum.p2028  |
 
 ## Mijia
 | Name                               | Model  |
-|                                    |        |
 |------------------------------------|--------|
 | 1S                                 | dreame.vacuum.r2254  |
 | 1T                                 | dreame.vacuum.p2041  |
@@ -114,7 +134,10 @@
 | Name                    | Model  |
 |-------------------------|--------|
 | 10 Robot Vacuum and Mop | dreame.vacuum.r2388  |
+| G20                     | dreame.vacuum.r2350  |
 | G20 Master              | dreame.vacuum.r2212  |
+| G30                     | dreame.vacuum.r2435  |
+| G30 Pro                 | dreame.vacuum.r2455  |
 | L600                    | dreame.vacuum.p2157  |
 | M1                      | dreame.vacuum.r2380  |
 | Z500                    | dreame.vacuum.p2156o |
@@ -123,7 +146,6 @@
 
 # Unsupported Devices
 
-## Mijia
 | Name	                                  | Model  |
 |-------------------------------------------|--------|
 | 1C                                        | dreame.vacuum.ma1808 |

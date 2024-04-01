@@ -169,15 +169,16 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
     @property
     def device_info(self) -> DeviceInfo:
         """Return device information about this Dreame Vacuum device."""
-        return DeviceInfo(
-            connections={(CONNECTION_NETWORK_MAC, self.device.mac)},
-            identifiers={(DOMAIN, self.device.mac)},
-            name=self.device.name,
-            manufacturer=self.device.info.manufacturer,
-            model=self.device.info.model,
-            sw_version=self.device.info.firmware_version,
-            hw_version=self.device.info.hardware_version,
-        )
+        if self.device.info:
+            return DeviceInfo(
+                connections={(CONNECTION_NETWORK_MAC, self.device.mac)},
+                identifiers={(DOMAIN, self.device.mac)},
+                name=self.device.name,
+                manufacturer=self.device.info.manufacturer,
+                model=self.device.info.model,
+                sw_version=self.device.info.firmware_version,
+                hw_version=self.device.info.hardware_version,
+            )
 
     @property
     def available(self) -> bool:

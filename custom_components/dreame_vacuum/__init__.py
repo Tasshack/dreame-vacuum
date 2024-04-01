@@ -20,15 +20,16 @@ PLATFORMS = (
     Platform.TIME,
 )
 
-
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Dreame Vacuum from a config entry."""
+    #coordinator = hass.data[DOMAIN][entry.entry_id] if DOMAIN in hass.data else None
+    #if coordinator and coordinator.device:
+    #    _unload(coordinator)
+    
     coordinator = DreameVacuumDataUpdateCoordinator(hass, entry=entry)
     await coordinator.async_config_entry_first_refresh()
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
-
-    entry.async_on_unload(entry.add_update_listener(update_listener))
 
     # Register frontend
     #frontend_js = f"/{DOMAIN}/frontend.js"
@@ -44,6 +45,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     # Set up all platforms for this device/entry.
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    
+    entry.async_on_unload(entry.add_update_listener(update_listener))
     return True
 
 
@@ -53,9 +56,8 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         coordinator: DreameVacuumDataUpdateCoordinator = hass.data[DOMAIN][
             entry.entry_id
         ]
-        coordinator.device.listen(None)
-        coordinator.device.disconnect()
-        coordinator.async_set_updated_data()
+        coordinator._device.listen(None)
+        coordinator._device.disconnect()
         del coordinator._device
         coordinator._device = None
         del hass.data[DOMAIN][entry.entry_id]

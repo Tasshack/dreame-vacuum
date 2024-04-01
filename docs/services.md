@@ -215,12 +215,21 @@ Start selected spot cleaning with optional customized cleaning parameters.
         - 3
     target:
       entity_id: vacuum.vacuum
-    ```tity_id: vacuum.vacuum
     ```
 
-### `dreame_vacuum.vacuum_go_to`
+### `dreame_vacuum.vacuum_goto`
 
 TODO
+
+- Go to at [819, -2235] and stop
+    ```yaml
+    service: dreame_vacuum.vacuum_goto
+    data:
+      x: 819
+      y: -2235
+    target:
+      entity_id: vacuum.vacuum
+    ```
 
 ### `dreame_vacuum.vacuum_follow_path`
 

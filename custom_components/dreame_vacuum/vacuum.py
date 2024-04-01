@@ -668,6 +668,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         self._attr_supported_features = SUPPORT_DREAME
         if (
             not (
+                self.device.status and 
                 self.device.status.started
                 and (
                     self.device.status.customized_cleaning
@@ -1004,7 +1005,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             size,
         )
 
-    async def async_send_command(self, command: str, params, **kwargs) -> None:
+    async def async_send_command(self, command: str, params = None, **kwargs) -> None:
         """Send a command to a vacuum cleaner."""
         await self._try_command("Unable to call send_command: %s", self.device.send_command, command, params)
 

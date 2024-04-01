@@ -107,7 +107,6 @@ ATTR_Y0: Final = "y0"
 ATTR_Y1: Final = "y1"
 ATTR_Y2: Final = "y2"
 ATTR_Y3: Final = "y3"
-ATTR_CALIBRATION: Final = "calibration_points"
 ATTR_CHARGER: Final = "charger_position"
 ATTR_IS_EMPTY: Final = "is_empty"
 ATTR_NO_GO_AREAS: Final = "no_go_areas"
@@ -2102,18 +2101,18 @@ class Obstacle(Point):
 
     def set_segment(self, map_data):
         if map_data and map_data.segments and map_data.pixel_type is not None:
-            obstacle_pixel = map_data.pixel_type[
-                int((self.x - map_data.dimensions.left) / map_data.dimensions.grid_size),
-                int((self.y - map_data.dimensions.top) / map_data.dimensions.grid_size),
-            ]
+            x = int((self.x - map_data.dimensions.left) / map_data.dimensions.grid_size)
+            y = int((self.y - map_data.dimensions.top) / map_data.dimensions.grid_size)
+            if x >= 0 and x < map_data.dimensions.width and y >= 0 and y < map_data.dimensions.height:
+                obstacle_pixel = map_data.pixel_type[x,y]
 
-            if obstacle_pixel not in map_data.segments:
-                for k, v in map_data.segments.items():
-                    if v.check_point(self.x, self.y, map_data.dimensions.grid_size * 4):
-                        self.segment = v.name
-                        break
-            else:
-                self.segment = map_data.segments[obstacle_pixel].name
+                if obstacle_pixel not in map_data.segments:
+                    for k, v in map_data.segments.items():
+                        if v.check_point(self.x, self.y, map_data.dimensions.grid_size * 4):
+                            self.segment = v.name
+                            break
+                else:
+                    self.segment = map_data.segments[obstacle_pixel].name
 
     def as_dict(self) -> Dict[str, Any]:
         attributes = super().as_dict()
@@ -3558,6 +3557,11 @@ class MapRendererData:
     ai_outborders: list[list[int]] | None = None
     ai_outborders_new: list[list[int]] | None = None
     ai_outborders_2d: list[list[int]] | None = None
+    second_cleaning: int | None = None
+    mop_wash_count: int | None = None
+    dust_collection_count: int | None = None
+    multiple_cleaning_time: int | None = None
+    dos: int | None = None
     ai_furniture_warning: int | None = None
     walls_info: Any | None = None
     walls_info_new: Any | None = None

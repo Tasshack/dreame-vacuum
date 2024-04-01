@@ -243,6 +243,7 @@ def async_update_buttons(
                 DreameVacuumShortcutButtonEntity(
                     coordinator,
                     DreameVacuumButtonEntityDescription(
+                        key="shortcut",
                         icon="mdi:play-speed",
                         available_fn=lambda device: not device.status.started
                         and not device.status.shortcut_task
@@ -266,8 +267,9 @@ def async_update_buttons(
                 DreameVacuumMapButtonEntity(
                     coordinator,
                     DreameVacuumButtonEntityDescription(
-                        entity_category=EntityCategory.DIAGNOSTIC,
+                        key="backup",
                         icon="mdi:content-save",
+                        entity_category=EntityCategory.DIAGNOSTIC,
                         available_fn=lambda device: not device.status.started and not device.status.map_backup_status,
                     ),
                     map_index,
@@ -345,7 +347,6 @@ class DreameVacuumShortcutButtonEntity(DreameVacuumEntity, ButtonEntity):
                     break
 
         super().__init__(coordinator, description)
-        self._attr_translation_key = None
         self.id = shortcut_id
         if self.id >= 32:
             self.id = self.id - 31
@@ -410,7 +411,6 @@ class DreameVacuumMapButtonEntity(DreameVacuumEntity, ButtonEntity):
         map_data = coordinator.device.get_map(self.map_index)
         self._map_name = map_data.custom_name if map_data else None
         super().__init__(coordinator, description)
-        self._attr_translation_key = None
         self._set_id()
         self._attr_unique_id = f"{self.device.mac}_backup_map_{self.map_index}"
         self.entity_id = f"button.{self.device.name.lower()}_backup_map_{self.map_index}"
