@@ -2935,7 +2935,7 @@ class DreameVacuumDevice:
             or len(voice_assistant_language) < 2
             or voice_assistant_language.upper() not in DreameVacuumVoiceAssistantLanguage.__members__
         ):
-            raise InvalidActionException(f"Voice assistant language ({voice_assistant_language}) is not suported")
+            raise InvalidActionException(f"Voice assistant language ({voice_assistant_language}) is not supported")
         return self.set_property(
             DreameVacuumProperty.VOICE_ASSISTANT_LANGUAGE,
             DreameVacuumVoiceAssistantLanguage[voice_assistant_language.upper()],
@@ -3935,7 +3935,7 @@ class DreameVacuumDevice:
                 result = self.set_auto_switch_settings({"k": prop.value, "v": int(value)})
                 if result is None or result[0]["code"] != 0:
                     _LOGGER.error(
-                        "Auto Swtich Property not updated: %s: %s -> %s",
+                        "Auto Switch Property not updated: %s: %s -> %s",
                         prop.name,
                         current_value,
                         value,
