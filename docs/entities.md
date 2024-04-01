@@ -6,7 +6,7 @@
 - Some entities may not be available on devices with older firmware versions like *customized_cleaning* and *cleaning_mode* that are also not available on valetudo. 
 - Most of the entities including the vacuum entity has dynamic icons for their state and can be overridden from entity settings.
 - Most of the sensor and all select entities returns their current raw integer value on `raw_value`, `map_id` or `segment_id` attributes for ease of use on automations and services.
-- All entities has dynamic refresh rate determined by its change range and device state. Integration only inform Home Assistant when a device property has changed trough listeners. This is more like a *local_push* type of approach instead of *local_pull* but please note that it may take time entity to reflect the changes when you edit related setting from the official App.
+- All entities has dynamic refresh rate determined by its change range and device state. Integration only inform Home Assistant when a device property has changed through listeners. This is more like a *local_push* type of approach instead of *local_pull* but please note that it may take time entity to reflect the changes when you edit related setting from the official App.
 - Some entities has custom availability rules for another specific entity or state. E.g. *tight_mopping* entity will become *unavailable* when water tank or mop pad is not attached. (All off the rules extracted from the official App)
 - Exposed cloud connected entities for all available settings that are stored not on the device but on specific map data itself. E.g. *map_rotation*
 - Generated entities have the following naming schema:
