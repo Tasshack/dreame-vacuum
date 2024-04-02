@@ -499,7 +499,7 @@ Map will be rendered at 1:1 ratio when this option is enabled from configuration
 
 ### Low Resolution Map
 
-Low resolution configuration option must be enabled when Home Assistant instace running on a system or container with less than 3GB memory otherwise Home Assistance instance may not start since integration uses a lot of memory for rendering zoomable high resolution images like official APP.
+Low resolution configuration option must be enabled when Home Assistant instance running on a system or container with less than 3GB memory otherwise Home Assistance instance may not start since integration uses a lot of memory for rendering zoomable high resolution images like official APP.
 
 
 ### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/README.md#how-to-use" target="_blank">How to view the map on the dashboard</a>

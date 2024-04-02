@@ -49,7 +49,7 @@ wget -O - https://raw.githubusercontent.com/Tasshack/dreame-vacuum/dev/install |
 <a href="https://my.home-assistant.io/redirect/config_flow_start/?domain=dreame_vacuum" target="_blank"><img src="https://my.home-assistant.io/badges/config_flow_start.svg" alt="Open your Home Assistant instance and start setting up a new integration." /></a>
 - Select configuration type:
 
-     - **Mi Home Acccount**: TODO
+     - **Mi Home Account**: TODO
      - **Dreamehome Account**: TODO
      - **Local**: TODO
 

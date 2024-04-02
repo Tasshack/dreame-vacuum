@@ -448,7 +448,7 @@ Rename a map.
 ### `dreame_vacuum.vacuum_restore_map`
 
 Restore a map from previous state that are created and uploaded by the device.
-> - It is not guaranteed that map recovery will be successfull. Cloud does not store the files forever and recovery files usually be deleted from the cloud after 365 days from the last access.
+> - It is not guaranteed that map recovery will be successful. Cloud does not store the files forever and recovery files usually be deleted from the cloud after 365 days from the last access.
 >  - Cloud connection is required with this service.
 
 **Examples:**
