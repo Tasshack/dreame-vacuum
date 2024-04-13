@@ -344,9 +344,11 @@ class DreameMapVacuumMapManager:
 
             if object_name:
                 self._add_map_data_file(object_name, self._last_robot_time)
+                return True
             if raw_map_data:
                 self._add_raw_map_data(raw_map_data, self._last_robot_time)
-            return True
+                return True
+            return False
 
         self._request_map_from_cloud()
         return False
@@ -559,13 +561,16 @@ class DreameMapVacuumMapManager:
                 _LOGGER.info("Get object name from cloud")
                 if self._protocol.cloud.dreame_cloud:
                     object_name_result = self._protocol.cloud.get_properties(DIID(DreameVacuumProperty.OBJECT_NAME))
+                    if object_name_result:
+                        object_name_result = object_name_result[0][MAP_PARAMETER_VALUE]
+                        object_name = object_name_result[0]
                 else:
                     object_name_result = self._protocol.cloud.get_device_property(
                         DIID(DreameVacuumProperty.OBJECT_NAME)
                     )
-                if object_name_result:
-                    object_name_result = json.loads(object_name_result[0][MAP_PARAMETER_VALUE])
-                    object_name = object_name_result[0]
+                    if object_name_result:
+                        object_name_result = json.loads(object_name_result[0][MAP_PARAMETER_VALUE])
+                        object_name = object_name_result[0]
 
             if object_name is None or object_name == "":
                 object_name = self._protocol.cloud.object_name
@@ -1215,8 +1220,17 @@ class DreameMapVacuumMapManager:
                 if self._map_request_count >= 16:
                     self._map_request_time = None
                     self._need_map_request = False
-                else:
-                    self._request_current_map(self._map_request_time)
+                elif (
+                    not self._request_current_map(self._map_request_time)
+                    and self._protocol.dreame_cloud
+                    and self._map_request_count == 2
+                    and self._map_data is None
+                ):
+                    object_name_result = self._protocol.cloud.get_properties(DIID(DreameVacuumProperty.OBJECT_NAME))
+                    if object_name_result and MAP_PARAMETER_VALUE in object_name_result[0]:
+                        self._add_cloud_map_data(
+                            None, object_name_result[0][MAP_PARAMETER_VALUE], object_name_result[0].get("updateDate")
+                        )
             elif not self._protocol.dreame_cloud:
                 if self._map_data is None or (
                     self._device_running
@@ -1289,10 +1303,14 @@ class DreameMapVacuumMapManager:
             self.schedule_update()
 
     def set_device_running(self, running: bool, docked: bool) -> None:
-        if self._device_running != running or self._device_docked != docked:
+        if self._device_running != running:
             self._device_running = running
-            if self._device_docked != docked:
-                if self._vslam_map and docked and self._map_data and self._map_data.saved_map_status == 1:
+
+        if self._device_docked != docked:
+            if docked:
+                if not self._vslam_map:
+                    self._request_map()
+                elif self._map_data and self._map_data.saved_map_status == 1:
                     saved_map_data = self._map_manager.selected_map
                     self._map_data.segments = copy.deepcopy(saved_map_data.segments)
                     self._map_data.data = copy.deepcopy(saved_map_data.data)
@@ -1309,10 +1327,11 @@ class DreameMapVacuumMapManager:
                     self._map_data.need_optimization = False
                     self._map_data.saved_map_status = 2
                     self._map_data.last_updated = time.time()
+                    self._map_data.optimized_pixel_type = None
+                    self._map_data.optimized_charger_position = None
                     self._map_data_changed()
 
-                self._device_docked = docked
-
+            self._device_docked = docked
             self.schedule_update(2)
 
     def set_device_docked(self, device_docked: bool) -> None:
@@ -2149,9 +2168,9 @@ class DreameMapVacuumMapEditor:
         if map_data and map_data.segments and segment_id in map_data.segments:
             map_data.cleanset[str(segment_id)][1] = wetness_level
             map_data.segments[segment_id].wetness_level = wetness_level
-            if wetness_level > 20:
+            if wetness_level > 26:
                 map_data.segments[segment_id].water_volume = 3
-            elif wetness_level < 11:
+            elif wetness_level < 6:
                 map_data.segments[segment_id].water_volume = 1
             else:
                 map_data.segments[segment_id].water_volume = 2
@@ -2631,30 +2650,6 @@ class DreameVacuumMapDecoder:
         return None
 
     @staticmethod
-    def _combine_dimensions(
-        current_dimensions: MapImageDimensions, new_dimensions: MapImageDimensions
-    ) -> MapImageDimensions:
-        grid_size = new_dimensions.grid_size
-        left = min(new_dimensions.left, current_dimensions.left)
-        top = min(new_dimensions.top, current_dimensions.top)
-        max_left = max(
-            new_dimensions.left + (new_dimensions.width * grid_size),
-            current_dimensions.left + (current_dimensions.width * current_dimensions.grid_size),
-        )
-        max_top = max(
-            new_dimensions.top + (new_dimensions.height * grid_size),
-            current_dimensions.top + (current_dimensions.height * current_dimensions.grid_size),
-        )
-
-        return MapImageDimensions(
-            top,
-            left,
-            int((max_top - top) / grid_size),
-            int((max_left - left) / grid_size),
-            grid_size,
-        )
-
-    @staticmethod
     def decode_map_partial(raw_map, iv=None, key=None) -> MapDataPartial | None:
         _LOGGER.debug("raw_map: %s", raw_map)
         raw_map = raw_map.replace("_", "/").replace("-", "+")
@@ -3090,7 +3085,10 @@ class DreameVacuumMapDecoder:
                     if (
                         restored_map
                         or map_data.recovery_map
-                        or (map_data.saved_map_status == 2 and (map_data.empty_map or (not map_data.frame_map and not vslam_map)))
+                        or (
+                            map_data.saved_map_status == 2
+                            and (map_data.empty_map or (not map_data.frame_map and not vslam_map))
+                        )
                     ):
                         map_data.segments = copy.deepcopy(saved_map_data.segments)
                         if saved_map_data.floor_material is not None:
@@ -3160,8 +3158,8 @@ class DreameVacuumMapDecoder:
                                         elif clean_value == 253:
                                             pixel_type[i, j] = segment_id if segment_id else 254
 
-                            map_data.pixel_type = pixel_type
-                            map_data.dimensions = MapImageDimensions(
+                            map_data.combined_pixel_type = pixel_type
+                            map_data.combined_dimensions = MapImageDimensions(
                                 top, left, height, width, map_data.dimensions.grid_size
                             )
 
@@ -3169,9 +3167,9 @@ class DreameVacuumMapDecoder:
                                 map_data.carpet_pixels = DreameVacuumMapDecoder.get_carpets(map_data, saved_map_data)
                         else:
                             # map_data.data = saved_map_data.data
-                            map_data.pixel_type = saved_map_data.pixel_type
-                            map_data.carpet_pixels = saved_map_data.carpet_pixels
-                            map_data.dimensions = saved_map_data.dimensions
+                            map_data.combined_pixel_type = saved_map_data.pixel_type
+                            map_data.combined_carpet_pixels = saved_map_data.carpet_pixels
+                            map_data.combined_dimensions = saved_map_data.dimensions
 
                         if map_data.empty_map:
                             map_data.restored_map = False
@@ -3640,38 +3638,50 @@ class DreameVacuumMapDecoder:
         if map_data.data:
             current_dimensions = current_map_data.dimensions
             new_dimensions = map_data.dimensions
-            combined_dimensions = DreameVacuumMapDecoder._combine_dimensions(current_dimensions, new_dimensions)
 
-            # Create new buffer
-            data = np.zeros((combined_dimensions.width * combined_dimensions.height), np.uint8)
-            pixel_type = np.full(
-                (combined_dimensions.width, combined_dimensions.height),
-                MapPixelType.OUTSIDE.value,
-                dtype=np.uint8,
+            # Find max image size
+            grid_size = new_dimensions.grid_size
+            left = min(new_dimensions.left, current_dimensions.left)
+            top = min(new_dimensions.top, current_dimensions.top)
+            max_left = max(
+                new_dimensions.left + (new_dimensions.width * grid_size),
+                current_dimensions.left + (current_dimensions.width * current_dimensions.grid_size),
+            )
+            max_top = max(
+                new_dimensions.top + (new_dimensions.height * grid_size),
+                current_dimensions.top + (current_dimensions.height * current_dimensions.grid_size),
             )
 
+            # Calculate new image size
+            width = int((max_left - left) / grid_size)
+            height = int((max_top - top) / grid_size)
+
+            # Create new buffer
+            data = np.zeros((width * height), np.uint8)
+            pixel_type = np.full((width, height), MapPixelType.OUTSIDE.value, dtype=np.uint8)
+
             # Calculate old image offset
-            left_offset = int((current_dimensions.left - combined_dimensions.left) / current_dimensions.grid_size)
-            top_offset = int((current_dimensions.top - combined_dimensions.top) / current_dimensions.grid_size)
+            left_offset = int((current_dimensions.left - left) / current_dimensions.grid_size)
+            top_offset = int((current_dimensions.top - top) / current_dimensions.grid_size)
 
             # Copy old image to buffer
             for y in range(current_dimensions.height):
                 for x in range(current_dimensions.width):
-                    data[(combined_dimensions.width * (top_offset + y)) + left_offset + x] = current_map_data.data[
+                    data[(width * (top_offset + y)) + left_offset + x] = current_map_data.data[
                         (current_dimensions.width * y) + x
                     ]
                     pixel_type[left_offset + x, top_offset + y] = current_map_data.pixel_type[x, y]
 
             # Calculate new image offset
-            left_offset = int((new_dimensions.left - combined_dimensions.left) / combined_dimensions.grid_size)
-            top_offset = int((new_dimensions.top - combined_dimensions.top) / combined_dimensions.grid_size)
+            left_offset = int((new_dimensions.left - left) / grid_size)
+            top_offset = int((new_dimensions.top - top) / grid_size)
 
             # Copy new image to buffer at calculated offset
             for y in range(new_dimensions.height):
                 for x in range(new_dimensions.width):
                     current_index = (new_dimensions.width * y) + x
                     if map_data.data[current_index]:
-                        new_index = (combined_dimensions.width * (top_offset + y)) + left_offset + x
+                        new_index = (width * (top_offset + y)) + left_offset + x
                         # Add current buffer value to new buffer value for finding the new pixel value
                         data[new_index] = data[new_index] + map_data.data[current_index]
                         # Calculate the new pixel type from updated buffer value
@@ -3684,7 +3694,7 @@ class DreameVacuumMapDecoder:
             # Update size and buffer
             current_map_data.data = bytes(data)
             current_map_data.pixel_type = pixel_type
-            current_map_data.dimensions = combined_dimensions
+            current_map_data.dimensions = MapImageDimensions(top, left, height, width, grid_size)
 
             if vslam_map:
                 current_map_data.need_optimization = True
@@ -3945,9 +3955,9 @@ class DreameVacuumMapDecoder:
                                         map_data.segments[k].custom_mopping_route = 0
                                         if values[2] == 0 and values[1] == 0:
                                             map_data.segments[k].wetness_level = item[1] if item[1] else 16
-                                            if map_data.segments[k].wetness_level > 20:
+                                            if map_data.segments[k].wetness_level > 26:
                                                 map_data.segments[k].water_volume = 3
-                                            elif map_data.segments[k].wetness_level < 11:
+                                            elif map_data.segments[k].wetness_level < 6:
                                                 map_data.segments[k].water_volume = 1
                                             else:
                                                 map_data.segments[k].water_volume = 2
@@ -6505,7 +6515,7 @@ class DreameVacuumMapRenderer:
                 or self.config.water_volume
                 or self.config.cleaning_times
                 or self.config.cleaning_mode
-                or self.config.mopping_settings
+                or self.config.mopping_mode
             )
         ):
             layers.append(layer)
@@ -8720,7 +8730,6 @@ class DreameVacuumMapRenderer:
             self._light_font_file = zlib.decompress(base64.b64decode(MAP_FONT_LIGHT), zlib.MAX_WBITS | 32)
 
         resources = MapRendererResources(
-            renderer=MAP_RENDERER_JS,
             icon_set=self.icon_set,
             robot_type=self._robot_type.value,
             robot=robot_image,
@@ -8732,7 +8741,14 @@ class DreameVacuumMapRenderer:
             cleaning_direction=MAP_ROBOT_CLEANING_DIRECTION_IMAGE,
             selected_segment=MAP_ICON_SELECTED_SEGMENT,
             cruise_point_background=MAP_ICON_CRUISE_POINT_DREAME,
-            segment={k: {"name": SEGMENT_TYPE_CODE_TO_NAME.get(k), "icon": v, "mdi": SEGMENT_TYPE_CODE_TO_HA_ICON.get(k, 'mdi:home-outline')} for k, v in icon_set.items()},
+            segment={
+                k: {
+                    "name": SEGMENT_TYPE_CODE_TO_NAME.get(k),
+                    "icon": v,
+                    "mdi": SEGMENT_TYPE_CODE_TO_HA_ICON.get(k, "mdi:home-outline"),
+                }
+                for k, v in icon_set.items()
+            },
             default_map_image=DEFAULT_MAP_IMAGE,
             font=base64.b64encode(self._light_font_file).decode("utf-8"),
             rotate=MAP_ICON_ROTATE,

@@ -1,4 +1,5 @@
 """Support for Dreame Vacuum buttons."""
+
 from __future__ import annotations
 
 from typing import Any
@@ -120,11 +121,11 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
     ),
     DreameVacuumButtonEntityDescription(
         action_key=DreameVacuumAction.START_AUTO_EMPTY,
-        icon_fn=lambda value, device: "mdi:delete-off"
-        if not device.status.dust_collection_available
-        else "mdi:delete-restore"
-        if device.status.auto_emptying
-        else "mdi:delete-empty",
+        icon_fn=lambda value, device: (
+            "mdi:delete-off"
+            if not device.status.dust_collection_available
+            else "mdi:delete-restore" if device.status.auto_emptying else "mdi:delete-empty"
+        ),
         exists_fn=lambda description, device: bool(
             DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.auto_empty_base
         ),
@@ -153,18 +154,22 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
     DreameVacuumButtonEntityDescription(
         name_fn=lambda value, device: "Self-Clean Pause" if device.status.washing else "Self-Clean",
         key="self_clean",
-        icon_fn=lambda value, device: "mdi:washing-machine-off"
-        if device.status.washing or not device.status.washing_available
-        else "mdi:washing-machine",
+        icon_fn=lambda value, device: (
+            "mdi:washing-machine-off"
+            if device.status.washing or not device.status.washing_available
+            else "mdi:washing-machine"
+        ),
         action_fn=lambda device: device.toggle_washing(),
         exists_fn=lambda description, device: device.capability.self_wash_base,
     ),
     DreameVacuumButtonEntityDescription(
         name_fn=lambda value, device: "Stop Drying" if device.status.drying else "Start Drying",
         key="manual_drying",
-        icon_fn=lambda value, device: "mdi:weather-sunny-off"
-        if device.status.drying or not device.status.drying_available
-        else "mdi:weather-sunny",
+        icon_fn=lambda value, device: (
+            "mdi:weather-sunny-off"
+            if device.status.drying or not device.status.drying_available
+            else "mdi:weather-sunny"
+        ),
         action_fn=lambda device: device.toggle_drying(),
         exists_fn=lambda description, device: device.capability.self_wash_base,
     ),

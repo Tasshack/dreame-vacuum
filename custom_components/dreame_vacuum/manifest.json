@@ -19,5 +19,5 @@
     "tzlocal",
     "paho-mqtt"
   ],
-  "version": "v2.0.0b13"
+  "version": "v2.0.0b14"
 }

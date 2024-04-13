@@ -1,4 +1,5 @@
 """Support for Dreame Vacuum numbers."""
+
 from __future__ import annotations
 import copy
 
@@ -29,9 +30,9 @@ from .dreame import DreameVacuumAction, DreameVacuumProperty
 
 def WETNESS_LEVEL_TO_ICON(wetness):
     if wetness:
-        if wetness > 20:
+        if wetness > 26:
             return "mdi:water-plus"
-        if wetness < 11:
+        if wetness < 6:
             return "mdi:water-minus"
         return "mdi:water"
     return "mdi:water-off"
@@ -76,9 +77,11 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
     ),
     DreameVacuumNumberEntityDescription(
         key="self_clean_area",
-        icon_fn=lambda value, device: "mdi:texture-box"
-        if device.status.self_clean_value or (device.status.current_map and not device.status.has_saved_map)
-        else "mdi:checkbox-blank-off-outline",
+        icon_fn=lambda value, device: (
+            "mdi:texture-box"
+            if device.status.self_clean_value or (device.status.current_map and not device.status.has_saved_map)
+            else "mdi:checkbox-blank-off-outline"
+        ),
         mode=NumberMode.SLIDER,
         native_unit_of_measurement=UNIT_AREA,
         exists_fn=lambda description, device: device.capability.self_wash_base,
@@ -87,14 +90,18 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_step=1,
         entity_category=None,
         value_fn=lambda value, device: (
-            device.status.self_clean_area_min
-            if device.status.self_clean_value < device.status.self_clean_area_min
-            else device.status.self_clean_area_max
-            if device.status.self_clean_value > device.status.self_clean_area_max
-            else device.status.self_clean_value
-        )
-        if device.status.self_clean_value and device.status.self_clean_value > 0
-        else device.status.self_clean_area_default,
+            (
+                device.status.self_clean_area_min
+                if device.status.self_clean_value < device.status.self_clean_area_min
+                else (
+                    device.status.self_clean_area_max
+                    if device.status.self_clean_value > device.status.self_clean_area_max
+                    else device.status.self_clean_value
+                )
+            )
+            if device.status.self_clean_value and device.status.self_clean_value > 0
+            else device.status.self_clean_area_default
+        ),
     ),
     DreameVacuumNumberEntityDescription(
         key="self_clean_time",
@@ -107,14 +114,18 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_step=1,
         entity_category=None,
         value_fn=lambda value, device: (
-            device.status.self_clean_time_min
-            if device.status.self_clean_value < device.status.self_clean_time_min
-            else device.status.self_clean_time_max
-            if device.status.self_clean_value > device.status.self_clean_time_max
-            else device.status.self_clean_value
-        )
-        if device.status.self_clean_value and device.status.self_clean_value > 0
-        else device.status.self_clean_time_default,
+            (
+                device.status.self_clean_time_min
+                if device.status.self_clean_value < device.status.self_clean_time_min
+                else (
+                    device.status.self_clean_time_max
+                    if device.status.self_clean_value > device.status.self_clean_time_max
+                    else device.status.self_clean_value
+                )
+            )
+            if device.status.self_clean_value and device.status.self_clean_value > 0
+            else device.status.self_clean_time_default
+        ),
     ),
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.CAMERA_LIGHT_BRIGHTNESS,
@@ -130,12 +141,14 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
     ),
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.WETNESS_LEVEL,
-        icon_fn=lambda value, device: "mdi:water-off"
-        if (
-            not (device.status.water_tank_or_mop_installed)
-            or device.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING
-        )
-        else WETNESS_LEVEL_TO_ICON(device.status.wetness_level),
+        icon_fn=lambda value, device: (
+            "mdi:water-off"
+            if (
+                not (device.status.water_tank_or_mop_installed)
+                or device.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING
+            )
+            else WETNESS_LEVEL_TO_ICON(device.status.wetness_level)
+        ),
         mode=NumberMode.SLIDER,
         native_min_value=1,
         native_max_value=32,

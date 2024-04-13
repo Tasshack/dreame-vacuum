@@ -1,9 +1,10 @@
 """Integration platform for recorder."""
+
 from __future__ import annotations
 
 from homeassistant.core import HomeAssistant, callback
 
-from .dreame import DreameVacuumProperty
+from .dreame import DreameVacuumProperty, DreameVacuumAutoSwitchProperty
 from .dreame.const import (
     ATTR_ROOMS,
     ATTR_CURRENT_SEGMENT,
@@ -18,7 +19,7 @@ from .dreame.const import (
     ATTR_MOP_PAD_HUMIDITY,
     ATTR_SELF_CLEAN_AREA,
     ATTR_SELF_CLEAN_TIME,
-    ATTR_MOP_PAD,  
+    ATTR_MOP_PAD,
     ATTR_CALIBRATION,
     ATTR_SELECTED,
     ATTR_CLEANING_HISTORY_PICTURE,
@@ -37,6 +38,9 @@ from .dreame.const import (
     ATTR_ZONE_CLEANING,
     ATTR_SPOT_CLEANING,
     ATTR_CRUSING,
+    ATTR_HAS_SAVED_MAP,
+    ATTR_CLEANGENIUS,
+    ATTR_CAPABILITIES,
 )
 
 from .dreame.types import (
@@ -90,16 +94,28 @@ VACUUM_UNRECORDED_ATTRIBUTES = {
     ATTR_ZONE_CLEANING,
     ATTR_SPOT_CLEANING,
     ATTR_CRUSING,
+    ATTR_HAS_SAVED_MAP,
+    ATTR_CLEANGENIUS,
+    ATTR_CAPABILITIES,
     "fan_speed_list",
     "fan_speed",
     "battery_level",
     "battery_icon",
+    "mop_wash_level_list",
     "mop_pad_humidity_list",
     "cleaning_mode_list",
+    "suction_level_list",
     "water_volume_list",
+    "cleaning_route_list",
+    "cleangenius_list",
+    "mopping_type_list",
+    "mop_wash_level_list",
     DreameVacuumProperty.STATUS.name.lower(),
+    DreameVacuumProperty.SUCTION_LEVEL.name.lower(),
     DreameVacuumProperty.WATER_VOLUME.name.lower(),
     DreameVacuumProperty.CLEANING_MODE.name.lower(),
+    DreameVacuumProperty.MOP_WASH_LEVEL.name.lower(),
+    DreameVacuumProperty.AUTO_DUST_COLLECTING.name.lower(),
     DreameVacuumProperty.TIGHT_MOPPING.name.lower(),
     DreameVacuumProperty.ERROR.name.lower(),
     DreameVacuumProperty.CLEANING_TIME.name.lower(),
@@ -138,6 +154,18 @@ VACUUM_UNRECORDED_ATTRIBUTES = {
     DreameVacuumProperty.CLEANING_PROGRESS.name.lower(),
     DreameVacuumProperty.INTELLIGENT_RECOGNITION.name.lower(),
     DreameVacuumProperty.MULTI_FLOOR_MAP.name.lower(),
+    DreameVacuumProperty.WETNESS_LEVEL.name.lower(),
+    DreameVacuumAutoSwitchProperty.CLEANING_ROUTE.name.lower(),
+    DreameVacuumAutoSwitchProperty.ULTRA_CLEAN_MODE.name.lower(),
+    DreameVacuumAutoSwitchProperty.SELF_CLEAN_FREQUENCY.name.lower(),
+    DreameVacuumAutoSwitchProperty.MOPPING_MODE.name.lower(),
+    DreameVacuumAutoSwitchProperty.CUSTOM_MOPPING_MODE.name.lower(),
+    DreameVacuumAutoSwitchProperty.UV_STERILIZATION.name.lower(),
+    DreameVacuumAutoSwitchProperty.HOT_WASHING.name.lower(),
+    DreameVacuumAutoSwitchProperty.MAX_SUCTION_POWER.name.lower(),
+    DreameVacuumAutoSwitchProperty.CLEANGENIUS.name.lower(),
+    DreameVacuumAutoSwitchProperty.MOPPING_TYPE.name.lower(),
+    DreameVacuumAutoSwitchProperty.AUTO_DRYING.name.lower(),
 }
 
 

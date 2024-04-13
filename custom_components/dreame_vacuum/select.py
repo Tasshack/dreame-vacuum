@@ -1,4 +1,5 @@
 """Support for Dreame Vacuum selects."""
+
 from __future__ import annotations
 
 import copy
@@ -97,7 +98,7 @@ CLEANING_MODE_TO_ICON = {
     DreameVacuumCleaningMode.SWEEPING: "mdi:broom",
     DreameVacuumCleaningMode.MOPPING: "mdi:cup-water",
     DreameVacuumCleaningMode.SWEEPING_AND_MOPPING: "mdi:hydro-power",
-    DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING: "mdi:hydro-power",
+    DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING: "mdi:water-polo",
 }
 
 FLOOR_MATERIAL_TO_ICON = {
@@ -157,19 +158,23 @@ class DreameVacuumSelectEntityDescription(DreameVacuumEntityDescription, SelectE
 SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     DreameVacuumSelectEntityDescription(
         property_key=DreameVacuumProperty.SUCTION_LEVEL,
-        icon_fn=lambda value, device: "mdi:fan-off"
-        if device.status.cleaning_mode is DreameVacuumCleaningMode.MOPPING
-        else SUCTION_LEVEL_TO_ICON.get(device.status.suction_level, "mdi:fan"),
+        icon_fn=lambda value, device: (
+            "mdi:fan-off"
+            if device.status.cleaning_mode is DreameVacuumCleaningMode.MOPPING
+            else SUCTION_LEVEL_TO_ICON.get(device.status.suction_level, "mdi:fan")
+        ),
         value_int_fn=lambda value, device: DreameVacuumSuctionLevel[value.upper()].value,
     ),
     DreameVacuumSelectEntityDescription(
         property_key=DreameVacuumProperty.WATER_VOLUME,
-        icon_fn=lambda value, device: "mdi:water-off"
-        if (
-            not (device.status.water_tank_or_mop_installed)
-            or device.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING
-        )
-        else WATER_VOLUME_TO_ICON.get(device.status.water_volume, "mdi:water"),
+        icon_fn=lambda value, device: (
+            "mdi:water-off"
+            if (
+                not (device.status.water_tank_or_mop_installed)
+                or device.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING
+            )
+            else WATER_VOLUME_TO_ICON.get(device.status.water_volume, "mdi:water")
+        ),
         value_int_fn=lambda value, device: DreameVacuumWaterVolume[value.upper()].value,
         exists_fn=lambda description, device: bool(
             not device.capability.self_wash_base and DreameVacuumEntityDescription().exists_fn(description, device)
@@ -233,12 +238,14 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     ),
     DreameVacuumSelectEntityDescription(
         key="mop_pad_humidity",
-        icon_fn=lambda value, device: "mdi:water-off"
-        if (
-            not (device.status.water_tank_or_mop_installed)
-            or device.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING
-        )
-        else MOP_PAD_HUMIDITY_TO_ICON.get(device.status.mop_pad_humidity, "mdi:water-percent"),
+        icon_fn=lambda value, device: (
+            "mdi:water-off"
+            if (
+                not (device.status.water_tank_or_mop_installed)
+                or device.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING
+            )
+            else MOP_PAD_HUMIDITY_TO_ICON.get(device.status.mop_pad_humidity, "mdi:water-percent")
+        ),
         value_int_fn=lambda value, device: DreameVacuumMopPadHumidity[value.upper()].value,
         exists_fn=lambda description, device: device.capability.self_wash_base,
     ),
@@ -353,9 +360,11 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         icon="mdi:crop-rotate",
         options=lambda device, segment: ["0", "90", "180", "270"],
         entity_category=EntityCategory.CONFIG,
-        value_fn=lambda value, device: str(device.status.selected_map.rotation)
-        if device.status.selected_map and device.status.selected_map.rotation is not None
-        else "",
+        value_fn=lambda value, device: (
+            str(device.status.selected_map.rotation)
+            if device.status.selected_map and device.status.selected_map.rotation is not None
+            else ""
+        ),
         exists_fn=lambda description, device: device.capability.map,
     ),
     DreameVacuumSelectEntityDescription(
@@ -363,29 +372,33 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         icon="mdi:map-check",
         options=lambda device, segment: [v.map_name for k, v in device.status.map_data_list.items()],
         entity_category=None,
-        value_fn=lambda value, device: device.status.selected_map.map_name
-        if device.status.selected_map and device.status.selected_map.map_name
-        else "",
+        value_fn=lambda value, device: (
+            device.status.selected_map.map_name
+            if device.status.selected_map and device.status.selected_map.map_name
+            else ""
+        ),
         exists_fn=lambda description, device: device.capability.map and device.capability.multi_floor_map,
         value_int_fn=lambda value, device: next(
             (k for k, v in device.status.map_data_list.items() if v.map_name == value),
             None,
         ),
-        attrs_fn=lambda device: {
-            ATTR_MAP_ID: device.status.selected_map.map_id,
-            ATTR_MAP_INDEX: device.status.selected_map.map_index,
-        }
-        if device.status.selected_map
-        else None,
+        attrs_fn=lambda device: (
+            {
+                ATTR_MAP_ID: device.status.selected_map.map_id,
+                ATTR_MAP_INDEX: device.status.selected_map.map_index,
+            }
+            if device.status.selected_map
+            else None
+        ),
     ),
 )
 
 SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     DreameVacuumSelectEntityDescription(
         key=DreameVacuumProperty.SUCTION_LEVEL.name.lower(),
-        icon_fn=lambda value, segment: SUCTION_LEVEL_TO_ICON.get(segment.suction_level, "mdi:fan")
-        if segment
-        else "mdi:fan-off",
+        icon_fn=lambda value, segment: (
+            SUCTION_LEVEL_TO_ICON.get(segment.suction_level, "mdi:fan") if segment else "mdi:fan-off"
+        ),
         segment_available_fn=lambda device, segment: bool(
             device.status.current_segments
             and segment.suction_level is not None
@@ -404,9 +417,9 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     ),
     DreameVacuumSelectEntityDescription(
         key=DreameVacuumProperty.WATER_VOLUME.name.lower(),
-        icon_fn=lambda value, segment: WATER_VOLUME_TO_ICON.get(segment.water_volume, "mdi:water")
-        if segment
-        else "mdi:water-off",
+        icon_fn=lambda value, segment: (
+            WATER_VOLUME_TO_ICON.get(segment.water_volume, "mdi:water") if segment else "mdi:water-off"
+        ),
         segment_available_fn=lambda device, segment: bool(
             device.status.current_segments
             and segment.water_volume is not None
@@ -426,9 +439,9 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     ),
     DreameVacuumSelectEntityDescription(
         key="mop_pad_humidity",
-        icon_fn=lambda value, segment: MOP_PAD_HUMIDITY_TO_ICON.get(segment.water_volume, "mdi:water-percent")
-        if segment
-        else "mdi:water-off",
+        icon_fn=lambda value, segment: (
+            MOP_PAD_HUMIDITY_TO_ICON.get(segment.water_volume, "mdi:water-percent") if segment else "mdi:water-off"
+        ),
         segment_available_fn=lambda device, segment: bool(
             device.status.current_segments
             and segment.mop_pad_humidity is not None
@@ -448,9 +461,9 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     ),
     DreameVacuumSelectEntityDescription(
         key=DreameVacuumProperty.CLEANING_MODE.name.lower(),
-        icon_fn=lambda value, segment: CLEANING_MODE_TO_ICON.get(segment.cleaning_mode, "mdi:broom")
-        if segment
-        else "mdi:broom",
+        icon_fn=lambda value, segment: (
+            CLEANING_MODE_TO_ICON.get(segment.cleaning_mode, "mdi:broom") if segment else "mdi:broom"
+        ),
         segment_available_fn=lambda device, segment: bool(
             device.status.current_segments
             and device.status.customized_cleaning
@@ -472,9 +485,11 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     ),
     DreameVacuumSelectEntityDescription(
         key="cleaning_times",
-        icon_fn=lambda value, segment: "mdi:home-floor-" + str(segment.cleaning_times)
-        if segment and segment.cleaning_times and segment.cleaning_times < 4
-        else "mdi:home-floor-0",
+        icon_fn=lambda value, segment: (
+            "mdi:home-floor-" + str(segment.cleaning_times)
+            if segment and segment.cleaning_times and segment.cleaning_times < 4
+            else "mdi:home-floor-0"
+        ),
         options=lambda device, segment: [f"{i}{UNIT_TIMES}" for i in range(1, 4)],
         segment_available_fn=lambda device, segment: bool(
             device.status.current_segments
@@ -495,9 +510,9 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     DreameVacuumSelectEntityDescription(
         key="custom_mopping_route",
         entity_category=None,
-        icon_fn=lambda value, segment: CUSTOM_MOPPING_ROUTE_TO_ICON.get(segment.custom_mopping_route, "mdi:routes")
-        if segment
-        else "mdi:routes",
+        icon_fn=lambda value, segment: (
+            CUSTOM_MOPPING_ROUTE_TO_ICON.get(segment.custom_mopping_route, "mdi:routes") if segment else "mdi:routes"
+        ),
         segment_available_fn=lambda device, segment: bool(
             device.status.current_segments
             and device.status.customized_cleaning
@@ -512,15 +527,16 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             segment.custom_mopping_route if segment.custom_mopping_route is not None else -1, STATE_UNKNOWN
         ),
         value_int_fn=lambda value, device: DreameVacuumCustomMoppingRoute[value.upper()].value,
-        exists_fn=lambda description, device: device.capability.segment_mopping_settings and not device.capability.cleaning_route,
+        exists_fn=lambda description, device: device.capability.segment_mopping_settings
+        and not device.capability.cleaning_route,
         segment_list_fn=lambda device: device.status.current_segments,
     ),
     DreameVacuumSelectEntityDescription(
         key=DreameVacuumAutoSwitchProperty.CLEANING_ROUTE.name.lower(),
         entity_category=None,
-        icon_fn=lambda value, segment: CLEANING_ROUTE_TO_ICON.get(segment.cleaning_route, "mdi:routes")
-        if segment
-        else "mdi:map-marker-remove",
+        icon_fn=lambda value, segment: (
+            CLEANING_ROUTE_TO_ICON.get(segment.cleaning_route, "mdi:routes") if segment else "mdi:map-marker-remove"
+        ),
         segment_available_fn=lambda device, segment: bool(
             device.status.current_segments
             and device.status.customized_cleaning
@@ -541,9 +557,11 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     ),
     DreameVacuumSelectEntityDescription(
         key="order",
-        options=lambda device, segment: [STATE_NOT_SET] + device.status.segment_order_list(segment)
-        if segment and device.status.current_segments
-        else [STATE_UNAVAILABLE],
+        options=lambda device, segment: (
+            [STATE_NOT_SET] + device.status.segment_order_list(segment)
+            if segment and device.status.current_segments
+            else [STATE_UNAVAILABLE]
+        ),
         entity_category=None,
         segment_available_fn=lambda device, segment: bool(
             device.status.current_segments
@@ -562,9 +580,11 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     ),
     DreameVacuumSelectEntityDescription(
         key="floor_material",
-        icon_fn=lambda value, segment: FLOOR_MATERIAL_TO_ICON.get(segment.floor_material, "mdi:checkbox-blank")
-        if segment
-        else "mdi:checkbox-blank-off",
+        icon_fn=lambda value, segment: (
+            FLOOR_MATERIAL_TO_ICON.get(segment.floor_material, "mdi:checkbox-blank")
+            if segment
+            else "mdi:checkbox-blank-off"
+        ),
         entity_category=EntityCategory.CONFIG,
         segment_available_fn=lambda device, segment: bool(
             device.status.current_segments
@@ -583,12 +603,14 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     ),
     DreameVacuumSelectEntityDescription(
         key="floor_material_direction",
-        icon_fn=lambda value, segment: FLOOR_MATERIAL_DIRECTION_TO_ICON.get(
-            segment.floor_material_rotated_direction,
-            "mdi:arrow-top-left-bottom-right-bold",
-        )
-        if segment and segment.floor_material == 1
-        else "mdi:arrow-top-left-bottom-right-bold",
+        icon_fn=lambda value, segment: (
+            FLOOR_MATERIAL_DIRECTION_TO_ICON.get(
+                segment.floor_material_rotated_direction,
+                "mdi:arrow-top-left-bottom-right-bold",
+            )
+            if segment and segment.floor_material == 1
+            else "mdi:arrow-top-left-bottom-right-bold"
+        ),
         entity_category=EntityCategory.CONFIG,
         segment_available_fn=lambda device, segment: bool(
             device.status.current_segments
@@ -618,9 +640,9 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     ),
     DreameVacuumSelectEntityDescription(
         key="visibility",
-        icon_fn=lambda value, segment: SEGMENT_VISIBILITY_TO_ICON.get(segment.visibility, "mdi:eye")
-        if segment
-        else "mdi:home-remove",
+        icon_fn=lambda value, segment: (
+            SEGMENT_VISIBILITY_TO_ICON.get(segment.visibility, "mdi:eye") if segment else "mdi:home-remove"
+        ),
         entity_category=EntityCategory.CONFIG,
         segment_available_fn=lambda device, segment: bool(
             device.status.current_segments
@@ -644,9 +666,9 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         segment_available_fn=lambda device, segment: bool(
             device.status.segments and not device.status.fast_mapping and not device.status.has_temporary_map
         ),
-        value_fn=lambda device, segment: device.status.segments[segment.segment_id].name
-        if segment.segment_id in device.status.segments
-        else None,
+        value_fn=lambda device, segment: (
+            device.status.segments[segment.segment_id].name if segment.segment_id in device.status.segments else None
+        ),
         value_int_fn=lambda value, self: next(
             (type for name, type in self.segment.name_list(self.device.status.segments).items() if name == value),
             None,

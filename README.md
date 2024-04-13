@@ -18,16 +18,16 @@ Complete app replacement with Home Assistant for Dreame robot vacuums.
 ## Features
 
 - [Supported devices](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/supported_devices.md)
-- [Auto generated device entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md)
-- [Live and multi floor map support](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md)
+- [Auto generated device entities](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/entities.md)
+- [Live and multi floor map support](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md)
 - [Map obstacle photos](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#obstacle-photos)
 - [Cleaning and cruising history maps](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#cleaning-and-cruising-history-maps)
 - [Cloud and local map backup/recovery](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#backup-and-recovery)
 - [Saved WiFi coverage maps](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#wifi-map)
-- [Customized room cleaning entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/room_entities.md)
-- [Services for device and map with examples](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md)
-- [Persistent notifications and error reporting](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md)
-- [Events for automations](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/events.md)
+- [Customized room cleaning entities](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/room_entities.md)
+- [Services for device and map with examples](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/services.md)
+- [Persistent notifications and error reporting](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/notifications.md)
+- [Events for automations](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/events.md)
 - Dreamehome account support
 
 
@@ -59,10 +59,10 @@ wget -O - https://raw.githubusercontent.com/Tasshack/dreame-vacuum/dev/install |
 
     TODO
 
-    <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md" target="_blank">About notifications feature</a><br><a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md#color-schemes" target="_blank">About map color schemes</a>
+    <a href="https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/notifications.md" target="_blank">About notifications feature</a><br><a href="https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#color-schemes" target="_blank">About map color schemes</a>
 - Navigate to device page for disabling or enabling entities that you want to use.
 
-    <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md" target="_blank">About entities</a>
+    <a href="https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/entities.md" target="_blank">About entities</a>
 
 
 ## How To Use

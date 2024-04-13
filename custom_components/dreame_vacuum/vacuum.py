@@ -72,6 +72,8 @@ from .const import (
     INPUT_X,
     INPUT_Y,
     INPUT_OBSTACLE_IGNORED,
+    INPUT_KEY,
+    INPUT_VALUE,
     SERVICE_CLEAN_ZONE,
     SERVICE_CLEAN_SEGMENT,
     SERVICE_CLEAN_SPOT,
@@ -82,6 +84,7 @@ from .const import (
     SERVICE_MOVE_REMOTE_CONTROL_STEP,
     SERVICE_RENAME_MAP,
     SERVICE_RENAME_SEGMENT,
+    SERVICE_SET_PROPERTY,
     SERVICE_REQUEST_MAP,
     SERVICE_SELECT_MAP,
     SERVICE_DELETE_MAP,
@@ -196,6 +199,15 @@ async def async_setup_entry(
     coordinator: DreameVacuumDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
 
     platform = entity_platform.current_platform.get()
+
+    platform.async_register_entity_service(
+        SERVICE_SET_PROPERTY,
+        {
+            vol.Required(INPUT_KEY): cv.string,
+            vol.Required(INPUT_VALUE): vol.Any(vol.Coerce(int), vol.Coerce(str), vol.Coerce(bool)),
+        },
+        DreameVacuum.async_set_property.__name__,
+    )
 
     platform.async_register_entity_service(
         SERVICE_REQUEST_MAP,
@@ -668,8 +680,8 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         self._attr_supported_features = SUPPORT_DREAME
         if (
             not (
-                self.device.status and 
-                self.device.status.started
+                self.device.status
+                and self.device.status.started
                 and (
                     self.device.status.customized_cleaning
                     and not (self.device.status.zone_cleaning or self.device.status.spot_cleaning)
@@ -823,14 +835,16 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             points,
         )
 
-    async def async_remote_control_move_step(self, rotation: int = 0, velocity: int = 0, prompt: bool | None = None) -> None:
+    async def async_remote_control_move_step(
+        self, rotation: int = 0, velocity: int = 0, prompt: bool | None = None
+    ) -> None:
         """Remote control the robot."""
         await self._try_command(
             "Unable to call remote_control_move_step: %s",
             self.device.remote_control_move_step,
             rotation,
             velocity,
-            prompt
+            prompt,
         )
 
     async def async_set_fan_speed(self, fan_speed, **kwargs) -> None:
@@ -890,6 +904,11 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     async def async_request_map(self) -> None:
         """Request new map."""
         await self._try_command("Unable to call request_map: %s", self.device.request_map)
+
+    async def async_set_property(self, key, value) -> None:
+        """Request new map."""
+        if key is not None and value is not None and key != "" and value != "":
+            await self._try_command("set_property failed: %s", self.device.set_property_value, key, value)
 
     async def async_rename_map(self, map_id, map_name="") -> None:
         """Rename a map"""
@@ -1005,7 +1024,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             size,
         )
 
-    async def async_send_command(self, command: str, params = None, **kwargs) -> None:
+    async def async_send_command(self, command: str, params=None, **kwargs) -> None:
         """Send a command to a vacuum cleaner."""
         await self._try_command("Unable to call send_command: %s", self.device.send_command, command, params)
 

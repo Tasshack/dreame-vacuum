@@ -1,4 +1,5 @@
 """Support for Dreame Vacuum sensors."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -98,9 +99,9 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.WATER_TANK,
-        icon_fn=lambda value, device: "mdi:water-pump-off"
-        if not device.status.water_tank_or_mop_installed
-        else "mdi:water-pump",
+        icon_fn=lambda value, device: (
+            "mdi:water-pump-off" if not device.status.water_tank_or_mop_installed else "mdi:water-pump"
+        ),
         exists_fn=lambda description, device: not device.capability.self_wash_base
         and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
@@ -115,11 +116,11 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.AUTO_EMPTY_STATUS,
-        icon_fn=lambda value, device: "mdi:delete-clock"
-        if device.status.auto_emptying_not_performed
-        else "mdi:delete-restore"
-        if device.status.auto_emptying
-        else "mdi:delete",
+        icon_fn=lambda value, device: (
+            "mdi:delete-clock"
+            if device.status.auto_emptying_not_performed
+            else "mdi:delete-restore" if device.status.auto_emptying else "mdi:delete"
+        ),
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.SELF_WASH_BASE_STATUS,
@@ -127,9 +128,9 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.LOW_WATER_WARNING,
-        icon_fn=lambda value, device: "mdi:water-alert"
-        if device.status.low_water_warning.value > 1
-        else "mdi:water-check",
+        icon_fn=lambda value, device: (
+            "mdi:water-alert" if device.status.low_water_warning.value > 1 else "mdi:water-check"
+        ),
         exists_fn=lambda description, device: device.capability.self_wash_base
         and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
@@ -151,11 +152,11 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.ERROR,
-        icon_fn=lambda value, device: "mdi:alert-circle-outline"
-        if device.status.has_error
-        else "mdi:alert-outline"
-        if device.status.has_warning
-        else "mdi:check-circle-outline",
+        icon_fn=lambda value, device: (
+            "mdi:alert-circle-outline"
+            if device.status.has_error
+            else "mdi:alert-outline" if device.status.has_warning else "mdi:check-circle-outline"
+        ),
         attrs_fn=lambda device: {
             ATTR_VALUE: device.status.error,
             "faults": device.status.faults,

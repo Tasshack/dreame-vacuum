@@ -912,42 +912,48 @@ class DreameVacuumProperty(IntEnum):
     DETERGENT_STATUS = 139
     STATION_DRAINAGE_STATUS = 140
     AI_MAP_OPTIMIZATION_STATUS = 141
-    WETNESS_LEVEL = 142
-    CLEAN_CARPETS_FIRST = 143
-    QUICK_WASH_MODE = 144
-    FACTORY_TEST_STATUS = 145
-    FACTORY_TEST_RESULT = 146
-    SELF_TEST_STATUS = 147
-    LSD_TEST_STATUS = 148
-    DEBUG_SWITCH = 149
-    SERIAL = 150
-    CALIBRATION_STATUS = 151
-    VERSION = 152
-    PERFORMANCE_SWITCH = 153
-    AI_TEST_STATUS = 154
-    PUBLIC_KEY = 155
-    AUTO_PAIR = 156
-    MCU_VERSION = 157
-    MOP_TEST_STATUS = 158
-    PLATFORM_NETWORK = 159
-    STREAM_STATUS = 160
-    STREAM_AUDIO = 161
-    STREAM_RECORD = 162
-    TAKE_PHOTO = 163
-    STREAM_KEEP_ALIVE = 164
-    STREAM_FAULT = 165
-    CAMERA_LIGHT_BRIGHTNESS = 166
-    CAMERA_LIGHT = 167
-    STEAM_HUMAN_FOLLOW = 168
-    STREAM_CRUISE_POINT = 169
-    STREAM_PROPERTY = 170
-    STREAM_TASK = 171
-    STREAM_UPLOAD = 172
-    STREAM_CODE = 173
-    STREAM_SET_CODE = 174
-    STREAM_VERIFY_CODE = 175
-    STREAM_RESET_CODE = 176
-    STREAM_SPACE = 177
+    SECOND_CLEANING_STATUS = 142
+    WATER_TANK_STATUS = 143
+    ADD_CLEANING_AREA_STATUS = 144
+    ADD_CLEANING_AREA_RESULT = 145
+    WETNESS_LEVEL = 146
+    CLEAN_CARPETS_FIRST = 147
+    QUICK_WASH_MODE = 148
+    HOT_WATER_LEVEL = 149
+    CLEAN_EFFICIENCY = 150
+    FACTORY_TEST_STATUS = 151
+    FACTORY_TEST_RESULT = 152
+    SELF_TEST_STATUS = 153
+    LSD_TEST_STATUS = 154
+    DEBUG_SWITCH = 155
+    SERIAL = 156
+    CALIBRATION_STATUS = 157
+    VERSION = 158
+    PERFORMANCE_SWITCH = 159
+    AI_TEST_STATUS = 160
+    PUBLIC_KEY = 161
+    AUTO_PAIR = 162
+    MCU_VERSION = 163
+    MOP_TEST_STATUS = 164
+    PLATFORM_NETWORK = 165
+    STREAM_STATUS = 166
+    STREAM_AUDIO = 167
+    STREAM_RECORD = 168
+    TAKE_PHOTO = 169
+    STREAM_KEEP_ALIVE = 170
+    STREAM_FAULT = 171
+    CAMERA_LIGHT_BRIGHTNESS = 172
+    CAMERA_LIGHT = 173
+    STEAM_HUMAN_FOLLOW = 174
+    STREAM_CRUISE_POINT = 175
+    STREAM_PROPERTY = 176
+    STREAM_TASK = 177
+    STREAM_UPLOAD = 178
+    STREAM_CODE = 179
+    STREAM_SET_CODE = 180
+    STREAM_VERIFY_CODE = 181
+    STREAM_RESET_CODE = 182
+    STREAM_SPACE = 183
 
 
 class DreameVacuumAutoSwitchProperty(str, Enum):
@@ -1196,9 +1202,15 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.DETERGENT_STATUS: {siid: 27, piid: 4},
     DreameVacuumProperty.STATION_DRAINAGE_STATUS: {siid: 27, piid: 5},
     DreameVacuumProperty.AI_MAP_OPTIMIZATION_STATUS: {siid: 27, piid: 7},
+    DreameVacuumProperty.SECOND_CLEANING_STATUS: {siid: 27, piid: 8},
+    DreameVacuumProperty.WATER_TANK_STATUS: {siid: 27, piid: 9},
+    DreameVacuumProperty.ADD_CLEANING_AREA_STATUS: {siid: 27, piid: 10},
+    DreameVacuumProperty.ADD_CLEANING_AREA_RESULT: {siid: 27, piid: 11},
     DreameVacuumProperty.WETNESS_LEVEL: {siid: 28, piid: 1},
     DreameVacuumProperty.CLEAN_CARPETS_FIRST: {siid: 28, piid: 2},
     DreameVacuumProperty.QUICK_WASH_MODE: {siid: 28, piid: 6},
+    DreameVacuumProperty.HOT_WATER_LEVEL: {siid: 28, piid: 8},
+    DreameVacuumProperty.CLEAN_EFFICIENCY: {siid: 28, piid: 9},
     DreameVacuumProperty.FACTORY_TEST_STATUS: {siid: 99, piid: 1},
     DreameVacuumProperty.FACTORY_TEST_RESULT: {siid: 99, piid: 3},
     DreameVacuumProperty.SELF_TEST_STATUS: {siid: 99, piid: 8},
@@ -1767,6 +1779,7 @@ class DeviceCapability(IntEnum):
 
 class DreameVacuumDeviceCapability:
     def __init__(self, device) -> None:
+        self.list = None
         self.lidar_navigation = True
         self.multi_floor_map = True
         self.ai_detection = False
@@ -1800,6 +1813,7 @@ class DreameVacuumDeviceCapability:
         self.auto_empty_mode = False
         self.map_object_offset = True
         self.robot_type = RobotType.LIDAR
+        self.tight_mopping = False
         self.floor_material = False
         self.floor_direction_cleaning = False
         self.segment_visibility = False
@@ -1854,6 +1868,7 @@ class DreameVacuumDeviceCapability:
         self.customized_cleaning = bool(
             self._device.get_property(DreameVacuumProperty.CUSTOMIZED_CLEANING) is not None
         )
+        self.tight_mopping = bool(self._device.get_property(DreameVacuumProperty.TIGHT_MOPPING) is not None)
         self.auto_switch_settings = bool(
             self._device.get_property(DreameVacuumProperty.AUTO_SWITCH_SETTINGS) is not None
         )
@@ -1943,6 +1958,18 @@ class DreameVacuumDeviceCapability:
                 else RobotType.LIDAR if self.lidar_navigation else RobotType.VSLAM
             )
         )
+
+        self.list = [
+            key
+            for key, value in self.__dict__.items()
+            if not callable(value) and not key.startswith("_") and value == True
+        ]
+        if self.custom_cleaning_mode:
+            self.list.append("custom_cleaning_mode")
+        if self.cruising:
+            self.list.append("cruising")
+        if self.map:
+            self.list.append("map")
 
     @property
     def map(self) -> bool:
@@ -2104,7 +2131,7 @@ class Obstacle(Point):
             x = int((self.x - map_data.dimensions.left) / map_data.dimensions.grid_size)
             y = int((self.y - map_data.dimensions.top) / map_data.dimensions.grid_size)
             if x >= 0 and x < map_data.dimensions.width and y >= 0 and y < map_data.dimensions.height:
-                obstacle_pixel = map_data.pixel_type[x,y]
+                obstacle_pixel = map_data.pixel_type[x, y]
 
                 if obstacle_pixel not in map_data.segments:
                     for k, v in map_data.segments.items():
@@ -2901,6 +2928,7 @@ class MapData:
         # Map header: top, left, height, width, grid_size
         self.dimensions: Optional[MapImageDimensions] = None
         self.optimized_dimensions: Optional[MapImageDimensions] = None
+        self.combined_dimensions: Optional[MapImageDimensions] = None
         self.data: Optional[Any] = None  # Raw image data for handling P frames
         # Data json
         self.timestamp_ms: Optional[int] = None  # Data json: timestamp_ms
@@ -2956,6 +2984,7 @@ class MapData:
         # Generated pixel map for rendering colors
         self.pixel_type: Optional[Any] = None
         self.optimized_pixel_type: Optional[Any] = None
+        self.combined_pixel_type: Optional[Any] = None
         # Generated segments from pixel_type
         self.segments: Optional[Dict[int, Segment]] = None
         self.floor_material: Optional[Dict[int, int]] = None  # Generated from seg_inf.material

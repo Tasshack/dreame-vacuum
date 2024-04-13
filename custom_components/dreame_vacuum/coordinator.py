@@ -1,4 +1,5 @@
 """DataUpdateCoordinator for Dreame Vacuum."""
+
 from __future__ import annotations
 
 import math
@@ -135,14 +136,10 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             self._self_wash_base_status_changed,
             DreameVacuumProperty.SELF_WASH_BASE_STATUS,
         )
-        self._device.listen(self.async_set_updated_data)
-        self._device.listen_error(self.async_set_update_error)
+        self._device.listen(self.set_updated_data)
+        self._device.listen_error(self.set_update_error)
 
-        super().__init__(
-            hass,
-            LOGGER,
-            name=DOMAIN
-        )
+        super().__init__(hass, LOGGER, name=DOMAIN)
 
         async_dispatcher_connect(
             hass,
@@ -363,12 +360,16 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             )
 
     def _create_persistent_notification(self, content, notification_id) -> None:
-        if not self.device.disconnected and self.device.device_connected and (self._notify or notification_id == NOTIFICATION_ID_2FA_LOGIN):
+        if (
+            not self.device.disconnected
+            and self.device.device_connected
+            and (self._notify or notification_id == NOTIFICATION_ID_2FA_LOGIN)
+        ):
             if isinstance(self._notify, list) and notification_id != NOTIFICATION_ID_2FA_LOGIN:
                 if notification_id == NOTIFICATION_ID_CLEANUP_COMPLETED:
                     if NOTIFICATION_ID_CLEANUP_COMPLETED not in self._notify:
                         return
-                    notification_id = f'{notification_id}_{int(time.time())}'
+                    notification_id = f"{notification_id}_{int(time.time())}"
                 elif NOTIFICATION_ID_WARNING in notification_id or NOTIFICATION_ID_LOW_WATER in notification_id:
                     if NOTIFICATION_ID_WARNING not in self._notify:
                         return
@@ -388,7 +389,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                     if NOTIFICATION_ID_CONSUMABLE not in self._notify:
                         return
 
-            persistent_notification.async_create(
+            persistent_notification.create(
                 hass=self.hass,
                 message=content,
                 title=self._device.name,
@@ -396,7 +397,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             )
 
     def _remove_persistent_notification(self, notification_id) -> None:
-        persistent_notification.async_dismiss(self.hass, f"{DOMAIN}_{self._device.mac}_{notification_id}")
+        persistent_notification.dismiss(self.hass, f"{DOMAIN}_{self._device.mac}_{notification_id}")
 
     def _notification_dismiss_listener(self, type, data) -> None:
         if type == persistent_notification.UpdateType.REMOVED and self._device:
@@ -450,6 +451,12 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
     @property
     def device(self) -> DreameVacuumDevice:
         return self._device
+
+    def set_update_error(self, ex=None) -> None:
+        self.hass.loop.call_soon_threadsafe(self.async_set_update_error, ex)
+
+    def set_updated_data(self, device=None) -> None:
+        self.hass.loop.call_soon_threadsafe(self.async_set_updated_data, device)
 
     @callback
     def async_set_updated_data(self, device=None) -> None:

@@ -6,6 +6,7 @@ from enum import IntEnum, IntFlag
 import time
 import asyncio
 import traceback
+import gzip
 from typing import Any, Dict, Final
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -107,12 +108,19 @@ class CameraDataView(CameraView):
         """Serve camera data."""
         if not camera.map_data_json:
             resources = request.query.get("resources")
-            return web.Response(
-                body=camera.map_data_string(
-                    resources and (resources == True or resources == "true" or resources == "1")
+            response = web.Response(
+                body=gzip.compress(
+                    bytes(
+                        camera.map_data_string(
+                            resources and (resources == True or resources == "true" or resources == "1")
+                        ),
+                        "utf-8",
+                    )
                 ),
                 content_type=JSON_CONTENT_TYPE,
             )
+            response.headers["Content-Encoding"] = "gzip"
+            return response
         raise web.HTTPNotFound()
 
 
@@ -207,10 +215,13 @@ class CameraHistoryView(CameraView):
                 data and resources and (resources == True or resources == "true" or resources == "1"),
             )
             if result:
-                return web.Response(
-                    body=result,
+                response = web.Response(
+                    body=gzip.compress(bytes(result, "utf-8")) if data else result,
                     content_type=JSON_CONTENT_TYPE if data else PNG_CONTENT_TYPE,
                 )
+                if data:
+                    response.headers["Content-Encoding"] = "gzip"
+                return response
         raise web.HTTPNotFound()
 
 
@@ -241,13 +252,15 @@ class CameraRecoveryView(CameraView):
                 )
             if result:
                 response = web.Response(
-                    body=result,
+                    body=gzip.compress(bytes(result, "utf-8")) if data and not file else result,
                     content_type="application/x-tar+gzip" if file else JSON_CONTENT_TYPE if data else PNG_CONTENT_TYPE,
                 )
                 if file:
                     response.headers["Content-Disposition"] = (
                         f'attachment; filename={object_name.replace("/", "-").replace(".mb.tbz2", "")}.mb.tbz2'
                     )
+                elif data:
+                    response.headers["Content-Encoding"] = "gzip"
                 return response
         raise web.HTTPNotFound()
 
@@ -269,10 +282,13 @@ class CameraWifiView(CameraView):
                 data and resources and (resources == True or resources == "true" or resources == "1"),
             )
             if result:
-                return web.Response(
-                    body=result,
+                response = web.Response(
+                    body=gzip.compress(bytes(result, "utf-8")) if data else result,
                     content_type=JSON_CONTENT_TYPE if data else PNG_CONTENT_TYPE,
                 )
+                if data:
+                    response.headers["Content-Encoding"] = "gzip"
+                return response
         raise web.HTTPNotFound()
 
 
@@ -504,7 +520,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         """Fetch state from the device."""
         self._last_map_request = 0
         map_data = self._map_data
-        if map_data and self.device.cloud_connected and (self.map_index > 0 or self.device.status.located):            
+        if map_data and self.device.cloud_connected and (self.map_index > 0 or self.device.status.located):
             if map_data.last_updated:
                 self._state = datetime.fromtimestamp(int(map_data.last_updated))
             elif map_data.timestamp_ms:
@@ -773,7 +789,6 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             return self._proxy_images[cache_key][item_key]
         image = self._proxy_renderer.render_map(map_data, 0, 0, info_text)
         if image:
-            keys = self._proxy_images[cache_key].keys()
             while len(self._proxy_images[cache_key]) >= max_item:
                 del self._proxy_images[cache_key][next(iter(self._proxy_images[cache_key]))]
             self._proxy_images[cache_key][item_key] = image
@@ -874,10 +889,13 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 attributes = {}
 
             if self.map_index:
-                attributes[ATTR_SELECTED] = self.device.status.selected_map and self.device.status.selected_map.map_index == self.map_index
+                attributes[ATTR_SELECTED] = (
+                    self.device.status.selected_map and self.device.status.selected_map.map_index == self.map_index
+                )
 
             token = self.access_tokens[-1]
             if self.map_index == 0:
+
                 def get_key(index, history):
                     return f"{index}: {time.strftime('%m/%d %H:%M', time.localtime(history.date.timestamp()))} - {'Second ' if history.second_cleaning else ''}{STATUS_CODE_TO_NAME.get(history.status, STATE_UNKNOWN).replace('_', ' ').title()} {'(Completed)' if history.completed else '(Interrupted)'}"
 

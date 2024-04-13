@@ -97,6 +97,7 @@ SERVICE_RESET_CONSUMABLE: Final = "vacuum_reset_consumable"
 SERVICE_RENAME_SHORTCUT: Final = "vacuum_rename_shortcut"
 SERVICE_SET_OBSTACLE_IGNORE: Final = "vacuum_set_obstacle_ignore"
 SERVICE_SET_ROUTER_POSITION: Final = "vacuum_set_router_position"
+SERVICE_SET_PROPERTY: Final = "vacuum_set_property"
 
 SERVICE_SELECT_NEXT = "select_select_next"
 SERVICE_SELECT_PREVIOUS = "select_select_previous"
@@ -140,6 +141,8 @@ INPUT_SHORTCUT_NAME: Final = "shortcut_name"
 INPUT_X: Final = "x"
 INPUT_Y: Final = "y"
 INPUT_OBSTACLE_IGNORED: Final = "obstacle_ignored"
+INPUT_KEY: Final = "key"
+INPUT_VALUE: Final = "value"
 
 CONSUMABLE_MAIN_BRUSH = "main_brush"
 CONSUMABLE_SIDE_BRUSH = "side_brush"
@@ -177,14 +180,22 @@ NOTIFICATION_ID_LOW_WATER: Final = "low_water"
 NOTIFICATION_ID_DRAINAGE_STATUS: Final = "drainage_status"
 
 NOTIFICATION_CLEANUP_COMPLETED: Final = "### Cleanup completed"
-NOTIFICATION_DUST_COLLECTION_NOT_PERFORMED: Final = "### Dust collecting (Auto-empty) task not performed\nThe robot will not perform auto-empty tasks during the DND period."
-NOTIFICATION_RESUME_CLEANING: Final = "### Resume Cleaning Mode\nThe robot will automatically resume unfinished cleaning tasks after charging its battery to 80%."
-NOTIFICATION_RESUME_CLEANING_NOT_PERFORMED: Final = "### The robot is in the DND period\nRobot will resume cleaning after the DND period ends."
-NOTIFICATION_REPLACE_MAP: Final = (
-    "### A new map has been generated\nYou need to save or discard map before using it."
+NOTIFICATION_DUST_COLLECTION_NOT_PERFORMED: Final = (
+    "### Dust collecting (Auto-empty) task not performed\nThe robot will not perform auto-empty tasks during the DND period."
 )
-NOTIFICATION_REPLACE_MULTI_MAP: Final = "### A new map has been generated\nMulti-floor maps that can be saved have reached the upper limit. You need to replace or discard map before using it."
-NOTIFICATION_2FA_LOGIN: Final = "### Additional authentication required.\nOpen following URL using device that has the same public IP, as your Home Assistant instance:\n"
+NOTIFICATION_RESUME_CLEANING: Final = (
+    "### Resume Cleaning Mode\nThe robot will automatically resume unfinished cleaning tasks after charging its battery to 80%."
+)
+NOTIFICATION_RESUME_CLEANING_NOT_PERFORMED: Final = (
+    "### The robot is in the DND period\nRobot will resume cleaning after the DND period ends."
+)
+NOTIFICATION_REPLACE_MAP: Final = "### A new map has been generated\nYou need to save or discard map before using it."
+NOTIFICATION_REPLACE_MULTI_MAP: Final = (
+    "### A new map has been generated\nMulti-floor maps that can be saved have reached the upper limit. You need to replace or discard map before using it."
+)
+NOTIFICATION_2FA_LOGIN: Final = (
+    "### Additional authentication required.\nOpen following URL using device that has the same public IP, as your Home Assistant instance:\n"
+)
 NOTIFICATION_DRAINAGE_COMPLETED: Final = "### Drainage completed"
 NOTIFICATION_DRAINAGE_FAILED: Final = "### Drainage failed"
 
