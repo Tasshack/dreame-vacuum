@@ -115,8 +115,8 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         self.device.listen(
             self._cleaning_paused_changed, DreameVacuumProperty.CLEANING_PAUSED
         )
-        self.device.listen(self.async_set_updated_data)
-        self.device.listen_error(self.async_set_update_error)
+        self.device.listen(self.set_updated_data)
+        self.device.listen_error(self.set_update_error)
 
         super().__init__(
             hass,
@@ -284,7 +284,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                        return
 
 
-            persistent_notification.async_create(
+            persistent_notification.create(
                 self.hass,
                 content,
                 title=self.device.name,
@@ -292,7 +292,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             )
 
     def _remove_persistent_notification(self, notification_id) -> None:
-        persistent_notification.async_dismiss(
+        persistent_notification.dismiss(
             self.hass, f"{DOMAIN}_{self.device.mac}_{notification_id}")
 
     def _notification_dismiss_listener(self, type, data) -> None:
@@ -335,6 +335,12 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 del self.device
                 self.device = None
             raise UpdateFailed(ex) from ex
+
+    def set_update_error(self, ex=None) -> None:
+        self.hass.loop.call_soon_threadsafe(self.async_set_update_error, ex)
+ 
+    def set_updated_data(self, device=None) -> None:
+        self.hass.loop.call_soon_threadsafe(self.async_set_updated_data, device)
 
     @callback
     def async_set_updated_data(self, device=None) -> None:
