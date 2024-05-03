@@ -305,7 +305,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         self._image = self._renderer.render_map(map_data, robot_status)
         if not self.entity_description.map_data_json and self._calibration_points != self._renderer.calibration_points:
             self._calibration_points = self._renderer.calibration_points
-            self.coordinator.async_set_updated_data()
+            self.coordinator.set_updated_data()
 
     @property
     def _map_data(self) -> Any:
@@ -320,10 +320,6 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     @property
     def frame_interval(self) -> float:
         return 0.25
-
-    @property
-    def supported_features(self) -> int:
-        return 0
 
     @property
     def state(self) -> str:
