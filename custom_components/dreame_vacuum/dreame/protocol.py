@@ -4,9 +4,10 @@ import hashlib
 import json
 import base64
 import hmac
-import time, locale, datetime
+import time, locale
 import tzlocal
 import requests
+from datetime import datetime
 from typing import Any, Dict, Optional, Tuple
 from .exceptions import DeviceException
 from typing import Any, Optional, Tuple
@@ -64,7 +65,7 @@ class DreameVacuumCloudProtocol:
         self._fail_count = 0
         self._connected = False
         try:
-            timezone = datetime.datetime.now(tzlocal.get_localzone()).strftime("%z")
+            timezone = datetime.now(tzlocal.get_localzone()).strftime("%z")
             timezone = "GMT{0}:{1}".format(timezone[:-2], timezone[-2:])
         except:
             timezone = "GMT+00:00"
