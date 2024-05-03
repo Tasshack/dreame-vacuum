@@ -16,8 +16,7 @@
     "pycryptodome",
     "python-miio",
     "py-mini-racer",
-    "tzlocal",
     "paho-mqtt"
   ],
-  "version": "v1.0.4"
+  "version": "v1.0.5"
 }
