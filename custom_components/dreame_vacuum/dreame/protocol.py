@@ -5,9 +5,7 @@ import json
 import base64
 import hmac
 import time, locale
-import tzlocal
 import requests
-from datetime import datetime
 from typing import Any, Dict, Optional, Tuple
 from .exceptions import DeviceException
 from typing import Any, Optional, Tuple
@@ -65,11 +63,10 @@ class DreameVacuumCloudProtocol:
         self._fail_count = 0
         self._connected = False
         try:
-            timezone = datetime.now(tzlocal.get_localzone()).strftime("%z")
-            timezone = "GMT{0}:{1}".format(timezone[:-2], timezone[-2:])
+            offset = (time.timezone if (time.localtime().tm_isdst == 0) else time.altzone) / 60 * -1
+            self._timezone = "GMT{}{:02d}:{:02d}".format('+' if offset >= 0 else '-', abs(int(offset / 60)), int(offset % 60))
         except:
-            timezone = "GMT+00:00"
-        self._timezone = timezone
+            self._timezone = "GMT+00:00"
 
     def _api_call(self, url, params):
         return self.request(f"{self.get_api_url()}/{url}", {"data": json.dumps(params, separators=(",", ":"))})
