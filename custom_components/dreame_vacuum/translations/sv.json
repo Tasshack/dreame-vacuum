@@ -129,7 +129,7 @@
         "state": {
           "avoidance": "Undvikande",
           "adaptation": "Adaptiv",
-          "remove_mop": "Ta bort moppdynor"
+          "remove_mop": "Ta bort moppdynor",
           "adaptation_without_route": "Adaptativ utan rutt",
           "vacuum_and_mop": "Dammsug och moppa",
           "ignore": "Ignorera"

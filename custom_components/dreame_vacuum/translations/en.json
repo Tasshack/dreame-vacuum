@@ -827,7 +827,7 @@
       "description": "Set room cleaning sequence. (Only on supported devices)",
       "fields": {
         "cleaning_sequence": {
-          "name": "Cleanin sequence",
+          "name": "Cleaning sequence",
           "description": "Segment ID list of cleaning sequence."
         }
       }
