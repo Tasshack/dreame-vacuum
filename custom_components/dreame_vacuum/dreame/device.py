@@ -160,7 +160,13 @@ from .const import (
     ATTR_CLEANED_AREA,
     ATTR_MOP_PAD_HUMIDITY,
     ATTR_SELF_CLEAN_AREA,
+    ATTR_PREVIOUS_SELF_CLEAN_AREA,
+    ATTR_SELF_CLEAN_AREA_MIN,
+    ATTR_SELF_CLEAN_AREA_MAX,
     ATTR_SELF_CLEAN_TIME,
+    ATTR_PREVIOUS_SELF_CLEAN_TIME,
+    ATTR_SELF_CLEAN_TIME_MIN,
+    ATTR_SELF_CLEAN_TIME_MAX,
     ATTR_MOP_PAD,
     ATTR_WASHING,
     ATTR_WASHING_PAUSED,
@@ -180,6 +186,8 @@ from .const import (
     ATTR_SPOT_CLEANING,
     ATTR_CRUSING,
     ATTR_HAS_SAVED_MAP,
+    ATTR_HAS_TEMPORARY_MAP,
+    ATTR_AUTO_EMPTY_MODE,
     ATTR_CAPABILITIES,
 )
 from .resources import ERROR_IMAGE
@@ -251,6 +259,8 @@ class DreameVacuumDevice:
         self._consumable_change: bool = False
         self._remote_control: bool = False
         self._dirty_data: dict[DreameVacuumProperty, DirtyData] = {}
+        self._dirty_auto_switch_data: dict[DreameVacuumAutoSwitchProperty, DirtyData] = {}
+        self._dirty_ai_data: dict[DreameVacuumStrAIProperty | DreameVacuumAIProperty, Any] = None
         self._discard_timeout = 5
         self._restore_timeout = 15
 
@@ -385,6 +395,8 @@ class DreameVacuumDevice:
         self.listen(self._cleaning_mode_changed, DreameVacuumProperty.CLEANING_MODE)
         self.listen(self._water_tank_changed, DreameVacuumProperty.WATER_TANK)
         self.listen(self._water_tank_changed, DreameVacuumProperty.MOP_PAD_INSTALLED)
+        self.listen(self._water_tank_changed, DreameVacuumProperty.MOP_IN_STATION)
+        # self.listen(self._water_tank_changed, DreameVacuumProperty.AUTO_MOUNT_MOP)
         self.listen(self._ai_obstacle_detection_changed, DreameVacuumProperty.AI_DETECTION)
         self.listen(
             self._auto_switch_settings_changed,
@@ -510,12 +522,14 @@ class DreameVacuumDevice:
 
                 current_value = self.data.get(did)
                 if current_value != value:
-                    # Do not call external listener when map properties changed
+                    # Do not call external listener when map and json properties changed
                     if not (
                         did == DreameVacuumProperty.MAP_LIST.value
                         or did == DreameVacuumProperty.RECOVERY_MAP_LIST.value
                         or did == DreameVacuumProperty.MAP_DATA.value
                         or did == DreameVacuumProperty.OBJECT_NAME.value
+                        or did == DreameVacuumProperty.AUTO_SWITCH_SETTINGS.value
+                        or did == DreameVacuumProperty.AI_DETECTION.value
                         # or did == DreameVacuumProperty.SELF_TEST_STATUS.value
                     ):
                         changed = True
@@ -570,11 +584,18 @@ class DreameVacuumDevice:
                 if self.capability.small_self_clean_area:
                     self.status.self_clean_area_min = 5
                     self.status.self_clean_area_max = 15
-                    self.status.self_clean_area_default = 20
+                    self.status.self_clean_area_default = 15
                 else:
                     self.status.self_clean_area_max = 35 if self.capability.cleaning_route else 30
 
-            self.status.previous_self_clean_area = self.status.self_clean_area_default
+            self.status.previous_self_clean_area = (
+                self.status.self_clean_value if self.status.self_clean_value else self.status.self_clean_area_default
+            )
+            self.status.previous_self_clean_time = (
+                self.status.self_clean_value
+                if self.status.self_clean_value and self.status.self_clean_by_time
+                else self.status.self_clean_time_default
+            )
 
             if (
                 not self.capability.mopping_after_sweeping
@@ -676,8 +697,6 @@ class DreameVacuumDevice:
                     value = int(old_state)
             current_value = self.get_property(prop)
             if current_value != value:
-                if prop not in self._discarded_properties:
-                    self._dirty_data[prop.value] = DirtyData(value, current_value, time.time())
                 did = prop.value
                 self.data[did] = value
                 if did in self._property_update_callback:
@@ -841,59 +860,43 @@ class DreameVacuumDevice:
             ):
                 new_list.pop(DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING)
 
-            # if not self.status.auto_mount_mop:  # or not self.status.mop_in_station:
-            try:
-                if not self.status.water_tank_or_mop_installed:
-                    new_list.pop(DreameVacuumCleaningMode.MOPPING)
-                    new_list.pop(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING)
-                    if DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING in new_list:
-                        new_list.pop(DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING)
-                    if self.status.cleaning_mode is not DreameVacuumCleaningMode.SWEEPING:
-                        # Store current cleaning mode for future use when water tank is reinstalled
-                        self._previous_cleaning_mode = self.status.cleaning_mode
-                        if self._ready and not self.status.scheduled_clean:
-                            try:
-                                self._update_cleaning_mode(DreameVacuumCleaningMode.SWEEPING.value)
-                            except:
-                                pass
-                elif not self.capability.mop_pad_lifting:
-                    new_list.pop(DreameVacuumCleaningMode.SWEEPING)
-                    if DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING in new_list:
-                        new_list.pop(DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING)
-                    if self.status.sweeping:
-                        if self._ready and not self.status.scheduled_clean:
-                            if (
-                                self._previous_cleaning_mode is not None
-                                and self._previous_cleaning_mode is not DreameVacuumCleaningMode.SWEEPING
-                            ):
-                                self._update_cleaning_mode(self._previous_cleaning_mode.value)
-                            else:
-                                self._update_cleaning_mode(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING.value)
-                        # Store current cleaning mode for future use when water tank is removed
-                        self._previous_cleaning_mode = self.status.cleaning_mode
-            except:
-                pass
+            if not self.status.auto_mount_mop or not self.status.mop_in_station:
+                try:
+                    if not self.status.water_tank_or_mop_installed:
+                        new_list.pop(DreameVacuumCleaningMode.MOPPING)
+                        new_list.pop(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING)
+                        if DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING in new_list:
+                            new_list.pop(DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING)
+                        if self.status.cleaning_mode is not DreameVacuumCleaningMode.SWEEPING:
+                            # Store current cleaning mode for future use when water tank is reinstalled
+                            self._previous_cleaning_mode = self.status.cleaning_mode
+                            if self._ready and not self.status.scheduled_clean and not self.status.shortcut_task:
+                                try:
+                                    self._update_cleaning_mode(DreameVacuumCleaningMode.SWEEPING.value)
+                                except:
+                                    pass
+                    elif not self.capability.mop_pad_lifting:
+                        new_list.pop(DreameVacuumCleaningMode.SWEEPING)
+                        if DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING in new_list:
+                            new_list.pop(DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING)
+                        if self.status.sweeping:
+                            if self._ready and not self.status.scheduled_clean and not self.status.shortcut_task:
+                                if (
+                                    self._previous_cleaning_mode is not None
+                                    and self._previous_cleaning_mode is not DreameVacuumCleaningMode.SWEEPING
+                                ):
+                                    self._update_cleaning_mode(self._previous_cleaning_mode.value)
+                                else:
+                                    self._update_cleaning_mode(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING.value)
+                            # Store current cleaning mode for future use when water tank is removed
+                            self._previous_cleaning_mode = self.status.cleaning_mode
+                except:
+                    pass
 
             self.status.cleaning_mode_list = {v: k for k, v in new_list.items()}
 
     def _task_status_changed(self, previous_task_status: Any = None) -> None:
         """Task status is a very important property and must be listened to trigger necessary actions when a task started or ended"""
-        if self.capability.mopping_after_sweeping:
-            if self.status.started:
-                if (
-                    self.status.cleaning_mode is not DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING
-                    and CLEANING_MODE_MOPPING_AFTER_SWEEPING in self.status.cleaning_mode_list
-                ):
-                    self.status.cleaning_mode_list.pop(CLEANING_MODE_MOPPING_AFTER_SWEEPING)
-                    self._property_changed()
-            elif CLEANING_MODE_MOPPING_AFTER_SWEEPING not in self.status.cleaning_mode_list and (
-                self.status.water_tank_or_mop_installed
-            ):
-                self.status.cleaning_mode_list[CLEANING_MODE_MOPPING_AFTER_SWEEPING] = (
-                    DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING
-                )
-                self._property_changed()
-
         if previous_task_status is not None:
             if previous_task_status in DreameVacuumTaskStatus._value2member_map_:
                 previous_task_status = DreameVacuumTaskStatus(previous_task_status)
@@ -1039,6 +1042,22 @@ class DreameVacuumDevice:
                 if self._protocol.prefer_cloud and self._protocol.dreame_cloud:
                     self.schedule_update(1, True)
 
+        if self.capability.mopping_after_sweeping:
+            if self.status.started:
+                if (
+                    self.status.cleaning_mode is not DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING
+                    and CLEANING_MODE_MOPPING_AFTER_SWEEPING in self.status.cleaning_mode_list
+                ):
+                    self.status.cleaning_mode_list.pop(CLEANING_MODE_MOPPING_AFTER_SWEEPING)
+                    self._property_changed()
+            elif CLEANING_MODE_MOPPING_AFTER_SWEEPING not in self.status.cleaning_mode_list and (
+                self.status.water_tank_or_mop_installed
+            ):
+                self.status.cleaning_mode_list[CLEANING_MODE_MOPPING_AFTER_SWEEPING] = (
+                    DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING
+                )
+                self._property_changed()
+
     def _status_changed(self, previous_status: Any = None) -> None:
         if previous_status is not None:
             if previous_status in DreameVacuumStatus._value2member_map_:
@@ -1092,6 +1111,10 @@ class DreameVacuumDevice:
         if previous_charging_status is not None:
             if self._map_manager:
                 self._map_manager.editor.refresh_map()
+
+            if self._ready and self.capability.mop_pad_lifting:
+                self._water_tank_changed()
+
             if (
                 self._protocol.dreame_cloud
                 and self.status.charging_status != DreameVacuumChargingStatus.CHARGING_COMPLETED
@@ -1101,6 +1124,7 @@ class DreameVacuumDevice:
     def _ai_obstacle_detection_changed(self, previous_ai_obstacle_detection: Any = None) -> None:
         """AI Detection property returns multiple values as json or int this function parses and sets the sub properties to memory"""
         ai_value = self.get_property(DreameVacuumProperty.AI_DETECTION)
+        changed = False
         if isinstance(ai_value, str):
             settings = json.loads(ai_value)
             if settings and self.ai_data is None:
@@ -1109,6 +1133,21 @@ class DreameVacuumDevice:
             for prop in DreameVacuumStrAIProperty:
                 if prop.value in settings:
                     value = settings[prop.value]
+                    if prop.value in self._dirty_ai_data:
+                        if (
+                            self._dirty_ai_data[prop.name].value != value
+                            and time.time() - self._dirty_ai_data[prop.name].update_time < self._discard_timeout
+                        ):
+                            _LOGGER.info(
+                                "AI Property %s Value Discarded: %s <- %s",
+                                prop.name,
+                                self._dirty_ai_data[prop.name].value,
+                                value,
+                            )
+                            del self._dirty_ai_data[prop.name]
+                            continue
+                        del self._dirty_ai_data[prop.name]
+
                     current_value = self.ai_data.get(prop.name)
                     if current_value != value:
                         if current_value is not None:
@@ -1120,6 +1159,7 @@ class DreameVacuumDevice:
                             )
                         else:
                             _LOGGER.info("AI Property %s Added: %s", prop.name, value)
+                        changed = True
                         self.ai_data[prop.name] = value
         elif isinstance(ai_value, int):
             if self.ai_data is None:
@@ -1128,18 +1168,39 @@ class DreameVacuumDevice:
             for prop in DreameVacuumAIProperty:
                 bit = int(prop.value)
                 value = (ai_value & bit) == bit
+                if prop.name in self._dirty_ai_data:
+                    if (
+                        self._dirty_ai_data[prop.name].value != value
+                        and time.time() - self._dirty_ai_data[prop.name].update_time < self._discard_timeout
+                    ):
+                        _LOGGER.info(
+                            "AI Property %s Value Discarded: %s <- %s",
+                            prop.name,
+                            self._dirty_ai_data[prop.name].value,
+                            value,
+                        )
+                        del self._dirty_ai_data[prop.name]
+                        continue
+                    del self._dirty_ai_data[prop.name]
+
                 current_value = self.ai_data.get(prop.name)
                 if current_value != value:
                     if current_value is not None:
                         _LOGGER.info(
-                            "Property %s Changed: %s -> %s",
+                            "AI Property %s Changed: %s -> %s",
                             prop.name,
                             current_value,
                             value,
                         )
                     else:
-                        _LOGGER.info("Property %s Added: %s", prop.name, value)
+                        _LOGGER.info("AI Property %s Added: %s", prop.name, value)
+                    changed = True
                     self.ai_data[prop.name] = value
+
+        if changed:
+            self._last_change = time.time()
+            if self._ready:
+                self._property_changed()
 
         self.status.ai_policy_accepted = bool(
             self.status.ai_policy_accepted or self.status.ai_obstacle_detection or self.status.ai_obstacle_picture
@@ -1149,6 +1210,7 @@ class DreameVacuumDevice:
         value = self.get_property(DreameVacuumProperty.AUTO_SWITCH_SETTINGS)
         if isinstance(value, str) and len(value) > 2:
             mopping_setting_changed = False
+            cleangenius_changed = False
             try:
                 settings = json.loads(value)
                 settings_dict = {}
@@ -1162,9 +1224,27 @@ class DreameVacuumDevice:
                 if settings_dict and self.auto_switch_data is None:
                     self.auto_switch_data = {}
 
+                changed = False
                 for prop in DreameVacuumAutoSwitchProperty:
                     if prop.value in settings_dict:
                         value = settings_dict[prop.value]
+
+                        if prop.name in self._dirty_auto_switch_data:
+                            if (
+                                self._dirty_auto_switch_data[prop.name].value != value
+                                and time.time() - self._dirty_auto_switch_data[prop.name].update_time
+                                < self._discard_timeout
+                            ):
+                                _LOGGER.info(
+                                    "Property %s Value Discarded: %s <- %s",
+                                    prop.name,
+                                    self._dirty_auto_switch_data[prop.name].value,
+                                    value,
+                                )
+                                del self._dirty_auto_switch_data[prop.name]
+                                continue
+                            del self._dirty_auto_switch_data[prop.name]
+
                         current_value = self.auto_switch_data.get(prop.name)
                         if current_value != value:
                             if (
@@ -1172,6 +1252,8 @@ class DreameVacuumDevice:
                                 or prop == DreameVacuumAutoSwitchProperty.CUSTOM_MOPPING_MODE
                             ):
                                 mopping_setting_changed = True
+                            if prop == DreameVacuumAutoSwitchProperty.CLEANGENIUS:
+                                cleangenius_changed = True
 
                             if current_value is not None:
                                 _LOGGER.info(
@@ -1182,7 +1264,13 @@ class DreameVacuumDevice:
                                 )
                             else:
                                 _LOGGER.info("Property %s Added: %s", prop.name, value)
+                            changed = True
                             self.auto_switch_data[prop.name] = value
+
+                if changed:
+                    self._last_change = time.time()
+                    if self._ready and previous_auto_switch_settings is not None:
+                        self._property_changed()
             except Exception as ex:
                 _LOGGER.error("Failed to parse auto switch settings: %s", ex)
 
@@ -1209,6 +1297,9 @@ class DreameVacuumDevice:
                     if self.capability.self_clean_frequency:
                         self.status.self_clean_time_max = 50
                         self.status.self_clean_time_default = 25
+
+            if cleangenius_changed and self._map_manager and self._ready and previous_auto_switch_settings is not None:
+                self._map_manager.editor.refresh_map()
 
     def _dnd_task_changed(self, previous_dnd_task: Any = None) -> None:
         dnd_tasks = self.get_property(DreameVacuumProperty.DND_TASK)
@@ -1492,7 +1583,6 @@ class DreameVacuumDevice:
     def _property_changed(self) -> None:
         """Call external listener when a property changed"""
         if self._update_callback:
-            _LOGGER.debug("Update Callback")
             self._update_callback()
 
     def _map_changed(self) -> None:
@@ -1561,11 +1651,11 @@ class DreameVacuumDevice:
     def _action_update_task(self) -> None:
         self._update_task(True)
 
-    def _update_task(self, from_action=False) -> None:
+    def _update_task(self, force_request_properties=False) -> None:
         """Timer task for updating properties periodically"""
         self._update_timer = None
         try:
-            self.update(from_action)
+            self.update(force_request_properties)
             if self._ready:
                 self.available = True
             self._update_fail_count = 0
@@ -1841,6 +1931,8 @@ class DreameVacuumDevice:
             self._last_settings_request = time.time()
             self._last_map_list_request = self._last_settings_request
             self._dirty_data = {}
+            self._dirty_auto_switch_data = {}
+            self._dirty_ai_data = {}
             self._request_properties()
             self._last_update_failed = None
 
@@ -1946,7 +2038,7 @@ class DreameVacuumDevice:
         """Set error callback function for external listeners"""
         self._error_callback = callback
 
-    def schedule_update(self, wait: float = None, from_action=False) -> None:
+    def schedule_update(self, wait: float = None, force_request_properties=False) -> None:
         """Schedule a device update for future"""
         if wait == None:
             wait = self._update_interval
@@ -1957,7 +2049,9 @@ class DreameVacuumDevice:
             self._update_timer = None
 
         if wait >= 0:
-            self._update_timer = Timer(wait, self._action_update_task if from_action else self._update_task)
+            self._update_timer = Timer(
+                wait, self._action_update_task if force_request_properties else self._update_task
+            )
             self._update_timer.start()
 
     def get_property(
@@ -2014,7 +2108,24 @@ class DreameVacuumDevice:
             if set_fn is None and self.get_property(prop) is None:
                 raise InvalidActionException("Invalid property")
 
-            if prop.name in PROPERTY_AVAILABILITY and not PROPERTY_AVAILABILITY[prop.name](self):
+            prop_name = prop.lower() if isinstance(prop, str) else prop.name
+
+            if (
+                (
+                    self.status.started
+                    or not (
+                        prop is DreameVacuumProperty.SUCTION_LEVEL
+                        or prop is DreameVacuumProperty.WATER_VOLUME
+                        or prop is DreameVacuumProperty.CLEANING_MODE
+                        or prop is DreameVacuumProperty.WETNESS_LEVEL
+                        or prop is DreameVacuumAutoSwitchProperty.CLEANING_ROUTE
+                        or prop == "CUSTOM_MOPPING_ROUTE"
+                        or prop == "MOP_PAD_HUMIDITY"
+                    )
+                )
+                and prop_name in PROPERTY_AVAILABILITY
+                and not PROPERTY_AVAILABILITY[prop_name](self)
+            ):
                 raise InvalidActionException("Property unavailable")
 
             def get_int_value(enum, value, enum_list=None):
@@ -2029,9 +2140,9 @@ class DreameVacuumDevice:
 
                 if isinstance(value, int):
                     if enum_list is None:
-                        if value in enum.__members__:
+                        if value in enum._value2member_map_:
                             return value
-                    elif value in enum_list.keys():
+                    elif value in enum_list.values():
                         return value
 
             if prop is DreameVacuumProperty.SUCTION_LEVEL:
@@ -2122,6 +2233,36 @@ class DreameVacuumDevice:
             raise InvalidActionException("Property not updated")
         raise InvalidActionException("Invalid property or value")
 
+    def call_action_value(self, action: str):
+        if action is not None:
+            if hasattr(self, action):
+                action_fn = getattr(self, action)
+            else:
+                action_fn = None
+
+            action = action.upper()
+            if action in DreameVacuumAction.__members__:
+                action = DreameVacuumAction(DreameVacuumAction[action])
+            elif action_fn is None:
+                raise InvalidActionException("Invalid action")
+
+            action_name = action.lower() if isinstance(action, str) else action.name
+
+            if action_name in ACTION_AVAILABILITY and not ACTION_AVAILABILITY[action_name](self):
+                raise InvalidActionException("Action unavailable")
+
+            if not self.device_connected:
+                raise InvalidActionException("Device unavailable")
+
+            if action_fn:
+                return action_fn()
+
+            result = self.call_action(action)
+            if result and result.get("code") == 0:
+                return
+            raise InvalidActionException("Unable to call action")
+        raise InvalidActionException("Invalid action")
+
     def set_property(
         self,
         prop: (
@@ -2143,6 +2284,9 @@ class DreameVacuumDevice:
         self.schedule_update(10)
         current_value = self._update_property(prop, value)
         if current_value is not None:
+            if prop not in self._discarded_properties:
+                self._dirty_data[prop.value] = DirtyData(value, current_value, time.time())
+
             self._last_change = time.time()
             self._last_settings_request = 0
 
@@ -2512,7 +2656,7 @@ class DreameVacuumDevice:
                 self._map_manager.set_update_interval(self._map_update_interval)
                 self._map_manager.schedule_update(0.01)
 
-    def update(self, from_action=False) -> None:
+    def update(self, force_request_properties=False) -> None:
         """Get properties from the device."""
         _LOGGER.debug("Device update: %s", self._update_interval)
 
@@ -2633,9 +2777,9 @@ class DreameVacuumDevice:
 
         try:
             if self._protocol.dreame_cloud and (not self.device_connected or not self.cloud_connected):
-                from_action = True
+                force_request_properties = True
 
-            if not self._protocol.dreame_cloud or from_action:
+            if not self._protocol.dreame_cloud or force_request_properties:
                 self._request_properties(properties)
             elif self.status.map_backup_status:
                 self._request_properties([DreameVacuumProperty.MAP_BACKUP_STATUS])
@@ -2650,7 +2794,7 @@ class DreameVacuumDevice:
                 if time.time() - v.update_time >= self._restore_timeout:
                     if v.previous_value is not None:
                         value = self.data.get(k)
-                        if v.value == value:
+                        if value is None or v.value == value:
                             _LOGGER.info(
                                 "Property %s Value Restored: %s <- %s",
                                 DreameVacuumProperty(k).name,
@@ -2663,7 +2807,44 @@ class DreameVacuumDevice:
                                     callback(v.previous_value)
 
                             self._property_changed()
+                            self.schedule_update(1, True)
                     del self._dirty_data[k]
+
+        if self._dirty_auto_switch_data:
+            for k, v in copy.deepcopy(self._dirty_auto_switch_data).items():
+                if time.time() - v.update_time >= self._restore_timeout:
+                    if v.previous_value is not None:
+                        value = self.auto_switch_data.get(k)
+                        ## TODO
+                        # if value is None or v.value == value:
+                        #    _LOGGER.info(
+                        #        "Property %s Value Restored: %s <- %s",
+                        #        k,
+                        #        v.previous_value,
+                        #        value,
+                        #    )
+                        #    self.auto_switch_data[k] = v.previous_value
+                        #    self._property_changed()
+                        #    self.schedule_update(1, True)
+                    del self._dirty_auto_switch_data[k]
+
+        if self._dirty_ai_data:
+            for k, v in copy.deepcopy(self._dirty_ai_data).items():
+                if time.time() - v.update_time >= self._restore_timeout:
+                    if v.previous_value is not None:
+                        value = self.ai_data.get(k)
+                        ## TODO
+                        # if value is None or v.value == value:
+                        #    _LOGGER.info(
+                        #        "AI Property %s Value Restored: %s <- %s",
+                        #        k,
+                        #        v.previous_value,
+                        #        value,
+                        #    )
+                        #    self.ai_data[k] = v.previous_value
+                        #    self._property_changed()
+                        #    self.schedule_update(1, True)
+                    del self._dirty_ai_data[k]
 
         if self._consumable_change:
             self._consumable_change = False
@@ -2831,7 +3012,7 @@ class DreameVacuumDevice:
             return
 
         # Schedule update for retrieving new properties after action sent
-        self.schedule_update(5, bool(not map_action and self._protocol.dreame_cloud))
+        self.schedule_update(6, bool(not map_action and self._protocol.dreame_cloud))
         if result and result.get("code") == 0:
             _LOGGER.info("Send action %s %s", action.name, parameters)
             self._last_change = time.time()
@@ -2874,6 +3055,19 @@ class DreameVacuumDevice:
         if self.status.cruising:
             raise InvalidActionException("Cannot set cleaning mode when cruising")
 
+        if self.status.draining:
+            raise InvalidActionException("Cannot set cleaning mode when draining")
+
+        if self.status.scheduled_clean or self.status.shortcut_task:
+            raise InvalidActionException("Cannot set cleaning mode when scheduled cleaning or shortcut task")
+
+        if (
+            self.status.started
+            and self.capability.custom_cleaning_mode
+            and (self.status.customized_cleaning and not (self.status.zone_cleaning or self.status.spot_cleaning))
+        ):
+            raise InvalidActionException("Cannot set cleaning mode when customized cleaning is enabled")
+
         cleaning_mode = int(cleaning_mode)
         if cleaning_mode == DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING.value and (
             not self.capability.mopping_after_sweeping
@@ -2884,20 +3078,20 @@ class DreameVacuumDevice:
         ):
             raise InvalidActionException("Cannot set mopping after sweeping")
 
-        # if not self.status.auto_mount_mop:  # or not self.status.mop_in_station:
-        if cleaning_mode == DreameVacuumCleaningMode.SWEEPING.value:
-            if self.status.water_tank_or_mop_installed and not self.capability.mop_pad_lifting:
+        if not self.status.auto_mount_mop or not self.status.mop_in_station:
+            if cleaning_mode == DreameVacuumCleaningMode.SWEEPING.value:
+                if self.status.water_tank_or_mop_installed and not self.capability.mop_pad_lifting:
+                    if self.capability.self_wash_base:
+                        raise InvalidActionException("Cannot set sweeping while mop pads are installed")
+                    else:
+                        raise InvalidActionException("Cannot set sweeping while water tank is installed")
+            elif not self.status.water_tank_or_mop_installed:
                 if self.capability.self_wash_base:
-                    raise InvalidActionException("Cannot set sweeping while mop pads are installed")
+                    raise InvalidActionException("Cannot set mopping while mop pads are not installed")
                 else:
-                    raise InvalidActionException("Cannot set sweeping while water tank is installed")
-        elif not self.status.water_tank_or_mop_installed:
-            if self.capability.self_wash_base:
-                raise InvalidActionException("Cannot set mopping while mop pads are not installed")
-            else:
-                raise InvalidActionException("Cannot set mopping while water tank is not installed")
+                    raise InvalidActionException("Cannot set mopping while water tank is not installed")
 
-        if not PROPERTY_AVAILABILITY[DreameVacuumProperty.CLEANING_MODE.name](self):
+        if self.status.started and not PROPERTY_AVAILABILITY[DreameVacuumProperty.CLEANING_MODE.name](self):
             raise InvalidActionException("Cleaning mode unavailable")
 
         return self._update_cleaning_mode(cleaning_mode)
@@ -2969,8 +3163,8 @@ class DreameVacuumDevice:
                     and (
                         not self.capability.self_clean_frequency
                         or (
-                            self.set_self_clean_frequency == DreameVacuumSelfCleanFrequency.BY_TIME
-                            or self.set_self_clean_frequency == DreameVacuumSelfCleanFrequency.BY_ROOM
+                            self.status.self_clean_frequency == DreameVacuumSelfCleanFrequency.BY_TIME
+                            or self.status.self_clean_frequency == DreameVacuumSelfCleanFrequency.BY_ROOM
                         )
                     )
                 ):
@@ -4013,11 +4207,6 @@ class DreameVacuumDevice:
     def set_ai_detection(self, settings: dict[str, bool] | int) -> dict[str, Any] | None:
         """Send ai detection parameters to the device."""
         if self.capability.ai_detection:
-            if isinstance(settings, int):
-                self._update_property(DreameVacuumProperty.AI_DETECTION, settings)
-            else:
-                self._property_changed()
-
             if (self.status.ai_obstacle_detection or self.status.ai_obstacle_image_upload) and (
                 self._protocol.cloud and not self.status.ai_policy_accepted
             ):
@@ -4041,7 +4230,6 @@ class DreameVacuumDevice:
                     raise InvalidActionException(
                         "You need to accept privacy policy from the App before enabling AI obstacle detection feature"
                     )
-
             mapping = self.property_mapping[DreameVacuumProperty.AI_DETECTION]
             if isinstance(settings, int):
                 return self._protocol.set_property(mapping["siid"], mapping["piid"], settings, 3)
@@ -4059,36 +4247,38 @@ class DreameVacuumDevice:
             if prop.name not in self.ai_data:
                 raise InvalidActionException("Not supported")
             current_value = self.get_ai_property(prop)
+
+            self._dirty_ai_data[prop.name] = DirtyData(value, current_value, time.time())
             self.ai_data[prop.name] = value
             ai_value = self.get_property(DreameVacuumProperty.AI_DETECTION)
-            if isinstance(ai_value, int):
-                bit = DreameVacuumAIProperty[prop.name].value
-                result = self.set_ai_detection((ai_value | bit) if value else (ai_value & -(bit + 1)))
-            else:
-                result = self.set_ai_detection({DreameVacuumStrAIProperty[prop.name].value: bool(value)})
-            if result is None or result[0]["code"] != 0:
-                _LOGGER.error(
-                    "AI Property not updated: %s: %s -> %s",
-                    prop.name,
-                    current_value,
-                    value,
-                )
+            self._property_changed()
+            try:
+                if isinstance(ai_value, int):
+                    bit = DreameVacuumAIProperty[prop.name].value
+                    result = self.set_ai_detection((ai_value | bit) if value else (ai_value & -(bit + 1)))
+                else:
+                    result = self.set_ai_detection({DreameVacuumStrAIProperty[prop.name].value: bool(value)})
+
+                if result is None or result[0]["code"] != 0:
+                    _LOGGER.error(
+                        "AI Property not updated: %s: %s -> %s",
+                        prop.name,
+                        current_value,
+                        value,
+                    )
+                    if prop.name in self._dirty_ai_data:
+                        del self._dirty_ai_data[prop.name]
+                    self.ai_data[prop.name] = current_value
+                    self._property_changed()
+            except:
+                if prop.name in self._dirty_ai_data:
+                    del self._dirty_ai_data[prop.name]
                 self.ai_data[prop.name] = current_value
                 self._property_changed()
             return result
 
     def set_auto_switch_settings(self, settings) -> dict[str, Any] | None:
         if self.capability.auto_switch_settings:
-            self._property_changed()
-            current_settings = json.loads(self.get_property(DreameVacuumProperty.AUTO_SWITCH_SETTINGS))
-            if len(current_settings):
-                for prop in current_settings:
-                    if prop["k"] == settings["k"]:
-                        prop["v"] = settings["v"]
-                self._update_property(
-                    DreameVacuumProperty.AUTO_SWITCH_SETTINGS,
-                    str(json.dumps(current_settings, separators=(",", ":"))).replace(" ", ""),
-                )
             mapping = self.property_mapping[DreameVacuumProperty.AUTO_SWITCH_SETTINGS]
             return self._protocol.set_property(
                 mapping["siid"],
@@ -4103,18 +4293,31 @@ class DreameVacuumDevice:
                 raise InvalidActionException("Not supported")
             current_value = self.get_auto_switch_property(prop)
             if current_value != value:
+                self._dirty_auto_switch_data[prop.name] = DirtyData(value, current_value, time.time())
                 self.auto_switch_data[prop.name] = value
-                result = self.set_auto_switch_settings({"k": prop.value, "v": int(value)})
-                if result is None or result[0]["code"] != 0:
-                    _LOGGER.error(
-                        "Auto Switch Property not updated: %s: %s -> %s",
-                        prop.name,
-                        current_value,
-                        value,
-                    )
+                self._property_changed()
+                try:
+                    result = self.set_auto_switch_settings({"k": prop.value, "v": int(value)})
+                    if result is None or result[0]["code"] != 0:
+                        _LOGGER.error(
+                            "Auto Switch Property not updated: %s: %s -> %s",
+                            prop.name,
+                            current_value,
+                            value,
+                        )
+                        if prop.name in self._dirty_auto_switch_data:
+                            del self._dirty_auto_switch_data[prop.name]
+                        self.auto_switch_data[prop.name] = current_value
+                        self._property_changed()
+                    else:
+                        _LOGGER.info("Update Property: %s: %s -> %s", prop.name, current_value, value)
+                        if prop.name in self._dirty_auto_switch_data:
+                            self._dirty_auto_switch_data[prop.name].update_time = time.time()
+                except:
+                    if prop.name in self._dirty_auto_switch_data:
+                        del self._dirty_auto_switch_data[prop.name]
                     self.auto_switch_data[prop.name] = current_value
                     self._property_changed()
-                _LOGGER.info("Update Property: %s: %s -> %s", prop.name, current_value, value)
                 return result
         elif self.capability.self_wash_base and prop == DreameVacuumAutoSwitchProperty.AUTO_DRYING:
             return self.set_property(DreameVacuumProperty.INTELLIGENT_RECOGNITION, int(value))
@@ -4170,17 +4373,21 @@ class DreameVacuumDevice:
                     self.status.previous_self_clean_area = self.status.self_clean_value
 
             if not value:
-                return self.set_self_clean_value(0)
+                result = self.set_self_clean_value(0)
+                if not self.capability.self_clean_frequency:
+                    return result
 
-            result = self.set_auto_switch_property(DreameVacuumAutoSwitchProperty.SELF_CLEAN_FREQUENCY, value)
-            if result:
-                if value == DreameVacuumSelfCleanFrequency.BY_TIME.value:
+            result = not self.capability.self_clean_frequency or self.set_auto_switch_property(
+                DreameVacuumAutoSwitchProperty.SELF_CLEAN_FREQUENCY, value
+            )
+            if result and value:
+                if self.capability.self_clean_frequency and value == DreameVacuumSelfCleanFrequency.BY_TIME.value:
                     self.set_self_clean_value(
                         self.status.previous_self_clean_time
                         if self.status.previous_self_clean_time
                         else self.status.self_clean_time_default
                     )
-                elif value == DreameVacuumSelfCleanFrequency.BY_AREA.value:
+                else:
                     self.set_self_clean_value(
                         self.status.previous_self_clean_area
                         if self.status.previous_self_clean_area
@@ -5973,7 +6180,10 @@ class DreameVacuumDeviceStatus:
     def dust_collection_available(self) -> bool:
         """Returns true when robot is docked and can start auto emptying."""
         return bool(
-            self._get_property(DreameVacuumProperty.DUST_COLLECTION) and (not self.washing or self.washing_paused)
+            self._get_property(DreameVacuumProperty.DUST_COLLECTION)
+            and (not self.washing or self.washing_paused)
+            and not self.draining
+            and not self.self_repairing
         )
 
     @property
@@ -6045,8 +6255,9 @@ class DreameVacuumDeviceStatus:
             value = self._get_property(DreameVacuumProperty.MOP_PAD_INSTALLED)
             if value is not None:
                 return bool(value == 0)
-        water_tank = self.water_tank
-        return bool(water_tank is DreameVacuumWaterTank.INSTALLED or water_tank is DreameVacuumWaterTank.MOP_INSTALLED)
+        return bool(
+            self._get_property(DreameVacuumProperty.WATER_TANK) != DreameVacuumWaterTank.NOT_INSTALLED.value
+        )
 
     @property
     def mop_pad_installed(self) -> bool:
@@ -6210,11 +6421,14 @@ class DreameVacuumDeviceStatus:
         """Returns true when device is cruising."""
         if self._capability.cruising:
             task_status = self.task_status
+            status = self.status
             return bool(
                 task_status is DreameVacuumTaskStatus.CRUISING_PATH
                 or task_status is DreameVacuumTaskStatus.CRUISING_POINT
                 or task_status is DreameVacuumTaskStatus.CRUISING_PATH_PAUSED
                 or task_status is DreameVacuumTaskStatus.CRUISING_POINT_PAUSED
+                or status is DreameVacuumStatus.CRUISING_PATH
+                or status is DreameVacuumStatus.CRUISING_POINT
             )
         return bool(self.go_to_zone)
 
@@ -6263,7 +6477,7 @@ class DreameVacuumDeviceStatus:
     def mop_in_station(self) -> bool:
         """Returns true when the mop pad is in the station."""
         value = self._get_property(DreameVacuumProperty.MOP_IN_STATION)
-        return bool(value == 1 or value == 4)
+        return bool(value == 1 or value == 4) and self.docked
 
     @property
     def auto_add_detergent(self) -> bool:
@@ -7116,17 +7330,9 @@ class DreameVacuumDeviceStatus:
             DreameVacuumProperty.MOP_WASH_LEVEL,
             DreameVacuumProperty.VOICE_ASSISTANT_LANGUAGE,
             DreameVacuumProperty.AUTO_DUST_COLLECTING,
-            DreameVacuumAutoSwitchProperty.CLEANING_ROUTE,
-            DreameVacuumAutoSwitchProperty.ULTRA_CLEAN_MODE,
-            DreameVacuumAutoSwitchProperty.SELF_CLEAN_FREQUENCY,
-            DreameVacuumAutoSwitchProperty.MOPPING_MODE,
-            DreameVacuumAutoSwitchProperty.CUSTOM_MOPPING_MODE,
-            DreameVacuumAutoSwitchProperty.UV_STERILIZATION,
-            DreameVacuumAutoSwitchProperty.HOT_WASHING,
-            DreameVacuumAutoSwitchProperty.MAX_SUCTION_POWER,
-            DreameVacuumAutoSwitchProperty.CLEANGENIUS,
-            DreameVacuumAutoSwitchProperty.MOPPING_TYPE,
-            DreameVacuumAutoSwitchProperty.AUTO_DRYING,
+            DreameVacuumProperty.AUTO_EMPTY_STATUS,
+            DreameVacuumProperty.SELF_CLEAN,
+            DreameVacuumProperty.DRYING_TIME,
         ]
 
         if not self._capability.disable_sensor_cleaning:
@@ -7145,6 +7351,9 @@ class DreameVacuumDeviceStatus:
                 ]
             )
 
+        if not self._capability.auto_empty_mode:
+            properties.append(DreameVacuumProperty.AUTO_EMPTY_FREQUENCY)
+
         attributes = {}
 
         if not self._capability.self_wash_base:
@@ -7152,17 +7361,58 @@ class DreameVacuumDeviceStatus:
             properties.append(DreameVacuumProperty.WATER_VOLUME)
         else:
             attributes[ATTR_MOP_PAD] = self.water_tank_or_mop_installed
-            if self.self_clean_value is not None:
-                attributes[ATTR_SELF_CLEAN_TIME if self.self_clean_by_time else ATTR_SELF_CLEAN_AREA] = (
-                    self.self_clean_value
-                )
-
             attributes[ATTR_MOP_PAD_HUMIDITY] = self.mop_pad_humidity_name.replace("_", " ").capitalize()
             attributes[f"{ATTR_MOP_PAD_HUMIDITY}_list"] = (
                 [v.replace("_", " ").capitalize() for v in self.mop_pad_humidity_list.keys()]
                 if PROPERTY_AVAILABILITY["mop_pad_humidity"](self._device)
                 else []
             )
+            if self.self_clean_value is not None:
+                attributes[ATTR_SELF_CLEAN_TIME if self.self_clean_by_time else ATTR_SELF_CLEAN_AREA] = (
+                    self.self_clean_value
+                )
+            attributes[ATTR_SELF_CLEAN_AREA_MIN] = self.self_clean_area_min
+            attributes[ATTR_SELF_CLEAN_AREA_MAX] = self.self_clean_area_max
+            attributes[ATTR_PREVIOUS_SELF_CLEAN_AREA] = self.previous_self_clean_area
+            if self._capability.self_clean_frequency:
+                attributes[ATTR_SELF_CLEAN_TIME_MIN] = self.self_clean_time_min
+                attributes[ATTR_SELF_CLEAN_TIME_MAX] = self.self_clean_time_max
+                attributes[ATTR_PREVIOUS_SELF_CLEAN_TIME] = self.previous_self_clean_time
+
+        if self._capability.auto_switch_settings:
+            properties.extend(
+                [
+                    DreameVacuumAutoSwitchProperty.MOPPING_MODE,
+                    DreameVacuumAutoSwitchProperty.AUTO_DRYING,
+                ]
+            )
+
+        if self._capability.hot_washing:
+            properties.append(DreameVacuumAutoSwitchProperty.HOT_WASHING)
+
+        if self._capability.max_suction_power:
+            properties.append(DreameVacuumAutoSwitchProperty.MAX_SUCTION_POWER)
+
+        if self._capability.uv_sterilization:
+            properties.append(DreameVacuumAutoSwitchProperty.UV_STERILIZATION)
+
+        if self._capability.ultra_clean_mode:
+            properties.append(DreameVacuumAutoSwitchProperty.ULTRA_CLEAN_MODE)
+
+        if self._capability.custom_cleaning_mode:
+            properties.append(DreameVacuumAutoSwitchProperty.CUSTOM_MOPPING_MODE)
+
+        if self._capability.cleaning_route:
+            properties.append(DreameVacuumAutoSwitchProperty.CLEANING_ROUTE)
+
+        if self._capability.cleangenius:
+            properties.append(DreameVacuumAutoSwitchProperty.CLEANGENIUS)
+
+        if self._capability.custom_mopping_route:
+            properties.append(DreameVacuumAutoSwitchProperty.MOPPING_TYPE)
+
+        if self._capability.self_clean_frequency:
+            properties.append(DreameVacuumAutoSwitchProperty.SELF_CLEAN_FREQUENCY)
 
         for prop in properties:
             value = self._get_property(prop)
@@ -7179,6 +7429,8 @@ class DreameVacuumDeviceStatus:
                     value = self.low_water_warning_name.replace("_", " ").capitalize()
                 elif prop is DreameVacuumProperty.STATUS:
                     value = self.status_name.replace("_", " ").capitalize()
+                elif prop is DreameVacuumProperty.AUTO_EMPTY_STATUS:
+                    value = self.auto_empty_status_name.replace("_", " ").capitalize()
                 elif prop is DreameVacuumProperty.WATER_VOLUME:
                     value = self.water_volume_name.capitalize()
                     attributes[f"{prop_name}_list"] = (
@@ -7215,8 +7467,6 @@ class DreameVacuumDeviceStatus:
                         v.replace("_", " ").capitalize() for v in self.voice_assistant_language_list.keys()
                     ]
                 elif prop is DreameVacuumAutoSwitchProperty.CLEANING_ROUTE:
-                    if not self._capability.cleaning_route:
-                        continue
                     value = self.cleaning_route_name.replace("_", " ").capitalize()
                     attributes[f"{prop_name}_list"] = (
                         [v.replace("_", " ").capitalize() for v in self.cleaning_route_list.keys()]
@@ -7224,8 +7474,6 @@ class DreameVacuumDeviceStatus:
                         else []
                     )
                 elif prop is DreameVacuumAutoSwitchProperty.CLEANGENIUS:
-                    if not self._capability.cleangenius:
-                        continue
                     value = self.cleangenius_name.replace("_", " ").capitalize()
                     attributes[f"{prop_name}_list"] = (
                         [v.replace("_", " ").capitalize() for v in self.cleangenius_list.keys()]
@@ -7233,8 +7481,6 @@ class DreameVacuumDeviceStatus:
                         else []
                     )
                 elif prop is DreameVacuumAutoSwitchProperty.MOPPING_TYPE:
-                    if self._capability.custom_mopping_route:
-                        continue
                     value = self.mopping_type_name.replace("_", " ").capitalize()
                     attributes[f"{prop_name}_list"] = (
                         [v.replace("_", " ").capitalize() for v in self.mopping_type_list.keys()]
@@ -7242,13 +7488,28 @@ class DreameVacuumDeviceStatus:
                         else []
                     )
                 elif prop is DreameVacuumProperty.CUSTOMIZED_CLEANING:
-                    value = self.customized_cleaning and not self.zone_cleaning and not self.spot_cleaning
+                    value = value and not self.zone_cleaning and not self.spot_cleaning
                 elif prop is DreameVacuumProperty.SCHEDULED_CLEAN:
                     value = bool(value == 1 or value == 2 or value == 4)
+                elif prop is DreameVacuumProperty.AUTO_DUST_COLLECTING:
+                    if self._capability.auto_empty_mode:
+                        attributes[ATTR_AUTO_EMPTY_MODE] = self.auto_empty_mode_name.replace("_", " ").capitalize()
+                        attributes[f"{ATTR_AUTO_EMPTY_MODE}_list"] = [
+                            v.replace("_", " ").capitalize() for v in self.auto_empty_mode_list.keys()
+                        ]
+                    value = bool(value > 0)
+                elif prop is DreameVacuumAutoSwitchProperty.SELF_CLEAN_FREQUENCY:
+                    value = self.self_clean_frequency_name.replace("_", " ").capitalize()
+                    attributes[f"{prop_name}_list"] = (
+                        [v.replace("_", " ").capitalize() for v in self.self_clean_frequency_list.keys()]
+                        if PROPERTY_AVAILABILITY[prop.name](self._device)
+                        else []
+                    )
                 elif (
                     prop is DreameVacuumProperty.TIGHT_MOPPING
                     or prop is DreameVacuumProperty.MULTI_FLOOR_MAP
                     or prop is DreameVacuumProperty.INTELLIGENT_RECOGNITION
+                    or prop is DreameVacuumProperty.SELF_CLEAN
                     or prop is DreameVacuumAutoSwitchProperty.ULTRA_CLEAN_MODE
                     or prop is DreameVacuumAutoSwitchProperty.UV_STERILIZATION
                     or prop is DreameVacuumAutoSwitchProperty.HOT_WASHING
@@ -7256,7 +7517,7 @@ class DreameVacuumDeviceStatus:
                     or prop is DreameVacuumAutoSwitchProperty.AUTO_DRYING
                     or prop is DreameVacuumAutoSwitchProperty.CUSTOM_MOPPING_MODE
                 ):
-                    value = bool(value == 1)
+                    value = bool(value > 0)
                 attributes[prop_name] = value
 
         if self._capability.dnd_task and self.dnd_tasks is not None:
@@ -7289,6 +7550,7 @@ class DreameVacuumDeviceStatus:
         attributes[ATTR_CRUSING] = self.cruising
         attributes[ATTR_VACUUM_STATE] = self.state_name.lower()
         attributes[ATTR_HAS_SAVED_MAP] = self._map_manager is not None and self.has_saved_map
+        attributes[ATTR_HAS_TEMPORARY_MAP] = self.has_temporary_map
 
         if self._capability.lidar_navigation:
             attributes[ATTR_MAPPING] = self.fast_mapping

@@ -236,6 +236,7 @@ class CameraRecoveryView(CameraView):
         if not camera.map_data_json:
             index = request.query.get("index", 1)
             file = request.query.get("file")
+            data = False
             file = file and (file == True or file == "true" or file == "1")
             if file:
                 result, map_url, object_name = await camera.recovery_map_file(index)
@@ -777,7 +778,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             self._image = self._renderer.render_map(map_data, robot_status, station_status)
             if not self.map_data_json and self._calibration_points != self._renderer.calibration_points:
                 self._calibration_points = self._renderer.calibration_points
-                self.coordinator.async_set_updated_data()
+                self.coordinator.set_updated_data()
         except Exception:
             LOGGER.warn("Map render Failed: %s", traceback.format_exc())
 

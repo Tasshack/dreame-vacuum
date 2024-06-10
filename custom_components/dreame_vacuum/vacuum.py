@@ -85,6 +85,7 @@ from .const import (
     SERVICE_RENAME_MAP,
     SERVICE_RENAME_SEGMENT,
     SERVICE_SET_PROPERTY,
+    SERVICE_CALL_ACTION,
     SERVICE_REQUEST_MAP,
     SERVICE_SELECT_MAP,
     SERVICE_DELETE_MAP,
@@ -204,11 +205,19 @@ async def async_setup_entry(
         SERVICE_SET_PROPERTY,
         {
             vol.Required(INPUT_KEY): cv.string,
-            vol.Required(INPUT_VALUE): vol.Any(vol.Coerce(int), vol.Coerce(str), vol.Coerce(bool)),
+            vol.Optional(INPUT_VALUE): vol.Any(vol.Coerce(int), vol.Coerce(str), vol.Coerce(bool)),
         },
         DreameVacuum.async_set_property.__name__,
     )
-
+    
+    platform.async_register_entity_service(
+        SERVICE_CALL_ACTION,
+        {
+            vol.Required(INPUT_KEY): cv.string
+        },
+        DreameVacuum.async_call_action.__name__,
+    )
+    
     platform.async_register_entity_service(
         SERVICE_REQUEST_MAP,
         {},
@@ -906,9 +915,14 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         await self._try_command("Unable to call request_map: %s", self.device.request_map)
 
     async def async_set_property(self, key, value) -> None:
-        """Request new map."""
+        """Set property."""
         if key is not None and value is not None and key != "" and value != "":
             await self._try_command("set_property failed: %s", self.device.set_property_value, key, value)
+
+    async def async_call_action(self, key) -> None:
+        """Call action."""
+        if key is not None and key != "":
+            await self._try_command("call_action failed: %s", self.device.call_action_value, key)
 
     async def async_rename_map(self, map_id, map_name="") -> None:
         """Rename a map"""

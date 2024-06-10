@@ -148,6 +148,9 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         icon="mdi:chart-bubble",
         entity_category=EntityCategory.CONFIG,
         format_fn=lambda value, device: int(value),
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.detergent
+        )
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.MAP_SAVING,

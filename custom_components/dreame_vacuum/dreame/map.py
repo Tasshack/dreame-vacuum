@@ -1217,7 +1217,7 @@ class DreameMapVacuumMapManager:
             if self._map_request_time is not None or self._need_map_request:
                 self._updated_frame_id = None
                 self._map_request_count = self._map_request_count + 1
-                if self._map_request_count >= 16:
+                if self._map_request_count >= 6:
                     self._map_request_time = None
                     self._need_map_request = False
                 elif (
@@ -3267,20 +3267,21 @@ class DreameVacuumMapDecoder:
                     elif furniture_type == 25:
                         furniture_type = 8
 
-                    map_data.saved_furnitures[index] = Furniture(
-                        int(furniture[6]),
-                        int(furniture[7]),
-                        int(furniture[6] - (furniture[3] / 2)),
-                        int(furniture[7] - (furniture[4] / 2)),
-                        furniture[3],
-                        furniture[4],
-                        FurnitureType(furniture_type),
-                        int(furniture[13]),
-                        furniture[9],
-                        furniture[12],
-                        furniture[0],
-                        furniture[2],
-                    )
+                    if furniture[3] > 0 and furniture[4] > 0:
+                        map_data.saved_furnitures[index] = Furniture(
+                            int(furniture[6]),
+                            int(furniture[7]),
+                            int(furniture[6] - (furniture[3] / 2)),
+                            int(furniture[7] - (furniture[4] / 2)),
+                            furniture[3],
+                            furniture[4],
+                            FurnitureType(furniture_type),
+                            int(furniture[13]),
+                            furniture[9],
+                            furniture[12],
+                            furniture[0],
+                            furniture[2],
+                        )
 
             if map_data.furnitures is None:
                 furniture_key = (
@@ -4036,8 +4037,8 @@ class DreameVacuumMapDecoder:
             if segment.segment_id not in area_color_index:
                 area_color_index[segment.segment_id] = 0
 
-        for i in area_color_index:
-            map_data.segments[i].color_index = area_color_index[i]
+        for k, v in area_color_index.items():
+            map_data.segments[k].color_index = v
 
     @staticmethod
     def get_carpets(map_data: MapData, saved_map_data: MapData) -> list[tuple]:
@@ -5642,12 +5643,16 @@ class DreameVacuumMapRenderer:
                     self._map_data is None
                     or self._map_data.segments != map_data.segments
                     or self._map_data.dimensions != map_data.dimensions
+                    or self._map_data.saved_map_id != map_data.saved_map_id
                 ):
                     map_data.dimensions.bounds = DreameVacuumMapRenderer._calculate_bounds(
                         map_data.dimensions, map_data.segments
                     )
 
-                    if self._map_data and self._map_data.dimensions.bounds != map_data.dimensions.bounds:
+                    if self._map_data and (
+                        self._map_data.dimensions.bounds != map_data.dimensions.bounds
+                        or self._map_data.saved_map_id != map_data.saved_map_id
+                    ):
                         self._map_data = None
                 else:
                     map_data.dimensions.bounds = self._map_data.dimensions.bounds

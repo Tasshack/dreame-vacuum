@@ -118,8 +118,8 @@ SEGMENT_VISIBILITY_TO_ICON = {
 }
 
 SELF_CLEAN_FREQUENCY_TO_ICON = {
-    DreameVacuumSelfCleanFrequency.BY_AREA: "mdi:home-switch",
-    DreameVacuumSelfCleanFrequency.BY_ROOM: "mdi:texture-box",
+    DreameVacuumSelfCleanFrequency.BY_AREA: "mdi:texture-box",
+    DreameVacuumSelfCleanFrequency.BY_ROOM: "mdi:home-switch",
     DreameVacuumSelfCleanFrequency.BY_TIME: "mdi:table-clock",
 }
 

@@ -1289,7 +1289,7 @@ PROPERTY_AVAILABILITY: Final = {
     and not device.status.cleangenius_cleaning,
     DreameVacuumProperty.TIGHT_MOPPING.name: lambda device: (device.status.water_tank_or_mop_installed)
     and not device.status.cleangenius_cleaning,
-    DreameVacuumProperty.MULTI_FLOOR_MAP.name: lambda device: not device.status.has_temporary_map,
+    DreameVacuumProperty.MULTI_FLOOR_MAP.name: lambda device: not device.status.has_temporary_map and not device.status.started,
     DreameVacuumProperty.SUCTION_LEVEL.name: lambda device: not device.status.mopping
     and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning))
     and not device.status.cleangenius_cleaning
@@ -1315,9 +1315,7 @@ PROPERTY_AVAILABILITY: Final = {
     and not device.status.cruising,
     DreameVacuumProperty.WETNESS_LEVEL.name: lambda device: (device.status.water_tank_or_mop_installed)
     and not device.status.sweeping
-    and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning))
     and not device.status.fast_mapping
-    and not device.status.started
     and not device.status.scheduled_clean
     and not device.status.cruising
     and not device.status.cleangenius_cleaning,
@@ -1331,9 +1329,7 @@ PROPERTY_AVAILABILITY: Final = {
     and not device.status.cleangenius_cleaning
     and not device.status.returning
     and not device.status.draining
-    and not device.status.shortcut_task
-    and not device.status.scheduled_clean
-    and not device.status.cruising,
+    and not device.status.shortcut_task,
     DreameVacuumProperty.CARPET_SENSITIVITY.name: lambda device: bool(
         device.get_property(DreameVacuumProperty.CARPET_BOOST)
     ),
@@ -1392,6 +1388,7 @@ PROPERTY_AVAILABILITY: Final = {
     and not device.status.washing
     and not device.status.washing_paused,
     DreameVacuumAutoSwitchProperty.SELF_CLEAN_FREQUENCY.name: lambda device: device.status.self_clean
+    and not device.status.started
     and not device.status.fast_mapping
     and not device.status.cleangenius_cleaning,
     DreameVacuumAutoSwitchProperty.STAIN_AVOIDANCE.name: lambda device: device.status.ai_fluid_detection,
@@ -1446,8 +1443,7 @@ PROPERTY_AVAILABILITY: Final = {
     DreameVacuumProperty.FIRST_CLEANING_DATE.name: lambda device: device.get_property(
         DreameVacuumProperty.FIRST_CLEANING_DATE
     ),
-    "auto_empty_mode": lambda device: device.get_property(DreameVacuumProperty.AUTO_DUST_COLLECTING)
-    and not device.status.cleangenius_cleaning,
+    "auto_empty_mode": lambda device: not device.status.cleangenius_cleaning,
     "self_clean_area": lambda device: device.status.self_clean
     and not device.status.fast_mapping
     and not device.status.self_clean_by_time
@@ -1523,9 +1519,7 @@ ACTION_AVAILABILITY: Final = {
         device.status.onboard_dirty_water_tank_life < 100
     ),
     DreameVacuumAction.RESET_DIRTY_WATER_TANK.name: lambda device: bool(device.status.dirty_water_tank_life < 100),
-    DreameVacuumAction.START_AUTO_EMPTY.name: lambda device: device.status.dust_collection_available
-    and not device.status.draining
-    and not device.status.self_repairing,
+    DreameVacuumAction.START_AUTO_EMPTY.name: lambda device: device.status.dust_collection_available,
     DreameVacuumAction.CLEAR_WARNING.name: lambda device: device.status.has_warning
     or device.status.low_water
     or device.status.draining_complete,
@@ -1732,49 +1726,48 @@ class DeviceCapability(IntEnum):
     MOPPING_AFTER_SWEEPING = 3
     MAX_SUCTION_POWER = 4
     OBSTACLE_IMAGE_CROP = 5
-    SMART_DRYING = 6
-    UV_STERILIZATION = 7
-    MOP_PAD_SWING = 8
-    HOT_WASHING = 9
-    AUTO_EMPTY_MODE = 10
-    FLOOR_DIRECTION_CLEANING = 11
-    LARGE_PARTICLES_BOOST = 12
-    SEGMENT_VISIBILITY = 13
-    MOP_PAD_SWING_PLUS = 14
-    AUTO_REWASHING = 15
-    MOP_PAD_LIFTING_PLUS = 16
-    PET_FURNITURE = 17
-    CLEANING_ROUTE = 18
-    MOPPING_SETTINGS = 19
-    SEGMENT_SLOW_CLEAN_ROUTE = 20
-    SMALL_SELF_CLEAN_AREA = 21
-    TASK_TYPE = 22
-    ULTRA_CLEAN_MODE = 23
-    EXTENDED_FURNITURES = 24
-    SELF_CLEAN_FREQUENCY = 25
-    CLEANGENIUS = 26
-    CLEANGENIUS_AUTO = 27
-    FLUID_DETECTION = 28
-    INTENSIVE_CARPET_CLEANING = 29
-    CLEAN_CARPETS_FIRST = 30
-    WETNESS_LEVEL = 31
-    AUTO_RENAME_SEGMENT = 32
-    DISABLE_SENSOR_CLEANING = 33
-    FLOOR_MATERIAL = 34
-    GEN5 = 35
-    NEW_FURNITURES = 36
-    SAVED_FURNITURES = 37
-    OBSTACLES = 38
-    WATER_CHECK = 39
-    AUTO_CARPET_CLEANING = 40
-    SEGMENT_MOPPING_SETTINGS = 41
-    SEGMENT_MOPPING_TYPE = 42
-    MOPPING_TYPE = 43
-    AUTO_CHARGING = 44
-    MAX_SUCTION_POWER_EXTENDED = 45
-    AUTO_RECLEANING = 46
-    NEW_STATE = 47
-    CAMERA_STREAMING = 48
+    UV_STERILIZATION = 6
+    MOP_PAD_SWING = 7
+    HOT_WASHING = 8
+    AUTO_EMPTY_MODE = 9
+    FLOOR_DIRECTION_CLEANING = 10
+    LARGE_PARTICLES_BOOST = 11
+    SEGMENT_VISIBILITY = 12
+    MOP_PAD_SWING_PLUS = 13
+    AUTO_REWASHING = 14
+    MOP_PAD_LIFTING_PLUS = 15
+    PET_FURNITURE = 16
+    CLEANING_ROUTE = 17
+    MOPPING_SETTINGS = 18
+    SEGMENT_SLOW_CLEAN_ROUTE = 19
+    SMALL_SELF_CLEAN_AREA = 20
+    TASK_TYPE = 21
+    ULTRA_CLEAN_MODE = 22
+    EXTENDED_FURNITURES = 23
+    SELF_CLEAN_FREQUENCY = 24
+    CLEANGENIUS = 25
+    CLEANGENIUS_AUTO = 26
+    FLUID_DETECTION = 27
+    INTENSIVE_CARPET_CLEANING = 28
+    CLEAN_CARPETS_FIRST = 29
+    WETNESS_LEVEL = 30
+    AUTO_RENAME_SEGMENT = 31
+    DISABLE_SENSOR_CLEANING = 32
+    FLOOR_MATERIAL = 33
+    GEN5 = 34
+    NEW_FURNITURES = 35
+    SAVED_FURNITURES = 36
+    OBSTACLES = 37
+    WATER_CHECK = 38
+    AUTO_CARPET_CLEANING = 39
+    SEGMENT_MOPPING_SETTINGS = 40
+    SEGMENT_MOPPING_TYPE = 41
+    MOPPING_TYPE = 42
+    MAX_SUCTION_POWER_EXTENDED = 43
+    AUTO_RECLEANING = 44
+    NEW_STATE = 45
+    CAMERA_STREAMING = 46
+    DETERGENT = 47
 
 
 class DreameVacuumDeviceCapability:
@@ -1854,6 +1847,7 @@ class DreameVacuumDeviceCapability:
         self.new_state = False
         self.camera_streaming = False
         self.gen5 = False
+        self.detergent = False
         self._custom_cleaning_mode = False
         self._device = device
 
@@ -1904,6 +1898,7 @@ class DreameVacuumDeviceCapability:
         # self.camera_streaming = bool(
         #    self.camera_streaming and (camera_light is not None or self._device.get_property(DreameVacuumProperty.CRUISE_SCHEDULE) is not None)
         # )
+        self.detergent = bool(self.detergent or self._device.get_property(DreameVacuumProperty.DETERGENT_LEFT))
         self.fill_light = bool(
             self.camera_streaming
             and camera_light is not None

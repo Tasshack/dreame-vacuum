@@ -278,6 +278,9 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:water-opacity",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.detergent
+        )
         # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
@@ -285,6 +288,9 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:water-opacity",
         native_unit_of_measurement=UNIT_DAYS,
         entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.detergent
+        )
         # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(

@@ -7,11 +7,11 @@ import hmac
 import requests
 import zlib
 import ssl
-import tzlocal
 import queue
 from threading import Thread, Timer
 from time import sleep
-import time, locale, datetime
+import time, locale
+from datetime import datetime
 from paho.mqtt.client import Client
 from typing import Any, Dict, Optional, Tuple
 from Crypto.Cipher import ARC4
@@ -635,11 +635,10 @@ class DreameVacuumMiHomeCloudProtocol:
         self._fail_count = 0
         self._connected = False
         try:
-            timezone = datetime.datetime.now(tzlocal.get_localzone()).strftime("%z")
-            timezone = "GMT{0}:{1}".format(timezone[:-2], timezone[-2:])
+            offset = (time.timezone if (time.localtime().tm_isdst == 0) else time.altzone) / 60 * -1
+            self._timezone = "GMT{}{:02d}:{:02d}".format('+' if offset >= 0 else '-', abs(int(offset / 60)), int(offset % 60))
         except:
-            timezone = "GMT+00:00"
-        self._timezone = timezone
+            self._timezone = "GMT+00:00"
 
     def _api_task(self):
         while True:

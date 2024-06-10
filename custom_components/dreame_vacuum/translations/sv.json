@@ -1,0 +1,998 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Enheten är redan konfigurerad",
+      "cannot_connect": "Misslyckades att ansluta."
+    },
+    "error": {
+      "cannot_connect": "Misslyckades att ansluta.",
+      "unsupported": "Enheten stöds inte",
+      "wrong_token": "Checksumme-fel, fel token",
+      "2fa_required": "2FA Inloggning krävs\n{url}",
+      "credentials_incomplete": "Inkompletta inloggningsuppgifter, fyll i användarnamn, lösenord och land",
+      "login_error": "Kunde inte logga in på Xiaomi Miio Cloud, se över inloggningsuppgifter.",
+      "no_devices": "Hittade inga enheter som stöds på detta Xiaomi Miio Cloud konto under valt land."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Konfigurationstyp"
+        },
+        "description": "Kartfunktion kräver moln-anslutning och förser automatisk konfiguration. Om du inte önskar kartfunktion, kan du välja manuell konfiguration."
+      },
+      "local": {
+        "data": {
+          "host": "Värd",
+          "token": "Token"
+        },
+        "description": "Du behöver 32-karaktärs API Token, se https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token för instruktioner."
+      },
+      "mi": {
+        "data": {
+          "username": "Användarnamn",
+          "password": "Lösenord",
+          "country": "Server-land",
+          "prefer_cloud": "Föredra moln-anslutning"
+        },
+        "description": "Logga in på Xiaomi Miio cloud, se https://www.openhab.org/addons/bindings/miio/#country-servers för att välja rätt moln-server."
+      },
+      "dreame": {
+        "data": {
+          "username": "Användarnamn",
+          "password": "Löserord",
+          "country": "Server-land"
+        },
+        "description": "Logga in på Dreamehome Cloud."
+      },
+      "devices": {
+        "data": {
+          "devices": "Enheter som stöds"
+        },
+        "description": "Välj vilken Dreame-dammsugare du vill konfigurera."
+      },
+      "options": {
+        "data": {
+          "name": "Namn",
+          "color_scheme": "Färgschema karta",
+          "icon_set": "Kartikoner",
+          "notify": "Notifikation",
+          "map_objects": "Kartobjekt",
+          "low_resolution": "Lågupplöst karta",
+          "square": "Fyrkantig karta"
+        }
+      },
+      "reauth_confirm": {
+        "description": "Dreame Vacuum integrationen behöver återautentisera ditt konto för att uppdatera token eller lägga till saknade moln-uppgifter.",
+        "title": "Återautentisera Integration"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Färgschema karta",
+          "icon_set": "Kartikoner",
+          "notify": "Notifikation",
+          "map_objects": "Kartobjekt",
+          "low_resolution": "Lågupplöst karta",
+          "square": "Fyrkantig karta",
+          "configuration_type": "Konfigurationstyp",
+          "prefer_cloud": "Föredra molnanslutning"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Uppgifter för molnanslutning är Inkompletta, fyll i användarnamn, lösenord och land"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "state": {
+          "quiet": "Tyst",
+          "standard": "Standard",
+          "strong": "Stark",
+          "turbo": "Turbo"
+        }
+      },
+      "water_volume": {
+        "state": {
+          "low": "Låg",
+          "medium": "Mellan",
+          "high": "Hög"
+        }
+      },
+      "mop_pad_humidity": {
+        "state": {
+          "slightly_dry": "Lite torr",
+          "moist": "Fuktig",
+          "wet": "Våt"
+        }
+      },
+      "cleaning_mode": {
+        "state": {
+          "sweeping": "Dammsugning",
+          "mopping": "Moppning",
+          "sweeping_and_mopping": "Dammsugning och moppning",
+          "mopping_after_sweeping": "Moppning efter dammsugning"
+        }
+      },
+      "carpet_sensitivity": {
+        "state": {
+          "low": "Låg",
+          "medium": "Mellan",
+          "high": "Hög"
+        }
+      },
+      "carpet_cleaning": {
+        "state": {
+          "avoidance": "Undvikande",
+          "adaptation": "Adaptiv",
+          "remove_mop": "Ta bort moppdynor"
+          "adaptation_without_route": "Adaptativ utan rutt",
+          "vacuum_and_mop": "Dammsug och moppa",
+          "ignore": "Ignorera"
+        }
+      },
+      "mop_wash_level": {
+        "state": {
+          "water_saving": "Vattensparande",
+          "daily": "Daglig",
+          "deep": "Djup"
+        }
+      },
+      "mopping_type": {
+        "state": {
+          "accurate": "Precis",
+          "daily": "Daglig",
+          "deep": "Djup"
+        }
+      },
+      "wider_corner_coverage": {
+        "state": {
+          "off": "Av",
+          "high_frequency": "Hög frekvens",
+          "low_frequency": "Låg frekvens"
+        }
+      },
+      "mop_pad_swing": {
+        "state": {
+          "off": "Av",
+          "auto": "Automatisk",
+          "daily": "Daglig",
+          "weekly": "Veckovis"
+        }
+      },
+      "floor_material": {
+        "state": {
+          "none": "Inget",
+          "tile": "Klinker",
+          "wood": "Trägolv"
+        }
+      },
+      "voice_assistant_language": {
+        "state": {
+          "default": "Standard",
+          "english": "Engelska",
+          "german": "Tyska",
+          "chinese": "Kinesiska"
+        }
+      },
+      "order": {
+        "state": {
+          "not_set": "Ej valt"
+        }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "Av yta",
+          "by_time": "Av tid",
+          "by_room": "Av rum"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Av",
+          "standard": "Standard",
+          "high_frequency": "Hög frekvens",
+          "low_frequency": "Låg frekvens"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Vertikal",
+          "horizontal": "Horizontal"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Synlig",
+          "hidden": "Dold"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Av",
+          "routine_cleaning": "Rutinrengöring",
+          "deep_cleaning": "Djuprengöring"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Av",
+          "in_deep_mode": "I djuprengöringsläge",
+          "in_all_modes": "I alla lägen"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Av",
+          "in_deep_mode": "I djuprengöringsläge",
+          "in_all_modes": "I alla lägen"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "Snabb",
+          "standard": "Standard",
+          "intensive": "Intensiv",
+          "deep": "Djup"
+        }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Av",
+          "standard": "Standard",
+          "intensive": "Intensiv",
+          "deep": "Djup"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "state": {
+          "unknown": "Okänd",
+          "sweeping": "Dammsuger",
+          "charging": "Laddar",
+          "error": "Fel",
+          "idle": "Vilar",
+          "paused": "Pausad",
+          "returning": "Återgår till dockstation",
+          "mopping": "Moppar",
+          "drying": "Torkar",
+          "washing": "Tvättar",
+          "returning_to_wash": "Återgår för att tvätta",
+          "building": "Bygger",
+          "sweeping_and_mopping": "Dammsuger och moppar",
+          "charging_completed": "Laddning färdig",
+          "upgrading": "Uppgraderar",
+          "clean_summon": "Kalla för att städa",
+          "station_reset": "Återställ dockstation",
+          "returning_install_mop": "Återgår för att hämta mopp",
+          "returning_remove_mop": "Återgår för att lämna mopp",
+          "water_check": "Vattenkontroll",
+          "clean_add_water": "Tvättar och fyller på vatten",
+          "washing_paused": "Tvätt pausad",
+          "auto_emptying": "Automatisk tömning",
+          "remote_control": "Fjärrstyrning",
+          "smart_charging": "Intelligent laddning",
+          "second_cleaning": "Andra städning",
+          "human_following": "Följ människa",
+          "spot_cleaning": "Punktstädning",
+          "returning_auto_empty": "Återgår för automatisk tömning",
+          "waiting_for_task": "Väntar på uppgift",
+          "station_cleaning": "Rengöring av dockstation",
+          "returning_to_drain": "Återgår för att dränera",
+          "draining": "Dränerar",
+          "auto_water_draining": "Automatisk dränering",
+          "shortcut": "Genväg",
+          "monitoring": "Övervakning",
+          "monitoring_paused": "Övervakning pausad"
+        }
+      },
+      "status": {
+        "state": {
+          "unknown": "Okänd",
+          "idle": "Vilar",
+          "paused": "Pausad",
+          "cleaning": "Dammsuger",
+          "returning": "Återgår till dockstation",
+          "spot_cleaning": "Punktstädning",
+          "follow_wall_cleaning": "Följ-vägg-städning",
+          "charging": "Laddar",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "WiFi inställt",
+          "power_off": "Avstängd",
+          "factory": "Fabrik",
+          "error": "Fel",
+          "remote_control": "Fjärrstyrning",
+          "sleeping": "Sover",
+          "self_test": "Självtest",
+          "factory_test": "Fabrikstest",
+          "standby": "Standby",
+          "room_cleaning": "Rumsrengöring",
+          "zone_cleaning": "Zonrengöring",
+          "fast_mapping": "Snabbmappning",
+          "cruising_path": "Åk längs bana",
+          "cruising_point": "Åk till punkt",
+          "summon_clean": "Kalla för att städa",
+          "shortcut": "Genväg",
+          "person_follow": "Följ människa",
+          "water_check": "Vattenkontroll"
+        }
+      },
+      "task_status": {
+        "state": {
+          "unknown": "Okänd",
+          "completed": "Färdig",
+          "cleaning": "Dammsuger",
+          "zone_cleaning": "Zonrengöring",
+          "room_cleaning": "Rumsrengöring",
+          "spot_cleaning": "Punktrengöring",
+          "fast_mapping": "Snabbmappning",
+          "cleaning_paused": "Städning pausad",
+          "room_cleaning_paused": "Rumsrengöring pausad",
+          "zone_cleaning_paused": "Zonrengöring pausad",
+          "spot_cleaning_paused": "Punktrengöring pausad",
+          "map_cleaning_paused": "Kartstädning pausad",
+          "docking_paused": "Dockning pausad",
+          "mopping_paused": "Moppning pausad",
+          "zone_mopping_paused": "Zonmoppning pausad",
+          "room_mopping_paused": "Rumsmoppning pausad",
+          "zone_docking_paused": "Zondockning pausad",
+          "room_docking_paused": "Rumsdockning pausad",
+          "cruising_path": "Åk längs bana",
+          "cruising_path_paused": "Åk längs bana pausad",
+          "cruising_point": "Åk till punkt",
+          "cruising_point_paused": "Åk till punkt pausad",
+          "summon_clean_paused": "Kalla för att städa pausad",
+          "returning_to_install_mop": "Återgår för att hämta mopp",
+          "returning_to_remove_mop": "Återgår för att lämna mopp"
+        }
+      },
+      "water_tank": {
+        "state": {
+          "unknown": "Okänd",
+          "installed": "Installerad",
+          "not_installed": "Ej installerad",
+          "mop_installed": "Mopp installerad",
+          "in_station": "I dockstation"
+        }
+      },
+      "mop_pad": {
+        "state": {
+          "unknown": "Okänd",
+          "installed": "Installerad",
+          "not_installed": "Ej installerad",
+          "mop_installed": "Mopp installerad",
+          "in_station": "I dockstation"
+        }
+      },
+      "dust_collection": {
+        "state": {
+          "unknown": "Okänd",
+          "not_available": "Ej tillgänglig",
+          "available": "Tillgänglig"
+        }
+      },
+      "auto_empty_status": {
+        "state": {
+          "unknown": "Okänd",
+          "idle": "Vilar",
+          "active": "Aktiv",
+          "not_performed": "Ej utförd"
+        }
+      },
+      "error": {
+        "state": {
+          "unknown": "Okänt felmeddelande",
+          "no_error": "Inga fel",
+          "drop": "Drivhjul har inte kontakt med golv",
+          "cliff": "Fel trappsensor",
+          "bumper": "Kollisionssensor har fastnat",
+          "gesture": "Robot lutad",
+          "bumper_repeat": "Kollisionssensor har fastnat",
+          "drop_repeat": "Drivhjul har inte kontakt med golv",
+          "optical_flow": "Fel optisk flödessensor",
+          "no_box": "Dammbehållare saknas",
+          "no_tank_box": "Vattentank saknas",
+          "water_box_empty": "Vattentank är tom",
+          "box_full": "Filter är vått eller blockerat",
+          "brush": "Huvudborste har fastnat",
+          "side_brush": "Sidoborste har fastnat",
+          "fan": "Filter är vått eller blockerat",
+          "left_wheel_motor": "Robotdammsugare har fastnat, vänster hjul kan vara blockerat",
+          "right_wheel_motor": "Robotdammsugare har fastnat, höger hjul kan vara blockerat",
+          "turn_suffocate": "Robotdammsugare har fastnat, kan inte svänga",
+          "forward_suffocate": "Robotdammsugare har fastnat, kan inte köra framåt",
+          "charger_get": "Hittar inte dockstation",
+          "battery_low": "Lågt batteri",
+          "charge_fault": "Fel laddning",
+          "battery_percentage": "Fel batterinivå",
+          "heart": "Internt fel",
+          "camera_occlusion": "Fel kamerasensor",
+          "move": "Fel flyttsensor",
+          "flow_shielding": "Fel optisk sensor",
+          "infrared_shielding": "Fel infrarött skydd",
+          "charge_no_electric": "Dockstation är inte påslagen",
+          "battery_fault": "Fel batteri",
+          "fan_speed_error": "Fel fläkthastighets-sensor",
+          "left_wheell_speed": "Vänster hjul kan vara blockerat",
+          "right_wheell_speed": "Höger hjul kan vara blockerat",
+          "bmi055_acce": "Fel accelerometer",
+          "bmi055_gyro": "Fel gyro",
+          "xv7001": "Fel gyro",
+          "left_magnet": "Fel vänster magnet-sensor",
+          "right_magnet": "Fel höger magnet-sensor",
+          "flow_error": "Fel flödessensor",
+          "infrared_fault": "Fel infrarött",
+          "camera_fault": "Fel kamera",
+          "strong_magnet": "Starkt magnetfält detekterat",
+          "water_pump": "Fel vattenpump",
+          "rtc": "RTC fel",
+          "auto_key_trig": "Intert fel",
+          "p3v3": "Internt fel",
+          "camera_idle": "Internt fel",
+          "blocked": "Städrutt är blockerad, återgår till dockstation.",
+          "lds_error": "Fel laser distans-sensor",
+          "lds_bumper": "Fel laser distans-sensor kollisionsskydd",
+          "filter_blocked": "Filter är vått eller blockerat",
+          "edge": "Fel kantsensor",
+          "carpet": "Starta robotdammsugare i utrymme utan matta.",
+          "laser": "Fel 3D-sensor.",
+          "ultrasonic": "Fel ultrasonisk sensor.",
+          "no_go_zone": "No-Go zon eller virtuell vägg detekterad.",
+          "route": "Städrutt är blockerad.",
+          "restricted": "Robotdammsugare är på begränsat område.",
+          "remove_mop": "Moppning färdig, ta bort och rengör moppdukar i tid.",
+          "mop_removed": "Moppdukar lossnade under städning.",
+          "mop_pad_stop_rotate": "Moppdukar har slutat rotera.",
+          "bin_full": "Dockstationens dammsugarpåse full.",
+          "bin_open": "Dockstationens lock är inte stängt.",
+          "water_tank": "Renvattentank är inte installerad.",
+          "dirty_water_tank": "Smutsvattentank är full eller inte installerad.",
+          "water_tank_dry": "Låg vattennivå i renvattentank, fyll på i tid.",
+          "dirty_water_tank_blocked": "Smutsvattentank blockerad.",
+          "dirty_water_tank_pump": "Fel på pump till smutsvattentank.",
+          "mop_pad": "Tvättbrädan är inte korrekt installerad.",
+          "wet_mop_pad": "Vattennivån vid tvättbrädan är onormalt hög.",
+          "clean_mop_pad": "Rengöringsprogrammet är slutfört, rengör tvättbräda.",
+          "clean_tank_level": "Kolla och fyll på renvattentank.",
+          "station_disconnected": "Dockstation är inte påslagen",
+          "dirty_tank_level": "Vattennivå på smutsvattentank är för hög.",
+          "washboard_level": "Vattennivån vid tvättbrädan är för hög.",
+          "no_mop_in_station": "Moppdukar ej vid station.",
+          "dust_bag_full": "Dammsugarpåse är full, eller blockerad.",
+          "self_test_failed": "Onormal vattenpåfyllning från övre renvattentank till lägre vattenmodul.",
+          "mop_install_failed": "Misslyckades att hämta moppdukar.",
+          "low_battery_turn_off": "Låg batterinivå. Robotdammsugare stängs snart av.",
+          "dirty_tank_not_installed": "Smutsvattentank är inte installerad.",
+          "robot_in_hidden_room": "Dolt utrymme. Flytta robotdammsugare till en annan yta och försök igen.",
+          "washboard_not_working": "Tvättbräda har slutat fungera.",
+          "return_to_charge_failed": "Misslyckades att återgå för att ladda."
+        }
+      },
+      "charging_status": {
+        "state": {
+          "unknown": "Okänd",
+          "charging": "Laddar",
+          "not_charging": "Laddar ej",
+          "return_to_charge": "Återgår för att ladda",
+          "charging_completed": "Laddning färdig"
+        }
+      },
+      "relocation_status": {
+        "state": {
+          "unknown": "Okänd",
+          "located": "Lokaliserad",
+          "locating": "Lokaliserar",
+          "failed": "Misslyckades",
+          "success": "Lyckades"
+        }
+      },
+      "self_wash_base_status": {
+        "state": {
+          "unknown": "Okänd",
+          "idle": "Vilar",
+          "washing": "Tvättar",
+          "drying": "Torkar",
+          "paused": "Pausad",
+          "returning": "Återgår för att tvätta",
+          "clean_add_water": "Tvättar och fyller på vatten",
+          "adding_water": "Fyller på vatten"
+        }
+      },
+      "low_water_warning": {
+        "state": {
+          "no_warning": "Inga varningar",
+          "no_water_left_dismiss": "Undersök renvattentank.",
+          "no_water_left": "Vattnet i renvattentank är på väg att ta slut. Fyll på vatten snarast.",
+          "no_water_left_after_clean": "Moppdukar har blivit rengjorda. Vattnet i renvattentank var inte tillräckligt. Fyll på vatten och töm smutsvattentank.",
+          "no_water_for_clean": "Låg vattennivå i renvattentank. Robotdammsugare har bytt till dammsugningsläge.",
+          "low_water": "Vattnet i renvattentank är på väg att ta slut. Fyll på vatten snarast.",
+          "tank_not_installed": "Renvattentank är inte installerad."
+        }
+      },
+      "stream_status": {
+        "state": {
+          "unknown": "Okänd",
+          "idle": "Vilar",
+          "video": "Bild",
+          "audio": "Ljud",
+          "recording": "Spelar in"
+        }
+      },
+      "drainage_status": {
+        "state": {
+          "unknown": "Okänd",
+          "idle": "Vilar",
+          "draining": "Dränerar",
+          "draining_successful": "Dränering lyckad",
+          "draining_failed": "Dränering misslyckades"
+        }
+      },
+      "task_type": {
+        "state": {
+          "standard": "Standardstädning",
+          "standard_paused": "Standardstädning pausad",
+          "custom": "Specialstädning",
+          "custom_paused": "Specialstädning pausad",
+          "shortcut": "Genvägsstädning",
+          "shortcut_paused": "Genvägsstädning pausad",
+          "scheduled": "Schemalagd städning",
+          "scheduled_paused": "Schemalagd städning pausad",
+          "smart": "Smart städning",
+          "smart_paused": "Smart städning pausad",
+          "partial": "Delvis städning",
+          "partial_paused": "Delvis städning pausad",
+          "summon": "Kallad städning",
+          "summon_paused": "Kallad städning pausad",
+          "water_stain": "Fläckstädning",
+          "water_stain_paused": "Fläckstädning pausad"
+        }
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "Städa Segment",
+      "description": "Börja städa i valda rum.",
+      "fields": {
+        "segments": {
+          "name": "Segment",
+          "description": "Lista över rum som ska städas. Endast rumssymbol eller en lista av rumssymboler, städtid, sugnivå och moppläge för att åsidosätta standardlägen för varje rum."
+        },
+        "repeats": {
+          "name": "Upprepningar",
+          "description": "Antal upprepningar för varje valt rum (så länge det inte är åsidosatt av specialparametrar)."
+        },
+        "suction_level": {
+          "name": "Sugnivå",
+          "description": "Sugnivå för varje valt rum (så länge det inte är åsidosatt av specialparametrar)."
+        },
+        "water_volume": {
+          "name": "Vattenvolym",
+          "description": "Vattenvolym för varje valt rum (så länge det inte är åsidosatt av specialparametrar)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "Zonstädning",
+      "description": "Starta städning i vald zon.",
+      "fields": {
+        "zone": {
+          "name": "Zon",
+          "description": "Koordinater."
+        },
+        "repeats": {
+          "name": "Upprepningar",
+          "description": "Antal upprepningar för varje vald zon."
+        },
+        "suction_level": {
+          "name": "Sugnivå",
+          "description": "Sugnivå för varje vald zon."
+        },
+        "water_volume": {
+          "name": "Vattenvolym",
+          "description": "Vattenvolym för varje vald zon."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "Punktstädning",
+      "description": "Starta städning vid valda punkter på kartan.",
+      "fields": {
+        "points": {
+          "name": "Punkter",
+          "description": "Lista på punkter som ska städas."
+        },
+        "repeats": {
+          "name": "Upprepningar",
+          "description": "Antal upprepningar för varje vald punkt."
+        },
+        "suction_level": {
+          "name": "Sugnivå",
+          "description": "Sugnivå för varje vald punkt."
+        },
+        "water_volume": {
+          "name": "Vattenvolym",
+          "description": "Vattenvolym för varje vald zon."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "Gå till",
+      "description": "Gå till koordinater på kartan och stanna.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X koordinat för punkt."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y koordinat för punkt."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Följ bana",
+      "description": "Följ lista av koordinater från kartan och återgå till basstation. (Stöds endast av robotdammsugare med kamera)",
+      "fields": {
+        "points": {
+          "name": "Punkter",
+          "description": "Lista över koordinater för bana."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "Fjärrstyrning steg",
+      "description": "Fjärrstyrning, flytta robotdammsugare ett steg.",
+      "fields": {
+        "rotation": {
+          "name": "Rotation",
+          "description": "Vrid i binära grader mellan -128 och 128."
+        },
+        "velocity": {
+          "name": "Hastighet",
+          "description": "Hastighet från 100 (framåt) till -300 (bakåt)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "Installera röstpaket",
+      "description": "Installera officiell- eller special röstpaket.",
+      "fields": {
+        "lang_id": {
+          "name": "Språk ID",
+          "description": "Språk ID för detta paket."
+        },
+        "url": {
+          "name": "URL",
+          "description": "URL för detta paket ska vara nåbart för robotdammsugare."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "MD5 checksumma för språkpaket."
+        },
+        "size": {
+          "name": "Storlek",
+          "description": "Storlek för språkpaket i bytes."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "Begär karta",
+      "description": "Begär kartdata"
+    },
+    "vacuum_select_map": {
+      "name": "Välj karta",
+      "description": "Välj nuvarande karta. Används när man har flera kartor/våningar.",
+      "fields": {
+        "map_id": {
+          "name": "Kart ID",
+          "description": "ID för kartan du vill välja."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "Ta bort karta",
+      "description": "Tar bort en karta.",
+      "fields": {
+        "map_id": {
+          "name": "Kart ID",
+          "description": "ID för kartan som ska tas bort."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "Spara temporär karta",
+      "description": "Spara temporär karta."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "Släng temporär karta",
+      "description": "Släng temporär karta."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "Ersätt temporär karta",
+      "description": "Ersätt temporär karta med en annan sparad karta.",
+      "fields": {
+        "map_id": {
+          "name": "Kart ID",
+          "description": "ID för kartan som ska bli ersatt."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "Döp om karta",
+      "description": "Byt namn på karta.",
+      "fields": {
+        "map_id": {
+          "name": "Kart ID",
+          "description": "ID för kartan."
+        },
+        "map_name": {
+          "name": "Kartnamn",
+          "description": "Nytt namn för karta."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "Återställ karta",
+      "description": "Återställ karta.",
+      "fields": {
+        "map_id": {
+          "name": "Kart ID",
+          "description": "ID för kartan som ska återställas."
+        },
+        "recovery_map_index": {
+          "name": "Kartindex återställning",
+          "description": "Index för den sparade återställningskartan"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Återställ karta från fil",
+      "description": "Återställ karta från fil.",
+      "fields": {
+        "map_id": {
+          "name": "Kart ID",
+          "description": "ID för kartan du vill återställa."
+        },
+        "file_url": {
+          "name": "Fil URL",
+          "description": "URL för sparad bz2.gz eller tar.gz fil"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Säkerhetskopiera karta",
+      "description": "Säkerhetskopiera till molnet.",
+      "fields": {
+        "map_id": {
+          "name": "Kart ID",
+          "description": "ID för kartan du vill säkerhetskopiera."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Sammanfoga segment",
+      "description": "Sammanfoga rum.",
+      "fields": {
+        "map_id": {
+          "name": "Kart ID",
+          "description": "ID för kartan."
+        },
+        "segments": {
+          "name": "Segment",
+          "description": "Rums ID."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Dela segment",
+      "description": "Splitta rum.",
+      "fields": {
+        "map_id": {
+          "name": "Kart ID",
+          "description": "ID för kartan."
+        },
+        "segment": {
+          "name": "Segment",
+          "description": "Rums ID."
+        },
+        "line": {
+          "name": "Linje",
+          "description": "Koordinater splitt-linje."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "Döp om segment",
+      "description": "Byt namn på segment.",
+      "fields": {
+        "segment_id": {
+          "name": "Segment ID",
+          "description": "ID för segment"
+        },
+        "segment_name": {
+          "name": "Segment namn",
+          "description": "Nytt namn för segment"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "Ställ in städsekväns",
+      "description": "Välj rumsordningssekvens. (Endast på enheter som stöds)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "Städsekväns",
+          "description": "Segment ID lista över städsekväns."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "Ställ in specialstädning",
+      "description": "Ställ in special städparameter. (Endast på enheter som stöds)",
+      "fields": {
+        "segment_id": {
+          "name": "Segment ID",
+          "description": "Rums ID."
+        },
+        "suction_level": {
+          "name": "Sugnivå",
+          "description": "Sugnivå för varje rum."
+        },
+        "water_volume": {
+          "name": "Vattenvolym",
+          "description": "Vattenvolym för varje rum."
+        },
+        "cleaning_mode": {
+          "name": "Städläge",
+          "description": "Städning för varje rum (Endast på enheter som stöder moppdukslyftning)."
+        },
+        "repeats": {
+          "name": "Upprepningar",
+          "description": "Antal städningar för varje rum."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Ställ in begränsade zoner",
+      "description": "Definiera virtuella väggar, no-go zoner och/eller no-mop zoner.",
+      "fields": {
+        "walls": {
+          "name": "Väggar",
+          "description": "Virtuella väggar."
+        },
+        "zones": {
+          "name": "Zoner",
+          "description": "No-go zoner."
+        },
+        "no_mops": {
+          "name": "No-mop",
+          "description": "No-mop zoner."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "Återställ förbrukningsvara",
+      "description": "Återställ en förbrukningsvara.",
+      "fields": {
+        "consumable": {
+          "name": "Förbrukningsvara",
+          "description": "Typ av förbrukningsvara."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Döp om genväg",
+      "description": "Byt namn på genväg (Endast på enheter som stöds)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Genvägs ID",
+          "description": "ID för genväg."
+        },
+        "shortcut_name": {
+          "name": "Genvägsnamn",
+          "description": "Nytt namn för genväg."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Ställ in mattområde",
+      "description": "Definera och ignorera mattor. (Endast på enheter som stöds)",
+      "fields": {
+        "carpets": {
+          "name": "Mattor",
+          "description": "Mattområden."
+        },
+        "ignored_carpets": {
+          "name": "Ignorerade mattor",
+          "description": "Ignorerade mattområden för att ta bort automatiskt detekterade mattor."
+        }
+      }
+    },
+    "vacuum_set_pathway": {
+      "name": "Ställ in banväg",
+      "description": "Definera banans väg.",
+      "fields": {
+        "pathways": {
+          "name": "Banvägar",
+          "description": "Banvägskoordinater."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Ställ in fördefinierade punkter",
+      "description": "Definera punkters koordinater på nuvarande karta. (Endast på enheter som har kamera)",
+      "fields": {
+        "points": {
+          "name": "Punkter",
+          "description": "Lista av koordinater att spara."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Hinder att ignorera",
+      "description": "Ställ in vilka hinder som ska ignoreras. (Endast på enheter med AI Detektering)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X koordinat för hinder."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y koordinat för hinder."
+        },
+        "obstacle_ignored": {
+          "name": "Ignorerade hinder",
+          "description": "Hinder ignorerad eller ej."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Ställ in router position",
+      "description": "Välj placering för routerns position. (Endast på enheter som stöder Wifi-mappning)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X koordinat för router."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y koordinat för router."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "Välj föregående",
+      "description": "Välj föregående inställning på vald entitet.",
+      "fields": {
+        "cycle": {
+          "name": "Växla",
+          "description": "Om inställningen ska växla från första till sista."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "Välj första",
+      "description": "Välj första inställning på vald entitet."
+    },
+    "select_select_last": {
+      "name": "Välj sista",
+      "description": "Välj sista inställning på vald entitet."
+    },
+    "select_select_next": {
+      "name": "Välj nästa",
+      "description": "Välj nästa inställning på vald entitet.",
+      "fields": {
+        "cycle": {
+          "name": "Växla",
+          "description": "Om inställningen ska växla från första till sista."
+        }
+      }
+    }
+  }
+}

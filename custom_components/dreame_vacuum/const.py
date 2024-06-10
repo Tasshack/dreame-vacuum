@@ -98,6 +98,7 @@ SERVICE_RENAME_SHORTCUT: Final = "vacuum_rename_shortcut"
 SERVICE_SET_OBSTACLE_IGNORE: Final = "vacuum_set_obstacle_ignore"
 SERVICE_SET_ROUTER_POSITION: Final = "vacuum_set_router_position"
 SERVICE_SET_PROPERTY: Final = "vacuum_set_property"
+SERVICE_CALL_ACTION: Final = "vacuum_call_action"
 
 SERVICE_SELECT_NEXT = "select_select_next"
 SERVICE_SELECT_PREVIOUS = "select_select_previous"

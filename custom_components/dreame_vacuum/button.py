@@ -90,7 +90,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:chart-bubble",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device) and device.status.detergent_life is not None
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.detergent
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -155,9 +155,9 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         name_fn=lambda value, device: "Self-Clean Pause" if device.status.washing else "Self-Clean",
         key="self_clean",
         icon_fn=lambda value, device: (
-            "mdi:washing-machine-off"
+            "mdi:dishwasher-off"
             if device.status.washing or not device.status.washing_available
-            else "mdi:washing-machine"
+            else "mdi:dishwasher"
         ),
         action_fn=lambda device: device.toggle_washing(),
         exists_fn=lambda description, device: device.capability.self_wash_base,
