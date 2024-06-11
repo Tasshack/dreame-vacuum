@@ -796,19 +796,27 @@ class DreameVacuumMiHomeCloudProtocol:
 
     def get_file_url(self, object_name: str = "") -> Any:
         api_response = self._api_call(f'home/getfileurl{("_v3" if self._v3 else "")}', {"obj_name": object_name})
-        _LOGGER.debug("Get file url result: %s", api_response)
+        _LOGGER.debug("Get file url result: %s = %s", object_name, api_response)
         if api_response is None or "result" not in api_response or "url" not in api_response["result"]:
+            if api_response and api_response.get("code") == -8 and self._v3:
+                _LOGGER.info("get_file_url fallback to V2")
+                self._v3 = False
+                return self.get_file_url(object_name)
             return None
 
         return api_response["result"]["url"]
 
     def get_interim_file_url(self, object_name: str = "") -> str:
-        _LOGGER.debug("Get interim file url: %s", object_name)
         api_response = self._api_call(
             f'v2/home/get_interim_file_url{("_pro" if self._v3 else "")}',
             {"obj_name": object_name},
         )
+        _LOGGER.debug("Get interim file url result: %s = %s", object_name, api_response)
         if api_response is None or not api_response.get("result") or "url" not in api_response["result"]:
+            if api_response and api_response.get("code") == -8 and self._v3:
+                _LOGGER.info("get_interim_file_url fallback to V2")
+                self._v3 = False
+                return self.get_interim_file_url(object_name)
             return None
 
         return api_response["result"]["url"]
