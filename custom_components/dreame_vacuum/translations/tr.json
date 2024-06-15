@@ -1,0 +1,931 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Cihaz zaten yapılandırılmış",
+      "cannot_connect": "Bağlanılamadı."
+    },
+    "error": {
+      "cannot_connect": "Bağlanılamadı.",
+      "wrong_token": "Checksum hatası, yanlış token",
+      "unsupported": "Cihaz desteklenmiyor",
+      "credentials_incomplete": "Kimlik bilgileri eksik, lütfen kullanıcı adı, şifre ve ülkeyi doldurun",
+      "2fa_required": "2FA Girişi gerekli\n{url}",
+      "login_error": "Xiaomi Miio Cloud'a giriş yapılamadı, kimlik bilgilerini kontrol edin.",
+      "no_devices": "Seçilen ülkede bu Xiaomi Miio bulut hesabında desteklenen cihaz bulunamadı."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Yapılandırma Türü"
+        },
+        "description": "Harita özelliği bulut bağlantısı gerektirir ve otomatik yapılandırma sağlar. Harita özelliğini kullanmak istemiyorsanız, manuel yapılandırmayı seçebilirsiniz."
+      },
+      "without_map": {
+        "data": {
+          "host": "Host",
+          "token": "Token"
+        },
+        "description": "32 karakterlik API Token'a ihtiyacınız olacak, talimatlar için https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token adresine bakın."
+      },
+      "with_map": {
+        "data": {
+          "username": "Kullanıcı Adı",
+          "password": "Şifre",
+          "country": "Sunucu ülkesi",
+          "prefer_cloud": "Bulut bağlantısını tercih edin"
+        },
+        "description": "Xiaomi Miio bulutunda oturum açın, kullanılacak bulut sunucusu için https://www.openhab.org/addons/bindings/miio/#country-servers adresine bakın."
+      },
+      "devices": {
+        "data": {
+          "devices": "Desteklenen Cihazlar"
+        },
+        "description": "Lütfen kurmak istediğiniz Dreame Vakum cihazını seçin."
+      },
+      "options": {
+        "data": {
+          "name": "Ad",
+            "color_scheme": "Harita renk şeması",
+            "icon_set": "Harita simge seti",
+            "notify": "Bildirim",
+            "map_objects": "Harita nesneleri",
+            "low_resolution": "Düşük çözünürlüklü harita",
+            "square": "Kare harita"
+        }
+      },
+      "reauth_confirm": {
+        "description": "Dreame Vacuum entegrasyonunun belirteçleri güncellemek veya eksik bulut kimlik bilgilerini eklemek için hesabınızı yeniden doğrulaması gerekir.",
+        "title": "Entegrasyonu Yeniden Doğrulayın"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+            "color_scheme": "Harita renk şeması",
+            "icon_set": "Harita simge seti",
+            "map_objects": "Harita nesneleri",
+            "notify": "Bildirim",
+            "square": "Kare harita",
+            "low_resolution": "Düşük çözünürlüklü harita",
+            "configuration_type": "Yapılandırma türü",
+            "prefer_cloud": "Bulut bağlantısını tercih et"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Bulut kimlik bilgileri eksik, lütfen kullanıcı adı, şifre ve ülkeyi girin"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "state": {
+          "quiet": "Sessiz",
+          "standard": "Standart",
+          "strong": "Güçlü",
+          "turbo": "Turbo"
+        }
+      },
+      "water_volume": {
+        "state": {
+          "low": "Düşük",
+          "medium": "Orta",
+          "high": "Güçlü"
+        }
+      },
+      "mop_pad_humidity": {
+        "state": {
+          "slightly_dry": "Hafif kuru",
+          "moist": "Nemli",
+          "wet": "Islak"
+        }
+      },
+      "cleaning_mode": {
+        "state": {
+          "sweeping": "Süpürme",
+          "mopping": "Paspaslama",
+          "sweeping_and_mopping": "Süpürme ve paspaslama",
+          "mopping_after_sweeping": "Süpürme işleminden sonra paspaslama"
+        }
+      },
+      "carpet_sensitivity": {
+        "state": {
+          "low": "Düşük",
+          "medium": "Orta",
+          "high": "Güçlü"
+        }
+      },
+      "carpet_cleaning": {
+        "state": {
+          "avoidance": "Kaçınma",
+          "adaptation": "Adaptasyon",
+          "remove_mop": "Paspası Çıkarın"
+        }
+      },
+      "mop_wash_level": {
+        "state": {
+          "water_saving": "Su tasarrufu",
+          "daily": "Günlük",
+          "deep": "Derin"
+        }
+      },
+      "mopping_type": {
+        "state": {
+          "accurate": "Kesin",
+          "daily": "Günlük",
+          "deep": "Derin"
+        }
+      },
+      "wider_corner_coverage": {
+        "state": {
+          "off": "Kapalı",
+          "high_frequency": "Yüksek Frekans",
+          "low_frequency": "Düşük Frekans"
+        }
+      },      
+      "mop_pad_swing": {
+        "state": {
+          "off": "Kapalı",
+          "auto": "Otomatik",
+          "daily": "Günlük",
+          "weekly": "Haftalık"
+        }
+      },
+      "floor_material": {
+        "state": {
+          "none": "Hiçbiri",
+          "tile": "Zemin döşemesi",
+          "wood": "Ahşap zemin"
+        }
+      },
+      "voice_assistant_language": {
+        "state": {
+          "default": "Varsayılan",
+          "english": "İngilizce",
+          "german": "Almanca",
+          "chinese": "Çince"
+        }
+      },
+      "order": {
+        "state": {
+          "not_set": "Ayarlanmamış"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "state": {
+          "unknown": "Bilinmiyor",
+          "charging": "Şarj oluyor",
+          "sweeping": "Süpürüyor",
+          "error": "Hata",
+          "idle": "Boşta",
+          "paused": "Duraklatıldı",
+          "returning": "İstasyona dönüyor",
+          "mopping": "Paspas yapıyor",
+          "drying": "Kuruluyor",
+          "washing": "Yıkıyor",
+          "returning_to_wash": "Yıkamaya dönüyor",
+          "building": "Harita oluşturuyor",
+          "sweeping_and_mopping": "Süpürüyor ve paspas yapıyor",
+          "charging_completed": "Şarj tamamlandı",
+          "upgrading": "Güncelleniyor",
+          "clean_summon": "Temizlemek için çağır",
+          "station_reset": "İstasyon sıfırlanıyor",
+          "returning_install_mop": "Paspas takmak için dönüyor",
+          "returning_remove_mop": "Paspası çıkarmak için dönüyor",
+          "water_check": "Su kontrol ediliyor",
+          "clean_add_water": "Temizliyor ve su ekliyor",
+          "washing_paused": "Yıkama duraklatıldı",
+          "auto_emptying": "Otomatik boşaltma",
+          "remote_control": "Uzaktan kontrol ediliyor",
+          "smart_charging": "Akıllı şarj",
+          "second_cleaning": "İkinci temizlik",
+          "human_following": "İnsanı takip ediyor",
+          "spot_cleaning": "Nokta temizliği",
+          "returning_auto_empty": "Otomatik boşaltmaya dönüyor",
+          "shortcut": "Kısayol",
+          "monitoring": "İzleme",
+          "monitoring_paused": "İzleme duraklatıldı"
+        }
+      },
+      "status": {
+        "state": {
+          "unknown": "Bilinmiyor",
+          "idle": "Boşta",
+          "paused": "Duraklatıldı",
+          "cleaning": "Temizleniyor",
+          "returning": "İstasyona dönüyor",
+          "spot_cleaning": "Nokta temizliği",
+          "follow_wall_cleaning": "Duvar takip temizliği",
+          "charging": "Şarj oluyor",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "WiFi ayarı",
+          "power_off": "Kapatma",
+          "factory": "Fabrika",
+          "error": "Hata",
+          "remote_control": "Uzaktan kontrol",
+          "sleeping": "Uyku modunda",
+          "self_test": "Kendi kendine test",
+          "factory_test": "Fabrika testi",
+          "standby": "Beklemede",
+          "room_cleaning": "Oda temizliği",
+          "zone_cleaning": "Bölge temizliği",
+          "fast_mapping": "Hızlı haritalama",
+          "cruising_path": "Patika üzerinde seyir",
+          "cruising_point": "Bir noktaya seyir",
+          "summon_clean": "Temizlemek için çağır",
+          "shortcut": "Kısayol",
+          "person_follow": "Kişi takibi",
+          "water_check": "Su kontrolü"
+        }
+      },
+      "task_status": {
+        "state": {
+          "unknown": "Bilinmiyor",
+          "completed": "Tamamlandı",
+          "cleaning": "Temizleniyor",
+          "zone_cleaning": "Bölge temizliği",
+          "room_cleaning": "Oda temizliği",
+          "spot_cleaning": "Nokta temizliği",
+          "fast_mapping": "Hızlı haritalama",
+          "cleaning_paused": "Temizlik duraklatıldı",
+          "room_cleaning_paused": "Oda temizliği duraklatıldı",
+          "zone_cleaning_paused": "Bölge temizliği duraklatıldı",
+          "spot_cleaning_paused": "Nokta temizliği duraklatıldı",
+          "map_cleaning_paused": "Harita temizliği duraklatıldı",
+          "docking_paused": "İstasyona dönüş duraklatıldı",
+          "mopping_paused": "Paspas duraklatıldı",
+          "zone_mopping_paused": "Bölge paspas duraklatıldı",
+          "room_mopping_paused": "Oda paspas duraklatıldı",
+          "zone_docking_paused": "Bölgeye dönüş duraklatıldı",
+          "room_docking_paused": "Odaya dönüş duraklatıldı",
+          "cruising_path": "Patika üzerinde seyir",
+          "cruising_path_paused": "Patika üzerinde seyir duraklatıldı",
+          "cruising_point": "Bir noktaya seyir",
+          "cruising_point_paused": "Bir noktaya seyir duraklatıldı",
+          "summon_clean_paused": "Temizlemek için çağırma duraklatıldı",
+          "returning_to_install_mop": "Paspas takmak için dönüyor",
+          "returning_to_remove_mop": "Paspası çıkarmak için dönüyor"
+        }
+      },
+      "water_tank": {
+        "state": {
+          "unknown": "Bilinmiyor",
+          "installed": "Kuruldu",
+          "not_installed": "Kurulu değil",
+          "mop_installed": "Paspas kurulu",
+          "in_station": "İstasyonda"
+        }
+      },
+      "mop_pad": {
+        "state": {
+          "unknown": "Bilinmiyor",
+          "installed": "Kurulu",
+          "not_installed": "Kurulu değil",
+          "mop_installed": "Paspas kurulu",
+          "in_station": "İstasyonda"
+        }
+      },
+      "dust_collection": {
+        "state": {
+          "unknown": "Bilinmiyor",
+          "not_available": "Mevcut değil",
+          "available": "Mevcut"
+        }
+      },
+      "auto_empty_status": {
+        "state": {
+          "unknown": "Bilinmiyor",
+          "idle": "Boşta",
+          "active": "Aktif",
+          "not_performed": "Gerçekleştirilmedi"
+        }
+      },
+      "error": {
+        "state": {
+          "unknown": "Bilinmeyen hata kodu",
+          "no_error": "Hata yok",
+          "drop": "Tekerlekler askıya alındı",
+          "cliff": "Uçurum sensörü hatası",
+          "bumper": "Çarpışma sensörü takılı kaldı",
+          "gesture": "Robot eğik durumda",
+          "bumper_repeat": "Çarpışma sensörü takılı kaldı",
+          "drop_repeat": "Tekerlekler askıya alındı",
+          "optical_flow": "Optik akış sensörü hatası",
+          "no_box": "Toz haznesi takılı değil",
+          "no_tank_box": "Su tankı takılı değil",
+          "water_box_empty": "Su tankı boş",
+          "box_full": "Filtre kurumamış veya tıkanmış",
+          "brush": "Ana fırça sarıldı",
+          "side_brush": "Yan fırça sarıldı",
+          "fan": "Filtre kurumamış veya tıkanmış",
+          "left_wheel_motor": "Robot sıkıştı veya sol tekerlek yabancı bir nesne tarafından engellenmiş olabilir",
+          "right_wheel_motor": "Robot sıkıştı veya sağ tekerlek yabancı bir nesne tarafından engellenmiş olabilir",
+          "turn_suffocate": "Robot sıkıştı veya dönmekte zorluk yaşıyor",
+          "forward_suffocate": "Robot sıkıştı veya ileri gidemiyor",
+          "charger_get": "Üs bulunamıyor",
+          "battery_low": "Düşük pil",
+          "charge_fault": "Şarj hatası",
+          "battery_percentage": "Pil seviyesi hatası",
+          "heart": "Dahili hata",
+          "camera_occlusion": "Görüntüleme konumlandırma sensörü hatası",
+          "move": "Hareket sensörü hatası",
+          "flow_shielding": "Optik sensör hatası",
+          "infrared_shielding": "Kızılötesi kalkan hatası",
+          "charge_no_electric": "Şarj istasyonu açık değil",
+          "battery_fault": "Pil hatası",
+          "fan_speed_error": "Fan hız sensörü hatası",
+          "left_wheell_speed": "Sol tekerlek yabancı bir nesne tarafından engellenmiş olabilir",
+          "right_wheell_speed": "Sağ tekerlek yabancı bir nesne tarafından engellenmiş olabilir",
+          "bmi055_acce": "İvmeölçer hatası",
+          "bmi055_gyro": "Gyro hatası",
+          "xv7001": "Gyro hatası",
+          "left_magnet": "Sol manyetik sensör hatası",
+          "right_magnet": "Sağ manyetik sensör hatası",
+          "flow_error": "Akış sensörü hatası",
+          "infrared_fault": "Kızılötesi hatası",
+          "camera_fault": "Kamera hatası",
+          "strong_magnet": "Güçlü manyetik alan algılandı",
+          "water_pump": "Su pompası hatası",
+          "rtc": "RTC hatası",
+          "auto_key_trig": "Dahili hata",
+          "p3v3": "Dahili hata",
+          "camera_idle": "Dahili hata",
+          "blocked": "Temizlik rotası engellendi, üsse geri dönülüyor.",
+          "lds_error": "Lazer mesafe sensörü hatası",
+          "lds_bumper": "Lazer mesafe sensörü tampon hatası",
+          "filter_blocked": "Filtre kurumamış veya tıkanmış",
+          "edge": "Kenar sensörü hatası",
+          "carpet": "Lütfen robotu halı olmayan bir alanda başlatın.",
+          "laser": "3D engel önleme sensörü arızalı.",
+          "ultrasonic": "Ultrasonik sensör arızalı.",
+          "no_go_zone": "Gitme alanı veya sanal duvar algılandı.",
+          "route": "Temizlik rotası engellendi.",
+          "restricted": "Vakum-paspa kısıtlı bir alanda algılandı.",
+          "remove_mop": "Paspas tamamlandı. Lütfen paspayı zamanında çıkarın ve temizleyin.",
+          "mop_removed": "Temizlik görevi sırasında paspas pedi çıktı.",
+          "mop_pad_stop_rotate": "Paspas pedi dönmeyi durdurdu.",
+          "bin_full": "Toz toplama torbası dolu veya hava kanalı tıkalı.",
+          "bin_open": "Otomatik boşaltma tabanının üst kapağı kapatılmadı veya toz torbası takılmadı.",
+          "water_tank": "Temiz su tankı takılı değil.",
+          "dirty_water_tank": "Kirli su tankı dolu veya takılı değil.",
+          "water_tank_dry": "Temiz su tankındaki su seviyesi düşük, lütfen zamanında su ekleyin.",
+          "dirty_water_tank_blocked": "Kirli su tankı tıkalı.",
+          "dirty_water_tank_pump": "Kirli su tankı pompası hatası.",
+          "mop_pad": "Yıkama tahtası düzgün bir şekilde kurulmamış.",
+          "wet_mop_pad": "Yıkama tahtasının su seviyesi anormal, lütfen zamanında yıkama tahtasını temizleyin.",
+          "clean_mop_pad": "Temizlik görevi tamamlandı, lütfen paspas ped yıkama tahtasını temizleyin.",
+          "clean_tank_level": "Temiz su tankını kontrol edin ve doldurun.",
+          "station_disconnected": "Üs istasyonu açık değil",
+          "dirty_tank_level": "Kullanılmış su tankındaki su seviyesi çok yüksek.",
+          "washboard_level": "Yıkama tahtasındaki su seviyesi çok yüksek.",
+          "no_mop_in_station": "Paspas pedi istasyonda değil.",
+          "dust_bag_full": "Toz torbası dolu veya hava delikleri tıkalı."
+        }
+      },
+      "charging_status": {
+        "state": {
+          "unknown": "Bilinmiyor",
+          "charging": "Şarj etme",
+          "not_charging": "Şarj olmuyor",
+          "return_to_charge": "Şarj işlemine geri dönün",
+          "charging_completed": "Şarj işlemi tamamlandı"
+        }
+      },
+      "relocation_status": {
+        "state": {
+          "unknown": "Bilinmiyor",
+          "located": "Konumlandırılmış",
+          "locating": "Konumlandırma",
+          "failed": "Başarısız",
+          "success": "Başarı"
+        }
+      },
+      "self_wash_base_status": {
+        "state": {
+          "unknown": "Bilinmiyor",
+          "idle": "Boşta",
+          "washing": "Yıkama",
+          "drying": "Kurutma",
+          "paused": "Duraklatıldı",
+          "returning": "Yıkamaya dönüyor",
+          "clean_add_water": "Temizleme ve su ekleme",
+          "adding_water": "Su ekleniyor"
+        }
+      },
+      "low_water_warning": {
+        "state": {
+          "no_warning": "Uyarı yok",
+          "no_water_left_dismiss": "Lütfen temiz su tankını kontrol edin.",
+          "no_water_left": "Temiz su tankındaki su neredeyse bitmek üzere. Lütfen temiz su tankını zamanında kontrol edip doldurun.",
+          "no_water_left_after_clean": "Paspas pedi temizlendi. Temiz su tankındaki suyun yetersiz olduğu tespit edildi, lütfen temiz su tankını doldurun ve kullanılmış su tankını boşaltın.",
+          "no_water_for_clean": "Temiz su tankındaki su seviyesi düşük. Robot Vakumlama Moduna geçti.",
+          "low_water": "Su tükenmek üzere. Lütfen temiz su tankını doldurun.",
+          "tank_not_installed": "Temiz su tankı takılı değil."
+        }
+      },
+      "stream_status": {
+        "state": {
+          "unknown": "Bilinmiyor",
+          "idle": "Boşta",
+          "video": "Video",
+          "audio": "Ses",
+          "recording": "Kaydediliyor"
+        }
+      },
+      "drainage_status": {
+        "state": {
+          "unknown": "Bilinmiyor",
+          "idle": "Boşta",
+          "draining": "Boşaltma",
+          "draining_successful": "Başarılı boşaltma",
+          "draining_failed": "Boşaltma başarısız oldu"
+        }
+      },
+      "task_type": {
+        "state": {
+          "standard": "Standart temizlik",
+          "standard_paused": "Standart temizlik duraklatıldı",
+          "custom": "Özel temizlik",
+          "custom_paused": "Özel temizlik duraklatıldı",
+          "shortcut": "Kısa yol temizliği",
+          "shortcut_paused": "Kısa yol temizliği duraklatıldı",
+          "scheduled": "Zamanlanmış temizlik",
+          "scheduled_paused": "Zamanlanmış temizlik duraklatıldı",
+          "smart": "Akıllı temizlik",
+          "smart_paused": "Akıllı temizlik duraklatıldı",
+          "partial": "Kısmi temizlik",
+          "partial_paused": "Kısmi temizlik duraklatıldı",
+          "summon": "Çağrı üzerine temizlik",
+          "summon_paused": "Çağrı üzerine temizlik duraklatıldı"
+        }
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "Temiz Bölüm",
+      "description": "Seçilen odalarda temizlik işlemini başlatın.",
+      "fields": {
+        "segments": {
+          "name": "Bölümler",
+          "description": "Temizlenecek odaların listesi. Oda başına varsayılan değerleri geçersiz kılmak için yalnızca odanın Karakteri veya odanın karakteri, temizleme süreleri, fan hızı ve paspas modu dizisi."
+        },
+        "repeats": {
+          "name": "Tekrarlar",
+          "description": "Seçilen her oda için temizlik geçişi sayısı (özelleştirilmiş temizlik parametresi tarafından geçersiz kılınmadığı sürece)."
+        },
+        "suction_level": {
+          "name": "Emiş Seviyesi",
+          "description": "Seçilen her oda için fan hızı (özelleştirilmiş temizlik parametresi tarafından geçersiz kılınmadığı sürece)."
+        },
+        "water_volume": {
+          "name": "Su Hacmi",
+          "description": "Seçilen her oda için su seviyesi (özelleştirilmiş temizlik parametresi tarafından geçersiz kılınmadığı sürece)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "Temiz Bölge",
+      "description": "Seçilen alanda temizleme işlemini başlatın.",
+      "fields": {
+        "zone": {
+          "name": "Bölge",
+          "description": "Koordinatlar."
+        },
+        "repeats": {
+          "name": "Tekrarlar",
+          "description": "Seçilen her bölge için temizlik geçişi sayısı."
+        },
+        "suction_level": {
+          "name": "Emme Seviyesi",
+          "description": "Seçilen her bölge için fan hızı."
+        },
+        "water_volume": {
+          "name": "Su Miktarı",
+          "description": "Seçilen her bölge için su seviyesi."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "Nokta Temizliği",
+      "description": "Haritada seçilen noktalarda temizlik işlemini başlatır.",
+      "fields": {
+        "points": {
+          "name": "Noktalar",
+          "description": "Temizlenecek koordinatların listesi."
+        },
+        "repeats": {
+          "name": "Tekrarlar",
+         "description": "Her seçilen bölge için temizlik geçişlerinin sayısı."
+        },
+        "suction_level": {
+         "name": "Emiş Seviyesi",
+         "description": "Her seçilen bölge için fan hızı."
+        },
+        "water_volume": {
+          "name": "Su Miktarı",
+          "description": "Her seçilen bölge için su seviyesi."
+        }
+      }
+    },
+    "vacuum_set_dnd": {
+      "name": "DnD'yi ayarla",
+      "description": "DnD işlevselliğini etkinleştirme/devre dışı bırakma ve/veya başlangıç ve bitiş zamanını ayarlama.",
+      "fields": {
+        "dnd_enabled": {
+          "name": "DnD Etkin",
+          "description": "DnD özelliğini etkinleştir veya devre dışı bırak."
+        },
+        "dnd_start": {
+          "name": "DnD Başlangıç",
+          "description": "DnD özelliğinin başlangıç saati."
+        },
+        "dnd_end": {
+          "name": "DnD Bitiş",
+          "description": "DnD özelliğinin bitiş saati."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "Gidiş",
+      "description": "Haritanın koordinatına gidin ve durun.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Noktanın X Koordinatı."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Noktanın Y Koordinatı."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Yolu Takip Et",
+      "description": "Haritadaki koordinat listesini takip edin ve üsse dönün. (Sadece kameralı süpürgelerde desteklenir)",
+      "fields": {
+        "points": {
+          "name": "Noktalar",
+          "description": "Yolun koordinatlarının listesi."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "Uzaktan Kumanda Hareket Adımı",
+      "description": "Uzaktan kontrol botu bir adım hareket ettirir.",
+      "fields": {
+        "rotation": {
+          "name": "Rotasyon",
+          "description": "128 ile 128 arasında ikili derece cinsinden çevirin."
+        },
+        "velocity": {
+          "name": "Hız",
+          "description": "Hareket hızı, 100 (ileri) ile -300 (geri) arasında."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "Ses Paketini Yükleyin",
+      "description": "Resmi veya özel ses paketini yükleyin.",
+      "fields": {
+        "lang_id": {
+          "name": "Dil Kimliği",
+          "description": "Bu paketin dil ID'si."
+        },
+        "url": {
+          "name": "URL",
+          "description": "Bu paketin URL'si vacuum botu tarafından erişilebilir olmalıdır."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "Dil paketinin MD5 sağlama toplamı."
+        },
+        "size": {
+          "name": "Boyut",
+          "description": "Dil paketinin bayt cinsinden boyutu."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "Harita İste",
+      "description": "Harita verilerini talep edin"
+    },
+    "vacuum_select_map": {
+      "name": "Harita Seçin",
+      "description": "Geçerli haritayı seçin. Birden fazla harita/zemin olduğunda kullanılır.",
+      "fields": {
+        "map_id": {
+          "name": "Harita Kimliği",
+          "description": "Seçilecek haritanın kimliği."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "Haritayı sil",
+      "description": "Harita silin.",
+      "fields": {
+        "map_id": {
+          "name": "Harita ID",
+          "description": "Silinecek haritanın ID'si."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "Geçici Haritayı Kaydet",
+      "description": "Geçici haritayı kaydedin."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "Geçici Haritayı Atın",
+      "description": "Geçici haritayı atın."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "Geçici Haritayı Değiştirin",
+      "description": "Geçici haritayı kaydedilmiş başka bir harita ile değiştirin.",
+      "fields": {
+        "map_id": {
+          "name": "Harita ID",
+          "description": "Değiştirilecek haritanın ID'si."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "Harita adını değiştir",
+      "description": "Haritaya isim verin.",
+      "fields": {
+        "map_id": {
+          "name": "Harita ID",
+          "description": "Haritanın kimliği."
+        },
+        "map_name": {
+          "name": "Harita Adı",
+          "description": "Haritanın yeni adı."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "Haritayı Geri Yükle",
+      "description": "Haritayı geri yükleyin.",
+      "fields": {
+        "map_id": {
+          "name": "Harita ID",
+          "description": "Geri yüklenecek haritanın ID'si."
+        },
+        "recovery_map_index": {
+          "name": "Kurtarma Haritası Dizini",
+          "description": "Kaydedilen kurtarma haritasının dizini"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Haritayı Dosyadan Geri Yükle",
+      "description": "Dosyadan bir haritayı geri yükleyin.",
+      "fields": {
+        "map_id": {
+          "name": "Harita ID",
+          "description": "Geri yüklenecek haritanın ID'si."
+        },
+        "file_url": {
+          "name": "Dosya Url",
+          "description": "Kaydedilen bz2.gz veya tar.gz dosyasının URL'si"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Yedekleme Haritası",
+      "description": "Bir haritayı buluta yedekleyin.",
+      "fields": {
+        "map_id": {
+          "name": "Harita ID",
+          "description": "Geri yüklenecek haritanın ID'si."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Segmentleri Birleştir",
+      "description": "Odaları birleştir.",
+      "fields": {
+        "map_id": {
+          "name": "Harita ID",
+          "description": "Haritanın ID'si."
+        },
+        "segments": {
+          "name": "Segmentler",
+          "description": "Oda ID'leri."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Bölünmüş Segmentler",
+      "description": "Bölünmüş odalar.",
+      "fields": {
+        "map_id": {
+          "name": "Harita ID",
+          "description": "Haritanın ID'si."
+        },
+        "segment": {
+          "name": "Segment",
+          "description": "Oda ID"
+        },
+        "line": {
+          "name": "Hat",
+          "description": "Bölünmüş hat koordinatları."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "Segmenti Yeniden Adlandır",
+      "description": "Segmenti yeniden adlandırın.",
+      "fields": {
+        "segment_id": {
+          "name": "Segment ID",
+          "description": "Segmentin ID'si"
+        },
+        "segment_name": {
+          "name": "Segment Adı",
+          "description": "Segmentin yeni adı"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "Temizleme Sırasını Ayarlama",
+      "description": "Oda temizleme sırasını ayarlayın. (Sadece desteklenen cihazlarda)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "Temizleme sırası",
+          "description": "Temizleme dizisinin Segment ID listesi."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "Özel Temizliği Ayarla",
+      "description": "Özel temizleme parametrelerini ayarlayın. (Sadece desteklenen cihazlarda)",
+      "fields": {
+        "segment_id": {
+          "name": "Segment ID",
+          "description": "Oda ID'leri."
+        },
+        "suction_level": {
+          "name": "Emme Seviyesi",
+          "description": "Her oda için emme seviyesi."
+        },
+        "water_volume": {
+          "name": "Su Hacmi",
+          "description": "Her oda için su hacmi."
+        },
+        "cleaning_mode": {
+          "name": "Temizleme Modu",
+          "description": "Her oda için temizlik (yalnızca paspas pedi kaldırma özelliğine sahip süpürgelerde desteklenir)."
+        },
+        "repeats": {
+          "name": "Tekrarlar",
+          "description": "Her oda için temizlik süreleri."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Kısıtlı Bölgeyi Ayarla",
+      "description": "Sanal duvarlar, kısıtlı bölgeler ve/veya paspaslanamaz bölgeler tanımlayın.",
+      "fields": {
+        "walls": {
+          "name": "Duvarlar",
+          "description": "Sanal duvarlar."
+        },
+        "zones": {
+          "name": "Bölgeler",
+          "description": "Girilmez bölgeler."
+        },
+        "no_mops": {
+          "name": "Paspas Yok",
+          "description": "Paspas bölgesi yok."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "Sarf Malzemesini Sıfırla",
+      "description": "Bir sarf malzemesini sıfırlayın.",
+      "fields": {
+        "consumable": {
+          "name": "Sarf Malzemesi",
+          "description": "Sarf malzemesi türü."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Kısayolu Yeniden Adlandır",
+      "description": "Bir kısayolu yeniden adlandırın. (Yalnızca desteklenen cihazlarda)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Kısayol Kimliği",
+          "description": "Kısayolun kimliği."
+        },
+        "shortcut_name": {
+          "name": "Kısayol Adı",
+          "description": "Kısayolun yeni adı."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Halı Alanını Ayarla",
+      "description": "Halıları ve yok sayılan halıları tanımlayın. (Sadece desteklenen cihazlarda)",
+      "fields": {
+        "carpets": {
+          "name": "Halılar",
+          "description": "Halı alanları."
+        },
+        "ignored_carpets": {
+          "name": "Görmezden Gelinen Halılar",
+          "description": "Otomatik olarak algılanan halıları silmek için göz ardı edilen halı alanları."
+        }
+      }
+    },
+    "vacuum_set_pathway": {
+      "name": "Yolu Ayarla",
+      "description": "Yolları tanımlayın.",
+      "fields": {
+        "pathways": {
+          "name": "Yollar",
+          "description": "Yol hattı koordinatları."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Önceden Tanımlanmış Noktaları Ayarlama",
+      "description": "Mevcut harita üzerinde önceden tanımlanmış koordinatları tanımlayın. (Sadece kameralı süpürgelerde desteklenir)",
+      "fields": {
+        "points": {
+          "name": "Noktalar",
+          "description": "Kaydedilecek koordinatların listesi."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Engel Yoksaymayı Ayarla",
+      "description": "Bir engelin yok sayma durumunu ayarlayın. (Yalnızca AI Engel algılama özelliğine sahip süpürgelerde desteklenir)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Engelin X Koordinatı."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Engelin Y Koordinatı."
+        },
+        "obstacle_type": {
+          "name": "Engel Türü",
+          "description": "Göz ardı edilecek engelin türü."
+        },
+        "obstacle_ignored": {
+          "name": "Görmezden Gelinen Engeller",
+          "description": "Engel göz ardı edilir ya da edilmez."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Yönlendirici konumunu ayarlama",
+      "description": "Mevcut harita üzerinde yönlendirici konumunu ayarlayın. (Sadece WiFi harita özelliği olan süpürgelerde desteklenir)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Yönlendiricinin X Koordinatı."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Yönlendiricinin Y Koordinatı."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "Önceki Seçiniz",
+      "description": "Seçilen bir varlığın önceki seçeneklerini seçin.",
+      "fields": {
+        "cycle": {
+          "name": "Döngü",
+          "description": "Seçenek ilkten sonuncuya doğru dönecekse."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "İlk Seçimi Yapın",
+      "description": "Seçilen bir varlığın ilk seçeneğini seçin."
+    },
+    "select_select_last": {
+      "name": "Son Seçiniz",
+      "description": "Seçilen bir varlığın son seçeneğini seçin."
+    },
+    "select_select_next": {
+      "name": "İleri'yi Seçin",
+      "description": "Seçilen bir varlığın sonraki seçeneklerini seçin.",
+      "fields": {
+        "cycle": {
+          "name": "Döngü",
+          "description": "Seçenek ilkten sonuncuya doğru dönecekse."
+        }
+      }
+    }
+  }
+}
