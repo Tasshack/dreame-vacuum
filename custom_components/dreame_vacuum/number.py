@@ -92,7 +92,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         value_fn=lambda value, device: (
             (
                 device.status.self_clean_area_min
-                if device.status.self_clean_value < device.status.self_clean_area_min
+                if device.status.self_clean_value < 1
                 else (
                     device.status.self_clean_area_max
                     if device.status.self_clean_value > device.status.self_clean_area_max
