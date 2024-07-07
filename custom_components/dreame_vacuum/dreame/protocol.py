@@ -1141,7 +1141,7 @@ class DreameVacuumProtocol:
         if username and password and country:
             if account_type == "mi":
                 self.cloud = DreameVacuumMiHomeCloudProtocol(username, password, country)
-            if account_type == "dreame":
+            elif account_type == "dreame":
                 self.cloud = DreameVacuumDreameHomeCloudProtocol(username, password, country, device_id)
         else:
             self.prefer_cloud = False
@@ -1149,9 +1149,11 @@ class DreameVacuumProtocol:
 
         if account_type == "mi":
             self.device_cloud = DreameVacuumMiHomeCloudProtocol(username, password, country) if prefer_cloud else None
-        if account_type == "dreame":
+        elif account_type == "dreame":
             self.prefer_cloud = True
             self.device_cloud = self.cloud
+        else:
+            self.device_cloud = None
 
     def set_credentials(self, ip: str, token: str, mac: str = None, account_type: str = "mi"):
         self._mac = mac
@@ -1165,7 +1167,7 @@ class DreameVacuumProtocol:
             self.device = None
 
     def connect(self, message_callback=None, connected_callback=None, retry_count=1) -> Any:
-        if self._account_type == "mi":
+        if self._account_type in ("mi", "local"):
             response = self.send("miIO.info", retry_count=retry_count)
             if (self.prefer_cloud or not self.device) and self.device_cloud and response:
                 self._connected = True
