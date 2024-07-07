@@ -1141,7 +1141,7 @@ class DreameVacuumProtocol:
         if username and password and country:
             if account_type == "mi":
                 self.cloud = DreameVacuumMiHomeCloudProtocol(username, password, country)
-            else:
+            if account_type == "dreame":
                 self.cloud = DreameVacuumDreameHomeCloudProtocol(username, password, country, device_id)
         else:
             self.prefer_cloud = False
@@ -1149,7 +1149,7 @@ class DreameVacuumProtocol:
 
         if account_type == "mi":
             self.device_cloud = DreameVacuumMiHomeCloudProtocol(username, password, country) if prefer_cloud else None
-        else:
+        if account_type == "dreame":
             self.prefer_cloud = True
             self.device_cloud = self.cloud
 
