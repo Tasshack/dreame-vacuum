@@ -1,4 +1,6 @@
 {
+  "domain": "dreame_vacuum",
+  "name": "Dreame Vacuum",
   "codeowners": [
     "@tasshack"
   ],
@@ -7,10 +9,8 @@
     "http"
   ],
   "documentation": "https://github.com/Tasshack/dreame-vacuum",
-  "domain": "dreame_vacuum",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Tasshack/dreame-vacuum/issues",
-  "name": "Dreame Vacuum",
   "requirements": [
     "pillow",
     "numpy",
