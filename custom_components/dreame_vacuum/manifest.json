@@ -9,6 +9,7 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Tasshack/dreame-vacuum/issues",
   "requirements": [
+    "http",
     "pillow",
     "numpy",
     "pybase64",
