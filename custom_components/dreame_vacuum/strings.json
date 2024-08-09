@@ -913,13 +913,13 @@
         }
       }
     },
-    "vacuum_set_pathway": {
-      "name": "Set Pathway",
-      "description": "Define pathways.",
+    "vacuum_set_virtual_threshold": {
+      "name": "Set Virtual Threshold",
+      "description": "Define virtual thresholds.",
       "fields": {
-        "pathways": {
-          "name": "Pathways",
-          "description": "Pathway line coordinates."
+        "virtual_thresholds": {
+          "name": "Virtual Thresholds",
+          "description": "Virtual threshold line coordinates."
         }
       }
     },

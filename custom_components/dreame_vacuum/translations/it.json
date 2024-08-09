@@ -914,11 +914,11 @@
         }
       }
     },
-    "vacuum_set_pathway": {
+    "vacuum_set_virtual_threshold": {
       "name": "Imposta il percorso",
       "description": "Definire percorsi.",
       "fields": {
-        "pathways": {
+        "virtual_thresholds": {
           "name": "Percorsi",
           "description": "Coordinate della linea del percorso."
         }

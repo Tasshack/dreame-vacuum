@@ -21,7 +21,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import entity_registry
 
-from .const import DOMAIN, UNIT_MINUTES, UNIT_AREA, UNIT_PERCENT
+from .const import DOMAIN, UNIT_MINUTES, UNIT_HOURS, UNIT_AREA, UNIT_PERCENT
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription
@@ -43,7 +43,6 @@ class DreameVacuumNumberEntityDescription(DreameVacuumEntityDescription, NumberE
     """Describes Dreame Vacuum Number entity."""
 
     mode: NumberMode = NumberMode.AUTO
-    post_action: DreameVacuumAction = None
     set_fn: Callable[[object, int]] = None
     max_value_fn: Callable[[object], int] = None
     min_value_fn: Callable[[object], int] = None
@@ -54,14 +53,13 @@ class DreameVacuumNumberEntityDescription(DreameVacuumEntityDescription, NumberE
 NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.VOLUME,
-        icon_fn=lambda value, device: "mdi:volume-off" if value == 0 else "mdi:volume-high",
+        icon_fn=lambda value, device: "mdi:volume-off" if not value else "mdi:volume-low" if value <= 35 else "mdi:volume-medium" if value <= 65 else "mdi:volume-high",
         mode=NumberMode.SLIDER,
         native_min_value=0,
         native_max_value=100,
         native_step=1,
         native_unit_of_measurement=UNIT_PERCENT,
-        entity_category=EntityCategory.CONFIG,
-        post_action=DreameVacuumAction.TEST_SOUND,
+        entity_category=EntityCategory.CONFIG
     ),
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.MOP_CLEANING_REMAINDER,
@@ -84,7 +82,8 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         ),
         mode=NumberMode.SLIDER,
         native_unit_of_measurement=UNIT_AREA,
-        exists_fn=lambda description, device: device.capability.self_wash_base,
+        exists_fn=lambda description, device: device.capability.self_wash_base
+        and not device.capability.mop_clean_frequency,
         min_value_fn=lambda device: device.status.self_clean_area_min,
         max_value_fn=lambda device: device.status.self_clean_area_max,
         native_step=1,
@@ -108,7 +107,8 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         icon="mdi:table-clock",
         mode=NumberMode.SLIDER,
         native_unit_of_measurement=UNIT_MINUTES,
-        exists_fn=lambda description, device: device.capability.self_clean_frequency,
+        exists_fn=lambda description, device: device.capability.self_clean_frequency
+        and not device.capability.mop_clean_frequency,
         min_value_fn=lambda device: device.status.self_clean_time_min,
         max_value_fn=lambda device: device.status.self_clean_time_max,
         native_step=1,
@@ -154,6 +154,18 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_max_value=32,
         native_step=1,
         exists_fn=lambda description, device: device.capability.wetness_level
+        and DreameVacuumEntityDescription().exists_fn(description, device),
+    ),
+    DreameVacuumNumberEntityDescription(
+        property_key=DreameVacuumProperty.DRYING_TIME,
+        icon="mdi:sun-clock",
+        native_unit_of_measurement=UNIT_HOURS,
+        mode=NumberMode.SLIDER,
+        native_min_value=2,
+        native_max_value=12,
+        native_step=1,
+        entity_category=None,
+        exists_fn=lambda description, device: device.capability.mop_clean_frequency
         and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
 )
@@ -306,13 +318,6 @@ class DreameVacuumNumberEntity(DreameVacuumEntity, NumberEntity):
                 self.device.set_property,
                 self.entity_description.property_key,
                 value,
-            )
-
-        if result and self.entity_description.post_action is not None:
-            await self._try_command(
-                "Unable to call %s",
-                self.device.call_action,
-                self.entity_description.post_action,
             )
 
     @property

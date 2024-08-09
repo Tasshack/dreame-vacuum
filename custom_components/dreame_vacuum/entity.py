@@ -171,9 +171,12 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
         """Return device information about this Dreame Vacuum device."""
         if self.device.info:
             return DeviceInfo(
-                connections={(CONNECTION_NETWORK_MAC, self.device.mac)},
+                connections={
+                    (CONNECTION_NETWORK_MAC, self.device.mac)
+                },
                 identifiers={(DOMAIN, self.device.mac)},
                 name=self.device.name,
+                serial_number=self.device.status.serial_number if self.device.status else None,
                 manufacturer=self.device.info.manufacturer,
                 model=self.device.info.model,
                 sw_version=self.device.info.firmware_version,

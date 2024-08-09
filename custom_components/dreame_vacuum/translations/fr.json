@@ -916,11 +916,11 @@
         }
       }
     },
-    "vacuum_set_pathway": {
+    "vacuum_set_virtual_threshold": {
       "name": "Définir le chemin",
       "description": "Définir des parcours.",
       "fields": {
-        "pathways": {
+        "virtual_thresholds": {
           "name": "Voies",
           "description": "Coordonnées de la ligne de chemin."
         }

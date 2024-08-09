@@ -1,9 +1,10 @@
-[![version](https://img.shields.io/github/manifest-json/v/Tasshack/dreame-vacuum/dev?filename=custom_components%2Fdreame_vacuum%2Fmanifest.json&color=slateblue&label=version)](https://github.com/Tasshack/dreame-vacuum/releases)
-![GitHub all releases](https://img.shields.io/github/downloads/Tasshack/dreame-vacuum/total)
-[![HACS](https://img.shields.io/badge/HACS-Default-orange.svg?logo=HomeAssistantCommunityStore&logoColor=white)](https://github.com/hacs/integration)
-[![Community Forum](https://img.shields.io/static/v1.svg?label=Community&message=Forum&color=41bdf5&logo=HomeAssistant&logoColor=white)](https://community.home-assistant.io/t/custom-component-dreame-vacuum/473026)
-[![Ko-Fi](https://img.shields.io/static/v1.svg?label=%20&message=Ko-Fi&color=F16061&logo=ko-fi&logoColor=white)](https://www.ko-fi.com/Tasshack)
-[![PayPal.Me](https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal)](https://paypal.me/Tasshackk)
+[![Version](https://img.shields.io/github/manifest-json/v/Tasshack/dreame-vacuum/dev?filename=custom_components%2Fdreame_vacuum%2Fmanifest.json&color=slateblue&label=Version&style=for-the-badge)](https://github.com/Tasshack/dreame-vacuum/releases)
+![Downloads](https://img.shields.io/github/downloads/Tasshack/dreame-vacuum/total?label=Downloads&style=for-the-badge)
+![Stars](https://img.shields.io/github/stars/Tasshack/dreame-vacuum?label=Stars&color=darkgoldenrod&style=for-the-badge)
+[![HACS](https://img.shields.io/badge/HACS-Default-orange.svg?logo=HomeAssistantCommunityStore&logoColor=white&style=for-the-badge)](https://github.com/hacs/integration)
+[![Community Forum](https://img.shields.io/static/v1.svg?label=Community&message=Forum&color=41bdf5&logo=HomeAssistant&logoColor=white&style=for-the-badge)](https://community.home-assistant.io/t/custom-component-dreame-vacuum/473026)
+[![Ko-Fi](https://img.shields.io/static/v1.svg?label=%20&message=Ko-Fi&color=F16061&logo=ko-fi&logoColor=white&style=for-the-badge)](https://www.ko-fi.com/Tasshack)
+[![PayPal.Me](https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal&color=blue&style=for-the-badge)](https://paypal.me/Tasshackk)
 
 ![Logo](https://raw.githubusercontent.com/Tasshack/dreame-vacuum/dev/docs/media/logo.png)
 
@@ -67,6 +68,11 @@ wget -O - https://raw.githubusercontent.com/Tasshack/dreame-vacuum/dev/install |
 
 ## How To Use
 Integration is compatible with all available Lovelace vacuum cards but if you want to use zone cleaning feature you can prefer the Xiaomi Vacuum Card.
+
+#### With Dreame Vacuum Card
+
+*Work in progress... <a href="https://github.com/Tasshack/dreame-vacuum/issues/466" target="_blank">#466</a>*
+
 
 #### With [Xiaomi Vacuum Map Card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card)
  > Template for room and zone cleaning.
@@ -255,24 +261,19 @@ attributes:
 
 ```
 
-#### With Dreame Vacuum Card
-
-*Work in progress*
-
 ## To Do
 
 - Integrated custom lovelace map card
-- Mopping effect settings
 - Shortcut editing
 - Schedule editing
 - Furniture editing
+- DnD editing
 - Live camera streaming
+- Backend translations
 
 
 ## Contributing
-Integrations is currently only available on English language and if want you use it on our language it would be very helpful to you to translate files on *translations* folder and share with us.
-
-To submit your changes please fork this repository and open a pull request. 
+To submit your changes please fork `dev` branch of this repository and open a pull request. 
 
 ## Thanks To
 

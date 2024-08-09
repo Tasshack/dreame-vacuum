@@ -495,13 +495,13 @@ vacuum_set_carpet_area:
       selector:
         object:    
 
-vacuum_set_pathway:
+vacuum_set_virtual_threshold:
   target:
     entity:
       integration: dreame_vacuum
       domain: vacuum
   fields:
-    pathways:
+    virtual_thresholds:
       example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
       required: false
       selector:

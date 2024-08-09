@@ -27,6 +27,7 @@ from homeassistant.helpers import entity_platform, entity_registry
 from .const import (
     DOMAIN,
     UNIT_TIMES,
+    UNIT_AREA,
     INPUT_CYCLE,
     SERVICE_SELECT_NEXT,
     SERVICE_SELECT_PREVIOUS,
@@ -220,6 +221,8 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         entity_category=None,
         value_fn=lambda value, device: f"{value}h",
         value_int_fn=lambda value, device: int(value[0]),
+        exists_fn=lambda description, device: not device.capability.mop_clean_frequency
+        and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSelectEntityDescription(
         property_key=DreameVacuumProperty.MOP_WASH_LEVEL,
@@ -257,6 +260,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         exists_fn=lambda description, device: bool(
             device.capability.self_wash_base
             and not device.capability.custom_mopping_route
+            and not device.capability.cleaning_route
             and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
     ),
@@ -277,7 +281,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
         value_int_fn=lambda value, device: DreameVacuumWiderCornerCoverage[value.upper()].value,
         exists_fn=lambda description, device: bool(
-            not device.capability.mop_pad_swing and DreameVacuumEntityDescription().exists_fn(description, device)
+            not device.capability.mop_pad_swing and not device.capability.mop_clean_frequency and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
     ),
     DreameVacuumSelectEntityDescription(
@@ -356,6 +360,16 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         exists_fn=lambda description, device: bool(device.capability.auto_empty_mode),
     ),
     DreameVacuumSelectEntityDescription(
+        key="mop_clean_frequency",
+        icon="mdi:texture-box",
+        options=lambda device, segment: [f"10{UNIT_AREA}", f"15{UNIT_AREA}", f"20{UNIT_AREA}", f"25{UNIT_AREA}"] if device.capability.mop_pad_swing else [f"8{UNIT_AREA}", f"10{UNIT_AREA}", f"5{UNIT_AREA}"],
+        entity_category=None,
+        value_fn=lambda value, device: f"{device.status.self_clean_value}{UNIT_AREA}",
+        value_int_fn=lambda value, device: int(value.replace(UNIT_AREA, "")),
+        exists_fn=lambda description, device: device.capability.self_wash_base
+        and device.capability.mop_clean_frequency,
+    ),
+    DreameVacuumSelectEntityDescription(
         key="map_rotation",
         icon="mdi:crop-rotate",
         options=lambda device, segment: ["0", "90", "180", "270"],
@@ -370,7 +384,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     DreameVacuumSelectEntityDescription(
         key="selected_map",
         icon="mdi:map-check",
-        options=lambda device, segment: [v.map_name for k, v in device.status.map_data_list.items()],
+        options=lambda device, segment: [v.map_name for k, v in device.status.map_data_list.items()] if device.status.map_data_list else [],
         entity_category=None,
         value_fn=lambda value, device: (
             device.status.selected_map.map_name

@@ -112,6 +112,12 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         property_key=DreameVacuumProperty.WATER_ELECTROLYSIS,
         icon_fn=lambda value, device: "mdi:lightning-bolt-outline" if value == 0 else "mdi:lightning-bolt",
         entity_category=EntityCategory.CONFIG,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.capability.self_wash_base
+            and not device.capability.mop_clean_frequency
+            and not device.capability.small_self_clean_area
+        ),
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.AUTO_WATER_REFILLING,
@@ -135,13 +141,10 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
     ),
     DreameVacuumSwitchEntityDescription(
         key="carpet_avoidance",
-        property_key=DreameVacuumProperty.CARPET_CLEANING,
         icon="mdi:close-box-outline",
         entity_category=EntityCategory.CONFIG,
-        value_fn=lambda value, device: device.status.carpet_avoidance,
-        format_fn=lambda value, device: 1 if value else 2,
         exists_fn=lambda description, device: not device.capability.mop_pad_unmounting
-        and DreameVacuumEntityDescription().exists_fn(description, device),
+        and device.capability.carpet_recognition,
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.AUTO_ADD_DETERGENT,
@@ -196,7 +199,8 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         value_fn=lambda value, device: bool(not device.status.self_clean_value),
         exists_fn=lambda description, device: device.capability.self_wash_base
         and not device.capability.self_clean_frequency
-        and device.status.self_clean_value is not None,
+        and device.status.self_clean_value is not None 
+        and not device.capability.mop_clean_frequency,
         set_fn=lambda device, value: device.set_self_clean_value(value),
         format_fn=lambda value, device: (
             0 if value else device.status.previous_self_clean_area if device.status.previous_self_clean_area else 20
@@ -335,6 +339,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         property_key=DreameVacuumProperty.OFF_PEAK_CHARGING,
         icon="mdi:battery-clock",
         entity_category=EntityCategory.CONFIG,
+        exists_fn=lambda description, device: device.capability.off_peak_charging,
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumAutoSwitchProperty.AUTO_CHARGING,
@@ -348,7 +353,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         property_key=DreameVacuumAutoSwitchProperty.HUMAN_FOLLOW,
         icon_fn=lambda value, device: "mdi:account-off" if not value else "mdi:account-arrow-left",
         exists_fn=lambda description, device: bool(
-            device.capability.mop_pad_swing and DreameVacuumEntityDescription().exists_fn(description, device)
+            device.capability.mop_pad_swing and device.capability.camera_streaming and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
         entity_category=EntityCategory.CONFIG,
     ),

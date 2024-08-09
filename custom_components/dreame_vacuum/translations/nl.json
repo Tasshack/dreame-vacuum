@@ -917,11 +917,11 @@
         }
       }
     },
-    "vacuum_set_pathway": {
+    "vacuum_set_virtual_threshold": {
       "name": "Pad Instellen",
       "description": "Definieer paden.",
       "fields": {
-        "pathways": {
+        "virtual_thresholds": {
           "name": "Paden",
           "description": "Coördinaten van de padlijn."
         }

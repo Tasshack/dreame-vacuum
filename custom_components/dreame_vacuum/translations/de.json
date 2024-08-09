@@ -914,11 +914,11 @@
         }
       }
     },
-    "vacuum_set_pathway": {
+    "vacuum_set_virtual_threshold": {
       "name": "Weg festlegen",
       "description": "Wege definieren.",
       "fields": {
-        "pathways": {
+        "virtual_thresholds": {
           "name": "Wege",
           "description": "Koordinaten der Weglinien."
         }

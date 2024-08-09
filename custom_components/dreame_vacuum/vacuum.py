@@ -50,6 +50,9 @@ from .const import (
     INPUT_MOP_ARRAY,
     INPUT_REPEATS,
     INPUT_CLEANING_MODE,
+    INPUT_CUSTOM_MOPPING_ROUTE,
+    INPUT_CLEANING_ROUTE,
+    INPUT_WETNESS_LEVEL,
     INPUT_ROTATION,
     INPUT_SEGMENT,
     INPUT_SEGMENT_ID,
@@ -68,7 +71,7 @@ from .const import (
     INPUT_SHORTCUT_NAME,
     INPUT_CARPET_ARRAY,
     INPUT_IGNORED_CARPET_ARRAY,
-    INPUT_PATHWAY_ARRAY,
+    INPUT_VIRTUAL_THRESHOLD_ARRAY,
     INPUT_X,
     INPUT_Y,
     INPUT_OBSTACLE_IGNORED,
@@ -96,7 +99,7 @@ from .const import (
     SERVICE_SET_CUSTOM_CLEANING,
     SERVICE_SET_RESTRICTED_ZONE,
     SERVICE_SET_CARPET_AREA,
-    SERVICE_SET_PATHWAY,
+    SERVICE_SET_VIRTUAL_THRESHOLD,
     SERVICE_SET_PREDEFINED_POINTS,
     SERVICE_SPLIT_SEGMENTS,
     SERVICE_SAVE_TEMPORARY_MAP,
@@ -201,23 +204,6 @@ async def async_setup_entry(
 
     platform = entity_platform.current_platform.get()
 
-    platform.async_register_entity_service(
-        SERVICE_SET_PROPERTY,
-        {
-            vol.Required(INPUT_KEY): cv.string,
-            vol.Optional(INPUT_VALUE): vol.Any(vol.Coerce(int), vol.Coerce(str), vol.Coerce(bool)),
-        },
-        DreameVacuum.async_set_property.__name__,
-    )
-    
-    platform.async_register_entity_service(
-        SERVICE_CALL_ACTION,
-        {
-            vol.Required(INPUT_KEY): cv.string
-        },
-        DreameVacuum.async_call_action.__name__,
-    )
-    
     platform.async_register_entity_service(
         SERVICE_REQUEST_MAP,
         {},
@@ -434,9 +420,9 @@ async def async_setup_entry(
     )
 
     platform.async_register_entity_service(
-        SERVICE_SET_PATHWAY,
+        SERVICE_SET_VIRTUAL_THRESHOLD,
         {
-            vol.Optional(INPUT_PATHWAY_ARRAY): vol.All(
+            vol.Optional(INPUT_VIRTUAL_THRESHOLD_ARRAY): vol.All(
                 list,
                 [
                     vol.ExactSequence(
@@ -450,7 +436,7 @@ async def async_setup_entry(
                 ],
             ),
         },
-        DreameVacuum.async_set_pathway.__name__,
+        DreameVacuum.async_set_virtual_threshold.__name__,
     )
 
     platform.async_register_entity_service(
@@ -581,6 +567,9 @@ async def async_setup_entry(
             vol.Required(INPUT_WATER_VOLUME): cv.ensure_list,
             vol.Required(INPUT_REPEATS): cv.ensure_list,
             vol.Optional(INPUT_CLEANING_MODE): cv.ensure_list,
+            vol.Optional(INPUT_CUSTOM_MOPPING_ROUTE): cv.ensure_list,
+            vol.Optional(INPUT_CLEANING_ROUTE): cv.ensure_list,
+            vol.Optional(INPUT_WETNESS_LEVEL): cv.ensure_list,
         },
         DreameVacuum.async_set_custom_cleaning.__name__,
     )
@@ -633,6 +622,21 @@ async def async_setup_entry(
             vol.Required(INPUT_Y): vol.All(vol.Coerce(int)),
         },
         DreameVacuum.async_set_router_position.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_SET_PROPERTY,
+        {
+            vol.Required(INPUT_KEY): cv.string,
+            vol.Optional(INPUT_VALUE): vol.Any(vol.Coerce(int), vol.Coerce(str), vol.Coerce(bool)),
+        },
+        DreameVacuum.async_set_property.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_CALL_ACTION,
+        {vol.Required(INPUT_KEY): cv.string, vol.Optional(INPUT_VALUE): cv.string},
+        DreameVacuum.async_call_action.__name__,
     )
 
     async_add_entities([DreameVacuum(coordinator)])
@@ -828,12 +832,12 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             ignored_carpets,
         )
 
-    async def async_set_pathway(self, pathways="") -> None:
-        """Create or update pathways."""
+    async def async_set_virtual_threshold(self, virtual_thresholds="") -> None:
+        """Create or update virtual thresholds."""
         await self._try_command(
-            "Unable to call set_pathway: %s",
-            self.device.set_pathway,
-            pathways,
+            "Unable to call set_virtual_threshold: %s",
+            self.device.set_virtual_threshold,
+            virtual_thresholds,
         )
 
     async def async_set_predefined_points(self, points="") -> None:
@@ -919,20 +923,19 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         if key is not None and value is not None and key != "" and value != "":
             await self._try_command("set_property failed: %s", self.device.set_property_value, key, value)
 
-    async def async_call_action(self, key) -> None:
+    async def async_call_action(self, key, value=None) -> None:
         """Call action."""
         if key is not None and key != "":
-            await self._try_command("call_action failed: %s", self.device.call_action_value, key)
+            await self._try_command("call_action failed: %s", self.device.call_action_value, key, value)
 
     async def async_rename_map(self, map_id, map_name="") -> None:
         """Rename a map"""
-        if map_name != "":
-            await self._try_command(
-                "Unable to call rename_map: %s",
-                self.device.rename_map,
-                map_id,
-                map_name,
-            )
+        await self._try_command(
+            "Unable to call rename_map: %s",
+            self.device.rename_map,
+            map_id,
+            map_name,
+        )
 
     async def async_restore_map(self, recovery_map_index, map_id=None) -> None:
         """Restore a map"""
@@ -1004,7 +1007,15 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             )
 
     async def async_set_custom_cleaning(
-        self, segment_id, suction_level, water_volume, repeats, cleaning_mode=None
+        self,
+        segment_id,
+        suction_level,
+        water_volume,
+        repeats,
+        cleaning_mode=None,
+        custom_mopping_route=None,
+        cleaning_route=None,
+        wetness_level=None,
     ) -> None:
         """Set custom cleaning"""
         if (
@@ -1025,6 +1036,9 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 water_volume,
                 repeats,
                 cleaning_mode,
+                custom_mopping_route,
+                cleaning_route,
+                wetness_level,
             )
 
     async def async_install_voice_pack(self, lang_id, url, md5, size, **kwargs) -> None:

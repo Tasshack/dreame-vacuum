@@ -11,6 +11,8 @@ from .types import (
     DreameVacuumRelocationStatus,
     DreameVacuumDustCollection,
     DreameVacuumAutoEmptyStatus,
+    DreameVacuumMapRecoveryStatus,
+    DreameVacuumMapBackupStatus,
     DreameVacuumSelfWashBaseStatus,
     DreameVacuumSuctionLevel,
     DreameVacuumWaterVolume,
@@ -117,10 +119,10 @@ TASK_STATUS_MOPPING_PAUSE: Final = "mopping_paused"
 TASK_STATUS_ZONE_MOPPING_PAUSE: Final = "zone_mopping_paused"
 TASK_STATUS_SEGMENT_MOPPING_PAUSE: Final = "room_mopping_paused"
 TASK_STATUS_AUTO_MOPPING_PAUSE: Final = "mopping_paused"
-TASK_STATUS_CRUISING_PATH: Final = "curising_path"
-TASK_STATUS_CRUISING_PATH_PAUSED: Final = "curising_path_paused"
-TASK_STATUS_CRUISING_POINT: Final = "curising_point"
-TASK_STATUS_CRUISING_POINT_PAUSED: Final = "curising_point_paused"
+TASK_STATUS_CRUISING_PATH: Final = "cruising_path"
+TASK_STATUS_CRUISING_PATH_PAUSED: Final = "cruising_path_paused"
+TASK_STATUS_CRUISING_POINT: Final = "cruising_point"
+TASK_STATUS_CRUISING_POINT_PAUSED: Final = "cruising_point_paused"
 TASK_STATUS_SUMMON_CLEAN_PAUSED: Final = "summon_clean_paused"
 TASK_STATUS_RETURNING_INSTALL_MOP: Final = "returning_to_install_mop"
 TASK_STATUS_RETURNING_REMOVE_MOP: Final = "returning_to_remove_mop"
@@ -143,8 +145,8 @@ STATUS_SEGMENT_CLEANING: Final = "room_cleaning"
 STATUS_ZONE_CLEANING: Final = "zone_cleaning"
 STATUS_SPOT_CLEANING: Final = "spot_cleaning"
 STATUS_FAST_MAPPING: Final = "fast_mapping"
-STATUS_CRUISING_PATH: Final = "curising_path"
-STATUS_CRUISING_POINT: Final = "curising_point"
+STATUS_CRUISING_PATH: Final = "cruising_path"
+STATUS_CRUISING_POINT: Final = "cruising_point"
 STATUS_SUMMON_CLEAN: Final = "summon_clean"
 STATUS_SHORTCUT: Final = "shortcut"
 STATUS_PERSON_FOLLOW: Final = "person_follow"
@@ -165,6 +167,16 @@ DUST_COLLECTION_AVAILABLE: Final = "available"
 
 AUTO_EMPTY_STATUS_ACTIVE: Final = "active"
 AUTO_EMPTY_STATUS_NOT_PERFORMED: Final = "not_performed"
+
+MAP_RECOVERY_STATUS_IDLE: Final = "idle"
+MAP_RECOVERY_STATUS_RUNNING: Final = "running"
+MAP_RECOVERY_STATUS_SUCCESS: Final = "success"
+MAP_RECOVERY_STATUS_FAIL: Final = "fail"
+
+MAP_BACKUP_STATUS_IDLE: Final = "idle"
+MAP_BACKUP_STATUS_RUNNING: Final = "running"
+MAP_BACKUP_STATUS_SUCCESS: Final = "success"
+MAP_BACKUP_STATUS_FAIL: Final = "fail"
 
 SELF_WASH_BASE_STATUS_WASHING: Final = "washing"
 SELF_WASH_BASE_STATUS_DRYING: Final = "drying"
@@ -374,6 +386,8 @@ ATTR_DUST_COLLECTION_AVAILABLE: Final = "dust_collection_available"
 ATTR_ROOMS: Final = "rooms"
 ATTR_CURRENT_SEGMENT: Final = "current_segment"
 ATTR_SELECTED_MAP: Final = "selected_map"
+ATTR_SELECTED_MAP_ID: Final = "selected_map_id"
+ATTR_SELECTED_MAP_INDEX: Final = "selected_map_index"
 ATTR_ID: Final = "id"
 ATTR_NAME: Final = "name"
 ATTR_ICON: Final = "icon"
@@ -396,6 +410,7 @@ ATTR_SELF_CLEAN_TIME: Final = "self_clean_time"
 ATTR_PREVIOUS_SELF_CLEAN_TIME: Final = "previous_self_clean_time"
 ATTR_SELF_CLEAN_TIME_MIN: Final = "self_clean_time_min"
 ATTR_SELF_CLEAN_TIME_MAX: Final = "self_clean_time_max"
+ATTR_MOP_CLEAN_FREQUENCY: Final = "mop_clean_frequency"
 ATTR_MOP_PAD: Final = "mop_pad"
 ATTR_CLEANING_SEQUENCE: Final = "cleaning_sequence"
 ATTR_WASHING: Final = "washing"
@@ -403,6 +418,9 @@ ATTR_WASHING_PAUSED: Final = "washing_paused"
 ATTR_DRYING: Final = "drying"
 ATTR_DRAINING: Final = "draining"
 ATTR_CLEANGENIUS: Final = "cleangenius_cleaning"
+ATTR_OFF_PEAK_CHARGING: Final = "off_peak_charging"
+ATTR_OFF_PEAK_CHARGING_START: Final = "off_peak_charging_start"
+ATTR_OFF_PEAK_CHARGING_END: Final = "off_peak_charging_end"
 ATTR_LOW_WATER: Final = "low_water"
 ATTR_VACUUM_STATE: Final = "vacuum_state"
 ATTR_DND: Final = "dnd"
@@ -429,6 +447,11 @@ ATTR_CRUSING: Final = "cruising"
 ATTR_HAS_SAVED_MAP: Final = "has_saved_map"
 ATTR_HAS_TEMPORARY_MAP: Final = "has_temporary_map"
 ATTR_AUTO_EMPTY_MODE: Final = "auto_empty_mode"
+ATTR_CARPET_AVOIDANCE: Final = "carpet_avoidance"
+ATTR_FLOOR_DIRECTION_CLEANING_AVAILABLE: Final = "floor_direction_cleaning_available"
+ATTR_FIRMWARE_VERSION: Final = "firmware_version"
+ATTR_AP: Final = "ap"
+ATTR_COLOR_SCHEME: Final = "color_scheme"
 ATTR_CAPABILITIES: Final = "capabilities"
 
 MAP_PARAMETER_NAME: Final = "name"
@@ -489,13 +512,13 @@ MAP_DATA_JSON_PARAMETER_WALL: Final = "wall"
 MAP_DATA_JSON_PARAMETER_SEGMENT: Final = "segment"
 
 DEVICE_KEY: Final = (
-    "H4sIAAAAAAAACj2TyZLaMBCGXyXl8xwsqW1LubGUhwmYxSEkJJUDmwEDXgYYZpLKu0dWd/v0f3K3elP7r1fHw8Nb2anTeD7NhuPQ+/zpl/cqpW+830/eJP42Opl5qaI63f5YKrYK33vyNsKXm4Jgf278t8U2nak/utPL+9t+Urb+omzM4/RRdPMgvo6n++54PW/N0kZpNEBVpIFiXTNsGLYMF4Ybw53hgRBSmKjVlQPl2nDafsBEFjC+hR1DxrAnwHBKhKwVgsJ2lNKsFD6gfAH2p0I6hz5WqkJBnmGEGpFnRGdNZx2Qo4EWqD4DOcOJ4cxwZcAZKYMlgi9Q6SWAerKK4S3g5C0cGAoESXclkNJdekUAQzHAYEEQ+PhoQIOAkNKG1BZonC1Qv6Cxf9BUr6GcRtIFI/HlwLgbRmFHVl1oq646q2zHqowS5IitW8UGGzgRROhKU7LqOjQg8QpI3Ww3XHtvaia7t/X3RfelK9vtDt3yl/n7c1HuB9nivssW2TubwW+sKvbzI9yzbrIaiPkhaa28ZLRTghpWNiduAu2Q9l8JaERYXKOrJkGRqZ9HmdQ67wedzuTCCexOWmt8KbLVi6zWu4t/ioJba6WFtFASRAh2KqjAqwgBboai/80qbzNuhlX6oLkLLblq9tW0PZFo6nqkH36QLUezL0k6CJO8rQsaazqeQKWCtZwNV+XboOeslRRg3MTDaXwcTZfJYPRxrqI0ZbNwZThwfrouvpptvZ+rXlU970QbphmtU/IHv2ZofnUHNsK//+u61l1HBQAA"
+    "H4sIAAAAAAAACj2Uy3baMBCGX6XH6ywsaSxL3QE5DmkwAZempT1dAMYkJviSG0l7+u6VNDNe/Z8ZzWj0a8TfqM9u7t/aUV9kq0V1M9fR50+/oicpYxv9vohus2+zo121Ku2L8sdacVTE0UW0E7HcNQSHR4TUSem+UZSLuzJlUxZL9ceMJvVleZm3QxnR+vC8ODfjOsme54vDeL5dDWFfxWuCqkgTxbpl2DGUDCeGF4ZXhjOCpjLpoJsAKpwu6PADbuQA6zvYM1QMBwIsp4Rm7RAUHkcpw0rlE9ovwfMpTd86xk6VFrRSp6gprUzp29C3SWihhQGoPws1w5HB31mAZwb0SFlsEWKBSjcBdCanWN4BOu/gnqFBkJQrgZRyZUq5MqVcmT4hkENAFw0KjwdgKQUs9g5JjPcL5BloStXkAGjOMXgfQB6BoaKGzmipTyspwUq8bQdoGdiQahXa4TRs5jQczSnHcU+rBC1E35yiXx6CTR6OBGiHJa+dBp8syDAFTul3ibVAGv9m4HnyppZy/LL9fje+HsvhzejwpNr6/appD9Pq7nVf3VXvHIbYR1UW1w/wWo3zzVSs7vMhyqNLkyrIEuX2xPmiyTQx3phiE7E5rxu/QVOpnw8y7019mYxGtyfewE26i2anptpcy267P8XHNHkZojTmDlqCFMG5hAo84JDgvCl6xU75jeC8OaUfDJ/CSJp8I7l9TjKKQzSlqfCdnouPOKnWs+WXvJjqvB46BR8t5rfQqWQrlzeb9m06CdFOCrDhDvQie5gt1vl09vHYpUXBYREaCxDWmb75asv+sFKTrrvai6GMNzsorYe4Z/B/KQFchX//ATnMEbjGBQAA"
 )
 DREAME_STRINGS: Final = (
     "H4sICAAAAAAEAGNsb3VkX3N0cmluZ3MuanNvbgBdUltv2jAU/iuoUtEmjZCEljBVPDAQgu0hK5eudJrQwXaIV18y24yyX79jm45tebDPd67f+ZyvVwnXLqGGgWSJY6S+eneV9fJ+gfdidBKb8XUll5+a4nr1A12TkLhdSjCu1pJ1s+Q2uX3fesM/11qxuxYvl62sn6R3rSUBwbq9JE3f+p5kkO56xaDY5Xm/XxT9HaHkZpBVvYIOKrjJd5Cl0EuhGmTQp1Unw6IPYDlpPc0+is2XTDzm0yOZbV7K5+n9o1zk97NmtM6mTw+qLsvJfogFafjQsA7cwaIhwTpm1pyiveOKTrQErhA0RjfMuBOaqMCcepcAV2kjh/Ny2bYE40MQor03oNzWnRBikmGVYbbeOv3MVPsf5MMNWHvUhrYPlhkFMtS0X70BhE5AiD4oh7gbxe/AwdVdHc7QDUOYxKyNzS+j/2D20nB0bHkM7rn2hmPK8w0bn1t7Lh3cMu7qkZcioqjUJULBga9kPzlhaAhu3UPu46rSMVCuxvMItCPeCnsbkPacH/DeV0tNmQjsCK5vL5RwWodo6Z+KKTrWUsIro4oLX+ovL+D5rXytVw6vGkdo419uz9wkEJ1E1vY/PInDRigqorWXYbRnyl1CC0EQ+ARt+C9wUcNV0LAT/oqxVo4hWMXh0DSCk5DY/W5DdrPFY3umo49KaKBrI6KjtDajf3u//QbhJuZXdAMAAA=="
 )
 DREAME_MODEL_CAPABILITIES: Final = (
-    "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"
+    "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"
 )
 
 PROPERTY_TO_NAME: Final = {
@@ -1110,6 +1133,23 @@ AUTO_EMPTY_STATUS_TO_NAME: Final = {
     DreameVacuumAutoEmptyStatus.IDLE: STATE_IDLE,
     DreameVacuumAutoEmptyStatus.ACTIVE: AUTO_EMPTY_STATUS_ACTIVE,
     DreameVacuumAutoEmptyStatus.NOT_PERFORMED: AUTO_EMPTY_STATUS_NOT_PERFORMED,
+}
+
+MAP_RECOVERY_STATUS_TO_NAME: Final = {
+    DreameVacuumMapRecoveryStatus.UNKNOWN: STATE_UNKNOWN,
+    DreameVacuumMapRecoveryStatus.IDLE: MAP_RECOVERY_STATUS_IDLE,
+    DreameVacuumMapRecoveryStatus.RUNNING: MAP_RECOVERY_STATUS_RUNNING,
+    DreameVacuumMapRecoveryStatus.SUCCESS: MAP_RECOVERY_STATUS_SUCCESS,
+    DreameVacuumMapRecoveryStatus.FAIL: MAP_RECOVERY_STATUS_FAIL,
+    DreameVacuumMapRecoveryStatus.FAIL_2: MAP_RECOVERY_STATUS_FAIL,
+}
+
+MAP_BACKUP_STATUS_TO_NAME: Final = {
+    DreameVacuumMapBackupStatus.UNKNOWN: STATE_UNKNOWN,
+    DreameVacuumMapBackupStatus.IDLE: MAP_BACKUP_STATUS_IDLE,
+    DreameVacuumMapBackupStatus.RUNNING: MAP_BACKUP_STATUS_RUNNING,
+    DreameVacuumMapBackupStatus.SUCCESS: MAP_BACKUP_STATUS_SUCCESS,
+    DreameVacuumMapBackupStatus.FAIL: MAP_BACKUP_STATUS_FAIL,
 }
 
 SELF_WASH_BASE_STATUS_TO_NAME: Final = {

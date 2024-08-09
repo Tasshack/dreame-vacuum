@@ -102,7 +102,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon_fn=lambda value, device: (
             "mdi:water-pump-off" if not device.status.water_tank_or_mop_installed else "mdi:water-pump"
         ),
-        exists_fn=lambda description, device: not device.capability.self_wash_base
+        exists_fn=lambda description, device: not device.capability.self_wash_base and not device.capability.embedded_tank
         and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSensorEntityDescription(
@@ -410,6 +410,31 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         value_fn=lambda value, device: device.info.version,
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
+    #DreameVacuumSensorEntityDescription(
+    #    property_key=DreameVacuumProperty.CLEAN_WATER_TANK_STATUS,
+    #    icon="mdi:beer",
+    #    entity_category=EntityCategory.DIAGNOSTIC,
+    #),
+    #DreameVacuumSensorEntityDescription(
+    #    property_key=DreameVacuumProperty.DIRTY_WATER_TANK_STATUS,
+    #    icon="mdi:glass-mug",
+    #    entity_category=EntityCategory.DIAGNOSTIC,
+    #),
+    #DreameVacuumSensorEntityDescription(
+    #    property_key=DreameVacuumProperty.DUST_BAG_STATUS,
+    #    icon="mdi:delete-circle-outline",
+    #    entity_category=EntityCategory.DIAGNOSTIC,
+    #),
+    #DreameVacuumSensorEntityDescription(
+    #    property_key=DreameVacuumProperty.DETERGENT_STATUS,
+    #    icon="mdi:chart-bubble",
+    #    entity_category=EntityCategory.DIAGNOSTIC,
+    #),
+    #DreameVacuumSensorEntityDescription(
+    #    property_key=DreameVacuumProperty.STATION_DRAINAGE_STATUS,
+    #    icon="mdi:water-pump",
+    #    entity_category=EntityCategory.DIAGNOSTIC,
+    #)
 )
 
 

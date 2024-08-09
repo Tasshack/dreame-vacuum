@@ -41,7 +41,7 @@ MAP_OBJECTS: Final = {
     "no_go": "No Go Zones",
     "no_mop": "No Mop Zones",
     "virtual_wall": "Virtual Walls",
-    "pathway": "Pathways",
+    "pathway": "Virtual Thresholds",
     "active_area": "Active Areas",
     "active_point": "Active Points",
     "charger": "Charger Icon",
@@ -77,7 +77,7 @@ SERVICE_SELECT_MAP: Final = "vacuum_select_map"
 SERVICE_DELETE_MAP: Final = "vacuum_delete_map"
 SERVICE_SET_RESTRICTED_ZONE: Final = "vacuum_set_restricted_zone"
 SERVICE_SET_CARPET_AREA: Final = "vacuum_set_carpet_area"
-SERVICE_SET_PATHWAY: Final = "vacuum_set_pathway"
+SERVICE_SET_VIRTUAL_THRESHOLD: Final = "vacuum_set_virtual_threshold"
 SERVICE_SET_PREDEFINED_POINTS: Final = "vacuum_set_predefined_points"
 SERVICE_MOVE_REMOTE_CONTROL_STEP: Final = "vacuum_remote_control_move_step"
 SERVICE_RENAME_MAP: Final = "vacuum_rename_map"
@@ -116,9 +116,12 @@ INPUT_ZONE: Final = "zone"
 INPUT_ZONE_ARRAY: Final = "zones"
 INPUT_CARPET_ARRAY: Final = "carpets"
 INPUT_IGNORED_CARPET_ARRAY: Final = "ignored_carpets"
-INPUT_PATHWAY_ARRAY: Final = "pathways"
+INPUT_VIRTUAL_THRESHOLD_ARRAY: Final = "virtual_thresholds"
 INPUT_REPEATS: Final = "repeats"
 INPUT_CLEANING_MODE: Final = "cleaning_mode"
+INPUT_CUSTOM_MOPPING_ROUTE: Final = "custom_mopping_route"
+INPUT_CLEANING_ROUTE: Final = "cleaning_route"
+INPUT_WETNESS_LEVEL: Final = "wetness_level"
 INPUT_SEGMENTS_ARRAY: Final = "segments"
 INPUT_SEGMENT: Final = "segment"
 INPUT_SEGMENT_ID: Final = "segment_id"

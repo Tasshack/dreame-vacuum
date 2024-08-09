@@ -152,15 +152,23 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         exists_fn=lambda description, device: device.capability.lidar_navigation,
     ),
     DreameVacuumButtonEntityDescription(
-        name_fn=lambda value, device: "Self-Clean Pause" if device.status.washing else "Self-Clean",
+        name_fn=lambda value, device: "Self-Clean Resume" if (device.status.washing_paused or device.status.returning_to_wash_paused) else "Self-Clean Pause" if device.status.washing else "Self-Clean",
         key="self_clean",
         icon_fn=lambda value, device: (
             "mdi:dishwasher-off"
-            if device.status.washing or not device.status.washing_available
+            if not device.status.washing_paused and (device.status.washing or not device.status.washing_available)
             else "mdi:dishwasher"
         ),
         action_fn=lambda device: device.toggle_washing(),
         exists_fn=lambda description, device: device.capability.self_wash_base,
+        available_fn=lambda device: (
+            device.status.washing_available
+            or device.status.washing
+            or device.status.returning_to_wash_paused
+            or device.status.washing_paused
+        )
+        and not device.status.draining
+        and not device.status.self_repairing
     ),
     DreameVacuumButtonEntityDescription(
         name_fn=lambda value, device: "Stop Drying" if device.status.drying else "Start Drying",
@@ -447,5 +455,5 @@ class DreameVacuumMapButtonEntity(DreameVacuumEntity, ButtonEntity):
         await self._try_command(
             "Unable to call %s",
             self.device.backup_map,
-            self.device.get_map(self.map_index).map_id,
+            self.device.get_map().map_id,
         )

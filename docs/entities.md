@@ -139,6 +139,7 @@
 | `self_clean_area`   | TODO | 
 | `self_clean_time`   | TODO | 
 | `wetness_level`   | TODO | 
+| `drying_time`   | TODO | 
 
 ## Time
 
@@ -207,6 +208,7 @@
 | `cleaning_route`   | TODO |
 | `custom_mopping_route`   | TODO |
 | `self_clean_frequency`   | TODO |
+| `mop_clean_frequency`   | TODO |
 
 ### Select Entities for rooms
 - Room select entities are only available with cloud connection. 
