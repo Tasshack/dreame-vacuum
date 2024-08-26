@@ -24,6 +24,8 @@ from homeassistant.config_entries import (
     OptionsFlow,
 )
 
+_LOGGER = logging.getLogger(__name__)
+
 from .dreame import DreameVacuumProtocol, MAP_COLOR_SCHEME_LIST, MAP_ICON_SET_LIST
 
 from .const import (
@@ -370,9 +372,10 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
     async def async_step_connect(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Connect to a Dreame Vacuum device."""
         errors: dict[str, str] = {}
-        if self.prefer_cloud or (self.token and len(self.token) == 32):
+        if self.prefer_cloud or self.token:
             try:
                 if self.protocol is None:
+                    _LOGGER.error("Creating protocol")
                     self.protocol = DreameVacuumProtocol(
                         self.host,
                         self.token,
@@ -385,15 +388,19 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 else:
                     self.protocol.set_credentials(self.host, self.token, account_type=self.account_type)
 
-                if self.protocol.device_cloud:
-                    self.protocol.device_cloud._did = self.device_id
+                if hasattr(self.protocol, 'device_cloud'):
+                    if self.protocol.device_cloud:
+                        self.protocol.device_cloud._did = self.device_id
 
                 if self.account_type != "dreame" or self.mac is None or self.model is None:
                     info = await self.hass.async_add_executor_job(self.protocol.connect, 5)
                     if info:
                         self.mac = info["mac"]
                         self.model = info["model"]
-            except:
+                        self.device_id = info()
+            except Exception as e:
+                _LOGGER.exception(e)
+
                 errors["base"] = "cannot_connect"
             else:
                 if self.mac:

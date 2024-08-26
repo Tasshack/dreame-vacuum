@@ -15,6 +15,7 @@ from paho.mqtt.client import Client
 from typing import Any, Dict, Optional, Tuple
 from Crypto.Cipher import ARC4
 from miio.miioprotocol import MiIOProtocol
+from miio import Device
 
 from .exceptions import DeviceException
 from .const import DREAME_STRINGS
@@ -1132,6 +1133,8 @@ class DreameVacuumProtocol:
         self._connected = False
         self._mac = None
         self._account_type = account_type
+        self._ip = ip
+        self._token = token
 
         if ip and token:
             self.device = DreameVacuumDeviceProtocol(ip, token)
@@ -1150,9 +1153,9 @@ class DreameVacuumProtocol:
 
         if account_type == "mi":
             self.device_cloud = DreameVacuumMiHomeCloudProtocol(username, password, country) if prefer_cloud else None
-        else:
-            self.prefer_cloud = True
-            self.device_cloud = self.cloud
+        # else:
+        #     self.prefer_cloud = True
+        #     self.device_cloud = self.cloud
 
     def set_credentials(self, ip: str, token: str, mac: str = None, account_type: str = "mi"):
         self._mac = mac
@@ -1171,6 +1174,12 @@ class DreameVacuumProtocol:
             if (self.prefer_cloud or not self.device) and self.device_cloud and response:
                 self._connected = True
             return response
+        elif self.prefer_cloud == False:
+            dev = Device(self._ip, self._token)
+            info = dev.info().data
+            if info:
+                self._connected = True
+            return info
         else:
             info = self.cloud.connect(message_callback, connected_callback)
             if info:
@@ -1182,8 +1191,9 @@ class DreameVacuumProtocol:
             self.device.disconnect()
         if self.cloud is not None:
             self.cloud.disconnect()
-        if self.device_cloud is not None:
-            self.device_cloud.disconnect()
+        if hasattr(self, 'device_cloud'):
+            if self.device_cloud is not None:
+                self.device_cloud.disconnect()
         self._connected = False
 
     def send_async(self, callback, method, parameters: Any = None, retry_count: int = 2):
