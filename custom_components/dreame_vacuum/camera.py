@@ -54,6 +54,7 @@ from .dreame.const import (
     ATTR_RECOVERY_MAP_FILE,
     ATTR_WIFI_MAP_PICTURE,
     ATTR_COLOR_SCHEME,
+    ATTR_ROOMS
 )
 from .dreame.map import (
     DreameVacuumMapRenderer,
@@ -310,7 +311,7 @@ class CameraResourcesView(HomeAssistantView):
         """Serve resources data."""
         if (camera := self.component.get_entity(entity_id)) is None or camera.map_data_json or camera.map_index != 0 or not camera.device:
             raise web.HTTPNotFound
-        
+
         icon_set = request.query.get("icon_set")
         response = web.Response(
             body=gzip.compress(
@@ -323,7 +324,7 @@ class CameraResourcesView(HomeAssistantView):
         )
         response.headers["Content-Encoding"] = "gzip"
         return response
-    
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -376,7 +377,7 @@ async def async_setup_entry(
         hass.http.register_view(CameraRecoveryView(camera))
         hass.http.register_view(CameraWifiView(camera))
         hass.http.register_view(CameraResourcesView(camera))
-        
+
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return True
@@ -555,7 +556,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         """Fetch state from the device."""
         self._last_map_request = 0
         map_data = self._map_data
-        if map_data and self.device.cloud_connected and (self.map_index > 0 or self.device.status.located):
+        if map_data and (self.map_index > 0 or self.device.status.located):
             if map_data.last_updated:
                 self._state = datetime.fromtimestamp(int(map_data.last_updated))
             elif map_data.timestamp_ms:
@@ -666,7 +667,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
 
     def update(self) -> None:
         map_data = self._map_data
-        if map_data and self.device.cloud_connected and (self.map_index > 0 or self.device.status.located):
+        if map_data and (self.map_index > 0 or self.device.status.located):
             self._device_active = self.device.status.active
             if map_data.last_updated:
                 self._state = datetime.fromtimestamp(int(map_data.last_updated))
@@ -807,9 +808,9 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 self.device.status.station_status,
             )
         return "{}"
-    
+
     def resources(self, icon_set=None) -> str:
-        if self.device:            
+        if self.device:
             return self._renderer.get_resources(self.device.capability, True, icon_set)
         return "{}"
 
@@ -872,7 +873,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
 
     @property
     def _default_map_image(self) -> Any:
-        if self.device and self._image and not self.device.cloud_connected:
+        if self.device and self._image:
             return self._renderer.disconnected_map_image
         return self._renderer.default_map_image
 
@@ -907,7 +908,6 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             map_data = self._map_data
             if (
                 map_data
-                and self.device.cloud_connected
                 and not map_data.empty_map
                 and (self.map_index > 0 or self.device.status.located)
             ):
@@ -918,9 +918,6 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 attributes[ATTR_CALIBRATION] = (
                     self._calibration_points if self._calibration_points else self._renderer.calibration_points
                 )
-            elif self.device.cloud_connected:
-                attributes = {ATTR_CALIBRATION: self._renderer.default_calibration_points}
-
             if not attributes:
                 attributes = {}
 
@@ -932,7 +929,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             token = self.access_tokens[-1]
             if self.map_index == 0:
                 attributes[ATTR_COLOR_SCHEME] = self._color_scheme
-                
+
                 def get_key(index, history):
                     return f"{index}: {time.strftime('%m/%d %H:%M', time.localtime(history.date.timestamp()))} - {'Second ' if history.second_cleaning else ''}{STATUS_CODE_TO_NAME.get(history.status, STATE_UNKNOWN).replace('_', ' ').title()} {'(Completed)' if history.completed else '(Interrupted)'}"
 
@@ -1023,3 +1020,4 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                         int(wifi_map_data.last_updated if wifi_map_data.last_updated else map_data.last_updated),
                     )
             return attributes
+        return None

@@ -1133,7 +1133,7 @@ class DreameVacuumProtocol:
         self._connected = False
         self._mac = None
         self._account_type = account_type
-        self._ip = ip
+        self.ip = ip
         self._token = token
 
         if ip and token:
@@ -1174,17 +1174,17 @@ class DreameVacuumProtocol:
             if (self.prefer_cloud or not self.device) and self.device_cloud and response:
                 self._connected = True
             return response
-        elif self.prefer_cloud == False:
-            dev = Device(self._ip, self._token)
+        if not self.prefer_cloud:
+            dev = Device(self.ip, self._token)
             info = dev.info().data
             if info:
                 self._connected = True
             return info
-        else:
-            info = self.cloud.connect(message_callback, connected_callback)
-            if info:
-                self._connected = True
-            return info
+
+        info = self.cloud.connect(message_callback, connected_callback)
+        if info:
+            self._connected = True
+        return info
 
     def disconnect(self):
         if self.device is not None:

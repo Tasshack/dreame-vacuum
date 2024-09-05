@@ -458,21 +458,22 @@ class DreameVacuumDevice:
             account_type,
             device_id,
         )
-        if self._protocol.cloud:
-            self._map_manager = DreameMapVacuumMapManager(self._protocol)
 
-            self.listen(self._map_list_changed, DreameVacuumProperty.MAP_LIST)
-            self.listen(self._recovery_map_list_changed, DreameVacuumProperty.RECOVERY_MAP_LIST)
-            self.listen(self._battery_level_changed, DreameVacuumProperty.BATTERY_LEVEL)
-            self.listen(self._map_property_changed, DreameVacuumProperty.CUSTOMIZED_CLEANING)
-            self.listen(self._map_property_changed, DreameVacuumProperty.STATE)
-            self.listen(self._map_property_changed, DreameVacuumProperty.AUTO_EMPTY_STATUS)
-            self.listen(
-                self._map_backup_status_changed,
-                DreameVacuumProperty.MAP_BACKUP_STATUS,
-            )
-            self._map_manager.listen(self._map_changed, self._map_updated)
-            self._map_manager.listen_error(self._update_failed)
+        #if self._protocol.cloud:
+        self._map_manager = DreameMapVacuumMapManager(self._protocol)
+
+        self.listen(self._map_list_changed, DreameVacuumProperty.MAP_LIST)
+        self.listen(self._recovery_map_list_changed, DreameVacuumProperty.RECOVERY_MAP_LIST)
+        self.listen(self._battery_level_changed, DreameVacuumProperty.BATTERY_LEVEL)
+        self.listen(self._map_property_changed, DreameVacuumProperty.CUSTOMIZED_CLEANING)
+        self.listen(self._map_property_changed, DreameVacuumProperty.STATE)
+        self.listen(self._map_property_changed, DreameVacuumProperty.AUTO_EMPTY_STATUS)
+        self.listen(
+            self._map_backup_status_changed,
+            DreameVacuumProperty.MAP_BACKUP_STATUS,
+        )
+        self._map_manager.listen(self._map_changed, self._map_updated)
+        self._map_manager.listen_error(self._update_failed)
 
     def _connected_callback(self):
         if not self._ready:
@@ -692,7 +693,10 @@ class DreameVacuumDevice:
         props = property_list.copy()
         results = []
         while props:
-            result = self._protocol.get_properties(props[:15])
+            try:
+                result = self._protocol.get_properties(props[:15], 3)
+            except Exception:
+                _LOGGER.warning("Failed to get device properties")
             if result is not None:
                 results.extend(result)
                 props[:] = props[15:]
@@ -2038,16 +2042,8 @@ class DreameVacuumDevice:
             self._request_properties()
             self._last_update_failed = None
 
-            if self.device_connected and self._protocol.cloud is not None and (not self._ready or not self.available):
+            if self.device_connected and (not self._ready or not self.available):
                 if self._map_manager:
-                    model = self.info.model.split(".")
-                    if len(model) == 3:
-                        for k, v in json.loads(
-                            zlib.decompress(base64.b64decode(DEVICE_KEY), zlib.MAX_WBITS | 32)
-                        ).items():
-                            if model[2] in v:
-                                self._map_manager.set_aes_iv(k)
-                                break
                     self._map_manager.set_capability(self.capability)
                     self._map_manager.set_update_interval(self._map_update_interval)
                     self._map_manager.set_device_running(
@@ -2517,7 +2513,7 @@ class DreameVacuumDevice:
                 render_map_data.dimensions.left = render_map_data.dimensions.left - offset
                 render_map_data.dimensions.top = render_map_data.dimensions.top - offset
             else:
-                render_map_data.dimensions.top = render_map_data.dimensions.top - render_map_data.dimensions.grid_size 
+                render_map_data.dimensions.top = render_map_data.dimensions.top - render_map_data.dimensions.grid_size
 
             if render_map_data.wifi_map:
                 return render_map_data
@@ -4838,7 +4834,7 @@ class DreameVacuumDevice:
                 )
 
             self.schedule_update(5)
-            
+
             if self._map_manager:
                 if self._protocol.dreame_cloud:
                     self._map_manager.schedule_update(3)
@@ -4887,7 +4883,7 @@ class DreameVacuumDevice:
         """Set custom name for a map"""
         if self.status.has_temporary_map:
             raise InvalidActionException("Cannot rename a map when temporary map is present")
-        
+
         if map_name is None:
             map_name = ""
 
@@ -7674,7 +7670,7 @@ class DreameVacuumDeviceStatus:
             DreameVacuumProperty.SCHEDULE,
             DreameVacuumProperty.MAP_RECOVERY_STATUS
         ]
-        
+
         if self._capability.backup_map:
             properties.append(DreameVacuumProperty.MAP_BACKUP_STATUS)
 
@@ -8088,8 +8084,8 @@ class DreameVacuumDeviceStatus:
 
         if self._capability.floor_direction_cleaning:
             attributes[ATTR_FLOOR_DIRECTION_CLEANING_AVAILABLE] = self.floor_direction_cleaning_available
-            
-        attributes[ATTR_FIRMWARE_VERSION] = self._device.info.version        
+
+        attributes[ATTR_FIRMWARE_VERSION] = self._device.info.version
         attributes[ATTR_AP] = self._device.info.ap
         attributes[ATTR_CAPABILITIES] = self._capability.list
         return attributes
@@ -8195,7 +8191,7 @@ class DreameVacuumDeviceInfo:
         if self.network_interface:
             return self.network_interface.get("localIp")
         return None
-    
+
     @property
     def manufacturer(self) -> str:
         """Manufacturer name."""

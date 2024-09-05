@@ -3,6 +3,7 @@
 from __future__ import annotations
 from typing import Any, Final
 import logging
+import traceback
 import re
 import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
@@ -397,7 +398,6 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                     if info:
                         self.mac = info["mac"]
                         self.model = info["model"]
-                        self.device_id = info()
             except Exception as e:
                 _LOGGER.exception(e)
 

@@ -6,6 +6,7 @@ import base64
 import json
 import zlib
 import re
+import requests
 import logging
 import traceback
 import copy
@@ -200,7 +201,7 @@ class DreameMapVacuumMapManager:
         self._capability: DreameVacuumDeviceCapability = None
 
     def _request_map_from_cloud(self) -> bool:
-        if self._protocol.cloud.dreame_cloud:
+        if not self._protocol.prefer_cloud or self._protocol.cloud.dreame_cloud:
             return True
 
         if self._current_timestamp_ms is not None:
@@ -221,18 +222,21 @@ class DreameMapVacuumMapManager:
         if self._latest_object_name_time is None or self._latest_object_name_time < request_start_time:
             self._latest_object_name_time = request_start_time
 
-        map_data_result = self._protocol.cloud.get_device_property(
-            DIID(DreameVacuumProperty.MAP_DATA), 20, self._latest_map_data_time
-        )
+        if (self._protocol.prefer_cloud):
+            map_data_result = self._protocol.cloud.get_device_property(
+                DIID(DreameVacuumProperty.MAP_DATA), 20, self._latest_map_data_time
+            )
 
-        if not self._protocol.cloud.connected:
-            if self._connected:
-                self._connected = False
-                self._map_data_changed()
-            return False
-        elif not self._connected:
-            self._connected = True
-            self._map_data_changed()
+        # if not self._protocol.cloud.connected:
+        #     if self._connected:
+        #         self._connected = False
+        #         self._map_data_changed()
+        #     return False
+        # elif not self._connected:
+        #     self._connected = True
+        #     self._map_data_changed()
+
+        self._map_data_changed()
 
         if map_data_result is None:
             _LOGGER.warn("Getting map_data from cloud failed")
@@ -435,6 +439,9 @@ class DreameMapVacuumMapManager:
         if result and result[MAP_PARAMETER_CODE] == 0:
             self.request_map_list()
 
+    def request_t_map(self) -> None:
+        self._request_map({MAP_REQUEST_PARAMETER_FRAME_TYPE: "T"})
+
     def _request_w_map(self) -> None:
         try:
             _LOGGER.info("Request wifi map from device")
@@ -445,10 +452,10 @@ class DreameMapVacuumMapManager:
         return None
 
     def _request_current_map(self, map_request_time: int = None) -> bool:
-        if self._request_i_map_available or self._protocol.dreame_cloud:
-            return self._request_i_map(map_request_time)
+        # if self._request_i_map_available or self._protocol.dreame_cloud:
+        return self._request_i_map(map_request_time)
 
-        return self._request_map_from_cloud()
+        # return self._request_map_from_cloud()
 
     def _map_data_updated(self) -> None:
         if self._update_callback:
@@ -556,11 +563,11 @@ class DreameMapVacuumMapManager:
         return response, key
 
     def _get_interim_file_data(self, object_name: str = "", timestamp=None) -> str | None:
-        if self._protocol.cloud.logged_in:
+        if not self._protocol.prefer_cloud or self._protocol.cloud.logged_in:
             if object_name is None or object_name == "":
                 _LOGGER.info("Get object name from cloud")
-                if self._protocol.cloud.dreame_cloud:
-                    object_name_result = self._protocol.cloud.get_properties(DIID(DreameVacuumProperty.OBJECT_NAME))
+                if not self._protocol.prefer_cloud or self._protocol.cloud.dreame_cloud:
+                    object_name_result = self._protocol.get_properties(DIID(DreameVacuumProperty.OBJECT_NAME))
                     if object_name_result:
                         object_name_result = object_name_result[0][MAP_PARAMETER_VALUE]
                         object_name = object_name_result[0]
@@ -578,14 +585,25 @@ class DreameMapVacuumMapManager:
             url = self._get_file_url(object_name)
             if url:
                 _LOGGER.info("Request map data from cloud %s", url)
-                response = self._protocol.cloud.get_file(url)
+                response = ""
+                if (self._protocol.prefer_cloud):
+                    response = self._protocol.cloud.get_file(url)
+                else:
+                    response = requests.get(url).content
                 if response is not None:
                     return response
                 _LOGGER.warning("Request map data from cloud failed %s", url)
                 if self._file_urls.get(object_name):
                     del self._file_urls[object_name]
+        return None
 
     def _get_file_url(self, object_name: str, interim: bool = True) -> str | None:
+        #http://192.168.50.21/api/v2/robot/get-object?obj_name=00000&index=0
+        if (not self._protocol.prefer_cloud):
+            baseUrl = f"http://{self._protocol.ip}/api/v2/robot/get-object?obj_name="
+            objName, index = object_name.split("/")
+            return f"{baseUrl}{objName}&index={index}"
+
         url = None
         now = int(round(time.time()))
         if self._file_urls and self._file_urls.get(object_name):
@@ -675,7 +693,12 @@ class DreameMapVacuumMapManager:
     def _add_map_data_file(self, object_name: str, timestamp) -> None:
         response, key = self._get_object_file_data(object_name, timestamp)
         if response is not None:
-            self._add_raw_map_data(response.decode(), timestamp, key)
+            if (not self._protocol.prefer_cloud):
+                resp = json.loads(response.decode())
+                rawMap = bytes(resp["data"]["data"]).decode()
+                self._add_raw_map_data(rawMap, timestamp, key)
+            else:
+                self._add_raw_map_data(response.decode(), timestamp, key)
 
     def _add_raw_map_data(self, raw_map: str, timestamp=None, key=None) -> bool:
         return self._add_map_data(self._decode_map_partial(raw_map, timestamp, key))
@@ -1265,7 +1288,7 @@ class DreameMapVacuumMapManager:
                             "Need map request: %.2f",
                             time.time() - (self._current_timestamp_ms / 1000.0),
                         )
-                    if self._protocol.cloud.logged_in:
+                    if not self._protocol.prefer_cloud or self._protocol.cloud.logged_in:
                         self._request_current_map()
                 elif not self._request_map_from_cloud() and self._device_running:
                     _LOGGER.debug("No new map data received, retrying")
@@ -1414,12 +1437,12 @@ class DreameMapVacuumMapManager:
         return False
 
     def request_map_list(self) -> None:
-        if self._map_list_object_name and self._protocol.cloud.logged_in:
+        if self._map_list_object_name:
             _LOGGER.info("Get Map List: %s", self._map_list_object_name)
             try:
                 response = self._get_interim_file_data(self._map_list_object_name)
             except Exception as ex:
-                _LOGGER.warn("Get Map List failed: %s", ex)
+                _LOGGER.warning("Get Map List failed: %s", ex)
                 return
 
             if response:
@@ -1427,7 +1450,7 @@ class DreameMapVacuumMapManager:
                 try:
                     map_info = json.loads(response.decode())
                 except:
-                    _LOGGER.warn("Get Map List json parse failed")
+                    _LOGGER.warning("Get Map List json parse failed")
                     return
 
                 saved_map_list = map_info[MAP_PARAMETER_MAPSTR]
@@ -1522,13 +1545,13 @@ class DreameMapVacuumMapManager:
             _LOGGER.info("Get Recovery Map List: %s", self._recovery_map_list_object_name)
             response = self._get_file_url(self._recovery_map_list_object_name)
             if response:
-                response = self._protocol.cloud.get_file(response)
-                if response:
+                response = requests.get(response, timeout=1)
+                if response and response.status_code == 200:
                     self._need_recovery_map_list_request = False
                     try:
-                        recovery_map_list = json.loads(response.decode())
+                        recovery_map_list = json.loads(response.content.decode())
                     except:
-                        _LOGGER.warn("Get Recovery Map List json parse failed")
+                        _LOGGER.warning("Get Recovery Map List json parse failed")
                         return
 
                     changed = False
@@ -6510,7 +6533,7 @@ class DreameVacuumMapRenderer:
             if (
                 not self._cache
                 or self._map_data is None
-                or self._map_data.no_go_areas != map_data.no_go_areas                
+                or self._map_data.no_go_areas != map_data.no_go_areas
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
@@ -8832,10 +8855,10 @@ class DreameVacuumMapRenderer:
 
     def get_resources(self, capability, as_json = False, icon_set = None) -> MapRendererResources | str:
         if icon_set is None or not str(icon_set).isdecimal():
-            icon_set = self.icon_set            
+            icon_set = self.icon_set
         else:
             icon_set = int(icon_set)
-            
+
         if icon_set == 2:
             if self._robot_type == RobotType.MOPPING:
                 robot_image = MAP_ROBOT_MOP_IMAGE_MIJIA
