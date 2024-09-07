@@ -13,6 +13,7 @@ import copy
 import numpy as np
 import hashlib
 import textwrap
+import uuid
 from datetime import datetime
 from py_mini_racer import MiniRacer
 from cryptography.hazmat.backends import default_backend
@@ -163,6 +164,7 @@ class DreameMapVacuumMapManager:
         self._ready: bool = False
         self._connected: bool = True
         self._vslam_map: bool = False
+        self._obstacle_uuid = uuid.UUID("f90e13dc-3728-4267-bd90-43caa3f460e5")
 
         self._init_data()
 
@@ -299,7 +301,7 @@ class DreameMapVacuumMapManager:
         return None
 
     def _request_i_map(self, start_time: int = None) -> bool:
-        if not self._request_i_map_available and not self._protocol.dreame_cloud:
+        if not self._request_i_map_available:
             return self.request_new_map()
 
         parameters = {
@@ -584,12 +586,13 @@ class DreameMapVacuumMapManager:
 
             url = self._get_file_url(object_name)
             if url:
-                _LOGGER.info("Request map data from cloud %s", url)
+                _LOGGER.debug("Request map data from cloud %s", url)
                 response = ""
                 if (self._protocol.prefer_cloud):
                     response = self._protocol.cloud.get_file(url)
                 else:
-                    response = requests.get(url).content
+                    resp = requests.get(url)
+                    response = resp.content if resp.status_code == 200 else ""
                 if response is not None:
                     return response
                 _LOGGER.warning("Request map data from cloud failed %s", url)
@@ -598,7 +601,6 @@ class DreameMapVacuumMapManager:
         return None
 
     def _get_file_url(self, object_name: str, interim: bool = True) -> str | None:
-        #http://192.168.50.21/api/v2/robot/get-object?obj_name=00000&index=0
         if (not self._protocol.prefer_cloud):
             baseUrl = f"http://{self._protocol.ip}/api/v2/robot/get-object?obj_name="
             objName, index = object_name.split("/")
@@ -1092,40 +1094,15 @@ class DreameMapVacuumMapManager:
                 and obstacle.picture_status.value != 3
             ):
                 try:
-                    object_name = (
-                        f"{obstacle.file_name}-{obstacle.object_id}"
-                        if self._protocol.dreame_cloud
-                        else obstacle.file_name
-                    )
+                    object_name = f"{obstacle.type.value}_{obstacle.x}00000_{obstacle.y}00000"
+                    object_name = uuid.uuid5(self._obstacle_uuid, object_name)
                     _LOGGER.info(
                         "Obstacle image object name: %s",
                         object_name,
                     )
-                    response = self._get_file_url(object_name, False)
-                    if response:
-                        response = self._protocol.cloud.get_file(response)
-                        if response:
-                            response = base64.b64encode(response).decode("utf-8")
-
-                            cipher = Cipher(
-                                algorithms.AES(
-                                    bytearray.fromhex(hashlib.md5((obstacle.key).encode("utf-8")).hexdigest())
-                                ),
-                                modes.ECB(),
-                                backend=default_backend(),
-                            )
-                            decryptor = cipher.decryptor()
-                            unpadder = padding.PKCS7(128).unpadder()
-                            return (
-                                (
-                                    unpadder.update(
-                                        decryptor.update(base64.b64decode(response[response.find(",") + 1 :]))
-                                        + decryptor.finalize()
-                                    )
-                                    + unpadder.finalize()
-                                ),
-                                obstacle,
-                            )
+                    response = requests.get(f"http://{self._protocol.ip}/api/v2/robot/capabilities/ObstacleImagesCapability/img/{object_name}")
+                    if response is not None and response.status_code == 200:
+                        return (response.content, obstacle)
                 except Exception as ex:
                     _LOGGER.warning(
                         "Obstacle (%s) image decryption failed: %s",
@@ -1438,7 +1415,7 @@ class DreameMapVacuumMapManager:
 
     def request_map_list(self) -> None:
         if self._map_list_object_name:
-            _LOGGER.info("Get Map List: %s", self._map_list_object_name)
+            _LOGGER.debug("Get Map List: %s", self._map_list_object_name)
             try:
                 response = self._get_interim_file_data(self._map_list_object_name)
             except Exception as ex:
@@ -1452,6 +1429,9 @@ class DreameMapVacuumMapManager:
                 except:
                     _LOGGER.warning("Get Map List json parse failed")
                     return
+
+                if MAP_PARAMETER_MAPSTR not in map_info:
+                    map_info = json.loads(bytes(map_info["data"]["data"]).decode())
 
                 saved_map_list = map_info[MAP_PARAMETER_MAPSTR]
                 changed = False
@@ -1538,6 +1518,7 @@ class DreameMapVacuumMapManager:
                     self.request_next_recovery_map_list()
 
     def request_recovery_map_list(self) -> None:
+        return
         if self._recovery_map_list_object_name:
             if self._vslam_map:
                 self._need_recovery_map_list_request = False
