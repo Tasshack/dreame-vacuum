@@ -10,7 +10,7 @@
 
 # Dreame vacuum integration for Home Assistant
 
-Complete app replacement with Home Assistant for Dreame robot vacuums.
+Complete vendor app replacement with Home Assistant for Dreame robot vacuums running (a custom build of) Valetudo.
 
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map.png" width="48%"><img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/map_app.png" width="48%">
 
@@ -33,29 +33,20 @@ Complete app replacement with Home Assistant for Dreame robot vacuums.
 
 
 ## Installation
+Replace the valetudo binary on your robot with [my Valetudo fork](https://github.com/riboyama/Valetudo).
 
-#### Manually
-
-```bash
-wget -O - https://raw.githubusercontent.com/Tasshack/dreame-vacuum/dev/install | bash -
-```
-
-
-#### Via [HACS](https://hacs.xyz/)
-<a href="https://my.home-assistant.io/redirect/hacs_repository/?owner=Tasshack&repository=dreame-vacuum&category=integration" target="_blank"><img src="https://my.home-assistant.io/badges/hacs_repository.svg" alt="Open your Home Assistant instance and open a repository inside the Home Assistant Community Store." /></a>
+Next, add this repo as a custom repository in HACS, and install Dreame Vacuum Valetudo.
+You can find the required token in `/data/config/miio/device.token` on your robot. Note that you do need to base64 encode it before entering it in the integration setup.
 
 
 ## Configuration
 
-<a href="https://my.home-assistant.io/redirect/config_flow_start/?domain=dreame_vacuum" target="_blank"><img src="https://my.home-assistant.io/badges/config_flow_start.svg" alt="Open your Home Assistant instance and start setting up a new integration." /></a>
-- Select configuration type:
 
-     - **Mi Home Account**: TODO
-     - **Dreamehome Account**: TODO
+- Select configuration type:
      - **Local**: TODO
 
-- Enter required credentials according to the selected configuration type. 
-  > Please make sure that the devices are at same subnet for `Mi Home account` and `Local` configuration types. <a href="https://python-miio.readthedocs.io/en/latest/troubleshooting.html#discover-devices-across-subnets" target="_blank">python-miio article about this issue.</a>
+- Enter required credentials according to the selected configuration type.
+  > Please make sure that the devices are at same subnet. <a href="https://python-miio.readthedocs.io/en/latest/troubleshooting.html#discover-devices-across-subnets" target="_blank">python-miio article about this issue.</a>
 - Set your device name and integration settings:
 
     TODO
@@ -188,7 +179,7 @@ shortcuts:
 ```
 
 #### With <a href="https://github.com/Hypfer/lovelace-valetudo-map-card" target="_blank">Valetudo Map Card</a>
- > Enable **Map Data** camera entity. 
+ > Enable **Map Data** camera entity.
 <a href="https://my.home-assistant.io/redirect/entities/" target="_blank"><img src="https://my.home-assistant.io/badges/entities.svg" alt="Open your Home Assistant instance and show your entities." /></a>
 
 ```yaml
@@ -273,7 +264,7 @@ attributes:
 
 
 ## Contributing
-To submit your changes please fork `dev` branch of this repository and open a pull request. 
+To submit your changes please fork `dev` branch of this repository and open a pull request.
 
 ## Thanks To
 
