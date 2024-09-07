@@ -36,7 +36,7 @@ Complete vendor app replacement with Home Assistant for Dreame robot vacuums run
 Replace the valetudo binary on your robot with [my Valetudo fork](https://github.com/riboyama/Valetudo).
 
 Next, add this repo as a custom repository in HACS, and install Dreame Vacuum Valetudo.
-You can find the required token in `/data/config/miio/device.token` on your robot. Note that you do need to base64 encode it before entering it in the integration setup.
+You can find the required token in `/data/config/miio/device.token` on your robot. Note that you do need to encode it to hex before entering it in the integration setup.
 
 
 ## Configuration
