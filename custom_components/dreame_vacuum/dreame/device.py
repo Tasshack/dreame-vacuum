@@ -694,12 +694,12 @@ class DreameVacuumDevice:
         results = []
         while props:
             try:
-                result = self._protocol.get_properties(props[:15], 3)
-            except Exception:
+                result = self._protocol.get_properties(props[:10], 3)
+            except:
                 _LOGGER.warning("Failed to get device properties")
             if result is not None:
                 results.extend(result)
-                props[:] = props[15:]
+                props[:] = props[10:]
 
         return self._handle_properties(results)
 

@@ -376,7 +376,6 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         if self.prefer_cloud or self.token:
             try:
                 if self.protocol is None:
-                    _LOGGER.error("Creating protocol")
                     self.protocol = DreameVacuumProtocol(
                         self.host,
                         self.token,
@@ -690,18 +689,17 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 default_objects.pop(3)  # Room Name Background
                 default_objects.pop(2)  # Room Names
 
-        if self.account_type != "local":
-            data_schema = data_schema.extend(
-                {
-                    vol.Required(CONF_COLOR_SCHEME, default=default_color_scheme): vol.In(
-                        list(MAP_COLOR_SCHEME_LIST.keys())
-                    ),
-                    vol.Required(CONF_ICON_SET, default=default_icon_set): vol.In(list(MAP_ICON_SET_LIST.keys())),
-                    vol.Required(CONF_MAP_OBJECTS, default=default_objects): cv.multi_select(MAP_OBJECTS),
-                    vol.Required(CONF_SQUARE, default=False): bool,
-                    vol.Required(CONF_LOW_RESOLUTION, default=False): bool,
-                }
-            )
+        data_schema = data_schema.extend(
+            {
+                vol.Required(CONF_COLOR_SCHEME, default=default_color_scheme): vol.In(
+                    list(MAP_COLOR_SCHEME_LIST.keys())
+                ),
+                vol.Required(CONF_ICON_SET, default=default_icon_set): vol.In(list(MAP_ICON_SET_LIST.keys())),
+                vol.Required(CONF_MAP_OBJECTS, default=default_objects): cv.multi_select(MAP_OBJECTS),
+                vol.Required(CONF_SQUARE, default=False): bool,
+                vol.Required(CONF_LOW_RESOLUTION, default=False): bool,
+            }
+        )
 
         return self.async_show_form(step_id="options", data_schema=data_schema, errors=errors)
 
