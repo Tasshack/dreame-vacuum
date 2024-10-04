@@ -1,61 +1,61 @@
 {
   "config": {
     "abort": {
-      "already_configured": "Device is already configured",
-      "cannot_connect": "Failed to connect."
+      "already_configured": "Dispositivo já está configurado",
+      "cannot_connect": "Falha ao conectar."
     },
     "error": {
-      "cannot_connect": "Failed to connect.",
-      "unsupported": "Device is not supported",
-      "wrong_token": "Checksum error, wrong token",
-      "2fa_required": "2FA Login required\n{url}",
-      "credentials_incomplete": "Credentials incomplete, please fill in username, password and country",
-      "login_error": "Could not login to Xiaomi Miio Cloud, check the credentials.",
-      "no_devices": "No supported devices found in this Xiaomi Miio cloud account on selected country."
+      "cannot_connect": "Falha ao conectar.",
+      "unsupported": "Dispositivo não é suportado",
+      "wrong_token": "Erro de checksum, token incorreto",
+      "2fa_required": "Login com 2FA requerido\n{url}",
+      "credentials_incomplete": "Credenciais incompletas, por favor preencha nome de usuário, senha e país",
+      "login_error": "Não foi possível fazer login no Xiaomi Miio Cloud, verifique as credenciais.",
+      "no_devices": "Nenhum dispositivo suportado foi encontrado nesta conta Xiaomi Miio no país selecionado."
     },
     "step": {
       "user": {
         "data": {
-          "configuration_type": "Configuration Type"
+          "configuration_type": "Tipo de Configuração"
         },
-        "description": "Map feature requires cloud connection and provides automatic configuration. If you don't want to use the map feature, you can select manual configuration."
+        "description": "O recurso de mapa requer conexão com a nuvem e fornece configuração automática. Se você não quiser usar o recurso de mapa, pode selecionar a configuração manual."
       },
       "without_map": {
         "data": {
           "host": "Host",
           "token": "Token"
         },
-        "description": "You will need the 32 character API Token, see https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token for instructions."
+        "description": "Você precisará do token API de 32 caracteres, veja https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token para as instruções."
       },
       "with_map": {
         "data": {
-          "username": "Username",
-          "password": "Password",
-          "country": "Server country",
-          "prefer_cloud": "Prefer cloud connection"
+          "username": "Nome de usuário",
+          "password": "Senha",
+          "country": "País do servidor",
+          "prefer_cloud": "Preferir conexão com a nuvem"
         },
-        "description": "Log in to the Xiaomi Miio cloud, see https://www.openhab.org/addons/bindings/miio/#country-servers for the cloud server to use."
+        "description": "Faça login na nuvem Xiaomi Miio, veja https://www.openhab.org/addons/bindings/miio/#country-servers para o servidor da nuvem que deve ser usado."
       },
       "devices": {
         "data": {
-          "devices": "Supported Devices"
+          "devices": "Dispositivos Suportados"
         },
-        "description": "Please select the Dreame Vacuum device you want to setup."
+        "description": "Por favor, selecione o dispositivo Dreame Vacuum que deseja configurar."
       },
       "options": {
         "data": {
-          "name": "Name",
-          "color_scheme": "Map color scheme",
-          "icon_set": "Map icon set",
-          "notify": "Notification",
-          "map_objects": "Map objects",
-          "low_resolution": "Low resolution map",
-          "square": "Square map"
+          "name": "Nome",
+          "color_scheme": "Esquema de cores do mapa",
+          "icon_set": "Conjunto de ícones do mapa",
+          "notify": "Notificação",
+          "map_objects": "Objetos do mapa",
+          "low_resolution": "Mapa de baixa resolução",
+          "square": "Mapa quadrado"
         }
       },
       "reauth_confirm": {
-        "description": "Dreame Vacuum integration needs to re-authenticate your account in order to update the tokens or add missing cloud credentials.",
-        "title": "Reauthenticate Integration"
+        "description": "A integração do Dreame Vacuum precisa reautenticar sua conta para atualizar os tokens ou adicionar credenciais de nuvem ausentes.",
+        "title": "Reautenticar Integração"
       }
     }
   },
@@ -63,58 +63,58 @@
     "step": {
       "init": {
         "data": {
-          "color_scheme": "Map color scheme",
-          "icon_set": "Map icon set",
-          "notify": "Notification",
-          "map_objects": "Map objects",
-          "low_resolution": "Low resolution map",
-          "square": "Square map",
-          "configuration_type": "Configuration type",
-          "prefer_cloud": "Prefer cloud connection"
+          "color_scheme": "Esquema de cores do mapa",
+          "icon_set": "Conjunto de ícones do mapa",
+          "notify": "Notificação",
+          "map_objects": "Objetos do mapa",
+          "low_resolution": "Mapa de baixa resolução",
+          "square": "Mapa quadrado",
+          "configuration_type": "Tipo de configuração",
+          "prefer_cloud": "Preferir conexão com a nuvem"
         }
       }
     },
     "error": {
-      "cloud_credentials_incomplete": "Cloud credentials incomplete, please fill in username, password and country"
+      "cloud_credentials_incomplete": "Credenciais de nuvem incompletas, por favor preencha nome de usuário, senha e país"
     }
   },
   "entity": {
     "select": {
       "suction_level": {
         "state": {
-          "quiet": "Quiet",
-          "standard": "Standard",
-          "strong": "Strong",
+          "quiet": "Silencioso",
+          "standard": "Padrão",
+          "strong": "Forte",
           "turbo": "Turbo"
         }
       },
       "water_volume": {
         "state": {
-          "low": "Low",
-          "medium": "Medium",
-          "high": "High"
+          "low": "Baixo",
+          "medium": "Médio",
+          "high": "Alto"
         }
       },
       "mop_pad_humidity": {
         "state": {
-          "slightly_dry": "Slightly dry",
-          "moist": "Moist",
-          "wet": "Wet"
+          "slightly_dry": "Levemente seco",
+          "moist": "Úmido",
+          "wet": "Molhado"
         }
       },
       "cleaning_mode": {
         "state": {
-          "sweeping": "Sweeping",
-          "mopping": "Mopping",
-          "sweeping_and_mopping": "Sweeping and mopping",
-          "mopping_after_sweeping": "Mopping after sweeping"
+          "sweeping": "Varrer",
+          "mopping": "Esfregar",
+          "sweeping_and_mopping": "Varrer e Esfregar",
+          "mopping_after_sweeping": "Esfregar após varrer"
         }
       },
       "carpet_sensitivity": {
         "state": {
-          "low": "Low",
-          "medium": "Medium",
-          "high": "High"
+          "low": "Baixo",
+          "medium": "Médio",
+          "high": "Alto"
         }
       },
       "carpet_cleaning": {
