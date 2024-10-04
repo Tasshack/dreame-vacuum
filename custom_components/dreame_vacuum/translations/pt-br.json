@@ -119,96 +119,96 @@
       },
       "carpet_cleaning": {
         "state": {
-          "avoidance": "Avoidance",
-          "adaptation": "Adaptation",
-          "remove_mop": "Remove Mop"
+          "avoidance": "Evitar",
+          "adaptation": "Adaptação",
+          "remove_mop": "Remover Mop"
         }
       },
       "mop_wash_level": {
         "state": {
-          "water_saving": "Water saving",
-          "daily": "Daily",
-          "deep": "Deep"
+          "water_saving": "Economia de água",
+          "daily": "Diário",
+          "deep": "Profundo"
         }
       },
       "mopping_type": {
         "state": {
-          "accurate": "Accurate",
-          "daily": "Daily",
-          "deep": "Deep"
+          "accurate": "Preciso",
+          "daily": "Diário",
+          "deep": "Profundo"
         }
       },
       "wider_corner_coverage": {
         "state": {
-          "off": "Off",
-          "high_frequency": "High Frequency",
-          "low_frequency": "Low Frequency"
+          "off": "Desligado",
+          "high_frequency": "Alta Frequência",
+          "low_frequency": "Baixa Frequência"
         }
       },      
       "mop_pad_swing": {
         "state": {
-          "off": "Off",
-          "auto": "Auto",
-          "daily": "Daily",
-          "weekly": "Weekly"
+          "off": "Desligado",
+          "auto": "Automático",
+          "daily": "Diário",
+          "weekly": "Semanal"
         }
       },
       "floor_material": {
         "state": {
-          "none": "None",
-          "tile": "Floor tile",
-          "wood": "Wood floor"
+          "none": "Nenhum",
+          "tile": "Piso cerâmico",
+          "wood": "Piso de madeira"
         }
       },
       "voice_assistant_language": {
         "state": {
-          "default": "Default",
-          "english": "English",
-          "german": "German",
-          "chinese": "Chinese"
+          "default": "Padrão",
+          "english": "Inglês",
+          "german": "Alemão",
+          "chinese": "Chinês"
         }
       },
       "order": {
         "state": {
-          "not_set": "Not Set"
+          "not_set": "Não definido"
         }
       }
     },
     "sensor": {
       "state": {
         "state": {
-            "unknown": "Desconhecido",
-            "sweeping": "Varrendo",
-            "charging": "Carregando",
-            "error": "Erro",
-            "idle": "Inativo",
-            "paused": "Pausado",
-            "returning": "Retornando à base",
-            "mopping": "Passando pano",
-            "drying": "Secando",
-            "washing": "Lavando",
-            "returning_to_wash": "Retornando para lavar",
-            "building": "Construindo",
-            "sweeping_and_mopping": "Varrendo e passando pano",
-            "charging_completed": "Carregamento concluído",
-            "upgrading": "Atualizando",
-            "clean_summon": "Chamar para limpar",
-            "station_reset": "Estação redefinida",
-            "returning_install_mop": "Retornando para instalar o pano",
-            "returning_remove_mop": "Retornando para remover o pano",
-            "water_check": "Verificando água",
-            "clean_add_water": "Limpando e adicionando água",
-            "washing_paused": "Lavagem pausada",
-            "auto_emptying": "Esvaziamento automático",
-            "remote_control": "Controle remoto",
-            "smart_charging": "Carregamento inteligente",
-            "second_cleaning": "Segunda limpeza",
-            "human_following": "Seguindo humano",
-            "spot_cleaning": "Limpeza pontual",
-            "returning_auto_empty": "Retornando para esvaziar automaticamente",
-            "shortcut": "Atalho",
-            "monitoring": "Monitorando",
-            "monitoring_paused": "Monitoramento pausado"
+          "unknown": "Desconhecido",
+          "sweeping": "Varrendo",
+          "charging": "Carregando",
+          "error": "Erro",
+          "idle": "Inativo",
+          "paused": "Pausado",
+          "returning": "Retornando à base",
+          "mopping": "Passando pano",
+          "drying": "Secando",
+          "washing": "Lavando",
+          "returning_to_wash": "Retornando para lavar",
+          "building": "Construindo",
+          "sweeping_and_mopping": "Varrendo e passando pano",
+          "charging_completed": "Carregamento concluído",
+          "upgrading": "Atualizando",
+          "clean_summon": "Chamar para limpar",
+          "station_reset": "Estação redefinida",
+          "returning_install_mop": "Retornando para instalar o pano",
+          "returning_remove_mop": "Retornando para remover o pano",
+          "water_check": "Verificando água",
+          "clean_add_water": "Limpando e adicionando água",
+          "washing_paused": "Lavagem pausada",
+          "auto_emptying": "Esvaziamento automático",
+          "remote_control": "Controle remoto",
+          "smart_charging": "Carregamento inteligente",
+          "second_cleaning": "Segunda limpeza",
+          "human_following": "Seguindo humano",
+          "spot_cleaning": "Limpeza pontual",
+          "returning_auto_empty": "Retornando para esvaziar automaticamente",
+          "shortcut": "Atalho",
+          "monitoring": "Monitorando",
+          "monitoring_paused": "Monitoramento pausado"
         }
       },
       "status": {
