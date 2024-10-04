@@ -788,120 +788,120 @@
       }
     },
     "vacuum_set_restricted_zone": {
-      "name": "Set Restricted Zone",
-      "description": "Define virtual walls, restricted zones, and/or no mop zones.",
+      "name": "Definir Zona Restrita",
+      "description": "Definir paredes virtuais, zonas restritas e/ou zonas onde não pode passar o mop."
       "fields": {
         "walls": {
-          "name": "Walls",
-          "description": "Virtual walls."
+          "name": "Paredes",
+          "description": "Paredes virtuais."
         },
         "zones": {
-          "name": "Zones",
-          "description": "No go zones."
+          "name": "Zonas",
+          "description": "Zonas proibidas."
         },
         "no_mops": {
-          "name": "No Mops",
-          "description": "No mop zones."
+          "name": "Sem Mops",
+          "description": "Zonas onde não pode passar o mop."
         }
       }
     },
     "vacuum_reset_consumable": {
-      "name": "Reset Consumable",
-      "description": "Reset a consumable.",
+      "name": "Redefinir Consumível",
+      "description": "Redefinir um consumível.",
       "fields": {
         "consumable": {
-          "name": "Consumable",
-          "description": "Consumable type."
+          "name": "Consumível",
+          "description": "Tipo de consumível."
         }
       }
     },
     "vacuum_rename_shortcut": {
-      "name": "Rename Shortcut",
-      "description": "Rename a shortcut. (Only on supported devices)",
+      "name": "Renomear Atalho",
+      "description": "Renomear um atalho. (Apenas em dispositivos suportados)",
       "fields": {
         "shortcut_id": {
-          "name": "Shortcut ID",
-          "description": "ID of the shortcut."
+          "name": "ID do Atalho",
+          "description": "ID do atalho."
         },
         "shortcut_name": {
-          "name": "Shortcut Name",
-          "description": "New name of the shortcut."
+          "name": "Nome do Atalho",
+          "description": "Novo nome do atalho."
         }
       }
     },
     "vacuum_set_carpet_area": {
-      "name": "Set Carpet Area",
-      "description": "Define carpets and ignored carpets. (Only on supported devices)",
+      "name": "Definir Área do Carpete",
+      "description": "Definir carpetes e carpetes ignorados. (Apenas em dispositivos suportados)",
       "fields": {
         "carpets": {
-          "name": "Carpets",
-          "description": "Carpet areas."
+          "name": "Carpetes",
+          "description": "Áreas de carpetes."
         },
         "ignored_carpets": {
-          "name": "Ignored Carpets",
-          "description": "Ignored carpet areas for deleting the automatically detected carpets."
+          "name": "Carpetes Ignorados",
+          "description": "Áreas de carpetes ignorados para excluir os carpetes detectados automaticamente."
         }
       }
     },
     "vacuum_set_pathway": {
-      "name": "Set Pathway",
-      "description": "Define pathways.",
+      "name": "Definir Caminhos",
+      "description": "Definir caminhos.",
       "fields": {
         "pathways": {
-          "name": "Pathways",
-          "description": "Pathway line coordinates."
+          "name": "Caminhos",
+          "description": "Coordenadas da linha do caminho."
         }
       }
     },
     "vacuum_set_predefined_points": {
-      "name": "Set Predefined Points",
-      "description": "Define predefined coordinates on current map. (Only supported on vacuums with camera)",
+      "name": "Definir Pontos Predefinidos",
+      "description": "Definir coordenadas predefinidas no mapa atual. (Apenas suportado em aspiradores com câmera)",
       "fields": {
         "points": {
-          "name": "Points",
-          "description": "List of coordinates to be saved."
+          "name": "Pontos",
+          "description": "Lista de coordenadas a serem salvas."
         }
       }
     },
     "vacuum_set_obstacle_ignore": {
-      "name": "Set Obstacle Ignore",
-      "description": "Set ignore status of an obstacle. (Only supported on vacuums with AI Obstacle detection feature)",
+      "name": "Definir Ignorar Obstáculo",
+      "description": "Definir o status de ignorar um obstáculo. (Apenas suportado em aspiradores com recurso de detecção de obstáculos por IA)"
       "fields": {
         "x": {
           "name": "X",
-          "description": "X Coordinate of the obstacle."
+          "description": "Coordenada X do obstáculo."
         },
         "y": {
           "name": "Y",
-          "description": "Y Coordinate of the obstacle."
+          "description": "Coordenada Y do obstáculo."
         },
         "obstacle_type": {
-          "name": "Obstacle Type",
-          "description": "Type of the obstacle that will be ignored."
+          "name": "Tipo de Obstáculo",
+          "description": "Tipo do obstáculo que será ignorado."
         },
         "obstacle_ignored": {
-          "name": "Obstacle Ignored",
-          "description": "Obstacle is ignored or not."
+          "name": "Obstáculo Ignorado",
+          "description": "O obstáculo é ignorado ou não."
         }
       }
     },
     "vacuum_set_router_position": {
-      "name": "Set router position",
-      "description": "Set router position on current map. (Only supported on vacuums with WiFi map feature)",
+      "name": "Definir posição do roteador",
+      "description": "Definir a posição do roteador no mapa atual. (Apenas suportado em aspiradores com recurso de mapa Wi-Fi)",
       "fields": {
         "x": {
           "name": "X",
-          "description": "X Coordinate of the router."
+          "description": "Coordenada X do roteador."
         },
         "y": {
           "name": "Y",
-          "description": "Y Coordinate of the router."
+           "description": "Coordenada Y do roteador."
         }
       }
     },
     "select_select_previous": {
-      "name": "Select Previous",
-      "description": "Select the previous options of an select entity.",
+      "name": "Selecionar Anterior",
+      "description": "Seleciona a opção anterior de uma entidade de seleção."
       "fields": {
         "cycle": {
           "name": "Cycle",
@@ -910,20 +910,20 @@
       }
     },
     "select_select_first": {
-      "name": "Select First",
-      "description": "Select the first option of an select entity."
+      "name": "Selecionar Primeiro",
+      "description": "Seleciona a primeira opção de uma entidade de seleção."
     },
     "select_select_last": {
-      "name": "Select Last",
-      "description": "Select the last option of an select entity."
+      "name": "Selecionar Último",
+      "description": "Seleciona a última opção de uma entidade de seleção."
     },
     "select_select_next": {
-      "name": "Select Next",
-      "description": "Select the next options of an select entity.",
+      "name": "Selecionar Próximo",
+      "description": "Seleciona a próxima opção de uma entidade de seleção."
       "fields": {
         "cycle": {
-          "name": "Cycle",
-          "description": "If the option should cycle from the first to the last."
+          "name": "Ciclo",
+          "description": "Se a opção deve alternar do primeiro para o último."
         }
       }
     }
