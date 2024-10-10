@@ -789,7 +789,7 @@
     },
     "vacuum_set_restricted_zone": {
       "name": "Definir Zona Restrita",
-      "description": "Definir paredes virtuais, zonas restritas e/ou zonas onde não pode passar o mop."
+      "description": "Definir paredes virtuais, zonas restritas e/ou zonas onde não pode passar o mop.",
       "fields": {
         "walls": {
           "name": "Paredes",
@@ -865,7 +865,7 @@
     },
     "vacuum_set_obstacle_ignore": {
       "name": "Definir Ignorar Obstáculo",
-      "description": "Definir o status de ignorar um obstáculo. (Apenas suportado em aspiradores com recurso de detecção de obstáculos por IA)"
+      "description": "Definir o status de ignorar um obstáculo. (Apenas suportado em aspiradores com recurso de detecção de obstáculos por IA)",
       "fields": {
         "x": {
           "name": "X",
@@ -919,7 +919,7 @@
     },
     "select_select_next": {
       "name": "Selecionar Próximo",
-      "description": "Seleciona a próxima opção de uma entidade de seleção."
+      "description": "Seleciona a próxima opção de uma entidade de seleção.",
       "fields": {
         "cycle": {
           "name": "Ciclo",
