@@ -915,12 +915,12 @@
       }
     },
     "vacuum_set_virtual_threshold":{
-      "name":"Útvonal beállítása",
-      "description":"Útvonalak meghatározása.",
+      "name":"Virtuális küszöb beállítása",
+      "description":"Virtuális küszöbök definiálása.",
       "fields":{
         "virtual_thresholds":{
-          "name":"Útvonalak",
-          "description":"Útvonalvonalak koordinátái."
+          "name":"Virtuális küszöbök",
+          "description":"Virtuális küszöb vonalának koordinátái."
         }
       }
     },
