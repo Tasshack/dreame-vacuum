@@ -424,7 +424,7 @@
           "no_water_left": "A tisztavíz tartályban lévő víz elfogyóban van. Kérem, töltse fel a tartályt időben.",
           "no_water_left_after_clean": "A felmosó tisztítása befejeződött. A tisztavíz tartályban nincs elég víz, kérem, töltse fel a tartályt és ürítse ki a szennyvíztartályt.",
           "no_water_for_clean": "Alacsony vízszint a tisztavíz tartályban. A robot átváltott csak porszívó módba.",
-          "low_water": "A víz elfogyóban van. Kérem, töltse fel a tisztavíz tartályt."
+          "low_water": "A víz elfogyóban van. Kérem, töltse fel a tisztavíz tartályt.",
           "tank_not_installed": "A tisztavíz tartály nincs telepítve."
         }
       },
