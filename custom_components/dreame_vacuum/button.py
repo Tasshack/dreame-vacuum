@@ -455,5 +455,5 @@ class DreameVacuumMapButtonEntity(DreameVacuumEntity, ButtonEntity):
         await self._try_command(
             "Unable to call %s",
             self.device.backup_map,
-            self.device.get_map().map_id,
+            self.device.get_map(self.map_index).map_id,
         )
