@@ -132,6 +132,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     ) -> None:
         """Initialize a Dreame Vacuum Camera entity."""
         super().__init__(coordinator, description)
+        Camera.__init__(self)
         self.content_type = CONTENT_TYPE
         self.stream = None
         self.access_tokens = collections.deque([], 2)
