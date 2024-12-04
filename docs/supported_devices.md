@@ -36,6 +36,7 @@
 | L10s Pro Ultra Heat                 | dreame.vacuum.r2377  |
 | L10s Ultra                          | dreame.vacuum.r2228d |
 | L10s Ultra                          | dreame.vacuum.r2228o |
+| L10s Ultra                          | dreame.vacuum.r2228z |
 | L10s Ultra Gen 2                    | dreame.vacuum.r2469a |
 | L10s Ultra Heat                     | dreame.vacuum.r2367  |
 | L20 Ultra                           | dreame.vacuum.r2253b |
