@@ -1,0 +1,1001 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Apparaat is al geconfigureerd",
+      "cannot_connect": "Verbinding mislukt."
+    },
+    "error": {
+      "cannot_connect": "Verbinding mislukt.",
+      "unsupported": "Apparaat wordt niet ondersteund",
+      "wrong_token": "Checksum fout, verkeerd token",
+      "2fa_required": "2FA Login vereist\n{url}",
+      "credentials_incomplete": "Inloggegevens onvolledig, vul alstublieft gebruikersnaam, wachtwoord en land in",
+      "login_error": "Kon niet inloggen, controleer de inloggegevens.",
+      "no_devices": "Geen ondersteunde apparaten gevonden op dit account in het geselecteerde land."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Configuratie Type"
+        },
+        "description": "Kaartfunctie vereist cloudverbinding en biedt automatische configuratie. Als u de kaartfunctie niet wilt gebruiken, kunt u handmatige configuratie selecteren."
+      },
+      "local": {
+        "data": {
+          "host": "Host",
+          "token": "Token"
+        },
+        "description": "U heeft een API Token van 32 tekens nodig, zie https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token voor instructies."
+      },
+      "mi": {
+        "data": {
+          "username": "Gebruikersnaam",
+          "password": "Wachtwoord",
+          "country": "Serverland",
+          "prefer_cloud": "Voorkeur voor cloudverbinding"
+        },
+        "description": "Log in op de Xiaomi Miio cloud, zie https://www.openhab.org/addons/bindings/miio/#country-servers voor de te gebruiken cloudserver."
+      },
+      "dreame": {
+        "data": {
+          "username": "Gebruikersnaam",
+          "password": "Wachtwoord",
+          "country": "Serverland"
+        },
+        "description": "Log in op de Dreamehome cloud."
+      },
+      "devices": {
+        "data": {
+          "devices": "Ondersteunde Apparaten"
+        },
+        "description": "Selecteer alstublieft het Dreame Vacuum apparaat dat u wilt instellen."
+      },
+      "options": {
+        "data": {
+          "name": "Naam",
+          "color_scheme": "Kleurenschema van de kaart",
+          "icon_set": "Icoonset van de kaart",
+          "notify": "Notificatie",
+          "map_objects": "Kaartobjecten",
+          "low_resolution": "Kaart met lage resolutie",
+          "square": "Vierkante kaart"
+        }
+      },
+      "reauth_confirm": {
+        "description": "Dreame Vacuum integratie moet uw account opnieuw authenticeren om de tokens bij te werken of ontbrekende cloudgegevens toe te voegen.",
+        "title": "Integratie Opnieuw Authenticeren"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Kleurenschema van de kaart",
+          "icon_set": "Icoonset van de kaart",
+          "notify": "Notificatie",
+          "map_objects": "Kaartobjecten",
+          "low_resolution": "Kaart met lage resolutie",
+          "square": "Vierkante kaart",
+          "configuration_type": "Configuratie Type",
+          "prefer_cloud": "Voorkeur voor cloudverbinding"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Cloudgegevens onvolledig, vul alstublieft gebruikersnaam, wachtwoord en land in"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "state": {
+          "quiet": "Stil",
+          "standard": "Standaard",
+          "strong": "Sterk",
+          "turbo": "Turbo"
+        }
+      },
+      "water_volume": {
+        "state": {
+          "low": "Laag",
+          "medium": "Medium",
+          "high": "Hoog"
+        }
+      },
+      "mop_pad_humidity": {
+        "state": {
+          "slightly_dry": "Licht droog",
+          "moist": "Vochtig",
+          "wet": "Nat"
+        }
+      },
+      "cleaning_mode": {
+        "state": {
+          "sweeping": "Vegen",
+          "mopping": "Dweilen",
+          "sweeping_and_mopping": "Vegen en dweilen",
+          "mopping_after_sweeping": "Dweilen na vegen"
+        }
+      },
+      "carpet_sensitivity": {
+        "state": {
+          "low": "Laag",
+          "medium": "Medium",
+          "high": "Hoog"
+        }
+      },
+      "carpet_cleaning": {
+        "state": {
+          "avoidance": "Vermijden",
+          "adaptation": "Aanpassen",
+          "remove_mop": "Dweil Verwijderen",
+          "adaptation_without_route": "Aanpassing Zonder Route",
+          "vacuum_and_mop": "Stofzuigen en dweilen",
+          "ignore": "Negeren"
+        }
+      },
+      "mop_wash_level": {
+        "state": {
+          "water_saving": "Waterbesparend",
+          "daily": "Dagelijks",
+          "deep": "Diep"
+        }
+      },
+      "mopping_type": {
+        "state": {
+          "accurate": "Nauwkeurig",
+          "daily": "Dagelijks",
+          "deep": "Diep"
+        }
+      },
+      "wider_corner_coverage": {
+        "state": {
+          "off": "Uit",
+          "high_frequency": "Hoge Frequentie",
+          "low_frequency": "Lage Frequentie"
+        }
+      },      
+      "mop_pad_swing": {
+        "state": {
+          "off": "Uit",
+          "auto": "Automatisch",
+          "daily": "Dagelijks",
+          "weekly": "Wekelijks"
+        }
+      },
+      "floor_material": {
+        "state": {
+          "none": "Geen",
+          "tile": "Vloertegel",
+          "wood": "Houten vloer"
+        }
+      },
+      "voice_assistant_language": {
+        "state": {
+          "default": "Standaard",
+          "english": "Engels",
+          "german": "Duits",
+          "chinese": "Chinees"
+        }
+      },
+      "order": {
+        "state": {
+          "not_set": "Niet ingesteld"
+        }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "Per Gebied",
+          "by_time": "Per Tijd",
+          "by_room": "Per Kamer"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Uit",
+          "standard": "Standaard",
+          "high_frequency": "Hoge Frequentie",
+          "low_frequency": "Lage Frequentie"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Verticaal",
+          "horizontal": "Horizontaal"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Zichtbaar",
+          "hidden": "Verborgen"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Uit",
+          "routine_cleaning": "Routine Reiniging",
+          "deep_cleaning": "Diepe Reiniging"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Uit",
+          "in_deep_mode": "In Diepe Modus",
+          "in_all_modes": "In Alle Modi"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Uit",
+          "in_deep_mode": "In Diepe Modus",
+          "in_all_modes": "In Alle Modi"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "Snel",
+          "standard": "Standaard",
+          "intensive": "Intensief",
+          "deep": "Diep"
+        }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Uit",
+          "standard": "Standaard",
+          "intensive": "Intensief",
+          "deep": "Diep"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "state": {
+          "unknown": "Onbekend",
+          "sweeping": "Vegen",
+          "charging": "Opladen",
+          "error": "Fout",
+          "idle": "Inactief",
+          "paused": "Gepauzeerd",
+          "returning": "Terugkeren naar dock",
+          "mopping": "Dweilen",
+          "drying": "Drogen",
+          "washing": "Wassen",
+          "returning_to_wash": "Terugkeren om te wassen",
+          "building": "Bouwen",
+          "sweeping_and_mopping": "Vegen en dweilen",
+          "charging_completed": "Opladen voltooid",
+          "upgrading": "Upgraden",
+          "clean_summon": "Oproepen om schoon te maken",
+          "station_reset": "Station resetten",
+          "returning_install_mop": "Terugkeren om dweil te installeren",
+          "returning_remove_mop": "Terugkeren om dweil te verwijderen",
+          "water_check": "Watercontrole",
+          "clean_add_water": "Schoonmaken en water toevoegen",
+          "washing_paused": "Wassen gepauzeerd",
+          "auto_emptying": "Automatisch legen",
+          "remote_control": "Afstandsbediening",
+          "smart_charging": "Slim opladen",
+          "second_cleaning": "Tweede keer schoonmaken",
+          "human_following": "Mens volgen",
+          "spot_cleaning": "Plek schoonmaken",
+          "returning_auto_empty": "Terugkeren voor automatisch legen",
+          "waiting_for_task": "Wachten op taak",
+          "station_cleaning": "Station schoonmaken",
+          "returning_to_drain": "Terugkeren om te legen",
+          "draining": "Legen",
+          "auto_water_draining": "Automatisch water legen",
+          "shortcut_task": "Snelkoppelingstaak",
+          "streaming": "Streamen",
+          "streaming_paused": "Streamen gepauzeerd",
+          "shortcut": "Snelkoppeling",
+          "monitoring": "Monitoren",
+          "monitoring_paused": "Monitoren gepauzeerd"
+        }
+      },
+      "status": {
+        "state": {
+          "unknown": "Onbekend",
+          "idle": "Inactief",
+          "paused": "Gepauzeerd",
+          "cleaning": "Schoonmaken",
+          "returning": "Terugkeren naar dock",
+          "spot_cleaning": "Plek schoonmaken",
+          "follow_wall_cleaning": "Volg muur schoonmaken",
+          "charging": "Opladen",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "WiFi ingesteld",
+          "power_off": "Uitgeschakeld",
+          "factory": "Fabriek",
+          "error": "Fout",
+          "remote_control": "Afstandsbediening",
+          "sleeping": "Slapen",
+          "self_test": "Zelftest",
+          "factory_test": "Fabriekstest",
+          "standby": "Standby",
+          "room_cleaning": "Kamerschoonmaak",
+          "zone_cleaning": "Zone schoonmaken",
+          "fast_mapping": "Snelle kaartopbouw",
+          "cruising_path": "Cruisen op pad",
+          "cruising_point": "Naar punt cruisen",
+          "summon_clean": "Oproepen om schoon te maken",
+          "shortcut": "Snelkoppeling",
+          "person_follow": "Persoon volgen",
+          "water_check": "Watercontrole"
+        }
+      },
+      "task_status": {
+        "state": {
+          "unknown": "Onbekend",
+          "completed": "Voltooid",
+          "cleaning": "Schoonmaken",
+          "zone_cleaning": "Zone schoonmaken",
+          "room_cleaning": "Kamerschoonmaak",
+          "spot_cleaning": "Plek schoonmaken",
+          "fast_mapping": "Snelle kaartopbouw",
+          "cleaning_paused": "Schoonmaken gepauzeerd",
+          "room_cleaning_paused": "Kamerschoonmaak gepauzeerd",
+          "zone_cleaning_paused": "Zone schoonmaken gepauzeerd",
+          "spot_cleaning_paused": "Plek schoonmaken gepauzeerd",
+          "map_cleaning_paused": "Kaartschoonmaak gepauzeerd",
+          "docking_paused": "Docking gepauzeerd",
+          "mopping_paused": "Dweilen gepauzeerd",
+          "zone_mopping_paused": "Zone dweilen gepauzeerd",
+          "room_mopping_paused": "Kamer dweilen gepauzeerd",
+          "zone_docking_paused": "Zone docking gepauzeerd",
+          "room_docking_paused": "Kamer docking gepauzeerd",
+          "cruising_path": "Cruisen op pad",
+          "cruising_path_paused": "Cruisen op pad gepauzeerd",
+          "cruising_point": "Naar punt cruisen",
+          "cruising_point_paused": "Naar punt cruisen gepauzeerd",
+          "summon_clean_paused": "Oproepen om schoon te maken gepauzeerd",
+          "returning_to_install_mop": "Terugkeren om dweil te installeren",
+          "returning_to_remove_mop": "Terugkeren om dweil te verwijderen"
+        }
+      },
+      "water_tank": {
+        "state": {
+          "unknown": "Onbekend",
+          "installed": "Geïnstalleerd",
+          "not_installed": "Niet geïnstalleerd",
+          "mop_installed": "Dweil geïnstalleerd",
+          "in_station": "In station"
+        }
+      },
+      "mop_pad": {
+        "state": {
+          "unknown": "Onbekend",
+          "installed": "Geïnstalleerd",
+          "not_installed": "Niet geïnstalleerd",
+          "mop_installed": "Dweil geïnstalleerd",
+          "in_station": "In station"
+        }
+      },
+      "dust_collection": {
+        "state": {
+          "unknown": "Onbekend",
+          "not_available": "Niet beschikbaar",
+          "available": "Beschikbaar"
+        }
+      },
+      "auto_empty_status": {
+        "state": {
+          "unknown": "Onbekend",
+          "idle": "Inactief",
+          "active": "Actief",
+          "not_performed": "Niet uitgevoerd"
+        }
+      },
+      "error": {
+        "state": {
+          "unknown": "Onbekende foutcode",
+          "no_error": "Geen fout",
+          "drop": "Wielen zijn opgehangen",
+          "cliff": "Klifsensorfout",
+          "bumper": "Botsingssensor zit vast",
+          "gesture": "Robot is gekanteld",
+          "bumper_repeat": "Botsingssensor zit vast",
+          "drop_repeat": "Wielen zijn opgehangen",
+          "optical_flow": "Optische stroomsensorfout",
+          "no_box": "Stofbak niet geïnstalleerd",
+          "no_tank_box": "Watertank niet geïnstalleerd",
+          "water_box_empty": "Watertank is leeg",
+          "box_full": "Het filter is niet droog of geblokkeerd",
+          "brush": "De hoofdborstel is verstrikt",
+          "side_brush": "De zijborstel is verstrikt",
+          "fan": "Het filter is niet droog of geblokkeerd",
+          "left_wheel_motor": "De robot zit vast, of het linkerwiel is mogelijk geblokkeerd door een voorwerp",
+          "right_wheel_motor": "De robot zit vast, of het rechterwiel is mogelijk geblokkeerd door een voorwerp",
+          "turn_suffocate": "De robot zit vast, of kan niet draaien",
+          "forward_suffocate": "De robot zit vast, of kan niet vooruit",
+          "charger_get": "Kan basis niet vinden",
+          "battery_low": "Lage batterij",
+          "charge_fault": "Oplaadfout",
+          "battery_percentage": "Batterijniveaufout",
+          "heart": "Interne fout",
+          "camera_occlusion": "Fout in visuele positioneringssensor",
+          "move": "Bewegingssensorfout",
+          "flow_shielding": "Optische sensorfout",
+          "infrared_shielding": "Infrarood afschermingsfout",
+          "charge_no_electric": "Het oplaadstation is niet ingeschakeld",
+          "battery_fault": "Batterijfout",
+          "fan_speed_error": "Foutsensor voor ventilatorsnelheid",
+          "left_wheell_speed": "Linkerwiel is mogelijk geblokkeerd door een voorwerp",
+          "right_wheell_speed": "Rechterwiel is mogelijk geblokkeerd door een voorwerp",
+          "bmi055_acce": "Accelerometerfout",
+          "bmi055_gyro": "Gyro-fout",
+          "xv7001": "Gyro-fout",
+          "left_magnet": "Fout in linker magnetische sensor",
+          "right_magnet": "Fout in rechter magnetische sensor",
+          "flow_error": "Stroomsensorfout",
+          "infrared_fault": "Infraroodfout",
+          "camera_fault": "Camerafout",
+          "strong_magnet": "Sterk magnetisch veld gedetecteerd",
+          "water_pump": "Waterpompfout",
+          "rtc": "RTC-fout",
+          "auto_key_trig": "Interne fout",
+          "p3v3": "Interne fout",
+          "camera_idle": "Interne fout",
+          "blocked": "Schoonmaakroute is geblokkeerd, terugkeren naar het dock.",
+          "lds_error": "Fout in lasersensor voor afstandsmeting",
+          "lds_bumper": "Fout in bumper van lasersensor voor afstandsmeting",
+          "filter_blocked": "Het filter is niet droog of geblokkeerd",
+          "edge": "Randsensorfout",
+          "carpet": "Start de robot alstublieft in een gebied zonder tapijt.",
+          "laser": "De 3D-sensor voor obstakelvermijding werkt niet goed.",
+          "ultrasonic": "De ultrasone sensor werkt niet goed.",
+          "no_go_zone": "No-Go zone of virtuele muur gedetecteerd.",
+          "route": "Schoonmaakroute is geblokkeerd.",
+          "restricted": "Gedetecteerd dat de stofzuig-robot in een beperkt gebied is.",
+          "remove_mop": "Dweilen voltooid. Verwijder en reinig de dweil op tijd.",
+          "mop_removed": "De dweilpad is losgekomen tijdens de schoonmaaktaak.",
+          "mop_pad_stop_rotate": "De dweilpad is gestopt met draaien.",
+          "bin_full": "De stofzak is vol, of het luchtkanaal is geblokkeerd.",
+          "bin_open": "De bovenklep van de auto-leeg basis is niet gesloten, of de stofzak is niet geïnstalleerd.",
+          "water_tank": "De schone watertank is niet geïnstalleerd.",
+          "dirty_water_tank": "De vuil watertank is vol of niet geïnstalleerd.",
+          "water_tank_dry": "Laag waterniveau in de schone watertank, vul tijdig met water.",
+          "dirty_water_tank_blocked": "Vuil watertank geblokkeerd.",
+          "dirty_water_tank_pump": "Fout in pomp van vuil watertank.",
+          "mop_pad": "De wasplank is niet goed geïnstalleerd.",
+          "wet_mop_pad": "Het waterniveau van de wasplank is abnormaal, reinig de wasplank tijdig.",
+          "clean_mop_pad": "De schoonmaaktaak is voltooid, reinig alstublieft de dweilpad wasplank.",
+          "clean_tank_level": "Controleer en vul de schone watertank.",
+          "station_disconnected": "Basisstation is niet ingeschakeld",
+          "dirty_tank_level": "Het waterniveau in de gebruikte watertank is te hoog.",
+          "washboard_level": "Waterniveau in de wasplank is te hoog.",
+          "no_mop_in_station": "Dweilpad is niet in het station.",
+          "dust_bag_full": "Stofzak is vol of ventilatieopeningen zijn geblokkeerd.",
+          "self_test_failed": "Abnormale waterafvoer uit de schone watertank van de bovenste en onderste watermodules.",
+          "mop_install_failed": "Installatie van dweilpad mislukt.",
+          "low_battery_turn_off": "Lage batterij. Robot zal binnenkort uitschakelen.",
+          "dirty_tank_not_installed": "De gebruikte watertank van de robot is niet geïnstalleerd.",
+          "robot_in_hidden_room": "Verborgen gebied. Verplaats de robot naar het juiste gebied en probeer opnieuw.",
+          "washboard_not_working": "Washboard werkt niet.",
+          "return_to_charge_failed": "Terugkeren om op te laden is mislukt."
+        }
+      },
+      "charging_status": {
+        "state": {
+          "unknown": "Onbekend",
+          "charging": "Opladen",
+          "not_charging": "Niet aan het opladen",
+          "return_to_charge": "Terugkeren om op te laden",
+          "charging_completed": "Opladen voltooid"
+        }
+      },
+      "relocation_status": {
+        "state": {
+          "unknown": "Onbekend",
+          "located": "Gelokaliseerd",
+          "locating": "Aan het lokaliseren",
+          "failed": "Mislukt",
+          "success": "Succes"
+        }
+      },
+      "self_wash_base_status": {
+        "state": {
+          "unknown": "Onbekend",
+          "idle": "Inactief",
+          "washing": "Wassen",
+          "drying": "Drogen",
+          "paused": "Gepauzeerd",
+          "returning": "Terugkeren om te wassen",
+          "clean_add_water": "Schoonmaken en water toevoegen",
+          "adding_water": "Water toevoegen"
+        }
+      },
+      "low_water_warning": {
+        "state": {
+          "no_warning": "Geen waarschuwing",
+          "no_water_left_dismiss": "Controleer de schoon watertank.",
+          "no_water_left": "Het water in de schoon watertank is bijna op. Controleer en vul de schoon watertank tijdig.",
+          "no_water_left_after_clean": "De mop pad is gereinigd. Geconstateerd dat het water in de schoon watertank onvoldoende is, vul de schoon watertank en leeg de gebruikte watertank.",
+          "no_water_for_clean": "Laag waterniveau in de schoon watertank. De robot is overgeschakeld naar stofzuigmodus.",
+          "low_water": "Bijna geen water meer. Vul de schoon watertank.",
+          "tank_not_installed": "De schoon watertank is niet geïnstalleerd."
+        }
+      },
+      "stream_status": {
+        "state": {
+          "unknown": "Onbekend",
+          "idle": "Inactief",
+          "video": "Video",
+          "audio": "Audio",
+          "recording": "Opname"
+        }
+      },
+      "drainage_status": {
+        "state": {
+          "unknown": "Onbekend",
+          "idle": "Inactief",
+          "draining": "Aan het legen",
+          "draining_successful": "Legen geslaagd",
+          "draining_failed": "Legen mislukt"
+        }
+      },
+      "task_type": {
+        "state": {
+          "standard": "Standaard schoonmaak",
+          "standard_paused": "Standaard schoonmaak gepauzeerd",
+          "custom": "Aangepaste schoonmaak",
+          "custom_paused": "Aangepaste schoonmaak gepauzeerd",
+          "shortcut": "Snelkoppeling schoonmaak",
+          "shortcut_paused": "Snelkoppeling schoonmaak gepauzeerd",
+          "scheduled": "Geplande schoonmaak",
+          "scheduled_paused": "Geplande schoonmaak gepauzeerd",
+          "smart": "Slimme schoonmaak",
+          "smart_paused": "Slimme schoonmaak gepauzeerd",
+          "partial": "Gedeeltelijke schoonmaak",
+          "partial_paused": "Gedeeltelijke schoonmaak gepauzeerd",
+          "summon": "Oproepen voor schoonmaak",
+          "summon_paused": "Oproepen voor schoonmaak gepauzeerd",
+          "water_stain": "Water vlek schoonmaak",
+          "water_stain_paused": "Water vlek schoonmaak gepauzeerd"
+        }
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "Segment Schoonmaken",
+      "description": "Start de schoonmaakoperatie in de geselecteerde kamers.",
+      "fields": {
+        "segments": {
+          "name": "Segmenten",
+          "description": "Lijst van kamers die schoongemaakt moeten worden. Alleen het karakter van de kamer of een array van kamers karakter, schoonmaaktijden, ventilatorsnelheid en dweilmodus om de standaardwaarden per kamer te overschrijven."
+        },
+        "repeats": {
+          "name": "Herhalingen",
+          "description": "Aantal schoonmaakrondes voor elke geselecteerde kamer (tenzij dit wordt overschreven door aangepaste schoonmaakparameters)."
+        },
+        "suction_level": {
+          "name": "Zuigniveau",
+          "description": "Ventilatorsnelheid voor elke geselecteerde kamer (tenzij dit wordt overschreven door aangepaste schoonmaakparameters)."
+        },
+        "water_volume": {
+          "name": "Waterhoeveelheid",
+          "description": "Waterniveau voor elke geselecteerde kamer (tenzij dit wordt overschreven door aangepaste schoonmaakparameters)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "Zone Schoonmaken",
+      "description": "Start de schoonmaakoperatie in het geselecteerde gebied.",
+      "fields": {
+        "zone": {
+          "name": "Zone",
+          "description": "Coördinaten."
+        },
+        "repeats": {
+          "name": "Herhalingen",
+          "description": "Aantal schoonmaakrondes voor elke geselecteerde zone."
+        },
+        "suction_level": {
+          "name": "Zuigniveau",
+          "description": "Ventilatorsnelheid voor elke geselecteerde zone."
+        },
+        "water_volume": {
+          "name": "Waterhoeveelheid",
+          "description": "Waterniveau voor elke geselecteerde zone."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "Plek Schoonmaken",
+      "description": "Start de schoonmaakoperatie op de geselecteerde punten op de kaart.",
+      "fields": {
+        "points": {
+          "name": "Punten",
+          "description": "Lijst van coördinaten die schoongemaakt moeten worden."
+        },
+        "repeats": {
+          "name": "Herhalingen",
+          "description": "Aantal schoonmaakrondes voor elke geselecteerde zone."
+        },
+        "suction_level": {
+          "name": "Zuigniveau",
+          "description": "Ventilatorsnelheid voor elke geselecteerde zone."
+        },
+        "water_volume": {
+          "name": "Waterhoeveelheid",
+          "description": "Waterniveau voor elke geselecteerde zone."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "Ga Naar",
+      "description": "Ga naar de coördinaat op de kaart en stop.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X-coördinaat van het punt."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y-coördinaat van het punt."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Volg Pad",
+      "description": "Volg een lijst van coördinaten op de kaart en keer terug naar de basis. (Alleen ondersteund op stofzuigers met camera)",
+      "fields": {
+        "points": {
+          "name": "Punten",
+          "description": "Lijst van coördinaten van het pad."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "Afstandsbediening Beweging Stap",
+      "description": "Bestuur de bot op afstand één stap.",
+      "fields": {
+        "rotation": {
+          "name": "Rotatie",
+          "description": "Draai in binaire graden tussen -128 en 128."
+        },
+        "velocity": {
+          "name": "Snelheid",
+          "description": "Beweegsnelheid, van 100 (vooruit) tot -300 (achteruit)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "Installeer Stemmenpakket",
+      "description": "Installeer officieel of aangepast stemmenpakket.",
+      "fields": {
+        "lang_id": {
+          "name": "Taal ID",
+          "description": "Taal ID van dit pakket."
+        },
+        "url": {
+          "name": "URL",
+          "description": "Url van dit pakket, het moet bereikbaar zijn door de stofzuiger."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "MD5 checksum van het taalpakket."
+        },
+        "size": {
+          "name": "Grootte",
+          "description": "Grootte van het taalpakket in bytes."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "Vraag Kaart Aan",
+      "description": "Vraag kaartgegevens aan"
+    },
+    "vacuum_select_map": {
+      "name": "Selecteer Kaart",
+      "description": "Selecteer huidige kaart. Gebruikt wanneer er meerdere kaarten/verdiepingen zijn.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart ID",
+          "description": "ID van de te selecteren kaart."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "Verwijder Kaart",
+      "description": "Verwijder een kaart.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart ID",
+          "description": "ID van de te verwijderen kaart."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "Sla Tijdelijke Kaart Op",
+      "description": "Sla de tijdelijke kaart op."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "Verwerp Tijdelijke Kaart",
+      "description": "Verwerp de tijdelijke kaart."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "Vervang Tijdelijke Kaart",
+      "description": "Vervang de tijdelijke kaart met een andere opgeslagen kaart.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart ID",
+          "description": "ID van de kaart die vervangen moet worden."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "Hernoem Kaart",
+      "description": "Hernoem een kaart.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart ID",
+          "description": "ID van de kaart."
+        },
+        "map_name": {
+          "name": "Kaartnaam",
+          "description": "Nieuwe naam van de kaart."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "Herstel Kaart",
+      "description": "Herstel een kaart.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart ID",
+          "description": "ID van de kaart die hersteld moet worden."
+        },
+        "recovery_map_index": {
+          "name": "Herstelkaart Index",
+          "description": "Index van de opgeslagen herstelkaart"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Herstel Kaart Van Bestand",
+      "description": "Herstel een kaart van een bestand.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart ID",
+          "description": "ID van de kaart die hersteld moet worden."
+        },
+        "file_url": {
+          "name": "Bestands-URL",
+          "description": "Url van het opgeslagen bz2.gz of tar.gz bestand"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Backup Kaart",
+      "description": "Backup een kaart naar de cloud.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart ID",
+          "description": "ID van de kaart die hersteld moet worden."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Segmenten Samenvoegen",
+      "description": "Ruimtes samenvoegen.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart ID",
+          "description": "ID van de kaart."
+        },
+        "segments": {
+          "name": "Segmenten",
+          "description": "ID's van de ruimtes."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Segmenten Splitsen",
+      "description": "Ruimtes splitsen.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart ID",
+          "description": "ID van de kaart."
+        },
+        "segment": {
+          "name": "Segment",
+          "description": "ID van de ruimte."
+        },
+        "line": {
+          "name": "Lijn",
+          "description": "Coördinaten van de splitslijn."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "Segment Hernoemen",
+      "description": "Hernoem een segment.",
+      "fields": {
+        "segment_id": {
+          "name": "Segment ID",
+          "description": "ID van het segment"
+        },
+        "segment_name": {
+          "name": "Segmentnaam",
+          "description": "Nieuwe naam van het segment"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "Schoonmaakvolgorde Instellen",
+      "description": "Stel de schoonmaakvolgorde van de ruimtes in. (Alleen op ondersteunde apparaten)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "Schoonmaakvolgorde",
+          "description": "Lijst met ID's van segmenten voor de schoonmaakvolgorde."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "Aangepaste Schoonmaak Instellen",
+      "description": "Stel aangepaste schoonmaakparameters in. (Alleen op ondersteunde apparaten)",
+      "fields": {
+        "segment_id": {
+          "name": "Segment ID",
+          "description": "ID's van de ruimtes."
+        },
+        "suction_level": {
+          "name": "Zuigniveau",
+          "description": "Zuigniveau voor elke ruimte."
+        },
+        "water_volume": {
+          "name": "Waterhoeveelheid",
+          "description": "Waterhoeveelheid voor elke ruimte."
+        },
+        "cleaning_mode": {
+          "name": "Schoonmaakmodus",
+          "description": "Schoonmaakmodus voor elke ruimte (alleen ondersteund op stofzuigers met een mophouderfunctie)."
+        },
+        "repeats": {
+          "name": "Herhalingen",
+          "description": "Aantal schoonmaakbeurten voor elke ruimte."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Beperkte Zone Instellen",
+      "description": "Definieer virtuele muren, beperkte zones en/of no-mop zones.",
+      "fields": {
+        "walls": {
+          "name": "Muren",
+          "description": "Virtuele muren."
+        },
+        "zones": {
+          "name": "Zones",
+          "description": "No-go zones."
+        },
+        "no_mops": {
+          "name": "No Mop Zones",
+          "description": "No-mop zones."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "Verbruiksartikel Resetten",
+      "description": "Reset een verbruiksartikel.",
+      "fields": {
+        "consumable": {
+          "name": "Verbruiksartikel",
+          "description": "Type verbruiksartikel."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Snelkoppeling Hernoemen",
+      "description": "Hernoem een snelkoppeling. (Alleen op ondersteunde apparaten)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Snelkoppeling ID",
+          "description": "ID van de snelkoppeling."
+        },
+        "shortcut_name": {
+          "name": "Naam van Snelkoppeling",
+          "description": "Nieuwe naam van de snelkoppeling."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Tapijtgebied Instellen",
+      "description": "Definieer tapijten en genegeerde tapijten. (Alleen op ondersteunde apparaten)",
+      "fields": {
+        "carpets": {
+          "name": "Tapijten",
+          "description": "Tapijtgebieden."
+        },
+        "ignored_carpets": {
+          "name": "Genegeerde Tapijten",
+          "description": "Genegeerde tapijtgebieden om automatisch gedetecteerde tapijten te verwijderen."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "Pad Instellen",
+      "description": "Definieer paden.",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "Paden",
+          "description": "Coördinaten van de padlijn."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Vooraf Gedefinieerde Punten Instellen",
+      "description": "Definieer vooraf gedefinieerde coördinaten op de huidige kaart. (Alleen ondersteund op stofzuigers met camera)",
+      "fields": {
+        "points": {
+          "name": "Punten",
+          "description": "Lijst van coördinaten om op te slaan."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Obstakel Negeren Instellen",
+      "description": "Stel de negeerstatus van een obstakel in. (Alleen ondersteund op stofzuigers met AI Obstakeldetectiefunctie)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X-coördinaat van het obstakel."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y-coördinaat van het obstakel."
+        },
+        "obstacle_ignored": {
+          "name": "Obstakel Genegeerd",
+          "description": "Obstakel wordt genegeerd of niet."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Routerpositie Instellen",
+      "description": "Stel routerpositie in op de huidige kaart. (Alleen ondersteund op stofzuigers met WiFi kaartfunctie)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X-coördinaat van de router."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y-coördinaat van de router."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "Selecteer Vorige",
+      "description": "Selecteer de vorige opties van een selectie-entiteit.",
+      "fields": {
+        "cycle": {
+          "name": "Cyclus",
+          "description": "Of de optie moet cyclisch zijn van de eerste naar de laatste."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "Selecteer Eerste",
+      "description": "Selecteer de eerste optie van een selectie-entiteit."
+    },
+    "select_select_last": {
+      "name": "Selecteer Laatste",
+      "description": "Selecteer de laatste optie van een selectie-entiteit."
+    },
+    "select_select_next": {
+      "name": "Selecteer Volgende",
+      "description": "Selecteer de volgende opties van een selectie-entiteit.",
+      "fields": {
+        "cycle": {
+          "name": "Cyclus",
+          "description": "Of de optie moet cyclisch zijn van de eerste naar de laatste."
+        }
+      }
+    }
+  }
+}

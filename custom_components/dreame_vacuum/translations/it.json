@@ -10,8 +10,8 @@
       "wrong_token": "Checksum error, token errato",
       "2fa_required": "Richiesta autenticazione 2FA\n{url}",
       "credentials_incomplete": "Credenziali incomplete, per favore inserisci username, password e località",
-      "login_error": "Non è stato possibile accedere a Xiaomi Miio Cloud, controlla le credenziali.",
-      "no_devices": "Non è stato trovato nessun dispositivo supportato in questo account Xiaomi Miio Cloud nella località selezionata."
+      "login_error": "Controlla le tue credenziali.",
+      "no_devices": "Nessun dispositivo supportato è stato trovato in questo account nella posizione selezionata."
     },
     "step": {
       "user": {
@@ -20,14 +20,14 @@
         },
         "description": "La presenza della mappa richiede una connessione al cloud e fornisce una configurazione automatica. Se non sei interessato ad usare la mappa, puoi selezionare la configurazione manuale."
       },
-      "without_map": {
+      "local": {
         "data": {
           "host": "Host",
           "token": "Token"
         },
         "description": "Avrai bisogno dell' API token da 32 caratteri, consulta https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token for instructions."
       },
-      "with_map": {
+      "mi": {
         "data": {
           "username": "Username",
           "password": "Password",
@@ -35,6 +35,14 @@
           "prefer_cloud": "Preferisci la connessione cloud"
         },
         "description": "Effettua il login su Xiaomi Miio cloud, consulta https://www.openhab.org/addons/bindings/miio/#country-servers per sapere quale server devi selezionare."
+      },
+      "dreame": {
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "country": "Località del Server"
+        },
+        "description": "Effettua il login su Dreamehome cloud."
       },
       "devices": {
         "data": {
@@ -121,7 +129,10 @@
         "state": {
           "avoidance": "Evitare",
           "adaptation": "Adattamento",
-          "remove_mop": "Rimuovi la scopa"
+          "remove_mop": "Rimuovi la scopa",
+          "adaptation_without_route": "Adattamento senza percorso",
+          "vacuum_and_mop": "Aspira e lava",
+          "ignore": "Ignorare"
         }
       },
       "mop_wash_level": {
@@ -172,6 +183,70 @@
         "state": {
           "not_set": "Non impostato"
         }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "Per zona",
+          "by_time": "Col tempo",
+          "by_room": "Per stanza"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Spento",
+          "standard": "Standard",
+          "high_frequency": "Alta frequenza",
+          "low_frequency": "Bassa frequenza"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Verticale",
+          "horizontal": "Orizzontale"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Visibile",
+          "hidden": "Nascosto"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Spento",
+          "routine_cleaning": "Pulizia ordinaria",
+          "deep_cleaning": "Pulizia profonda"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Spento",
+          "in_deep_mode": "In modalità profonda",
+          "in_all_modes": "In tutte le modalità"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Spento",
+          "in_deep_mode": "In modalità profonda",
+          "in_all_modes": "In tutte le modalità"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "Presto",
+          "standard": "Standard",
+          "intensive": "Intensivo",
+          "deep": "Profondo"
+        }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Spento",
+          "standard": "Standard",
+          "intensive": "Intensivo",
+          "deep": "Profondo"
+        }
       }
     },
     "sensor": {
@@ -206,6 +281,11 @@
           "human_following": "Seguito umano",
           "spot_cleaning": "Pulizia delle macchie",
           "returning_auto_empty": "Ritorno allo svuotamento automatico",
+          "waiting_for_task": "In attesa del compito",
+          "station_cleaning": "Pulizia della stazione",
+          "returning_to_drain": "Ritornando allo scarico",
+          "draining": "Drenante",
+          "auto_water_draining": "Scarico automatico dell'acqua",
           "shortcut": "Scorciatoia",
           "monitoring": "Monitoraggio",
           "monitoring_paused": "Monitoraggio in pausa"
@@ -384,7 +464,14 @@
           "dirty_tank_level": "Il serbatoio dell'acqua sporca è quasi pieno, controlla il livello per tempo.",
           "washboard_level": "Il livello dell'acqua nella base di lavaggio è troppo elevato.",
           "no_mop_in_station": "Mop pad non è nella stazione.",
-          "dust_bag_full": "Il sacchetto per la polvere è pieno o le prese d'aria sono ostruite."
+          "dust_bag_full": "Il sacchetto per la polvere è pieno o le prese d'aria sono ostruite.",
+          "self_test_failed": "Scarico anomalo dell'acqua dal serbatoio dell'acqua pulita dei moduli dell'acqua superiore e inferiore.",
+          "mop_install_failed": "L'installazione del tampone per la pulizia non è riuscita.",
+          "low_battery_turn_off": "Batteria scarica. ",
+          "dirty_tank_not_installed": "Il serbatoio dell'acqua usata del robot non è installato.",
+          "robot_in_hidden_room": "Zona nascosta. ",
+          "washboard_not_working": "Washboard smette di funzionare.",
+          "return_to_charge_failed": "Impossibile tornare alla carica."
         }
       },
       "charging_status": {
@@ -461,7 +548,9 @@
           "partial": "Pulizia parziale",
           "partial_paused": "Pulizia parziale sospesa",
           "summon": "Chiamare la pulizia",
-          "summon_paused": "Richiamare la pulizia in pausa"
+          "summon_paused": "Richiamare la pulizia in pausa",
+          "water_stain": "Pulizia delle macchie d'acqua",
+          "water_stain_paused": "Pulizia delle macchie d'acqua in pausa"
         }
       }
     }
@@ -530,24 +619,6 @@
         "water_volume": {
           "name": "Volume d'acqua",
           "description": "Livello dell'acqua per ogni zona selezionata."
-        }
-      }
-    },
-    "vacuum_set_dnd": {
-      "name": "Set DnD",
-      "description": "Enable/disable DnD functionality and/or setting its start and end time.",
-      "fields": {
-        "dnd_enabled": {
-          "name": "DnD Enabled",
-          "description": "Enable or disable DnD feature."
-        },
-        "dnd_start": {
-          "name": "DnD Start",
-          "description": "Start time of DnD feature."
-        },
-        "dnd_end": {
-          "name": "Dnd End",
-          "description": "End time of DnD feature."
         }
       }
     },
@@ -843,11 +914,11 @@
         }
       }
     },
-    "vacuum_set_pathway": {
+    "vacuum_set_virtual_threshold": {
       "name": "Imposta il percorso",
       "description": "Definire percorsi.",
       "fields": {
-        "pathways": {
+        "virtual_thresholds": {
           "name": "Percorsi",
           "description": "Coordinate della linea del percorso."
         }
@@ -874,10 +945,6 @@
         "y": {
           "name": "Y",
           "description": "Y Coordinata dell'ostacolo."
-        },
-        "obstacle_type": {
-          "name": "Tipo di ostacolo",
-          "description": "Tipo di ostacolo che verrà ignorato."
         },
         "obstacle_ignored": {
           "name": "Ostacolo ignorato",

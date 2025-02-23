@@ -10,8 +10,8 @@
       "wrong_token": "Помилка контрольної суми, неправильний токен",
       "2fa_required": "Необхідна 2FA-автентифікація\n{url}",
       "credentials_incomplete": "Неповні облікові дані, будь ласка, введіть ім'я користувача, пароль та країну",
-      "login_error": "Не вдалося увійти до хмари Xiaomi, перевірте облікові дані.",
-      "no_devices": "В обліковому записі Xiaomi для даного регіону не знайдено підтримуваних пристроїв."
+      "login_error": "Не вдається ввійти, перевірте свої облікові дані",
+      "no_devices": "В обліковому записі для цього регіону не знайдено підтримуваних пристроїв"
     },
     "step": {
       "user": {
@@ -20,14 +20,14 @@
         },
         "description": "Функція мапи потребує підключення до хмари та надає автоматичну конфігурацію. Якщо ви не хочете використовувати функцію мапи, ви можете вибрати ручну конфігурацію."
       },
-      "without_map": {
+      "local": {
         "data": {
           "host": "Хост",
           "token": "Токен"
         },
         "description": "Вам знадобиться 32-знаковий API-токен, див. https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token для інструкцій."
       },
-      "with_map": {
+      "mi": {
         "data": {
           "username": "Ім'я користувача",
           "password": "Пароль",
@@ -35,6 +35,14 @@
           "prefer_cloud": "Перевага хмарного з'єднання"
         },
         "description": "Увійдіть до хмари Xiaomi, див. https://www.openhab.org/addons/bindings/miio/#country-servers для використання хмарного сервера."
+      },
+      "dreame": {
+        "data": {
+          "username": "Ім'я користувача",
+          "password": "Пароль",
+          "country": "Країна сервера"
+        },
+        "description": "Увійдіть у хмару Dreamehome."
       },
       "devices": {
         "data": {
@@ -121,7 +129,10 @@
         "state": {
           "avoidance": "Уникання килима",
           "adaptation": "Адаптація до килиму",
-          "remove_mop": "Видалення швабри"
+          "remove_mop": "Видалення швабри",
+          "adaptation_without_route": "Адаптація без маршруту",
+          "vacuum_and_mop": "Пилосос і швабра",
+          "ignore": "Ігнорувати"
         }
       },
       "mop_wash_level": {
@@ -172,6 +183,70 @@
         "state": {
           "not_set": "Не встановлено"
         }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "За площею",
+          "by_time": "За часом",
+          "by_room": "По кімнаті"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Вимкнено",
+          "standard": "Стандартний",
+          "high_frequency": "Висока частота",
+          "low_frequency": "Низька частота"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Вертикальний",
+          "horizontal": "Горизонтальний"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Видно",
+          "hidden": "Прихований"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Вимкнено",
+          "routine_cleaning": "Регулярне прибирання",
+          "deep_cleaning": "Глибоке очищення"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Вимкнено",
+          "in_deep_mode": "У глибокому режимі",
+          "in_all_modes": "У всіх режимах"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Вимкнено",
+          "in_deep_mode": "У глибокому режимі",
+          "in_all_modes": "У всіх режимах"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "швидко",
+          "standard": "Стандартний",
+          "intensive": "Інтенсивний",
+          "deep": "Глибокий"
+        }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Вимкнено",
+          "standard": "Стандартний",
+          "intensive": "Інтенсивний",
+          "deep": "Глибокий"
+        }
       }
     },
     "sensor": {
@@ -206,6 +281,11 @@
           "human_following": "Слідкування за людиною",
           "spot_cleaning": "Точкове прибирання",
           "returning_auto_empty": "Повернення для автоматичного спорожнення",
+          "waiting_for_task": "Очікування завдання",
+          "station_cleaning": "Прибирання вокзалу",
+          "returning_to_drain": "Повернення до зливу",
+          "draining": "Злив",
+          "auto_water_draining": "Автоматичний злив води",
           "shortcut": "Шорткат",
           "monitoring": "Моніторинг",
           "monitoring_paused": "Моніторинг призупинено"
@@ -384,7 +464,14 @@
           "dirty_tank_level": "Рівень води в резервуарі для використаної води занадто високий.",
           "washboard_level": "Рівень води в резервуарі для чистої води занадто високий.",
           "no_mop_in_station": "Швабри нема на станції.",
-          "dust_bag_full": "Мішок для пилу заповнений або вентиляційні отвори заблоковані."
+          "dust_bag_full": "Мішок для пилу заповнений або вентиляційні отвори заблоковані.",
+          "self_test_failed": "Ненормальний скид води з резервуара чистої води верхнього та нижнього водяних модулів.",
+          "mop_install_failed": "Не вдалося встановити моп.",
+          "low_battery_turn_off": "Низький заряд батареї. ",
+          "dirty_tank_not_installed": "Бак для використаної води робота не встановлено.",
+          "robot_in_hidden_room": "Прихована зона. ",
+          "washboard_not_working": "Пральна дошка перестає працювати.",
+          "return_to_charge_failed": "Не вдалося повернутися до зарядки."
         }
       },
       "charging_status": {
@@ -461,7 +548,9 @@
           "partial": "Часткове прибирання",
           "partial_paused": "Часткове прибирання призупинено",
           "summon": "Викликане прибирання",
-          "summon_paused": "Викликане прибирання призупинено"
+          "summon_paused": "Викликане прибирання призупинено",
+          "water_stain": "Очищення плям водою",
+          "water_stain_paused": "Очищення плям від води призупинено"
         }
       }
     }
@@ -530,24 +619,6 @@
         "water_volume": {
           "name": "Об'єм води",
           "description": "Рівень води для кожної вибраної зони."
-        }
-      }
-    },
-    "vacuum_set_dnd": {
-      "name": "Set DnD",
-      "description": "Enable/disable DnD functionality and/or setting its start and end time.",
-      "fields": {
-        "dnd_enabled": {
-          "name": "DnD Enabled",
-          "description": "Enable or disable DnD feature."
-        },
-        "dnd_start": {
-          "name": "DnD Start",
-          "description": "Start time of DnD feature."
-        },
-        "dnd_end": {
-          "name": "Dnd End",
-          "description": "End time of DnD feature."
         }
       }
     },
@@ -843,11 +914,11 @@
         }
       }
     },
-    "vacuum_set_pathway": {
+    "vacuum_set_virtual_threshold": {
       "name": "Встановити шлях",
       "description": "Визначте шляхи.",
       "fields": {
-        "pathways": {
+        "virtual_thresholds": {
           "name": "Шляхи",
           "description": "Координати лінії шляху."
         }
@@ -874,10 +945,6 @@
         "y": {
           "name": "Ю",
           "description": "Y Координата перешкоди."
-        },
-        "obstacle_type": {
-          "name": "Тип перешкоди",
-          "description": "Тип перешкоди, яка буде проігнорована."
         },
         "obstacle_ignored": {
           "name": "Перешкода проігнорована",

@@ -6,3 +6,4 @@
 *.zip
 custom_components/dreame_vacuum/.DS_Store
 .gitignore
+.idea

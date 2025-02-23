@@ -5,8 +5,11 @@
     "@tasshack"
   ],
   "config_flow": true,
+  "dependencies": [
+    "http"
+  ],
   "documentation": "https://github.com/Tasshack/dreame-vacuum",
-  "iot_class": "local_polling",
+  "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Tasshack/dreame-vacuum/issues",
   "requirements": [
     "pillow",
@@ -18,5 +21,5 @@
     "py-mini-racer",
     "paho-mqtt"
   ],
-  "version": "v1.0.5"
+  "version": "v2.0.0b16"
 }

@@ -10,8 +10,8 @@
       "wrong_token": "Błąd sumy kontrolnej, zły token",
       "2fa_required": "Wymagane logowanie 2FA\n{url}",
       "credentials_incomplete": "Niepoprawne dane logowania, proszę podać nazwę użytkownika, hasło i kraj",
-      "login_error": "Nie można zalogować się do chmury Xiaomi Miio, sprawdź dane logowania.",
-      "no_devices": "Nie znaleziono obsługiwanych urządzeń na tym koncie w chmurze Xiaomi Miio w wybranym kraju."
+      "login_error": "Nie można się zalogować, sprawdź swoje dane logowania.",
+      "no_devices": "Nie znaleziono obsługiwanych urządzeń na tym koncie w wybranym kraju."
     },
     "step": {
       "user": {
@@ -20,14 +20,14 @@
         },
         "description": "Funkcja mapy wymaga połączenia z chmurą oraz zapewnia automatyczną konfigurację. Jeśli nie chcesz korzystać z funkcji mapy, możesz wybrać konfigurację ręczną."
       },
-      "without_map": {
+      "local": {
         "data": {
           "host": "Host",
           "token": "Token"
         },
         "description": "Potrzebujesz 32-znakowego tokena API, zobacz https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token, aby uzyskać wiecej informacji."
       },
-      "with_map": {
+      "mi": {
         "data": {
           "username": "Nazwa użytkownika",
           "password": "Hasło",
@@ -35,6 +35,14 @@
           "prefer_cloud": "Preferuj połączenie z chmurą"
         },
         "description": "Zaloguj się do chmury Xiaomi Miio, zobacz https://www.openhab.org/addons/bindings/miio/#country-servers, aby uzyskać wiecej informacji."
+      },
+      "dreame": {
+        "data": {
+          "username": "Nazwa użytkownika",
+          "password": "Hasło",
+          "country": "Kraj serwera"
+        },
+        "description": "Zaloguj się do chmury Dreamehome."
       },
       "devices": {
         "data": {
@@ -121,7 +129,10 @@
         "state": {
           "avoidance": "Unikanie",
           "adaptation": "Dostosowanie",
-          "remove_mop": "Usuń Mopa"
+          "remove_mop": "Usuń Mopa",
+          "adaptation_without_route": "Dostosowanie Bez trasy",
+          "vacuum_and_mop": "Odkurz i mopuj",
+          "ignore": "Ignorować"
         }
       },
       "mop_wash_level": {
@@ -172,6 +183,70 @@
         "state": {
           "not_set": "Nie ustawiony"
         }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "Według obszaru",
+          "by_time": "Z czasem",
+          "by_room": "Według pokoju"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Wyłączony",
+          "standard": "Standard",
+          "high_frequency": "Wysoka częstotliwość",
+          "low_frequency": "Niska częstotliwość"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Pionowy",
+          "horizontal": "Poziomy"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Widoczny",
+          "hidden": "Ukryty"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Wyłączony",
+          "routine_cleaning": "Rutynowe czyszczenie",
+          "deep_cleaning": "Dogłębne czyszczenie"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Wyłączony",
+          "in_deep_mode": "W trybie głębokim",
+          "in_all_modes": "We wszystkich trybach"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Wyłączony",
+          "in_deep_mode": "W trybie głębokim",
+          "in_all_modes": "We wszystkich trybach"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "Szybki",
+          "standard": "Standard",
+          "intensive": "Intensywny",
+          "deep": "Głęboko"
+        }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Wyłączony",
+          "standard": "Standard",
+          "intensive": "Intensywny",
+          "deep": "Głęboko"
+        }
       }
     },
     "sensor": {
@@ -206,6 +281,11 @@
           "human_following": "Podążanie za człowiekiem",
           "spot_cleaning": "Czyszczenie punktowe",
           "returning_auto_empty": "Powrót do automatycznego opróżniania",
+          "waiting_for_task": "Oczekiwanie na zadanie",
+          "station_cleaning": "Sprzątanie stacji",
+          "returning_to_drain": "Wracając do drenażu",
+          "draining": "Opróżnianie",
+          "auto_water_draining": "Automatyczne odprowadzanie wody",
           "shortcut": "Skrót",
           "monitoring": "Monitorowanie",
           "monitoring_paused": "Monitorowanie zostało wstrzymane"
@@ -384,7 +464,14 @@
           "dirty_tank_level": "Poziom wody w zbiorniku zużytej wody jest za wysoki.",
           "washboard_level": "Za wysoki poziom wody w tarce.",
           "no_mop_in_station": "Podkładki do mopa nie ma w stacji.",
-          "dust_bag_full": "Worek na kurz jest pełny lub otwory wentylacyjne są zablokowane."
+          "dust_bag_full": "Worek na kurz jest pełny lub otwory wentylacyjne są zablokowane.",
+          "self_test_failed": "Nieprawidłowy wypływ wody ze zbiornika czystej wody górnego i dolnego modułu wodnego.",
+          "mop_install_failed": "Instalacja podkładki mopa nie powiodła się.",
+          "low_battery_turn_off": "Niski poziom baterii. ",
+          "dirty_tank_not_installed": "Zbiornik na zużytą wodę robota nie jest zainstalowany.",
+          "robot_in_hidden_room": "Ukryty obszar. ",
+          "washboard_not_working": "Tarka przestaje działać.",
+          "return_to_charge_failed": "Nie udało się powrócić do ładowania."
         }
       },
       "charging_status": {
@@ -461,7 +548,9 @@
           "partial": "Częściowe czyszczenie",
           "partial_paused": "Częściowe czyszczenie wstrzymane",
           "summon": "Wezwij sprzątanie",
-          "summon_paused": "Czyszczenie przywołania zostało wstrzymane"
+          "summon_paused": "Czyszczenie przywołania zostało wstrzymane",
+          "water_stain": "Czyszczenie plam po wodzie",
+          "water_stain_paused": "Usuwanie plam wodnych zostało wstrzymane"
         }
       }
     }
@@ -530,24 +619,6 @@
         "water_volume": {
           "name": "Objętość wody",
           "description": "Poziom wody dla każdej wybranej strefy."
-        }
-      }
-    },
-    "vacuum_set_dnd": {
-      "name": "Set DnD",
-      "description": "Enable/disable DnD functionality and/or setting its start and end time.",
-      "fields": {
-        "dnd_enabled": {
-          "name": "DnD Enabled",
-          "description": "Enable or disable DnD feature."
-        },
-        "dnd_start": {
-          "name": "DnD Start",
-          "description": "Start time of DnD feature."
-        },
-        "dnd_end": {
-          "name": "Dnd End",
-          "description": "End time of DnD feature."
         }
       }
     },
@@ -843,11 +914,11 @@
         }
       }
     },
-    "vacuum_set_pathway": {
+    "vacuum_set_virtual_threshold": {
       "name": "Ustaw ścieżkę",
       "description": "Zdefiniuj ścieżki.",
       "fields": {
-        "pathways": {
+        "virtual_thresholds": {
           "name": "Ścieżki",
           "description": "Współrzędne linii ścieżki."
         }
@@ -874,10 +945,6 @@
         "y": {
           "name": "Y",
           "description": "Współrzędna Y przeszkody."
-        },
-        "obstacle_type": {
-          "name": "Typ przeszkody",
-          "description": "Rodzaj przeszkody, która zostanie zignorowana."
         },
         "obstacle_ignored": {
           "name": "Przeszkoda zignorowana",

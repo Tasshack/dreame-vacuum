@@ -44,3 +44,11 @@ Added after mapping completed when device cannot store the new map. Official app
 Added when auto-emptying not performed due to the do not disturb settings.
 
 <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/notification_dust_collection.jpg" width="400px">
+
+### Low Water
+
+TODO
+
+### Drainage Status
+
+TODO
