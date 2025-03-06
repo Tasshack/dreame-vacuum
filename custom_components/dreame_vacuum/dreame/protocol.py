@@ -12,6 +12,7 @@ from threading import Thread, Timer
 from time import sleep
 import time, locale
 from paho.mqtt.client import Client
+from paho.mqtt import client as mqtt_client
 from typing import Any, Dict, Optional, Tuple
 from Crypto.Cipher import ARC4
 from miio.miioprotocol import MiIOProtocol
@@ -234,6 +235,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                         try:
                             host = self._host.split(":")
                             self._client = Client(
+                                mqtt_client.CallbackAPIVersion.VERSION1,
                                 f"{self._strings[53]}{self._uid}{self._strings[54]}{DreameVacuumMiHomeCloudProtocol.get_random_agent_id()}{self._strings[54]}{host[0]}",
                                 clean_session=True,
                                 userdata=self,
