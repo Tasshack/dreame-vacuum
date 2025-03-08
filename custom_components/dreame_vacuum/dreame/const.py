@@ -55,6 +55,8 @@ STATE_SWEEPING_AND_MOPPING: Final = "sweeping_and_mopping"
 STATE_CHARGING_COMPLETED: Final = "charging_completed"
 STATE_UPGRADING: Final = "upgrading"
 STATE_UNAVAILABLE: Final = "unavailable"
+STATE_CLEANING: Final = "cleaning"
+STATE_DOCKED: Final = "docked"
 
 TASK_STATUS_COMPLETED: Final = "completed"
 TASK_STATUS_AUTO_CLEANING: Final = "cleaning"

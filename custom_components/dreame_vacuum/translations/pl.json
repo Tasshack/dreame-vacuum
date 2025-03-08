@@ -338,7 +338,7 @@
           "infrared_shielding": "Błąd ekranowania na podczerwień",
           "charge_no_electric": "Stacja ładująca nie jest włączona",
           "battery_fault": "Błąd baterii",
-          "fan_speed": "Błąd czujnika prędkości wentylatora",
+          "fan_speed_error": "Błąd czujnika prędkości wentylatora",
           "left_wheell_speed": "Lewe koło może być zablokowane",
           "right_wheell_speed": "Prawe koło może być zablokowane",
           "bmi055_acce": "Błąd akcelerometru",

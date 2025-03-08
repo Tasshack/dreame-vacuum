@@ -338,7 +338,7 @@
           "infrared_shielding": "Errore della schermatura del sensore infrarossi",
           "charge_no_electric": "La stazione di ricarica non è collegata alla presa elettrica",
           "battery_fault": "Errore fatale alla batteria",
-          "fan_speed": "Errore al sensore della velocità della ventola",
+          "fan_speed_error": "Errore al sensore della velocità della ventola",
           "left_wheell_speed": "La ruota sinistra potrebbe essersi impigliata in qualche oggetto",
           "right_wheell_speed": "La ruota destra potrebbe essersi impigliata in qualche oggetto",
           "bmi055_acce": "Errore dell' accelerometro",

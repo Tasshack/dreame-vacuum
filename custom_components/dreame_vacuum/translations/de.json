@@ -338,7 +338,7 @@
           "infrared_shielding": "Infrarotabschirmung Fehler",
           "charge_no_electric": "Die Ladestation ist nicht eingeschaltet",
           "battery_fault": "Batterie Fehler",
-          "fan_speed": "Fehler des Lüfterdrehzahlsensors",
+          "fan_speed_error": "Fehler des Lüfterdrehzahlsensors",
           "left_wheell_speed": "Linkes Rad ist möglicherweise durch Fremdkörper blockiert",
           "right_wheell_speed": "Rechtes Rad ist möglicherweise durch Fremdkörper blockiert",
           "bmi055_acce": "Beschleunigungssensor Fehler",

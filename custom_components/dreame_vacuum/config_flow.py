@@ -115,15 +115,15 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
 
     def __init__(self, config_entry: ConfigEntry) -> None:
         """Initialize Dreame Vacuum options flow."""
-        self.config_entry = config_entry
+        self._config_entry = config_entry
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         """Manage Dreame Vacuum options."""
         errors = {}
-        data = self.config_entry.data
-        options = self.config_entry.options
+        data = self._config_entry.data
+        options = self._config_entry.options
 
         if user_input is not None:
             return self.async_create_entry(title="", data={**options, **user_input})

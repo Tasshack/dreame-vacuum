@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import voluptuous as vol
 from typing import Final
+import importlib
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity
@@ -11,14 +12,17 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import config_validation as cv, entity_platform
 from homeassistant.exceptions import HomeAssistantError
-from homeassistant.const import STATE_UNKNOWN, STATE_UNAVAILABLE
-from homeassistant.components.vacuum import (
+from .dreame.const import (
+    STATE_UNKNOWN,
+    STATE_UNAVAILABLE,
     STATE_CLEANING,
     STATE_DOCKED,
     STATE_ERROR,
     STATE_IDLE,
     STATE_PAUSED,
     STATE_RETURNING,
+)
+from homeassistant.components.vacuum import (
     StateVacuumEntity,
     VacuumEntityFeature
 )
@@ -439,6 +443,14 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         self._attr_device_class = DOMAIN
         self._attr_name = coordinator.device.name
         self._attr_unique_id = f"{coordinator.device.mac}_" + DOMAIN
+
+        ## For backwards compatibility
+        try:            
+            module = importlib.import_module("homeassistant.components.vacuum")
+            self._activity_class = module.VacuumActivity
+        except:
+            self._activity_class = None
+
         self._set_attrs()
 
     @callback
@@ -479,13 +491,10 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             
         self._attr_battery_level = self.device.status.battery_level
         self._attr_extra_state_attributes = self.device.status.attributes
-        self._attr_state = STATE_CODE_TO_STATE.get(self.device.status.state, STATE_UNKNOWN)
         self._attr_status = self.device.status.status_name.replace("_", " ").capitalize()
-        
-    @property
-    def state(self) -> str | None:
-        """Return the state of the vacuum cleaner."""
-        return self._attr_state
+        self._vacuum_state = STATE_CODE_TO_STATE.get(self.device.status.state, STATE_UNKNOWN)
+        if self._activity_class is None:
+            self._attr_state = self._vacuum_state
 
     @property
     def status(self) -> str | None:
@@ -501,6 +510,12 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     def extra_state_attributes(self) -> dict[str, str] | None:
         """Return the extra state attributes of the entity."""
         return self._attr_extra_state_attributes
+
+    @property
+    def activity(self):
+        if self._activity_class is not None:
+            return self._activity_class(self._vacuum_state)
+        return self._vacuum_state
 
     @property
     def available(self) -> bool:

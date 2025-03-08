@@ -338,7 +338,7 @@
           "infrared_shielding": "Erreur de protection contre l'infrarouge",
           "charge_no_electric": "La station n'est pas branchée ou allumée",
           "battery_fault": "Problème de batterie",
-          "fan_speed": "Erreur du capteur de vitesse d'aspiration",
+          "fan_speed_error": "Erreur du capteur de vitesse d'aspiration",
           "left_wheell_speed": "La roue gauche est probablement bloquée",
           "right_wheell_speed": "La roue droite est probablement bloquée",
           "bmi055_acce": "Erreur d'accéléromètre",
