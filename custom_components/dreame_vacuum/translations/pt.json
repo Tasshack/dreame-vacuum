@@ -164,6 +164,13 @@
           "weekly": "Semanalmente"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Padrão",
+          "intelligent": "Inteligente",
+          "high": "Alto"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Nenhum",
@@ -216,6 +223,28 @@
           "off": "Desligado",
           "routine_cleaning": "Limpeza de rotina",
           "deep_cleaning": "Limpeza profunda"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Vacuum e MOP",
+          "mop_after_vacuum": "MOP após vácuo"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Luz",
+          "standard": "Padrão",
+          "deep": "Profundo",
+          "ultra_washing": "Ultra Lavagem"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normal",
+          "mild": "Leve",
+          "warm": "Esquentar",
+          "hot": "Quente"
         }
       },
       "auto_recleaning": {
@@ -349,7 +378,12 @@
           "cruising_point_paused": "Cruzeiro até um ponto pausado",
           "summon_clean_paused": "Chamada para limpar pausada",
           "returning_to_install_mop": "Retornando para instalar o pano",
-          "returning_to_remove_mop": "Retornando para remover o pano"
+          "returning_to_remove_mop": "Retornando para remover o pano",
+          "station_cleaning": "Limpeza da estação",
+          "pet_finding": "Pet Econd",
+          "auto_cleaning_washing_paused": "Lavagem de limpeza automática fez uma pausa",
+          "area_cleaning_washing_paused": "Lavagem de área para lavar a lavagem parada",
+          "custom_cleaning_washing_paused": "Lavagem de limpeza personalizada fez uma pausa"
         }
       },
       "water_tank": {
@@ -533,6 +567,52 @@
           "draining_failed": "Falha na drenagem"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Desconhecido",
+          "not_available": "Não disponível",
+          "not_installed": "Não instalado",
+          "low_water": "Água baixa",
+          "installed": "Instalado"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Desconhecido",
+          "installed": "Instalado",
+          "not_installed_or_full": "Não instalado ou cheio"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Desconhecido",
+          "installed": "Instalado",
+          "not_installed": "Não instalado",
+          "check": "Verificar"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Desconhecido",
+          "installed": "Instalado",
+          "disabled": "Desabilitado",
+          "low_detergent": "Detergente baixo"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Desconhecido",
+          "disabled": "Desabilitado",
+          "enabled": "Habilitado"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Desconhecido",
+          "idle": "Parado",
+          "draining": "Drenagem"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Limpeza padrão",
@@ -550,7 +630,9 @@
           "summon": "Limpeza por chamada",
           "summon_paused": "Limpeza por chamada pausada",
           "water_stain": "Limpeza de manchas de água",
-          "water_stain_paused": "Limpeza de manchas de água pausada"
+          "water_stain_paused": "Limpeza de manchas de água pausada",
+          "boosted_edge_cleaning": "Limpeza de borda aumentada",
+          "hair_compressing": "Comprimindo o cabelo"
         }
       }
     }

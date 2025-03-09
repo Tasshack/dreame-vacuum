@@ -155,13 +155,20 @@
           "high_frequency": "高頻率",
           "low_frequency": "低頻率"
         }
-      },      
+      },
       "mop_pad_swing": {
         "state": {
           "off": "關閉",
           "auto": "自動",
           "daily": "每日",
           "weekly": "每週"
+        }
+      },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "标准",
+          "intelligent": "聪明的",
+          "high": "高的"
         }
       },
       "floor_material": {
@@ -216,6 +223,28 @@
           "off": "關閉",
           "routine_cleaning": "日常清潔",
           "deep_cleaning": "深度清潔"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "真空和拖把",
+          "mop_after_vacuum": "真空后的拖把"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "光",
+          "standard": "标准",
+          "deep": "深的",
+          "ultra_washing": "超清洗"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "普通的",
+          "mild": "温和的",
+          "warm": "温暖的",
+          "hot": "热的"
         }
       },
       "auto_recleaning": {
@@ -349,7 +378,12 @@
           "cruising_point_paused": "定點巡航暫停",
           "summon_clean_paused": "召喚清潔暫停",
           "returning_to_install_mop": "返回安裝拖布",
-          "returning_to_remove_mop": "返回卸下拖布"
+          "returning_to_remove_mop": "返回卸下拖布",
+          "station_cleaning": "车站清洁",
+          "pet_finding": "宠物发现",
+          "auto_cleaning_washing_paused": "自动清洁洗涤暂停",
+          "area_cleaning_washing_paused": "区域清洗暂停",
+          "custom_cleaning_washing_paused": "定制清洗暂停"
         }
       },
       "water_tank": {
@@ -533,6 +567,52 @@
           "draining_failed": "排水失敗"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "未知",
+          "not_available": "无法使用",
+          "not_installed": "未安装",
+          "low_water": "枯水",
+          "installed": "安装"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "未知",
+          "installed": "安装",
+          "not_installed_or_full": "未安装或完整"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "未知",
+          "installed": "安装",
+          "not_installed": "未安装",
+          "check": "查看"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "未知",
+          "installed": "安装",
+          "disabled": "禁用",
+          "low_detergent": "低洗涤剂"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "未知",
+          "disabled": "禁用",
+          "enabled": "启用"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "未知",
+          "idle": "闲置的",
+          "draining": "排水"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "標準清潔",
@@ -550,7 +630,9 @@
           "summon": "召喚清潔",
           "summon_paused": "召喚清潔暫停",
           "water_stain": "水漬清潔",
-          "water_stain_paused": "水漬清潔暫停"
+          "water_stain_paused": "水漬清潔暫停",
+          "boosted_edge_cleaning": "增强边缘清洁",
+          "hair_compressing": "头发压缩"
         }
       }
     }

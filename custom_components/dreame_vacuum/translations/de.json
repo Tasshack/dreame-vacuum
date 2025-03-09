@@ -164,6 +164,13 @@
           "weekly": "Wöchentlich"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Standard",
+          "intelligent": "Intelligent",
+          "high": "Hoch"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Kein Material",
@@ -218,6 +225,28 @@
           "deep_cleaning": "Gründliche Reinigung"
         }
       },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Vakuum und Mopp",
+          "mop_after_vacuum": "Mop nach Vakuum"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Licht",
+          "standard": "Standard",
+          "deep": "Tief",
+          "ultra_washing": "Ultra -Waschen"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normal",
+          "mild": "Leicht",
+          "warm": "Warm",
+          "hot": "Heiß"
+        }
+      },
       "auto_recleaning": {
         "state": {
           "off": "Aus",
@@ -241,7 +270,7 @@
         }
       },
       "custom_mopping_route": {
-        "state": {          
+        "state": {
           "off": "Aus",
           "standard": "Standard",
           "intensive": "Intensiv",
@@ -349,7 +378,12 @@
           "cruising_point_paused": "Die Fahrt zum Zielpunkt wurde unterbrochen",
           "summon_clean_paused": "Zur Reinigung rufen wurde angehalten",
           "returning_to_install_mop": "Zurückkehren zum anbringen des Wischpads",
-          "returning_to_remove_mop": "Zurückkehren zum entfernen des Wischpads"
+          "returning_to_remove_mop": "Zurückkehren zum entfernen des Wischpads",
+          "station_cleaning": "Stationreinigung",
+          "pet_finding": "Haustierfindung",
+          "auto_cleaning_washing_paused": "Automatisch Reinigung waschen im Pause",
+          "area_cleaning_washing_paused": "Reinigungsreinigung waschen pausieren",
+          "custom_cleaning_washing_paused": "Custom Cleaning Wäsche pausiert"
         }
       },
       "water_tank": {
@@ -533,6 +567,52 @@
           "draining_failed": "Die Entleerung ist fehlgeschlagen"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "not_available": "Nicht verfügbar",
+          "not_installed": "Nicht installiert",
+          "low_water": "Niedriges Wasser",
+          "installed": "Installiert"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "installed": "Installiert",
+          "not_installed_or_full": "Nicht installiert oder voll"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "installed": "Installiert",
+          "not_installed": "Nicht installiert",
+          "check": "Überprüfen"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "installed": "Installiert",
+          "disabled": "Deaktiviert",
+          "low_detergent": "Niedriges Waschmittel"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "disabled": "Deaktiviert",
+          "enabled": "Ermöglicht"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Unbekannt",
+          "idle": "Leerlauf",
+          "draining": "Absperrung"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Standardreinigung",
@@ -550,7 +630,9 @@
           "summon": "Zur Reinigung heranrufen",
           "summon_paused": "Reinigung herbeirufen pausiert",
           "water_stain": "Reinigung von Wasserflecken",
-          "water_stain_paused": "Die Reinigung von Wasserflecken wurde angehalten"
+          "water_stain_paused": "Die Reinigung von Wasserflecken wurde angehalten",
+          "boosted_edge_cleaning": "Steigende Kantenreinigung",
+          "hair_compressing": "Haarkomprimierung"
         }
       }
     }

@@ -164,6 +164,13 @@
           "weekly": "Еженедельно"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Стандартный",
+          "intelligent": "Разумный",
+          "high": "Высокий"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Никто",
@@ -216,6 +223,28 @@
           "off": "Выключенный",
           "routine_cleaning": "Регулярная уборка",
           "deep_cleaning": "Глубокая очистка"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Вакуум и швабка",
+          "mop_after_vacuum": "Швабрь после вакуума"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Свет",
+          "standard": "Стандартный",
+          "deep": "Глубокий",
+          "ultra_washing": "Ультра мытье"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Нормальный",
+          "mild": "Мягкий",
+          "warm": "Теплый",
+          "hot": "Горячий"
         }
       },
       "auto_recleaning": {
@@ -349,7 +378,12 @@
           "cruising_point_paused": "Крейсерская точка приостановлена",
           "summon_clean_paused": "Вызов для сброса приостановлен",
           "returning_to_install_mop": "Возвращение для установки швабры",
-          "returning_to_remove_mop": "Выполняется очистка швабры. Подождите"
+          "returning_to_remove_mop": "Выполняется очистка швабры. Подождите",
+          "station_cleaning": "Уборка станции",
+          "pet_finding": "Обнаружение домашних животных",
+          "auto_cleaning_washing_paused": "Автотическая очистка приостановлена",
+          "area_cleaning_washing_paused": "Очистка очистки мыть",
+          "custom_cleaning_washing_paused": "Пользовательская очистка промывка приостановлена"
         }
       },
       "water_tank": {
@@ -418,7 +452,7 @@
           "infrared_shielding": "Ошибка ИК-датчика",
           "charge_no_electric": "Зарядная станция не подключена к источнику энергии",
           "battery_fault": "Ошибка батереи",
-          "fan_speed": "Ошибка датчика мощности всасывания",
+          "fan_speed_error": "Ошибка датчика мощности всасывания",
           "left_wheell_speed": "Левое колесо может быть заблокировано посторонними предметами",
           "right_wheell_speed": "Правое колесо может быть заблокировано посторонними предметами",
           "bmi055_acce": "Ошибка акселерометра",
@@ -533,6 +567,52 @@
           "draining_failed": "Ошибка слива"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Неизвестный",
+          "not_available": "Нет в наличии",
+          "not_installed": "Не установлен",
+          "low_water": "Низкая вода",
+          "installed": "Установлен"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Неизвестный",
+          "installed": "Установлен",
+          "not_installed_or_full": "Не установлен и не заполнен"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Неизвестный",
+          "installed": "Установлен",
+          "not_installed": "Не установлен",
+          "check": "Проверять"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Неизвестный",
+          "installed": "Установлен",
+          "disabled": "Неполноценный",
+          "low_detergent": "Низкий моющий сред"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Неизвестный",
+          "disabled": "Неполноценный",
+          "enabled": "Включено"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Неизвестный",
+          "idle": "Праздный",
+          "draining": "Дренирование"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Стандартная уборка",
@@ -550,7 +630,9 @@
           "summon": "Вызвать уборку",
           "summon_paused": "Вызов уборки приостановлен",
           "water_stain": "Очистка пятен от воды",
-          "water_stain_paused": "Очистка пятен от воды приостановлена"
+          "water_stain_paused": "Очистка пятен от воды приостановлена",
+          "boosted_edge_cleaning": "Увеличенная очистка края",
+          "hair_compressing": "Сжатие волос"
         }
       }
     }

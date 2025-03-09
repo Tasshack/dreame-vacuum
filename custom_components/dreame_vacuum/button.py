@@ -118,6 +118,33 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
             DreameVacuumEntityDescription().exists_fn(description, device)
             and device.status.dirty_water_tank_life is not None
         ),
+    ),    
+    DreameVacuumButtonEntityDescription(
+        action_key=DreameVacuumAction.RESET_DEODORIZER,
+        icon="mdi:scent",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.capability.deodorizer
+        ),
+    ),
+    DreameVacuumButtonEntityDescription(
+        action_key=DreameVacuumAction.RESET_SCALE_INHIBITOR,
+        icon="mdi:pipe",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.capability.scale_inhibitor
+        ),
+    ),
+    DreameVacuumButtonEntityDescription(
+        action_key=DreameVacuumAction.RESET_WHEEL,
+        icon="mdi:tire",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.capability.wheel
+        ),
     ),
     DreameVacuumButtonEntityDescription(
         action_key=DreameVacuumAction.START_AUTO_EMPTY,
@@ -201,6 +228,13 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         action_fn=lambda device: device.start_self_repairing(),
         exists_fn=lambda description, device: device.capability.self_wash_base,
+    ),
+    DreameVacuumButtonEntityDescription(
+        key="base_station_cleaning",
+        icon="mdi:car-wash",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        action_fn=lambda device: device.start_station_cleaning(),
+        exists_fn=lambda description, device: device.capability.station_cleaning,
     ),
     DreameVacuumButtonEntityDescription(
         key="start_recleaning",

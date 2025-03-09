@@ -164,6 +164,13 @@
           "weekly": "Setmanalment"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Estàndard",
+          "intelligent": "Intel·ligent",
+          "high": "Alt"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Cap",
@@ -216,6 +223,28 @@
           "off": "Desactivat",
           "routine_cleaning": "Neteja rutinària",
           "deep_cleaning": "Neteja profunda"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Buit i fregó",
+          "mop_after_vacuum": "Mop després del buit"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Llum",
+          "standard": "Estàndard",
+          "deep": "Fondo",
+          "ultra_washing": "Ultra rentat"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normal",
+          "mild": "Dolç",
+          "warm": "Calent",
+          "hot": "Calent"
         }
       },
       "auto_recleaning": {
@@ -349,7 +378,12 @@
           "cruising_point_paused": "Creuant a un punt pausat",
           "summon_clean_paused": "Invocació de neteja pausada",
           "returning_to_install_mop": "Tornant a instal·lar la mopa",
-          "returning_to_remove_mop": "Tornant a treure la mopa"
+          "returning_to_remove_mop": "Tornant a treure la mopa",
+          "station_cleaning": "Neteja de l'estació",
+          "pet_finding": "Trobada de mascotes",
+          "auto_cleaning_washing_paused": "El rentat de neteja automàtica va fer una pausa",
+          "area_cleaning_washing_paused": "El rentat de neteja de la zona va fer una pausa",
+          "custom_cleaning_washing_paused": "Rentat de neteja a mida"
         }
       },
       "water_tank": {
@@ -533,6 +567,52 @@
           "draining_failed": "Error en el drenatge"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "not_available": "No disponible",
+          "not_installed": "No instal·lat",
+          "low_water": "Aigua baixa",
+          "installed": "Instal·lat"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "installed": "Instal·lat",
+          "not_installed_or_full": "No instal·lat ni ple"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "installed": "Instal·lat",
+          "not_installed": "No instal·lat",
+          "check": "Compta"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "installed": "Instal·lat",
+          "disabled": "Inepte",
+          "low_detergent": "Detergent baix"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "disabled": "Inepte",
+          "enabled": "Activat"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "idle": "Ociosa",
+          "draining": "Drenar"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Neteja estàndard",
@@ -550,7 +630,9 @@
           "summon": "Neteja per invocació",
           "summon_paused": "Neteja per invocació en pausa",
           "water_stain": "Neteja de taques d'aigua",
-          "water_stain_paused": "Neteja de taques d'aigua en pausa"
+          "water_stain_paused": "Neteja de taques d'aigua en pausa",
+          "boosted_edge_cleaning": "Neteja d’avantguarda impulsada",
+          "hair_compressing": "Compressió del cabell"
         }
       }
     }

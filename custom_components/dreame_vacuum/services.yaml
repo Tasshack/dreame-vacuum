@@ -139,16 +139,16 @@ vacuum_remote_control_move_step:
       required: true
       selector:
         number:
-          min: -128
-          max: 128
+          min: -360
+          max: 360
           mode: box
     velocity:
       example: 100
       required: true
       selector:
         number:
-          min: -300
-          max: 100
+          min: -600
+          max: 600
           mode: box
 
 vacuum_install_voice_pack:
@@ -459,6 +459,9 @@ vacuum_reset_consumable:
             - "squeegee"
             - "onboard_dirty_water_tank"
             - "dirty_water_tank"
+            - "deodorizer"
+            - "wheel"
+            - "scale_inhibitor"
 
 vacuum_rename_shortcut:
   target:

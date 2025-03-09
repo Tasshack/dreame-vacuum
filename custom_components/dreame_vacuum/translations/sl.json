@@ -155,13 +155,20 @@
           "high_frequency": "Visoka frekvenca",
           "low_frequency": "Nizka frekvenca"
         }
-      },      
+      },
       "mop_pad_swing": {
         "state": {
           "off": "Izklopljeno",
           "auto": "Samodejno",
           "daily": "Dnevno",
           "weekly": "Tedensko"
+        }
+      },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Standardno",
+          "intelligent": "Inteligenten",
+          "high": "Visok"
         }
       },
       "floor_material": {
@@ -216,6 +223,28 @@
           "off": "Izklopljeno",
           "routine_cleaning": "Rutinsko čiščenje",
           "deep_cleaning": "Globinsko čiščenje"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Vakuum in mop",
+          "mop_after_vacuum": "Mop po vakuumu"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Svetloba",
+          "standard": "Standardno",
+          "deep": "Globoko",
+          "ultra_washing": "Ultra pranje"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normalno",
+          "mild": "Blago",
+          "warm": "Toplo",
+          "hot": "Vroče"
         }
       },
       "auto_recleaning": {
@@ -349,7 +378,12 @@
           "cruising_point_paused": "Križarjenje do točke zaustavljeno",
           "summon_clean_paused": "Klicanje za čiščenje zaustavljeno",
           "returning_to_install_mop": "Vračanje za namestitev mopa",
-          "returning_to_remove_mop": "Vračanje za odstranitev mopa"
+          "returning_to_remove_mop": "Vračanje za odstranitev mopa",
+          "station_cleaning": "Čiščenje postaje",
+          "pet_finding": "Iskanje hišnih ljubljenčkov",
+          "auto_cleaning_washing_paused": "Samodejno čiščenje pranje",
+          "area_cleaning_washing_paused": "Območje čiščenja pranje je bilo zaustavljeno",
+          "custom_cleaning_washing_paused": "Čiščenje po meri začasno"
         }
       },
       "water_tank": {
@@ -385,7 +419,7 @@
           "not_performed": "Ni izvedeno"
         }
       },
-"error": {
+      "error": {
         "state": {
           "unknown": "Neznana koda napake",
           "no_error": "Brez napake",
@@ -533,6 +567,52 @@
           "draining_failed": "Odvajanje neuspešno"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Neznano",
+          "not_available": "Ni na voljo",
+          "not_installed": "Ni nameščen",
+          "low_water": "Nizka voda",
+          "installed": "Nameščen"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Neznano",
+          "installed": "Nameščen",
+          "not_installed_or_full": "Ni nameščen ali poln"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Neznano",
+          "installed": "Nameščen",
+          "not_installed": "Ni nameščen",
+          "check": "Preverite"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Neznano",
+          "installed": "Nameščen",
+          "disabled": "Invalid",
+          "low_detergent": "Nizek detergent"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Neznano",
+          "disabled": "Invalid",
+          "enabled": "Omogočeno"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Neznano",
+          "idle": "V prostem teku",
+          "draining": "Odtok"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Standardno čiščenje",
@@ -550,7 +630,9 @@
           "summon": "Klicanje za čiščenje",
           "summon_paused": "Klicanje za čiščenje zaustavljeno",
           "water_stain": "Čiščenje vodnih madežev",
-          "water_stain_paused": "Čiščenje vodnih madežev zaustavljeno"
+          "water_stain_paused": "Čiščenje vodnih madežev zaustavljeno",
+          "boosted_edge_cleaning": "Povišano čiščenje robov",
+          "hair_compressing": "Stiskanje las"
         }
       }
     }

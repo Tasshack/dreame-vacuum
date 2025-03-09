@@ -164,6 +164,13 @@
           "weekly": "Veckovis"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Standard",
+          "intelligent": "Intelligent",
+          "high": "Hög"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Inget",
@@ -216,6 +223,28 @@
           "off": "Av",
           "routine_cleaning": "Rutinrengöring",
           "deep_cleaning": "Djuprengöring"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Vakuum och mopp",
+          "mop_after_vacuum": "Mopp efter vakuum"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Ljus",
+          "standard": "Standard",
+          "deep": "Djup",
+          "ultra_washing": "Ultratvätt"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normal",
+          "mild": "Mild",
+          "warm": "Värma",
+          "hot": "Varm"
         }
       },
       "auto_recleaning": {
@@ -349,7 +378,12 @@
           "cruising_point_paused": "Åk till punkt pausad",
           "summon_clean_paused": "Kalla för att städa pausad",
           "returning_to_install_mop": "Återgår för att hämta mopp",
-          "returning_to_remove_mop": "Återgår för att lämna mopp"
+          "returning_to_remove_mop": "Återgår för att lämna mopp",
+          "station_cleaning": "Stationstädning",
+          "pet_finding": "Husdjursuppträdande",
+          "auto_cleaning_washing_paused": "Auto Cleaning Washing paused",
+          "area_cleaning_washing_paused": "Area Rengöring av tvätt pausade",
+          "custom_cleaning_washing_paused": "Anpassad rengöring av tvätt pausade"
         }
       },
       "water_tank": {
@@ -533,6 +567,52 @@
           "draining_failed": "Dränering misslyckades"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Okänd",
+          "not_available": "Inte tillgängligt",
+          "not_installed": "Inte installerad",
+          "low_water": "Låg vatten",
+          "installed": "Installerad"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Okänd",
+          "installed": "Installerad",
+          "not_installed_or_full": "Inte installerad eller full"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Okänd",
+          "installed": "Installerad",
+          "not_installed": "Inte installerad",
+          "check": "Kontrollera"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Okänd",
+          "installed": "Installerad",
+          "disabled": "Funktionshindrad",
+          "low_detergent": "Låg tvättmedel"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Okänd",
+          "disabled": "Funktionshindrad",
+          "enabled": "Aktiverad"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Okänd",
+          "idle": "På tomgång",
+          "draining": "Dränering"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Standardstädning",
@@ -550,7 +630,9 @@
           "summon": "Kallad städning",
           "summon_paused": "Kallad städning pausad",
           "water_stain": "Fläckstädning",
-          "water_stain_paused": "Fläckstädning pausad"
+          "water_stain_paused": "Fläckstädning pausad",
+          "boosted_edge_cleaning": "Förstärkt kantrengöring",
+          "hair_compressing": "Hårkomprimering"
         }
       }
     }

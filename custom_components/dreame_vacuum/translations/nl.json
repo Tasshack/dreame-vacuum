@@ -155,13 +155,20 @@
           "high_frequency": "Hoge Frequentie",
           "low_frequency": "Lage Frequentie"
         }
-      },      
+      },
       "mop_pad_swing": {
         "state": {
           "off": "Uit",
           "auto": "Automatisch",
           "daily": "Dagelijks",
           "weekly": "Wekelijks"
+        }
+      },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Standaard",
+          "intelligent": "Intelligent",
+          "high": "Hoog"
         }
       },
       "floor_material": {
@@ -216,6 +223,28 @@
           "off": "Uit",
           "routine_cleaning": "Routine Reiniging",
           "deep_cleaning": "Diepe Reiniging"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Vacuüm en dweil",
+          "mop_after_vacuum": "Dweil na vacuüm"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Licht",
+          "standard": "Standaard",
+          "deep": "Diep",
+          "ultra_washing": "Ultra wassen"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normaal",
+          "mild": "Mild",
+          "warm": "Warm",
+          "hot": "Heet"
         }
       },
       "auto_recleaning": {
@@ -352,7 +381,12 @@
           "cruising_point_paused": "Naar punt cruisen gepauzeerd",
           "summon_clean_paused": "Oproepen om schoon te maken gepauzeerd",
           "returning_to_install_mop": "Terugkeren om dweil te installeren",
-          "returning_to_remove_mop": "Terugkeren om dweil te verwijderen"
+          "returning_to_remove_mop": "Terugkeren om dweil te verwijderen",
+          "station_cleaning": "Stationsreiniging",
+          "pet_finding": "Pet Finding",
+          "auto_cleaning_washing_paused": "Auto schoonmaken wassen gepauzeerd",
+          "area_cleaning_washing_paused": "Gebied schoonmaken wassen gepauzeerd",
+          "custom_cleaning_washing_paused": "Aangepaste schoonmaak wassen gepauzeerd"
         }
       },
       "water_tank": {
@@ -536,6 +570,52 @@
           "draining_failed": "Legen mislukt"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Onbekend",
+          "not_available": "Niet beschikbaar",
+          "not_installed": "Niet geïnstalleerd",
+          "low_water": "Laag water",
+          "installed": "Geïnstalleerd"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Onbekend",
+          "installed": "Geïnstalleerd",
+          "not_installed_or_full": "Niet geïnstalleerd of vol"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Onbekend",
+          "installed": "Geïnstalleerd",
+          "not_installed": "Niet geïnstalleerd",
+          "check": "Rekening"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Onbekend",
+          "installed": "Geïnstalleerd",
+          "disabled": "Gehandicapt",
+          "low_detergent": "Lage wasmiddel"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Onbekend",
+          "disabled": "Gehandicapt",
+          "enabled": "Ingeschakeld"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Onbekend",
+          "idle": "Inactief",
+          "draining": "Aftappend"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Standaard schoonmaak",
@@ -553,7 +633,9 @@
           "summon": "Oproepen voor schoonmaak",
           "summon_paused": "Oproepen voor schoonmaak gepauzeerd",
           "water_stain": "Water vlek schoonmaak",
-          "water_stain_paused": "Water vlek schoonmaak gepauzeerd"
+          "water_stain_paused": "Water vlek schoonmaak gepauzeerd",
+          "boosted_edge_cleaning": "Boosted randreiniging",
+          "hair_compressing": "Haar comprimeren"
         }
       }
     }

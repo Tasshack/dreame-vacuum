@@ -71,6 +71,14 @@
 | `ultra_clean_mode`   | TODO | 
 | `streaming_voice_prompt`   | TODO | 
 | `clean_carpets_first`   | TODO | 
+| `silent_drying`   | TODO | 
+| `hair_compression`   | TODO | 
+| `side_brush_carpet_rotate`   | TODO | 
+| `auto_lds_lifting`   | TODO | 
+| `smart_mop_washing`   | TODO | 
+| `dnd_disable_resume_cleaning`   | TODO | 
+| `dnd_disable_auto_empty`   | TODO | 
+| `dnd_reduce_volume`   | TODO | 
 
 
 ## Sensor
@@ -122,12 +130,24 @@
 | `cruising_history`   | TODO | 
 | `cleaning_progress`   | TODO | 
 | `drying_progress`   | TODO | 
+| `clean_water_tank_status`   | TODO | 
+| `dirty_water_tank_status`   | TODO | 
+| `dust_bag_status`   | TODO | 
+| `detergent_status`   | TODO | 
+| `hot_water_status`   | TODO | 
+| `station_drainage_status`   | TODO | 
 | `squeegee_left`   | TODO | 
 | `squeegee_time_left`   | TODO | 
 | `dirty_water_tank_left`   | TODO | 
 | `dirty_water_tank_time_left`   | TODO | 
 | `onboard_dirty_water_tank_left`   | TODO | 
 | `onboard_dirty_water_tank_time_left`   | TODO | 
+| `deodorizer_left`   | TODO | 
+| `deodorizer_time_left`   | TODO | 
+| `wheel_dirty_left`   | TODO | 
+| `wheel_dirty_time_left`   | TODO | 
+| `scale_inhibitor_left`   | TODO | 
+| `scale_inhibitor_time_left`   | TODO | 
 
 ## Number
 
@@ -164,6 +184,9 @@
 | `reset_squeegee`   | TODO | 
 | `reset_dirty_water_tank`   | TODO | 
 | `reset_onboard_dirty_water_tank`   | TODO | 
+| `reset_deodorizer`   | TODO | 
+| `reset_wheel`   | TODO | 
+| `reset_scale_inhibitor`   | TODO | 
 | `start_auto_empty`   | Start auto-emptying | Available on vacuums with auto-empty station
 | `clear_warning`   | Clear warning | Unavailable when there is no warning to clear
 | `start_fast_mapping`   | Start fast mapping | Unavailable when maximum map count reached
@@ -176,6 +199,7 @@
 | `base_station_self_repair`   | TODO | 
 | `start_recleaning`   | TODO | 
 | `empty_water_tank`   | TODO | 
+| `base_station_cleaning`   | TODO | 
 | `shortcut_{1-33}`   | TODO | 
 | `backup_map_1`   | TODO | 
 | `backup_map_2`   | TODO | 
@@ -209,6 +233,9 @@
 | `custom_mopping_route`   | TODO |
 | `self_clean_frequency`   | TODO |
 | `mop_clean_frequency`   | TODO |
+| `cleangenius_mode`   | TODO |
+| `washing_mode`   | TODO |
+| `water_temperature`   | TODO |
 
 ### Select Entities for rooms
 - Room select entities are only available with cloud connection. 

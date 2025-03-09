@@ -56,12 +56,16 @@ from .dreame import (
     DreameVacuumMoppingType,
     DreameVacuumWiderCornerCoverage,
     DreameVacuumMopPadSwing,
+    DreameVacuumMopExtendFrequency,
+    DreameVacuumWashingMode,
+    DreameVacuumWaterTemperature,
     DreameVacuumSecondCleaning,
     DreameVacuumCleaningRoute,
     DreameVacuumCustomMoppingRoute,
     DreameVacuumSelfCleanFrequency,
     DreameVacuumAutoEmptyMode,
     DreameVacuumCleanGenius,
+    DreameVacuumCleanGeniusMode,
     DreameVacuumFloorMaterial,
     DreameVacuumFloorMaterialDirection,
     DreameVacuumSegmentVisibility,
@@ -230,7 +234,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         value_int_fn=lambda value, device: DreameVacuumMopWashLevel[value.upper()].value,
         entity_category=None,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.self_wash_base
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.self_wash_base and not device.capability.smart_mop_washing
         ),
     ),
     DreameVacuumSelectEntityDescription(
@@ -281,17 +285,29 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
         value_int_fn=lambda value, device: DreameVacuumWiderCornerCoverage[value.upper()].value,
         exists_fn=lambda description, device: bool(
-            not device.capability.mop_pad_swing and not device.capability.mop_clean_frequency and DreameVacuumEntityDescription().exists_fn(description, device)
+            not device.capability.mop_pad_swing
+            and not device.capability.mop_clean_frequency
+            and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
     ),
     DreameVacuumSelectEntityDescription(
         property_key=DreameVacuumAutoSwitchProperty.MOP_PAD_SWING,
-        # icon_fn=lambda value, device: "mdi:arrow-oscillating-off" if value == "off" else "mdi:arrow-oscillating",
         icon="mdi:arrow-split-vertical",
         entity_category=EntityCategory.CONFIG,
         value_int_fn=lambda value, device: DreameVacuumMopPadSwing[value.upper()].value,
         exists_fn=lambda description, device: bool(
-            device.capability.mop_pad_swing and DreameVacuumEntityDescription().exists_fn(description, device)
+            device.capability.mop_pad_swing
+            and not device.capability.mop_extend
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+    ),
+    DreameVacuumSelectEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.MOP_EXTEND_FREQUENCY,
+        icon="mdi:waves-arrow-right",
+        entity_category=EntityCategory.CONFIG,
+        value_int_fn=lambda value, device: DreameVacuumMopExtendFrequency[value.upper()].value,
+        exists_fn=lambda description, device: bool(
+            device.capability.mop_extend and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
     ),
     DreameVacuumSelectEntityDescription(
@@ -353,6 +369,24 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         ),
     ),
     DreameVacuumSelectEntityDescription(
+        property_key=DreameVacuumProperty.CLEANGENIUS_MODE,
+        icon="mdi:atom",
+        entity_category=None,
+        value_int_fn=lambda value, device: DreameVacuumCleanGeniusMode[value.upper()].value,
+        exists_fn=lambda description, device: bool(
+            device.capability.cleangenius_mode and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+    ),
+    DreameVacuumSelectEntityDescription(
+        property_key=DreameVacuumProperty.WATER_TEMPERATURE,
+        icon="mdi:water-thermometer",
+        entity_category=None,
+        value_int_fn=lambda value, device: DreameVacuumWaterTemperature[value.upper()].value,
+        exists_fn=lambda description, device: bool(
+            device.capability.water_temperature and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
+    ),
+    DreameVacuumSelectEntityDescription(
         key="auto_empty_mode",
         icon_fn=lambda value, device: AUTO_EMPTY_MODE_TO_ICON.get(device.status.auto_empty_mode, "mdi:autorenew"),
         entity_category=None,
@@ -362,12 +396,26 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     DreameVacuumSelectEntityDescription(
         key="mop_clean_frequency",
         icon="mdi:texture-box",
-        options=lambda device, segment: [f"10{UNIT_AREA}", f"15{UNIT_AREA}", f"20{UNIT_AREA}", f"25{UNIT_AREA}"] if device.capability.mop_pad_swing else [f"8{UNIT_AREA}", f"10{UNIT_AREA}", f"5{UNIT_AREA}"],
+        options=lambda device, segment: (
+            [f"10{UNIT_AREA}", f"15{UNIT_AREA}", f"20{UNIT_AREA}", f"25{UNIT_AREA}"]
+            if device.capability.mop_pad_swing
+            else [f"8{UNIT_AREA}", f"10{UNIT_AREA}", f"5{UNIT_AREA}"]
+        ),
         entity_category=None,
         value_fn=lambda value, device: f"{device.status.self_clean_value}{UNIT_AREA}",
         value_int_fn=lambda value, device: int(value.replace(UNIT_AREA, "")),
         exists_fn=lambda description, device: device.capability.self_wash_base
         and device.capability.mop_clean_frequency,
+    ),    
+    DreameVacuumSelectEntityDescription(
+        key="washing_mode",
+        icon="mdi:water-opacity",
+        entity_category=None,
+        value_int_fn=lambda value, device: DreameVacuumWashingMode[value.upper()].value,
+        exists_fn=lambda description, device: bool(
+            device.capability.smart_mop_washing
+            and DreameVacuumEntityDescription().exists_fn(description, device)
+        ),
     ),
     DreameVacuumSelectEntityDescription(
         key="map_rotation",
@@ -384,7 +432,9 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     DreameVacuumSelectEntityDescription(
         key="selected_map",
         icon="mdi:map-check",
-        options=lambda device, segment: [v.map_name for k, v in device.status.map_data_list.items()] if device.status.map_data_list else [],
+        options=lambda device, segment: (
+            [v.map_name for k, v in device.status.map_data_list.items()] if device.status.map_data_list else []
+        ),
         entity_category=None,
         value_fn=lambda value, device: (
             device.status.selected_map.map_name

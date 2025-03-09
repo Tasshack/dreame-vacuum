@@ -315,6 +315,9 @@ Reset a consumable life by type.
 >  - `squeege`
 >  - `dirty_water_tank`
 >  - `onboard_dirty_water_tank`
+>  - `deodorizer`
+>  - `wheel`
+>  - `scale_inhibitor`
 
 **Examples:**
 

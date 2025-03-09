@@ -37,6 +37,9 @@ Fires when consumable life is ended.
   - `squeege`: Squeege must be replaced
   - `dirty_water_tank`: Dirty water tank must be cleaned
   - `onboard_dirty_water_tank`: Onboard dirty water tank must be cleaned
+  - `deodorizer`: Deodorizer must be replaced
+  - `wheel`: Wheel must be cleaned
+  - `scale_inhibitor`: Antiscalant must be replaced
 
 ### Information
 Fires when certain job cannot be executed due to the user settings.

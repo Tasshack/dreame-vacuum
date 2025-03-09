@@ -164,6 +164,13 @@
           "weekly": "Co tydzień"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Standard",
+          "intelligent": "Inteligentny",
+          "high": "Wysoki"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Nic",
@@ -216,6 +223,28 @@
           "off": "Wyłączony",
           "routine_cleaning": "Rutynowe czyszczenie",
           "deep_cleaning": "Dogłębne czyszczenie"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Próżnia i mop",
+          "mop_after_vacuum": "MOP po próżni"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Światło",
+          "standard": "Standard",
+          "deep": "Głęboko",
+          "ultra_washing": "Ultra mycie"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normalna",
+          "mild": "Łagodny",
+          "warm": "Ciepły",
+          "hot": "Gorący"
         }
       },
       "auto_recleaning": {
@@ -349,7 +378,12 @@
           "cruising_point_paused": "Rejs do punktu wstrzymany",
           "summon_clean_paused": "Powiedz wstrzymanie sprzątania",
           "returning_to_install_mop": "Powracanie w celu montażu podkładki mopa",
-          "returning_to_remove_mop": "Powracanie w celu demontażu podkładki mopa"
+          "returning_to_remove_mop": "Powracanie w celu demontażu podkładki mopa",
+          "station_cleaning": "Czyszczenie stacji",
+          "pet_finding": "Znalezienie zwierząt domowych",
+          "auto_cleaning_washing_paused": "Przerwające mycie automatycznego czyszczenia",
+          "area_cleaning_washing_paused": "Przerwające mycie w porze.",
+          "custom_cleaning_washing_paused": "Zatrzymane mycie czyszczenia niestandardowego"
         }
       },
       "water_tank": {
@@ -418,7 +452,7 @@
           "infrared_shielding": "Błąd ekranowania na podczerwień",
           "charge_no_electric": "Stacja ładująca nie jest włączona",
           "battery_fault": "Błąd baterii",
-          "fan_speed": "Błąd czujnika prędkości wentylatora",
+          "fan_speed_error": "Błąd czujnika prędkości wentylatora",
           "left_wheell_speed": "Lewe koło może być zablokowane",
           "right_wheell_speed": "Prawe koło może być zablokowane",
           "bmi055_acce": "Błąd akcelerometru",
@@ -533,6 +567,52 @@
           "draining_failed": "Opróżnianie nie powiodło się"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Nieznany",
+          "not_available": "Niedostępne",
+          "not_installed": "Nie zainstalowane",
+          "low_water": "Niska woda",
+          "installed": "Zainstalowane"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Nieznany",
+          "installed": "Zainstalowane",
+          "not_installed_or_full": "Nie zainstalowane lub pełne"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Nieznany",
+          "installed": "Zainstalowane",
+          "not_installed": "Nie zainstalowane",
+          "check": "Sprawdzać"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Nieznany",
+          "installed": "Zainstalowane",
+          "disabled": "Wyłączony",
+          "low_detergent": "Niski detergent"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Nieznany",
+          "disabled": "Wyłączony",
+          "enabled": "Włączony"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Nieznany",
+          "idle": "Bezczynny",
+          "draining": "Opróżnianie"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Standardowe sprzątanie",
@@ -550,7 +630,9 @@
           "summon": "Wezwij sprzątanie",
           "summon_paused": "Czyszczenie przywołania zostało wstrzymane",
           "water_stain": "Czyszczenie plam po wodzie",
-          "water_stain_paused": "Usuwanie plam wodnych zostało wstrzymane"
+          "water_stain_paused": "Usuwanie plam wodnych zostało wstrzymane",
+          "boosted_edge_cleaning": "Zwiększone czyszczenie krawędzi",
+          "hair_compressing": "Kompresowanie włosów"
         }
       }
     }

@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 from typing import Any, Final
-import logging
 import re
+import zlib
+import base64
+import json
 import voluptuous as vol
 import homeassistant.helpers.config_validation as cv
 from collections.abc import Mapping
@@ -44,218 +46,27 @@ from .const import (
     MAP_OBJECTS,
     NOTIFICATION_ID_2FA_LOGIN,
     NOTIFICATION_2FA_LOGIN,
+    SUPPORTED_MODELS
 )
-
-DREAME_MODELS = [
-    "dreame.vacuum.p2009",
-    "dreame.vacuum.p2027",
-    "dreame.vacuum.p2028",
-    "dreame.vacuum.p2028a",
-    "dreame.vacuum.p2029",
-    "dreame.vacuum.p2036",
-    "dreame.vacuum.p2156o",
-    "dreame.vacuum.p2157",
-    "dreame.vacuum.p2187",
-    "dreame.vacuum.p2259",
-    "dreame.vacuum.r2104",
-    "dreame.vacuum.r2205",
-    "dreame.vacuum.r2212",
-    "dreame.vacuum.r2215",
-    "dreame.vacuum.r2216o",
-    "dreame.vacuum.r2228",
-    "dreame.vacuum.r2228d",
-    "dreame.vacuum.r2228o",
-    "dreame.vacuum.r2232a",
-    "dreame.vacuum.r2232b",
-    "dreame.vacuum.r2232c",
-    "dreame.vacuum.r2232d",
-    "dreame.vacuum.r2233",
-    "dreame.vacuum.r2235",
-    "dreame.vacuum.r2240",
-    "dreame.vacuum.r2243",
-    "dreame.vacuum.r2246",
-    "dreame.vacuum.r2247",
-    "dreame.vacuum.r2250",
-    "dreame.vacuum.r2251a",
-    "dreame.vacuum.r2251o",
-    "dreame.vacuum.r2253",
-    "dreame.vacuum.r2253b",
-    "dreame.vacuum.r2253c",
-    "dreame.vacuum.r2253d",
-    "dreame.vacuum.r2253m",
-    "dreame.vacuum.r2253t",
-    "dreame.vacuum.r2253u",
-    "dreame.vacuum.r2253w",
-    "dreame.vacuum.r2257o",
-    "dreame.vacuum.r2260",
-    "dreame.vacuum.r2263",
-    "dreame.vacuum.r2273",
-    "dreame.vacuum.r2273a",
-    "dreame.vacuum.r2310",
-    "dreame.vacuum.r2310a",
-    "dreame.vacuum.r2310b",
-    "dreame.vacuum.r2310d",
-    "dreame.vacuum.r2310e",
-    "dreame.vacuum.r2310f",
-    "dreame.vacuum.r2310g",
-    "dreame.vacuum.r2312",
-    "dreame.vacuum.r2312a",
-    "dreame.vacuum.r2313",
-    "dreame.vacuum.r2316",
-    "dreame.vacuum.r2316p",
-    "dreame.vacuum.r2317",
-    "dreame.vacuum.r2322",
-    "dreame.vacuum.r2328",
-    "dreame.vacuum.r2332",
-    "dreame.vacuum.r2338",
-    "dreame.vacuum.r2338a",
-    "dreame.vacuum.r2345a",
-    "dreame.vacuum.r2345h",
-    "dreame.vacuum.r2350",
-    "dreame.vacuum.r2355",
-    "dreame.vacuum.r2360",
-    "dreame.vacuum.r2360w",
-    "dreame.vacuum.r2361a",
-    "dreame.vacuum.r2363",
-    "dreame.vacuum.r2363a",
-    "dreame.vacuum.r2364",
-    "dreame.vacuum.r2364a",
-    "dreame.vacuum.r2367",
-    "dreame.vacuum.r2375",
-    "dreame.vacuum.r2377",
-    #"dreame.vacuum.r2380",
-    #"dreame.vacuum.r2380r",
-    "dreame.vacuum.r2382a",
-    "dreame.vacuum.r2382k",
-    "dreame.vacuum.r2382r",
-    "dreame.vacuum.r2383a",
-    "dreame.vacuum.r2383k",
-    "dreame.vacuum.r2385",
-    "dreame.vacuum.r2385a",
-    "dreame.vacuum.r2386",
-    "dreame.vacuum.r2388",
-    "dreame.vacuum.r2394a",
-    "dreame.vacuum.r2394f",
-    "dreame.vacuum.r2394j",
-    "dreame.vacuum.r2394k",
-    "dreame.vacuum.r2394l",
-    "dreame.vacuum.r2394s",
-    "dreame.vacuum.r2394u",
-    "dreame.vacuum.r2398",
-    "dreame.vacuum.r2401",
-    "dreame.vacuum.r2412",
-    "dreame.vacuum.r2416",
-    "dreame.vacuum.r2416a",
-    "dreame.vacuum.r2416a",
-    "dreame.vacuum.r2416c",
-    "dreame.vacuum.r2416c",
-    "dreame.vacuum.r2416h",
-    "dreame.vacuum.r2416h",
-    "dreame.vacuum.r2416n",
-    "dreame.vacuum.r2416n",
-    "dreame.vacuum.r2421",
-    "dreame.vacuum.r2422",
-    "dreame.vacuum.r2422a",
-    "dreame.vacuum.r2423",
-    "dreame.vacuum.r2424",
-    "dreame.vacuum.r2426",
-    "dreame.vacuum.r2427a",
-    "dreame.vacuum.r2427c",
-    "dreame.vacuum.r2427r",
-    "dreame.vacuum.r2432",
-    "dreame.vacuum.r2435",
-    "dreame.vacuum.r2437",
-    #"dreame.vacuum.r2438a",
-    #"dreame.vacuum.r2438b",
-    #"dreame.vacuum.r2438i",
-    #"dreame.vacuum.r2438r",
-    "dreame.vacuum.r2449a",
-    "dreame.vacuum.r2449a",
-    "dreame.vacuum.r2449k",
-    "dreame.vacuum.r2449k",
-    "dreame.vacuum.r2450m",
-    "dreame.vacuum.r2455",
-    "dreame.vacuum.r2462",
-    "dreame.vacuum.r2465a",
-    "dreame.vacuum.r2469a",
-    "dreame.vacuum.r2471",
-    "dreame.vacuum.r2483",
-    "dreame.vacuum.r2485",
-    "dreame.vacuum.r2487",
-    "dreame.vacuum.r2488",
-    "dreame.vacuum.r2491",
-    "dreame.vacuum.r2492a",
-    "dreame.vacuum.r2492b",
-    "dreame.vacuum.r2492j",
-    "dreame.vacuum.r2495",
-    "dreame.vacuum.r9301",
-    "dreame.vacuum.r9302",
-    "dreame.vacuum.r9304",
-    "dreame.vacuum.r9305",
-    "dreame.vacuum.r9309a",
-    "dreame.vacuum.r9311",
-    "dreame.vacuum.r9312",
-    "dreame.vacuum.r9316a",
-    "dreame.vacuum.r9316h",
-    "dreame.vacuum.r9316k",
-    "dreame.vacuum.r9317a",
-    "dreame.vacuum.r9401",
-    "dreame.vacuum.r9406",
-    "dreame.vacuum.r9420",
-    "dreame.vacuum.r9421",
-    "dreame.vacuum.r9422",
-    "dreame.vacuum.r9428",
-]
-
-MIJIA_MODELS = [
-    "dreame.vacuum.r2254",
-    "dreame.vacuum.r2211o",
-    "dreame.vacuum.r2210",
-    "dreame.vacuum.r2209",
-    "dreame.vacuum.p2150o",
-    "dreame.vacuum.p2150b",
-    "dreame.vacuum.p2150a",
-    "dreame.vacuum.p2149o",
-    "dreame.vacuum.p2148o",
-    "dreame.vacuum.p2140q",
-    "dreame.vacuum.p2140p",
-    "dreame.vacuum.p2140o",
-    "dreame.vacuum.p2140a",
-    "dreame.vacuum.p2140",
-    "dreame.vacuum.p2114o",
-    "dreame.vacuum.p2114a",
-    "dreame.vacuum.p2041o",
-    "dreame.vacuum.p2041",
-    "dreame.vacuum.p2008",
-    "xiaomi.vacuum.d103cn",
-    "xiaomi.vacuum.d102",
-    "xiaomi.vacuum.c107",
-    "xiaomi.vacuum.c102gl",
-    "xiaomi.vacuum.c102cn",
-]
 
 MIHOME: Final = "Xiaomi Home Account"
 DREAMEHOME: Final = "Dreamehome Account"
 LOCAL: Final = "Manual Connection (Without map)"
-
 
 class DreameVacuumOptionsFlowHandler(OptionsFlow):
     """Handle Dreame Vacuum options."""
 
     def __init__(self, config_entry: ConfigEntry) -> None:
         """Initialize Dreame Vacuum options flow."""
-        self.config_entry = config_entry
+        self._config_entry = config_entry
 
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Manage Dreame Vacuum options."""
         errors = {}
-        data = self.config_entry.data
-        options = self.config_entry.options
-
         if user_input is not None:
-            return self.async_create_entry(title="", data={**options, **user_input})
+            return self.async_create_entry(title="", data={**self._config_entry.options, **user_input})
 
-        notify = options[CONF_NOTIFY]
+        notify = self._config_entry.options[CONF_NOTIFY]
         if isinstance(notify, bool):
             if notify is True:
                 notify = list(NOTIFICATION.keys())
@@ -263,33 +74,33 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
                 notify = []
 
         data_schema = vol.Schema({vol.Required(CONF_NOTIFY, default=notify): cv.multi_select(NOTIFICATION)})
-        if data[CONF_USERNAME]:
+        if self._config_entry.data[CONF_USERNAME]:
             data_schema = data_schema.extend(
                 {
-                    vol.Required(CONF_COLOR_SCHEME, default=options[CONF_COLOR_SCHEME]): vol.In(
+                    vol.Required(CONF_COLOR_SCHEME, default=self._config_entry.options[CONF_COLOR_SCHEME]): vol.In(
                         list(MAP_COLOR_SCHEME_LIST.keys())
                     ),
                     vol.Required(
                         CONF_ICON_SET,
-                        default=options.get(CONF_ICON_SET, next(iter(MAP_ICON_SET_LIST))),
+                        default=self._config_entry.options.get(CONF_ICON_SET, next(iter(MAP_ICON_SET_LIST))),
                     ): vol.In(list(MAP_ICON_SET_LIST.keys())),
                     vol.Required(
                         CONF_MAP_OBJECTS,
-                        default=options.get(CONF_MAP_OBJECTS, list(MAP_OBJECTS.keys())),
+                        default=self._config_entry.options.get(CONF_MAP_OBJECTS, list(MAP_OBJECTS.keys())),
                     ): cv.multi_select(MAP_OBJECTS),
-                    vol.Required(CONF_SQUARE, default=options.get(CONF_SQUARE, False)): bool,
+                    vol.Required(CONF_SQUARE, default=self._config_entry.options.get(CONF_SQUARE, False)): bool,
                     vol.Required(
                         CONF_LOW_RESOLUTION,
-                        default=options.get(CONF_LOW_RESOLUTION, False),
+                        default=self._config_entry.options.get(CONF_LOW_RESOLUTION, False),
                     ): bool,
                 }
             )
-            if data.get(CONF_ACCOUNT_TYPE, "mi") == "mi":
+            if self._config_entry.data.get(CONF_ACCOUNT_TYPE, "mi") == "mi":
                 data_schema = data_schema.extend(
                     {
                         vol.Required(
                             CONF_PREFER_CLOUD,
-                            default=options.get(CONF_PREFER_CLOUD, False),
+                            default=self._config_entry.options.get(CONF_PREFER_CLOUD, False),
                         ): bool,
                     }
                 )
@@ -324,6 +135,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         self.square: bool = False
         self.devices: dict[str, dict[str, Any]] = {}
         self.protocol: DreameVacuumProtocol | None = None
+        self.models = json.loads(zlib.decompress(base64.b64decode(SUPPORTED_MODELS), zlib.MAX_WBITS | 32))
 
     @staticmethod
     @callback
@@ -407,7 +219,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                         }
                     )
 
-                if self.model in DREAME_MODELS or self.model in MIJIA_MODELS:
+                if self.model in self.models["dreame"] or self.model in self.models["mijia"]:
                     if self.name is None:
                         self.name = self.model
                     return await self.async_step_options()
@@ -496,7 +308,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                         found = list(
                             filter(
                                 lambda d: not d.get("parent_id")
-                                and (str(d["model"]) in DREAME_MODELS or str(d["model"]) in MIJIA_MODELS),
+                                and (str(d["model"]) in self.models["dreame"] or str(d["model"]) in self.models["mijia"]),
                                 devices,
                             )
                         )
@@ -578,7 +390,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                     if devices:
                         found = list(
                             filter(
-                                lambda d: str(d["model"]) in DREAME_MODELS or str(d["model"]) in MIJIA_MODELS,
+                                lambda d: str(d["model"]) in self.models["dreame"] or str(d["model"]) in self.models["mijia"],
                                 devices["page"]["records"],
                             )
                         )
@@ -668,7 +480,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             }
         )
 
-        mijia = bool(self.model in MIJIA_MODELS)
+        mijia = bool(self.model in self.models["mijia"])
         default_objects = list(MAP_OBJECTS.keys())
         if mijia:
             default_color_scheme = "Mijia Light"

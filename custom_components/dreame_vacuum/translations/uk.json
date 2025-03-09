@@ -164,6 +164,13 @@
           "weekly": "Щотижня"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Стандартний",
+          "intelligent": "Розумний",
+          "high": "Високий"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Не вибрано",
@@ -216,6 +223,28 @@
           "off": "Вимкнено",
           "routine_cleaning": "Регулярне прибирання",
           "deep_cleaning": "Глибоке очищення"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Вакуум і швабра",
+          "mop_after_vacuum": "Швабри після вакууму"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Світлий",
+          "standard": "Стандартний",
+          "deep": "Глибокий",
+          "ultra_washing": "Ультра прання"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Нормальний",
+          "mild": "Помірний",
+          "warm": "Зігрівати",
+          "hot": "Гарячий"
         }
       },
       "auto_recleaning": {
@@ -349,7 +378,12 @@
           "cruising_point_paused": "Переміщення до точки призупинено",
           "summon_clean_paused": "Виклик на очищення призупинено",
           "returning_to_install_mop": "Повернення для встановлення швабри",
-          "returning_to_remove_mop": "Повернення для видалення швабри"
+          "returning_to_remove_mop": "Повернення для видалення швабри",
+          "station_cleaning": "Прибирання станції",
+          "pet_finding": "Виявлення домашніх тварин",
+          "auto_cleaning_washing_paused": "Автоматичне очищення прання призупинене",
+          "area_cleaning_washing_paused": "Очищення області прибирання призупинено",
+          "custom_cleaning_washing_paused": "Спеціальна миття прибирання зробив паузу"
         }
       },
       "water_tank": {
@@ -533,6 +567,52 @@
           "draining_failed": "Помилка зливання"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Невідомий",
+          "not_available": "Недоступний",
+          "not_installed": "Не встановлений",
+          "low_water": "Низька вода",
+          "installed": "Встановлений"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Невідомий",
+          "installed": "Встановлений",
+          "not_installed_or_full": "Не встановлено або повне"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Невідомий",
+          "installed": "Встановлений",
+          "not_installed": "Не встановлений",
+          "check": "Перевіряти"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Невідомий",
+          "installed": "Встановлений",
+          "disabled": "Інвалід",
+          "low_detergent": "Низький миючий засіб"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Невідомий",
+          "disabled": "Інвалід",
+          "enabled": "Увімкнено"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Невідомий",
+          "idle": "Безтурботний",
+          "draining": "Осушення"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Стандартне прибирання",
@@ -550,7 +630,9 @@
           "summon": "Викликане прибирання",
           "summon_paused": "Викликане прибирання призупинено",
           "water_stain": "Очищення плям водою",
-          "water_stain_paused": "Очищення плям від води призупинено"
+          "water_stain_paused": "Очищення плям від води призупинено",
+          "boosted_edge_cleaning": "Підвищене очищення краю",
+          "hair_compressing": "Стиснення волосся"
         }
       }
     }

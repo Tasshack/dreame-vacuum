@@ -57,6 +57,9 @@ from .const import (
     NOTIFICATION_ID_REPLACE_SQUEEGEE,
     NOTIFICATION_ID_CLEAN_ONBOARD_DIRTY_WATER_TANK,
     NOTIFICATION_ID_CLEAN_DIRTY_WATER_TANK,
+    NOTIFICATION_ID_REPLACE_DEODORIZER,
+    NOTIFICATION_ID_CLEAN_WHEEL,
+    NOTIFICATION_ID_REPLACE_SCALE_INHIBITOR,
     NOTIFICATION_ID_CLEANUP_COMPLETED,
     NOTIFICATION_ID_WARNING,
     NOTIFICATION_ID_ERROR,
@@ -85,6 +88,9 @@ from .const import (
     CONSUMABLE_SQUEEGEE,
     CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
     CONSUMABLE_DIRTY_WATER_TANK,
+    CONSUMABLE_DEODORIZER,
+    CONSUMABLE_WHEEL,
+    CONSUMABLE_SCALE_INHIBITOR,
 )
 
 
@@ -358,6 +364,24 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 NOTIFICATION_ID_REPLACE_DETERGENT,
                 DreameVacuumProperty.DETERGENT_LEFT,
             )
+        if self._device.capability.deodorizer:
+            self._check_consumable(
+                CONSUMABLE_DEODORIZER,
+                NOTIFICATION_ID_REPLACE_DEODORIZER,
+                DreameVacuumProperty.DEODORIZER_LEFT,
+            )
+        if self._device.capability.wheel:
+            self._check_consumable(
+                CONSUMABLE_WHEEL,
+                NOTIFICATION_ID_CLEAN_WHEEL,
+                DreameVacuumProperty.WHEEL_DIRTY_LEFT,
+            )
+        if self._device.capability.scale_inhibitor:
+            self._check_consumable(
+                CONSUMABLE_SCALE_INHIBITOR,
+                NOTIFICATION_ID_REPLACE_SCALE_INHIBITOR,
+                DreameVacuumProperty.SCALE_INHIBITOR_LEFT,
+            )
 
     def _create_persistent_notification(self, content, notification_id) -> None:
         if (
@@ -460,6 +484,8 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
 
     @callback
     def async_set_updated_data(self, device=None) -> None:
+        if not self._device or not self._device.status:
+            return
         if self._has_temporary_map != self._device.status.has_temporary_map:
             self._has_temporary_map_changed(self._has_temporary_map)
             self._has_temporary_map = self._device.status.has_temporary_map

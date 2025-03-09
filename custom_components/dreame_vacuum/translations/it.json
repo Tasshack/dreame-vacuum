@@ -164,6 +164,13 @@
           "weekly": "settimanalmente"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Standard",
+          "intelligent": "Intelligente",
+          "high": "Alto"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Nessuno",
@@ -216,6 +223,28 @@
           "off": "Spento",
           "routine_cleaning": "Pulizia ordinaria",
           "deep_cleaning": "Pulizia profonda"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Vuoto e MOP",
+          "mop_after_vacuum": "MOP dopo il vuoto"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Leggero",
+          "standard": "Standard",
+          "deep": "Profondo",
+          "ultra_washing": "Lavaggio ultra"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normale",
+          "mild": "Blando",
+          "warm": "Caldo",
+          "hot": "Caldo"
         }
       },
       "auto_recleaning": {
@@ -349,7 +378,12 @@
           "cruising_point_paused": "La crociera fino a un punto si fermò",
           "summon_clean_paused": "Evoca per pulire in pausa",
           "returning_to_install_mop": "Sta tornando a installare il mocio",
-          "returning_to_remove_mop": "Sta tornando per rimuovere il mocio"
+          "returning_to_remove_mop": "Sta tornando per rimuovere il mocio",
+          "station_cleaning": "Pulizia della stazione",
+          "pet_finding": "Trovamento degli animali domestici",
+          "auto_cleaning_washing_paused": "Il lavaggio della pulizia automatica si è fermata",
+          "area_cleaning_washing_paused": "Il lavaggio della pulizia della zona in pausa",
+          "custom_cleaning_washing_paused": "Lavaggio di pulizia personalizzato in pausa"
         }
       },
       "water_tank": {
@@ -418,7 +452,7 @@
           "infrared_shielding": "Errore della schermatura del sensore infrarossi",
           "charge_no_electric": "La stazione di ricarica non è collegata alla presa elettrica",
           "battery_fault": "Errore fatale alla batteria",
-          "fan_speed": "Errore al sensore della velocità della ventola",
+          "fan_speed_error": "Errore al sensore della velocità della ventola",
           "left_wheell_speed": "La ruota sinistra potrebbe essersi impigliata in qualche oggetto",
           "right_wheell_speed": "La ruota destra potrebbe essersi impigliata in qualche oggetto",
           "bmi055_acce": "Errore dell' accelerometro",
@@ -533,6 +567,52 @@
           "draining_failed": "Scarico fallito"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Sconosciuto",
+          "not_available": "Non disponibile",
+          "not_installed": "Non installato",
+          "low_water": "Acqua bassa",
+          "installed": "Installato"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Sconosciuto",
+          "installed": "Installato",
+          "not_installed_or_full": "Non installato o pieno"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Sconosciuto",
+          "installed": "Installato",
+          "not_installed": "Non installato",
+          "check": "Controllo"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Sconosciuto",
+          "installed": "Installato",
+          "disabled": "Disabile",
+          "low_detergent": "Detersivo basso"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Sconosciuto",
+          "disabled": "Disabile",
+          "enabled": "Abilitato"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Sconosciuto",
+          "idle": "Oziare",
+          "draining": "Drenaggio"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Pulizia ordinaria",
@@ -550,7 +630,9 @@
           "summon": "Chiamare la pulizia",
           "summon_paused": "Richiamare la pulizia in pausa",
           "water_stain": "Pulizia delle macchie d'acqua",
-          "water_stain_paused": "Pulizia delle macchie d'acqua in pausa"
+          "water_stain_paused": "Pulizia delle macchie d'acqua in pausa",
+          "boosted_edge_cleaning": "Pulizia del bordo potenziata",
+          "hair_compressing": "Compressione dei capelli"
         }
       }
     }

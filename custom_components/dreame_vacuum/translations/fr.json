@@ -164,6 +164,13 @@
           "weekly": "Hebdomadaire"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Standard",
+          "intelligent": "Intelligent",
+          "high": "Haut"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Aucun",
@@ -216,6 +223,28 @@
           "off": "Désactivé",
           "routine_cleaning": "Nettoyage courant",
           "deep_cleaning": "Nettoyage en profondeur"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Vide et vadrouille",
+          "mop_after_vacuum": "Mop après vide"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Lumière",
+          "standard": "Standard",
+          "deep": "Profond",
+          "ultra_washing": "Ultra lavage"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normale",
+          "mild": "Bénin",
+          "warm": "Chaud",
+          "hot": "Chaud"
         }
       },
       "auto_recleaning": {
@@ -351,7 +380,12 @@
           "cruising_point_paused": "Croisière vers un point en pause",
           "summon_clean_paused": "Appeler pour nettoyer en pause",
           "returning_to_install_mop": "Retourner pour installer la serpillière",
-          "returning_to_remove_mop": "Retourner pour retirer la serpillière"
+          "returning_to_remove_mop": "Retourner pour retirer la serpillière",
+          "station_cleaning": "Nettoyage de la station",
+          "pet_finding": "Constatation d'animaux",
+          "auto_cleaning_washing_paused": "Lavage de nettoyage automatique interrompu",
+          "area_cleaning_washing_paused": "Lavage de nettoyage de zone interrompu",
+          "custom_cleaning_washing_paused": "Lavage de nettoyage personnalisé pause"
         }
       },
       "water_tank": {
@@ -420,7 +454,7 @@
           "infrared_shielding": "Erreur de protection contre l'infrarouge",
           "charge_no_electric": "La station n'est pas branchée ou allumée",
           "battery_fault": "Problème de batterie",
-          "fan_speed": "Erreur du capteur de vitesse d'aspiration",
+          "fan_speed_error": "Erreur du capteur de vitesse d'aspiration",
           "left_wheell_speed": "La roue gauche est probablement bloquée",
           "right_wheell_speed": "La roue droite est probablement bloquée",
           "bmi055_acce": "Erreur d'accéléromètre",
@@ -535,6 +569,52 @@
           "draining_failed": "La vidange a échoué"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Inconnu",
+          "not_available": "Pas disponible",
+          "not_installed": "Non installé",
+          "low_water": "Basse eau",
+          "installed": "Installé"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Inconnu",
+          "installed": "Installé",
+          "not_installed_or_full": "Non installé ou complet"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Inconnu",
+          "installed": "Installé",
+          "not_installed": "Non installé",
+          "check": "Vérifier"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Inconnu",
+          "installed": "Installé",
+          "disabled": "Désactivé",
+          "low_detergent": "Détergent faible"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Inconnu",
+          "disabled": "Désactivé",
+          "enabled": "Activé"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Inconnu",
+          "idle": "Inactif",
+          "draining": "Évacuation"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Nettoyage standard",
@@ -552,7 +632,9 @@
           "summon": "Invoquer le nettoyage",
           "summon_paused": "Nettoyage d'invocation suspendu",
           "water_stain": "Nettoyage des taches d'eau",
-          "water_stain_paused": "Nettoyage des taches d'eau interrompu"
+          "water_stain_paused": "Nettoyage des taches d'eau interrompu",
+          "boosted_edge_cleaning": "Nettoyage des bords boosté",
+          "hair_compressing": "Compression de cheveux"
         }
       }
     }

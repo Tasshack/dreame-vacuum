@@ -79,6 +79,7 @@ from .types import (
     SEGMENT_TYPE_CODE_TO_HA_ICON,
     FURNITURE_TYPE_TO_DIMENSIONS,
     FURNITURE_V2_TYPE_TO_DIMENSIONS,
+    FURNITURE_V2_TYPE_MIJIA_TO_DIMENSIONS,
     ALine,
     CLine,
     Paths,
@@ -235,14 +236,14 @@ class DreameMapVacuumMapManager:
             self._map_data_changed()
 
         if map_data_result is None:
-            _LOGGER.warn("Getting map_data from cloud failed")
+            _LOGGER.warning("Getting map_data from cloud failed")
             map_data_result = []
 
         object_name_result = self._protocol.cloud.get_device_property(
             DIID(DreameVacuumProperty.OBJECT_NAME), 1, self._latest_object_name_time
         )
         if object_name_result is None:
-            _LOGGER.warn("Getting object_name from cloud failed")
+            _LOGGER.warning("Getting object_name from cloud failed")
 
         partial_map_data = None
         if len(map_data_result):
@@ -1066,7 +1067,7 @@ class DreameMapVacuumMapManager:
                 and len(obstacle.file_name) > 1
                 and obstacle.key
                 and len(obstacle.key) > 1
-                and obstacle.picture_status.value != 3
+                and (obstacle.picture_status is None or obstacle.picture_status.value == 2)
             ):
                 try:
                     object_name = (
@@ -1153,7 +1154,7 @@ class DreameMapVacuumMapManager:
                             if response:
                                 recovery_map_list[index].raw_map = response.decode()
                         except Exception as ex:
-                            _LOGGER.warn("Get Recovery Map Object failed: %s", ex)
+                            _LOGGER.warning("Get Recovery Map Object failed: %s", ex)
                             return
 
                     if recovery_map_list[index].raw_map:
@@ -1419,7 +1420,7 @@ class DreameMapVacuumMapManager:
             try:
                 response = self._get_interim_file_data(self._map_list_object_name)
             except Exception as ex:
-                _LOGGER.warn("Get Map List failed: %s", ex)
+                _LOGGER.warning("Get Map List failed: %s", ex)
                 return
 
             if response:
@@ -1427,7 +1428,7 @@ class DreameMapVacuumMapManager:
                 try:
                     map_info = json.loads(response.decode())
                 except:
-                    _LOGGER.warn("Get Map List json parse failed")
+                    _LOGGER.warning("Get Map List json parse failed")
                     return
 
                 saved_map_list = map_info[MAP_PARAMETER_MAPSTR]
@@ -1445,7 +1446,7 @@ class DreameMapVacuumMapManager:
                                 if response:
                                     raw_map = response.decode()
                             except Exception as ex:
-                                _LOGGER.warn("Get Saved Map Object failed: %s", ex)
+                                _LOGGER.warning("Get Saved Map Object failed: %s", ex)
                                 return
 
                         if raw_map:
@@ -1522,13 +1523,13 @@ class DreameMapVacuumMapManager:
             _LOGGER.info("Get Recovery Map List: %s", self._recovery_map_list_object_name)
             response = self._get_file_url(self._recovery_map_list_object_name)
             if response:
+                self._need_recovery_map_list_request = False
                 response = self._protocol.cloud.get_file(response)
                 if response:
-                    self._need_recovery_map_list_request = False
                     try:
                         recovery_map_list = json.loads(response.decode())
                     except:
-                        _LOGGER.warn("Get Recovery Map List json parse failed")
+                        _LOGGER.warning("Get Recovery Map List json parse failed")
                         return
 
                     changed = False
@@ -2070,7 +2071,7 @@ class DreameMapVacuumMapEditor:
                     if response:
                         recovery_map_info.raw_map = response.decode()
                 except Exception as ex:
-                    _LOGGER.warn("Get Recovery Map Object failed: %s", ex)
+                    _LOGGER.warning("Get Recovery Map Object failed: %s", ex)
                     return
 
             recovery_map_data = (
@@ -2261,7 +2262,8 @@ class DreameMapVacuumMapEditor:
         if map_data and map_data.segments and segment_id in map_data.segments:
             map_data.cleanset[str(segment_id)][1] = wetness_level
             map_data.segments[segment_id].wetness_level = wetness_level
-            if wetness_level > 26:
+            
+            if wetness_level > (14 if self.map_manager._capability.mop_clean_frequency else 26):
                 map_data.segments[segment_id].water_volume = 3
             elif wetness_level < 6:
                 map_data.segments[segment_id].water_volume = 1
@@ -3026,6 +3028,7 @@ class DreameVacuumMapDecoder:
                                 map_data.empty_map = False
                                 break
 
+                np.seterr(over='ignore')
                 map_data.pixel_type = np.full((width, height), MapPixelType.OUTSIDE.value, dtype=np.uint8)
                 if not map_data.empty_map:
                     map_data.empty_map = True
@@ -3364,27 +3367,30 @@ class DreameVacuumMapDecoder:
                 index = 0
                 for furniture in data_json["funiture_info"]:
                     index = index + 1
-                    furniture_type = furniture[1]
+                    furniture_type = int(furniture[1])
                     if furniture_type == 8:
                         furniture_type = 25
                     elif furniture_type == 25:
                         furniture_type = 8
 
                     if furniture[3] > 0 and furniture[4] > 0:
-                        map_data.saved_furnitures[index] = Furniture(
-                            int(furniture[6]),
-                            int(furniture[7]),
-                            int(furniture[6] - (furniture[3] / 2)),
-                            int(furniture[7] - (furniture[4] / 2)),
-                            furniture[3],
-                            furniture[4],
-                            FurnitureType(furniture_type),
-                            int(furniture[13]),
-                            furniture[9],
-                            furniture[12],
-                            furniture[0],
-                            furniture[2],
-                        )
+                        if furniture_type in FurnitureType._value2member_map_:
+                            map_data.saved_furnitures[index] = Furniture(
+                                int(furniture[6]),
+                                int(furniture[7]),
+                                int(furniture[6] - (furniture[3] / 2)),
+                                int(furniture[7] - (furniture[4] / 2)),
+                                furniture[3],
+                                furniture[4],
+                                FurnitureType(furniture_type),
+                                int(furniture[13]),
+                                furniture[9],
+                                furniture[12],
+                                furniture[0],
+                                furniture[2],
+                            )
+                        else:
+                            _LOGGER.debug("Unknown furniture type: %s", furniture_type)                            
 
             if map_data.furnitures is None:
                 furniture_key = (
@@ -3444,12 +3450,11 @@ class DreameVacuumMapDecoder:
 
             if "ai_obstacle" in data_json:
                 map_data.obstacles = {}
-                index = 0
+                index = 1
                 for obstacle in data_json["ai_obstacle"]:
                     size = len(obstacle)
                     if size >= 4:
                         obstacle_type = int(obstacle[2])
-                        index = index + 1
                         if obstacle_type in ObstacleType._value2member_map_:
                             id = int(obstacle[4])
                             x = float(obstacle[0])
@@ -3485,7 +3490,7 @@ class DreameVacuumMapDecoder:
                                             and (int(obstacle[-1]) >= 0 or int(obstacle[-1]) <= 2)
                                             else 0
                                         ),
-                                    )
+                                    )                                  
                                 else:
                                     map_data.obstacles[str(index)] = Obstacle(
                                         x,
@@ -3495,16 +3500,19 @@ class DreameVacuumMapDecoder:
                                         id,
                                         obstacle[6],
                                         obstacle[5],
-                                    )
+                                    )                
                             else:
                                 map_data.obstacles[str(index)] = Obstacle(
                                     x,
                                     y,
                                     ObstacleType(obstacle_type),
                                     possibility,
-                                )
+                                )                
                             if map_data.segments:
-                                map_data.obstacles[str(index)].set_segment(map_data)
+                                map_data.obstacles[str(index)].set_segment(map_data)                                            
+                            index = index + 1
+                        else:
+                            _LOGGER.debug("Unknown obstacle type: %s", obstacle_type)
 
             if "vw" in data_json:
                 virtual_walls = data_json["vw"]
@@ -3523,6 +3531,7 @@ class DreameVacuumMapDecoder:
                                 y_coords[1],
                                 x_coords[0],
                                 y_coords[1],
+                                area[4] if len(area) > 4 else None,
                             )
                         )
 
@@ -3541,6 +3550,7 @@ class DreameVacuumMapDecoder:
                                 y_coords[1],
                                 x_coords[0],
                                 y_coords[1],
+                                area[4] if len(area) > 4 else None,
                             )
                         )
 
@@ -3558,38 +3568,36 @@ class DreameVacuumMapDecoder:
                 if "addcpt" in virtual_walls and not map_data.carpets:
                     map_data.carpets = []
                     for carpet in virtual_walls["addcpt"]:
-                        x_coords = sorted([carpet[0], carpet[2]])
-                        y_coords = sorted([carpet[1], carpet[3]])
                         map_data.carpets.append(
                             Carpet(
                                 carpet[4] if len(carpet) > 4 else None,
-                                x_coords[0],
-                                y_coords[0],
-                                x_coords[1],
-                                y_coords[0],
-                                x_coords[1],
-                                y_coords[1],
-                                x_coords[0],
-                                y_coords[1],
+                                carpet[0],
+                                carpet[1],
+                                carpet[2],
+                                carpet[1],
+                                carpet[2],
+                                carpet[3],
+                                carpet[0],
+                                carpet[3],
+                                carpet[5] if len(carpet) > 5 else None,
                             )
                         )
 
                 if "nocpt" in virtual_walls and not map_data.ignored_carpets:
                     map_data.ignored_carpets = []
                     for carpet in virtual_walls["nocpt"]:
-                        x_coords = sorted([carpet[0], carpet[2]])
-                        y_coords = sorted([carpet[1], carpet[3]])
                         map_data.ignored_carpets.append(
                             Carpet(
                                 0,
-                                x_coords[0],
-                                y_coords[0],
-                                x_coords[1],
-                                y_coords[0],
-                                x_coords[1],
-                                y_coords[1],
-                                x_coords[0],
-                                y_coords[1],
+                                carpet[0],
+                                carpet[1],
+                                carpet[2],
+                                carpet[1],
+                                carpet[2],
+                                carpet[3],
+                                carpet[0],
+                                carpet[3],
+                                carpet[5] if len(carpet) > 5 else None,
                             )
                         )
 
@@ -3647,19 +3655,19 @@ class DreameVacuumMapDecoder:
                 map_data.detected_carpets = []
                 for carpet_id in data_json["carpet_info"]:
                     carpet = data_json["carpet_info"][carpet_id]
-                    x_coords = sorted([carpet[0], carpet[2]])
-                    y_coords = sorted([carpet[1], carpet[3]])
                     map_data.detected_carpets.append(
                         Carpet(
                             int(carpet_id),
-                            x_coords[0],
-                            y_coords[0],
-                            x_coords[1],
-                            y_coords[0],
-                            x_coords[1],
-                            y_coords[1],
-                            x_coords[0],
-                            y_coords[1],
+                            carpet[0],
+                            carpet[1],
+                            carpet[2],
+                            carpet[1],
+                            carpet[2],
+                            carpet[3],
+                            carpet[0],
+                            carpet[3],
+                            carpet[6] if len(carpet) > 6 else None,
+                            carpet[5] if len(carpet) > 5 else None,
                             carpet[4],
                         )
                     )
@@ -4035,7 +4043,7 @@ class DreameVacuumMapDecoder:
                 if len(cleanset) == 0:
                     if capability:
                         if capability.wetness_level:
-                            cleanset_type = CleansetType.WETNESS_LEVEL
+                            cleanset_type = CleansetType.WETNESS_LEVEL_MAX_15 if capability.mop_clean_frequency else CleansetType.WETNESS_LEVEL
                         elif capability.cleaning_route:
                             cleanset_type = CleansetType.CLEANING_ROUTE
                         elif capability.segment_mopping_settings:
@@ -4048,7 +4056,7 @@ class DreameVacuumMapDecoder:
                             cleanset_type = CleansetType.CLEANING_MODE
                             if capability:
                                 if capability.wetness_level:
-                                    cleanset_type = CleansetType.WETNESS_LEVEL
+                                    cleanset_type = CleansetType.WETNESS_LEVEL_MAX_15 if capability.mop_clean_frequency else CleansetType.WETNESS_LEVEL
                                 elif capability.cleaning_route:
                                     cleanset_type = CleansetType.CLEANING_ROUTE
                                 elif capability.segment_mopping_settings:
@@ -4107,6 +4115,22 @@ class DreameVacuumMapDecoder:
                                             map_data.segments[k].wetness_level = 27
                                         else:
                                             map_data.segments[k].wetness_level = 16
+                                    elif cleanset_type == CleansetType.WETNESS_LEVEL_MAX_15:
+                                        map_data.segments[k].custom_mopping_route = 0
+                                        if values[2] == 0 and values[1] == 0:
+                                            map_data.segments[k].wetness_level = item[1] if item[1] else 10
+                                            if map_data.segments[k].wetness_level > 14:
+                                                map_data.segments[k].water_volume = 3
+                                            elif map_data.segments[k].wetness_level < 6:
+                                                map_data.segments[k].water_volume = 1
+                                            else:
+                                                map_data.segments[k].water_volume = 2
+                                        elif map_data.segments[k].water_volume == 1:
+                                            map_data.segments[k].wetness_level = 5
+                                        elif map_data.segments[k].water_volume == 3:
+                                            map_data.segments[k].wetness_level = 15
+                                        else:
+                                            map_data.segments[k].wetness_level = 10
 
                     else:
                         map_data.segments[k].mopping_settings = None
@@ -5013,6 +5037,7 @@ class DreameVacuumMapRenderer:
         min_width,
         min_height,
         scale,
+        icon_set
     ) -> list[int]:
         min_x = 0
         min_y = 0
@@ -5080,20 +5105,23 @@ class DreameVacuumMapRenderer:
                 max_y = max(max(y_coords), max_y)
 
         if furnitures:
+            if furniture_version == 2:                
+                furniture_images = FURNITURE_V2_TYPE_MIJIA_TO_IMAGE if icon_set == 2 else FURNITURE_V2_TYPE_TO_IMAGE
+                furniture_icons = FURNITURE_V2_TYPE_TO_ICON
+            else:
+                furniture_images = FURNITURE_TYPE_TO_IMAGE
+                furniture_icons = FURNITURE_TYPE_TO_ICON
+                
             for k, v in furnitures.items():
                 p = Point(v.x, v.y).to_coord(dimensions)
                 w = 0
                 h = 0
                 if v.width and v.height:
-                    if v.type.value not in (
-                        FURNITURE_V2_TYPE_TO_IMAGE if furniture_version == 2 else FURNITURE_TYPE_TO_IMAGE
-                    ):
+                    if v.type.value not in furniture_images:
                         continue
                     w = int((v.width / dimensions.grid_size) / 2)
                     h = int((v.height / dimensions.grid_size) / 2)
-                elif v.type.value not in (
-                    FURNITURE_V2_TYPE_TO_ICON if furniture_version == 2 else FURNITURE_TYPE_TO_ICON
-                ):
+                elif v.type.value not in furniture_icons:
                     continue
                 min_x = min(p.x - w, min_x)
                 max_x = max(p.x + w, max_x)
@@ -5123,6 +5151,78 @@ class DreameVacuumMapRenderer:
             padding[k] = padding[k] * scale
 
         return padding
+
+    @staticmethod
+    def _round_coord(coord, grid_size):
+        remainder = coord % grid_size
+        if remainder <= grid_size / 2:
+            return coord - remainder
+        return coord + grid_size - remainder
+
+    @staticmethod
+    def _get_carpet_coords(carpet, dimensions):
+        grid_size = dimensions.grid_size
+        if carpet.ellipse:
+            x0 = DreameVacuumMapRenderer._round_coord(carpet.x0 - grid_size / 2, grid_size) + grid_size / 2
+            y0 = DreameVacuumMapRenderer._round_coord(carpet.y0 - grid_size / 2, grid_size) + grid_size / 2
+            x2 = DreameVacuumMapRenderer._round_coord(carpet.x2, grid_size)
+            y2 = DreameVacuumMapRenderer._round_coord(carpet.y2, grid_size)
+
+            x_coords = sorted([x0, x2])
+            y_coords = sorted([y0, y2])
+
+            return (
+                int(math.ceil((x_coords[0] - x_coords[1] - dimensions.left) / grid_size)),
+                int(math.ceil((y_coords[0] - y_coords[1] - dimensions.top) / grid_size)),
+                int(math.ceil(((x_coords[0] + x_coords[1] - dimensions.left) / grid_size) + 1)),
+                int(math.ceil(((y_coords[0] + y_coords[1] - dimensions.top) / grid_size) + 1)),
+            )
+        else:
+            left = dimensions.left
+            top = dimensions.top
+            if left % dimensions.grid_size != 0 or top % dimensions.grid_size != 0:
+                left = left + (dimensions.grid_size / 2)
+                top = top + (dimensions.grid_size / 2)
+
+            x_coords = sorted([carpet.x0, carpet.x2])
+            y_coords = sorted([carpet.y0, carpet.y2])
+
+            return (
+                int(math.ceil((x_coords[0] - left) / grid_size)),
+                int(math.ceil((y_coords[0] - top) / grid_size)),
+                int(math.ceil((x_coords[1] - left) / grid_size)),
+                int(math.ceil((y_coords[1] - top) / grid_size)),
+            )
+
+    @staticmethod
+    def _check_carpet(x, y, carpet, dimensions, pixel_type=None):
+        if pixel_type is not None and (
+            pixel_type >= 255
+            or pixel_type <= 0
+            or (pixel_type < 254 and carpet.segments and pixel_type not in carpet.segments)
+        ):
+            return False
+
+        if carpet.ellipse or carpet.ignored_areas:
+            x = (x * dimensions.grid_size) + dimensions.left - carpet.x0
+            y = (y * dimensions.grid_size) + dimensions.top - carpet.y0
+
+        if carpet.ellipse and not (x * x / (carpet.x2 * carpet.x2) + y * y / (carpet.y2 * carpet.y2) < 1):
+            return False
+
+        if carpet.ignored_areas and isinstance(carpet.ignored_areas, list):
+            for area in carpet.ignored_areas:
+                if (
+                    area
+                    and isinstance(area, list)
+                    and len(area) > 3
+                    and x >= area[0]
+                    and x <= area[2]
+                    and y >= area[1]
+                    and y <= area[3]
+                ):
+                    return False
+        return True
 
     @staticmethod
     def _calculate_calibration_points(map_data: MapData) -> dict[str, int] | None:
@@ -5380,7 +5480,7 @@ class DreameVacuumMapRenderer:
                             v.cleaning_mode if v.cleanset_type != CleansetType.DEFAULT else None,
                             v.custom_mopping_route if v.cleanset_type == CleansetType.CUSTOM_MOPPING_ROUTE else None,
                             v.cleaning_route if v.cleanset_type != CleansetType.CUSTOM_MOPPING_ROUTE else None,
-                            v.wetness_level if v.cleanset_type == CleansetType.WETNESS_LEVEL else None,
+                            v.wetness_level if v.cleanset_type == CleansetType.WETNESS_LEVEL or v.cleanset_type == CleansetType.WETNESS_LEVEL_MAX_15 else None,
                             v.floor_material,
                             v.floor_material_direction,
                             v.visibility,
@@ -5439,6 +5539,7 @@ class DreameVacuumMapRenderer:
                             area.y2,
                             area.x3,
                             area.y3,
+                            area.angle,
                         ]
                         for area in map_data.no_mopping_areas
                     ]
@@ -5456,6 +5557,7 @@ class DreameVacuumMapRenderer:
                             area.y2,
                             area.x3,
                             area.y3,
+                            area.angle,
                         ]
                         for area in map_data.no_go_areas
                     ]
@@ -5465,6 +5567,7 @@ class DreameVacuumMapRenderer:
                 obstacles=(
                     [
                         [
+                            k,
                             v.x,
                             v.y,
                             v.type.value,
@@ -5490,17 +5593,7 @@ class DreameVacuumMapRenderer:
                 ),
                 carpets=(
                     [
-                        [
-                            area.x0,
-                            area.y0,
-                            area.x1,
-                            area.y1,
-                            area.x2,
-                            area.y2,
-                            area.x3,
-                            area.y3,
-                            area.id,
-                        ]
+                        [area.x0, area.y0, area.x1, area.y1, area.x2, area.y2, area.x3, area.y3, area.id, area.ellipse]
                         for area in map_data.carpets
                     ]
                     if map_data.carpets is not None
@@ -5508,17 +5601,7 @@ class DreameVacuumMapRenderer:
                 ),
                 ignored_carpets=(
                     [
-                        [
-                            area.x0,
-                            area.y0,
-                            area.x1,
-                            area.y1,
-                            area.x2,
-                            area.y2,
-                            area.x3,
-                            area.y3,
-                            area.id,
-                        ]
+                        [area.x0, area.y0, area.x1, area.y1, area.x2, area.y2, area.x3, area.y3, area.id, area.ellipse]
                         for area in map_data.ignored_carpets
                     ]
                     if map_data.ignored_carpets is not None
@@ -5536,7 +5619,9 @@ class DreameVacuumMapRenderer:
                             area.x3,
                             area.y3,
                             area.id,
+                            area.ellipse,
                             area.segments,
+                            area.ignored_areas,
                         ]
                         for area in map_data.detected_carpets
                     ]
@@ -5841,6 +5926,7 @@ class DreameVacuumMapRenderer:
                     120,
                     80,
                     scale,
+                    self.icon_set
                 )
 
                 if self._cache and self._map_data and self._map_data.dimensions.padding != map_data.dimensions.padding:
@@ -6481,7 +6567,12 @@ class DreameVacuumMapRenderer:
             icon_size = icon_size * 1.3
 
         layer = MapRendererLayer.NO_MOP
-        if (not map_data.saved_map or map_data.recovery_map) and map_data.no_mopping_areas and self.config.no_mop and (not robot_status or robot_status < 100):
+        if (
+            (not map_data.saved_map or map_data.recovery_map)
+            and map_data.no_mopping_areas
+            and self.config.no_mop
+            and (not robot_status or robot_status < 100)
+        ):
             layers.append(layer)
             if (
                 not self._cache
@@ -6510,7 +6601,7 @@ class DreameVacuumMapRenderer:
             if (
                 not self._cache
                 or self._map_data is None
-                or self._map_data.no_go_areas != map_data.no_go_areas                
+                or self._map_data.no_go_areas != map_data.no_go_areas
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
@@ -8399,10 +8490,11 @@ class DreameVacuumMapRenderer:
             else furniture.type.value
         )
         if draw_image:
-            furniture_images = FURNITURE_V2_TYPE_TO_IMAGE if furniture_version == 2 else FURNITURE_TYPE_TO_IMAGE
+            furniture_images = FURNITURE_V2_TYPE_MIJIA_TO_IMAGE if self.icon_set == 2 else FURNITURE_V2_TYPE_TO_IMAGE if furniture_version == 2 else FURNITURE_TYPE_TO_IMAGE
             if furniture_type not in self._furniture_images and furniture_type in furniture_images:
                 img = np.array(Image.open(BytesIO(base64.b64decode(furniture_images[furniture_type]))).convert("RGBA"))
-                img[..., 3] = 235 * (img[..., 3] > 0)
+                if self.icon_set != 2:
+                    img[..., 3] = 235 * (img[..., 3] > 0)
                 self._furniture_images[furniture_type] = Image.fromarray(img)
             icon = self._furniture_images.get(furniture_type)
         else:
@@ -8653,107 +8745,39 @@ class DreameVacuumMapRenderer:
 
         if detected_carpets:
             for carpet in detected_carpets:
-                for x in range(
-                    int(math.ceil((carpet.x0 - left) / dimensions.grid_size)),
-                    int(math.ceil((carpet.x2 - left) / dimensions.grid_size)),
-                ):
-                    for y in range(
-                        int(math.ceil((carpet.y0 - top) / dimensions.grid_size)),
-                        int(math.ceil((carpet.y2 - top) / dimensions.grid_size)),
-                    ):
-                        if y < 0 or y >= dimensions.height or x < 0 or x >= dimensions.width:
-                            continue
-                        value = int(pixel_type[x, y])
-                        if value > 0 and value != 255:
-                            if value != 254 and carpet.segments:
-                                if value in carpet.segments:
-                                    carpet_data[(x, y)] = 1
-                            else:
-                                carpet_data[(x, y)] = 1
+                x0, y0, x1, y1 = DreameVacuumMapRenderer._get_carpet_coords(carpet, dimensions)
+                for x in range(max(0, x0), min(x1, dimensions.width - 1)):
+                    for y in range(max(y0, 0), min(y1, dimensions.height - 1)):
+                        if DreameVacuumMapRenderer._check_carpet(x, y, carpet, dimensions, int(pixel_type[x, y])):
+                            carpet_data[(x, y)] = 1
+
         elif carpet_pixels:
             for pixel in carpet_pixels:
                 x = pixel[0]
                 y = pixel[1]
-                for yy in range(y - 1, y + 2):
-                    for xx in range(x - 1, x + 3):
-                        if yy < 0 or yy >= dimensions.height or xx < 0 or xx >= dimensions.width:
-                            continue
+                for xx in range(max(0, x - 1), min(x + 3, dimensions.width - 1)):
+                    for yy in range(max(0, y - 1), min(y + 2, dimensions.height - 1)):
                         val = int(pixel_type[xx, yy])
                         if val > 0 and val != 255:
                             carpet_data[(xx, yy)] = 1
 
         if ignored_carpets:
             for carpet in ignored_carpets:
-                for x in range(
-                    int(math.ceil((carpet.x0 - left) / dimensions.grid_size)),
-                    int(math.ceil((carpet.x2 - left) / dimensions.grid_size)),
-                ):
-                    for y in range(
-                        int(math.ceil((carpet.y0 - top) / dimensions.grid_size)),
-                        int(math.ceil((carpet.y2 - top) / dimensions.grid_size)),
-                    ):
+                x0, y0, x1, y1 = DreameVacuumMapRenderer._get_carpet_coords(carpet, dimensions)
+                for x in range(x0, x1):
+                    for y in range(y0, y1):
+                        if not DreameVacuumMapRenderer._check_carpet(x, y, carpet, dimensions):
+                            continue
                         carpet_data[(x, y)] = 0
 
         if carpets:
             for carpet in carpets:
-                for x in range(
-                    int(math.ceil((carpet.x0 - left) / dimensions.grid_size)),
-                    int(math.ceil((carpet.x2 - left) / dimensions.grid_size)),
-                ):
-                    for y in range(
-                        int(math.ceil((carpet.y0 - top) / dimensions.grid_size)),
-                        int(math.ceil((carpet.y2 - top) / dimensions.grid_size)),
-                    ):
+                x0, y0, x1, y1 = DreameVacuumMapRenderer._get_carpet_coords(carpet, dimensions)
+                for x in range(x0, x1):
+                    for y in range(y0, y1):
+                        if not DreameVacuumMapRenderer._check_carpet(x, y, carpet, dimensions):
+                            continue
                         carpet_data[(x, y)] = 2
-
-        # if carpet_pixels or detected_carpets or ignored_carpets:
-        #    for x in range(dimensions.width):
-        #        for y in range(dimensions.height):
-        #            in_carpet = False
-        #            carpet_segments = None
-        #            value = int(pixel_type[x, y])
-        #            if detected_carpets:
-        #                xx = left + (dimensions.grid_size * x)
-        #                yy = top + (dimensions.grid_size * y)
-        #                for carpet in detected_carpets:
-        #                    if xx >= carpet.x0 and xx < carpet.x1 and yy >= carpet.y0 and yy < carpet.y2:
-        #                        if carpet.segments and value > 0 and value != 255 and value != 254:
-        #                            carpet_segments = carpet.segments
-        #                            if value in carpet_segments:
-        #                                in_carpet = True
-        #                                break
-        #                        else:
-        #                            in_carpet = True
-        #                            break
-        #            if (detected_carpets and in_carpet) or (carpet_pixels and not detected_carpets and (x, y) in carpet_pixels):
-        #                if ignored_carpets:
-        #                    cont = False
-        #                    for carpet in ignored_carpets:
-        #                        if xx >= carpet.x0 and xx < carpet.x1 and yy >= carpet.y0 and yy < carpet.y2:
-        #                            cont = True
-        #                            break
-        #                    if cont:
-        #                        continue
-        #                for n in range(y - 1, y + 2):
-        #                    for m in range(x - 1, x + 3):
-        #                        if n < 0 or n >= dimensions.height or m < 0 or m >= dimensions.width:
-        #                            continue
-        #                        val = int(pixel_type[m, n])
-        #                        if not (val > 0 and val != 255):
-        #                            continue
-        #                        if carpet_segments and val not in carpet_segments:
-        #                            continue
-        #                        if detected_carpets:
-        #                            xx = left + (dimensions.grid_size * m)
-        #                            yy = top + (dimensions.grid_size * n)
-        #                            add_pixel = False
-        #                            for carpet in detected_carpets:
-        #                                if xx >= carpet.x0 and xx < carpet.x1 and yy >= carpet.y0 and yy < carpet.y2:
-        #                                    add_pixel = True
-        #                                    break
-        #                            if not add_pixel:
-        #                                continue
-        #                        carpet_data.append([dimensions.height - n - 1, m, 1])
 
         color_map = {}
         for coord, px_type in carpet_data.items():
@@ -8830,12 +8854,12 @@ class DreameVacuumMapRenderer:
 
         return mask_layer
 
-    def get_resources(self, capability, as_json = False, icon_set = None) -> MapRendererResources | str:
+    def get_resources(self, capability, as_json=False, icon_set=None) -> MapRendererResources | str:
         if icon_set is None or not str(icon_set).isdecimal():
-            icon_set = self.icon_set            
+            icon_set = self.icon_set
         else:
             icon_set = int(icon_set)
-            
+
         if icon_set == 2:
             if self._robot_type == RobotType.MOPPING:
                 robot_image = MAP_ROBOT_MOP_IMAGE_MIJIA
@@ -8985,12 +9009,19 @@ class DreameVacuumMapRenderer:
                 furniture_types = list(set(furniture_types) - set([i for i in FurnitureType if i.value > 13]))
 
             if capability.new_furnitures:
+                if icon_set == 2:
+                    dimensions = FURNITURE_V2_TYPE_MIJIA_TO_DIMENSIONS
+                    images = FURNITURE_V2_TYPE_MIJIA_TO_IMAGE
+                else:
+                    dimensions = FURNITURE_V2_TYPE_TO_DIMENSIONS
+                    images = FURNITURE_V2_TYPE_TO_IMAGE
+                    
                 resources.furniture = {
                     i.value: {
                         "name": i.name.replace("_", " ").capitalize(),
                         "icon": FURNITURE_V2_TYPE_TO_ICON.get(i.value),
-                        "image": FURNITURE_V2_TYPE_TO_IMAGE.get(i.value),
-                        "dimensions": FURNITURE_V2_TYPE_TO_DIMENSIONS.get(i.value),
+                        "image": images.get(i.value),
+                        "dimensions": dimensions.get(i.value),
                     }
                     for i in furniture_types
                 }
@@ -10583,7 +10614,7 @@ class DreameVacuumMapOptimizer:
 
             self._merge_saved_map_data(map_data, saved_map_data)
 
-            # _LOGGER.warn(f"""
+            # _LOGGER.warning(f"""
             # var data = {map_data.pixel_type.tolist()};
             # var data_size = {[map_data.dimensions.left, map_data.dimensions.top, map_data.dimensions.width, map_data.dimensions.height, map_data.dimensions.grid_size]};
             # var saved_data = {saved_map_data.pixel_type.tolist() if saved_map_data else "undefined"};

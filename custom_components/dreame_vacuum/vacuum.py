@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import voluptuous as vol
 from typing import Final
+import importlib
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity
@@ -13,18 +14,20 @@ from homeassistant.helpers import config_validation as cv, entity_platform
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.icon import icon_for_battery_level
 from homeassistant.components.vacuum import (
+    StateVacuumEntity,
+    VacuumEntityFeature,
+)
+from .recorder import VACUUM_UNRECORDED_ATTRIBUTES
+
+from .dreame.const import (
+    STATE_UNKNOWN,
     STATE_CLEANING,
     STATE_DOCKED,
     STATE_ERROR,
     STATE_IDLE,
     STATE_PAUSED,
     STATE_RETURNING,
-    StateVacuumEntity,
-    VacuumEntityFeature,
 )
-from .recorder import VACUUM_UNRECORDED_ATTRIBUTES
-
-from .dreame.const import STATE_UNKNOWN
 from .dreame import (
     DreameVacuumState,
     DreameVacuumSuctionLevel,
@@ -120,6 +123,9 @@ from .const import (
     CONSUMABLE_SQUEEGEE,
     CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
     CONSUMABLE_DIRTY_WATER_TANK,
+    CONSUMABLE_DEODORIZER,
+    CONSUMABLE_WHEEL,
+    CONSUMABLE_SCALE_INHIBITOR,
 )
 
 SUPPORT_DREAME = (
@@ -191,6 +197,9 @@ CONSUMABLE_RESET_ACTION = {
     CONSUMABLE_SQUEEGEE: DreameVacuumAction.RESET_SQUEEGEE,
     CONSUMABLE_ONBOARD_DIRTY_WATER_TANK: DreameVacuumAction.RESET_ONBOARD_DIRTY_WATER_TANK,
     CONSUMABLE_DIRTY_WATER_TANK: DreameVacuumAction.RESET_DIRTY_WATER_TANK,
+    CONSUMABLE_DEODORIZER: DreameVacuumAction.RESET_DEODORIZER,
+    CONSUMABLE_WHEEL: DreameVacuumAction.RESET_WHEEL,
+    CONSUMABLE_SCALE_INHIBITOR: DreameVacuumAction.RESET_SCALE_INHIBITOR,
 }
 
 
@@ -590,6 +599,9 @@ async def async_setup_entry(
                     CONSUMABLE_SQUEEGEE,
                     CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
                     CONSUMABLE_DIRTY_WATER_TANK,
+                    CONSUMABLE_DEODORIZER,
+                    CONSUMABLE_WHEEL,
+                    CONSUMABLE_SCALE_INHIBITOR,
                 ]
             ),
         },
@@ -654,6 +666,13 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         self._attr_device_class = DOMAIN
         self._attr_name = coordinator.device.name
         self._attr_unique_id = f"{coordinator.device.mac}_" + DOMAIN
+        
+        ## For backwards compatibility
+        try:            
+            module = importlib.import_module("homeassistant.components.vacuum")
+            self._activity_class = module.VacuumActivity
+        except:
+            self._activity_class = None
 
         self._set_attrs()
 
@@ -720,13 +739,10 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
 
         self._attr_battery_level = self.device.status.battery_level
         self._attr_charging = self.device.status.charging
-        self._attr_state = STATE_CODE_TO_STATE.get(self.device.status.state, STATE_UNKNOWN)
+        self._vacuum_state = STATE_CODE_TO_STATE.get(self.device.status.state, STATE_UNKNOWN)
+        if self._activity_class is None:
+            self._attr_state = self._vacuum_state
         self._attr_extra_state_attributes = self.device.status.attributes
-
-    @property
-    def state(self) -> str | None:
-        """Return the state of the vacuum cleaner."""
-        return self._attr_state
 
     @property
     def supported_features(self) -> int:
@@ -742,6 +758,12 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     def battery_icon(self) -> str:
         """Return the battery icon for the vacuum cleaner."""
         return icon_for_battery_level(battery_level=self._attr_battery_level, charging=self._attr_charging)
+
+    @property
+    def activity(self):
+        if self._activity_class is not None:
+            return self._activity_class(self._vacuum_state)
+        return self._vacuum_state
 
     @property
     def available(self) -> bool:
