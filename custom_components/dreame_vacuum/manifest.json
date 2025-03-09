@@ -5,6 +5,9 @@
     "@tasshack"
   ],
   "config_flow": true,
+  "dependencies": [
+    "http"
+  ],
   "documentation": "https://github.com/Tasshack/dreame-vacuum/tree/dev?tab=readme-ov-file#features",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Tasshack/dreame-vacuum/issues",
