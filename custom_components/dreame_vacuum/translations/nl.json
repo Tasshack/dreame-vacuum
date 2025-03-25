@@ -480,8 +480,8 @@
           "description": "Hoeveelheid schoonmaak herhalingen voor elke geselecteerde kamer. (Tenzij overschreven door aangepaaste schoonmaak parameter)."
         },
         "suction_level": {
-          "name": "Zuig niveau",
-          "description": "Zuig snelheid voor voor elke geselecteerde kamer. (Tenzij overschreven door aangepaaste schoonmaak parameter)."
+          "name": "zuigkracht",
+          "description": "zuigkracht voor voor elke geselecteerde kamer. (Tenzij overschreven door aangepaaste schoonmaak parameter)."
         },
         "water_volume": {
           "name": "Water volume",
@@ -502,8 +502,8 @@
           "description": "Hoeveelheid schoonmaak herhalingen voor elke geselecteerde zone."
         },
         "suction_level": {
-          "name": "Zuig niveau",
-          "description": "Zuig snelheid voor voor elke geselecteerde zone."
+          "name": "zuigkracht",
+          "description": "zuigkracht voor voor elke geselecteerde zone."
         },
         "water_volume": {
           "name": "Water Volume",
@@ -524,8 +524,8 @@
           "description": "Hoeveelheid schoonmaak herhalingen voor elke geselecteerde zone."
         },
         "suction_level": {
-          "name": "Suction Level",
-          "description": "Zuig snelheid voor voor elke geselecteerde zone."
+          "name": "Zuigkracht",
+          "description": "zuigkracht voor voor elke geselecteerde zone."
         },
         "water_volume": {
           "name": "Water Volume",
