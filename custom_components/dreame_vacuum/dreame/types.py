@@ -1779,7 +1779,7 @@ ACTION_AVAILABILITY: Final = {
         device.status.onboard_dirty_water_tank_life < 100
     ),
     DreameVacuumAction.RESET_DIRTY_WATER_TANK.name: lambda device: bool(device.status.dirty_water_tank_life < 100),
-    DreameVacuumAction.RESET_DEODORIZER.name: lambda device: bool(device.status.deodorizer_life < 100),
+    DreameVacuumAction.RESET_DEODORIZER.name: lambda device: device.status.deodorizer_life is not None and bool(device.status.deodorizer_life < 100),
     DreameVacuumAction.RESET_WHEEL.name: lambda device: bool(device.status.wheel_dirty_life < 100),
     DreameVacuumAction.RESET_SCALE_INHIBITOR.name: lambda device: bool(device.status.scale_inhibitor_life < 100),
     DreameVacuumAction.START_AUTO_EMPTY.name: lambda device: device.status.dust_collection_available,

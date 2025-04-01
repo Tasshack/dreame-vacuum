@@ -125,7 +125,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
             DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.capability.deodorizer
+            and device.capability.deodorizer is not None
         ),
     ),
     DreameVacuumButtonEntityDescription(
