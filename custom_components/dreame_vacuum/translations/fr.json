@@ -129,9 +129,9 @@
         "state": {
           "avoidance": "Évitement",
           "adaptation": "Adaptation",
-          "remove_mop": "Retirer la vadrouille",
+          "remove_mop": "Retirer la serpillière",
           "adaptation_without_route": "Adaptation sans itinéraire",
-          "vacuum_and_mop": "Aspirateur et vadrouille",
+          "vacuum_and_mop": "Aspirateur et serpillière",
           "ignore": "Ignorer"
         }
       },
@@ -227,8 +227,8 @@
       },
       "cleangenius_mode": {
         "state": {
-          "vacuum_and_mop": "Vide et vadrouille",
-          "mop_after_vacuum": "Mop après vide"
+          "vacuum_and_mop": "Aspirateur et serpillière",
+          "mop_after_vacuum": "Serpillière après aspirateur"
         }
       },
       "washing_mode": {
@@ -298,8 +298,8 @@
           "upgrading": "En cours de mise à jour",
           "clean_summon": "Appel à nettoyer",
           "station_reset": "Réinitialisation de la station",
-          "returning_install_mop": "Retour à l'installation de la vadrouille",
-          "returning_remove_mop": "Retour pour enlever la vadrouille",
+          "returning_install_mop": "Retour à l'installation de la serpillière",
+          "returning_remove_mop": "Retour pour enlever la serpillière",
           "water_check": "Vérification de l'eau",
           "clean_add_water": "Nettoyer et ajouter de l'eau",
           "washing_paused": "Lavage en pause",
@@ -311,7 +311,7 @@
           "spot_cleaning": "Nettoyage des taches",
           "returning_auto_empty": "Retour à Vider automatiquement",
           "waiting_for_task": "En attente de tâche",
-          "station_cleaning": "Nettoyage des gares",
+          "station_cleaning": "Nettoyage de la station",
           "returning_to_drain": "Retour à l'égout",
           "draining": "Évacuation",
           "auto_water_draining": "Vidange automatique de l'eau",
@@ -339,7 +339,7 @@
           "factory": "Usine",
           "error": "Erreur",
           "remote_control": "Contrôle à distance",
-          "sleeping": "En sommeil",
+          "sleeping": "En veille",
           "self_test": "Auto-test",
           "factory_test": "Test usine",
           "standby": "En veille",
@@ -499,10 +499,10 @@
           "station_disconnected": "Station de base non allumée",
           "dirty_tank_level": "Le niveau d'eau dans le réservoir d'eau sale est trop élevé.",
           "washboard_level": "Le niveau d'eau du dispositif de nettoyage de la serpillière est trop élevé.",
-          "no_mop_in_station": "Le tampon de vadrouille n'est pas dans la station.",
+          "no_mop_in_station": "Le tampon de la serpillière n'est pas dans la station.",
           "dust_bag_full": "Le sac à poussière est plein ou les évents sont obstrués.",
           "self_test_failed": "Décharge d'eau anormale du réservoir d'eau propre des modules d'eau supérieur et inférieur.",
-          "mop_install_failed": "L'installation du tampon de vadrouille a échoué.",
+          "mop_install_failed": "L'installation du tampon de la serpillière a échoué.",
           "low_battery_turn_off": "Batterie faible. ",
           "dirty_tank_not_installed": "Le réservoir d'eau usée du robot n'est pas installé.",
           "robot_in_hidden_room": "Zone cachée. ",
@@ -545,7 +545,7 @@
           "no_warning": "Pas d'avertissement",
           "no_water_left_dismiss": "Veuillez vérifier le réservoir d'eau propre.",
           "no_water_left": "L'eau du réservoir d'eau propre est sur le point d'être épuisée. ",
-          "no_water_left_after_clean": "Le tampon de vadrouille a été nettoyé. ",
+          "no_water_left_after_clean": "Le tampon de la serpillière a été nettoyé. ",
           "no_water_for_clean": "Niveau d'eau bas dans le réservoir d'eau propre. ",
           "low_water": "Sur le point de manquer d'eau. ",
           "tank_not_installed": "Le réservoir d'eau propre n'est pas installé."
@@ -934,7 +934,7 @@
         },
         "cleaning_mode": {
           "name": "Mode de nettoyage",
-          "description": "Nettoyage de chaque pièce (uniquement pris en charge sur les aspirateurs dotés de la fonction de levage du tampon de vadrouille)."
+          "description": "Nettoyage de chaque pièce (uniquement pris en charge sur les aspirateurs dotés de la fonction de levage du tampon de la serpillière)."
         },
         "repeats": {
           "name": "Répétitions",
@@ -944,7 +944,7 @@
     },
     "vacuum_set_restricted_zone": {
       "name": "Définir une zone restreinte",
-      "description": "Définissez des murs virtuels, des zones restreintes et/ou des zones sans vadrouille.",
+      "description": "Définissez des murs virtuels, des zones restreintes et/ou des zones sans serpillière.",
       "fields": {
         "walls": {
           "name": "Des murs",
@@ -955,8 +955,8 @@
           "description": "Zones interdites."
         },
         "no_mops": {
-          "name": "Pas de vadrouille",
-          "description": "Aucune zone de vadrouille."
+          "name": "Pas de serpillière",
+          "description": "Aucune zone de serpillière."
         }
       }
     },
@@ -1055,7 +1055,7 @@
       "description": "Sélectionnez les options précédentes d'une entité sélectionnée.",
       "fields": {
         "cycle": {
-          "name": "Faire du vélo",
+          "name": "Cycle",
           "description": "Si l’option doit passer du premier au dernier."
         }
       }
@@ -1073,7 +1073,7 @@
       "description": "Sélectionnez les options suivantes d'une entité sélectionnée.",
       "fields": {
         "cycle": {
-          "name": "Faire du vélo",
+          "name": "Cycle",
           "description": "Si l’option doit passer du premier au dernier."
         }
       }
