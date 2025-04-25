@@ -115,6 +115,7 @@
 | S40 Pro (Enhanced Edition)                   | dreame.vacuum.r9419  |
 | S40 Pro (Enhanced Ultra-Thin embedded)       | dreame.vacuum.r9426x |
 | S40 Pro Ultra                                | dreame.vacuum.r9428  |
+| S50 Pro                                      | dreame.vacuum.r2508  |
 | W10                                          | dreame.vacuum.p2027  |
 | W10 Pro                                      | dreame.vacuum.r2104  |
 | W10s                                         | dreame.vacuum.r2251o |
