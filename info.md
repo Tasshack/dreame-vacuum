@@ -256,6 +256,8 @@ attributes:
  - Dreame cloud authentication by [@kuudori](https://github.com/kuudori)
  - Mova cloud help by [@r1si](https://github.com/r1si)
 
+ ## Do not forget to support the project!
 
-<a href='https://ko-fi.com/tasshack' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
-<a href="https://paypal.me/tasshackK" target="_blank"><img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg" border="0" alt="PayPal Logo" style="height: auto !important;width: auto !important;"></a>
+<a href="https://ko-fi.com/tasshack"><img width="300" src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/refs/heads/dev/.github/icons/kofi.png"/></a>
+<a href="https://paypal.me/tasshackK"><img width="300" src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/refs/heads/dev/.github/icons/paypal.png"></a>
+<a href="https://github.com/sponsors/Tasshack"><img width="300" src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/refs/heads/dev/.github/icons/github.png"></a>
