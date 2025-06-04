@@ -134,8 +134,8 @@ vacuum_start_shortcut:
       integration: dreame_vacuum
       domain: vacuum
   fields:
-    points:
-      shortcut_id: "32" 
+    shortcut_id:
+      example: 32
       required: true
       selector:
         number:
