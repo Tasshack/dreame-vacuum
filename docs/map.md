@@ -156,6 +156,7 @@ Configurable map object rendering options:
 - **Carpet Area**: Render carpets *(Only on supported devices)*
 - **Floor Material**: Render floor material of the rooms *(Only on supported devices)*
 - **Furnitures**: Render 2D/3D furnitures *(Only on supported devices)*
+- **Low-Lying Areas**: Render Low-Lying areas *(Only on supported devices)*
 - **Cruise Point**: Render cruise points *(Only on supported devices)*
 
 ### Cleaning and Cruising History Maps

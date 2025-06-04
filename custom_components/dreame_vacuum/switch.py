@@ -167,7 +167,11 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         key="carpet_avoidance",
         icon="mdi:close-box-outline",
         entity_category=EntityCategory.CONFIG,
-        exists_fn=lambda description, device: not device.capability.mop_pad_unmounting
+        exists_fn=lambda description, device: not (
+            device.capability.mop_pad_unmounting
+            or device.capability.auto_carpet_cleaning
+            or device.capability.mop_pad_lifting_plus
+        )
         and device.capability.carpet_recognition,
     ),
     DreameVacuumSwitchEntityDescription(
@@ -176,7 +180,18 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
         format_fn=lambda value, device: int(value),
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.detergent
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and (device.capability.detergent or device.capability.smart_mop_washing)
+        ),
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumProperty.MOP_WASHING_WITH_DETERGENT,
+        icon="mdi:hand-wash",
+        entity_category=EntityCategory.CONFIG,
+        format_fn=lambda value, device: int(value),
+        exists_fn=lambda description, device: bool(
+            device.capability.mop_washing_with_detergent
+            and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
     ),
     DreameVacuumSwitchEntityDescription(
@@ -341,6 +356,8 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
             device.capability.intensive_carpet_cleaning
             and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
+        available_fn=lambda device: not device.status.started
+        and (not device.status.carpet_recognition or device.status.carpet_avoidance),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
@@ -419,7 +436,9 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         property_key=DreameVacuumAutoSwitchProperty.HOT_WASHING,
         icon="mdi:sun-thermometer",
         exists_fn=lambda description, device: bool(
-            device.capability.hot_washing and DreameVacuumEntityDescription().exists_fn(description, device)
+            device.capability.hot_washing
+            and not device.capability.smart_mop_washing
+            and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
         entity_category=None,
     ),
@@ -435,7 +454,9 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         property_key=DreameVacuumAutoSwitchProperty.ULTRA_CLEAN_MODE,
         icon="mdi:silverware-clean",
         exists_fn=lambda description, device: bool(
-            device.capability.ultra_clean_mode and not device.capability.smart_mop_washing and DreameVacuumEntityDescription().exists_fn(description, device)
+            device.capability.ultra_clean_mode
+            and not device.capability.smart_mop_washing
+            and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
         entity_category=EntityCategory.CONFIG,
     ),
@@ -453,6 +474,8 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         exists_fn=lambda description, device: bool(
             device.capability.clean_carpets_first and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
+        available_fn=lambda device: not device.status.started
+        and (not device.status.carpet_recognition or device.status.carpet_avoidance),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
@@ -482,8 +505,11 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         property_key=DreameVacuumProperty.SIDE_BRUSH_CARPET_ROTATE,
         icon="mdi:format-rotate-90",
         exists_fn=lambda description, device: bool(
-            device.capability.side_brush_carpet_rotate and DreameVacuumEntityDescription().exists_fn(description, device)
+            device.capability.side_brush_carpet_rotate
+            and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
+        available_fn=lambda device: not device.status.started
+        and (not device.status.carpet_recognition or device.status.carpet_avoidance),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(

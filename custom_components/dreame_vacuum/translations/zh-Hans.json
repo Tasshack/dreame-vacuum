@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "设备已经设置过",
-      "cannot_connect": "连接失败"
+      "cannot_connect": "连接失败",
+      "reauth_successful": "重新验证成功"
     },
     "error": {
       "cannot_connect": "连接失败",
       "unsupported": "此设备尚未支持",
       "wrong_token": "校验失败，Token有误",
-      "2fa_required": "需要两步骤验证\n{url}",
+      "2fa_failed": "验证失败。",
       "credentials_incomplete": "凭证信息不完整，请完整输入用户名称、密码及国家",
       "login_error": "无法登入，请确认凭证信息",
       "no_devices": "在此账号选择的国家内未发现有支持的设备"
@@ -36,6 +37,12 @@
         },
         "description": "登入小米云端账号请至 https://www.openhab.org/addons/bindings/miio/#country-servers 选择适当的服务器所在国家"
       },
+      "2fa": {
+        "data": {
+          "verification_code": "双因素验证码"
+        },
+        "description": "## 此登录需要安全验证\n请打开验证页面以发送手机/邮箱验证码。收到验证码后，请不要在网页上验证。返回 HomeAssistant 并在下方输入框中输入验证码。\n### [发送验证码]({url})"
+      },
       "dreame": {
         "data": {
           "username": "使用者名称",
@@ -44,11 +51,25 @@
         },
         "description": "登入追觅账号"
       },
+      "mova": {
+        "data": {
+          "username": "使用者名称",
+          "password": "密码",
+          "country": "登入您的 Mova 帳戶"
+        },
+        "description": "登入追觅账号"
+      },
       "devices": {
         "data": {
           "devices": "可支持的设备"
         },
         "description": "请选择想设置的追觅扫地机设备"
+      },
+      "donation": {
+        "data": {
+          "donated": "我已捐款"
+        },
+        "description": "## 不要忘记支持该项目。{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "低分辨率地图",
           "square": "方形地图",
           "configuration_type": "设置类型",
-          "prefer_cloud": "使用云端联机"
+          "prefer_cloud": "使用云端联机",
+          "donated": "我已捐款"
         }
       }
     },
@@ -132,7 +154,8 @@
           "remove_mop": "移除拖布",
           "adaptation_without_route": "自动适应无路径",
           "vacuum_and_mop": "清扫与拖",
-          "ignore": "忽略地毯"
+          "ignore": "忽略地毯",
+          "cross": "穿越"
         }
       },
       "mop_wash_level": {
@@ -195,6 +218,11 @@
         "state": {
           "by_area": "根据面积",
           "by_time": "根据时间",
+          "by_room": "根据房间"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
           "by_room": "根据房间"
         }
       },
@@ -728,6 +756,16 @@
         }
       }
     },
+    "vacuum_start_shortcut": {
+      "name": "启动快捷方式",
+      "description": "启动快捷方式任务。（仅支持的设备）",
+      "fields": {
+        "shortcut_id": {
+          "name": "快捷方式ID",
+          "description": "快捷方式的ID。"
+        }
+      }
+    },
     "vacuum_remote_control_move_step": {
       "name": "远程控制移动步数",
       "description": "远程控制机器人移动一步。",
@@ -844,7 +882,7 @@
         },
         "file_url": {
           "name": "档案网址",
-          "description": "储存的 bz2.gz 或 tar.gz 档案的网址 URL。"
+          "description": "储存的 tbz2.gz 或 tar.gz 档案的网址 URL。"
         }
       }
     },
@@ -937,6 +975,28 @@
         "repeats": {
           "name": "重复次数",
           "description": "每个房间的清洁次数。"
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "设置自定义地毯清洁",
+      "description": "为地毯设置自定义清洁设置。（仅支持的设备）",
+      "fields": {
+        "id": {
+          "name": "地毯ID",
+          "description": "地毯ID列表。"
+        },
+        "type": {
+          "name": "对象类型",
+          "description": "带ID对象的类型。（0 = 自动检测地毯，1 = 手动创建地毯，2 = 房间地毯（如果支持））"
+        },
+        "carpet_cleaning": {
+          "name": "地毯清洁",
+          "description": "每个地毯的自定义清洁设置。"
+        },
+        "carpet_settings": {
+          "name": "地毯设置",
+          "description": "每个地毯的自定义设置，包含启用设置的数组。"
         }
       }
     },

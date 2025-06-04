@@ -118,14 +118,13 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
             DreameVacuumEntityDescription().exists_fn(description, device)
             and device.status.dirty_water_tank_life is not None
         ),
-    ),    
+    ),
     DreameVacuumButtonEntityDescription(
         action_key=DreameVacuumAction.RESET_DEODORIZER,
         icon="mdi:scent",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.capability.deodorizer is not None
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.deodorizer is not None
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -133,8 +132,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:pipe",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.capability.scale_inhibitor
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.scale_inhibitor
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -142,8 +140,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:tire",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.capability.wheel
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.wheel
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -179,7 +176,11 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         exists_fn=lambda description, device: device.capability.lidar_navigation,
     ),
     DreameVacuumButtonEntityDescription(
-        name_fn=lambda value, device: "Self-Clean Resume" if (device.status.washing_paused or device.status.returning_to_wash_paused) else "Self-Clean Pause" if device.status.washing else "Self-Clean",
+        name_fn=lambda value, device: (
+            "Self-Clean Resume"
+            if (device.status.washing_paused or device.status.returning_to_wash_paused)
+            else "Self-Clean Pause" if device.status.washing else "Self-Clean"
+        ),
         key="self_clean",
         icon_fn=lambda value, device: (
             "mdi:dishwasher-off"
@@ -195,7 +196,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
             or device.status.washing_paused
         )
         and not device.status.draining
-        and not device.status.self_repairing
+        and not device.status.self_repairing,
     ),
     DreameVacuumButtonEntityDescription(
         name_fn=lambda value, device: "Stop Drying" if device.status.drying else "Start Drying",

@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "Urządzenie jest już skonfigurowane",
-      "cannot_connect": "Nie udało się połączyć."
+      "cannot_connect": "Nie udało się połączyć.",
+      "reauth_successful": "Ponowna autoryzacja zakończyła się pomyślnies"
     },
     "error": {
       "cannot_connect": "Nie udało się połączyć.",
       "unsupported": "Urządzenie nie jest obsługiwane",
       "wrong_token": "Błąd sumy kontrolnej, zły token",
-      "2fa_required": "Wymagane logowanie 2FA\n{url}",
+      "2fa_failed": "Weryfikacja nie powiodła się.",
       "credentials_incomplete": "Niepoprawne dane logowania, proszę podać nazwę użytkownika, hasło i kraj",
       "login_error": "Nie można się zalogować, sprawdź swoje dane logowania.",
       "no_devices": "Nie znaleziono obsługiwanych urządzeń na tym koncie w wybranym kraju."
@@ -36,6 +37,12 @@
         },
         "description": "Zaloguj się do chmury Xiaomi Miio, zobacz https://www.openhab.org/addons/bindings/miio/#country-servers, aby uzyskać wiecej informacji."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Kod weryfikacji dwuetapowej"
+        },
+        "description": "## To logowanie wymaga weryfikacji bezpieczeństwa\nProszę otworzyć stronę weryfikacji, aby wysłać kod weryfikacji na telefon komórkowy/e-mail. Po otrzymaniu kodu weryfikacji, nie weryfikuj go na stronie internetowej. Wróć do HomeAssistant i wprowadź go w poniższym polu wejściowym.\n### [Wyślij kod weryfikacji]({url})"
+      },
       "dreame": {
         "data": {
           "username": "Nazwa użytkownika",
@@ -44,11 +51,25 @@
         },
         "description": "Zaloguj się do chmury Dreamehome."
       },
+      "mova": {
+        "data": {
+          "username": "Nazwa użytkownika",
+          "password": "Hasło",
+          "country": "Kraj serwera"
+        },
+        "description": "Zaloguj się do chmury Movahome."
+      },
       "devices": {
         "data": {
           "devices": "Obsługiwane urządzenia"
         },
         "description": "Wybierz urządzenie Dreame Vacuum, które chcesz skonfigurować."
+      },
+      "donation": {
+        "data": {
+          "donated": "Eu fiz uma doação"
+        },
+        "description": "## Nie zapomnij wesprzeć projektu.{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "Mapa w niskiej rozdzielczości",
           "square": "Kwadratowa mapa",
           "configuration_type": "Typ konfiguracji",
-          "prefer_cloud": "Preferuj połączenie z chmurą"
+          "prefer_cloud": "Preferuj połączenie z chmurą",
+          "donated": "Eu fiz uma doação"
         }
       }
     },
@@ -132,7 +154,8 @@
           "remove_mop": "Usuń Mopa",
           "adaptation_without_route": "Dostosowanie Bez trasy",
           "vacuum_and_mop": "Odkurz i mopuj",
-          "ignore": "Ignorować"
+          "ignore": "Ignorować",
+          "cross": "Przekraczać"
         }
       },
       "mop_wash_level": {
@@ -195,6 +218,11 @@
         "state": {
           "by_area": "Według obszaru",
           "by_time": "Z czasem",
+          "by_room": "Według pokoju"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
           "by_room": "Według pokoju"
         }
       },
@@ -728,6 +756,16 @@
         }
       }
     },
+    "vacuum_start_shortcut": {
+      "name": "Uruchom skrót",
+      "description": "Uruchamia zadanie skrótu. (Tylko na obsługiwanych urządzeniach)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID skrótu",
+          "description": "ID skrótu."
+        }
+      }
+    },
     "vacuum_remote_control_move_step": {
       "name": "Krok przesuwania pilota",
       "description": "Zdalnie kontroluj przesuwanie bota o jeden krok.",
@@ -844,7 +882,7 @@
         },
         "file_url": {
           "name": "Adres pliku",
-          "description": "Adres URL zapisanego pliku bz2.gz lub tar.gz"
+          "description": "Adres URL zapisanego pliku tbz2.gz lub tar.gz"
         }
       }
     },
@@ -937,6 +975,28 @@
         "repeats": {
           "name": "Powtarza",
           "description": "Godziny sprzątania każdego pokoju."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Ustaw niestandardowe czyszczenie dywanu",
+      "description": "Ustaw niestandardowe ustawienia czyszczenia dywanów. (Tylko na obsługiwanych urządzeniach)",
+      "fields": {
+        "id": {
+          "name": "ID dywanu",
+          "description": "ID dywanów."
+        },
+        "type": {
+          "name": "Typ obiektu",
+          "description": "Typ obiektu o danym ID. (0 = Automatycznie wykryty dywan, 1 = Ręcznie utworzony dywan, 2 = Dywan pokojowy (jeśli obsługiwany))"
+        },
+        "carpet_cleaning": {
+          "name": "Czyszczenie dywanu",
+          "description": "Niestandardowe ustawienie czyszczenia dla każdego dywanu."
+        },
+        "carpet_settings": {
+          "name": "Ustawienia dywanu",
+          "description": "Niestandardowe ustawienia dywanu dla każdego dywanu z listą włączonych ustawień."
         }
       }
     },

@@ -30,6 +30,7 @@ Complete app replacement with Home Assistant for Dreame robot vacuums.
 - [Persistent notifications and error reporting](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/notifications.md)
 - [Events for automations](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/events.md)
 - Dreamehome account support
+- Movahome account support
 
 
 ## Installation
@@ -282,6 +283,7 @@ To submit your changes please fork `dev` branch of this repository and open a pu
  - [Xiaomi Cloud Map Extractor](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor) by [@PiotrMachowski](https://github.com/PiotrMachowski)
  - [Valetudo](https://github.com/Hypfer/Valetudo) by [@Hypfer](https://github.com/Hypfer)
  - Dreame cloud authentication by [@kuudori](https://github.com/kuudori)
+ - Mova cloud help by [@r1si](https://github.com/r1si)
 
 
 <a href='https://ko-fi.com/tasshack' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi3.png?v=3' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>

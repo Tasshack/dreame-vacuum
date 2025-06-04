@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "O dispositivo já está configurado",
-      "cannot_connect": "Falha ao conectar."
+      "cannot_connect": "Falha ao conectar.",
+      "reauth_successful": "A reautenticação foi bem-sucedida"
     },
     "error": {
       "cannot_connect": "Falha ao conectar.",
       "unsupported": "Dispositivo não suportado",
       "wrong_token": "Erro de checksum, token incorreto",
-      "2fa_required": "Login de 2FA necessário\n{url}",
+      "2fa_failed": "Falha na verificação.",
       "credentials_incomplete": "Credenciais incompletas, por favor preencha o nome de usuário, senha e país",
       "login_error": "Não foi possível fazer login, verifique as credenciais.",
       "no_devices": "Nenhum dispositivo compatível encontrado nesta conta no país selecionado."
@@ -36,6 +37,12 @@
         },
         "description": "Faça login na Xiaomi Miio Cloud, consulte https://www.openhab.org/addons/bindings/miio/#country-servers para saber qual servidor de nuvem usar."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Código de verificação em dois passos"
+        },
+        "description": "## Este login requer verificação de segurança\nPor favor, abra a página de verificação para enviar o código de verificação por telemóvel/email. Após receber o código, não o verifique na página web. Volte ao HomeAssistant e insira-o na caixa de entrada abaixo.\n### [Enviar código de verificação]({url})"
+      },
       "dreame": {
         "data": {
           "username": "Usuário",
@@ -44,11 +51,25 @@
         },
         "description": "Acesse a nuvem Dreamehome."
       },
+      "mova": {
+        "data": {
+          "username": "Usuário",
+          "password": "Senha",
+          "country": "País do servidor"
+        },
+        "description": "Acesse a nuvem Movahome."
+      },
       "devices": {
         "data": {
           "devices": "Dispositivos suportados"
         },
         "description": "Por favor, selecione o dispositivo de Aspirador Dreame que você deseja configurar."
+      },
+      "donation": {
+        "data": {
+          "donated": "Eu fiz uma doação"
+        },
+        "description": "## Não se esqueça de apoiar o projeto.{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "Mapa de baixa resolução",
           "square": "Mapa quadrado",
           "configuration_type": "Tipo de configuração",
-          "prefer_cloud": "Preferir conexão com a nuvem"
+          "prefer_cloud": "Preferir conexão com a nuvem",
+          "donated": "Eu fiz uma doação"
         }
       }
     },
@@ -132,7 +154,8 @@
           "remove_mop": "Remover pano",
           "adaptation_without_route": "Adaptação Sem rota",
           "vacuum_and_mop": "Aspirador e esfregão",
-          "ignore": "Ignorar"
+          "ignore": "Ignorar",
+          "cross": "Atravessar"
         }
       },
       "mop_wash_level": {
@@ -195,6 +218,11 @@
         "state": {
           "by_area": "Por área",
           "by_time": "Por tempo",
+          "by_room": "Por quarto"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
           "by_room": "Por quarto"
         }
       },
@@ -728,6 +756,16 @@
         }
       }
     },
+    "vacuum_start_shortcut": {
+      "name": "Iniciar atalho",
+      "description": "Inicia uma tarefa de atalho. (Apenas em dispositivos suportados)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID do atalho",
+          "description": "ID do atalho."
+        }
+      }
+    },
     "vacuum_remote_control_move_step": {
       "name": "Movimento remoto passo a passo",
       "description": "Controlar remotamente o movimento do robô um passo de cada vez",
@@ -844,7 +882,7 @@
         },
         "file_url": {
           "name": "URL do arquivo",
-          "description": "URL do arquivo bz2.gz ou tar.gz salvo"
+          "description": "URL do arquivo tbz2.gz ou tar.gz salvo"
         }
       }
     },
@@ -937,6 +975,28 @@
         "repeats": {
           "name": "Repetições",
           "description": "Número de repetições de limpeza para cada divisão."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Definir limpeza personalizada do tapete",
+      "description": "Definir configuração personalizada de limpeza para tapetes. (Apenas em dispositivos suportados)",
+      "fields": {
+        "id": {
+          "name": "ID do tapete",
+          "description": "IDs dos tapetes."
+        },
+        "type": {
+          "name": "Tipo de objeto",
+          "description": "Tipo do objeto com o ID. (0 = Tapete detetado automaticamente, 1 = Tapete criado manualmente, 2 = Tapete da divisão (se suportado))"
+        },
+        "carpet_cleaning": {
+          "name": "Limpeza do tapete",
+          "description": "Configuração personalizada de limpeza para cada tapete."
+        },
+        "carpet_settings": {
+          "name": "Configurações do tapete",
+          "description": "Configuração personalizada para cada tapete com uma lista de configurações ativadas."
         }
       }
     },

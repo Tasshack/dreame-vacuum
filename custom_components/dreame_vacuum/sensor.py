@@ -429,15 +429,21 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         property_key=DreameVacuumProperty.CLEAN_WATER_TANK_STATUS,
         icon="mdi:beer",
         entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: device.capability.self_wash_base
+        and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.DIRTY_WATER_TANK_STATUS,
         icon="mdi:glass-mug",
+        exists_fn=lambda description, device: device.capability.self_wash_base
+        and DreameVacuumEntityDescription().exists_fn(description, device),
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.DUST_BAG_STATUS,
         icon="mdi:delete-circle-outline",
+        exists_fn=lambda description, device: device.capability.auto_empty_base
+        and DreameVacuumEntityDescription().exists_fn(description, device),
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
     DreameVacuumSensorEntityDescription(
@@ -446,16 +452,18 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
     DreameVacuumSensorEntityDescription(
-       property_key=DreameVacuumProperty.STATION_DRAINAGE_STATUS,
-       icon="mdi:water-pump",
-       exists_fn=lambda description, device: device.capability.drainage and DreameVacuumEntityDescription().exists_fn(description, device),
-       entity_category=EntityCategory.DIAGNOSTIC,
+        property_key=DreameVacuumProperty.STATION_DRAINAGE_STATUS,
+        icon="mdi:water-pump",
+        exists_fn=lambda description, device: device.capability.drainage
+        and DreameVacuumEntityDescription().exists_fn(description, device),
+        entity_category=EntityCategory.DIAGNOSTIC,
     ),
     DreameVacuumSensorEntityDescription(
-       property_key=DreameVacuumProperty.HOT_WATER_STATUS,
-       icon="mdi:water-thermometer",
-       exists_fn=lambda description, device: device.capability.hot_washing and DreameVacuumEntityDescription().exists_fn(description, device),
-       entity_category=EntityCategory.DIAGNOSTIC,
+        property_key=DreameVacuumProperty.HOT_WATER_STATUS,
+        icon="mdi:water-thermometer",
+        exists_fn=lambda description, device: device.capability.hot_washing
+        and DreameVacuumEntityDescription().exists_fn(description, device),
+        entity_category=EntityCategory.DIAGNOSTIC,
     ),
     DreameVacuumSensorEntityDescription(
         key="current_room",

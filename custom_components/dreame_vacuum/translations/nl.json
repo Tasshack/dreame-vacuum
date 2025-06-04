@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "Apparaat is al geconfigureerd",
-      "cannot_connect": "Verbinding mislukt."
+      "cannot_connect": "Verbinding mislukt.",
+      "reauth_successful": "De herauthenticatie is geslaagd"
     },
     "error": {
       "cannot_connect": "Verbinding mislukt.",
       "unsupported": "Apparaat wordt niet ondersteund",
       "wrong_token": "Checksum fout, verkeerd token",
-      "2fa_required": "2FA Login vereist\n{url}",
+      "2fa_failed": "Verificatie mislukt.",
       "credentials_incomplete": "Inloggegevens onvolledig, vul alstublieft gebruikersnaam, wachtwoord en land in",
       "login_error": "Kon niet inloggen, controleer de inloggegevens.",
       "no_devices": "Geen ondersteunde apparaten gevonden op dit account in het geselecteerde land."
@@ -36,6 +37,12 @@
         },
         "description": "Log in op de Xiaomi Miio cloud, zie https://www.openhab.org/addons/bindings/miio/#country-servers voor de te gebruiken cloudserver."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Twee-factor verificatiecode"
+        },
+        "description": "## Deze inlog vereist beveiligingsverificatie\nOpen de verificatiepagina om de mobiele/email verificatiecode te verzenden. Nadat je de verificatiecode hebt ontvangen, verifieer deze dan niet op de webpagina. Ga terug naar HomeAssistant en voer deze in het onderstaande invoerveld in.\n### [Verificatiecode verzenden]({url})"
+      },
       "dreame": {
         "data": {
           "username": "Gebruikersnaam",
@@ -44,11 +51,25 @@
         },
         "description": "Log in op de Dreamehome cloud."
       },
+      "mova": {
+        "data": {
+          "username": "Gebruikersnaam",
+          "password": "Wachtwoord",
+          "country": "Serverland"
+        },
+        "description": "Log in op de Movahome cloud."
+      },
       "devices": {
         "data": {
           "devices": "Ondersteunde Apparaten"
         },
         "description": "Selecteer alstublieft het Dreame Vacuum apparaat dat u wilt instellen."
+      },
+      "donation": {
+        "data": {
+          "donated": "Ik heb een donatie gedaan"
+        },
+        "description": "## Vergeet niet het project te steunen.{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "Kaart met lage resolutie",
           "square": "Vierkante kaart",
           "configuration_type": "Configuratie Type",
-          "prefer_cloud": "Voorkeur voor cloudverbinding"
+          "prefer_cloud": "Voorkeur voor cloudverbinding",
+          "donated": "Ik heb een donatie gedaan"
         }
       }
     },
@@ -132,7 +154,8 @@
           "remove_mop": "Dweil Verwijderen",
           "adaptation_without_route": "Aanpassing Zonder Route",
           "vacuum_and_mop": "Stofzuigen en dweilen",
-          "ignore": "Negeren"
+          "ignore": "Negeren",
+          "cross": "Oversteken"
         }
       },
       "mop_wash_level": {
@@ -195,6 +218,11 @@
         "state": {
           "by_area": "Per Gebied",
           "by_time": "Per Tijd",
+          "by_room": "Per Kamer"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
           "by_room": "Per Kamer"
         }
       },
@@ -731,6 +759,16 @@
         }
       }
     },
+    "vacuum_start_shortcut": {
+      "name": "Snelkoppeling starten",
+      "description": "Start een snelkoppelingstaak. (Alleen op ondersteunde apparaten)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Snelkoppeling ID",
+          "description": "ID van de snelkoppeling."
+        }
+      }
+    },
     "vacuum_remote_control_move_step": {
       "name": "Afstandsbediening Beweging Stap",
       "description": "Bestuur de bot op afstand één stap.",
@@ -847,7 +885,7 @@
         },
         "file_url": {
           "name": "Bestands-URL",
-          "description": "Url van het opgeslagen bz2.gz of tar.gz bestand"
+          "description": "Url van het opgeslagen tbz2.gz of tar.gz bestand"
         }
       }
     },
@@ -940,6 +978,28 @@
         "repeats": {
           "name": "Herhalingen",
           "description": "Aantal schoonmaakbeurten voor elke ruimte."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Aangepaste tapijtreiniging instellen",
+      "description": "Stel aangepaste reinigingsinstellingen in voor tapijten. (Alleen op ondersteunde apparaten)",
+      "fields": {
+        "id": {
+          "name": "Tapijt ID",
+          "description": "Tapijt IDs."
+        },
+        "type": {
+          "name": "Type object",
+          "description": "Type van het object met de ID. (0 = Automatisch gedetecteerd tapijt, 1 = Handmatig gemaakt tapijt, 2 = Kamer tapijt (indien ondersteund))"
+        },
+        "carpet_cleaning": {
+          "name": "Tapijtreiniging",
+          "description": "Aangepaste tapijtreinigingsinstelling voor elk tapijt."
+        },
+        "carpet_settings": {
+          "name": "Tapijtinstellingen",
+          "description": "Aangepaste tapijtinstellingen voor elk tapijt met een array van ingeschakelde instellingen."
         }
       }
     },

@@ -53,6 +53,7 @@ from .dreame import (
     DreameVacuumCarpetSensitivity,
     DreameVacuumCarpetCleaning,
     DreameVacuumMopWashLevel,
+    DreameVacuumMopCleanFrequency,
     DreameVacuumMoppingType,
     DreameVacuumWiderCornerCoverage,
     DreameVacuumMopPadSwing,
@@ -110,6 +111,9 @@ FLOOR_MATERIAL_TO_ICON = {
     DreameVacuumFloorMaterial.NONE: "mdi:checkbox-blank",
     DreameVacuumFloorMaterial.TILE: "mdi:apps",
     DreameVacuumFloorMaterial.WOOD: "mdi:pine-tree-box",
+    DreameVacuumFloorMaterial.MEDIUM_PILE_CARPET: "mdi:rug",
+    DreameVacuumFloorMaterial.LOW_PILE_CARPET: "mdi:rug",
+    DreameVacuumFloorMaterial.CARPET: "mdi:rug",
 }
 
 FLOOR_MATERIAL_DIRECTION_TO_ICON = {
@@ -205,6 +209,8 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         value_int_fn=lambda value, device: DreameVacuumCarpetCleaning[value.upper()].value,
         entity_category=EntityCategory.CONFIG,
         exists_fn=lambda description, device: device.capability.mop_pad_unmounting
+        or device.capability.auto_carpet_cleaning
+        or device.capability.mop_pad_lifting_plus
         and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSelectEntityDescription(
@@ -227,6 +233,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         value_int_fn=lambda value, device: int(value[0]),
         exists_fn=lambda description, device: not device.capability.mop_clean_frequency
         and DreameVacuumEntityDescription().exists_fn(description, device),
+        available_fn=lambda device: not device.status.smart_drying and not device.status.silent_drying,
     ),
     DreameVacuumSelectEntityDescription(
         property_key=DreameVacuumProperty.MOP_WASH_LEVEL,
@@ -234,8 +241,11 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         value_int_fn=lambda value, device: DreameVacuumMopWashLevel[value.upper()].value,
         entity_category=None,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.self_wash_base and not device.capability.smart_mop_washing
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.capability.self_wash_base
+            and not device.capability.smart_mop_washing
         ),
+        available_fn=lambda device: not device.status.ultra_clean_mode and device.status.self_clean,
     ),
     DreameVacuumSelectEntityDescription(
         property_key=DreameVacuumProperty.VOICE_ASSISTANT_LANGUAGE,
@@ -395,27 +405,21 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
     ),
     DreameVacuumSelectEntityDescription(
         key="mop_clean_frequency",
-        icon="mdi:texture-box",
-        options=lambda device, segment: (
-            [f"10{UNIT_AREA}", f"15{UNIT_AREA}", f"20{UNIT_AREA}", f"25{UNIT_AREA}"]
-            if device.capability.mop_pad_swing
-            else [f"8{UNIT_AREA}", f"10{UNIT_AREA}", f"5{UNIT_AREA}"]
-        ),
+        icon_fn=lambda value, device: "mdi:home-switch" if device.status.self_clean_value == 0 else "mdi:texture-box",
         entity_category=None,
-        value_fn=lambda value, device: f"{device.status.self_clean_value}{UNIT_AREA}",
-        value_int_fn=lambda value, device: int(value.replace(UNIT_AREA, "")),
+        value_int_fn=lambda value, device: 0 if value == "by_room" else int(value.replace(UNIT_AREA, "")),
         exists_fn=lambda description, device: device.capability.self_wash_base
         and device.capability.mop_clean_frequency,
-    ),    
+    ),
     DreameVacuumSelectEntityDescription(
         key="washing_mode",
         icon="mdi:water-opacity",
         entity_category=None,
         value_int_fn=lambda value, device: DreameVacuumWashingMode[value.upper()].value,
         exists_fn=lambda description, device: bool(
-            device.capability.smart_mop_washing
-            and DreameVacuumEntityDescription().exists_fn(description, device)
+            device.capability.smart_mop_washing and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
+        available_fn=lambda device: not device.status.smart_mop_washing and device.status.self_clean,
     ),
     DreameVacuumSelectEntityDescription(
         key="map_rotation",
@@ -636,7 +640,6 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             and not device.status.cruising
             and device.status.has_saved_map
             and not device.status.fast_mapping
-            and not device.status.cleangenius_cleaning
         ),
         value_fn=lambda device, segment: str(segment.order) if segment.order else STATE_NOT_SET,
         exists_fn=lambda description, device: device.capability.customized_cleaning,

@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "Naprava je že konfigurirana",
-      "cannot_connect": "Povezava ni uspela."
+      "cannot_connect": "Povezava ni uspela.",
+      "reauth_successful": "Ponovna overitev je bila uspešna"
     },
     "error": {
       "cannot_connect": "Povezava ni uspela.",
       "unsupported": "Naprava ni podprta",
       "wrong_token": "Napaka pri preverjanju, napačen žeton",
-      "2fa_required": "Potrebna je prijava z 2FA\n{url}",
+      "2fa_failed": "Preverjanje ni uspelo.",
       "credentials_incomplete": "Nepravilni podatki za prijavo, prosimo izpolnite uporabniško ime, geslo in državo",
       "login_error": "Prijava ni uspela, preverite podatke za prijavo.",
       "no_devices": "V tem računu v izbrani državi ni bilo najdenih podprtih naprav."
@@ -36,6 +37,12 @@
         },
         "description": "Prijavite se v Xiaomi Miio oblak, glejte https://www.openhab.org/addons/bindings/miio/#country-servers za izbiro strežnika."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Dvofaktorska potrditvena koda"
+        },
+        "description": "## Za prijavo je potrebna varnostna preverba\nOdprite stran za preverjanje in pošljite potrditveno kodo na mobilni telefon ali e-pošto. Ko prejmete kodo, je ne preverjajte na spletni strani. Vrnite se v HomeAssistant in jo vnesite v spodnje vnosno polje.\n### [Pošlji potrditveno kodo]({url})"
+      },
       "dreame": {
         "data": {
           "username": "Uporabniško ime",
@@ -44,11 +51,25 @@
         },
         "description": "Prijavite se v Dreamehome oblak."
       },
+      "mova": {
+        "data": {
+          "username": "Uporabniško ime",
+          "password": "Geslo",
+          "country": "Država strežnika"
+        },
+        "description": "Prijavite se v Movahome oblak."
+      },
       "devices": {
         "data": {
           "devices": "Podprte naprave"
         },
         "description": "Prosimo, izberite napravo Dreame Vacuum, ki jo želite nastaviti."
+      },
+      "donation": {
+        "data": {
+          "donated": "Donacija je bila opravljena"
+        },
+        "description": "## Ne pozabite podpreti projekta.{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "Zemljevid nizke ločljivosti",
           "square": "Kvadratni zemljevid",
           "configuration_type": "Vrsta konfiguracije",
-          "prefer_cloud": "Raje uporabljajte povezavo v oblak"
+          "prefer_cloud": "Raje uporabljajte povezavo v oblak",
+          "donated": "Donacija je bila opravljena"
         }
       }
     },
@@ -132,7 +154,8 @@
           "remove_mop": "Odstranite mop",
           "adaptation_without_route": "Prilagoditev brez poti",
           "vacuum_and_mop": "Sesanje in brisanje",
-          "ignore": "Prezri"
+          "ignore": "Prezri",
+          "cross": "Prečkati"
         }
       },
       "mop_wash_level": {
@@ -195,6 +218,11 @@
         "state": {
           "by_area": "Po območju",
           "by_time": "Po času",
+          "by_room": "Po sobi"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
           "by_room": "Po sobi"
         }
       },
@@ -728,6 +756,16 @@
         }
       }
     },
+    "vacuum_start_shortcut": {
+      "name": "Zaženi bližnjico",
+      "description": "Zaženi opravilo bližnjice. (Samo na podprtih napravah)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID bližnjice",
+          "description": "ID bližnjice."
+        }
+      }
+    },
     "vacuum_remote_control_move_step": {
       "name": "Daljinsko upravljanje premika koraka",
       "description": "Daljinsko upravljanje premakne robota za en korak.",
@@ -844,7 +882,7 @@
         },
         "file_url": {
           "name": "URL datoteke",
-          "description": "URL shranjene datoteke bz2.gz ali tar.gz."
+          "description": "URL shranjene datoteke tbz2.gz ali tar.gz."
         }
       }
     },
@@ -937,6 +975,28 @@
         "repeats": {
           "name": "Ponovitve",
           "description": "Število čiščenj za vsako sobo."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Nastavi prilagojeno čiščenje preprog",
+      "description": "Nastavi prilagojene nastavitve čiščenja preprog. (Samo na podprtih napravah)",
+      "fields": {
+        "id": {
+          "name": "ID preproge",
+          "description": "ID-ji preprog."
+        },
+        "type": {
+          "name": "Vrsta predmeta",
+          "description": "Vrsta predmeta z danim ID-jem. (0 = Samodejno zaznana preproga, 1 = Ročno ustvarjena preproga, 2 = Preproga sobe (če je podprto))"
+        },
+        "carpet_cleaning": {
+          "name": "Čiščenje preproge",
+          "description": "Prilagojena nastavitev čiščenja za vsako preprogo."
+        },
+        "carpet_settings": {
+          "name": "Nastavitve preproge",
+          "description": "Prilagojene nastavitve za vsako preprogo z naborom omogočenih nastavitev."
         }
       }
     },

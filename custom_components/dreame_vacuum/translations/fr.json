@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "L'appareil est déjà configuré",
-      "cannot_connect": "Impossible d'établir la connexion."
+      "cannot_connect": "Impossible d'établir la connexion.",
+      "reauth_successful": "La réauthentification a réussi"
     },
     "error": {
       "cannot_connect": "Impossible d'établir la connexion.",
       "unsupported": "L'appareil n'est pas pris en charge.",
       "wrong_token": "Erreur de somme de contrôle, mauvais jeton",
-      "2fa_required": "Connexion à double facteur requise\n{url}",
+      "2fa_failed": "Vérification échouée.",
       "credentials_incomplete": "Identifiants incomplets, merci de renseigner le nom d'utilisateur, le mot de passe et le pays",
       "login_error": "Impossible de se connecter, vérifiez vos identifiants.",
       "no_devices": "Aucun appareil compatible n'a été trouvé sur ce compte pour le pays sélectionné."
@@ -36,6 +37,12 @@
         },
         "description": "Connexion à Xiaomi Miio cloud, consultez https://www.openhab.org/addons/bindings/miio/#country-servers pour déterminer le serveur cloud à utiliser."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Code de vérification à deux facteurs"
+        },
+        "description": "## Cette connexion nécessite une vérification de sécurité\nVeuillez ouvrir la page de vérification pour envoyer le code de vérification mobile/email. Après avoir reçu le code de vérification, ne le vérifiez pas sur la page web. Revenez à HomeAssistant et saisissez-le dans la zone de saisie ci-dessous.\n### [Envoyer le code de vérification]({url})"
+      },
       "dreame": {
         "data": {
           "username": "Nom d'utilisateur",
@@ -44,11 +51,25 @@
         },
         "description": "Connexion à Dreamehome cloud."
       },
+      "mova": {
+        "data": {
+          "username": "Nom d'utilisateur",
+          "password": "Mot de passe",
+          "country": "Pays du serveur"
+        },
+        "description": "Connexion à Movahome cloud."
+      },
       "devices": {
         "data": {
           "devices": "Appareils pris en charge"
         },
         "description": "Merci de sélectionner l'aspirateur Dreame que vous souhaitez configurer."
+      },
+      "donation": {
+        "data": {
+          "donated": "J’ai fait un don"
+        },
+        "description": "## N'oubliez pas de soutenir le projet.{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "Carte basse résolution",
           "square": "Carte carrée",
           "configuration_type": "Type de configuration",
-          "prefer_cloud": "Privilégier la connexion cloud"
+          "prefer_cloud": "Privilégier la connexion cloud",
+          "donated": "J’ai fait un don"
         }
       }
     },
@@ -132,7 +154,8 @@
           "remove_mop": "Retirer la serpillière",
           "adaptation_without_route": "Adaptation sans itinéraire",
           "vacuum_and_mop": "Aspirateur et serpillière",
-          "ignore": "Ignorer"
+          "ignore": "Ignorer",
+          "cross": "Traverser"
         }
       },
       "mop_wash_level": {
@@ -195,6 +218,11 @@
         "state": {
           "by_area": "Par zone",
           "by_time": "Par heure",
+          "by_room": "Par chambre"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
           "by_room": "Par chambre"
         }
       },
@@ -730,6 +758,16 @@
         }
       }
     },
+    "vacuum_start_shortcut": {
+      "name": "Démarrer le raccourci",
+      "description": "Démarre une tâche de raccourci. (Uniquement sur les appareils compatibles)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID du raccourci",
+          "description": "ID du raccourci."
+        }
+      }
+    },
     "vacuum_remote_control_move_step": {
       "name": "Étape de déplacement de la télécommande",
       "description": "Contrôlez à distance le déplacement du robot d'une étape.",
@@ -846,7 +884,7 @@
         },
         "file_url": {
           "name": "URL du fichier",
-          "description": "URL du fichier bz2.gz ou tar.gz enregistré"
+          "description": "URL du fichier tbz2.gz ou tar.gz enregistré"
         }
       }
     },
@@ -939,6 +977,28 @@
         "repeats": {
           "name": "Répétitions",
           "description": "Horaires de ménage pour chaque pièce."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Définir le nettoyage personnalisé du tapis",
+      "description": "Définit les paramètres de nettoyage personnalisés pour les tapis. (Uniquement sur les appareils compatibles)",
+      "fields": {
+        "id": {
+          "name": "ID du tapis",
+          "description": "ID des tapis."
+        },
+        "type": {
+          "name": "Type d'objet",
+          "description": "Type de l'objet avec l'ID. (0 = Tapis détecté automatiquement, 1 = Tapis créé manuellement, 2 = Tapis de chambre (si pris en charge))"
+        },
+        "carpet_cleaning": {
+          "name": "Nettoyage du tapis",
+          "description": "Paramètre de nettoyage personnalisé du tapis pour chaque tapis."
+        },
+        "carpet_settings": {
+          "name": "Paramètres du tapis",
+          "description": "Paramètre de réglage personnalisé du tapis pour chaque tapis avec un tableau de paramètres activés."
         }
       }
     },

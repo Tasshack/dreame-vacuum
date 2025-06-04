@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "Device is already configured",
-      "cannot_connect": "Failed to connect."
+      "cannot_connect": "Failed to connect.",
+      "reauth_successful": "Reauthentication is successful"
     },
     "error": {
       "cannot_connect": "Failed to connect.",
       "unsupported": "Device is not supported",
       "wrong_token": "Checksum error, wrong token",
-      "2fa_required": "2FA Login required\n{url}",
+      "2fa_failed": "Verification failed.",
       "credentials_incomplete": "Credentials incomplete, please fill in username, password and country",
       "login_error": "Could not login, check the credentials.",
       "no_devices": "No supported devices found in this account on selected country."
@@ -35,6 +36,12 @@
           "prefer_cloud": "Prefer cloud connection"
         },
         "description": "Log in to the Xiaomi Miio cloud, see https://www.openhab.org/addons/bindings/miio/#country-servers for the cloud server to use."
+      },      
+      "2fa": {
+        "data": {
+          "verification_code": "Two-factor verification code"
+        },
+        "description": "## This login requires security verification\nPlease open the verification page to send the mobile/email verification code. After receiving the verification code, do not verify it on the webpage. Go back to HomeAssistant and enter it in the input box below.\n### [Send Verification Code]({url})"
       },
       "dreame": {
         "data": {
@@ -44,11 +51,25 @@
         },
         "description": "Log in to the Dreamehome cloud."
       },
+      "mova": {
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "country": "Server country"
+        },
+        "description": "Log in to the Movahome cloud."
+      },
       "devices": {
         "data": {
           "devices": "Supported Devices"
         },
         "description": "Please select the Dreame Vacuum device you want to setup."
+      },
+      "donation": {
+        "data": {
+          "donated": "Donated"
+        },
+        "description": "## Do not forget to support the project.{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "Low resolution map",
           "square": "Square map",
           "configuration_type": "Configuration type",
-          "prefer_cloud": "Prefer cloud connection"
+          "prefer_cloud": "Prefer cloud connection",
+          "donated": "Donated"
         }
       }
     },
@@ -132,7 +154,8 @@
           "remove_mop": "Remove Mop",
           "adaptation_without_route": "Adaptation Without Route",
           "vacuum_and_mop": "Vacuum and Mop",
-          "ignore": "Ignore"
+          "ignore": "Ignore",
+          "cross": "Cross"
         }
       },
       "mop_wash_level": {
@@ -155,7 +178,7 @@
           "high_frequency": "High Frequency",
           "low_frequency": "Low Frequency"
         }
-      },      
+      },
       "mop_pad_swing": {
         "state": {
           "off": "Off",
@@ -163,7 +186,7 @@
           "daily": "Daily",
           "weekly": "Weekly"
         }
-      },            
+      },
       "mop_extend_frequency": {
         "state": {
           "standard": "Standard",
@@ -197,6 +220,11 @@
           "by_time": "By Time",
           "by_room": "By Room"
         }
+      },      
+      "mop_clean_frequency": {
+        "state": {
+          "by_room": "By Room"
+        }
       },
       "auto_empty_mode": {
         "state": {
@@ -224,7 +252,7 @@
           "routine_cleaning": "Routine Cleaning",
           "deep_cleaning": "Deep Cleaning"
         }
-      },      
+      },
       "cleangenius_mode": {
         "state": {
           "vacuum_and_mop": "Vacuum and Mop",
@@ -566,7 +594,7 @@
           "draining_successful": "Draining successful",
           "draining_failed": "Draining failed"
         }
-      },      
+      },
       "clean_water_tank_status": {
         "state": {
           "unknown": "Unknown",
@@ -728,6 +756,16 @@
         }
       }
     },
+    "vacuum_start_shortcut": {
+      "name": "Start Shortcut",
+      "description": "Start a shortcut task. (Only on supported devices)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Shortcut ID",
+          "description": "ID of the shortcut."
+        }
+      }
+    },
     "vacuum_remote_control_move_step": {
       "name": "Remote Control Move Step",
       "description": "Remotely control move the bot one step.",
@@ -844,7 +882,7 @@
         },
         "file_url": {
           "name": "File Url",
-          "description": "Url of the saved bz2.gz or tar.gz file"
+          "description": "Url of the saved tbz2.gz or tar.gz file"
         }
       }
     },
@@ -929,6 +967,10 @@
         "water_volume": {
           "name": "Water Volume",
           "description": "Water volume for each room."
+        },        
+        "wetness_level": {
+          "name": "Wetness Level",
+          "description": "Wetness level for each room (On supported devices)."
         },
         "cleaning_mode": {
           "name": "Cleaning Mode",
@@ -937,6 +979,28 @@
         "repeats": {
           "name": "Repeats",
           "description": "Cleaning times for each room."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Set Custom Carpet Cleaning",
+      "description": "Set custom cleaning setting for carpets. (Only on supported devices)",
+      "fields": {
+        "id": {
+          "name": "Carpet ID",
+          "description": "Carpet IDs."
+        },
+        "type": {
+          "name": "Type of the object",
+          "description": "Type of the object with the ID. (0 = Automatically Detected Carpet, 1 = Manually Created Carpet, 2 = Room Carpet (If supported))"
+        },
+        "carpet_cleaning": {
+          "name": "Carpet Cleaning",
+          "description": "Custom carpet cleaning setting for each carpet."
+        },
+        "carpet_settings": {
+          "name": "Carpet Settings",
+          "description": "Custom carpet settings setting for each carpet with an array of enabled settings."
         }
       }
     },

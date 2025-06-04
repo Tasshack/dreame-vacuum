@@ -16,9 +16,11 @@ from homeassistant.const import (
     ATTR_ENTITY_ID,
 )
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import generate_entity_id
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+
 from .dreame import DreameVacuumDevice, DreameVacuumProperty
 from .dreame.resources import (
     CONSUMABLE_IMAGE,
@@ -32,6 +34,7 @@ from .const import (
     CONF_COUNTRY,
     CONF_MAC,
     CONF_DID,
+    CONF_AUTH_KEY,
     CONF_ACCOUNT_TYPE,
     CONF_PREFER_CLOUD,
     CONTENT_TYPE,
@@ -41,7 +44,6 @@ from .const import (
     NOTIFICATION_RESUME_CLEANING_NOT_PERFORMED,
     NOTIFICATION_REPLACE_MULTI_MAP,
     NOTIFICATION_REPLACE_MAP,
-    NOTIFICATION_2FA_LOGIN,
     NOTIFICATION_DRAINAGE_COMPLETED,
     NOTIFICATION_DRAINAGE_FAILED,
     NOTIFICATION_ID_DUST_COLLECTION,
@@ -66,7 +68,6 @@ from .const import (
     NOTIFICATION_ID_INFORMATION,
     NOTIFICATION_ID_CONSUMABLE,
     NOTIFICATION_ID_REPLACE_TEMPORARY_MAP,
-    NOTIFICATION_ID_2FA_LOGIN,
     NOTIFICATION_ID_LOW_WATER,
     NOTIFICATION_ID_DRAINAGE_STATUS,
     EVENT_TASK_STATUS,
@@ -74,7 +75,6 @@ from .const import (
     EVENT_WARNING,
     EVENT_ERROR,
     EVENT_INFORMATION,
-    EVENT_2FA_LOGIN,
     EVENT_LOW_WATER,
     EVENT_DRAINAGE_STATUS,
     CONSUMABLE_MAIN_BRUSH,
@@ -108,6 +108,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         self._token = entry.data[CONF_TOKEN]
         self._host = entry.data[CONF_HOST]
         self._notify = entry.options.get(CONF_NOTIFY, True)
+        self._auth_key = entry.data.get(CONF_AUTH_KEY)
         self._entry = entry
         self._ready = False
         self._available = False
@@ -116,7 +117,6 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         self._low_water = False
         self._drainage_status = None
         self._washing = None
-        self._two_factor_url = None
 
         LOGGER.info("Integration loading: %s", entry.data[CONF_NAME])
         self._device = DreameVacuumDevice(
@@ -130,6 +130,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             entry.options.get(CONF_PREFER_CLOUD, False),
             entry.data.get(CONF_ACCOUNT_TYPE, "mi"),
             entry.data.get(CONF_DID),
+            self._auth_key,
         )
 
         self._device.listen(self._dust_collection_changed, DreameVacuumProperty.DUST_COLLECTION)
@@ -384,12 +385,8 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             )
 
     def _create_persistent_notification(self, content, notification_id) -> None:
-        if (
-            not self.device.disconnected
-            and self.device.device_connected
-            and (self._notify or notification_id == NOTIFICATION_ID_2FA_LOGIN)
-        ):
-            if isinstance(self._notify, list) and notification_id != NOTIFICATION_ID_2FA_LOGIN:
+        if not self.device.disconnected and self.device.device_connected and self._notify:
+            if isinstance(self._notify, list):
                 if notification_id == NOTIFICATION_ID_CLEANUP_COMPLETED:
                     if NOTIFICATION_ID_CLEANUP_COMPLETED not in self._notify:
                         return
@@ -432,10 +429,6 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                         self._device.clear_warning()
                     self._has_warning = self._device.status.has_warning
 
-            if self._two_factor_url:
-                if f"{DOMAIN}_{self._device.mac}_{NOTIFICATION_ID_2FA_LOGIN}" not in notifications:
-                    self._two_factor_url = None
-
             if self._low_water:
                 if f"{DOMAIN}_{self._device.mac}_{NOTIFICATION_ID_LOW_WATER}" not in notifications:
                     if NOTIFICATION_ID_WARNING in self._notify:
@@ -460,10 +453,17 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             LOGGER.info("Integration starting...")
             await self.hass.async_add_executor_job(self._device.update)
             if self._device and not self._device.disconnected:
+                if self._device.auth_failed:
+                    self._device.listen(None)
+                    self._device.disconnect()
+                    raise ConfigEntryAuthFailed() from None
                 self._device.schedule_update()
                 self.async_set_updated_data()
                 return self._device
         except Exception as ex:
+            if self._device.auth_failed:
+                raise ConfigEntryAuthFailed("Authentication Failed!") from ex
+
             LOGGER.warning("Integration start failed: %s", traceback.format_exc())
             if self._device is not None:
                 self._device.listen(None)
@@ -503,17 +503,15 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 LOGGER.info("Update Host Config: %s", self._host)
                 self.hass.config_entries.async_update_entry(self._entry, data=data)
 
-        if self._device.two_factor_url:
-            self._create_persistent_notification(
-                f"{NOTIFICATION_2FA_LOGIN}[Click for 2FA Login]({self._device.two_factor_url})",
-                NOTIFICATION_ID_2FA_LOGIN,
-            )
-            if self._two_factor_url != self._device.two_factor_url:
-                self._fire_event(EVENT_2FA_LOGIN, {"url": self._device.two_factor_url})
-        else:
-            self._remove_persistent_notification(NOTIFICATION_ID_2FA_LOGIN)
-
-        self._two_factor_url = self._device.two_factor_url
+            if self._device._protocol.cloud and self._device._protocol.cloud.auth_key != self._auth_key:
+                self._auth_key = self._device._protocol.cloud.auth_key
+                data = self._entry.data.copy()
+                data[CONF_AUTH_KEY] = self._auth_key
+                self.hass.config_entries.async_update_entry(self._entry, data=data)
+        elif self._device.auth_failed:
+            ## Reload entry to trigger reauth and unload
+            self._entry.async_schedule_reload(self._entry.entry_id)
+            return
 
         self._available = self._device and self._device.available
         super().async_set_updated_data(self._device)

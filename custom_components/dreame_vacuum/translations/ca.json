@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "El dispositiu ja està configurat",
-      "cannot_connect": "No s'ha pogut connectar."
+      "cannot_connect": "No s'ha pogut connectar.",
+      "reauth_successful": "La reautenticació s'ha completat amb èxit"
     },
     "error": {
       "cannot_connect": "No s'ha pogut connectar.",
       "unsupported": "Aquest dispositiu no és compatible",
       "wrong_token": "Error de verificació, testimoni erroni",
-      "2fa_required": "Cal iniciar sessió 2FA {url}",
+      "2fa_failed": "Verificació fallida.",
       "credentials_incomplete": "Credencials incompletes, introdueix el nom d'usuari, la contrasenya i el país",
       "login_error": "No s'ha pogut iniciar la sessió, comproveu les credencials.",
       "no_devices": "No s'ha trobat cap dispositiu compatible en aquest compte al país seleccionat."
@@ -36,6 +37,12 @@
         },
         "description": "Inicia sessió al núvol Xiaomi Miio, consulta https://www.openhab.org/addons/bindings/miio/#country-servers per obtenir el servidor al núvol."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Codi de verificació en dos passos"
+        },
+        "description": "## Aquest inici de sessió requereix verificació de seguretat\nObre la pàgina de verificació per enviar el codi de verificació per mòbil/correu electrònic. Un cop rebut el codi, no el verifiquis a la pàgina web. Torna a HomeAssistant i introdueix-lo al quadre de text a continuació.\n### [Envia el codi de verificació]({url})"
+      },
       "dreame": {
         "data": {
           "username": "Nom d'usuari",
@@ -44,11 +51,25 @@
         },
         "description": "Inicieu sessió al núvol de Dreamehome."
       },
+      "mova": {
+        "data": {
+          "username": "Nom d'usuari",
+          "password": "Contrasenya",
+          "country": "País del servidor"
+        },
+        "description": "Inicieu sessió al núvol de Movahome."
+      },
       "devices": {
         "data": {
           "devices": "Dispositius suportats"
         },
         "description": "Seleccioneu el dispositiu aspirador Dreame que voleu configurar."
+      },
+      "donation": {
+        "data": {
+          "donated": "He fet una donació"
+        },
+        "description": "## No oblideu donar suport al projecte.{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "Mapa de baixa resolució",
           "square": "Mapa quadrat",
           "configuration_type": "Tipus de configuració",
-          "prefer_cloud": "Es prefereix connexió al núvol"
+          "prefer_cloud": "Es prefereix connexió al núvol",
+          "donated": "He fet una donació"
         }
       }
     },
@@ -132,7 +154,8 @@
           "remove_mop": "Treure la mopa",
           "adaptation_without_route": "Adaptació sense ruta",
           "vacuum_and_mop": "Aspira i frega",
-          "ignore": "Ignora"
+          "ignore": "Ignora",
+          "cross": "Creuar"
         }
       },
       "mop_wash_level": {
@@ -195,6 +218,11 @@
         "state": {
           "by_area": "Per àrea",
           "by_time": "Per temps",
+          "by_room": "Per habitació"
+        }
+      },      
+      "mop_clean_frequency": {
+        "state": {
           "by_room": "Per habitació"
         }
       },
@@ -728,6 +756,16 @@
         }
       }
     },
+    "vacuum_start_shortcut": {
+      "name": "Iniciar drecera",
+      "description": "Inicia una tasca de drecera. (Només en dispositius compatibles)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID de la drecera",
+          "description": "ID de la drecera."
+        }
+      }
+    },
     "vacuum_remote_control_move_step": {
       "name": "Pas de moviment de control remot de l'aspirador",
       "description": "Controlar remotament moure l'aspirador un pas.",
@@ -844,7 +882,7 @@
         },
         "file_url": {
           "name": "Url del fitxer",
-          "description": "Url del fitxer desat com a bz2.gz o tar.gz"
+          "description": "Url del fitxer desat com a tbz2.gz o tar.gz"
         }
       }
     },
@@ -937,6 +975,28 @@
         "repeats": {
           "name": "Repeticions",
           "description": "Temps de neteja per habitació."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Establir neteja personalitzada de catifes",
+      "description": "Estableix la configuració de neteja personalitzada per a catifes. (Només en dispositius compatibles)",
+      "fields": {
+        "id": {
+          "name": "ID de la catifa",
+          "description": "IDs de les catifes."
+        },
+        "type": {
+          "name": "Tipus d'objecte",
+          "description": "Tipus de l'objecte amb la ID. (0 = Catifa detectada automàticament, 1 = Catifa creada manualment, 2 = Catifa d'habitació (si es suporta))"
+        },
+        "carpet_cleaning": {
+          "name": "Neteja de la catifa",
+          "description": "Configuració personalitzada de neteja de la catifa per a cada catifa."
+        },
+        "carpet_settings": {
+          "name": "Configuracions de la catifa",
+          "description": "Configuració personalitzada de les configuracions de la catifa per a cada catifa amb una matriu de configuracions habilitades."
         }
       }
     },

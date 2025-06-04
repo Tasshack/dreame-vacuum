@@ -471,7 +471,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     _legacy_webrtc_provider = None
     _supports_native_sync_webrtc = False
     _supports_native_async_webrtc = False
-    
+
     def __init__(
         self,
         coordinator: DreameVacuumDataUpdateCoordinator,
@@ -496,6 +496,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         self._last_updated = -1
         self._frame_id = -1
         self._last_map_request = 0
+        self._last_rendered = -1
         self._attr_is_streaming = True
         self._calibration_points = None
         self._device_active = None
@@ -614,6 +615,13 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 if self.map_index == 0 and self.device:
                     self.device.update_map()
                 self.update()
+                if self._last_updated and self._last_rendered != self._last_updated and self._renderer.render_complete:
+                    await self._update_image(
+                        self.device.get_map_for_render(self._map_data),
+                        self.device.status.robot_status,
+                        self.device.status.station_status,
+                    )
+                    self._last_rendered = self._last_updated
             self._should_poll = True
         return self._image
 
@@ -682,35 +690,17 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             elif map_data.timestamp_ms:
                 self._state = datetime.fromtimestamp(int(map_data.timestamp_ms / 1000))
 
-            if (
-                self.map_index == 0
-                and not self.map_data_json
-                and map_data.last_updated != self._last_updated
-                and not self._renderer.render_complete
-            ):
-                LOGGER.warning("Waiting render complete")
-
-            if self._renderer.render_complete and map_data.last_updated != self._last_updated:
-                if self.map_index == 0 and not self.map_data_json:
-                    LOGGER.debug("Update map")
-
+            if map_data.last_updated != self._last_updated:
                 self._last_updated = map_data.last_updated
                 self._frame_id = map_data.frame_id
                 self._default_map = False
-
-                self.coordinator.hass.async_create_task(
-                    self._update_image(
-                        self.device.get_map_for_render(self._map_data),
-                        self.device.status.robot_status,
-                        self.device.status.station_status,
-                    )
-                )
         elif not self._default_map:
             self._state = STATE_UNAVAILABLE
             self._image = self._default_map_image
             self._default_map = True
             self._frame_id = -1
             self._last_updated = -1
+            self._last_rendered = -1
 
     async def obstacle_image(self, index, box=False, crop=False):
         if self.map_index == 0 and not self.map_data_json:

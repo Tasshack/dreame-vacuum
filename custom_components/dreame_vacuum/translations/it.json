@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "Il dispositivo è già stato configurato",
-      "cannot_connect": "Impossibile connettersi."
+      "cannot_connect": "Impossibile connettersi.",
+      "reauth_successful": "La riautenticazione è andata a buon fine"
     },
     "error": {
       "cannot_connect": "Impossibile connettersi.",
       "unsupported": "Dispositivo non supportato",
       "wrong_token": "Checksum error, token errato",
-      "2fa_required": "Richiesta autenticazione 2FA\n{url}",
+      "2fa_failed": "Verifica fallita.",
       "credentials_incomplete": "Credenziali incomplete, per favore inserisci username, password e località",
       "login_error": "Controlla le tue credenziali.",
       "no_devices": "Nessun dispositivo supportato è stato trovato in questo account nella posizione selezionata."
@@ -36,6 +37,12 @@
         },
         "description": "Effettua il login su Xiaomi Miio cloud, consulta https://www.openhab.org/addons/bindings/miio/#country-servers per sapere quale server devi selezionare."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Codice di verifica a due fattori"
+        },
+        "description": "## Questo accesso richiede una verifica di sicurezza\nSi prega di aprire la pagina di verifica per inviare il codice di verifica mobile/email. Dopo aver ricevuto il codice di verifica, non verificarlo sulla pagina web. Torna su HomeAssistant e inseriscilo nel campo di input sottostante.\n### [Invia codice di verifica]({url})"
+      },
       "dreame": {
         "data": {
           "username": "Username",
@@ -44,11 +51,25 @@
         },
         "description": "Effettua il login su Dreamehome cloud."
       },
+      "mova": {
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "country": "Località del Server"
+        },
+        "description": "Effettua il login su Movahome cloud."
+      },
       "devices": {
         "data": {
           "devices": "Dispositivi Supportati"
         },
         "description": "Per favore seleziona il dispositivo Dreame che vuoi configurare."
+      },
+      "donation": {
+        "data": {
+          "donated": "Ho fatto una donazione"
+        },
+        "description": "## Non dimenticatevi di sostenere il progetto.{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "Mappa a bassa risoluzione",
           "square": "Mappa quadrata",
           "configuration_type": "Tipo di configurazione",
-          "prefer_cloud": "Preferisci la connessione cloud"
+          "prefer_cloud": "Preferisci la connessione cloud",
+          "donated": "Ho fatto una donazione"
         }
       }
     },
@@ -132,7 +154,8 @@
           "remove_mop": "Rimuovi la scopa",
           "adaptation_without_route": "Adattamento senza percorso",
           "vacuum_and_mop": "Aspira e lava",
-          "ignore": "Ignorare"
+          "ignore": "Ignorare",
+          "cross": "Attraversare"
         }
       },
       "mop_wash_level": {
@@ -195,6 +218,11 @@
         "state": {
           "by_area": "Per zona",
           "by_time": "Col tempo",
+          "by_room": "Per stanza"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
           "by_room": "Per stanza"
         }
       },
@@ -728,6 +756,16 @@
         }
       }
     },
+    "vacuum_start_shortcut": {
+      "name": "Avvia scorciatoia",
+      "description": "Avvia un'attività di scorciatoia. (Solo su dispositivi supportati)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID scorciatoia",
+          "description": "ID della scorciatoia."
+        }
+      }
+    },
     "vacuum_remote_control_move_step": {
       "name": "Passaggio di spostamento del telecomando",
       "description": "Controlla da remoto e muovi il bot di un passo.",
@@ -844,7 +882,7 @@
         },
         "file_url": {
           "name": "URL del file",
-          "description": "URL del file bz2.gz o tar.gz salvato"
+          "description": "URL del file tbz2.gz o tar.gz salvato"
         }
       }
     },
@@ -937,6 +975,28 @@
         "repeats": {
           "name": "Si ripete",
           "description": "Orari di pulizia per ogni camera."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Imposta pulizia personalizzata tappeto",
+      "description": "Imposta la configurazione di pulizia personalizzata per i tappeti. (Solo su dispositivi supportati)",
+      "fields": {
+        "id": {
+          "name": "ID tappeto",
+          "description": "ID dei tappeti."
+        },
+        "type": {
+          "name": "Tipo di oggetto",
+          "description": "Tipo dell'oggetto con l'ID. (0 = Tappeto rilevato automaticamente, 1 = Tappeto creato manualmente, 2 = Tappeto della stanza (se supportato))"
+        },
+        "carpet_cleaning": {
+          "name": "Pulizia tappeto",
+          "description": "Impostazione personalizzata della pulizia per ogni tappeto."
+        },
+        "carpet_settings": {
+          "name": "Impostazioni tappeto",
+          "description": "Impostazioni personalizzate per ogni tappeto con un array di opzioni abilitate."
         }
       }
     },

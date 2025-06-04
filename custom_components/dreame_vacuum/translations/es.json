@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "El dispositivo ya está configurado",
-      "cannot_connect": "No se pudo conectar."
+      "cannot_connect": "No se pudo conectar.",
+      "reauth_successful": "La reautenticación se ha realizado con éxito"
     },
     "error": {
       "cannot_connect": "No se pudo conectar.",
       "unsupported": "El dispositivo no es compatible",
       "wrong_token": "Error de suma de comprobación, token incorrecto",
-      "2fa_required": "Inicio de sesión 2FA requerido\n{url}",
+      "2fa_failed": "Verificación fallida.",
       "credentials_incomplete": "Credenciales incompletas, por favor introduzca el usuario, la contraseña y el país",
       "login_error": "No se pudo iniciar sesión en Xiaomi Miio Cloud, verifique las credenciales.",
       "no_devices": "No se encontraron dispositivos compatibles en esta cuenta de Xiaomi Miio cloud en el país seleccionado."
@@ -36,6 +37,12 @@
         },
         "description": "Inicie sesión en la nube de Xiaomi Miio, consulte https://www.openhab.org/addons/bindings/miio/#country-servers para seleccionar el servidor de la nube a utilizar."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Código de verificación de dos factores"
+        },
+        "description": "## Este inicio de sesión requiere verificación de seguridad\nPor favor, abra la página de verificación para enviar el código de verificación móvil/correo electrónico. Después de recibir el código de verificación, no lo verifique en la página web. Regrese a HomeAssistant e ingréselo en el cuadro de entrada a continuación.\n### [Enviar código de verificación]({url})"
+      },
       "dreame": {
         "data": {
           "username": "Usuario",
@@ -44,11 +51,25 @@
         },
         "description": "Iniciar sesión en la nube de Dreamehome."
       },
+      "mova": {
+        "data": {
+          "username": "Usuario",
+          "password": "Contraseña",
+          "country": "País del servidor"
+        },
+        "description": "Iniciar sesión en la nube de Movahome."
+      },
       "devices": {
         "data": {
           "devices": "Dispositivos compatibles"
         },
         "description": "Por favor seleccione el dispositivo Dreame Vacuum que desea configurar."
+      },
+      "donation": {
+        "data": {
+          "donated": "He hecho una donación"
+        },
+        "description": "## No olvides apoyar el proyecto.{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "Mapa de baja resolución",
           "square": "Mapa cuadrado",
           "configuration_type": "Tipo de configuración",
-          "prefer_cloud": "Priorizar conexión a la nube"
+          "prefer_cloud": "Priorizar conexión a la nube",
+          "donated": "He hecho una donación"
         }
       }
     },
@@ -132,7 +154,8 @@
           "remove_mop": "Quitar la mopa",
           "adaptation_without_route": "Adaptación sin ruta",
           "vacuum_and_mop": "Aspirado y mopeado",
-          "ignore": "Ignorar"
+          "ignore": "Ignorar",
+          "cross": "Cruzar"
         }
       },
       "mop_wash_level": {
@@ -195,6 +218,11 @@
         "state": {
           "by_area": "Por área",
           "by_time": "Por tiempo",
+          "by_room": "Por habitación"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
           "by_room": "Por habitación"
         }
       },
@@ -728,6 +756,16 @@
         }
       }
     },
+    "vacuum_start_shortcut": {
+      "name": "Iniciar acceso directo",
+      "description": "Inicia una tarea de acceso directo. (Solo en dispositivos compatibles)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID de acceso directo",
+          "description": "ID del acceso directo."
+        }
+      }
+    },
     "vacuum_remote_control_move_step": {
       "name": "Movimiento remoto por pasos",
       "description": "Controlar remotamente el movimiento del robot un paso.",
@@ -844,7 +882,7 @@
         },
         "file_url": {
           "name": "URL del archivo",
-          "description": "URL del archivo guardado bz2.gz o tar.gz"
+          "description": "URL del archivo guardado tbz2.gz o tar.gz"
         }
       }
     },
@@ -937,6 +975,28 @@
         "repeats": {
           "name": "Repeticiones",
           "description": "Veces de limpieza para cada habitación."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Establecer limpieza personalizada de alfombra",
+      "description": "Establece la configuración de limpieza personalizada para alfombras. (Solo en dispositivos compatibles)",
+      "fields": {
+        "id": {
+          "name": "ID de alfombra",
+          "description": "ID de las alfombras."
+        },
+        "type": {
+          "name": "Tipo de objeto",
+          "description": "Tipo del objeto con la ID. (0 = Alfombra detectada automáticamente, 1 = Alfombra creada manualmente, 2 = Alfombra de habitación (si es compatible))"
+        },
+        "carpet_cleaning": {
+          "name": "Limpieza de alfombra",
+          "description": "Configuración personalizada de limpieza de alfombra para cada alfombra."
+        },
+        "carpet_settings": {
+          "name": "Configuraciones de alfombra",
+          "description": "Configuración personalizada de ajustes de alfombra para cada alfombra con una matriz de ajustes habilitados."
         }
       }
     },

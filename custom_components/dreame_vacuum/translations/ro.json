@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "Dispozitivul este deja configurat",
-      "cannot_connect": "Conectare nereușită."
+      "cannot_connect": "Conectare nereușită.",
+      "reauth_successful": "Reautentificarea a fost realizată cu success"
     },
     "error": {
       "cannot_connect": "Conectare nereușită.",
       "unsupported": "Dispozitivul nu este suportat",
       "wrong_token": "Eroare de checksum, token greșit",
-      "2fa_required": "Autentificare 2FA necesară\n{url}",
+      "2fa_failed": "Verificare eșuată.",
       "credentials_incomplete": "Credențiale incomplete, vă rugăm să completați numele de utilizator, parola și țara",
       "login_error": "Nu s-a putut realiza autentificarea, verificați credențialele.",
       "no_devices": "Nu au fost găsite dispozitive suportate în acest cont pentru țara selectată."
@@ -36,6 +37,12 @@
         },
         "description": "Autentificați-vă în cloud-ul Xiaomi Miio, consultați https://www.openhab.org/addons/bindings/miio/#country-servers pentru serverul cloud de utilizat."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Cod de verificare în doi pași"
+        },
+        "description": "## Această autentificare necesită verificare de securitate\nDeschideți pagina de verificare pentru a trimite codul de verificare prin mobil/e-mail. După ce ați primit codul, nu îl verificați pe pagina web. Reveniți la HomeAssistant și introduceți-l în câmpul de mai jos.\n### [Trimite codul de verificare]({url})"
+      },
       "dreame": {
         "data": {
           "username": "Nume de utilizator",
@@ -44,11 +51,25 @@
         },
         "description": "Autentificați-vă în cloud-ul Dreamehome."
       },
+      "mova": {
+        "data": {
+          "username": "Nume de utilizator",
+          "password": "Parolă",
+          "country": "Țara serverului"
+        },
+        "description": "Autentificați-vă în cloud-ul Movahome."
+      },
       "devices": {
         "data": {
           "devices": "Dispozitive Suportate"
         },
         "description": "Vă rugăm să selectați dispozitivul Dreame Vacuum pe care doriți să-l configurați."
+      },
+      "donation": {
+        "data": {
+          "donated": "Am făcut o donație"
+        },
+        "description": "## Nu uitați să susțineți proiectul.{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "Hartă cu rezoluție scăzută",
           "square": "Hartă pătrată",
           "configuration_type": "Tip de configurare",
-          "prefer_cloud": "Preferă conexiunea cloud"
+          "prefer_cloud": "Preferă conexiunea cloud",
+          "donated": "Am făcut o donație"
         }
       }
     },
@@ -132,7 +154,8 @@
           "remove_mop": "Scoateți mopul",
           "adaptation_without_route": "Adaptare fără rută",
           "vacuum_and_mop": "Aspirare și ștergere",
-          "ignore": "Ignoră"
+          "ignore": "Ignoră",
+          "cross": "Traversare"
         }
       },
       "mop_wash_level": {
@@ -195,6 +218,11 @@
         "state": {
           "by_area": "După Arie",
           "by_time": "După Timp",
+          "by_room": "După Cameră"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
           "by_room": "După Cameră"
         }
       },
@@ -728,6 +756,16 @@
         }
       }
     },
+    "vacuum_start_shortcut": {
+      "name": "Pornește scurtătura",
+      "description": "Pornește o sarcină de scurtătură. (Doar pe dispozitive suportate)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID scurtătură",
+          "description": "ID-ul scurtăturii."
+        }
+      }
+    },
     "vacuum_remote_control_move_step": {
       "name": "Pas de Deplasare Control de la Distanță",
       "description": "Deplasează robotul cu un pas prin control de la distanță.",
@@ -844,7 +882,7 @@
         },
         "file_url": {
           "name": "URL Fișier",
-          "description": "Adresa URL a fișierului salvat bz2.gz sau tar.gz"
+          "description": "Adresa URL a fișierului salvat tbz2.gz sau tar.gz"
         }
       }
     },
@@ -937,6 +975,28 @@
         "repeats": {
           "name": "Repetări",
           "description": "Numărul de curățări pentru fiecare cameră."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Setează curățarea personalizată a covorului",
+      "description": "Setează configurarea personalizată de curățare pentru covoare. (Doar pe dispozitive suportate)",
+      "fields": {
+        "id": {
+          "name": "ID covor",
+          "description": "ID-urile covoarelor."
+        },
+        "type": {
+          "name": "Tipul obiectului",
+          "description": "Tipul obiectului cu ID-ul respectiv. (0 = Covor detectat automat, 1 = Covor creat manual, 2 = Covor de cameră (dacă este suportat))"
+        },
+        "carpet_cleaning": {
+          "name": "Curățare covor",
+          "description": "Configurare personalizată de curățare pentru fiecare covor."
+        },
+        "carpet_settings": {
+          "name": "Setări covor",
+          "description": "Setări personalizate pentru fiecare covor cu o listă de setări activate."
         }
       }
     },

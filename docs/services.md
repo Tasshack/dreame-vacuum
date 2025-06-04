@@ -235,6 +235,10 @@ TODO
 
 TODO
 
+### `dreame_vacuum.vacuum_start_shortcut_`
+
+TODO
+
 ### `dreame_vacuum.vacuum_remote_control_move_step`
 
 Send remote control command to vacuum. *(For use of a custom lovelace card)*
@@ -282,10 +286,13 @@ Set customized room cleaning parameters on current map.
 
 **Examples:**
 
-- Set room 1 fan speed to quiet, water level to low, cleaning times to 2 and room 2 fan speed to turbo, water level to medium, repeats to 1
+- Set room 1 fan speed to quiet, water level to low, cleaning times to 2 and room 5 fan speed to turbo, water level to medium, repeats to 1
     ```yaml
     service: dreame_vacuum.vacuum_set_custom_cleaning
     data:
+        segment_id: 
+          - 1
+          - 5
         suction_level: 
           - 0
           - 3
@@ -295,6 +302,18 @@ Set customized room cleaning parameters on current map.
         repeats: 
           - 2
           - 1
+    target:
+        entity_id: vacuum.vacuum
+    ```
+
+- Set room 3 wetness level to 16
+    ```yaml
+    service: dreame_vacuum.vacuum_set_custom_cleaning
+    data:
+        segment_id: 
+          - 3
+        wetness_level: 
+          - 16
     target:
         entity_id: vacuum.vacuum
     ```

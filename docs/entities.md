@@ -191,10 +191,8 @@
 | `clear_warning`   | Clear warning | Unavailable when there is no warning to clear
 | `start_fast_mapping`   | Start fast mapping | Unavailable when maximum map count reached
 | `start_mapping`   | Create new map with cleaning the whole floor | Unavailable when maximum map count reached
-| `start_washing`   | Manually start mop washing | Available on vacuums with self-wash base, unavailable when washing is not possible or already washing mop
-| `pause_washing`   | Pause mop washing | Available on vacuums with self-wash base, unavailable when robot is not currently washing mop
-| `start_drying`   | Manually start mop drying | Available on vacuums with self-wash base, unavailable when drying is not possible or already drying mop
-| `stop_drying`   | Stop mop drying | Available on vacuums with self-wash base, unavailable when robot is not currently drying mop
+| `self_clean_`   | Manually start/pause mop washing | Available on vacuums with self-wash base, unavailable when washing is not possible
+| `manual_drying`   | Manually starti/stop mop drying | Available on vacuums with self-wash base, unavailable when drying is not possible
 | `water_tank_draining`   | TODO | 
 | `base_station_self_repair`   | TODO | 
 | `start_recleaning`   | TODO | 

@@ -80,11 +80,16 @@ from .const import (
     INPUT_OBSTACLE_IGNORED,
     INPUT_KEY,
     INPUT_VALUE,
+    INPUT_ID,
+    INPUT_TYPE,
+    INPUT_CARPET_CLEANING,
+    INPUT_CARPET_SETTINGS,
     SERVICE_CLEAN_ZONE,
     SERVICE_CLEAN_SEGMENT,
     SERVICE_CLEAN_SPOT,
     SERVICE_GOTO,
     SERVICE_FOLLOW_PATH,
+    SERVICE_START_SHORTCUT,
     SERVICE_INSTALL_VOICE_PACK,
     SERVICE_MERGE_SEGMENTS,
     SERVICE_MOVE_REMOTE_CONTROL_STEP,
@@ -100,6 +105,7 @@ from .const import (
     SERVICE_BACKUP_MAP,
     SERVICE_SET_CLEANING_SEQUENCE,
     SERVICE_SET_CUSTOM_CLEANING,
+    SERVICE_SET_CUSTOM_CARPET_CLEANING,
     SERVICE_SET_RESTRICTED_ZONE,
     SERVICE_SET_CARPET_AREA,
     SERVICE_SET_VIRTUAL_THRESHOLD,
@@ -350,6 +356,14 @@ async def async_setup_entry(
     )
 
     platform.async_register_entity_service(
+        SERVICE_START_SHORTCUT,
+        {
+            vol.Required(INPUT_SHORTCUT_ID): vol.All(vol.Coerce(int)),
+        },
+        DreameVacuum.async_start_shortcut.__name__,
+    )
+
+    platform.async_register_entity_service(
         SERVICE_SET_RESTRICTED_ZONE,
         {
             vol.Optional(INPUT_WALL_ARRAY): vol.All(
@@ -584,6 +598,19 @@ async def async_setup_entry(
     )
 
     platform.async_register_entity_service(
+        SERVICE_SET_CUSTOM_CARPET_CLEANING,
+        {
+            vol.Required(INPUT_ID): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Required(INPUT_TYPE): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Optional(INPUT_CARPET_CLEANING): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Optional(INPUT_CARPET_SETTINGS): vol.Any(
+                [vol.Coerce(str)], [[vol.Coerce(str)]], [vol.Coerce(int)], [[vol.Coerce(int)]]
+            ),
+        },
+        DreameVacuum.async_set_custom_carpet_cleaning.__name__,
+    )
+
+    platform.async_register_entity_service(
         SERVICE_RESET_CONSUMABLE,
         {
             vol.Required(INPUT_CONSUMABLE): vol.In(
@@ -666,9 +693,9 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         self._attr_device_class = DOMAIN
         self._attr_name = coordinator.device.name
         self._attr_unique_id = f"{coordinator.device.mac}_" + DOMAIN
-        
+
         ## For backwards compatibility
-        try:            
+        try:
             module = importlib.import_module("homeassistant.components.vacuum")
             self._activity_class = module.VacuumActivity
         except:
@@ -834,6 +861,10 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     async def async_follow_path(self, points="") -> None:
         """Start a survaliance job."""
         await self._try_command("Unable to call follow_path: %s", self.device.follow_path, points)
+
+    async def async_start_shortcut(self, shortcut_id="") -> None:
+        """Start a shortct job."""
+        await self._try_command("Unable to call start_shortcut: %s", self.device.start_shortcut, shortcut_id)
 
     async def async_set_restricted_zone(self, walls="", zones="", no_mops="") -> None:
         """Create restricted zone."""
@@ -1061,6 +1092,24 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 custom_mopping_route,
                 cleaning_route,
                 wetness_level,
+            )
+
+    async def async_set_custom_carpet_cleaning(
+        self,
+        id,
+        type,
+        carpet_cleaning=None,
+        carpet_settings=None,
+    ) -> None:
+        """Set custom carpet cleaning"""
+        if id != "" and id is not None and type != "" and type is not None:
+            await self._try_command(
+                "Unable to call set_custom_carpet_cleaning: %s",
+                self.device.set_custom_carpet_cleaning,
+                id,
+                type,
+                carpet_cleaning,
+                carpet_settings,
             )
 
     async def async_install_voice_pack(self, lang_id, url, md5, size, **kwargs) -> None:
