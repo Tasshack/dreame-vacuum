@@ -274,5 +274,7 @@ To submit your changes please fork this repository and open a pull request.
 ## Do not forget to support the project!
 
 <a href="https://ko-fi.com/tasshack"><img width="300" src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/refs/heads/dev/.github/icons/kofi.png"/></a>
+
 <a href="https://paypal.me/tasshackK"><img width="300" src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/refs/heads/dev/.github/icons/paypal.png"></a>
+
 <a href="https://github.com/sponsors/Tasshack"><img width="300" src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/refs/heads/dev/.github/icons/github.png"></a>
