@@ -20,7 +20,7 @@ from miio.miioprotocol import MiIOProtocol
 
 from .exceptions import DeviceException
 
-VERSION: Final = "v2.0.0b18"
+VERSION: Final = "v2.0.0b19"
 DATA_URL: Final = (
     "aHR0cHM6Ly93d3cuZ29vZ2xlLWFuYWx5dGljcy5jb20vbXAvY29sbGVjdD9tZWFzdXJlbWVudF9pZD1HLTcwN1g2N0MzWlAmYXBpX3NlY3JldD1jX2taVDJlV1N1Q3Q4Q2swTGdtaE1n"
 )
@@ -940,7 +940,7 @@ class DreameVacuumMiHomeCloudProtocol:
                     location = data.get("location")
                     if location:
                         self._userId = data.get("userId", self._userId)
-                        self._ssecurity = data.get("ssecurity", self.ssecurity)
+                        self._ssecurity = data.get("ssecurity", self._ssecurity)
                         self._location = location
                         return True
 

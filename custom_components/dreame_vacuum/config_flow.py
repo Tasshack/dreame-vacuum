@@ -104,7 +104,7 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
                     ): bool,
                 }
             )
-            if self._config_entry.data.get(CONF_ACCOUNT_TYPE, ACCOUNT_TYPE_DREAME) == ACCOUNT_TYPE_MI:
+            if self._config_entry.data.get(CONF_ACCOUNT_TYPE, ACCOUNT_TYPE_MI) == ACCOUNT_TYPE_MI:
                 data_schema = data_schema.extend(
                     {
                         vol.Required(
@@ -137,7 +137,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         self.username: str | None = None
         self.password: str | None = None
         self.country: str = "eu"
-        self.account_type: str = ACCOUNT_TYPE_DREAME
+        self.account_type: str = ACCOUNT_TYPE_MI
         self.device_id: int | None = None
         self.prefer_cloud: bool = True
         self.low_resolution: bool = False
@@ -181,8 +181,8 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         self.username = user_input[CONF_USERNAME]
         self.password = user_input[CONF_PASSWORD]
         self.country = user_input[CONF_COUNTRY]
-        self.prefer_cloud = user_input.get(CONF_PREFER_CLOUD, True)
-        self.account_type = user_input.get(CONF_ACCOUNT_TYPE, ACCOUNT_TYPE_DREAME)
+        self.prefer_cloud = user_input.get(CONF_PREFER_CLOUD, False)
+        self.account_type = user_input.get(CONF_ACCOUNT_TYPE, ACCOUNT_TYPE_MI)
         self.device_id = user_input.get(CONF_DID)
         self.mac = user_input.get(CONF_MAC)
         return await self.async_step_reauth_confirm()
