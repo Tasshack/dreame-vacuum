@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "O dispositivo já está configurado",
-      "cannot_connect": "Falha ao conectar."
+      "cannot_connect": "Falha ao conectar.",
+      "reauth_successful": "A reautenticação foi bem-sucedida"
     },
     "error": {
       "cannot_connect": "Falha ao conectar.",
       "unsupported": "Dispositivo não suportado",
       "wrong_token": "Erro de checksum, token incorreto",
-      "2fa_required": "Login de 2FA necessário\n{url}",
+      "2fa_failed": "Verificação falhou.",
       "credentials_incomplete": "Credenciais incompletas, por favor preencha o nome de usuário, senha e país",
       "login_error": "Não foi possível fazer login, verifique as credenciais.",
       "no_devices": "Nenhum dispositivo compatível encontrado nesta conta no país selecionado."
@@ -36,6 +37,12 @@
         },
         "description": "Faça login na Xiaomi Miio Cloud, consulte https://www.openhab.org/addons/bindings/miio/#country-servers para saber qual servidor de nuvem usar."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Código de verificação de dois fatores"
+        },
+        "description": "## Este login requer verificação de segurança\nPor favor, abra a página de verificação para enviar o código de verificação por celular/e-mail. Após receber o código de verificação, não o verifique na página da web. Volte para o HomeAssistant e insira-o na caixa de entrada abaixo.\n### [Enviar código de verificação]({url})"
+      },
       "dreame": {
         "data": {
           "username": "Usuário",
@@ -44,11 +51,25 @@
         },
         "description": "Acesse a nuvem Dreamehome."
       },
+      "mova": {
+        "data": {
+          "username": "Usuário",
+          "password": "Senha",
+          "country": "País do servidor"
+        },
+        "description": "Acesse a nuvem Movahome."
+      },
       "devices": {
         "data": {
           "devices": "Dispositivos suportados"
         },
         "description": "Por favor, selecione o dispositivo de Aspirador Dreame que você deseja configurar."
+      },
+      "donation": {
+        "data": {
+          "donated": "Eu fiz uma doação"
+        },
+        "description": "## Não se esqueça de apoiar o projeto.{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "Mapa de baixa resolução",
           "square": "Mapa quadrado",
           "configuration_type": "Tipo de configuração",
-          "prefer_cloud": "Preferir conexão com a nuvem"
+          "prefer_cloud": "Preferir conexão com a nuvem",
+          "donated": "Eu fiz uma doação"
         }
       }
     },
@@ -132,7 +154,8 @@
           "remove_mop": "Remover pano",
           "adaptation_without_route": "Adaptação Sem rota",
           "vacuum_and_mop": "Odkurz i mopuj",
-          "ignore": "Ignorować"
+          "ignore": "Ignorować",
+          "cross": "Atravessar"
         }
       },
       "mop_wash_level": {
@@ -164,6 +187,13 @@
           "weekly": "Semanalmente"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Padrão",
+          "intelligent": "Inteligente",
+          "high": "Alto"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Nenhum",
@@ -188,6 +218,11 @@
         "state": {
           "by_area": "Por área",
           "by_time": "Por tempo",
+          "by_room": "Por quarto"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
           "by_room": "Por quarto"
         }
       },
@@ -216,6 +251,28 @@
           "off": "Desligado",
           "routine_cleaning": "Limpeza de rotina",
           "deep_cleaning": "Limpeza profunda"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Vacuum e MOP",
+          "mop_after_vacuum": "MOP após vácuo"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Luz",
+          "standard": "Padrão",
+          "deep": "Profundo",
+          "ultra_washing": "Ultra Lavagem"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normal",
+          "mild": "Leve",
+          "warm": "Esquentar",
+          "hot": "Quente"
         }
       },
       "auto_recleaning": {
@@ -349,7 +406,12 @@
           "cruising_point_paused": "Cruzeiro até um ponto pausado",
           "summon_clean_paused": "Chamada para limpar pausada",
           "returning_to_install_mop": "Retornando para instalar o pano",
-          "returning_to_remove_mop": "Retornando para remover o pano"
+          "returning_to_remove_mop": "Retornando para remover o pano",
+          "station_cleaning": "Limpeza da estação",
+          "pet_finding": "Pet Econd",
+          "auto_cleaning_washing_paused": "Lavagem de limpeza automática fez uma pausa",
+          "area_cleaning_washing_paused": "Lavagem de área para lavar a lavagem parada",
+          "custom_cleaning_washing_paused": "Lavagem de limpeza personalizada fez uma pausa"
         }
       },
       "water_tank": {
@@ -533,6 +595,52 @@
           "draining_failed": "Falha na drenagem"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Desconhecido",
+          "not_available": "Não disponível",
+          "not_installed": "Não instalado",
+          "low_water": "Água baixa",
+          "installed": "Instalado"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Desconhecido",
+          "installed": "Instalado",
+          "not_installed_or_full": "Não instalado ou cheio"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Desconhecido",
+          "installed": "Instalado",
+          "not_installed": "Não instalado",
+          "check": "Verificar"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Desconhecido",
+          "installed": "Instalado",
+          "disabled": "Desabilitado",
+          "low_detergent": "Detergente baixo"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Desconhecido",
+          "disabled": "Desabilitado",
+          "enabled": "Habilitado"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Desconhecido",
+          "idle": "Parado",
+          "draining": "Drenagem"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Limpeza padrão",
@@ -550,7 +658,9 @@
           "summon": "Limpeza por chamada",
           "summon_paused": "Limpeza por chamada pausada",
           "water_stain": "Limpeza de manchas de água",
-          "water_stain_paused": "Limpeza de manchas de água pausada"
+          "water_stain_paused": "Limpeza de manchas de água pausada",
+          "boosted_edge_cleaning": "Limpeza de borda aumentada",
+          "hair_compressing": "Comprimindo o cabelo"
         }
       }
     }
@@ -643,6 +753,16 @@
         "points": {
           "name": "Pontos",
           "description": "Lista de coordenadas do trajeto."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "Iniciar atalho",
+      "description": "Inicia uma tarefa de atalho. (Apenas em dispositivos compatíveis)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID do atalho",
+          "description": "ID do atalho."
         }
       }
     },
@@ -762,7 +882,7 @@
         },
         "file_url": {
           "name": "URL do arquivo",
-          "description": "URL do arquivo bz2.gz ou tar.gz salvo"
+          "description": "URL do arquivo tbz2.gz ou tar.gz salvo"
         }
       }
     },
@@ -855,6 +975,28 @@
         "repeats": {
           "name": "Repetições",
           "description": "Número de repetições de limpeza para cada divisão."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Configurar limpeza personalizada do tapete",
+      "description": "Configura a limpeza personalizada para tapetes. (Apenas em dispositivos compatíveis)",
+      "fields": {
+        "id": {
+          "name": "ID do tapete",
+          "description": "IDs dos tapetes."
+        },
+        "type": {
+          "name": "Tipo de objeto",
+          "description": "Tipo do objeto com o ID. (0 = Tapete detectado automaticamente, 1 = Tapete criado manualmente, 2 = Tapete de cômodo (se suportado))"
+        },
+        "carpet_cleaning": {
+          "name": "Limpeza do tapete",
+          "description": "Configuração personalizada de limpeza para cada tapete."
+        },
+        "carpet_settings": {
+          "name": "Configurações do tapete",
+          "description": "Configuração personalizada para cada tapete com uma lista de configurações ativadas."
         }
       }
     },

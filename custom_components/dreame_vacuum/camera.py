@@ -309,7 +309,12 @@ class CameraResourcesView(HomeAssistantView):
 
     async def get(self, request: web.Request, entity_id: str) -> web.StreamResponse:
         """Serve resources data."""
-        if (camera := self.component.get_entity(entity_id)) is None or camera.map_data_json or camera.map_index != 0 or not camera.device:
+        if (
+            (camera := self.component.get_entity(entity_id)) is None
+            or camera.map_data_json
+            or camera.map_index != 0
+            or not camera.device
+        ):
             raise web.HTTPNotFound
 
         icon_set = request.query.get("icon_set")
@@ -463,6 +468,10 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     """Defines a Dreame Vacuum Camera entity."""
 
     _unrecorded_attributes = frozenset(CAMERA_UNRECORDED_ATTRIBUTES)
+    _webrtc_provider = None
+    _legacy_webrtc_provider = None
+    _supports_native_sync_webrtc = False
+    _supports_native_async_webrtc = False
 
     def __init__(
         self,
@@ -488,6 +497,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         self._last_updated = -1
         self._frame_id = -1
         self._last_map_request = 0
+        self._last_rendered = -1
         self._attr_is_streaming = True
         self._calibration_points = None
         self._device_active = None
@@ -606,6 +616,13 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 if self.map_index == 0 and self.device:
                     self.device.update_map()
                 self.update()
+                if self._last_updated and self._last_rendered != self._last_updated and self._renderer.render_complete:
+                    await self._update_image(
+                        self.device.get_map_for_render(self._map_data),
+                        self.device.status.robot_status,
+                        self.device.status.station_status,
+                    )
+                    self._last_rendered = self._last_updated
             self._should_poll = True
         return self._image
 
@@ -674,35 +691,17 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             elif map_data.timestamp_ms:
                 self._state = datetime.fromtimestamp(int(map_data.timestamp_ms / 1000))
 
-            if (
-                self.map_index == 0
-                and not self.map_data_json
-                and map_data.last_updated != self._last_updated
-                and not self._renderer.render_complete
-            ):
-                LOGGER.warning("Waiting render complete")
-
-            if self._renderer.render_complete and map_data.last_updated != self._last_updated:
-                if self.map_index == 0 and not self.map_data_json:
-                    LOGGER.debug("Update map")
-
+            if map_data.last_updated != self._last_updated:
                 self._last_updated = map_data.last_updated
                 self._frame_id = map_data.frame_id
                 self._default_map = False
-
-                self.coordinator.hass.async_create_task(
-                    self._update_image(
-                        self.device.get_map_for_render(self._map_data),
-                        self.device.status.robot_status,
-                        self.device.status.station_status,
-                    )
-                )
         elif not self._default_map:
             self._state = STATE_UNAVAILABLE
             self._image = self._default_map_image
             self._default_map = True
             self._frame_id = -1
             self._last_updated = -1
+            self._last_rendered = -1
 
     async def obstacle_image(self, index, box=False, crop=False):
         if self.map_index == 0 and not self.map_data_json:
@@ -762,7 +761,11 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         if not self.map_data_json and not self.wifi_map:
             if self.map_index == 0:
                 selected_map = self.device.status.selected_map
-                map_data = await self.hass.async_add_executor_job(self.device.recovery_map, selected_map.map_id, index) if selected_map else None
+                map_data = (
+                    await self.hass.async_add_executor_job(self.device.recovery_map, selected_map.map_id, index)
+                    if selected_map
+                    else None
+                )
             else:
                 map_data = await self.hass.async_add_executor_job(self.device.recovery_map, self._map_id, index)
             if map_data:
@@ -821,7 +824,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 self._calibration_points = self._renderer.calibration_points
                 self.coordinator.set_updated_data()
         except Exception:
-            LOGGER.warn("Map render Failed: %s", traceback.format_exc())
+            LOGGER.warning("Map render Failed: %s", traceback.format_exc())
 
     def _get_proxy_image(self, index, map_data, info_text, cache_key, max_item=2):
         item_key = f"i{index}_t{int(info_text)}_d{int(map_data.last_updated)}"
@@ -958,7 +961,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                         index = index + 1
                     attributes[ATTR_CRUISING_HISTORY_PICTURE] = cruising_history
 
-                if map_data and map_data.obstacles is not None:
+                if map_data and map_data.obstacles:
                     obstacles = {}
                     total = len(map_data.obstacles)
                     if total:
@@ -966,9 +969,18 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                         for k in reversed(map_data.obstacles):
                             obstacle = map_data.obstacles[k]
                             if (
-                                index == total
-                                and obstacle.picture_status is not None
-                                and obstacle.picture_status.value != 2
+                                (obstacle.type.value == 158 and self.device.status.ai_pet_detection == 0)
+                                or (
+                                    self.device.capability.fluid_detection
+                                    and (
+                                        obstacle.type.value == 139
+                                        or obstacle.type.value == 206
+                                        or obstacle.type.value == 202
+                                        or obstacle.type.value == 169
+                                    )
+                                    and not self.device.status.ai_fluid_detection
+                                )
+                                or (obstacle.picture_status is not None and obstacle.picture_status.value != 2)
                             ):
                                 index = index - 1
                                 continue
@@ -981,7 +993,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                             if obstacle.ignore_status and int(obstacle.ignore_status) > 0:
                                 key = f"{key} ({obstacle.ignore_status.name.replace('_', ' ').title()})"
 
-                            obstacles[key] = OBSTACLE_IMAGE_URL.format(self.entity_id, token, index, obstacle.id)
+                            obstacles[key] = OBSTACLE_IMAGE_URL.format(self.entity_id, token, k, obstacle.id)
                             index = index - 1
 
                     attributes[ATTR_OBSTACLE_PICTURE] = obstacles

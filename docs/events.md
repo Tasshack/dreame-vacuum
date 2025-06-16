@@ -37,6 +37,9 @@ Fires when consumable life is ended.
   - `squeege`: Squeege must be replaced
   - `dirty_water_tank`: Dirty water tank must be cleaned
   - `onboard_dirty_water_tank`: Onboard dirty water tank must be cleaned
+  - `deodorizer`: Deodorizer must be replaced
+  - `wheel`: Wheel must be cleaned
+  - `scale_inhibitor`: Antiscalant must be replaced
 
 ### Information
 Fires when certain job cannot be executed due to the user settings.
@@ -77,10 +80,3 @@ Fires when water tank drainage is completed or failed.
 #### `dreame_vacuum_drainage_status`
 - `entity_id`: Vacuum entity
 - `drainage_status`: Drainage is successful or not
-
-### 2FA Login Required
-Fires when there two factor authentication is required to login.
-
-#### `dreame_vacuum_2fa_login`
-- `entity_id`: Vacuum entity
-- `url`: 2FA login URL

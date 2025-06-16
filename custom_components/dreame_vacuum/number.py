@@ -28,9 +28,9 @@ from .entity import DreameVacuumEntity, DreameVacuumEntityDescription
 from .dreame import DreameVacuumAction, DreameVacuumProperty
 
 
-def WETNESS_LEVEL_TO_ICON(wetness):
+def WETNESS_LEVEL_TO_ICON(wetness, max):
     if wetness:
-        if wetness > 26:
+        if wetness > max:
             return "mdi:water-plus"
         if wetness < 6:
             return "mdi:water-minus"
@@ -46,6 +46,7 @@ class DreameVacuumNumberEntityDescription(DreameVacuumEntityDescription, NumberE
     set_fn: Callable[[object, int]] = None
     max_value_fn: Callable[[object], int] = None
     min_value_fn: Callable[[object], int] = None
+    segment_icon_fn: Callable[[str, object, object], str] = None
     segment_available_fn: Callable[[object, object], bool] = None
     segment_list_fn: Callable[[object], bool] = None
 
@@ -53,13 +54,17 @@ class DreameVacuumNumberEntityDescription(DreameVacuumEntityDescription, NumberE
 NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.VOLUME,
-        icon_fn=lambda value, device: "mdi:volume-off" if not value else "mdi:volume-low" if value <= 35 else "mdi:volume-medium" if value <= 65 else "mdi:volume-high",
+        icon_fn=lambda value, device: (
+            "mdi:volume-off"
+            if not value
+            else "mdi:volume-low" if value <= 35 else "mdi:volume-medium" if value <= 65 else "mdi:volume-high"
+        ),
         mode=NumberMode.SLIDER,
         native_min_value=0,
         native_max_value=100,
         native_step=1,
         native_unit_of_measurement=UNIT_PERCENT,
-        entity_category=EntityCategory.CONFIG
+        entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.MOP_CLEANING_REMAINDER,
@@ -147,11 +152,13 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
                 not (device.status.water_tank_or_mop_installed)
                 or device.status.cleaning_mode is DreameVacuumCleaningMode.SWEEPING
             )
-            else WETNESS_LEVEL_TO_ICON(device.status.wetness_level)
+            else WETNESS_LEVEL_TO_ICON(
+                device.status.wetness_level, 14 if device.capability.mop_clean_frequency else 26
+            )
         ),
         mode=NumberMode.SLIDER,
         native_min_value=1,
-        native_max_value=32,
+        max_value_fn=lambda device: 15 if device.capability.mop_clean_frequency else 32,
         native_step=1,
         exists_fn=lambda description, device: device.capability.wetness_level
         and DreameVacuumEntityDescription().exists_fn(description, device),
@@ -174,7 +181,11 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
 SEGMENT_NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
     DreameVacuumNumberEntityDescription(
         key=DreameVacuumProperty.WETNESS_LEVEL.name.lower(),
-        icon_fn=lambda value, segment: WETNESS_LEVEL_TO_ICON(segment.wetness_level) if segment else "mdi:water-off",
+        segment_icon_fn=lambda value, device, segment: (
+            WETNESS_LEVEL_TO_ICON(segment.wetness_level, 14 if device.capability.mop_clean_frequency else 26)
+            if segment
+            else "mdi:water-off"
+        ),
         segment_available_fn=lambda device, segment: bool(
             device.status.current_segments
             and segment.wetness_level is not None
@@ -372,8 +383,10 @@ class DreameVacuumSegmentNumberEntity(DreameVacuumEntity, NumberEntity):
 
         self._attr_name = f"{self.device.name} {name.replace('_', ' ').title()}"
 
-        if self.entity_description.icon_fn is not None:
-            self._attr_icon = self.entity_description.icon_fn(self._attr_native_value, self.segment)
+        if self.entity_description.segment_icon_fn is not None:
+            self._attr_icon = self.entity_description.segment_icon_fn(
+                self._attr_native_value, self.device, self.segment
+            )
         elif self.segment:
             self._attr_icon = self.segment.icon
         else:

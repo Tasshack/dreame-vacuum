@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "L'appareil est déjà configuré",
-      "cannot_connect": "Impossible d'établir la connexion."
+      "cannot_connect": "Impossible d'établir la connexion.",
+      "reauth_successful": "La réauthentification a réussi"
     },
     "error": {
       "cannot_connect": "Impossible d'établir la connexion.",
       "unsupported": "L'appareil n'est pas pris en charge.",
       "wrong_token": "Erreur de somme de contrôle, mauvais jeton",
-      "2fa_required": "Connexion à double facteur requise\n{url}",
+      "2fa_failed": "Vérification échouée.",
       "credentials_incomplete": "Identifiants incomplets, merci de renseigner le nom d'utilisateur, le mot de passe et le pays",
       "login_error": "Impossible de se connecter, vérifiez vos identifiants.",
       "no_devices": "Aucun appareil compatible n'a été trouvé sur ce compte pour le pays sélectionné."
@@ -36,6 +37,12 @@
         },
         "description": "Connexion à Xiaomi Miio cloud, consultez https://www.openhab.org/addons/bindings/miio/#country-servers pour déterminer le serveur cloud à utiliser."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Code de vérification à deux facteurs"
+        },
+        "description": "## Cette connexion nécessite une vérification de sécurité\nVeuillez ouvrir la page de vérification pour envoyer le code de vérification mobile/email. Après avoir reçu le code de vérification, ne le vérifiez pas sur la page web. Revenez à HomeAssistant et saisissez-le dans la zone de saisie ci-dessous.\n### [Envoyer le code de vérification]({url})"
+      },
       "dreame": {
         "data": {
           "username": "Nom d'utilisateur",
@@ -44,11 +51,25 @@
         },
         "description": "Connexion à Dreamehome cloud."
       },
+      "mova": {
+        "data": {
+          "username": "Nom d'utilisateur",
+          "password": "Mot de passe",
+          "country": "Pays du serveur"
+        },
+        "description": "Connexion à Movahome cloud."
+      },
       "devices": {
         "data": {
           "devices": "Appareils pris en charge"
         },
         "description": "Merci de sélectionner l'aspirateur Dreame que vous souhaitez configurer."
+      },
+      "donation": {
+        "data": {
+          "donated": "J’ai fait un don"
+        },
+        "description": "## N'oubliez pas de soutenir le projet.{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "Carte basse résolution",
           "square": "Carte carrée",
           "configuration_type": "Type de configuration",
-          "prefer_cloud": "Privilégier la connexion cloud"
+          "prefer_cloud": "Privilégier la connexion cloud",
+          "donated": "J’ai fait un don"
         }
       }
     },
@@ -129,10 +151,11 @@
         "state": {
           "avoidance": "Évitement",
           "adaptation": "Adaptation",
-          "remove_mop": "Retirer la vadrouille",
+          "remove_mop": "Retirer la serpillière",
           "adaptation_without_route": "Adaptation sans itinéraire",
-          "vacuum_and_mop": "Aspirateur et vadrouille",
-          "ignore": "Ignorer"
+          "vacuum_and_mop": "Aspirateur et serpillière",
+          "ignore": "Ignorer",
+          "cross": "Traverser"
         }
       },
       "mop_wash_level": {
@@ -164,6 +187,13 @@
           "weekly": "Hebdomadaire"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Standard",
+          "intelligent": "Intelligent",
+          "high": "Haut"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Aucun",
@@ -188,6 +218,11 @@
         "state": {
           "by_area": "Par zone",
           "by_time": "Par heure",
+          "by_room": "Par chambre"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
           "by_room": "Par chambre"
         }
       },
@@ -216,6 +251,28 @@
           "off": "Désactivé",
           "routine_cleaning": "Nettoyage courant",
           "deep_cleaning": "Nettoyage en profondeur"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Aspirateur et serpillière",
+          "mop_after_vacuum": "Serpillière après aspirateur"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Lumière",
+          "standard": "Standard",
+          "deep": "Profond",
+          "ultra_washing": "Ultra lavage"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normale",
+          "mild": "Bénin",
+          "warm": "Chaud",
+          "hot": "Chaud"
         }
       },
       "auto_recleaning": {
@@ -269,8 +326,8 @@
           "upgrading": "En cours de mise à jour",
           "clean_summon": "Appel à nettoyer",
           "station_reset": "Réinitialisation de la station",
-          "returning_install_mop": "Retour à l'installation de la vadrouille",
-          "returning_remove_mop": "Retour pour enlever la vadrouille",
+          "returning_install_mop": "Retour à l'installation de la serpillière",
+          "returning_remove_mop": "Retour pour enlever la serpillière",
           "water_check": "Vérification de l'eau",
           "clean_add_water": "Nettoyer et ajouter de l'eau",
           "washing_paused": "Lavage en pause",
@@ -282,7 +339,7 @@
           "spot_cleaning": "Nettoyage des taches",
           "returning_auto_empty": "Retour à Vider automatiquement",
           "waiting_for_task": "En attente de tâche",
-          "station_cleaning": "Nettoyage des gares",
+          "station_cleaning": "Nettoyage de la station",
           "returning_to_drain": "Retour à l'égout",
           "draining": "Évacuation",
           "auto_water_draining": "Vidange automatique de l'eau",
@@ -310,7 +367,7 @@
           "factory": "Usine",
           "error": "Erreur",
           "remote_control": "Contrôle à distance",
-          "sleeping": "En sommeil",
+          "sleeping": "En veille",
           "self_test": "Auto-test",
           "factory_test": "Test usine",
           "standby": "En veille",
@@ -351,7 +408,12 @@
           "cruising_point_paused": "Croisière vers un point en pause",
           "summon_clean_paused": "Appeler pour nettoyer en pause",
           "returning_to_install_mop": "Retourner pour installer la serpillière",
-          "returning_to_remove_mop": "Retourner pour retirer la serpillière"
+          "returning_to_remove_mop": "Retourner pour retirer la serpillière",
+          "station_cleaning": "Nettoyage de la station",
+          "pet_finding": "Constatation d'animaux",
+          "auto_cleaning_washing_paused": "Lavage de nettoyage automatique interrompu",
+          "area_cleaning_washing_paused": "Lavage de nettoyage de zone interrompu",
+          "custom_cleaning_washing_paused": "Lavage de nettoyage personnalisé pause"
         }
       },
       "water_tank": {
@@ -420,7 +482,7 @@
           "infrared_shielding": "Erreur de protection contre l'infrarouge",
           "charge_no_electric": "La station n'est pas branchée ou allumée",
           "battery_fault": "Problème de batterie",
-          "fan_speed": "Erreur du capteur de vitesse d'aspiration",
+          "fan_speed_error": "Erreur du capteur de vitesse d'aspiration",
           "left_wheell_speed": "La roue gauche est probablement bloquée",
           "right_wheell_speed": "La roue droite est probablement bloquée",
           "bmi055_acce": "Erreur d'accéléromètre",
@@ -465,10 +527,10 @@
           "station_disconnected": "Station de base non allumée",
           "dirty_tank_level": "Le niveau d'eau dans le réservoir d'eau sale est trop élevé.",
           "washboard_level": "Le niveau d'eau du dispositif de nettoyage de la serpillière est trop élevé.",
-          "no_mop_in_station": "Le tampon de vadrouille n'est pas dans la station.",
+          "no_mop_in_station": "Le tampon de la serpillière n'est pas dans la station.",
           "dust_bag_full": "Le sac à poussière est plein ou les évents sont obstrués.",
           "self_test_failed": "Décharge d'eau anormale du réservoir d'eau propre des modules d'eau supérieur et inférieur.",
-          "mop_install_failed": "L'installation du tampon de vadrouille a échoué.",
+          "mop_install_failed": "L'installation du tampon de la serpillière a échoué.",
           "low_battery_turn_off": "Batterie faible. ",
           "dirty_tank_not_installed": "Le réservoir d'eau usée du robot n'est pas installé.",
           "robot_in_hidden_room": "Zone cachée. ",
@@ -511,7 +573,7 @@
           "no_warning": "Pas d'avertissement",
           "no_water_left_dismiss": "Veuillez vérifier le réservoir d'eau propre.",
           "no_water_left": "L'eau du réservoir d'eau propre est sur le point d'être épuisée. ",
-          "no_water_left_after_clean": "Le tampon de vadrouille a été nettoyé. ",
+          "no_water_left_after_clean": "Le tampon de la serpillière a été nettoyé. ",
           "no_water_for_clean": "Niveau d'eau bas dans le réservoir d'eau propre. ",
           "low_water": "Sur le point de manquer d'eau. ",
           "tank_not_installed": "Le réservoir d'eau propre n'est pas installé."
@@ -535,6 +597,52 @@
           "draining_failed": "La vidange a échoué"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Inconnu",
+          "not_available": "Pas disponible",
+          "not_installed": "Non installé",
+          "low_water": "Basse eau",
+          "installed": "Installé"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Inconnu",
+          "installed": "Installé",
+          "not_installed_or_full": "Non installé ou complet"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Inconnu",
+          "installed": "Installé",
+          "not_installed": "Non installé",
+          "check": "Vérifier"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Inconnu",
+          "installed": "Installé",
+          "disabled": "Désactivé",
+          "low_detergent": "Détergent faible"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Inconnu",
+          "disabled": "Désactivé",
+          "enabled": "Activé"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Inconnu",
+          "idle": "Inactif",
+          "draining": "Évacuation"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Nettoyage standard",
@@ -552,7 +660,9 @@
           "summon": "Invoquer le nettoyage",
           "summon_paused": "Nettoyage d'invocation suspendu",
           "water_stain": "Nettoyage des taches d'eau",
-          "water_stain_paused": "Nettoyage des taches d'eau interrompu"
+          "water_stain_paused": "Nettoyage des taches d'eau interrompu",
+          "boosted_edge_cleaning": "Nettoyage des bords boosté",
+          "hair_compressing": "Compression de cheveux"
         }
       }
     }
@@ -645,6 +755,16 @@
         "points": {
           "name": "Points",
           "description": "Liste des coordonnées du chemin."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "Démarrer le raccourci",
+      "description": "Démarre une tâche de raccourci. (Uniquement sur les appareils compatibles)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID du raccourci",
+          "description": "ID du raccourci."
         }
       }
     },
@@ -764,7 +884,7 @@
         },
         "file_url": {
           "name": "URL du fichier",
-          "description": "URL du fichier bz2.gz ou tar.gz enregistré"
+          "description": "URL du fichier tbz2.gz ou tar.gz enregistré"
         }
       }
     },
@@ -852,7 +972,7 @@
         },
         "cleaning_mode": {
           "name": "Mode de nettoyage",
-          "description": "Nettoyage de chaque pièce (uniquement pris en charge sur les aspirateurs dotés de la fonction de levage du tampon de vadrouille)."
+          "description": "Nettoyage de chaque pièce (uniquement pris en charge sur les aspirateurs dotés de la fonction de levage du tampon de la serpillière)."
         },
         "repeats": {
           "name": "Répétitions",
@@ -860,9 +980,31 @@
         }
       }
     },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Définir le nettoyage personnalisé du tapis",
+      "description": "Définit les paramètres de nettoyage personnalisés pour les tapis. (Uniquement sur les appareils compatibles)",
+      "fields": {
+        "id": {
+          "name": "ID du tapis",
+          "description": "ID des tapis."
+        },
+        "type": {
+          "name": "Type d'objet",
+          "description": "Type de l'objet avec l'ID. (0 = Tapis détecté automatiquement, 1 = Tapis créé manuellement, 2 = Tapis de chambre (si pris en charge))"
+        },
+        "carpet_cleaning": {
+          "name": "Nettoyage du tapis",
+          "description": "Paramètre de nettoyage personnalisé du tapis pour chaque tapis."
+        },
+        "carpet_settings": {
+          "name": "Paramètres du tapis",
+          "description": "Paramètre de réglage personnalisé du tapis pour chaque tapis avec un tableau de paramètres activés."
+        }
+      }
+    },
     "vacuum_set_restricted_zone": {
       "name": "Définir une zone restreinte",
-      "description": "Définissez des murs virtuels, des zones restreintes et/ou des zones sans vadrouille.",
+      "description": "Définissez des murs virtuels, des zones restreintes et/ou des zones sans serpillière.",
       "fields": {
         "walls": {
           "name": "Des murs",
@@ -873,8 +1015,8 @@
           "description": "Zones interdites."
         },
         "no_mops": {
-          "name": "Pas de vadrouille",
-          "description": "Aucune zone de vadrouille."
+          "name": "Pas de serpillière",
+          "description": "Aucune zone de serpillière."
         }
       }
     },
@@ -973,7 +1115,7 @@
       "description": "Sélectionnez les options précédentes d'une entité sélectionnée.",
       "fields": {
         "cycle": {
-          "name": "Faire du vélo",
+          "name": "Cycle",
           "description": "Si l’option doit passer du premier au dernier."
         }
       }
@@ -991,7 +1133,7 @@
       "description": "Sélectionnez les options suivantes d'une entité sélectionnée.",
       "fields": {
         "cycle": {
-          "name": "Faire du vélo",
+          "name": "Cycle",
           "description": "Si l’option doit passer du premier au dernier."
         }
       }

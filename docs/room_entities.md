@@ -20,7 +20,7 @@ TODO
 <a href="https://my.home-assistant.io/redirect/developer_template/" target="_blank"><img src="https://my.home-assistant.io/badges/developer_template.svg" alt="Open your Home Assistant instance and show your template developer tools." /></a>
 
 ```yaml
-{# ----------------- PROVIDE YOUR OWN ENTITY ID AND ROOM COUNT HERE ----------------- #}
+{# ----------------- PROVIDE YOUR OWN ENTITY ID HERE ----------------- #}
 {% set vacuum_entity = "vacuum." %}
 {# ------------------- DO NOT CHANGE ANYTHING BELOW ------------------- #}
 {%- set vacuum_name = states[vacuum_entity].entity_id.replace('vacuum.', '') %} 
@@ -64,7 +64,7 @@ entities:
       - >-
         (vars[6].attributes.rooms && vars[6].attributes.selected_map ? vars[6].attributes.rooms[vars[6].attributes.selected_map].filter(function (e) { return states['select.{{ vacuum_name }}_room_' + e.id + '_order'] && states['select.{{ vacuum_name }}_room_' + e.id + '_order'].state != 'not_set' }).length : 0)
       - >-
-        ({{ current_room }} ? 'var(--state-icon-active-color)' : 'var(--text-primary-color)')
+        ({{ current_room }} ? 'var(--state-icon-active-color)' : 'var(--primary-text-color)')
       - >-
         (vars[6].attributes.cleaning_sequence ? 'inherit' : 'none')
       - >-

@@ -2,13 +2,14 @@
   "config": {
     "abort": {
       "already_configured": "Enheten är redan konfigurerad",
-      "cannot_connect": "Misslyckades att ansluta."
+      "cannot_connect": "Misslyckades att ansluta.",
+      "reauth_successful": "Återautentiseringen lyckades"
     },
     "error": {
       "cannot_connect": "Misslyckades att ansluta.",
       "unsupported": "Enheten stöds inte",
       "wrong_token": "Checksumme-fel, fel token",
-      "2fa_required": "2FA Inloggning krävs\n{url}",
+      "2fa_failed": "Verifiering misslyckades.",
       "credentials_incomplete": "Inkompletta inloggningsuppgifter, fyll i användarnamn, lösenord och land",
       "login_error": "Kunde inte logga in på Xiaomi Miio Cloud, se över inloggningsuppgifter.",
       "no_devices": "Hittade inga enheter som stöds på detta Xiaomi Miio Cloud konto under valt land."
@@ -36,6 +37,12 @@
         },
         "description": "Logga in på Xiaomi Miio cloud, se https://www.openhab.org/addons/bindings/miio/#country-servers för att välja rätt moln-server."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Tvåfaktorsverifieringskod"
+        },
+        "description": "## Denna inloggning kräver säkerhetsverifiering\nÖppna verifieringssidan för att skicka verifieringskoden via mobil/e-post. Efter att du fått koden, verifiera den inte på webbsidan. Gå tillbaka till HomeAssistant och ange den i fältet nedan.\n### [Skicka verifieringskod]({url})"
+      },
       "dreame": {
         "data": {
           "username": "Användarnamn",
@@ -44,11 +51,25 @@
         },
         "description": "Logga in på Dreamehome Cloud."
       },
+      "mova": {
+        "data": {
+          "username": "Användarnamn",
+          "password": "Löserord",
+          "country": "Server-land"
+        },
+        "description": "Logga in på Movahome Cloud."
+      },
       "devices": {
         "data": {
           "devices": "Enheter som stöds"
         },
         "description": "Välj vilken Dreame-dammsugare du vill konfigurera."
+      },
+      "donation": {
+        "data": {
+          "donated": "Jag har gjort en donation"
+        },
+        "description": "## Glöm inte att stödja projektet.{text}"
       },
       "options": {
         "data": {
@@ -78,7 +99,8 @@
           "low_resolution": "Lågupplöst karta",
           "square": "Fyrkantig karta",
           "configuration_type": "Konfigurationstyp",
-          "prefer_cloud": "Föredra molnanslutning"
+          "prefer_cloud": "Föredra molnanslutning",
+          "donated": "Jag har gjort en donation"
         }
       }
     },
@@ -132,7 +154,8 @@
           "remove_mop": "Ta bort moppdynor",
           "adaptation_without_route": "Adaptativ utan rutt",
           "vacuum_and_mop": "Dammsug och moppa",
-          "ignore": "Ignorera"
+          "ignore": "Ignorera",
+          "cross": "Korsa"
         }
       },
       "mop_wash_level": {
@@ -164,6 +187,13 @@
           "weekly": "Veckovis"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Standard",
+          "intelligent": "Intelligent",
+          "high": "Hög"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Inget",
@@ -188,6 +218,11 @@
         "state": {
           "by_area": "Av yta",
           "by_time": "Av tid",
+          "by_room": "Av rum"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
           "by_room": "Av rum"
         }
       },
@@ -216,6 +251,28 @@
           "off": "Av",
           "routine_cleaning": "Rutinrengöring",
           "deep_cleaning": "Djuprengöring"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Vakuum och mopp",
+          "mop_after_vacuum": "Mopp efter vakuum"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Ljus",
+          "standard": "Standard",
+          "deep": "Djup",
+          "ultra_washing": "Ultratvätt"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normal",
+          "mild": "Mild",
+          "warm": "Värma",
+          "hot": "Varm"
         }
       },
       "auto_recleaning": {
@@ -349,7 +406,12 @@
           "cruising_point_paused": "Åk till punkt pausad",
           "summon_clean_paused": "Kalla för att städa pausad",
           "returning_to_install_mop": "Återgår för att hämta mopp",
-          "returning_to_remove_mop": "Återgår för att lämna mopp"
+          "returning_to_remove_mop": "Återgår för att lämna mopp",
+          "station_cleaning": "Stationstädning",
+          "pet_finding": "Husdjursuppträdande",
+          "auto_cleaning_washing_paused": "Auto Cleaning Washing paused",
+          "area_cleaning_washing_paused": "Area Rengöring av tvätt pausade",
+          "custom_cleaning_washing_paused": "Anpassad rengöring av tvätt pausade"
         }
       },
       "water_tank": {
@@ -533,6 +595,52 @@
           "draining_failed": "Dränering misslyckades"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Okänd",
+          "not_available": "Inte tillgängligt",
+          "not_installed": "Inte installerad",
+          "low_water": "Låg vatten",
+          "installed": "Installerad"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Okänd",
+          "installed": "Installerad",
+          "not_installed_or_full": "Inte installerad eller full"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Okänd",
+          "installed": "Installerad",
+          "not_installed": "Inte installerad",
+          "check": "Kontrollera"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Okänd",
+          "installed": "Installerad",
+          "disabled": "Funktionshindrad",
+          "low_detergent": "Låg tvättmedel"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Okänd",
+          "disabled": "Funktionshindrad",
+          "enabled": "Aktiverad"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Okänd",
+          "idle": "På tomgång",
+          "draining": "Dränering"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Standardstädning",
@@ -550,7 +658,9 @@
           "summon": "Kallad städning",
           "summon_paused": "Kallad städning pausad",
           "water_stain": "Fläckstädning",
-          "water_stain_paused": "Fläckstädning pausad"
+          "water_stain_paused": "Fläckstädning pausad",
+          "boosted_edge_cleaning": "Förstärkt kantrengöring",
+          "hair_compressing": "Hårkomprimering"
         }
       }
     }
@@ -643,6 +753,16 @@
         "points": {
           "name": "Punkter",
           "description": "Lista över koordinater för bana."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "Starta genväg",
+      "description": "Starta en genvägsuppgift. (Endast på stödjda enheter)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Genvägs-ID",
+          "description": "ID för genvägen."
         }
       }
     },
@@ -762,7 +882,7 @@
         },
         "file_url": {
           "name": "Fil URL",
-          "description": "URL för sparad bz2.gz eller tar.gz fil"
+          "description": "URL för sparad tbz2.gz eller tar.gz fil"
         }
       }
     },
@@ -855,6 +975,28 @@
         "repeats": {
           "name": "Upprepningar",
           "description": "Antal städningar för varje rum."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Ställ in anpassad mattstädning",
+      "description": "Ställ in anpassade rengöringsinställningar för mattor. (Endast på stödjda enheter)",
+      "fields": {
+        "id": {
+          "name": "Matt-ID",
+          "description": "Matt-ID:n."
+        },
+        "type": {
+          "name": "Objekttyp",
+          "description": "Typ av objekt med ID. (0 = Automatiskt upptäckt matta, 1 = Manuellt skapad matta, 2 = Rummatta (om stöds))"
+        },
+        "carpet_cleaning": {
+          "name": "Mattstädning",
+          "description": "Anpassade rengöringsinställningar för varje matta."
+        },
+        "carpet_settings": {
+          "name": "Mattinställningar",
+          "description": "Anpassade mattinställningar för varje matta med en lista över aktiverade inställningar."
         }
       }
     },

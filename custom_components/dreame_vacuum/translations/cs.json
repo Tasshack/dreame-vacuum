@@ -1,0 +1,1140 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Zařízení je již nakonfigurováno",
+      "cannot_connect": "Nepodařilo se připojit.",
+      "reauth_successful": "Znovuověření bylo úspěšné"
+    },
+    "error": {
+      "cannot_connect": "Nepodařilo se připojit.",
+      "unsupported": "Zařízení není podporováno",
+      "wrong_token": "Chyba kontrolního součtu, špatný token",
+      "2fa_failed": "Ověření selhalo.",
+      "credentials_incomplete": "Přihlašovací údaje jsou neúplné, vyplňte prosím uživatelské jméno, heslo a zemi",
+      "login_error": "Nepodařilo se přihlásit, zkontrolujte přihlašovací údaje.",
+      "no_devices": "Na tomto účtu v zvolené zemi nebyla nalezena žádná podporovaná zařízení."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Typ konfigurace"
+        },
+        "description": "Funkce mapy vyžaduje připojení ke cloudu a poskytuje automatickou konfiguraci. Pokud nechcete používat funkci mapy, můžete zvolit manuální konfiguraci."
+      },
+      "local": {
+        "data": {
+          "host": "Hostitel",
+          "token": "Token"
+        },
+        "description": "Budete potřebovat 32 znakový API token, viz https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token pro pokyny."
+      },
+      "mi": {
+        "data": {
+          "username": "Uživatelské jméno",
+          "password": "Heslo",
+          "country": "Země serveru",
+          "prefer_cloud": "Preferovat připojení přes cloud"
+        },
+        "description": "Přihlaste se do Xiaomi Miio cloudu, viz https://www.openhab.org/addons/bindings/miio/#country-servers pro výběr cloudového serveru."
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "Kód pro dvoufázové ověření"
+        },
+        "description": "## Tento přístup vyžaduje bezpečnostní ověření\nOtevřete ověřovací stránku a pošlete ověřovací kód na mobilní telefon nebo e-mail. Po obdržení kódu jej neověřujte na webové stránce. Vraťte se zpět do HomeAssistant a zadejte jej do níže uvedeného vstupního pole.\n### [Odeslat ověřovací kód]({url})"
+      },
+      "dreame": {
+        "data": {
+          "username": "Uživatelské jméno",
+          "password": "Heslo",
+          "country": "Země serveru"
+        },
+        "description": "Přihlaste se do cloudu Dreamehome."
+      },
+      "mova": {
+        "data": {
+          "username": "Uživatelské jméno",
+          "password": "Heslo",
+          "country": "Země serveru"
+        },
+        "description": "Přihlaste se do cloudu Movahome."
+      },
+      "devices": {
+        "data": {
+          "devices": "Podporovaná zařízení"
+        },
+        "description": "Vyberte prosím zařízení Dreame Vacuum, které chcete nastavit."
+      },
+      "donation": {
+        "data": {
+          "donated": "Darováno"
+        },
+        "description": "## Nezapomeňte podpořit projekt.{text}"
+      },
+      "options": {
+        "data": {
+          "name": "Název",
+          "color_scheme": "Barevné schéma mapy",
+          "icon_set": "Sada ikon mapy",
+          "notify": "Oznámení",
+          "map_objects": "Objekty na mapě",
+          "low_resolution": "Mapa v nízkém rozlišení",
+          "square": "Čtvercová mapa"
+        }
+      },
+      "reauth_confirm": {
+        "description": "Integrace Dreame Vacuum vyžaduje opětovné ověření vašeho účtu pro aktualizaci tokenů nebo doplnění chybějících cloudových přihlašovacích údajů.",
+        "title": "Opětovné ověření integrace"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Barevné schéma mapy",
+          "icon_set": "Sada ikon mapy",
+          "notify": "Oznámení",
+          "map_objects": "Objekty na mapě",
+          "low_resolution": "Mapa v nízkém rozlišení",
+          "square": "Čtvercová mapa",
+          "configuration_type": "Typ konfigurace",
+          "prefer_cloud": "Preferovat připojení přes cloud",
+          "donated": "Darováno"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Přihlašovací údaje do cloudu jsou neúplné, vyplňte prosím uživatelské jméno, heslo a zemi"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "state": {
+          "quiet": "Tichý",
+          "standard": "Standardní",
+          "strong": "Silný",
+          "turbo": "Turbo"
+        }
+      },
+      "water_volume": {
+        "state": {
+          "low": "Nízký",
+          "medium": "Střední",
+          "high": "Vysoký"
+        }
+      },
+      "mop_pad_humidity": {
+        "state": {
+          "slightly_dry": "Mírně suchý",
+          "moist": "Vlhký",
+          "wet": "Mokrý"
+        }
+      },
+      "cleaning_mode": {
+        "state": {
+          "sweeping": "Vysávání",
+          "mopping": "Mopovaní",
+          "sweeping_and_mopping": "Vysávání a mopovaní",
+          "mopping_after_sweeping": "Mopovaní po vysávání"
+        }
+      },
+      "carpet_sensitivity": {
+        "state": {
+          "low": "Nízká",
+          "medium": "Střední",
+          "high": "Vysoká"
+        }
+      },
+      "carpet_cleaning": {
+        "state": {
+          "avoidance": "Vyhýbání",
+          "adaptation": "Přizpůsobení",
+          "remove_mop": "Odstranit mop",
+          "adaptation_without_route": "Přizpůsobení bez trasy",
+          "vacuum_and_mop": "Vysávání a mopovaní",
+          "ignore": "Ignorovat",
+          "cross": "Přejít přes"
+        }
+      },
+      "mop_wash_level": {
+        "state": {
+          "water_saving": "Šetření vody",
+          "daily": "Denní",
+          "deep": "Hluboké"
+        }
+      },
+      "mopping_type": {
+        "state": {
+          "accurate": "Přesné",
+          "daily": "Denní",
+          "deep": "Hluboké"
+        }
+      },
+      "wider_corner_coverage": {
+        "state": {
+          "off": "Vypnuto",
+          "high_frequency": "Vysoká frekvence",
+          "low_frequency": "Nízká frekvence"
+        }
+      },
+      "mop_pad_swing": {
+        "state": {
+          "off": "Vypnuto",
+          "auto": "Automaticky",
+          "daily": "Denní",
+          "weekly": "Týdenní"
+        }
+      },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Standardní",
+          "intelligent": "Inteligentní",
+          "high": "Vysoká"
+        }
+      },
+      "floor_material": {
+        "state": {
+          "none": "Žádný",
+          "tile": "Dlaždice",
+          "wood": "Dřevěná podlaha"
+        }
+      },
+      "voice_assistant_language": {
+        "state": {
+          "default": "Výchozí",
+          "english": "Angličtina",
+          "german": "Němčina",
+          "chinese": "Čínština"
+        }
+      },
+      "order": {
+        "state": {
+          "not_set": "Nenastaveno"
+        }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "Podle oblasti",
+          "by_time": "Podle času",
+          "by_room": "Podle místnosti"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
+          "by_room": "Podle místnosti"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Vypnuto",
+          "standard": "Standardní",
+          "high_frequency": "Vysoká frekvence",
+          "low_frequency": "Nízká frekvence"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Vertikální",
+          "horizontal": "Horizontální"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Viditelný",
+          "hidden": "Skrytý"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Vypnuto",
+          "routine_cleaning": "Rutinní úklid",
+          "deep_cleaning": "Hluboký úklid"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Vysávání a mopovaní",
+          "mop_after_vacuum": "Mopovaní po vysávání"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Lehké",
+          "standard": "Standardní",
+          "deep": "Hluboké",
+          "ultra_washing": "Ultra mytí"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normální",
+          "mild": "Vlažná",
+          "warm": "Teplá",
+          "hot": "Horká"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Vypnuto",
+          "in_deep_mode": "V hlubokém režimu",
+          "in_all_modes": "Ve všech režimech"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Vypnuto",
+          "in_deep_mode": "V hlubokém režimu",
+          "in_all_modes": "Ve všech režimech"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "Rychlé",
+          "standard": "Standardní",
+          "intensive": "Intenzivní",
+          "deep": "Hluboké"
+        }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Vypnuto",
+          "standard": "Standardní",
+          "intensive": "Intenzivní",
+          "deep": "Hluboké"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "state": {
+          "unknown": "Neznámý",
+          "sweeping": "Vysávání",
+          "charging": "Nabíjení",
+          "error": "Chyba",
+          "idle": "Nečinný",
+          "paused": "Pozastaveno",
+          "returning": "Vrací se do základny",
+          "mopping": "Mopování",
+          "drying": "Sušení",
+          "washing": "Mytí",
+          "returning_to_wash": "Vrací se k mytí",
+          "building": "Vytváření mapy",
+          "sweeping_and_mopping": "Vysávání a mopování",
+          "charging_completed": "Nabíjení dokončeno",
+          "upgrading": "Aktualizace",
+          "clean_summon": "Přivolat k úklidu",
+          "station_reset": "Reset stanice",
+          "returning_install_mop": "Vrací se pro instalaci mopu",
+          "returning_remove_mop": "Vrací se pro odstranění mopu",
+          "water_check": "Kontrola vody",
+          "clean_add_water": "Čištění a doplňování vody",
+          "washing_paused": "Mytí pozastaveno",
+          "auto_emptying": "Automatické vyprazdňování",
+          "remote_control": "Dálkové ovládání",
+          "smart_charging": "Chytré nabíjení",
+          "second_cleaning": "Druhý úklid",
+          "human_following": "Následuje osobu",
+          "spot_cleaning": "Lokální úklid",
+          "returning_auto_empty": "Vrací se k automatickému vyprazdňování",
+          "waiting_for_task": "Čeká na úkol",
+          "station_cleaning": "Čištění stanice",
+          "returning_to_drain": "Vrací se k vypouštění",
+          "draining": "Vypouštění",
+          "auto_water_draining": "Automatické vypouštění vody",
+          "shortcut": "Zkratka",
+          "monitoring": "Monitorování",
+          "monitoring_paused": "Monitorování pozastaveno"
+        }
+      },
+      "status": {
+        "state": {
+          "unknown": "Neznámý",
+          "idle": "Nečinný",
+          "paused": "Pozastaveno",
+          "cleaning": "Uklízení",
+          "returning": "Vrací se do základny",
+          "spot_cleaning": "Lokální Uklízení",
+          "follow_wall_cleaning": "Uklízení podél stěn",
+          "charging": "Nabíjení",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "Nastavení WiFi",
+          "power_off": "Vypnuto",
+          "factory": "Tovární režim",
+          "error": "Chyba",
+          "remote_control": "Dálkové ovládání",
+          "sleeping": "Spánek",
+          "self_test": "Samočinný test",
+          "factory_test": "Tovární test",
+          "standby": "Pohotovostní režim",
+          "room_cleaning": "Uklízení místnosti",
+          "zone_cleaning": "Uklízení zóny",
+          "fast_mapping": "Rychlé mapování",
+          "cruising_path": "Jede po trase",
+          "cruising_point": "Jede k bodu",
+          "summon_clean": "Přivolat k úklidu",
+          "shortcut": "Zkratka",
+          "person_follow": "Sledování osoby",
+          "water_check": "Kontrola vody"
+        }
+      },
+      "task_status": {
+        "state": {
+          "unknown": "Neznámý",
+          "completed": "Dokončeno",
+          "cleaning": "Uklízení",
+          "zone_cleaning": "Uklízení zóny",
+          "room_cleaning": "Uklízení místnosti",
+          "spot_cleaning": "Lokální Uklízení",
+          "fast_mapping": "Rychlé mapování",
+          "cleaning_paused": "Uklízení pozastaveno",
+          "room_cleaning_paused": "Uklízení místnosti pozastaveno",
+          "zone_cleaning_paused": "Uklízení zóny pozastaveno",
+          "spot_cleaning_paused": "Lokální uklízení pozastaveno",
+          "map_cleaning_paused": "Uklízení mapy pozastaveno",
+          "docking_paused": "Dokování pozastaveno",
+          "mopping_paused": "Mopování pozastaveno",
+          "zone_mopping_paused": "Mopování zóny pozastaveno",
+          "room_mopping_paused": "Mopování místnosti pozastaveno",
+          "zone_docking_paused": "Dokování zóny pozastaveno",
+          "room_docking_paused": "Dokování místnosti pozastaveno",
+          "cruising_path": "Jede po trase",
+          "cruising_path_paused": "Cesta po trase pozastavena",
+          "cruising_point": "Jede k bodu",
+          "cruising_point_paused": "Cesta k bodu pozastavena",
+          "summon_clean_paused": "Přivolat k úklidu pozastaveno",
+          "returning_to_install_mop": "Vrací se pro instalaci mopu",
+          "returning_to_remove_mop": "Vrací se pro odstranění mopu",
+          "station_cleaning": "Čištění stanice",
+          "pet_finding": "Hledání mazlíčka",
+          "auto_cleaning_washing_paused": "Automatické čištění a mytí pozastaveno",
+          "area_cleaning_washing_paused": "Čištění oblasti a mytí pozastaveno",
+          "custom_cleaning_washing_paused": "Vlastní čištění a mytí pozastaveno"
+        }
+      },
+      "water_tank": {
+        "state": {
+          "unknown": "Neznámý",
+          "installed": "Nainstalováno",
+          "not_installed": "Nenainstalováno",
+          "mop_installed": "Mop nainstalován",
+          "in_station": "Ve stanici"
+        }
+      },
+      "mop_pad": {
+        "state": {
+          "unknown": "Neznámý",
+          "installed": "Nainstalováno",
+          "not_installed": "Nenainstalováno",
+          "mop_installed": "Mop nainstalován",
+          "in_station": "Ve stanici"
+        }
+      },
+      "dust_collection": {
+        "state": {
+          "unknown": "Neznámý",
+          "not_available": "Není dostupné",
+          "available": "Dostupné"
+        }
+      },
+      "auto_empty_status": {
+        "state": {
+          "unknown": "Neznámý",
+          "idle": "Nečinný",
+          "active": "Aktivní",
+          "not_performed": "Nevykonáno"
+        }
+      },
+      "error": {
+        "state": {
+          "unknown": "Neznámý kód chyby",
+          "no_error": "Žádná chyba",
+          "drop": "Kola jsou zavěšena",
+          "cliff": "Chyba senzoru útesu",
+          "bumper": "Kolizní senzor je zaseknutý",
+          "gesture": "Robot je nakloněn",
+          "bumper_repeat": "Kolizní senzor je zaseknutý",
+          "drop_repeat": "Kola jsou zavěšena",
+          "optical_flow": "Chyba optického senzoru",
+          "no_box": "Není nainstalován odpadkový koš",
+          "no_tank_box": "Není nainstalovaná vodní nádrž",
+          "water_box_empty": "Vodní nádrž je prázdná",
+          "box_full": "Filtr není suchý nebo je zablokovaný",
+          "brush": "Hlavní kartáč je zamotaný",
+          "side_brush": "Boční kartáč je zamotaný",
+          "fan": "Filtr není suchý nebo je zablokovaný",
+          "left_wheel_motor": "Robot je zaseknutý nebo jeho levé kolo může být zablokováno cizím předmětem",
+          "right_wheel_motor": "Robot je zaseknutý nebo jeho pravé kolo může být zablokováno cizím předmětem",
+          "turn_suffocate": "Robot je zaseknutý nebo se nemůže otočit",
+          "forward_suffocate": "Robot je zaseknutý nebo se nemůže pohybovat vpřed",
+          "charger_get": "Nelze najít základnu",
+          "battery_low": "Nízký stav baterie",
+          "charge_fault": "Chyba nabíjení",
+          "battery_percentage": "Chyba úrovně baterie",
+          "heart": "Interní chyba",
+          "camera_occlusion": "Chyba senzoru vizuálního polohování",
+          "move": "Chyba pohybového senzoru",
+          "flow_shielding": "Chyba optického senzoru",
+          "infrared_shielding": "Chyba infračerveného stínění",
+          "charge_no_electric": "Nabíjecí stanice není zapnutá",
+          "battery_fault": "Chyba baterie",
+          "fan_speed_error": "Chyba senzoru rychlosti ventilátoru",
+          "left_wheell_speed": "Levý kolo může být zablokováno cizím předmětem",
+          "right_wheell_speed": "Pravý kolo může být zablokováno cizím předmětem",
+          "bmi055_acce": "Chyba akcelerometru",
+          "bmi055_gyro": "Chyba gyroskopu",
+          "xv7001": "Chyba gyroskopu",
+          "left_magnet": "Chyba levého magnetického senzoru",
+          "right_magnet": "Chyba pravého magnetického senzoru",
+          "flow_error": "Chyba senzoru průtoku",
+          "infrared_fault": "Chyba infračerveného senzoru",
+          "camera_fault": "Chyba kamery",
+          "strong_magnet": "Detekováno silné magnetické pole",
+          "water_pump": "Chyba vodního čerpadla",
+          "rtc": "Chyba RTC",
+          "auto_key_trig": "Interní chyba",
+          "p3v3": "Interní chyba",
+          "camera_idle": "Interní chyba",
+          "blocked": "Úklidová trasa je zablokována, vrací se do základny.",
+          "lds_error": "Chyba laserového dálkoměru",
+          "lds_bumper": "Chyba nárazníku laserového dálkoměru",
+          "filter_blocked": "Filtr není suchý nebo je zablokovaný",
+          "edge": "Chyba senzoru hrany",
+          "carpet": "Nastartujte robota v oblasti bez koberce.",
+          "laser": "Senzor 3D vyhýbání překážkám nefunguje.",
+          "ultrasonic": "Ultrazvukový senzor nefunguje.",
+          "no_go_zone": "Detekována zakázaná zóna nebo virtuální stěna.",
+          "route": "Úklidová trasa je zablokována.",
+          "restricted": "Detekováno, že vysavač-mop je v zakázané oblasti.",
+          "remove_mop": "Mytí mopu dokončeno. Prosím, odstraňte a vyčistěte mop včas.",
+          "mop_removed": "Mop se během úklidového úkolu uvolnil.",
+          "mop_pad_stop_rotate": "Mop přestal rotovat.",
+          "bin_full": "Sáček na prach je plný nebo je vzduchový kanál zablokován.",
+          "bin_open": "Horní kryt automatické základny není zavřený nebo sáček na prach není nainstalován.",
+          "water_tank": "Nádrž na čistou vodu není nainstalována.",
+          "dirty_water_tank": "Nádrž na špinavou vodu je plná nebo není nainstalována.",
+          "water_tank_dry": "Nízká hladina vody v nádrži na čistou vodu, prosím, doplňte vodu.",
+          "dirty_water_tank_blocked": "Nádrž na špinavou vodu je zablokována.",
+          "dirty_water_tank_pump": "Chyba čerpadla nádrže na špinavou vodu.",
+          "mop_pad": "Mycí deska není správně nainstalována.",
+          "wet_mop_pad": "Hladina vody na mycí desce je abnormální, prosím, vyčistěte mycí desku.",
+          "clean_mop_pad": "Úklidový úkol je dokončen, prosím, vyčistěte mycí desku mopu.",
+          "clean_tank_level": "Zkontrolujte a doplňte nádrž na čistou vodu.",
+          "station_disconnected": "Základna není zapnutá",
+          "dirty_tank_level": "Hladina vody v nádrži na špinavou vodu je příliš vysoká.",
+          "washboard_level": "Hladina vody na mycí desce je příliš vysoká.",
+          "no_mop_in_station": "Mop není ve stanici.",
+          "dust_bag_full": "Sáček na prach je plný nebo jsou větrací otvory zablokované.",
+          "self_test_failed": "Abnormální výtok vody z nádrže na čistou vodu horního a dolního vodního modulu.",
+          "mop_install_failed": "Instalace mopu selhala.",
+          "low_battery_turn_off": "Nízký stav baterie. Robot se brzy vypne.",
+          "dirty_tank_not_installed": "Nádrž na špinavou vodu robota není nainstalována.",
+          "robot_in_hidden_room": "Skrytá oblast. Přesuňte robota do vhodné oblasti a zkuste to znovu.",
+          "washboard_not_working": "Mycí deska přestala fungovat.",
+          "return_to_charge_failed": "Nepodařilo se vrátit na nabíječku."
+        }
+      },
+      "charging_status": {
+        "state": {
+          "unknown": "Neznámý",
+          "charging": "Nabíjení",
+          "not_charging": "Nenabíjí se",
+          "return_to_charge": "Vrací se k nabíječce",
+          "charging_completed": "Nabíjení dokončeno"
+        }
+      },
+      "relocation_status": {
+        "state": {
+          "unknown": "Neznámý",
+          "located": "Nalezeno",
+          "locating": "Hledání",
+          "failed": "Selhalo",
+          "success": "Úspěch"
+        }
+      },
+      "self_wash_base_status": {
+        "state": {
+          "unknown": "Neznámý",
+          "idle": "Nečinný",
+          "washing": "Mytí",
+          "drying": "Sušení",
+          "paused": "Pozastaveno",
+          "returning": "Vrací se k mytí",
+          "clean_add_water": "Čištění a přidávání vody",
+          "adding_water": "Přidávání vody"
+        }
+      },
+      "low_water_warning": {
+        "state": {
+          "no_warning": "Žádné varování",
+          "no_water_left_dismiss": "Zkontrolujte nádržku na čistou vodu.",
+          "no_water_left": "Voda v nádržce na čistou vodu se téměř vyčerpala. Zkontrolujte a doplňte nádržku na čistou vodu.",
+          "no_water_left_after_clean": "Podložka na mop byla vyčištěna. Zjištěno, že v nádržce na čistou vodu je nedostatek vody, doplňte nádržku na čistou vodu a vyprázdněte nádržku na použitou vodu.",
+          "no_water_for_clean": "Nízká hladina vody v nádržce na čistou vodu. Robot přešel do režimu vysávání.",
+          "low_water": "Dochází voda. Doplňte nádržku na čistou vodu.",
+          "tank_not_installed": "Nádržka na čistou vodu není nainstalována."
+        }
+      },
+      "stream_status": {
+        "state": {
+          "unknown": "Neznámý",
+          "idle": "Nečinný",
+          "video": "Video",
+          "audio": "Audio",
+          "recording": "Nahrávání"
+        }
+      },
+      "drainage_status": {
+        "state": {
+          "unknown": "Neznámý",
+          "idle": "Nečinný",
+          "draining": "Vypouštění",
+          "draining_successful": "Vypouštění bylo úspěšné",
+          "draining_failed": "Vypouštění selhalo"
+        }
+      },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Neznámý",
+          "not_available": "Není k dispozici",
+          "not_installed": "Nenainstalováno",
+          "low_water": "Nízká hladina vody",
+          "installed": "Nainstalováno"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Neznámý",
+          "installed": "Nainstalováno",
+          "not_installed_or_full": "Nenainstalováno nebo plné"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Neznámý",
+          "installed": "Nainstalováno",
+          "not_installed": "Nenainstalováno",
+          "check": "Zkontrolujte"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Neznámý",
+          "installed": "Nainstalováno",
+          "disabled": "Zakázáno",
+          "low_detergent": "Nízká hladina čisticího prostředku"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Neznámý",
+          "disabled": "Zakázáno",
+          "enabled": "Povoleno"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Neznámý",
+          "idle": "Nečinný",
+          "draining": "Vypouštění"
+        }
+      },
+      "task_type": {
+        "state": {
+          "standard": "Standardní uklízení",
+          "standard_paused": "Standardní uklízení pozastaveno",
+          "custom": "Vlastní uklízení",
+          "custom_paused": "Vlastní uklízení pozastaveno",
+          "shortcut": "Zkrácené uklízení",
+          "shortcut_paused": "Zkrácené uklízení pozastaveno",
+          "scheduled": "Plánované uklízení",
+          "scheduled_paused": "Plánované čišuklízenítění pozastaveno",
+          "smart": "Chytré uklízení",
+          "smart_paused": "Chytré uklízení pozastaveno",
+          "partial": "Částečné uklízení",
+          "partial_paused": "Částečné uklízení pozastaveno",
+          "summon": "Uklízení na přivolání",
+          "summon_paused": "Uklízení na přivolání pozastaveno",
+          "water_stain": "Uklízení vodních skvrn",
+          "water_stain_paused": "Uklízení vodních skvrn pozastaveno",
+          "boosted_edge_cleaning": "Zesílené uklízení okrajů",
+          "hair_compressing": "Kompresování vlasů"
+        }
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "Uklidit segment",
+      "description": "Spustit operaci uklízení ve vybraných místnostech.",
+      "fields": {
+        "segments": {
+          "name": "Segmenty",
+          "description": "Seznam místností k uklízení. Pouze znak místnosti nebo pole znaků místnosti, počet uklízení, rychlost ventilátoru a režim mopu pro přepsání výchozích hodnot pro každou místnost."
+        },
+        "repeats": {
+          "name": "Opakování",
+          "description": "Počet průchodů uklízení pro každou vybranou místnost (pokud není přepsán upraveným parametrem uklízení)."
+        },
+        "suction_level": {
+          "name": "Úroveň sání",
+          "description": "Rychlost ventilátoru pro každou vybranou místnost (pokud není přepsána upraveným parametrem uklízení)."
+        },
+        "water_volume": {
+          "name": "Objem vody",
+          "description": "Úroveň vody pro každou vybranou místnost (pokud není přepsána upraveným parametrem uklízení)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "Uklidit zónu",
+      "description": "Spustit operaci uklízení ve vybrané oblasti.",
+      "fields": {
+        "zone": {
+          "name": "Zóna",
+          "description": "Souřadnice."
+        },
+        "repeats": {
+          "name": "Opakování",
+          "description": "Počet průchodů uklízení pro každou vybranou zónu."
+        },
+        "suction_level": {
+          "name": "Úroveň sání",
+          "description": "Rychlost ventilátoru pro každou vybranou zónu."
+        },
+        "water_volume": {
+          "name": "Objem vody",
+          "description": "Úroveň vody pro každou vybranou zónu."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "Uklidit místo",
+      "description": "Spustit operaci uklízení na vybraných bodech na mapě.",
+      "fields": {
+        "points": {
+          "name": "Body",
+          "description": "Seznam souřadnic k vyčištění."
+        },
+        "repeats": {
+          "name": "Opakování",
+          "description": "Počet průchodů uklízení pro každou vybranou zónu."
+        },
+        "suction_level": {
+          "name": "Úroveň sání",
+          "description": "Rychlost ventilátoru pro každou vybranou zónu."
+        },
+        "water_volume": {
+          "name": "Objem vody",
+          "description": "Úroveň vody pro každou vybranou zónu."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "Jít na místo",
+      "description": "Přejít na souřadnice na mapě a zastavit.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X souřadnice bodu."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y souřadnice bodu."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Sledovat cestu",
+      "description": "Sledovat seznam souřadnic na mapě a vrátit se na základnu. (Podporováno pouze na vysavačích s kamerou)",
+      "fields": {
+        "points": {
+          "name": "Body",
+          "description": "Seznam souřadnic cesty."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "Spustit zkratku",
+      "description": "Spustit úlohu zkratky. (Pouze na podporovaných zařízeních)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID zkratky",
+          "description": "ID zkratky."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "Dálkové ovládání - krok",
+      "description": "Dálkově ovládat pohyb robota o jeden krok.",
+      "fields": {
+        "rotation": {
+          "name": "Rotace",
+          "description": "Otočení v binárních stupních mezi -128 a 128."
+        },
+        "velocity": {
+          "name": "Rychlost",
+          "description": "Rychlost pohybu, od 100 (vpřed) do -300 (zpět)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "Nainstalovat hlasový balíček",
+      "description": "Nainstalovat oficiální nebo vlastní hlasový balíček.",
+      "fields": {
+        "lang_id": {
+          "name": "ID jazyka",
+          "description": "ID jazyka tohoto balíčku."
+        },
+        "url": {
+          "name": "URL",
+          "description": "URL tohoto balíčku, mělo by být dosažitelné vysavačem."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "MD5 kontrolní součet hlasového balíčku."
+        },
+        "size": {
+          "name": "Velikost",
+          "description": "Velikost hlasového balíčku v bajtech."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "Požádat o mapu",
+      "description": "Požádat o data mapy."
+    },
+    "vacuum_select_map": {
+      "name": "Vybrat mapu",
+      "description": "Vybrat aktuální mapu. Používá se při více mapách/patrech.",
+      "fields": {
+        "map_id": {
+          "name": "ID mapy",
+          "description": "ID mapy, která má být vybrána."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "Smazat mapu",
+      "description": "Smazat mapu.",
+      "fields": {
+        "map_id": {
+          "name": "ID mapy",
+          "description": "ID mapy, která má být smazána."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "Uložit dočasnou mapu",
+      "description": "Uložit dočasnou mapu."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "Zahodit dočasnou mapu",
+      "description": "Zahodit dočasnou mapu."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "Nahradit dočasnou mapu",
+      "description": "Nahradit dočasnou mapu jinou uloženou mapou.",
+      "fields": {
+        "map_id": {
+          "name": "ID mapy",
+          "description": "ID mapy, která má být nahrazena."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "Přejmenovat mapu",
+      "description": "Přejmenovat mapu.",
+      "fields": {
+        "map_id": {
+          "name": "ID mapy",
+          "description": "ID mapy."
+        },
+        "map_name": {
+          "name": "Název mapy",
+          "description": "Nový název mapy."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "Obnovit mapu",
+      "description": "Obnovit mapu.",
+      "fields": {
+        "map_id": {
+          "name": "ID mapy",
+          "description": "ID mapy, která má být obnovena."
+        },
+        "recovery_map_index": {
+          "name": "Index obnovovací mapy",
+          "description": "Index uložené obnovovací mapy."
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Obnovit mapu ze souboru",
+      "description": "Obnovit mapu ze souboru.",
+      "fields": {
+        "map_id": {
+          "name": "ID mapy",
+          "description": "ID mapy, která má být obnovena."
+        },
+        "file_url": {
+          "name": "URL souboru",
+          "description": "URL uloženého souboru tbz2.gz nebo tar.gz."
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Zálohovat mapu",
+      "description": "Zálohovat mapu do cloudu.",
+      "fields": {
+        "map_id": {
+          "name": "ID mapy",
+          "description": "ID mapy, která má být zálohována."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Sloučit segmenty",
+      "description": "Sloučit místnosti.",
+      "fields": {
+        "map_id": {
+          "name": "ID mapy",
+          "description": "ID mapy."
+        },
+        "segments": {
+          "name": "Segmenty",
+          "description": "ID místností."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Rozdělit segmenty",
+      "description": "Rozdělit místnosti.",
+      "fields": {
+        "map_id": {
+          "name": "ID mapy",
+          "description": "ID mapy."
+        },
+        "segment": {
+          "name": "Segment",
+          "description": "ID místnosti."
+        },
+        "line": {
+          "name": "Čára",
+          "description": "Souřadnice rozdělovací čáry."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "Přejmenovat segment",
+      "description": "Přejmenovat segment.",
+      "fields": {
+        "segment_id": {
+          "name": "ID segmentu",
+          "description": "ID segmentu."
+        },
+        "segment_name": {
+          "name": "Název segmentu",
+          "description": "Nový název segmentu."
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "Nastavit pořadí úklidu",
+      "description": "Nastavit pořadí úklidu místností. (Pouze na podporovaných zařízeních)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "Pořadí úklidu",
+          "description": "Seznam ID segmentů pro pořadí úklidu."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "Nastavit vlastní úklid",
+      "description": "Nastavit parametry vlastního úklidu. (Pouze na podporovaných zařízeních)",
+      "fields": {
+        "segment_id": {
+          "name": "ID segmentu",
+          "description": "ID místností."
+        },
+        "suction_level": {
+          "name": "Úroveň sání",
+          "description": "Úroveň sání pro každou místnost."
+        },
+        "water_volume": {
+          "name": "Objem vody",
+          "description": "Objem vody pro každou místnost."
+        },
+        "cleaning_mode": {
+          "name": "Režim úklidu",
+          "description": "Režim úklidu pro každou místnost (pouze na vysavačích s funkcí zvedání mopovací podložky)."
+        },
+        "repeats": {
+          "name": "Opakování",
+          "description": "Počet úklidů pro každou místnost."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Nastavit vlastní čištění koberců",
+      "description": "Nastavit vlastní nastavení čištění koberců. (Pouze na podporovaných zařízeních)",
+      "fields": {
+        "id": {
+          "name": "ID koberce",
+          "description": "ID koberců."
+        },
+        "type": {
+          "name": "Typ objektu",
+          "description": "Typ objektu s ID. (0 = Automaticky detekovaný koberec, 1 = Ručně vytvořený koberec, 2 = Pokojový koberec (pokud je podporováno))"
+        },
+        "carpet_cleaning": {
+          "name": "Čištění koberce",
+          "description": "Vlastní nastavení čištění koberce pro každý koberec."
+        },
+        "carpet_settings": {
+          "name": "Nastavení koberce",
+          "description": "Vlastní nastavení koberce pro každý koberec s polem povolených nastavení."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Nastavit zakázanou zónu",
+      "description": "Definovat virtuální stěny, zakázané zóny a/nebo zóny bez mopování.",
+      "fields": {
+        "walls": {
+          "name": "Stěny",
+          "description": "Virtuální stěny."
+        },
+        "zones": {
+          "name": "Zóny",
+          "description": "Zakázané zóny."
+        },
+        "no_mops": {
+          "name": "Zóny bez mopování",
+          "description": "Zóny bez mopování."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "Resetovat spotřební materiál",
+      "description": "Resetovat spotřební materiál.",
+      "fields": {
+        "consumable": {
+          "name": "Spotřební materiál",
+          "description": "Typ spotřebního materiálu."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Přejmenovat zkratku",
+      "description": "Přejmenovat zkratku. (Pouze na podporovaných zařízeních)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID zkratky",
+          "description": "ID zkratky."
+        },
+        "shortcut_name": {
+          "name": "Název zkratky",
+          "description": "Nový název zkratky."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Nastavit kobercovou plochu",
+      "description": "Definovat koberce a ignorované koberce. (Pouze na podporovaných zařízeních)",
+      "fields": {
+        "carpets": {
+          "name": "Koberce",
+          "description": "Plochy koberců."
+        },
+        "ignored_carpets": {
+          "name": "Ignorované koberce",
+          "description": "Ignorované kobercové plochy pro odstranění automaticky detekovaných koberců."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "Nastavit virtuální práh",
+      "description": "Definovat virtuální prahy.",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "Virtuální prahy",
+          "description": "Souřadnice čar virtuálních prahů."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Nastavit předdefinované body",
+      "description": "Definovat předdefinované souřadnice na aktuální mapě. (Pouze na vysavačích s kamerou)",
+      "fields": {
+        "points": {
+          "name": "Body",
+          "description": "Seznam souřadnic k uložení."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Nastavit ignorování překážky",
+      "description": "Nastavit stav ignorování překážky. (Pouze na vysavačích s funkcí detekce překážek pomocí AI)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X souřadnice překážky."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y souřadnice překážky."
+        },
+        "obstacle_ignored": {
+          "name": "Ignorovat překážku",
+          "description": "Překážka je ignorována nebo ne."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Nastavit pozici routeru",
+      "description": "Nastavit pozici routeru na aktuální mapě. (Pouze na vysavačích s funkcí WiFi mapy)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X souřadnice routeru."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y souřadnice routeru."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "Vybrat předchozí",
+      "description": "Vybrat předchozí možnosti u entity výběru.",
+      "fields": {
+        "cycle": {
+          "name": "Cyklicky",
+          "description": "Zda by se mělo cyklicky přejít z první možnosti na poslední."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "Vybrat první",
+      "description": "Vybrat první možnost u entity výběru."
+    },
+    "select_select_last": {
+      "name": "Vybrat poslední",
+      "description": "Vybrat poslední možnost u entity výběru."
+    },
+    "select_select_next": {
+      "name": "Vybrat další",
+      "description": "Vybrat další možnosti u entity výběru.",
+      "fields": {
+        "cycle": {
+          "name": "Cyklicky",
+          "description": "Zda by se mělo cyklicky přejít z první možnosti na poslední."
+        }
+      }
+    }
+  }
+}

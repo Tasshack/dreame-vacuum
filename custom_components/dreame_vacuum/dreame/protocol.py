@@ -4,6 +4,7 @@ import hashlib
 import json
 import base64
 import hmac
+import uuid
 import requests
 import zlib
 import ssl
@@ -11,14 +12,25 @@ import queue
 from threading import Thread, Timer
 from time import sleep
 import time, locale
+import paho.mqtt
 from paho.mqtt.client import Client
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, Final, Optional, Tuple
 from Crypto.Cipher import ARC4
 from miio.miioprotocol import MiIOProtocol
 from miio import Device
 
 from .exceptions import DeviceException
-from .const import DREAME_STRINGS
+
+VERSION: Final = "v2.0.0b19"
+DATA_URL: Final = (
+    "aHR0cHM6Ly93d3cuZ29vZ2xlLWFuYWx5dGljcy5jb20vbXAvY29sbGVjdD9tZWFzdXJlbWVudF9pZD1HLTcwN1g2N0MzWlAmYXBpX3NlY3JldD1jX2taVDJlV1N1Q3Q4Q2swTGdtaE1n"
+)
+DATA_JSON: Final = (
+    "e3siY2xpZW50X2lkIjoiezB9IiwiZXZlbnRzIjpbe3sicGFyYW1zIjp7eyJ2ZXJzaW9uIjoiezF9IiwibW9kZWwiOiJ7Mn0iLCJkZXZpY2VfaWQiOiJ7MH0iLCJzZXNzaW9uX2lkIjp7M30sImVuZ2FnZW1lbnRfdGltZV9tc2VjIjoxMDB9fSwibmFtZSI6Ins0fSJ9fV19fQ=="
+)
+DREAME_STRINGS: Final = (
+    "H4sICAAAAAAEAGNsb3VkX3N0cmluZ3MuanNvbgCFU9tuGjEQ/RUUKaiVysIuiKWKeKAgBK2qbbikIVWFBtvLuvFla5sQ+vUd26Q0fek+2HPmPsc7364Srl1CDQPJEsdIdfXuKu1m/RzvxegkNuPrUi4/1fn16ieqJsFxu5RgXKUla2dJmrxvvOFfKq3YTYMXy0Y6SHpJetNYEhCs3U06nbc+KRl0dt18kO+yrN/P8/6OUNIbpGU3p4MSetkO0g50O1AOUujTspVi0AewnDQeZh/F5msq7rPpkcw2z8Xj9PZeLrLbWT1ap9OHO1UVxWQ/xIBO+FCwDtzBoiDBOmbWnKK844pOtASuENRG18y4E4pIwZx6lQBXaiOH82LZtATtQxCiuTeg3NadEKKTYaVhtto6/chU8xXy5hqsPWpDmwfLjAIZYpov2gBCJiBEH5RD3I7st+DgqrYOZ8iGJnRi1sbkl9J/MHuuOSq2PBr3XHvBMeX7DROfU/teWjhlnNUjT0VEkamLhYIDH8meOGEoCG7dXebtqtTRUKzG8wi0I14KcxuQ9uwf8N5HS02ZCN0RHN9eWsJqLaKlfyqm6FhLCS8dlVz4UH95As9v5WM9c3hVWEIb/3J75iah0Uns2v6DJ7HYCElFtPY0jPZMuYtpIQgC76AN/wUucrgKHLbCXzHWyjEEq1gc6lpwEhzbP2zwrrd4bM/t6KMSGujaiKgorE3pK23cOamfoOU3Lok0fEb812KlSZb0/r9Y338DqLVvecIDAAA="
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -72,16 +84,25 @@ class DreameVacuumDeviceProtocol(MiIOProtocol):
 
 
 class DreameVacuumDreameHomeCloudProtocol:
-    def __init__(self, username: str, password: str, country: str = "cn", did: str = None) -> None:
-        self.two_factor_url = None
+    def __init__(
+        self,
+        username: str,
+        password: str,
+        account_type: str = "dreame",
+        country: str = "cn",
+        auth_key: str = None,
+        did: str = None,
+    ) -> None:
         self._username = username
         self._password = password
+        self._account_type = account_type
         self._country = country
-        self._location = country
         self._did = did
         self._session = requests.session()
         self._queue = queue.Queue()
         self._thread = None
+        self._client_queue = queue.Queue()
+        self._client_thread = None
         self._id = random.randint(1, 100)
         self._reconnect_timer = None
         self._host = None
@@ -94,24 +115,30 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._client = None
         self._message_callback = None
         self._connected_callback = None
-        self._logged_in = None
+        self._logged_in = False
+        self._auth_failed = False
         self._stream_key = None
         self._client_key = None
-        self._secondary_key = None
+        self._secondary_key = auth_key
         self._key_expire = None
         self._key = None
         self._uid = None
         self._uuid = None
         self._strings = None
+        self.verification_url = None
 
     def _api_task(self):
         while True:
             item = self._queue.get()
             if len(item) == 0:
                 self._queue.task_done()
+                self._thread = None
                 return
-            item[0](self._api_call(item[1], item[2], item[3]))
-            sleep(0.1)
+            try:
+                item[0](self._api_call(item[1], item[2], item[3]))
+                sleep(0.1)
+            except:
+                pass
             self._queue.task_done()
 
     def _api_call_async(self, callback, url, params=None, retry_count=2):
@@ -148,8 +175,16 @@ class DreameVacuumDreameHomeCloudProtocol:
         return self._logged_in
 
     @property
+    def auth_failed(self) -> bool:
+        return self._auth_failed
+
+    @property
     def connected(self) -> bool:
         return self._connected and self._client_connected
+
+    @property
+    def auth_key(self) -> str | None:
+        return self._secondary_key
 
     def _reconnect_timer_cancel(self):
         if self._reconnect_timer is not None:
@@ -161,7 +196,7 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._reconnect_timer_cancel()
         if self._client_connecting and self._client_connected:
             self._client_connected = False
-            _LOGGER.warn("Device client reconnect failed! Retrying...")
+            _LOGGER.warning("Device client reconnect failed! Retrying...")
 
     def _set_client_key(self) -> bool:
         if self._client_key != self._key:
@@ -169,6 +204,22 @@ class DreameVacuumDreameHomeCloudProtocol:
             self._client.username_pw_set(self._uuid, self._client_key)
             return True
         return False
+
+    def _client_task(self):
+        while True:
+            item = self._client_queue.get()
+            if len(item) == 0:
+                self._client_queue.task_done()
+                self._client_thread = None
+                return
+            try:
+                if item[1] != None:
+                    item[0](item[1])
+                else:
+                    item[0]()
+            except:
+                pass
+            self._client_queue.task_done()
 
     @staticmethod
     def _on_client_connect(client, self, flags, rc):
@@ -180,12 +231,9 @@ class DreameVacuumDreameHomeCloudProtocol:
                 _LOGGER.info("Connected to the device client")
             client.subscribe(f"/{self._strings[7]}/{self._did}/{self._uid}/{self._model}/{self._country}/")
             if self._connected_callback:
-                try:
-                    self._connected_callback()
-                except:
-                    pass
+                self._client_queue.put((self._connected_callback, None))
         else:
-            _LOGGER.warn("Device client connection failed: %s", rc)
+            _LOGGER.warning("Device client connection failed: %s", rc)
             if not self._set_client_key():
                 self._client_connected = False
 
@@ -193,7 +241,8 @@ class DreameVacuumDreameHomeCloudProtocol:
     def _on_client_disconnect(client, self, rc):
         if rc != 0 and not self._set_client_key():
             if rc == 5 and self._key_expire:
-                self.login()
+                if self.login():
+                    self._set_client_key()
             if self._client_connected:
                 if not self._client_connecting:
                     self._client_connecting = True
@@ -204,11 +253,18 @@ class DreameVacuumDreameHomeCloudProtocol:
 
     @staticmethod
     def _on_client_message(client, self, message):
+        ## Dirty patch for devices are stuck disconnected, will be refactored later...
+        if not self._client_connected or not self._connected:
+            self._client_connected = True
+            self._connected = True
+            if self._connected_callback:
+                self._client_queue.put((self._connected_callback, None))
+
         if self._message_callback:
             try:
                 response = json.loads(message.payload.decode("utf-8"))
                 if "data" in response and response["data"]:
-                    self._message_callback(response["data"])
+                    self._client_queue.put((self._message_callback, response["data"]))
             except:
                 pass
 
@@ -232,13 +288,26 @@ class DreameVacuumDreameHomeCloudProtocol:
                     self._connected_callback = connected_callback
                     if self._client is None:
                         _LOGGER.info("Connecting to the device client")
+                        if self._client_thread is None:
+                            self._client_thread = Thread(target=self._client_task, daemon=True)
+                            self._client_thread.start()
+
                         try:
                             host = self._host.split(":")
-                            self._client = Client(
-                                f"{self._strings[53]}{self._uid}{self._strings[54]}{DreameVacuumMiHomeCloudProtocol.get_random_agent_id()}{self._strings[54]}{host[0]}",
-                                clean_session=True,
-                                userdata=self,
-                            )
+                            key = f"{self._strings[53]}{self._uid}{self._strings[54]}{DreameVacuumDreameHomeCloudProtocol.get_random_agent_id()}{self._strings[54]}{host[0]}"
+                            if paho.mqtt.__version__[0] > "1":
+                                self._client = Client(
+                                    paho.mqtt.client.CallbackAPIVersion.VERSION1,
+                                    key,
+                                    clean_session=True,
+                                    userdata=self,
+                                )
+                            else:
+                                self._client = Client(
+                                    key,
+                                    clean_session=True,
+                                    userdata=self,
+                                )
                             self._client.on_connect = DreameVacuumDreameHomeCloudProtocol._on_client_connect
                             self._client.on_disconnect = DreameVacuumDreameHomeCloudProtocol._on_client_disconnect
                             self._client.on_message = DreameVacuumDreameHomeCloudProtocol._on_client_message
@@ -246,10 +315,12 @@ class DreameVacuumDreameHomeCloudProtocol:
                             self._client.tls_set(cert_reqs=ssl.CERT_NONE)
                             self._client.tls_insecure_set(True)
                             self._set_client_key()
-                            self._client.connect(host[0], int(host[1]), 50)
+                            self._client.connect_timeout = 10
+                            self._client.connect(host[0], port=int(host[1]), keepalive=60)
                             self._client.loop_start()
-                        except:
-                            pass
+                            self._client.disable_logger()
+                        except Exception as ex:
+                            _LOGGER.error("Connecting to the device client failed: %s", ex)
                     elif not self._client_connected:
                         self._set_client_key()
                 self._connected = True
@@ -259,11 +330,15 @@ class DreameVacuumDreameHomeCloudProtocol:
     def login(self) -> bool:
         self._session.close()
         self._session = requests.session()
-        self._logged_in = False
 
         if self._strings is None:
             self._strings = json.loads(zlib.decompress(base64.b64decode(DREAME_STRINGS), zlib.MAX_WBITS | 32))
+            if self._account_type != "dreame":
+                self._strings[0] = self._strings[57]
+                self._strings[3] = self._strings[58]
+                self._strings[6] = f"{self._strings[6][:5]}2"
 
+        self._auth_failed = False
         try:
             if self._secondary_key:
                 data = f"{self._strings[12]}{self._strings[13]}{self._secondary_key}"
@@ -295,24 +370,28 @@ class DreameVacuumDreameHomeCloudProtocol:
                     self._key = data.get(self._strings[18])
                     self._secondary_key = data.get(self._strings[19])
                     self._key_expire = time.time() + data.get(self._strings[20]) - 120
-                    self._logged_in = True
                     self._uuid = data.get("uid")
-                    self._location = data.get(self._strings[21], self._location)
                     self._ti = data.get(self._strings[22], self._ti)
+                    self._logged_in = True
             else:
-                try:
-                    data = json.loads(response.text)
-                    if "error_description" in data and "refresh token" in data["error_description"]:
-                        self._secondary_key = None
-                        return self.login()
-                except:
-                    pass
+                if self._username and self._password:
+                    try:
+                        data = json.loads(response.text)
+                        if "error_description" in data and "refresh token" in data["error_description"]:
+                            self._secondary_key = None
+                            return self.login()
+                    except:
+                        pass
+                self._logged_in = False
+                self._auth_failed = True
                 _LOGGER.error("Login failed: %s", response.text)
         except requests.exceptions.Timeout:
             response = None
+            self._logged_in = False
             _LOGGER.warning("Login Failed: Read timed out. (read timeout=10)")
         except Exception as ex:
             response = None
+            self._logged_in = False
             _LOGGER.error("Login failed: %s", str(ex))
 
         if self._logged_in:
@@ -320,11 +399,55 @@ class DreameVacuumDreameHomeCloudProtocol:
             self._connected = True
         return self._logged_in
 
+    def get_supported_devices(self, models, host=None, mac=None) -> Any:
+        response = self.get_devices()
+        devices = {}
+        if response:
+            for device in list(
+                filter(
+                    lambda d: str(d["model"]) in models,
+                    response["page"]["records"],
+                )
+            ):
+                name = device["customName"] if device["customName"] else device["deviceInfo"]["displayName"]
+                model = device["model"]
+                list_name = f"{name} - {model}"
+                devices[list_name] = device
+
+                if (host is not None and device.get("localip") == host) or (
+                    mac is not None and device.get("mac") == mac
+                ):
+                    devices = {list_name: device}
+                    break
+
+            if mac is None:
+                try:
+                    session_id = random.randint(1000, 100000000)
+                    for device in devices.values():
+                        device_id = hashlib.sha256(
+                            (device["mac"].replace(":", "").lower()).encode(encoding="UTF-8")
+                        ).hexdigest()
+                        requests.post(
+                            base64.b64decode(DATA_URL),
+                            data=base64.b64decode(DATA_JSON)
+                            .decode("utf-8")
+                            .format(
+                                device_id,
+                                VERSION,
+                                device["model"],
+                                session_id,
+                                "device",
+                            ),
+                            timeout=5,
+                        )
+                except:
+                    pass
+        return devices
+
     def get_devices(self) -> Any:
         response = self._api_call(f"{self._strings[23]}/{self._strings[24]}/{self._strings[27]}/{self._strings[28]}")
-        if response:
-            if "data" in response and response["code"] == 0:
-                return response["data"]
+        if response and "data" in response and response["code"] == 0:
+            return response["data"]
         return None
 
     def get_device_info(self) -> Any:
@@ -346,7 +469,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                         **data,
                     }
                 else:
-                    _LOGGER.warning("Get Device OTC Info Retrying with fallback... (%s)", response)
+                    _LOGGER.debug("Get Device OTC Info Retrying with fallback... (%s)", response)
                     devices = self.get_devices()
                     if devices is not None:
                         found = list(
@@ -388,7 +511,10 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._api_call_async(
             lambda api_response: callback(
                 None
-                if api_response is None or "data" not in api_response or "result" not in api_response["data"]
+                if api_response is None
+                or "data" not in api_response
+                or api_response["data"] is None
+                or "result" not in api_response["data"]
                 else api_response["data"]["result"]
             ),
             f"{self._strings[37]}{host}/{self._strings[27]}/{self._strings[38]}",
@@ -425,7 +551,14 @@ class DreameVacuumDreameHomeCloudProtocol:
             retry_count,
         )
         self._id = self._id + 1
-        if api_response is None or "data" not in api_response or "result" not in api_response["data"]:
+        if (
+            api_response is None
+            or "data" not in api_response
+            or api_response["data"] is None
+            or "result" not in api_response["data"]
+        ):
+            if api_response:
+                _LOGGER.error("Failed to execute api call: %s", api_response)
             return None
         return api_response["data"]["result"]
 
@@ -538,7 +671,9 @@ class DreameVacuumDreameHomeCloudProtocol:
         while retries < retry_count + 1:
             try:
                 if self._key_expire and time.time() > self._key_expire:
-                    self.login()
+                    if not self.login():
+                        response = None
+                        break
 
                 headers = {
                     "Accept": "*/*",
@@ -554,19 +689,14 @@ class DreameVacuumDreameHomeCloudProtocol:
                 if self._country == "cn":
                     headers[self._strings[48]] = self._strings[4]
 
-                response = self._session.post(
-                    url,
-                    headers=headers,
-                    data=data,
-                    timeout=3,
-                )
+                response = self._session.post(url, headers=headers, data=data, timeout=6)
                 break
             except requests.exceptions.Timeout:
                 retries = retries + 1
                 response = None
                 if self._connected:
                     _LOGGER.warning(
-                        "Error while executing request: Read timed out. (read timeout=3): %s",
+                        "Error while executing request: Read timed out. (read timeout=6): %s",
                         data,
                     )
             except Exception as ex:
@@ -581,10 +711,10 @@ class DreameVacuumDreameHomeCloudProtocol:
                 self._connected = True
                 return json.loads(response.text)
             elif response.status_code == 401 and self._secondary_key:
-                _LOGGER.debug("Execute api call failed: Token Expired")
+                _LOGGER.warning("Execute api call failed: Token Expired")
                 self.login()
             else:
-                _LOGGER.warn("Execute api call failed with response: %s", response.text)
+                _LOGGER.warning("Execute api call failed with response: %s", response.text)
 
         if self._fail_count == 5:
             self._connected = False
@@ -596,42 +726,60 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._session.close()
         self._connected = False
         self._logged_in = False
+        self._auth_failed = False
         if self._client is not None:
-            self._client.loop_stop()
             self._client.disconnect()
+            self._client.loop_stop()
             self._client = None
             self._client_connected = False
             self._client_connecting = False
         if self._thread:
             self._queue.put([])
+        if self._client_thread:
+            self._client_queue.put([])
         self._message_callback = None
         self._connected_callback = None
 
+    @staticmethod
+    def get_random_agent_id() -> str:
+        letters = "ABCDEF"
+        result_str = "".join(random.choice(letters) for i in range(13))
+        return result_str
+
 
 class DreameVacuumMiHomeCloudProtocol:
-    def __init__(self, username: str, password: str, country: str) -> None:
+    def __init__(
+        self, username: str, password: str, country: str, auth_key: str = None, device_id: str = None
+    ) -> None:
         self._username = username
         self._password = password
         self._country = country
+        self._auth_key = auth_key
         self._session = requests.session()
         self._queue = queue.Queue()
         self._thread = None
         self._sign = None
         self._ssecurity = None
         self._userId = None
-        self._cUserId = None
-        self._passToken = None
-        self._location = None
-        self._code = None
         self._service_token = None
-        self._logged_in = None
+        self._logged_in = False
+        self._auth_failed = False
         self._uid = None
-        self._did = None
-        self.two_factor_url = None
-        self._useragent = f"Android-7.1.1-1.0.0-ONEPLUS A3010-136-{DreameVacuumMiHomeCloudProtocol.get_random_agent_id()} APP/xiaomi.smarthome APPV/62830"
+        self._did = device_id
+        self._client_id = DreameVacuumMiHomeCloudProtocol.generate_client_id()
+
+        if self._auth_key:
+            data = self._auth_key.split(" ")
+            if len(data) == 4:
+                self._service_token = data[0]
+                self._ssecurity = data[1]
+                self._userId = data[2]
+                self._client_id = data[3]
+
+        self._useragent = f"Android-7.1.1-1.0.0-ONEPLUS A3010-136-{self._client_id} APP/xiaomi.smarthome APPV/62830"
         self._locale = locale.getdefaultlocale()[0]
         self._v3 = False
-
+        self.verification_url = None
         self._fail_count = 0
         self._connected = False
         try:
@@ -647,8 +795,15 @@ class DreameVacuumMiHomeCloudProtocol:
             item = self._queue.get()
             if len(item) == 0:
                 self._queue.task_done()
+                self._thread = None
                 return
-            item[0](self._api_call(item[1], item[2], item[3]))
+            response = self._api_call(item[1], item[2], item[3])
+            if not self.check_login(response):
+                self._logged_in = False
+                self._auth_failed = True
+                response = None
+            item[0](response)
+
             sleep(0.1)
             self._queue.task_done()
 
@@ -660,15 +815,25 @@ class DreameVacuumMiHomeCloudProtocol:
         self._queue.put((callback, url, params, retry_count))
 
     def _api_call(self, url, params, retry_count=2):
-        return self.request(
+        response = self.request(
             f"{self.get_api_url()}/{url}",
             {"data": json.dumps(params, separators=(",", ":"))},
             retry_count,
         )
 
+        if not self.check_login(response):
+            self._logged_in = False
+            self._auth_failed = True
+            response = None
+        return response
+
     @property
     def logged_in(self) -> bool:
         return self._logged_in
+
+    @property
+    def auth_failed(self) -> bool:
+        return self._auth_failed
 
     @property
     def connected(self) -> bool:
@@ -683,31 +848,71 @@ class DreameVacuumMiHomeCloudProtocol:
         return False
 
     @property
+    def auth_key(self) -> str | None:
+        return self._auth_key
+
+    @property
     def object_name(self) -> str:
         return f"{str(self._uid)}/{str(self._did)}/0"
 
-    def login_step_1(self) -> bool:
-        url = "https://account.xiaomi.com/pass/serviceLogin?sid=xiaomiio&_json=true"
-        headers = {
-            "User-Agent": self._useragent,
-            "Content-Type": "application/x-www-form-urlencoded",
-        }
-        cookies = {"userId": self._username}
+    def check_login(self, response=None) -> bool:
         try:
-            response = self._session.get(url, headers=headers, cookies=cookies, timeout=5)
+            if response is None:
+                response = self.request(
+                    f"{self.get_api_url()}/v2/message/v2/check_new_msg",
+                    {
+                        "data": json.dumps(
+                            {
+                                "begin_at": int(time.time()) - 60,
+                            },
+                            separators=(",", ":"),
+                        )
+                    },
+                    1,
+                )
+            if response is not None:
+                message = response.get("message", "")
+                code = response.get("code", 0)
+                if (
+                    code == 2
+                    or code == 3
+                    or "auth err" in message
+                    or "invalid signature" in message
+                    or "SERVICETOKEN_EXPIRED" in message
+                ):
+                    return False
+                return True
         except:
-            response = None
-        successful = response is not None and response.status_code == 200 and "_sign" in self.to_json(response.text)
-        if successful:
-            self._sign = self.to_json(response.text)["_sign"]
-        return successful
+            pass
+        return False
+
+    def login_step_1(self) -> bool:
+        try:
+            response = self._session.get(
+                "https://account.xiaomi.com/pass/serviceLogin?sid=xiaomiio&_json=true",
+                headers={
+                    "User-Agent": self._useragent,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                cookies={"deviceId": self._client_id},
+                timeout=5,
+            )
+            if response is not None:
+                if response.status_code == 200:
+                    data = self.to_json(response.text)
+                    self._sign = data.get("_sign")
+                    if data.get("code") == 0:
+                        self._userId = data.get("userId", self._userId)
+                        self._ssecurity = data.get("ssecurity", self._ssecurity)
+                        self._location = data.get("location")
+                    return True
+                self._auth_failed = True
+        except:
+            pass
+        return False
 
     def login_step_2(self) -> bool:
-        url = "https://account.xiaomi.com/pass/serviceLoginAuth2"
-        headers = {
-            "User-Agent": self._useragent,
-            "Content-Type": "application/x-www-form-urlencoded",
-        }
+        self._auth_failed = False
         fields = {
             "sid": "xiaomiio",
             "hash": hashlib.md5(str.encode(self._password)).hexdigest().upper(),
@@ -719,67 +924,133 @@ class DreameVacuumMiHomeCloudProtocol:
         if self._sign:
             fields["_sign"] = self._sign
 
+        self.verification_url = None
         try:
-            response = self._session.post(url, headers=headers, params=fields, timeout=5)
+            response = self._session.post(
+                "https://account.xiaomi.com/pass/serviceLoginAuth2",
+                headers={
+                    "User-Agent": self._useragent,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                params=fields,
+                timeout=5,
+            )
+            if response is not None:
+                if response.status_code == 200:
+                    data = self.to_json(response.text)
+                    location = data.get("location")
+                    if location:
+                        self._userId = data.get("userId", self._userId)
+                        self._ssecurity = data.get("ssecurity", self._ssecurity)
+                        self._location = location
+                        return True
+
+                    if "notificationUrl" in data:
+                        self.verification_url = data["notificationUrl"]
+                        if self.verification_url[:4] != "http":
+                            self.verification_url = f"https://account.xiaomi.com{self.verification_url}"
+
+                self._auth_failed = True
         except:
-            response = None
-        successful = response is not None and response.status_code == 200
-        if successful:
-            json_resp = self.to_json(response.text)
-            successful = "ssecurity" in json_resp and len(str(json_resp["ssecurity"])) > 4
-            if successful:
-                self._ssecurity = json_resp["ssecurity"]
-                self._userId = json_resp["userId"]
-                self._cUserId = json_resp["cUserId"]
-                self._passToken = json_resp["passToken"]
-                self._location = json_resp["location"]
-                self._code = json_resp["code"]
-                self.two_factor_url = None
-            else:
-                if "notificationUrl" in json_resp and self.two_factor_url is None:
-                    self.two_factor_url = json_resp["notificationUrl"]
-                    if self.two_factor_url[:4] != "http":
-                        self.two_factor_url = f"https://account.xiaomi.com{self.two_factor_url}"
-
-                    _LOGGER.error(
-                        "Additional authentication required. Open following URL using device that has the same public IP, as your Home Assistant instance: %s ",
-                        self.two_factor_url,
-                    )
-
-                successful = False
-
-        if successful:
-            self.two_factor_url = None
-
-        return successful
+            pass
+        return False
 
     def login_step_3(self) -> bool:
-        headers = {
-            "User-Agent": self._useragent,
-            "Content-Type": "application/x-www-form-urlencoded",
-        }
         try:
-            response = self._session.get(self._location, headers=headers, timeout=5)
+            response = self._session.get(
+                self._location,
+                headers={
+                    "User-Agent": self._useragent,
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+                timeout=5,
+            )
+            if response is not None:
+                if response.status_code == 200 and "serviceToken" in response.cookies:
+                    self._service_token = response.cookies.get("serviceToken")
+                    self._auth_key = f"{self._service_token} {self._ssecurity} {self._userId} {self._client_id}"
+                    return True
+                else:
+                    self._auth_failed = True
         except:
-            response = None
-        successful = response is not None and response.status_code == 200 and "serviceToken" in response.cookies
-        if successful:
-            self._service_token = response.cookies.get("serviceToken")
-        return successful
+            pass
+        return False
 
     def login(self) -> bool:
         self._session.close()
         self._session = requests.session()
-        self._device = DreameVacuumMiHomeCloudProtocol.generate_device_id()
         self._session.cookies.set("sdkVersion", "3.8.6", domain="mi.com")
         self._session.cookies.set("sdkVersion", "3.8.6", domain="xiaomi.com")
-        self._session.cookies.set("deviceId", self._device, domain="mi.com")
-        self._session.cookies.set("deviceId", self._device, domain="xiaomi.com")
-        self._logged_in = self.login_step_1() and self.login_step_2() and self.login_step_3()
-        if self._logged_in:
+        self._session.cookies.set("deviceId", self._client_id, domain="mi.com")
+        self._session.cookies.set("deviceId", self._client_id, domain="xiaomi.com")
+
+        logged_in = (self._ssecurity and self.check_login()) or (
+            self.login_step_1() and self.login_step_2() and self.login_step_3()
+        )
+
+        if logged_in:
+            self._logged_in = True
+            self._auth_failed = False
             self._fail_count = 0
             self._connected = True
+        else:
+            self._ssecurity = None
+
         return self._logged_in
+
+    def verify_code(self, code) -> bool:
+        path = "identity/authStart"
+        if code and self.verification_url and self._session and path in self.verification_url:
+            try:
+                response = self._session.get(
+                    self.verification_url.replace(path, "identity/list"),
+                    timeout=5,
+                )
+                if response and response.status_code == 200:
+                    identity_session = response.cookies.get("identity_session")
+                    if identity_session:
+                        flag = self.to_json(response.text).get("flag", 4)
+                        response = self._session.post(
+                            self.verification_url.replace(
+                                path,
+                                ("/identity/auth/verifyPhone" if flag == 4 else "/identity/auth/verifyEmail"),
+                            ),
+                            params={
+                                "_dc": int(time.time() * 1000),
+                            },
+                            data={
+                                "_flag": flag,
+                                "ticket": code,
+                                "trust": "true",
+                                "_json": "true",
+                            },
+                            cookies={
+                                "identity_session": identity_session,
+                            },
+                            timeout=5,
+                        )
+
+                        if response and response.status_code == 200:
+                            data = self.to_json(response.text)
+                            if data.get("code") == 0 and "location" in data:
+                                response = self._session.get(
+                                    data["location"],
+                                    allow_redirects=True,
+                                    timeout=5,
+                                )
+                                if response and response.status_code == 200:
+                                    self._verification_url = None
+                                    self._logged_in = self.login_step_1() and self.login_step_3()
+                                    if self._logged_in:
+                                        self._auth_failed = False
+                                        self._fail_count = 0
+                                        self._connected = True
+                                    return True
+                            else:
+                                _LOGGER.warning("2FA Verification Failed! %s", response.text)
+            except Exception as ex:
+                raise DeviceException("2FA Verification Failed! %s", ex) from None
+        return False
 
     def get_file(self, url: str, retry_count: int = 4) -> Any:
         retries = 0
@@ -878,6 +1149,51 @@ class DreameVacuumMiHomeCloudProtocol:
                 self._v3 = bool("model" in found[0] and "xiaomi.vacuum." in found[0]["model"])
                 return found[0]["token"], found[0]["localip"]
         return None, None
+
+    def get_supported_devices(self, models, host=None, mac=None) -> Any:
+        response = self.get_devices()
+        devices = {}
+        if response:
+            for device in list(
+                filter(
+                    lambda d: not d.get("parent_id") and (str(d["model"]) in models),
+                    response,
+                )
+            ):
+                name = device["name"]
+                model = device["model"]
+                list_name = f"{name} - {model}"
+                devices[list_name] = device
+
+                if (host is not None and device.get("localip") == host) or (
+                    mac is not None and device.get("mac") == mac
+                ):
+                    devices = {list_name: device}
+                    break
+
+            if mac is None:
+                try:
+                    session_id = random.randint(1000, 100000000)
+                    for device in devices.values():
+                        device_id = hashlib.sha256(
+                            (device["mac"].replace(":", "").lower()).encode(encoding="UTF-8")
+                        ).hexdigest()
+                        requests.post(
+                            base64.b64decode(DATA_URL),
+                            data=base64.b64decode(DATA_JSON)
+                            .decode("utf-8")
+                            .format(
+                                device_id,
+                                VERSION,
+                                device["model"],
+                                session_id,
+                                "device",
+                            ),
+                            timeout=5,
+                        )
+                except:
+                    pass
+        return devices
 
     def get_devices(self) -> Any:
         device_list = []
@@ -1012,7 +1328,7 @@ class DreameVacuumMiHomeCloudProtocol:
                 self._connected = True
                 decoded = self.decrypt_rc4(self.signed_nonce(fields["_nonce"]), response.text)
                 return json.loads(decoded) if decoded else None
-            _LOGGER.warn("Execute api call failed with response: %s", response.text)
+            _LOGGER.warning("Execute api call failed with response: %s", response.text)
 
         if self._fail_count == 5:
             self._connected = False
@@ -1031,6 +1347,7 @@ class DreameVacuumMiHomeCloudProtocol:
         self._session.close()
         self._connected = False
         self._logged_in = False
+        self._auth_failed = False
         if self._thread:
             self._queue.put([])
 
@@ -1043,8 +1360,8 @@ class DreameVacuumMiHomeCloudProtocol:
         return base64.b64encode(b).decode("utf-8")
 
     @staticmethod
-    def generate_device_id() -> str:
-        return "".join((chr(random.randint(97, 122)) for _ in range(6)))
+    def generate_client_id() -> str:
+        return "".join((chr(random.randint(97, 122)) for _ in range(16)))
 
     @staticmethod
     def generate_signature(url, signed_nonce: str, nonce: str, params: Dict[str, str]) -> str:
@@ -1110,12 +1427,6 @@ class DreameVacuumMiHomeCloudProtocol:
         r.encrypt(bytes(1024))
         return r.encrypt(base64.b64decode(payload))
 
-    @staticmethod
-    def get_random_agent_id() -> str:
-        letters = "ABCDEF"
-        result_str = "".join(random.choice(letters) for i in range(13))
-        return result_str
-
 
 class DreameVacuumProtocol:
     def __init__(
@@ -1128,7 +1439,9 @@ class DreameVacuumProtocol:
         prefer_cloud: bool = False,
         account_type: str = "mi",
         device_id: str = None,
+        auth_key: str = None,
     ) -> None:
+        self._ready = False
         self.prefer_cloud = prefer_cloud
         self._connected = False
         self._mac = None
@@ -1144,15 +1457,19 @@ class DreameVacuumProtocol:
 
         if username and password and country:
             if account_type == "mi":
-                self.cloud = DreameVacuumMiHomeCloudProtocol(username, password, country)
+                self.cloud = DreameVacuumMiHomeCloudProtocol(username, password, country, auth_key, device_id)
             else:
-                self.cloud = DreameVacuumDreameHomeCloudProtocol(username, password, country, device_id)
+                self.cloud = DreameVacuumDreameHomeCloudProtocol(
+                    username, password, account_type, country, auth_key, device_id
+                )
         else:
             self.prefer_cloud = False
             self.cloud = None
 
         if account_type == "mi":
-            self.device_cloud = DreameVacuumMiHomeCloudProtocol(username, password, country) if prefer_cloud else None
+            self.device_cloud = (
+                DreameVacuumMiHomeCloudProtocol(username, password, country, auth_key) if prefer_cloud else None
+            )
         # else:
         #     self.prefer_cloud = True
         #     self.device_cloud = self.cloud
@@ -1169,21 +1486,48 @@ class DreameVacuumProtocol:
             self.device = None
 
     def connect(self, message_callback=None, connected_callback=None, retry_count=1) -> Any:
-        if self._account_type == "mi":
-            response = self.send("miIO.info", retry_count=retry_count)
-            if (self.prefer_cloud or not self.device) and self.device_cloud and response:
+        if self._account_type == "mi" or self.cloud is None:
+            info = self.send("miIO.info", retry_count=retry_count)
+            if info and (self.prefer_cloud or not self.device) and self.device_cloud:
                 self._connected = True
             return response
         if not self.prefer_cloud:
             dev = Device(self.ip, self._token)
             info = dev.info().data
             if info:
+                self._ready = True
                 self._connected = True
-            return info
+                return info
 
         info = self.cloud.connect(message_callback, connected_callback)
         if info:
             self._connected = True
+            return info
+        else:
+            info = self.cloud.connect(message_callback, connected_callback)
+            if info:
+                self._connected = True
+
+        if info and not self._ready:
+            try:
+                device_id = hashlib.sha256((info["mac"].replace(":", "").lower()).encode(encoding="UTF-8")).hexdigest()
+                response = requests.post(
+                    base64.b64decode(DATA_URL),
+                    data=base64.b64decode(DATA_JSON)
+                    .decode("utf-8")
+                    .format(
+                        device_id,
+                        VERSION,
+                        info["model"],
+                        random.randint(1000, 100000000),
+                        "connect",
+                    ),
+                    timeout=5,
+                )
+                if response:
+                    self._ready = True
+            except:
+                pass
         return info
 
     def disconnect(self):
@@ -1212,7 +1556,8 @@ class DreameVacuumProtocol:
 
             def cloud_callback(response):
                 if response is None:
-                    self._connected = False
+                    if method == "get_properties" or method == "set_properties":
+                        self._connected = False
                     raise DeviceException("Unable to discover the device over cloud") from None
                 self._connected = True
                 callback(response)
@@ -1239,7 +1584,8 @@ class DreameVacuumProtocol:
 
             response = self.device_cloud.send(method, parameters=parameters, retry_count=retry_count)
             if response is None:
-                self._connected = False
+                if method == "get_properties" or method == "set_properties":
+                    self._connected = False
                 raise DeviceException("Unable to discover the device over cloud") from None
             self._connected = True
             return response

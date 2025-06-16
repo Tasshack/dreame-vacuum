@@ -1,0 +1,1140 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "El dispositiu ja està configurat",
+      "cannot_connect": "No s'ha pogut connectar.",
+      "reauth_successful": "La reautenticació s'ha completat amb èxit"
+    },
+    "error": {
+      "cannot_connect": "No s'ha pogut connectar.",
+      "unsupported": "Aquest dispositiu no és compatible",
+      "wrong_token": "Error de verificació, testimoni erroni",
+      "2fa_failed": "Verificació fallida.",
+      "credentials_incomplete": "Credencials incompletes, introdueix el nom d'usuari, la contrasenya i el país",
+      "login_error": "No s'ha pogut iniciar la sessió, comproveu les credencials.",
+      "no_devices": "No s'ha trobat cap dispositiu compatible en aquest compte al país seleccionat."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Tipus de configuració"
+        },
+        "description": "La funció de mapa requereix connexió al núvol i proporciona una configuració automàtica. Si no voleu utilitzar la funció de mapa, podeu seleccionar la configuració manual."
+      },
+      "local": {
+        "data": {
+          "host": "Amfitrió",
+          "token": "Testimoni"
+        },
+        "description": "Necessitareu la clau API de 32 caràcters, consulteu les instruccions a https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token."
+      },
+      "mi": {
+        "data": {
+          "username": "Nom d'usuari",
+          "password": "Contrasenya",
+          "country": "País del servidor",
+          "prefer_cloud": "Es prefereix connexió al núvol"
+        },
+        "description": "Inicia sessió al núvol Xiaomi Miio, consulta https://www.openhab.org/addons/bindings/miio/#country-servers per obtenir el servidor al núvol."
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "Codi de verificació en dos passos"
+        },
+        "description": "## Aquest inici de sessió requereix verificació de seguretat\nObre la pàgina de verificació per enviar el codi de verificació per mòbil/correu electrònic. Un cop rebut el codi, no el verifiquis a la pàgina web. Torna a HomeAssistant i introdueix-lo al quadre de text a continuació.\n### [Envia el codi de verificació]({url})"
+      },
+      "dreame": {
+        "data": {
+          "username": "Nom d'usuari",
+          "password": "Contrasenya",
+          "country": "País del servidor"
+        },
+        "description": "Inicieu sessió al núvol de Dreamehome."
+      },
+      "mova": {
+        "data": {
+          "username": "Nom d'usuari",
+          "password": "Contrasenya",
+          "country": "País del servidor"
+        },
+        "description": "Inicieu sessió al núvol de Movahome."
+      },
+      "devices": {
+        "data": {
+          "devices": "Dispositius suportats"
+        },
+        "description": "Seleccioneu el dispositiu aspirador Dreame que voleu configurar."
+      },
+      "donation": {
+        "data": {
+          "donated": "He fet una donació"
+        },
+        "description": "## No oblideu donar suport al projecte.{text}"
+      },
+      "options": {
+        "data": {
+          "name": "Nom",
+          "color_scheme": "Esquema de colors del mapa",
+          "icon_set": "Conjunt d'icones del mapa",
+          "notify": "Notificació",
+          "map_objects": "Objectes del mapa",
+          "low_resolution": "Mapa de baixa resolució",
+          "square": "Mapa quadrat"
+        }
+      },
+      "reauth_confirm": {
+        "description": "La integració Dreame Vacuum ha de tornar a autenticar-se amb el vostre compte per poder actualitzar els testimonis o afegir credencials al núvol.",
+        "title": "Torna a autenticar la integració"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Esquema de colors del mapa",
+          "icon_set": "Conjunt d'icones del mapa",
+          "notify": "Notificació",
+          "map_objects": "Objectes del mapa",
+          "low_resolution": "Mapa de baixa resolució",
+          "square": "Mapa quadrat",
+          "configuration_type": "Tipus de configuració",
+          "prefer_cloud": "Es prefereix connexió al núvol",
+          "donated": "He fet una donació"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Credencials del núvol incompletes, introdueix el nom d'usuari, la contrasenya i el país"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "state": {
+          "quiet": "Silenciós",
+          "standard": "Estàndard",
+          "strong": "Fort",
+          "turbo": "Turbo"
+        }
+      },
+      "water_volume": {
+        "state": {
+          "low": "Baix",
+          "medium": "Mitjà",
+          "high": "Alt"
+        }
+      },
+      "mop_pad_humidity": {
+        "state": {
+          "slightly_dry": "Lleugerament humit",
+          "moist": "Humit",
+          "wet": "Molt humit"
+        }
+      },
+      "cleaning_mode": {
+        "state": {
+          "sweeping": "Aspirat",
+          "mopping": "Fregat",
+          "sweeping_and_mopping": "Aspirat i fregat",
+          "mopping_after_sweeping": "Fregant després d'escombrar"
+        }
+      },
+      "carpet_sensitivity": {
+        "state": {
+          "low": "Baix",
+          "medium": "Mitjà",
+          "high": "Alta"
+        }
+      },
+      "carpet_cleaning": {
+        "state": {
+          "avoidance": "Evitació",
+          "adaptation": "Adaptació",
+          "remove_mop": "Treure la mopa",
+          "adaptation_without_route": "Adaptació sense ruta",
+          "vacuum_and_mop": "Aspira i frega",
+          "ignore": "Ignora",
+          "cross": "Creuar"
+        }
+      },
+      "mop_wash_level": {
+        "state": {
+          "water_saving": "Estalvi d'aigua",
+          "daily": "Diari",
+          "deep": "Profund"
+        }
+      },
+      "mopping_type": {
+        "state": {
+          "accurate": "Precís",
+          "daily": "Diari",
+          "deep": "Profund"
+        }
+      },
+      "wider_corner_coverage": {
+        "state": {
+          "off": "Desactivat",
+          "high_frequency": "Alta freqüència",
+          "low_frequency": "Baixa freqüència"
+        }
+      },
+      "mop_pad_swing": {
+        "state": {
+          "off": "Desactivat",
+          "auto": "Automàtic",
+          "daily": "Diari",
+          "weekly": "Setmanalment"
+        }
+      },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Estàndard",
+          "intelligent": "Intel·ligent",
+          "high": "Alt"
+        }
+      },
+      "floor_material": {
+        "state": {
+          "none": "Cap",
+          "tile": "Rajola ceràmica",
+          "wood": "Parquet"
+        }
+      },
+      "voice_assistant_language": {
+        "state": {
+          "default": "Per defecte",
+          "english": "Anglès",
+          "german": "Alemany",
+          "chinese": "Xinès"
+        }
+      },
+      "order": {
+        "state": {
+          "not_set": "No configurat"
+        }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "Per àrea",
+          "by_time": "Per temps",
+          "by_room": "Per habitació"
+        }
+      },      
+      "mop_clean_frequency": {
+        "state": {
+          "by_room": "Per habitació"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Desactivat",
+          "standard": "Estàndard",
+          "high_frequency": "Alta freqüència",
+          "low_frequency": "Baixa freqüència"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Vertical",
+          "horizontal": "Horitzontal"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Visible",
+          "hidden": "Amagada"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Desactivat",
+          "routine_cleaning": "Neteja rutinària",
+          "deep_cleaning": "Neteja profunda"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Buit i fregó",
+          "mop_after_vacuum": "Mop després del buit"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Llum",
+          "standard": "Estàndard",
+          "deep": "Fondo",
+          "ultra_washing": "Ultra rentat"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normal",
+          "mild": "Dolç",
+          "warm": "Calent",
+          "hot": "Calent"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Desactivat",
+          "in_deep_mode": "En mode profund",
+          "in_all_modes": "En tots els modes"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Desactivat",
+          "in_deep_mode": "En mode profund",
+          "in_all_modes": "En tots els modes"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "Ràpid",
+          "standard": "Estàndard",
+          "intensive": "Intensiu",
+          "deep": "Profund"
+        }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Desactivat",
+          "standard": "Estàndard",
+          "intensive": "Intensiu",
+          "deep": "Profund"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "state": {
+          "unknown": "Desconegut",
+          "sweeping": "Escombrant",
+          "charging": "Carregant",
+          "error": "Error",
+          "idle": "Inactiu",
+          "paused": "Pausat",
+          "returning": "Retornant a la base",
+          "mopping": "Fregant",
+          "drying": "Assecant",
+          "washing": "Rentant",
+          "returning_to_wash": "Tornant a rentar",
+          "building": "Construint",
+          "sweeping_and_mopping": "Escombrant i fregant",
+          "charging_completed": "Càrrega completada",
+          "upgrading": "Actualitzant",
+          "clean_summon": "Invocació de neteja",
+          "station_reset": "Reinici d'estació",
+          "returning_install_mop": "Tornant a instal·lar la mopa",
+          "returning_remove_mop": "Tornant a treure la mopa",
+          "water_check": "Verificant aigua",
+          "clean_add_water": "Netejant i afegint aigua",
+          "washing_paused": "Neteja pausada",
+          "auto_emptying": "Buidatge automàtic",
+          "remote_control": "Control remot",
+          "smart_charging": "Càrrega intel·ligent",
+          "second_cleaning": "Segona neteja",
+          "human_following": "Seguint humà",
+          "spot_cleaning": "Netejant punt",
+          "returning_auto_empty": "Tornant per al buidatge automàtic",
+          "waiting_for_task": "Esperant tasca",
+          "station_cleaning": "Neteja d'estació",
+          "returning_to_drain": "Tornant a buidar",
+          "draining": "Buidant",
+          "auto_water_draining": "Buidatge automàtic d'aigua",
+          "shortcut": "Drecera",
+          "monitoring": "Monitorant",
+          "monitoring_paused": "Monitoratge pausat"
+        }
+      },
+      "status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "idle": "Inactiu",
+          "paused": "Pausada",
+          "cleaning": "Netejant",
+          "returning": "Retornant a la base",
+          "spot_cleaning": "Netejant punt",
+          "follow_wall_cleaning": "Neteja seguint la paret",
+          "charging": "Carregant",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "Connexió wifi configurada",
+          "power_off": "Apagat",
+          "factory": "Fàbrica",
+          "error": "Error",
+          "remote_control": "Control remot",
+          "sleeping": "Dormint",
+          "self_test": "Autotest",
+          "factory_test": "Test de fàbrica",
+          "standby": "En espera",
+          "room_cleaning": "Neteja d'habitació",
+          "zone_cleaning": "Neteja zonificada",
+          "fast_mapping": "Mapatge ràpid",
+          "cruising_path": "Creuant per camí",
+          "cruising_point": "Creuant a un punt",
+          "summon_clean": "Invocació de neteja",
+          "shortcut": "Drecera",
+          "person_follow": "Seguint persona",
+          "water_check": "Verificant aigua"
+        }
+      },
+      "task_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "completed": "Completat",
+          "cleaning": "Netejant",
+          "zone_cleaning": "Neteja zonificada",
+          "room_cleaning": "Neteja d'habitació",
+          "spot_cleaning": "Netejant punt",
+          "fast_mapping": "Mapatge ràpid",
+          "cleaning_paused": "Neteja pausada",
+          "room_cleaning_paused": "Neteja d'habitació pausada",
+          "zone_cleaning_paused": "Neteja zonificada pausada",
+          "spot_cleaning_paused": "Neteja de punts pausada",
+          "map_cleaning_paused": "Neteja de mapa pausada",
+          "docking_paused": "Acoblament pausat",
+          "mopping_paused": "Fregar pausat",
+          "zone_mopping_paused": "Fregar zonificat pausat",
+          "room_mopping_paused": "Fregar d'habitació pausat",
+          "zone_docking_paused": "Acoblament zonificat pausat",
+          "room_docking_paused": "Acoblament d'habitació pausat",
+          "cruising_path": "Creuant per camí",
+          "cruising_path_paused": "Creuant per camí pausat",
+          "cruising_point": "Creuant a un punt",
+          "cruising_point_paused": "Creuant a un punt pausat",
+          "summon_clean_paused": "Invocació de neteja pausada",
+          "returning_to_install_mop": "Tornant a instal·lar la mopa",
+          "returning_to_remove_mop": "Tornant a treure la mopa",
+          "station_cleaning": "Neteja de l'estació",
+          "pet_finding": "Trobada de mascotes",
+          "auto_cleaning_washing_paused": "El rentat de neteja automàtica va fer una pausa",
+          "area_cleaning_washing_paused": "El rentat de neteja de la zona va fer una pausa",
+          "custom_cleaning_washing_paused": "Rentat de neteja a mida"
+        }
+      },
+      "water_tank": {
+        "state": {
+          "unknown": "Desconeguda",
+          "installed": "Instal·lat",
+          "not_installed": "No instal·lat",
+          "mop_installed": "Mopa instal·lada",
+          "in_station": "A l'estació"
+        }
+      },
+      "mop_pad": {
+        "state": {
+          "unknown": "Desconeguda",
+          "installed": "Instal·lat",
+          "not_installed": "No instal·lat",
+          "mop_installed": "Mopa instal·lada",
+          "in_station": "A l'estació"
+        }
+      },
+      "dust_collection": {
+        "state": {
+          "unknown": "Desconeguda",
+          "not_available": "No disponible",
+          "available": "Disponibles"
+        }
+      },
+      "auto_empty_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "idle": "Inactiu",
+          "active": "Actiu",
+          "not_performed": "No realitzat"
+        }
+      },
+      "error": {
+        "state": {
+          "unknown": "Codi d'error desconegut",
+          "no_error": "Cap error",
+          "drop": "Les rodes estan suspeses",
+          "cliff": "Error del sensor de precipici",
+          "bumper": "El sensor de col·lisió està encallat",
+          "gesture": "El robot està inclinat",
+          "bumper_repeat": "El sensor de col·lisió està encallat",
+          "drop_repeat": "Les rodes estan suspeses",
+          "optical_flow": "Error del sensor de flux òptic",
+          "no_box": "El contenidor de pols no està instal·lat",
+          "no_tank_box": "El dipòsit d'aigua no està instal·lat",
+          "water_box_empty": "El dipòsit d'aigua està buit",
+          "box_full": "El filtre no està sec o està bloquejat",
+          "brush": "El raspall principal està enredat",
+          "side_brush": "El raspall lateral està enredat",
+          "fan": "El filtre no està sec o està bloquejat",
+          "left_wheel_motor": "El robot està encallat o la seva roda esquerra pot estar bloquejada per objectes estranys",
+          "right_wheel_motor": "El robot està encallat o la seva roda dreta pot estar bloquejada per objectes estranys",
+          "turn_suffocate": "El robot està encallat o no pot girar",
+          "forward_suffocate": "El robot està encallat o no pot avançar",
+          "charger_get": "No es pot trobar la base",
+          "battery_low": "Bateria baixa",
+          "charge_fault": "Error de càrrega",
+          "battery_percentage": "Error de nivell de bateria",
+          "heart": "Error intern",
+          "camera_occlusion": "Error del sensor de posicionament visual",
+          "move": "Error del sensor de moviment",
+          "flow_shielding": "Error del sensor òptic",
+          "infrared_shielding": "Error d'escut infraroig",
+          "charge_no_electric": "La base de càrrega no està alimentada",
+          "battery_fault": "Error de bateria",
+          "fan_speed_error": "Error del sensor de velocitat del ventilador",
+          "left_wheell_speed": "Roda esquerra pot estar bloquejada per objectes estranys",
+          "right_wheell_speed": "Roda dreta pot estar bloquejada per objectes estranys",
+          "bmi055_acce": "Error de l'acceleròmetre",
+          "bmi055_gyro": "Error del giroscopi",
+          "xv7001": "Error del giroscopi",
+          "left_magnet": "Error del sensor magnètic esquerre",
+          "right_magnet": "Error del sensor magnètic dret",
+          "flow_error": "Error del sensor de flux",
+          "infrared_fault": "Error al sensor infraroig",
+          "camera_fault": "Error de càmera",
+          "strong_magnet": "S'ha detectat un camp magnètic fort",
+          "water_pump": "Error de bomba d'aigua",
+          "rtc": "Error de RTC",
+          "auto_key_trig": "Error intern",
+          "p3v3": "Error intern",
+          "camera_idle": "Error intern",
+          "blocked": "La ruta de neteja està bloquejada, tornant a la base.",
+          "lds_error": "Error del sensor de distància làser",
+          "lds_bumper": "Error de para-xocs del sensor de distància làser",
+          "filter_blocked": "El filtre no està sec o està bloquejat",
+          "edge": "Error del sensor de vora",
+          "carpet": "Si us plau, comença el robot en una zona que no sigui catifa.",
+          "laser": "El sensor d'evitació d'obstacles en 3D no funciona correctament.",
+          "ultrasonic": "El sensor ultrasònic no està funcionant correctament.",
+          "no_go_zone": "Zona restringida o paret virtual detectada.",
+          "route": "La ruta de neteja està bloquejada.",
+          "restricted": "S'ha detectat que l'aspirador en mode fregona es troba en una àrea restringida.",
+          "remove_mop": "Fregar completat. Si us plau, treu i neteja la mopa al seu temps.",
+          "mop_removed": "La mopa es desprèn durant la tasca de neteja.",
+          "mop_pad_stop_rotate": "El coixinet de la mopa ha deixat de girar.",
+          "bin_full": "La bossa de recollida de pols està plena o el conducte d'aire està bloquejat.",
+          "bin_open": "La tapa superior de la base de buit automàtic no està tancada, o la bossa de recollida de pols no està instal·lada.",
+          "water_tank": "El dipòsit d'aigua neta no està instal·lat.",
+          "dirty_water_tank": "El dipòsit d'aigua bruta està ple o no està instal·lat.",
+          "water_tank_dry": "Nivell d'aigua baix en el dipòsit d'aigua neta, si us plau, omple amb aigua a temps.",
+          "dirty_water_tank_blocked": "Dipòsit d'aigua bruta bloquejat.",
+          "dirty_water_tank_pump": "Error de la bomba del dipòsit d'aigua bruta.",
+          "mop_pad": "La mopa no està instal·lada correctament.",
+          "wet_mop_pad": "El nivell d'aigua de la mopa és anormal, si us plau, neteja la mopa a temps.",
+          "clean_mop_pad": "La tasca de neteja està completa, neteja la mopa de la mopa.",
+          "clean_tank_level": "Revisa i omple el dipòsit d'aigua neta.",
+          "station_disconnected": "Base d'estació no alimentada",
+          "dirty_tank_level": "El nivell d'aigua en el dipòsit d'aigua usat és massa alt.",
+          "washboard_level": "El nivell d'aigua en la mopa és massa alt.",
+          "no_mop_in_station": "La mopa no està en l'estació.",
+          "dust_bag_full": "Bossa de pols està plena o les ventilacions estan bloquejades.",
+          "self_test_failed": "Descàrrega d'aigua anormal del dipòsit d'aigua net del mòdul superior i inferior.",
+          "mop_install_failed": "Error en la instal·lació de la mopa.",
+          "low_battery_turn_off": "Bateria baixa. El robot s'apagarà aviat.",
+          "dirty_tank_not_installed": "El dipòsit d'aigua bruta del robot no està instal·lat.",
+          "robot_in_hidden_room": "Àrea oculta. Si us plau, trasllada el robot a l'àrea adequada i torna a provar-ho.",
+          "washboard_not_working": "El rentaplats deixa de funcionar.",
+          "return_to_charge_failed": "No s'ha pogut tornar a carregar."
+        }
+      },
+      "charging_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "charging": "Carregant",
+          "not_charging": "No carregant",
+          "return_to_charge": "Retornar a carregar",
+          "charging_completed": "Càrrega completada"
+        }
+      },
+      "relocation_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "located": "Localitzat",
+          "locating": "Localitzant",
+          "failed": "Ha fallat",
+          "success": "Èxit"
+        }
+      },
+      "self_wash_base_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "idle": "Inactiu",
+          "washing": "Rentant",
+          "drying": "Assecant",
+          "paused": "Pausada",
+          "returning": "Retornant per rentar",
+          "clean_add_water": "Netejant i afegint aigua",
+          "adding_water": "Afegint aigua"
+        }
+      },
+      "low_water_warning": {
+        "state": {
+          "no_warning": "Sense advertències",
+          "no_water_left_dismiss": "Si us plau, comprova el dipòsit d'aigua neta.",
+          "no_water_left": "L'aigua del dipòsit d'aigua neta està a punt d'acabar-se. Comprova i omple el dipòsit d'aigua neta ràpidament.",
+          "no_water_left_after_clean": "La mopa s'ha rentat. S'ha detectat que l'aigua del dipòsit d'aigua neta és insuficient, si us plau, ompliu el dipòsit d'aigua neta i buideu el dipòsit d'aigua bruta.",
+          "no_water_for_clean": "Baix nivell d'aigua al dipòsit d'aigua neta. El robot ha canviat al mode només aspiració.",
+          "low_water": "L'aigua està a punt d'acabar-se. Si us plau, omple el dipòsit d'aigua neta.",
+          "tank_not_installed": "El dipòsit d'aigua neta no està instal·lat."
+        }
+      },
+      "stream_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "idle": "Inactiu",
+          "video": "Vídeo",
+          "audio": "Àudio",
+          "recording": "Enregistrant"
+        }
+      },
+      "drainage_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "idle": "Inactiu",
+          "draining": "Drenant",
+          "draining_successful": "Drenatge amb èxit",
+          "draining_failed": "Error en el drenatge"
+        }
+      },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "not_available": "No disponible",
+          "not_installed": "No instal·lat",
+          "low_water": "Aigua baixa",
+          "installed": "Instal·lat"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "installed": "Instal·lat",
+          "not_installed_or_full": "No instal·lat ni ple"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "installed": "Instal·lat",
+          "not_installed": "No instal·lat",
+          "check": "Compta"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "installed": "Instal·lat",
+          "disabled": "Inepte",
+          "low_detergent": "Detergent baix"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "disabled": "Inepte",
+          "enabled": "Activat"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Desconeguda",
+          "idle": "Ociosa",
+          "draining": "Drenar"
+        }
+      },
+      "task_type": {
+        "state": {
+          "standard": "Neteja estàndard",
+          "standard_paused": "Neteja estàndard en pausa",
+          "custom": "Neteja personalitzada",
+          "custom_paused": "Neteja personalitzada en pausa",
+          "shortcut": "Neteja de dreceres",
+          "shortcut_paused": "Neteja de dreceres en pausa",
+          "scheduled": "Neteja programada",
+          "scheduled_paused": "Neteja programada en pausa",
+          "smart": "Neteja intel·ligent",
+          "smart_paused": "Neteja intel·ligent en pausa",
+          "partial": "Neteja parcial",
+          "partial_paused": "Neteja parcial en pausa",
+          "summon": "Neteja per invocació",
+          "summon_paused": "Neteja per invocació en pausa",
+          "water_stain": "Neteja de taques d'aigua",
+          "water_stain_paused": "Neteja de taques d'aigua en pausa",
+          "boosted_edge_cleaning": "Neteja d’avantguarda impulsada",
+          "hair_compressing": "Compressió del cabell"
+        }
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "Neteja segment",
+      "description": "Inicia l'operació de neteja a les habitacions seleccionades.",
+      "fields": {
+        "segments": {
+          "name": "Segments",
+          "description": "Llista d'habitacions a netejar. Només el caràcter de l'habitació o una sèrie de caràcters de l'habitació, els temps de neteja, la velocitat del ventilador i el mode de fregona per anul·lar els valors predeterminats per habitació."
+        },
+        "repeats": {
+          "name": "Repeticions",
+          "description": "Nombre de passades de neteja per a cada habitació seleccionada (s'ha d'evitar per paràmetre de neteja personalitzat)."
+        },
+        "suction_level": {
+          "name": "Nivell d'aspiració",
+          "description": "Velocitat del ventilador per a cada habitació seleccionada (s'ha d'evitar per paràmetre de neteja personalitzat)."
+        },
+        "water_volume": {
+          "name": "Volum d'Aigua",
+          "description": "Nivell d'aigua per a cada habitació seleccionada (s'ha d'evitar per paràmetre de neteja personalitzat)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "Zona Neta",
+      "description": "Iniciar l'operació de neteja a l'àrea seleccionada.",
+      "fields": {
+        "zone": {
+          "name": "Zona",
+          "description": "Coordenades."
+        },
+        "repeats": {
+          "name": "Repeticions",
+          "description": "Nombre de passades de neteja per a cada zona seleccionada."
+        },
+        "suction_level": {
+          "name": "Nivell d'Aspiració",
+          "description": "Velocitat del ventilador per a cada zona seleccionada."
+        },
+        "water_volume": {
+          "name": "Volum d'Aigua",
+          "description": "Nivell d'aigua per a cada zona seleccionada."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "Neteja Puntual",
+      "description": "Iniciar l'operació de neteja en els punts seleccionats al mapa.",
+      "fields": {
+        "points": {
+          "name": "Punts",
+          "description": "Llista de coordenades a netejar."
+        },
+        "repeats": {
+          "name": "Repeticions",
+          "description": "Nombre de passades de neteja per a cada zona seleccionada."
+        },
+        "suction_level": {
+          "name": "Nivell d'Aspiració",
+          "description": "Velocitat del ventilador per a cada zona seleccionada."
+        },
+        "water_volume": {
+          "name": "Volum d'Aigua",
+          "description": "Nivell d'aigua per a cada zona seleccionada."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "Ves a",
+      "description": "Ves a la coordenada del mapa i atura't.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Coordenada X del punt."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Coordenada Y del punt."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Segueix el Camí",
+      "description": "Segueix la llista de coordenades al mapa i retorna a la base. (Només compatible amb aspiradores amb càmera)",
+      "fields": {
+        "points": {
+          "name": "Punts",
+          "description": "Llista de coordenades del camí."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "Iniciar drecera",
+      "description": "Inicia una tasca de drecera. (Només en dispositius compatibles)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID de la drecera",
+          "description": "ID de la drecera."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "Pas de moviment de control remot de l'aspirador",
+      "description": "Controlar remotament moure l'aspirador un pas.",
+      "fields": {
+        "rotation": {
+          "name": "Rotació",
+          "description": "Gira en graus binaris entre -128 i 128."
+        },
+        "velocity": {
+          "name": "Velocitat",
+          "description": "Velocitat de moviment, de 100 (endavant) a -300 (enrere)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "Instal·lar Paquet de Veu",
+      "description": "Instal·lar paquet de veu oficial o personalitzat.",
+      "fields": {
+        "lang_id": {
+          "name": "ID d'idioma",
+          "description": "ID d'idioma d'aquest paquet."
+        },
+        "url": {
+          "name": "URL",
+          "description": "L'Url d'aquest paquet hauria de ser accessible pel robot aspirador."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "Sumatori de verificació MD5 del paquet d'idioma."
+        },
+        "size": {
+          "name": "Mida",
+          "description": "Mida del paquet d'idioma en bytes."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "Sol·licita Mapa",
+      "description": "Sol·licitar dades del mapa"
+    },
+    "vacuum_select_map": {
+      "name": "Selecciona Mapa",
+      "description": "Selecciona el mapa actual. Utilitzat quan es tenen múltiples mapes/plantes.",
+      "fields": {
+        "map_id": {
+          "name": "ID del Mapa",
+          "description": "ID del mapa a seleccionar."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "Eliminar mapa",
+      "description": "Eliminar un mapa.",
+      "fields": {
+        "map_id": {
+          "name": "ID del Mapa",
+          "description": "ID del mapa a eliminar."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "Desa Mapa Temporal",
+      "description": "Desa el mapa temporal."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "Descarta Mapa Temporal",
+      "description": "Descarta el mapa temporal."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "Reemplaça Mapa Temporal",
+      "description": "Reemplaça el mapa temporal amb un altre mapa desat.",
+      "fields": {
+        "map_id": {
+          "name": "ID del Mapa",
+          "description": "ID del mapa per reemplaçar."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "Reanomena mapa",
+      "description": "Reanomenar un mapa.",
+      "fields": {
+        "map_id": {
+          "name": "ID del Mapa",
+          "description": "ID del mapa."
+        },
+        "map_name": {
+          "name": "Nom del Mapa",
+          "description": "Nou nom del mapa."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "Restaura mapa",
+      "description": "Restaura un mapa.",
+      "fields": {
+        "map_id": {
+          "name": "ID del Mapa",
+          "description": "ID del mapa a restaurar."
+        },
+        "recovery_map_index": {
+          "name": "Índex de Mapa de Recuperació",
+          "description": "Índex del mapa de recuperació desat"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Restaura Mapa Des de Fitxer",
+      "description": "Restaura un mapa des de fitxer.",
+      "fields": {
+        "map_id": {
+          "name": "ID del Mapa",
+          "description": "ID del mapa a restaurar."
+        },
+        "file_url": {
+          "name": "Url del fitxer",
+          "description": "Url del fitxer desat com a tbz2.gz o tar.gz"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Còpia de Seguretat de Mapa",
+      "description": "Còpia de seguretat del mapa al núvol.",
+      "fields": {
+        "map_id": {
+          "name": "ID del Mapa",
+          "description": "ID del mapa a restaurar."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Combina Segments",
+      "description": "Combina habitacions.",
+      "fields": {
+        "map_id": {
+          "name": "ID del Mapa",
+          "description": "ID del mapa."
+        },
+        "segments": {
+          "name": "Segments",
+          "description": "ID d'Habitacions."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Divideix Segments",
+      "description": "Divideix habitacions.",
+      "fields": {
+        "map_id": {
+          "name": "ID del Mapa",
+          "description": "ID del mapa."
+        },
+        "segment": {
+          "name": "Segment",
+          "description": "ID d'Habitació."
+        },
+        "line": {
+          "name": "Línia",
+          "description": "Coordenades de la línia de divisió."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "Reanomena Segment",
+      "description": "Reanomenar un segment.",
+      "fields": {
+        "segment_id": {
+          "name": "ID del Segment",
+          "description": "ID del segment"
+        },
+        "segment_name": {
+          "name": "Nom del Segment",
+          "description": "Nou nom del segment"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "Estableix la Seqüència de Neteja",
+      "description": "Estableix la seqüència de neteja de l'habitació. (Només en dispositius compatibles)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "Seqüència de Neteja",
+          "description": "Llista d'ID de segment de la seqüència de neteja."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "Estableix Neteja Personalitzada",
+      "description": "Estableix paràmetres de neteja personalitzats. (Només en dispositius compatibles)",
+      "fields": {
+        "segment_id": {
+          "name": "ID del Segment",
+          "description": "ID d'Habitacions."
+        },
+        "suction_level": {
+          "name": "Nivell d'Aspiració",
+          "description": "Nivell d'aspiració per habitació."
+        },
+        "water_volume": {
+          "name": "Volum d'Aigua",
+          "description": "Volum d'aigua per habitació."
+        },
+        "cleaning_mode": {
+          "name": "Mode de Neteja",
+          "description": "Neteja per habitació (només compatible amb aspiradores amb funció d'aixecament de mopa)."
+        },
+        "repeats": {
+          "name": "Repeticions",
+          "description": "Temps de neteja per habitació."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Establir neteja personalitzada de catifes",
+      "description": "Estableix la configuració de neteja personalitzada per a catifes. (Només en dispositius compatibles)",
+      "fields": {
+        "id": {
+          "name": "ID de la catifa",
+          "description": "IDs de les catifes."
+        },
+        "type": {
+          "name": "Tipus d'objecte",
+          "description": "Tipus de l'objecte amb la ID. (0 = Catifa detectada automàticament, 1 = Catifa creada manualment, 2 = Catifa d'habitació (si es suporta))"
+        },
+        "carpet_cleaning": {
+          "name": "Neteja de la catifa",
+          "description": "Configuració personalitzada de neteja de la catifa per a cada catifa."
+        },
+        "carpet_settings": {
+          "name": "Configuracions de la catifa",
+          "description": "Configuració personalitzada de les configuracions de la catifa per a cada catifa amb una matriu de configuracions habilitades."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Estableix Zona Restringida",
+      "description": "Definir parets virtuals, zones restringides i/o zones sense fregar.",
+      "fields": {
+        "walls": {
+          "name": "Parets",
+          "description": "Parets virtuals."
+        },
+        "zones": {
+          "name": "Zones",
+          "description": "Zones prohibides."
+        },
+        "no_mops": {
+          "name": "No freguis",
+          "description": "Zones sense fregar."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "Reinicia Consumible",
+      "description": "Reinicia un consumible.",
+      "fields": {
+        "consumable": {
+          "name": "Consumible",
+          "description": "Tipus de consumible."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Reanomena Drecera",
+      "description": "Reanomena una drecera. (Només en dispositius compatibles)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID de la Drecera",
+          "description": "ID de la drecera."
+        },
+        "shortcut_name": {
+          "name": "Nom de la Drecera",
+          "description": "Nou nom de la drecera."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Configura Zona de Catifa",
+      "description": "Definir catifes i catifes ignorades. (Només en dispositius compatibles)",
+      "fields": {
+        "carpets": {
+          "name": "Catifes",
+          "description": "Àrees de catifa."
+        },
+        "ignored_carpets": {
+          "name": "Catifes Ignorades",
+          "description": "Àrees de catifa ignorades per eliminar les catifes detectades automàticament."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "Configura Llindar Virtual",
+      "description": "Definir llindars virtuals.",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "Llindars Virtuals",
+          "description": "Coordenades de la línia de llindar virtual."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Estableix Punts Predefinits",
+      "description": "Definiu les coordenades predefinides al mapa actual. (Només és compatible amb aspiradores amb càmera)",
+      "fields": {
+        "points": {
+          "name": "Punts",
+          "description": "Llista de coordenades a desar."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Estableix ignorar obstacles",
+      "description": "Estableix l'estat per a ignorar obstacles. (Només és compatible amb aspiradores amb funció de detecció d'obstacles IA)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Coordenada de l'obstacle X."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Coordenada de l'obstacle Y."
+        },
+        "obstacle_ignored": {
+          "name": "Obstacle ignorat",
+          "description": "L'obstacle s'ignora o no."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Estableix la posició de la ruta",
+      "description": "Estableix la posició de la ruta al mapa actual. (Només és compatible amb aspiradores amb funció de mapa wifi)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Coordenada de la ruta X."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Coordenada de la ruta Y."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "Seleccioneu l'anterior",
+      "description": "Seleccioneu l'opció anterior de l'entitat seleccionada.",
+      "fields": {
+        "cycle": {
+          "name": "Cicle",
+          "description": "L'opció circula de la primera a l'última."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "Seleccioneu el primer",
+      "description": "Seleccioneu la primera opció de l'entitat seleccionada."
+    },
+    "select_select_last": {
+      "name": "Seleccioneu l'últim",
+      "description": "Seleccioneu l'última opció de l'entitat seleccionada."
+    },
+    "select_select_next": {
+      "name": "Seleccioneu el següent",
+      "description": "Seleccioneu l'opció següent de l'entitat seleccionada.",
+      "fields": {
+        "cycle": {
+          "name": "Cicle",
+          "description": "L'opció circula de la primera a l'última."
+        }
+      }
+    }
+  }
+}
