@@ -1,90 +1,90 @@
 {
   "config": {
     "abort": {
-      "already_configured": "设备已经设置过",
+      "already_configured": "设备已配置",
       "cannot_connect": "连接失败",
-      "reauth_successful": "重新验证成功"
+      "reauth_successful": "重新认证成功"
     },
     "error": {
       "cannot_connect": "连接失败",
       "unsupported": "此设备尚未支持",
-      "wrong_token": "校验失败，Token有误",
-      "2fa_failed": "验证失败。",
-      "credentials_incomplete": "凭证信息不完整，请完整输入用户名称、密码及国家",
-      "login_error": "无法登入，请确认凭证信息",
-      "no_devices": "在此账号选择的国家内未发现有支持的设备"
+      "wrong_token": "校验错误，Token无效",
+      "2fa_failed": "需要双重认证登录",
+      "credentials_incomplete": "认证信息不完整，请填写用户名、密码及国家或地区",
+      "login_error": "登录失败，请检查凭证信息是否有误",
+      "no_devices": "此账号选择的国家或地区的中未找到支持的设备"
     },
     "step": {
       "user": {
         "data": {
-          "configuration_type": "设置类型"
+          "configuration_type": "配置类型"
         },
-        "description": "地图功能需要勾选云端联机及自动设置，如您不想使用地图功能，可以选择手动设置"
+        "description": "地图功能需连接云端，并提供自动配置。若无需使用地图功能，可选择手动配置。"
       },
       "local": {
         "data": {
-          "host": "设备IP",
+          "host": "Host",
           "token": "Token"
         },
-        "description": "您需要32位数字元的API Token，请至 https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token 参考说明"
+        "description": "需要提供32位API Token，参考： https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token"
       },
       "mi": {
         "data": {
-          "username": "使用者名称",
+          "username": "用户名",
           "password": "密码",
-          "country": "服务器所在国家",
-          "prefer_cloud": "使用云端联机"
+          "country": "服务器所在区域",
+          "prefer_cloud": "使用云端连接"
         },
-        "description": "登入小米云端账号请至 https://www.openhab.org/addons/bindings/miio/#country-servers 选择适当的服务器所在国家"
+        "description": "请登录小米米家云服务，适用的云端服务器参考： https://www.openhab.org/addons/bindings/miio/#country-servers"
       },
       "2fa": {
         "data": {
           "verification_code": "双因素验证码"
         },
-        "description": "## 此登录需要安全验证\n请打开验证页面以发送手机/邮箱验证码。收到验证码后，请不要在网页上验证。返回 HomeAssistant 并在下方输入框中输入验证码。\n### [发送验证码]({url})"
+        "description": "## 本次登录需安全验证\n请打开验证页面获取手机/邮箱验证码。收到验证码后，请勿在网页端验证，返回 HomeAssistant 并在下方输入框中输入验证码。\n### [发送验证码]({url})"
       },
       "dreame": {
         "data": {
-          "username": "使用者名称",
+          "username": "用户名",
           "password": "密码",
-          "country": "服务器所在国家"
+          "country": "服务器所在区域"
         },
-        "description": "登入追觅账号"
+        "description": "登录追觅账号"
       },
       "mova": {
         "data": {
-          "username": "使用者名称",
+          "username": "用户名",
           "password": "密码",
-          "country": "登入您的 Mova 帳戶"
+          "country": "服务器所在区域"
         },
-        "description": "登入追觅账号"
+        "description": "登录Mova账号"
       },
       "devices": {
         "data": {
-          "devices": "可支持的设备"
+          "devices": "支持的设备"
         },
-        "description": "请选择想设置的追觅扫地机设备"
+        "description": "请选择需要设置的追觅扫地机器人设备"
       },
       "donation": {
         "data": {
-          "donated": "我已捐款"
+          "donated": "已捐赠"
         },
         "description": "## 不要忘记支持该项目。{text}"
       },
       "options": {
         "data": {
           "name": "名称",
-          "color_scheme": "地图颜色方案",
-          "icon_set": "地图图示风格",
+          "color_scheme": "地图配色方案",
+          "icon_set": "图标风格",
           "notify": "通知",
-          "map_objects": "地图物件",
+          "map_objects": "地图元素",
           "low_resolution": "低分辨率地图",
           "square": "方形地图"
         }
       },
       "reauth_confirm": {
-        "description": "追觅扫地机整合需要重新验证您的账号，以更新Token或新增缺少的云端凭证",
-        "title": "重新验证整合"
+        "description": "追觅扫地机器人需要重新登录您的账户，用于更新访问令牌或补填云服务账号信息",
+        "title": "重新授权"
       }
     }
   },
@@ -92,20 +92,20 @@
     "step": {
       "init": {
         "data": {
-          "color_scheme": "地图颜色方案",
-          "icon_set": "地图图示风格",
+          "color_scheme": "地图配色方案",
+          "icon_set": "图标风格",
           "notify": "通知",
-          "map_objects": "地图物件",
+          "map_objects": "地图元素",
           "low_resolution": "低分辨率地图",
           "square": "方形地图",
-          "configuration_type": "设置类型",
-          "prefer_cloud": "使用云端联机",
-          "donated": "我已捐款"
+          "configuration_type": "配置方式",
+          "prefer_cloud": "使用云端连接",
+          "donated": "已捐赠"
         }
       }
     },
     "error": {
-      "cloud_credentials_incomplete": "云端凭证信息不完整，请完整输入用户名称、密码及国家"
+      "cloud_credentials_incomplete": "云端服务凭证不完整，请填写用户名、密码及国家或地区"
     }
   },
   "entity": {
@@ -134,8 +134,8 @@
       },
       "cleaning_mode": {
         "state": {
-          "sweeping": "扫地",
-          "mopping": "拖地",
+          "sweeping": "仅扫地",
+          "mopping": "仅拖地",
           "sweeping_and_mopping": "同时扫拖",
           "mopping_after_sweeping": "先扫后拖"
         }
@@ -150,19 +150,19 @@
       "carpet_cleaning": {
         "state": {
           "avoidance": "避开地毯",
-          "adaptation": "自动适应",
-          "remove_mop": "移除拖布",
-          "adaptation_without_route": "自动适应无路径",
-          "vacuum_and_mop": "清扫与拖",
+          "adaptation": "自适应",
+          "remove_mop": "升起拖布",
+          "adaptation_without_route": "无路径自适应",
+          "vacuum_and_mop": "扫拖同步",
           "ignore": "忽略地毯",
           "cross": "穿越"
         }
       },
       "mop_wash_level": {
         "state": {
-          "water_saving": "节省用水",
-          "daily": "日常清洗",
-          "deep": "深度清洁"
+          "water_saving": "节水",
+          "daily": "日常",
+          "deep": "深度"
         }
       },
       "mopping_type": {
@@ -190,40 +190,40 @@
       "mop_extend_frequency": {
         "state": {
           "standard": "标准",
-          "intelligent": "聪明的",
-          "high": "高的"
+          "intelligent": "智能",
+          "high": "频繁"
         }
       },
       "floor_material": {
         "state": {
-          "none": "无",
-          "tile": "地砖",
+          "none": "未设置",
+          "tile": "瓷砖",
           "wood": "木地板"
         }
       },
       "voice_assistant_language": {
         "state": {
-          "default": "预设",
-          "english": "英文",
-          "german": "德文",
+          "default": "默认",
+          "english": "英语",
+          "german": "德语",
           "chinese": "中文"
         }
       },
       "order": {
         "state": {
-          "not_set": "不设置"
+          "not_set": "未设置"
         }
       },
       "self_clean_frequency": {
         "state": {
-          "by_area": "根据面积",
-          "by_time": "根据时间",
-          "by_room": "根据房间"
+          "by_area": "按面积",
+          "by_time": "按时间",
+          "by_room": "按房间"
         }
       },
       "mop_clean_frequency": {
         "state": {
-          "by_room": "根据房间"
+          "by_room": "按房间"
         }
       },
       "auto_empty_mode": {
@@ -236,8 +236,8 @@
       },
       "floor_material_direction": {
         "state": {
-          "vertical": "垂直的",
-          "horizontal": "水平的"
+          "vertical": "纵向",
+          "horizontal": "横向"
         }
       },
       "visibility": {
@@ -255,45 +255,45 @@
       },
       "cleangenius_mode": {
         "state": {
-          "vacuum_and_mop": "真空和拖把",
-          "mop_after_vacuum": "真空后的拖把"
+          "vacuum_and_mop": "扫拖同步",
+          "mop_after_vacuum": "先扫后拖"
         }
       },
       "washing_mode": {
         "state": {
-          "light": "光",
+          "light": "轻度",
           "standard": "标准",
-          "deep": "深的",
-          "ultra_washing": "超清洗"
+          "deep": "深度",
+          "ultra_washing": "强力清洗"
         }
       },
       "water_temperature": {
         "state": {
-          "normal": "普通的",
-          "mild": "温和的",
-          "warm": "温暖的",
-          "hot": "热的"
+          "normal": "常温",
+          "mild": "微温",
+          "warm": "温",
+          "hot": "热"
         }
       },
       "auto_recleaning": {
         "state": {
           "off": "关闭",
-          "in_deep_mode": "在深度模式",
-          "in_all_modes": "在所有模式"
+          "in_deep_mode": "深度模式下",
+          "in_all_modes": "所有模式下"
         }
       },
       "auto_rewashing": {
         "state": {
           "off": "关闭",
-          "in_deep_mode": "在深度模式",
-          "in_all_modes": "在所有模式"
+          "in_deep_mode": "深度模式下",
+          "in_all_modes": "所有模式下"
         }
       },
       "cleaning_route": {
         "state": {
           "quick": "快速",
           "standard": "标准",
-          "intensive": "密集",
+          "intensive": "精细",
           "deep": "深度"
         }
       },
@@ -301,7 +301,7 @@
         "state": {
           "off": "关闭",
           "standard": "标准",
-          "intensive": "密集",
+          "intensive": "精细",
           "deep": "深度"
         }
       }
@@ -310,40 +310,40 @@
       "state": {
         "state": {
           "unknown": "未知",
-          "sweeping": "扫地中",
+          "sweeping": "清扫中",
           "charging": "充电中",
           "error": "错误",
-          "idle": "待机中",
+          "idle": "待机",
           "paused": "暂停",
-          "returning": "返回充电中",
+          "returning": "返回基座",
           "mopping": "拖地中",
           "drying": "烘干中",
           "washing": "清洗中",
-          "returning_to_wash": "返回清洗中",
-          "building": "建立中",
-          "sweeping_and_mopping": "同时扫拖中",
+          "returning_to_wash": "返回清洗",
+          "building": "建图中",
+          "sweeping_and_mopping": "扫拖同步",
           "charging_completed": "充电完成",
           "upgrading": "升级中",
           "clean_summon": "召唤清洁",
-          "station_reset": "基站重设",
-          "returning_install_mop": "返回安装拖布中",
-          "returning_remove_mop": "返回卸下拖布中",
-          "water_check": "水量检查",
-          "clean_add_water": "清洁及加水",
-          "washing_paused": "清洗中暂停",
+          "station_reset": "基站重置",
+          "returning_install_mop": "返回安装拖布",
+          "returning_remove_mop": "返回拆卸拖布",
+          "water_check": "水量检测中",
+          "clean_add_water": "清洁并加水",
+          "washing_paused": "暂停清洗",
           "auto_emptying": "自动集尘中",
-          "remote_control": "远程遥控",
-          "smart_charging": "智慧充电中",
-          "second_cleaning": "二次清洁中",
-          "human_following": "跟随人类中",
-          "spot_cleaning": "定点清洁中",
-          "returning_auto_empty": "返回自动集尘中",
+          "remote_control": "遥控中",
+          "smart_charging": "智能充电",
+          "second_cleaning": "二次清洁",
+          "human_following": "人员跟随",
+          "spot_cleaning": "局部清洁",
+          "returning_auto_empty": "返回自动集尘",
           "waiting_for_task": "等待任务",
-          "station_cleaning": "基站清洁中",
+          "station_cleaning": "基站自清洁中",
           "returning_to_drain": "返回排水中",
           "draining": "排水中",
           "auto_water_draining": "自动排水中",
-          "shortcut": "快捷方式",
+          "shortcut": "快捷指令",
           "monitoring": "监控中",
           "monitoring_paused": "监控暂停"
         }
@@ -351,67 +351,76 @@
       "status": {
         "state": {
           "unknown": "未知",
-          "idle": "待机中",
+          "idle": "待机",
           "paused": "暂停",
           "cleaning": "清洁中",
-          "returning": "返回充电中",
-          "spot_cleaning": "定点清洁中",
-          "follow_wall_cleaning": "沿墙清洁中",
+          "returning": "返回基座",
+          "spot_cleaning": "局部清洁",
+          "follow_wall_cleaning": "沿墙清洁",
           "charging": "充电中",
-          "ota": "OTA更新",
-          "fct": "FCT测试",
+          "ota": "固件升级",
+          "fct": "工厂模式",
           "wifi_set": "WiFi设置",
-          "power_off": "电源关闭",
-          "factory": "出厂设置",
+          "power_off": "已关机",
+          "factory": "恢复出厂",
           "error": "错误",
-          "remote_control": "远程遥控",
+          "remote_control": "遥控模式",
           "sleeping": "休眠中",
-          "self_test": "自我检测",
-          "factory_test": "工程测试",
-          "standby": "待机中",
-          "room_cleaning": "房间清洁中",
-          "zone_cleaning": "区域清洁中",
-          "fast_mapping": "快速建立地图",
-          "cruising_path": "路径巡航",
+          "self_repair": "自检中",
+          "factory_test": "工厂测试",
+          "standby": "就绪",
+          "room_cleaning": "房间清洁",
+          "zone_cleaning": "区域清洁",
+          "fast_mapping": "快速建图",
+          "cruising_path": "路径巡航", 
           "cruising_point": "定点巡航",
           "summon_clean": "召唤清洁",
-          "shortcut": "快捷方式",
+          "shortcut": "快捷指令",
           "person_follow": "人员跟随",
-          "water_check": "水量检查"
+          "water_check": "水量检测"
         }
       },
       "task_status": {
         "state": {
           "unknown": "未知",
           "completed": "完成",
-          "cleaning": "清扫中",
+          "cleaning": "清洁中",
           "zone_cleaning": "区域清洁中",
-          "room_cleaning": "房间清洁中",
+          "room_cleaning": "房间清洁中",  
           "spot_cleaning": "定点清洁中",
-          "fast_mapping": "快速建立地图",
-          "cleaning_paused": "清洁暂停",
-          "room_cleaning_paused": "房间清洁暂停",
-          "zone_cleaning_paused": "区域清洁暂停",
-          "spot_cleaning_paused": "定点清洁暂停",
-          "map_cleaning_paused": "地图清洁暂停",
-          "docking_paused": "回充暂停",
-          "mopping_paused": "拖地暂停",
-          "zone_mopping_paused": "区域拖地暂停",
-          "room_mopping_paused": "房间拖地暂停",
-          "zone_docking_paused": "区域回充暂停",
-          "room_docking_paused": "房间回充暂停",
-          "cruising_path": "路径巡航",
-          "cruising_path_paused": "路径巡航暂停",
-          "cruising_point": "定点巡航",
-          "cruising_point_paused": "定点巡航暂停",
-          "summon_clean_paused": "召唤清洁暂停",
-          "returning_to_install_mop": "返回安装拖布",
-          "returning_to_remove_mop": "返回卸下拖布",
-          "station_cleaning": "车站清洁",
-          "pet_finding": "宠物发现",
-          "auto_cleaning_washing_paused": "自动清洁洗涤暂停",
-          "area_cleaning_washing_paused": "区域清洗暂停",
-          "custom_cleaning_washing_paused": "定制清洗暂停"
+          "fast_mapping": "快速建图中",
+          "cleaning_paused": "清洁已暂停",
+          "room_cleaning_paused": "房间清洁已暂停",
+          "zone_cleaning_paused": "区域清洁已暂停",
+          "spot_cleaning_paused": "定点清洁已暂停",
+          "map_cleaning_paused": "地图清洁已暂停",
+          "docking_paused": "回充已暂停",
+          "mopping_paused": "拖地已暂停",
+          "zone_mopping_paused": "区域拖地已暂停",
+          "room_mopping_paused": "房间拖地已暂停",
+          "zone_docking_paused": "区域回充已暂停",
+          "room_docking_paused": "房间回充已暂停",
+          "cruising_path": "路径巡航中",
+          "cruising_path_paused": "路径巡航已暂停",
+          "cruising_point": "定点巡航中",
+          "cruising_point_paused": "定点巡航已暂停",
+          "summon_clean_paused": "召唤清洁已暂停",
+          "returning_to_install_mop": "返回安装拖布中",
+          "returning_to_remove_mop": "返回拆卸拖布中",
+          "station_cleaning": "基站自清洁中",
+          "pet_finding": "寻宠中",
+          "auto_cleaning_washing_paused": "自动洗拖暂停",
+          "area_cleaning_washing_paused": "区域洗拖暂停",  
+          "custom_cleaning_washing_paused": "定制洗拖暂停"
+        }
+      },
+      "mop": {
+        "state": {
+          "unknown": "未知",
+          "installed": "已安装",
+          "not_installed": "未安装",
+          "mop_installed": "拖布已安装", 
+          "in_station": "在基站内"
         }
       },
       "water_tank": {
@@ -419,17 +428,8 @@
           "unknown": "未知",
           "installed": "已安装",
           "not_installed": "未安装",
-          "mop_installed": "拖布已安装",
-          "in_station": "在基站"
-        }
-      },
-      "mop_pad": {
-        "state": {
-          "unknown": "未知",
-          "installed": "已安装",
-          "not_installed": "未安装",
-          "mop_installed": "拖布已安装",
-          "in_station": "在基站"
+          "mop_installed": "拖布已安装", 
+          "in_station": "在基站内"
         }
       },
       "dust_collection": {
@@ -442,98 +442,97 @@
       "auto_empty_status": {
         "state": {
           "unknown": "未知",
-          "idle": "待机中",
-          "active": "运作中",
+          "idle": "待机",
+          "active": "运行中",
           "not_performed": "未执行"
         }
       },
       "error": {
         "state": {
-          "unknown": "未知错误代码",
-          "no_error": "无错误",
+          "unknown": "未知错误",
+          "no_error": "运行正常",
           "drop": "轮子悬空",
-          "cliff": "悬崖传感器错误",
-          "bumper": "防撞传感器卡住",
-          "gesture": "扫地机倾倒",
-          "bumper_repeat": "防撞传感器卡住",
-          "drop_repeat": "轮子悬空",
-          "optical_flow": "光流传感器错误",
-          "no_box": "未安装集尘盒",
-          "no_tank_box": "未安装水箱",
-          "water_box_empty": "水箱空了",
-          "box_full": "集尘盒已满",
+          "cliff": "悬崖传感器异常",
+          "bumper": "碰撞传感器卡住",
+          "gesture": "设备倾斜",
+          "bumper_repeat": "碰撞传感器持续卡住",
+          "drop_repeat": "轮子持续悬空",
+          "optical_flow": "光学流量传感器异常",
+          "no_box": "尘盒未安装",
+          "no_tank_box": "水箱未安装",  
+          "water_box_empty": "水箱缺水",
+          "box_full": "滤网未干或堵塞",
           "brush": "主刷缠绕",
-          "side_brush": "侧刷缠绕",
-          "fan": "滤芯潮湿或堵塞",
-          "left_wheel_motor": "扫地机卡住或左轮被异物卡住",
-          "right_wheel_motor": "扫地机卡住或右轮被异物卡住",
-          "turn_suffocate": "扫地机卡住或无法转弯",
-          "forward_suffocate": "扫地机卡住或无法前进",
-          "charger_get": "找不到基站",
-          "battery_low": "电量偏低",
-          "charge_fault": "充电错误",
-          "battery_percentage": "电池电量错误",
-          "heart": "内部错误",
-          "camera_occlusion": "视觉定位传感器错误",
-          "move": "移动传感器错误",
-          "flow_shielding": "光学传感器错误",
-          "infrared_shielding": "红外线遮蔽错误",
-          "charge_no_electric": "充电基站未通电",
-          "battery_fault": "电池错误",
-          "fan_speed_error": "风速传感器错误",
-          "left_wheell_speed": "左轮可能被异物卡住",
-          "right_wheell_speed": "右轮可能被异物卡住",
-          "bmi055_acce": "加速度计错误",
-          "bmi055_gyro": "陀螺仪错误",
-          "xv7001": "陀螺仪错误",
-          "left_magnet": "左磁力传感器错误",
-          "right_magnet": "右磁力传感器错误",
-          "flow_error": "流量传感器错误",
-          "infrared_fault": "红外线错误",
-          "camera_fault": "相机错误",
-          "strong_magnet": "侦测到强力磁场",
-          "water_pump": "水泵错误",
-          "rtc": "RTC错误",
-          "auto_key_trig": "内部错误",
-          "p3v3": "内部错误",
-          "camera_idle": "相机闲置",
-          "blocked": "扫路径被阻挡，返回基站",
-          "lds_error": "雷射距离传感器错误",
-          "lds_bumper": "雷射距离传感器撞击错误",
-          "filter_blocked": "滤网潮湿或堵塞",
-          "edge": "边缘传感器错误",
-          "carpet": "请将扫地机放在非地毯区域再启动",
-          "laser": "3D避障传感器故障",
-          "ultrasonic": "超音波传感器故障",
-          "no_go_zone": "侦测到禁区或虚拟墙",
-          "route": "清扫路径被阻挡",
-          "restricted": "侦测到扫拖机器人位于限制区域",
-          "remove_mop": "拖地完成，请及时卸下并清洗抹布",
-          "mop_removed": "拖地过程中拖布脱落",
+          "side_brush": "边刷缠绕",
+          "fan": "滤网未干或堵塞",
+          "left_wheel_motor": "左轮卡住或异物阻塞",
+          "right_wheel_motor": "右轮卡住或异物阻塞",
+          "turn_suffocate": "转向受阻",
+          "forward_suffocate": "前进受阻",
+          "charger_get": "未找到基站",
+          "battery_low": "电量不足",
+          "charge_fault": "充电异常",
+          "battery_percentage": "电量检测异常",
+          "heart": "内部出错",
+          "camera_occlusion": "视觉传感器遮挡",
+          "move": "位移传感器异常",
+          "flow_shielding": "光学传感器异常",
+          "infrared_shielding": "红外传感器异常",
+          "charge_no_electric": "基站未通电",
+          "battery_fault": "电池故障",
+          "fan_speed_error": "风机转速异常",
+          "left_wheell_speed": "左轮转速异常",
+          "right_wheell_speed": "右轮转速异常",
+          "bmi055_acce": "加速度计异常",
+          "bmi055_gyro": "陀螺仪异常",
+          "xv7001": "陀螺仪校准异常",
+          "left_magnet": "左磁传感器异常",
+          "right_magnet": "右磁传感器异常",
+          "flow_error": "流量传感器异常",
+          "infrared_fault": "红外功能异常",
+          "camera_fault": "视觉系统异常",
+          "strong_magnet": "检测到强磁场",
+          "water_pump": "水泵异常",
+          "rtc": "时钟模块异常",
+          "auto_key_trig": "自动触发异常",
+          "p3v3": "电源模块异常",
+          "camera_idle": "视觉系统待机异常",
+          "blocked": "行进路线受阻，正在返回基站",
+          "lds_error": "激光雷达异常",
+          "lds_bumper": "激光防撞系统异常",
+          "filter_blocked": "滤网堵塞",
+          "edge": "沿边传感器异常",
+          "carpet": "请在地毯区域外启动",
+          "laser": "3D避障系统异常",
+          "ultrasonic": "超声波传感器异常",
+          "no_go_zone": "检测到禁行区/虚拟墙",
+          "route": "清扫路线受阻",
+          "restricted": "设备处于限制区域",
+          "remove_mop": "拖地完成，请及时清洗拖布",
+          "mop_removed": "清洁过程中拖布脱落",
           "mop_pad_stop_rotate": "拖布停止旋转",
-          "bin_full": "集尘袋满了或风道堵塞",
-          "bin_open": "自动集尘基座的上盖未关闭或集尘袋未安装",
-          "water_tank": "未安装清水箱",
-          "dirty_water_tank": "污水箱满了或未安装",
-          "water_tank_dry": "清水箱水位低，请及时加水",
+          "bin_full": "集尘袋已满或风道堵塞",
+          "bin_open": "集尘仓未关闭或尘袋未安装",
+          "water_tank": "清水箱未安装",
+          "dirty_water_tank": "污水箱已满或未安装",
+          "water_tank_dry": "清水箱水位过低，请及时加水",
           "dirty_water_tank_blocked": "污水箱堵塞",
-          "dirty_water_tank_pump": "污水箱泵浦错误",
-          "mop_pad": "洗涤板未正确安装",
-          "wet_mop_pad": "洗涤板水位异常，请及时清洗洗涤板",
-          "clean_mop_pad": "清扫任务完成，请清洗拖布和洗涤板",
-          "clean_tank_level": "请检查并加满清水箱",
+          "dirty_water_tank_pump": "污水箱水泵异常",
+          "mop_pad": "拖布支架安装异常",
+          "wet_mop_pad": "拖布水量异常，请及时清理",
+          "clean_mop_pad": "清洁完成，请清洗拖布支架",
+          "clean_tank_level": "请检查并补充清水",
           "station_disconnected": "基站未通电",
           "dirty_tank_level": "污水箱水位过高",
-          "washboard_level": "洗涤板水位过高",
-          "no_mop_in_station": "拖布不在基站内",
-          "dust_bag_full": "集尘袋满了或排气孔堵塞",
-          "self_test_failed": "上下水模块清水箱异常排水",
+          "washboard_level": "清洗盘水位过高",
+          "no_mop_in_station": "拖布未在基站内",
+          "dust_bag_full": "尘袋已满或通风口堵塞",
           "mop_install_failed": "拖布安装失败",
-          "low_battery_turn_off": "电池电量低，扫地机即将关机",
-          "dirty_tank_not_installed": "未安装扫地机的污水箱",
-          "robot_in_hidden_room": "隐藏区域，请将扫地机移至适当区域并重试",
-          "washboard_not_working": "洗涤板停止工作",
-          "return_to_charge_failed": "返回充电失败"
+          "low_battery_turn_off": "电量过低，设备即将关机",
+          "dirty_tank_not_installed": "未安装污水箱",
+          "robot_in_hidden_room": "处于禁止区域，请将设备移至可运行区域后重试",  
+          "washboard_not_working": "清洁盘停止工作",
+          "return_to_charge_failed": "回充失败"
         }
       },
       "charging_status": {
@@ -557,74 +556,74 @@
       "self_wash_base_status": {
         "state": {
           "unknown": "未知",
-          "idle": "待机中",
+          "idle": "待机",
           "washing": "清洗中",
           "drying": "烘干中",
-          "paused": "暂停",
+          "paused": "已暂停",
           "returning": "返回清洗中",
-          "clean_add_water": "清扫加水",
+          "clean_add_water": "清洁加水",
           "adding_water": "加水中"
         }
       },
       "low_water_warning": {
         "state": {
-          "no_warning": "无警告",
+          "no_warning": "水量正常",
           "no_water_left_dismiss": "请检查清水箱",
-          "no_water_left": "清水箱水量即将用完，请立即检查并加满清水箱",
-          "no_water_left_after_clean": "拖布已清洗，侦测到清水箱水量不足，请加满清水箱并清空脏水箱",
-          "no_water_for_clean": "清水箱水位低，扫地机已切换至吸尘模式",
-          "low_water": "即将缺水，请加满清水箱",
-          "tank_not_installed": "未安装清水箱"
+          "no_water_left": "清水箱即将耗尽，请及时检查并补充清水",
+          "no_water_left_after_clean": "拖布已清洁，检测到清水不足，请补充清水并清空污水箱",
+          "no_water_for_clean": "清水箱水位过低，已切换至仅吸尘模式",
+          "low_water": "清水即将用尽，请及时补充",
+          "tank_not_installed": "清水箱未安装"
         }
       },
       "stream_status": {
         "state": {
           "unknown": "未知",
-          "idle": "待机中",
-          "video": "影片",
-          "audio": "音讯",
-          "recording": "录制中"
+          "idle": "待机",
+          "video": "视频",
+          "audio": "音频",
+          "recording": "录像中"
         }
       },
       "drainage_status": {
         "state": {
           "unknown": "未知",
-          "idle": "待机中",
+          "idle": "待机",
           "draining": "排水中",
-          "draining_successful": "排水成功",
+          "draining_successful": "排水完成",
           "draining_failed": "排水失败"
         }
       },
       "clean_water_tank_status": {
         "state": {
           "unknown": "未知",
-          "not_available": "无法使用",
+          "not_available": "不可用",
           "not_installed": "未安装",
-          "low_water": "枯水",
-          "installed": "安装"
+          "low_water": "水量低",
+          "installed": "已安装"
         }
       },
       "dirty_water_tank_status": {
         "state": {
           "unknown": "未知",
-          "installed": "安装",
-          "not_installed_or_full": "未安装或完整"
+          "installed": "已安装",
+          "not_installed_or_full": "未安装或已满"
         }
       },
       "dust_bag_status": {
         "state": {
           "unknown": "未知",
-          "installed": "安装",
+          "installed": "已安装",
           "not_installed": "未安装",
-          "check": "查看"
+          "check": "需检查"
         }
       },
       "detergent_status": {
         "state": {
           "unknown": "未知",
-          "installed": "安装",
+          "installed": "已安装",
           "disabled": "禁用",
-          "low_detergent": "低洗涤剂"
+          "low_detergent": "清洁液不足"
         }
       },
       "hot_water_status": {
@@ -637,8 +636,8 @@
       "station_drainage_status": {
         "state": {
           "unknown": "未知",
-          "idle": "闲置的",
-          "draining": "排水"
+          "idle": "待机",
+          "draining": "排水中"
         }
       },
       "task_type": {
@@ -646,335 +645,339 @@
           "standard": "标准清洁",
           "standard_paused": "标准清洁暂停",
           "custom": "自定义清洁",
-          "custom_paused": "自定义清洁暂停",
-          "shortcut": "快捷键清洁",
-          "shortcut_paused": "快捷键清洁暂停",
+          "custom_paused": "自定义清洁暂停", 
+          "shortcut": "快捷清洁",
+          "shortcut_paused": "快捷清洁暂停",
           "scheduled": "预约清洁",
           "scheduled_paused": "预约清洁暂停",
-          "smart": "智慧清洁",
-          "smart_paused": "智慧清洁暂停",
+          "smart": "智能清洁",
+          "smart_paused": "智能清洁暂停",
           "partial": "局部清洁",
           "partial_paused": "局部清洁暂停",
           "summon": "召唤清洁",
           "summon_paused": "召唤清洁暂停",
-          "water_stain": "水渍清洁",
+          "water_stain": "水渍清洁模式",
           "water_stain_paused": "水渍清洁暂停",
-          "boosted_edge_cleaning": "增强边缘清洁",
-          "hair_compressing": "头发压缩"
+          "boosted_edge_cleaning": "边角增强清洁",
+          "hair_compressing": "毛发压缩处理"
         }
       }
     }
   },
   "services": {
     "vacuum_clean_segment": {
-      "name": "区域清洁",
-      "description": "在指定的房间内开始清洁作业。",
+      "name": "分区清洁",
+      "description": "对选定房间启动清洁任务",
       "fields": {
         "segments": {
-          "name": "区域",
-          "description": "要清洁的房间列表。仅限用房间代码或房间代码、清洁时间、风扇速度和拖地模式的数组，以覆盖每个房间的默认值。"
+          "name": "清洁区域",
+          "description": "待清洁房间列表。可单独设置每个房间的标识符，或通过数组为每个房间覆盖默认的清洁次数、吸力强度和拖地模式"
         },
         "repeats": {
-          "name": "重复次数",
-          "description": "每个选定房间的清洁次数(除非被自定义清洁参数覆盖)。"
+          "name": "清洁次数",
+          "description": "每个选定房间的清洁次数（除非被自定义参数覆盖）"
         },
         "suction_level": {
           "name": "吸力强度",
-          "description": "每个选定房间的吸力强度(除非被自定义清洁参数覆盖)。"
+          "description": "每个选定房间的吸力强度（除非被自定义参数覆盖）"
         },
         "water_volume": {
-          "name": "水量",
-          "description": "每个选定房间的用水量(除非被自定义清洁参数覆盖)。"
+          "name": "出水量",
+          "description": "每个选定房间的拖地水量（除非被自定义参数覆盖）"
         }
       }
     },
     "vacuum_clean_zone": {
       "name": "区域清洁",
-      "description": "在选定的区域开始清洁作业。",
+      "description": "对选定区域启动清洁任务",
       "fields": {
         "zone": {
-          "name": "区域",
-          "description": "坐标"
+          "name": "清洁区域",
+          "description": "区域坐标范围"
         },
         "repeats": {
-          "name": "重复次数",
-          "description": "每个选定区域的清洁次数。"
+          "name": "清洁次数",
+          "description": "每个选定区域的清洁遍数"
         },
         "suction_level": {
           "name": "吸力强度",
-          "description": "每个选定区域的吸力强度"
+          "description": "每个选定区域的吸力档位"
         },
         "water_volume": {
-          "name": "水量",
-          "description": "每个选定区域的用水量"
+          "name": "出水量",
+          "description": "每个选定区域的拖地水量"
         }
       }
     },
     "vacuum_clean_spot": {
       "name": "定点清洁",
-      "description": "在地图上的选定点开始清洁作业。",
+      "description": "对地图上选定的坐标点启动清洁任务",
       "fields": {
         "points": {
           "name": "坐标点",
-          "description": "要清洁的坐标列表。"
+          "description": "待清洁的坐标点列表"
         },
         "repeats": {
-          "name": "重复次数",
-          "description": "每个选定区域的清洁次数。"
+          "name": "清洁次数",
+          "description": "每个坐标点的清洁遍数"
         },
         "suction_level": {
           "name": "吸力强度",
-          "description": "每个选定区域的吸力强度。"
+          "description": "每个坐标点的吸力档位"
         },
         "water_volume": {
-          "name": "水量",
-          "description": "每个选定区域的用水量。"
+          "name": "出水量",
+          "description": "每个坐标点的拖地水量"
         }
       }
     },
     "vacuum_goto": {
       "name": "前往",
-      "description": "前往地图上的坐标并停止。",
+      "description": "前往地图坐标点并停止",
       "fields": {
         "x": {
-          "name": "X",
-          "description": "该点的 X 坐标。"
+          "name": "X坐标",
+          "description": "X轴坐标值"
         },
         "y": {
-          "name": "Y",
-          "description": "该点的 Y 坐标。"
+          "name": "Y坐标",
+          "description": "Y轴坐标值"
         }
       }
     },
     "vacuum_follow_path": {
-      "name": "跟随路径",
-      "description": "按照地图上的坐标列表移动并返回基站。(仅支持具有相机的扫地机)",
+      "name": "路径巡航",
+      "description": "按照地图上的坐标列表移动并返回基站（仅支持带视觉导航的机型）",
       "fields": {
         "points": {
           "name": "坐标点",
-          "description": "路径的坐标列表。"
-        }
+          "description": "目标路径的坐标点集合"
+                  }
       }
     },
     "vacuum_start_shortcut": {
-      "name": "启动快捷方式",
-      "description": "启动快捷方式任务。（仅支持的设备）",
+      "name": "执行快捷指令",
+      "description": "启动预设的快捷任务（仅支持部分机型）",
       "fields": {
         "shortcut_id": {
-          "name": "快捷方式ID",
-          "description": "快捷方式的ID。"
+          "name": "指令编号",
+          "description": "快捷指令的唯一标识码"
         }
       }
     },
     "vacuum_remote_control_move_step": {
-      "name": "远程控制移动步数",
-      "description": "远程控制机器人移动一步。",
+      "name": "遥控单步移动",
+      "description": "远程控制设备执行单步移动指令",
       "fields": {
         "rotation": {
-          "name": "旋转",
-          "description": "以二进制度数在 -128 到 128 之间旋转。"
+          "name": "转向角度",
+          "description": "转向角度值（二进制角度制），范围-128至128"
         },
         "velocity": {
-          "name": "速度",
-          "description": "移动速度，从 100(前进)到 -300(后退)。"
+          "name": "移动速度", 
+          "description": "移动速度值，100（前进）至-300（后退）"
         }
       }
     },
     "vacuum_install_voice_pack": {
       "name": "安装语音包",
-      "description": "安装官方或自定义语音包。",
+      "description": "安装官方或自定义语音包",
       "fields": {
         "lang_id": {
-          "name": "语言 ID",
-          "description": "此语音包的语言 ID。"
+          "name": "语言ID",
+          "description": "语音包对应的语言标识码"
         },
         "url": {
-          "name": "网址URL",
-          "description": "此语音包的 URL，扫地机应该能够访问的网址。"
+          "name": "下载地址",
+          "description": "语音包下载链接"
         },
         "md5": {
-          "name": "MD5",
-          "description": "语言包的 MD5 校验和。"
+          "name": "MD5校验码",
+          "description": "语音包的MD5校验值"
         },
         "size": {
-          "name": "大小",
-          "description": "语言包的大小，以bytes为单位。"
+          "name": "文件大小",
+          "description": "语音包体积（单位：字节）"
         }
       }
     },
     "vacuum_request_map": {
-      "name": "请求地图",
-      "description": "请求地图数据。"
+      "name": "请求地图数据",
+      "description": "获取当前地图数据"
     },
     "vacuum_select_map": {
       "name": "选择地图",
-      "description": "选择当前地图。在有多张地图/楼层时使用。",
+      "description": "选择当前使用的地图（适用于多地图/多层场景）",
       "fields": {
         "map_id": {
-          "name": "地图 ID",
-          "description": "要选择的地图 ID。"
+          "name": "地图ID",
+          "description": "选择地图的唯一标识码"
         }
       }
     },
     "vacuum_delete_map": {
       "name": "删除地图",
-      "description": "删除地图。",
+      "description": "永久删除指定地图数据",
       "fields": {
         "map_id": {
-          "name": "地图 ID",
-          "description": "要删除的地图 ID。"
+          "name": "地图ID",
+          "description": "待删除地图的唯一标识码"
         }
       }
     },
     "vacuum_save_temporary_map": {
-      "name": "储存临时地图",
-      "description": "储存临时地图。"
+      "name": "保存临时地图",
+      "description": "将当前临时地图保存为正式地图"
     },
     "vacuum_discard_temporary_map": {
-      "name": "舍弃临时地图",
-      "description": "舍弃临时地图。"
+      "name": "丢弃临时地图",
+      "description": "永久清除当前临时地图数据"
     },
     "vacuum_replace_temporary_map": {
       "name": "替换临时地图",
-      "description": "用另一张储存的地图替换临时地图。",
+      "description": "用其他已保存地图替换当前临时地图",
       "fields": {
         "map_id": {
-          "name": "地图 ID",
-          "description": "要替换的地图 ID。"
+          "name": "目标地图ID",
+          "description": "用于替换临时地图的已存地图标识码"
         }
       }
     },
     "vacuum_rename_map": {
-      "name": "重新命名地图",
-      "description": "重新命名地图。",
+      "name": "地图重命名",
+      "description": "修改指定地图的名称",
       "fields": {
         "map_id": {
-          "name": "地图 ID",
-          "description": "地图 ID"
+          "name": "地图ID",
+          "description": "需要重命名的地图标识码"
         },
         "map_name": {
-          "name": "地图名称",
-          "description": "地图的新名称。"
+          "name": "新地图名称",
+          "description": "地图的新命名（支持中文、字母和数字）"
         }
       }
     },
     "vacuum_restore_map": {
       "name": "恢复地图",
-      "description": "恢复地图。",
+      "description": "从备份恢复指定地图数据",
       "fields": {
         "map_id": {
-          "name": "地图 ID",
-          "description": "要恢复的地图 ID。"
+          "name": "目标地图ID",
+          "description": "待恢复地图的标识码"
         },
         "recovery_map_index": {
-          "name": "恢复地图索引",
-          "description": "已储存恢复地图的索引"
+          "name": "恢复点序号",
+          "description": "备份地图的版本索引号"
         }
       }
     },
     "vacuum_restore_map_from_file": {
-      "name": "从档案恢复地图",
-      "description": "从档案恢复地图。",
+      "name": "从文件恢复地图",
+      "description": "从本地文件恢复地图数据",
       "fields": {
         "map_id": {
-          "name": "地图 ID",
-          "description": "要恢复的地图 ID。"
+          "name": "地图ID",
+          "description": "需要恢复的地图编号"
         },
         "file_url": {
-          "name": "档案网址",
-          "description": "储存的 tbz2.gz 或 tar.gz 档案的网址 URL。"
+          "name": "文件URL",
+          "description": "已保存的.bz2.gz或.tar.gz压缩文件地址"
         }
       }
     },
     "vacuum_backup_map": {
-      "name": "备份地图",
-      "description": "将地图备份到云端。",
+      "name": "备份地图至云端",
+      "description": "将当前地图备份到云存储",
       "fields": {
         "map_id": {
-          "name": "地图 ID",
-          "description": "要备份的地图 ID。"
+          "name": "地图ID",
+          "description": "需要备份的地图编号"
         }
       }
     },
     "vacuum_merge_segments": {
       "name": "合并区域",
-      "description": "合并房间。",
+      "description": "合并多个房间区域",
       "fields": {
         "map_id": {
-          "name": "地图 ID",
-          "description": "地图 ID。"
+          "name": "地图ID",
+          "description": "目标地图编号"
         },
         "segments": {
           "name": "区域",
-          "description": "房间 ID。"
+          "description": "需要合并的房间ID"
         }
       }
     },
     "vacuum_split_segments": {
       "name": "分割区域",
-      "description": "分割房间。",
+      "description": "将现有房间区域拆分为多个独立区域",
       "fields": {
         "map_id": {
-          "name": "地图 ID",
-          "description": "地图 ID。"
+          "name": "地图ID",
+          "description": "目标地图编号"
         },
         "segment": {
           "name": "区域",
-          "description": "房间 ID。"
+          "description": "需要分割的原始房间编号"
         },
         "line": {
-          "name": "线条",
-          "description": "分割线的坐标。"
+          "name": "分割线",
+          "description": "分割线坐标"
         }
       }
     },
     "vacuum_rename_segment": {
-      "name": "重新命名区域",
-      "description": "重新命名区域。",
+      "name": "重命名区域",
+      "description": "修改指定区域的名称",
       "fields": {
         "segment_id": {
-          "name": "区域 ID",
-          "description": "区域 ID。"
+          "name": "区域ID",
+          "description": "需要重命名的区域编号"
         },
         "segment_name": {
-          "name": "区域名称",
-          "description": "区域的新名称。"
+          "name": "新区域名称",
+          "description": "为该区域设置的新名称"
         }
       }
     },
     "vacuum_set_cleaning_sequence": {
-      "name": "设置清洁顺序",
-      "description": "设置房间清洁顺序。(仅支持特定设备)",
+      "name": "设置清洁区域顺序",
+      "description": "设置房间清洁顺序（仅支持部分机型）",
       "fields": {
         "cleaning_sequence": {
           "name": "清洁顺序",
-          "description": "清洁顺序的区域 ID 列表。"
+          "description": "按顺序排列的区域ID列表"
         }
       }
     },
     "vacuum_set_custom_cleaning": {
       "name": "设置自定义清洁",
-      "description": "设置自定义清洁参数。(仅支持特定设备)",
+      "description": "设置个性化清洁参数（仅限支持机型）",
       "fields": {
         "segment_id": {
-          "name": "区域 ID",
-          "description": "房间 ID。"
+          "name": "区域ID",
+          "description": "目标房间编号"
         },
         "suction_level": {
-          "name": "吸力强度",
-          "description": "每个房间的吸力强度。"
+          "name": "吸力等级",
+          "description": "各房间对应的吸力强度"
         },
         "water_volume": {
-          "name": "水量",
-          "description": "每个房间的用水量。"
+          "name": "出水量",
+          "description": "各房间对应的拖地水量"
+        },
+        "wetness_level": {
+          "name": "拖布湿润度",
+          "description": "为每个房间设置拖地湿度（仅支持部分机型）"
         },
         "cleaning_mode": {
           "name": "清洁模式",
-          "description": "每个房间的清洁模式(仅支持有拖布升降功能的扫地机)。"
+          "description": "各房间的清洁方式（需设备支持拖布抬升功能）"
         },
         "repeats": {
           "name": "重复次数",
-          "description": "每个房间的清洁次数。"
+          "description": "各房间的清洁遍数"
         }
       }
     },
