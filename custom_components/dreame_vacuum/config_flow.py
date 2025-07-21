@@ -618,6 +618,6 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             {
                 vol.Required(CONF_USERNAME, default=self.username): str,
                 vol.Required(CONF_PASSWORD, default=self.password): str,
-                vol.Required(CONF_COUNTRY, default=self.country): vol.In(["eu", "cn", "us", "ru", "sg"]),
+                vol.Required(CONF_COUNTRY, default=self.country): vol.In(["eu", "cn", "us", "ru", "sg", "fr"]),
             }
         )
