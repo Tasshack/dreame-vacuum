@@ -5,7 +5,7 @@ import json
 import time
 from typing import Any, Dict, Final, List, Optional
 from enum import IntEnum, Enum
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from datetime import datetime
 
 SEGMENT_TYPE_CODE_TO_NAME: Final = {
@@ -3748,7 +3748,10 @@ class Shortcut:
     map_id: int = None
     running: bool = False
     tasks: list[list[ShortcutTask]] = None
-
+    
+    def as_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+    
 
 @dataclass
 class ShortcutTask:
@@ -3757,6 +3760,9 @@ class ShortcutTask:
     water_volume: int = None
     cleaning_times: int = None
     cleaning_mode: int = None
+
+    def as_dict(self) -> Dict[str, Any]:
+        return asdict(self)
 
 
 @dataclass
@@ -3772,7 +3778,10 @@ class ScheduleTask:
     water_volume: int = None
     options: str = None
 
-
+    def as_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+    
+    
 @dataclass
 class GoToZoneSettings:
     x: int = None
@@ -3783,6 +3792,9 @@ class GoToZoneSettings:
     cleaning_mode: int = None
     size: int = 50
 
+    def as_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+    
 
 @dataclass
 class MapRendererConfig:
