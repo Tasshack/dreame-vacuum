@@ -21,7 +21,7 @@ from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import generate_entity_id
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .dreame import DreameVacuumDevice, DreameVacuumProperty
+from .dreame import DreameVacuumDevice, DreameVacuumProperty, VERSION
 from .dreame.resources import (
     CONSUMABLE_IMAGE,
     DRAINAGE_STATUS_SUCCESS,
@@ -37,6 +37,11 @@ from .const import (
     CONF_AUTH_KEY,
     CONF_ACCOUNT_TYPE,
     CONF_PREFER_CLOUD,
+    CONF_MAP_OBJECTS,
+    CONF_HIDDEN_MAP_OBJECTS,
+    CONF_DONATED,
+    CONF_VERSION,
+    MAP_OBJECTS,
     CONTENT_TYPE,
     NOTIFICATION_CLEANUP_COMPLETED,
     NOTIFICATION_DUST_COLLECTION_NOT_PERFORMED,
@@ -46,6 +51,7 @@ from .const import (
     NOTIFICATION_REPLACE_MAP,
     NOTIFICATION_DRAINAGE_COMPLETED,
     NOTIFICATION_DRAINAGE_FAILED,
+    NOTIFICATION_SPONSOR,
     NOTIFICATION_ID_DUST_COLLECTION,
     NOTIFICATION_ID_CLEANING_PAUSED,
     NOTIFICATION_ID_REPLACE_MAIN_BRUSH,
@@ -119,6 +125,28 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         self._washing = None
 
         LOGGER.info("Integration loading: %s", entry.data[CONF_NAME])
+
+        if entry.options.get(CONF_VERSION) != VERSION:
+            options = entry.options.copy()
+            
+            ## Migration: Convert map objects to hidden map objects
+            if CONF_MAP_OBJECTS in entry.options and CONF_HIDDEN_MAP_OBJECTS not in options:
+                options[CONF_HIDDEN_MAP_OBJECTS] = []
+                for key in list(MAP_OBJECTS.keys()):
+                    if key not in options[CONF_MAP_OBJECTS] and key != "curtain" and key != "ramp":
+                        options[CONF_HIDDEN_MAP_OBJECTS].append(key)
+                del options[CONF_MAP_OBJECTS]
+
+            options[CONF_VERSION] = VERSION
+            if not options.get(CONF_DONATED):
+                persistent_notification.create(
+                    hass=hass,
+                    message=NOTIFICATION_SPONSOR,
+                    title="Dreame Vacuum",
+                    notification_id=f"{DOMAIN}_sponsor",
+                )
+            hass.config_entries.async_update_entry(entry=entry, options=options)
+
         self._device = DreameVacuumDevice(
             entry.data[CONF_NAME],
             self._host,

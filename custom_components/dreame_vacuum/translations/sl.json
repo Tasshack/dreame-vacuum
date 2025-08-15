@@ -10,9 +10,10 @@
       "unsupported": "Naprava ni podprta",
       "wrong_token": "Napaka pri preverjanju, napačen žeton",
       "2fa_failed": "Preverjanje ni uspelo.",
+      "wrong_captcha": "Napačen captcha.",
       "credentials_incomplete": "Nepravilni podatki za prijavo, prosimo izpolnite uporabniško ime, geslo in državo",
       "login_error": "Prijava ni uspela, preverite podatke za prijavo.",
-      "no_devices": "V tem računu v izbrani državi ni bilo najdenih podprtih naprav."
+      "no_devices": "V tem računu v izbrani državi ni bilo najdenih podprtih naprav.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "Dvofaktorska potrditvena koda"
         },
         "description": "## Za prijavo je potrebna varnostna preverba\nOdprite stran za preverjanje in pošljite potrditveno kodo na mobilni telefon ali e-pošto. Ko prejmete kodo, je ne preverjajte na spletni strani. Vrnite se v HomeAssistant in jo vnesite v spodnje vnosno polje.\n### [Pošlji potrditveno kodo]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Koda"
+        },
+        "description": "## Zahtevana je CAPTCHA preverba.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "Barvna shema zemljevida",
           "icon_set": "Nabor ikon zemljevida",
           "notify": "Obvestilo",
-          "map_objects": "Predmeti na zemljevidu",
+          "hidden_map_objects": "Skriti kartni objekti",
           "low_resolution": "Zemljevid nizke ločljivosti",
           "square": "Kvadratni zemljevid"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "Barvna shema zemljevida",
           "icon_set": "Nabor ikon zemljevida",
           "notify": "Obvestilo",
-          "map_objects": "Predmeti na zemljevidu",
+          "hidden_map_objects": "Skriti kartni objekti",
           "low_resolution": "Zemljevid nizke ločljivosti",
           "square": "Kvadratni zemljevid",
           "configuration_type": "Vrsta konfiguracije",
@@ -436,7 +443,9 @@
         "state": {
           "unknown": "Neznano",
           "not_available": "Ni na voljo",
-          "available": "Na voljo"
+          "available": "Na voljo",
+          "over_use": "Prekomerna uporaba",
+          "never": "Nikoli"
         }
       },
       "auto_empty_status": {

@@ -1,3 +1,5 @@
+VERSION = "v2.0.0b20"
+
 from .types import (
     DreameVacuumProperty,
     DreameVacuumAutoSwitchProperty,

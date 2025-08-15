@@ -10,9 +10,10 @@
       "unsupported": "Enheten stöds inte",
       "wrong_token": "Checksumme-fel, fel token",
       "2fa_failed": "Verifiering misslyckades.",
+      "wrong_captcha": "Felaktig captcha.",
       "credentials_incomplete": "Inkompletta inloggningsuppgifter, fyll i användarnamn, lösenord och land",
       "login_error": "Kunde inte logga in på Xiaomi Miio Cloud, se över inloggningsuppgifter.",
-      "no_devices": "Hittade inga enheter som stöds på detta Xiaomi Miio Cloud konto under valt land."
+      "no_devices": "Hittade inga enheter som stöds på detta Xiaomi Miio Cloud konto under valt land.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "Tvåfaktorsverifieringskod"
         },
         "description": "## Denna inloggning kräver säkerhetsverifiering\nÖppna verifieringssidan för att skicka verifieringskoden via mobil/e-post. Efter att du fått koden, verifiera den inte på webbsidan. Gå tillbaka till HomeAssistant och ange den i fältet nedan.\n### [Skicka verifieringskod]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Kod"
+        },
+        "description": "## Captcha-verifiering krävs.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "Färgschema karta",
           "icon_set": "Kartikoner",
           "notify": "Notifikation",
-          "map_objects": "Kartobjekt",
+          "hidden_map_objects": "Dolda kartobjekt",
           "low_resolution": "Lågupplöst karta",
           "square": "Fyrkantig karta"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "Färgschema karta",
           "icon_set": "Kartikoner",
           "notify": "Notifikation",
-          "map_objects": "Kartobjekt",
+          "hidden_map_objects": "Dolda kartobjekt",
           "low_resolution": "Lågupplöst karta",
           "square": "Fyrkantig karta",
           "configuration_type": "Konfigurationstyp",
@@ -436,7 +443,9 @@
         "state": {
           "unknown": "Okänd",
           "not_available": "Ej tillgänglig",
-          "available": "Tillgänglig"
+          "available": "Tillgänglig",
+          "over_use": "Överanvändning",
+          "never": "Aldrig"
         }
       },
       "auto_empty_status": {

@@ -4,7 +4,6 @@ import hashlib
 import json
 import base64
 import hmac
-import uuid
 import requests
 import zlib
 import ssl
@@ -20,7 +19,8 @@ from miio.miioprotocol import MiIOProtocol
 
 from .exceptions import DeviceException
 
-VERSION: Final = "v2.0.0b19"
+from . import VERSION
+
 DATA_URL: Final = (
     "aHR0cHM6Ly93d3cuZ29vZ2xlLWFuYWx5dGljcy5jb20vbXAvY29sbGVjdD9tZWFzdXJlbWVudF9pZD1HLTcwN1g2N0MzWlAmYXBpX3NlY3JldD1jX2taVDJlV1N1Q3Q4Q2swTGdtaE1n"
 )
@@ -125,6 +125,7 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._uuid = None
         self._strings = None
         self.verification_url = None
+        self.captcha_img = None
 
     def _api_task(self):
         while True:
@@ -401,28 +402,29 @@ class DreameVacuumDreameHomeCloudProtocol:
     def get_supported_devices(self, models, host=None, mac=None) -> Any:
         response = self.get_devices()
         devices = {}
+        unsupported_devices = {}
         if response:
-            for device in list(
-                filter(
-                    lambda d: str(d["model"]) in models,
-                    response["page"]["records"],
-                )
-            ):
-                name = device["customName"] if device["customName"] else device["deviceInfo"]["displayName"]
+            all_devices = list(response["page"]["records"])
+            for device in all_devices:
                 model = device["model"]
+                name = device["customName"] if device["customName"] else device["deviceInfo"]["displayName"]
                 list_name = f"{name} - {model}"
-                devices[list_name] = device
+                if model in models:
+                    devices[list_name] = device
 
-                if (host is not None and device.get("localip") == host) or (
-                    mac is not None and device.get("mac") == mac
-                ):
-                    devices = {list_name: device}
-                    break
+                    if (host is not None and device.get("localip") == host) or (
+                        mac is not None and device.get("mac") == mac
+                    ):
+                        devices = {list_name: device}
+                        break
+                elif ".vacuum." in model:
+                    unsupported_devices[list_name] = device
 
             if mac is None:
                 try:
                     session_id = random.randint(1000, 100000000)
-                    for device in devices.values():
+                    for device in all_devices:
+                        model = device["model"]
                         device_id = hashlib.sha256(
                             (device["mac"].replace(":", "").lower()).encode(encoding="UTF-8")
                         ).hexdigest()
@@ -433,15 +435,15 @@ class DreameVacuumDreameHomeCloudProtocol:
                             .format(
                                 device_id,
                                 VERSION,
-                                device["model"],
+                                model,
                                 session_id,
-                                "device",
+                                "device" if model in models else "unsupported_device",
                             ),
                             timeout=5,
                         )
                 except:
                     pass
-        return devices
+        return devices, unsupported_devices
 
     def get_devices(self) -> Any:
         response = self._api_call(f"{self._strings[23]}/{self._strings[24]}/{self._strings[27]}/{self._strings[28]}")
@@ -687,7 +689,6 @@ class DreameVacuumDreameHomeCloudProtocol:
                 }
                 if self._country == "cn":
                     headers[self._strings[48]] = self._strings[4]
-
                 response = self._session.post(url, headers=headers, data=data, timeout=6)
                 break
             except requests.exceptions.Timeout:
@@ -761,6 +762,8 @@ class DreameVacuumMiHomeCloudProtocol:
         self._ssecurity = None
         self._userId = None
         self._service_token = None
+        self._captcha_ick = None
+        self._captcha_code = None
         self._logged_in = False
         self._auth_failed = False
         self._uid = None
@@ -779,6 +782,7 @@ class DreameVacuumMiHomeCloudProtocol:
         self._locale = locale.getdefaultlocale()[0]
         self._v3 = False
         self.verification_url = None
+        self.captcha_img = None
         self._fail_count = 0
         self._connected = False
         try:
@@ -852,7 +856,7 @@ class DreameVacuumMiHomeCloudProtocol:
 
     @property
     def object_name(self) -> str:
-        return f"{str(self._uid)}/{str(self._did)}/0"
+        return f"{str(self._uid)}/{str(self._did)}/0"        
 
     def check_login(self, response=None) -> bool:
         try:
@@ -912,29 +916,39 @@ class DreameVacuumMiHomeCloudProtocol:
 
     def login_step_2(self) -> bool:
         self._auth_failed = False
-        fields = {
-            "sid": "xiaomiio",
-            "hash": hashlib.md5(str.encode(self._password)).hexdigest().upper(),
-            "callback": "https://sts.api.io.mi.com/sts",
-            "qs": "%3Fsid%3Dxiaomiio%26_json%3Dtrue",
+        data = {
             "user": self._username,
-            "_json": "true",
+            "hash": hashlib.md5(str.encode(self._password)).hexdigest().upper(),
+            "callback": "https://sts.api.io.mi.com/sts",            
+            "sid": "xiaomiio",
+            "qs": "%3Fsid%3Dxiaomiio%26_json%3Dtrue",
         }
         if self._sign:
-            fields["_sign"] = self._sign
-
+            data["_sign"] = self._sign
+        params = {'_json': 'true'}       
+        
         self.verification_url = None
+        self.captcha_img = None
+        
         try:
+            cookies = {}
+            if self._captcha_code and self._captcha_ick:
+                data['captCode'] = self._captcha_code
+                params['_dc'] = int(time.time() * 1000)
+                cookies['ick'] = self._captcha_ick
+                
             response = self._session.post(
                 "https://account.xiaomi.com/pass/serviceLoginAuth2",
                 headers={
                     "User-Agent": self._useragent,
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
-                params=fields,
+                data=data,
+                params=params,
+                cookies=cookies,
                 timeout=5,
             )
-            if response is not None:
+            if response is not None:                
                 if response.status_code == 200:
                     data = self.to_json(response.text)
                     location = data.get("location")
@@ -948,7 +962,17 @@ class DreameVacuumMiHomeCloudProtocol:
                         self.verification_url = data["notificationUrl"]
                         if self.verification_url[:4] != "http":
                             self.verification_url = f"https://account.xiaomi.com{self.verification_url}"
-
+                            
+                    if "captchaUrl" in data:
+                        url = data["captchaUrl"]
+                        if url:
+                            if url[:4] != 'http':
+                                url = f"https://account.xiaomi.com{url}"
+                            
+                            response = self._session.get(url)
+                            if ick := response.cookies.get('ick'):                            
+                                self._captcha_ick = ick
+                                self.captcha_img = base64.b64encode(response.content).decode()
                 self._auth_failed = True
         except:
             pass
@@ -1038,7 +1062,8 @@ class DreameVacuumMiHomeCloudProtocol:
                                     timeout=5,
                                 )
                                 if response and response.status_code == 200:
-                                    self._verification_url = None
+                                    self.verification_url = None
+                                    self.captcha_url = None
                                     self._logged_in = self.login_step_1() and self.login_step_3()
                                     if self._logged_in:
                                         self._auth_failed = False
@@ -1051,6 +1076,10 @@ class DreameVacuumMiHomeCloudProtocol:
                 raise DeviceException("2FA Verification Failed! %s", ex) from None
         return False
 
+    def verify_captcha(self, code) -> bool:
+        self._captcha_code = code
+        return self.login() or self.captcha_img is None
+        
     def get_file(self, url: str, retry_count: int = 4) -> Any:
         retries = 0
         if not retry_count or retry_count < 0:
@@ -1152,28 +1181,34 @@ class DreameVacuumMiHomeCloudProtocol:
     def get_supported_devices(self, models, host=None, mac=None) -> Any:
         response = self.get_devices()
         devices = {}
+        unsupported_devices = {}
         if response:
-            for device in list(
+            all_devices = list(
                 filter(
-                    lambda d: not d.get("parent_id") and (str(d["model"]) in models),
+                    lambda d: not d.get("parent_id"),
                     response,
                 )
-            ):
+            )
+            for device in all_devices:
                 name = device["name"]
                 model = device["model"]
                 list_name = f"{name} - {model}"
-                devices[list_name] = device
+                if model in models:
+                    devices[list_name] = device
 
-                if (host is not None and device.get("localip") == host) or (
-                    mac is not None and device.get("mac") == mac
-                ):
-                    devices = {list_name: device}
-                    break
+                    if (host is not None and device.get("localip") == host) or (
+                        mac is not None and device.get("mac") == mac
+                    ):
+                        devices = {list_name: device}
+                        break
+                elif ".vacuum." in model:
+                    unsupported_devices[list_name] = device
 
             if mac is None:
                 try:
                     session_id = random.randint(1000, 100000000)
-                    for device in devices.values():
+                    for device in all_devices:
+                        model = device["model"]
                         device_id = hashlib.sha256(
                             (device["mac"].replace(":", "").lower()).encode(encoding="UTF-8")
                         ).hexdigest()
@@ -1184,15 +1219,15 @@ class DreameVacuumMiHomeCloudProtocol:
                             .format(
                                 device_id,
                                 VERSION,
-                                device["model"],
+                                model,
                                 session_id,
-                                "device",
+                                "device" if model in models else "unsupported_device",
                             ),
                             timeout=5,
                         )
                 except:
                     pass
-        return devices
+        return devices, unsupported_devices
 
     def get_devices(self) -> Any:
         device_list = []

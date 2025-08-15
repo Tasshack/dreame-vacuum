@@ -33,7 +33,7 @@ from .const import (
     DOMAIN,
     CONF_COLOR_SCHEME,
     CONF_ICON_SET,
-    CONF_MAP_OBJECTS,
+    CONF_HIDDEN_MAP_OBJECTS,
     CONF_LOW_RESOLUTION,
     CONF_SQUARE,
     MAP_OBJECTS,
@@ -342,7 +342,7 @@ async def async_setup_entry(
         icon_set = entry.options.get(CONF_ICON_SET)
         low_resolution = entry.options.get(CONF_LOW_RESOLUTION, False)
         square = entry.options.get(CONF_SQUARE, False)
-        map_objects = entry.options.get(CONF_MAP_OBJECTS, MAP_OBJECTS.keys())
+        hidden_map_objects = entry.options.get(CONF_HIDDEN_MAP_OBJECTS, [])
 
         async_add_entities(
             DreameVacuumCameraEntity(
@@ -350,7 +350,7 @@ async def async_setup_entry(
                 description,
                 color_scheme,
                 icon_set,
-                map_objects,
+                hidden_map_objects,
                 low_resolution,
                 square,
             )
@@ -364,7 +364,7 @@ async def async_setup_entry(
             async_add_entities,
             color_scheme,
             icon_set,
-            map_objects,
+            hidden_map_objects,
             low_resolution,
             square,
         )
@@ -394,7 +394,7 @@ def async_update_map_cameras(
     async_add_entities,
     color_scheme: str,
     icon_set: str,
-    map_objects: list[str],
+    hidden_map_objects: list[str],
     low_resolution: bool,
     square: bool,
 ) -> None:
@@ -416,7 +416,7 @@ def async_update_map_cameras(
                 ),
                 color_scheme,
                 icon_set,
-                map_objects,
+                hidden_map_objects,
                 low_resolution,
                 square,
                 map_index,
@@ -436,7 +436,7 @@ def async_update_map_cameras(
                     ),
                     color_scheme,
                     icon_set,
-                    map_objects,
+                    hidden_map_objects,
                     True,
                     square,
                     map_index,
@@ -478,7 +478,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         description: DreameVacuumCameraEntityDescription,
         color_scheme: str = None,
         icon_set: str = None,
-        map_objects: list[str] = None,
+        hidden_map_objects: list[str] = None,
         low_resolution: bool = False,
         square: bool = False,
         map_index: int = 0,
@@ -508,10 +508,16 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             self._renderer = DreameVacuumMapDataJsonRenderer()
             self.content_type = JSON_CONTENT_TYPE
         else:
+            if self.wifi_map:
+                objects = list(MAP_OBJECTS.keys())
+                objects.pop(17)  ## Charger
+            else:
+                objects = hidden_map_objects
+
             self._renderer = DreameVacuumMapRenderer(
                 color_scheme,
                 icon_set,
-                ["charger"] if self.wifi_map else map_objects,
+                objects,
                 self.device.capability.robot_type,
                 low_resolution,
                 square,
@@ -520,7 +526,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 self._proxy_renderer = DreameVacuumMapRenderer(
                     color_scheme,
                     icon_set,
-                    map_objects,
+                    hidden_map_objects,
                     self.device.capability.robot_type,
                     low_resolution,
                     square,

@@ -10,9 +10,10 @@
       "unsupported": "Dispositivo non supportato",
       "wrong_token": "Checksum error, token errato",
       "2fa_failed": "Verifica fallita.",
+      "wrong_captcha": "Captcha errato.",
       "credentials_incomplete": "Credenziali incomplete, per favore inserisci username, password e località",
       "login_error": "Controlla le tue credenziali.",
-      "no_devices": "Nessun dispositivo supportato è stato trovato in questo account nella posizione selezionata."
+      "no_devices": "Nessun dispositivo supportato è stato trovato in questo account nella posizione selezionata.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "Codice di verifica a due fattori"
         },
         "description": "## Questo accesso richiede una verifica di sicurezza\nSi prega di aprire la pagina di verifica per inviare il codice di verifica mobile/email. Dopo aver ricevuto il codice di verifica, non verificarlo sulla pagina web. Torna su HomeAssistant e inseriscilo nel campo di input sottostante.\n### [Invia codice di verifica]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Codice"
+        },
+        "description": "## È richiesta la verifica del captcha.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "Schema colori della mappa",
           "icon_set": "Set di icone",
           "notify": "Notifica",
-          "map_objects": "Oggetti della mappa",
+          "hidden_map_objects": "Oggetti mappa nascosti",
           "low_resolution": "Mappa a bassa risoluzione",
           "square": "Mappa quadrata"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "Schema colori della mappa",
           "icon_set": "Set di icone",
           "notify": "Notifica",
-          "map_objects": "Oggetti della mappa",
+          "hidden_map_objects": "Oggetti mappa nascosti",
           "low_resolution": "Mappa a bassa risoluzione",
           "square": "Mappa quadrata",
           "configuration_type": "Tipo di configurazione",
@@ -436,7 +443,9 @@
         "state": {
           "unknown": "Sconosciuto",
           "not_available": "Non disponibile",
-          "available": "Disponibile"
+          "available": "Disponibile",
+          "over_use": "Uso eccessivo",
+          "never": "Mai"
         }
       },
       "auto_empty_status": {

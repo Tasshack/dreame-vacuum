@@ -127,37 +127,41 @@ TODO ADD IMAGES
 - **Mijia**: Icons from the official Mijia App.
 - **Material**: Icons from the Material Design.
 
-### Map Objects
+### Hidden Map Objects
 
 Configurable map object rendering options: 
 
-> Map object can be selected from integration configuration options.
-- **Room Colors**: Render rooms with colors
-- **Room Icons**: Render room icons
-- **Room Names**: Render custom and default room names
-- **Room Name Background**: Render room name or icon background in room color
-- **Room Order**: Render cleaning sequence number of the room
-- **Room Suction Level**: Render customized cleaning suction level of the room
-- **Room Water Volume**: Render customized cleaning water volume of the room
-- **Room Cleaning Times**: Render customized cleaning times of the room
-- **Room Cleaning Mode**: Render customized cleaning cleaning mode of the room *(Only on supported devices)*
-- **Path**: Render paths
-- **No Go Zones**: Render no go zones
-- **No Mop Zones**: Render no mop zones
-- **Virtual Walls**: Render virtual walls
-- **Pathways**: Render pathways *(Only on supported devices)*
-- **Active Areas**: Render active areas
-- **Active Points**: Render active points
-- **Charger Icon**: Render charger icon
-- **Robot Icon**: Render robot icon
-- **Cleaning Direction**: Render cleaning direction
-- **AI Obstacle**: Render obstacle icons *(Only on supported devices)*
-- **Pet**: Render pet icons *(Only on supported devices)*
-- **Carpet Area**: Render carpets *(Only on supported devices)*
-- **Floor Material**: Render floor material of the rooms *(Only on supported devices)*
-- **Furnitures**: Render 2D/3D furnitures *(Only on supported devices)*
-- **Low-Lying Areas**: Render Low-Lying areas *(Only on supported devices)*
-- **Cruise Point**: Render cruise points *(Only on supported devices)*
+> Hidden Map objects can be selected from integration configuration options.
+- **Room Colors**: Disable rooms with colors
+- **Room Icons**: Disable room icons
+- **Room Names**: Disable custom and default room names
+- **Room Name Background**: Disable room name or icon background in room color
+- **Room Order**: Disable cleaning sequence number of the room
+- **Room Suction Level**: Disable customized cleaning suction level of the room
+- **Room Water Volume**: Disable customized cleaning water volume of the room
+- **Room Cleaning Times**: Disable customized cleaning times of the room
+- **Room Cleaning Mode**: Disable customized cleaning cleaning mode of the room *(Only on supported devices)*
+- **Path**: Disable paths
+- **No Go Zones**: Disable no go zones
+- **No Mop Zones**: Disable no mop zones
+- **Virtual Walls**: Disable virtual walls
+- **Pathways**: Disable pathways *(Only on supported devices)*
+- **Passable Thresholds**: Disable Passable Thresholds *(Only on supported devices)*
+- **Impassable Thresholds**: Disable Passable Thresholds *(Only on supported devices)*
+- **Active Areas**: Disable active areas
+- **Active Points**: Disable active points
+- **Charger Icon**: Disable charger icon
+- **Robot Icon**: Disable robot icon
+- **Cleaning Direction**: Disable cleaning direction
+- **AI Obstacle**: Disable obstacle icons *(Only on supported devices)*
+- **Pet**: Disable pet icons *(Only on supported devices)*
+- **Carpet Area**: Disable carpets *(Only on supported devices)*
+- **Floor Material**: Disable floor material of the rooms *(Only on supported devices)*
+- **Furnitures**: Disable 2D/3D furnitures *(Only on supported devices)*
+- **Low-Lying Areas**: Disable Low-Lying areas *(Only on supported devices)*
+- **Curtains**: Disable Curtains *(Only on supported devices)*
+- **Ramps**: Disable Ramps *(Only on supported devices)*
+- **Cruise Point**: Disable cruise points *(Only on supported devices)*
 
 ### Cleaning and Cruising History Maps
 

@@ -198,6 +198,7 @@
 | `start_recleaning`   | TODO | 
 | `empty_water_tank`   | TODO | 
 | `base_station_cleaning`   | TODO | 
+| `reload_shortcuts`   | TODO | 
 | `shortcut_{1-33}`   | TODO | 
 | `backup_map_1`   | TODO | 
 | `backup_map_2`   | TODO | 

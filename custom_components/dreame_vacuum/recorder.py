@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import callback
 
 from .dreame import DreameVacuumProperty, DreameVacuumAutoSwitchProperty, DreameVacuumAIProperty
 from .dreame.const import (
@@ -59,6 +59,9 @@ from .dreame.const import (
     ATTR_FLOOR_DIRECTION_CLEANING_AVAILABLE,
     ATTR_CAPABILITIES,
     ATTR_COLOR_SCHEME,
+    ATTR_CHARGING,
+    ATTR_DOCKED,
+    ATTR_BATTERY,
     ATTR_SHORTCUT_TASK,
 )
 
@@ -135,6 +138,9 @@ VACUUM_UNRECORDED_ATTRIBUTES = {
     ATTR_FLOOR_DIRECTION_CLEANING_AVAILABLE,
     ATTR_CAPABILITIES,
     ATTR_SHORTCUT_TASK,
+    ATTR_CHARGING,
+    ATTR_DOCKED,
+    ATTR_BATTERY,
     "fan_speed_list",
     "fan_speed",
     "battery_level",
@@ -283,6 +289,6 @@ VACUUM_UNRECORDED_ATTRIBUTES = {
 
 
 @callback
-def exclude_attributes(hass: HomeAssistant) -> set[str]:
+def exclude_attributes(hass) -> set[str]:
     """Exclude vacuum, camera and sensor attributes from being recorded in the database."""
     return frozenset(CAMERA_UNRECORDED_ATTRIBUTES) | frozenset(VACUUM_UNRECORDED_ATTRIBUTES)

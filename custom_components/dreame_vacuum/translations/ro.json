@@ -10,9 +10,10 @@
       "unsupported": "Dispozitivul nu este suportat",
       "wrong_token": "Eroare de checksum, token greșit",
       "2fa_failed": "Verificare eșuată.",
+      "wrong_captcha": "Captcha incorect.",
       "credentials_incomplete": "Credențiale incomplete, vă rugăm să completați numele de utilizator, parola și țara",
       "login_error": "Nu s-a putut realiza autentificarea, verificați credențialele.",
-      "no_devices": "Nu au fost găsite dispozitive suportate în acest cont pentru țara selectată."
+      "no_devices": "Nu au fost găsite dispozitive suportate în acest cont pentru țara selectată.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "Cod de verificare în doi pași"
         },
         "description": "## Această autentificare necesită verificare de securitate\nDeschideți pagina de verificare pentru a trimite codul de verificare prin mobil/e-mail. După ce ați primit codul, nu îl verificați pe pagina web. Reveniți la HomeAssistant și introduceți-l în câmpul de mai jos.\n### [Trimite codul de verificare]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Cod"
+        },
+        "description": "## Verificarea captcha este necesară.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "Schema de culori a hărții",
           "icon_set": "Set de pictograme al hărții",
           "notify": "Notificare",
-          "map_objects": "Obiecte ale hărții",
+          "hidden_map_objects": "Obiecte de hartă ascunse",
           "low_resolution": "Hartă cu rezoluție scăzută",
           "square": "Hartă pătrată"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "Schema de culori a hărții",
           "icon_set": "Set de pictograme al hărții",
           "notify": "Notificare",
-          "map_objects": "Obiecte ale hărții",
+          "hidden_map_objects": "Obiecte de hartă ascunse",
           "low_resolution": "Hartă cu rezoluție scăzută",
           "square": "Hartă pătrată",
           "configuration_type": "Tip de configurare",
@@ -436,7 +443,9 @@
         "state": {
           "unknown": "Necunoscut",
           "not_available": "Indisponibil",
-          "available": "Disponibil"
+          "available": "Disponibil",
+          "over_use": "Utilizare excesivă",
+          "never": "Niciodată"
         }
       },
       "auto_empty_status": {

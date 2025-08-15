@@ -10,9 +10,10 @@
       "unsupported": "Aquest dispositiu no és compatible",
       "wrong_token": "Error de verificació, testimoni erroni",
       "2fa_failed": "Verificació fallida.",
+      "wrong_captcha": "Captcha incorrecte.",
       "credentials_incomplete": "Credencials incompletes, introdueix el nom d'usuari, la contrasenya i el país",
       "login_error": "No s'ha pogut iniciar la sessió, comproveu les credencials.",
-      "no_devices": "No s'ha trobat cap dispositiu compatible en aquest compte al país seleccionat."
+      "no_devices": "No s'ha trobat cap dispositiu compatible en aquest compte al país seleccionat.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "Codi de verificació en dos passos"
         },
         "description": "## Aquest inici de sessió requereix verificació de seguretat\nObre la pàgina de verificació per enviar el codi de verificació per mòbil/correu electrònic. Un cop rebut el codi, no el verifiquis a la pàgina web. Torna a HomeAssistant i introdueix-lo al quadre de text a continuació.\n### [Envia el codi de verificació]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Codi"
+        },
+        "description": "## Cal verificar el captcha.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "Esquema de colors del mapa",
           "icon_set": "Conjunt d'icones del mapa",
           "notify": "Notificació",
-          "map_objects": "Objectes del mapa",
+          "hidden_map_objects": "Objectes del mapa ocults",
           "low_resolution": "Mapa de baixa resolució",
           "square": "Mapa quadrat"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "Esquema de colors del mapa",
           "icon_set": "Conjunt d'icones del mapa",
           "notify": "Notificació",
-          "map_objects": "Objectes del mapa",
+          "hidden_map_objects": "Objectes del mapa ocults",
           "low_resolution": "Mapa de baixa resolució",
           "square": "Mapa quadrat",
           "configuration_type": "Tipus de configuració",
@@ -436,7 +443,9 @@
         "state": {
           "unknown": "Desconeguda",
           "not_available": "No disponible",
-          "available": "Disponibles"
+          "available": "Disponibles",
+          "over_use": "Ús excessiu",
+          "never": "Mai"
         }
       },
       "auto_empty_status": {

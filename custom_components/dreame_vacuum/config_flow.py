@@ -25,7 +25,7 @@ from homeassistant.config_entries import (
     OptionsFlow,
 )
 
-from .dreame import DreameVacuumProtocol, MAP_COLOR_SCHEME_LIST, MAP_ICON_SET_LIST, DEVICE_INFO
+from .dreame import DreameVacuumProtocol, MAP_COLOR_SCHEME_LIST, MAP_ICON_SET_LIST, DEVICE_INFO, VERSION
 
 from .const import (
     DOMAIN,
@@ -38,11 +38,12 @@ from .const import (
     CONF_MAC,
     CONF_DID,
     CONF_AUTH_KEY,
-    CONF_MAP_OBJECTS,
+    CONF_HIDDEN_MAP_OBJECTS,
     CONF_PREFER_CLOUD,
     CONF_LOW_RESOLUTION,
     CONF_SQUARE,
     CONF_DONATED,
+    CONF_VERSION,
     NOTIFICATION,
     MAP_OBJECTS,
     SPONSOR,
@@ -94,8 +95,8 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
                         default=self._config_entry.options.get(CONF_ICON_SET, next(iter(MAP_ICON_SET_LIST))),
                     ): vol.In(list(MAP_ICON_SET_LIST.keys())),
                     vol.Required(
-                        CONF_MAP_OBJECTS,
-                        default=self._config_entry.options.get(CONF_MAP_OBJECTS, list(MAP_OBJECTS.keys())),
+                        CONF_HIDDEN_MAP_OBJECTS,
+                        default=self._config_entry.options.get(CONF_HIDDEN_MAP_OBJECTS, []),
                     ): cv.multi_select(MAP_OBJECTS),
                     vol.Required(CONF_SQUARE, default=self._config_entry.options.get(CONF_SQUARE, False)): bool,
                     vol.Required(
@@ -113,6 +114,15 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
                         ): bool,
                     }
                 )
+
+            data_schema = data_schema.extend(
+                {
+                    vol.Required(
+                        CONF_DONATED,
+                        default=False,
+                    ): bool
+                }
+            )
 
         return self.async_show_form(
             step_id="init",
@@ -146,6 +156,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         self.protocol: DreameVacuumProtocol | None = None
         self.models: dict[str, int] = None
         self.devices: dict[str, Any] = None
+        self.unsupported_devices: dict[str, Any] = None
         self.reauth: bool = False
 
     @staticmethod
@@ -181,10 +192,10 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         self.username = user_input[CONF_USERNAME]
         self.password = user_input[CONF_PASSWORD]
         self.country = user_input[CONF_COUNTRY]
-        self.prefer_cloud = user_input.get(CONF_PREFER_CLOUD, False)
         self.account_type = user_input.get(CONF_ACCOUNT_TYPE, ACCOUNT_TYPE_MI)
         self.device_id = user_input.get(CONF_DID)
         self.mac = user_input.get(CONF_MAC)
+        self.prefer_cloud = True  # Only for reauth
         return await self.async_step_reauth_confirm()
 
     async def async_step_reauth_confirm(self, user_input: dict[str, Any] | None = None) -> FlowResult:
@@ -318,6 +329,9 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 self.country = country
                 self.prefer_cloud = user_input.get(CONF_PREFER_CLOUD, self.prefer_cloud)
 
+                if self.protocol is not None:
+                    self.protocol.disconnect()
+
                 self.protocol = DreameVacuumProtocol(
                     username=self.username,
                     password=self.password,
@@ -325,9 +339,12 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                     prefer_cloud=self.prefer_cloud,
                     account_type=self.account_type,
                 )
+
                 await self.hass.async_add_executor_job(self.protocol.cloud.login)
 
-                if self.protocol.cloud.verification_url is not None:
+                if self.protocol.cloud.captcha_img is not None:
+                    return await self.async_step_captcha()
+                elif self.protocol.cloud.verification_url is not None:
                     return await self.async_step_2fa()
                 elif self.protocol.cloud.logged_in is False:
                     errors["base"] = "login_error"
@@ -343,6 +360,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id=self.account_type,
             data_schema=self.login_schema,
+            description_placeholders={"devices": ""},
             errors=errors,
         )
 
@@ -373,6 +391,35 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
+    async def async_step_captcha(self, user_input: dict[str, Any] | None = None, errors: dict[str, Any] | None = {}):
+        if self.protocol.cloud.captcha_img is None and not self.protocol.cloud.logged_in:
+            return await self.async_step_mi()
+
+        if user_input is not None:
+            code = user_input.get("code")
+            result = await self.hass.async_add_executor_job(self.protocol.cloud.verify_captcha, code)
+            if result:
+                if not self.protocol.cloud.logged_in:
+                    if self.protocol.cloud.verification_url is not None:
+                        return await self.async_step_2fa()
+                    return await self.async_step_mi(user_input=None, error="login_error")
+                return await self.async_step_devices()
+            else:
+                errors["base"] = "wrong_captcha"
+        else:
+            errors = {}
+
+        return self.async_show_form(
+            step_id="captcha",
+            data_schema=vol.Schema(
+                {
+                    vol.Required("code"): str,
+                }
+            ),
+            description_placeholders={"img": self.protocol.cloud.captcha_img},
+            errors=errors,
+        )
+
     async def async_step_dreame(
         self,
         user_input: dict[str, Any] | None = None,
@@ -381,6 +428,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
     ) -> FlowResult:
         """Configure a dreame vacuum device through the Dreame Cloud."""
 
+        description_placeholders = {}
         if user_input is not None:
             username = user_input.get(CONF_USERNAME)
             password = user_input.get(CONF_PASSWORD)
@@ -391,6 +439,9 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 self.password = password
                 self.country = country
                 self.prefer_cloud = True
+
+                if self.protocol is not None:
+                    self.protocol.disconnect()
 
                 self.protocol = DreameVacuumProtocol(
                     username=self.username,
@@ -409,12 +460,19 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 errors["base"] = "credentials_incomplete"
         elif error:
             errors["base"] = error
+            devices = ""
+            if error == "no_devices" and self.unsupported_devices:
+                for device in self.unsupported_devices.values():
+                    devices = f"{devices} ({device.get("model", "unknown")})"
+
+            description_placeholders = {"devices": devices}
         else:
             errors = {}
 
         return self.async_show_form(
             step_id=self.account_type,
             data_schema=self.login_schema,
+            description_placeholders=description_placeholders,
             errors=errors,
         )
 
@@ -434,18 +492,22 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         if user_input is None:
             if not self.devices:
                 self.load_devices()
-                devices = await self.hass.async_add_executor_job(
+                supported_devices, self.unsupported_devices = await self.hass.async_add_executor_job(
                     self.protocol.cloud.get_supported_devices, self.models, self.host, self.mac
                 )
-                if not devices:
+                if not supported_devices:
                     return await self.async_step_login(error="no_devices")
-                
+
                 self.devices = {}
-                for k, v in devices.items():
-                    if self.reauth or not self.hass.config_entries.async_entry_for_domain_unique_id(self.handler, format_mac(v["mac"])):
+                for k, v in supported_devices.items():
+                    if self.reauth or not self.hass.config_entries.async_entry_for_domain_unique_id(
+                        self.handler, format_mac(v["mac"])
+                    ):
                         self.devices[k] = v
 
                 if not self.devices:
+                    if self.unsupported_devices:
+                        return await self.async_step_login(error="no_devices")
                     raise AbortFlow("already_configured")
 
                 if len(self.devices) == 1:
@@ -470,7 +532,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 CONF_NOTIFY: user_input[CONF_NOTIFY],
                 CONF_COLOR_SCHEME: user_input.get(CONF_COLOR_SCHEME),
                 CONF_ICON_SET: user_input.get(CONF_ICON_SET),
-                CONF_MAP_OBJECTS: user_input.get(CONF_MAP_OBJECTS),
+                CONF_HIDDEN_MAP_OBJECTS: user_input.get(CONF_HIDDEN_MAP_OBJECTS),
                 CONF_SQUARE: user_input.get(CONF_SQUARE),
                 CONF_LOW_RESOLUTION: user_input.get(CONF_LOW_RESOLUTION),
                 CONF_PREFER_CLOUD: self.prefer_cloud,
@@ -486,19 +548,19 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         )
 
         self.load_devices()
-        default_objects = list(MAP_OBJECTS.keys())
+        hidden_map_objects = []
         if self.models[self.model] == 1:
             default_color_scheme = "Mijia Light"
             default_icon_set = "Mijia"
-            default_objects.pop(3)  # Room Name Background
-            default_objects.pop(1)  # Room icons
+            hidden_map_objects.append("name_background")
+            hidden_map_objects.append("icon")
         else:
             default_color_scheme = "Dreame Light"
             default_icon_set = "Dreame"
             model = re.sub(r"[^0-9]", "", self.model)
             if not (model.isnumeric() and int(model) >= 2215):
-                default_objects.pop(3)  # Room Name Background
-                default_objects.pop(2)  # Room Names
+                hidden_map_objects.append("name_background")
+                hidden_map_objects.append("name")
 
         if self.account_type != ACCOUNT_TYPE_LOCAL:
             data_schema = data_schema.extend(
@@ -507,7 +569,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                         list(MAP_COLOR_SCHEME_LIST.keys())
                     ),
                     vol.Required(CONF_ICON_SET, default=default_icon_set): vol.In(list(MAP_ICON_SET_LIST.keys())),
-                    vol.Required(CONF_MAP_OBJECTS, default=default_objects): cv.multi_select(MAP_OBJECTS),
+                    vol.Required(CONF_HIDDEN_MAP_OBJECTS, default=hidden_map_objects): cv.multi_select(MAP_OBJECTS),
                     vol.Required(CONF_SQUARE, default=False): bool,
                     vol.Required(CONF_LOW_RESOLUTION, default=False): bool,
                 }
@@ -517,7 +579,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
 
     async def async_step_donation(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         if user_input is not None:
-            self.options[CONF_DONATED] = user_input.get(CONF_DONATED, False)
+            self.options = self.options | {CONF_DONATED: user_input.get(CONF_DONATED, False), CONF_VERSION: VERSION}
 
             return self.async_create_entry(
                 title=self.name,

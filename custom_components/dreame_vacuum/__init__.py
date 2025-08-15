@@ -1,18 +1,19 @@
 """The Dreame Vacuum component."""
 
 from __future__ import annotations
-import traceback
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.components.frontend import DATA_EXTRA_MODULE_URL
 from pathlib import Path
 from .const import DOMAIN
+
 from .coordinator import DreameVacuumDataUpdateCoordinator
 
 PLATFORMS = (
     Platform.VACUUM,
     Platform.SENSOR,
+    Platform.BINARY_SENSOR,
     Platform.SWITCH,
     Platform.BUTTON,
     Platform.NUMBER,

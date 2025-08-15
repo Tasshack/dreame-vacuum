@@ -166,9 +166,11 @@ from .const import (
     FLOOR_MATERIAL_LOW_PILE_CARPET,
     FLOOR_MATERIAL_CARPET,
     ATTR_CHARGING,
+    ATTR_DOCKED,
     ATTR_VACUUM_STATE,
     ATTR_DND,
     ATTR_SHORTCUTS,
+    ATTR_BATTERY,
     ATTR_CLEANING_SEQUENCE,
     ATTR_STARTED,
     ATTR_PAUSED,
@@ -685,7 +687,7 @@ class DreameVacuumDevice:
             if self.capability.mop_clean_frequency:
                 if MOP_WASH_LEVEL_WATER_SAVING in self.status.mop_wash_level_list:
                     self.status.mop_wash_level_list.pop(MOP_WASH_LEVEL_WATER_SAVING)
-                    
+
                 if self.capability.mop_pad_swing:
                     if MOP_CLEAN_FREQUENCY_EIGHT_SQUARE_METERS in self.status.mop_clean_frequency_list:
                         self.status.mop_clean_frequency_list.pop(MOP_CLEAN_FREQUENCY_EIGHT_SQUARE_METERS)
@@ -699,7 +701,7 @@ class DreameVacuumDevice:
                     if MOP_CLEAN_FREQUENCY_TWENTY_SQUARE_METERS in self.status.mop_clean_frequency_list:
                         self.status.mop_clean_frequency_list.pop(MOP_CLEAN_FREQUENCY_TWENTY_SQUARE_METERS)
                     if MOP_CLEAN_FREQUENCY_TWENTYFIVE_SQUARE_METERS in self.status.mop_clean_frequency_list:
-                        self.status.mop_clean_frequency_list.pop(MOP_CLEAN_FREQUENCY_TWENTYFIVE_SQUARE_METERS)                    
+                        self.status.mop_clean_frequency_list.pop(MOP_CLEAN_FREQUENCY_TWENTYFIVE_SQUARE_METERS)
 
             if (
                 self.capability.smart_mop_washing
@@ -925,11 +927,12 @@ class DreameVacuumDevice:
                         elif self.status.water_volume:
                             values[2] = self.status.water_volume.value
 
-                    if values[2] > 0:
-                        if values[2] is not None and values[2] in DreameVacuumMopPadHumidity._value2member_map_:
-                            self.status.mop_pad_humidity = DreameVacuumMopPadHumidity(values[2])
-                        else:
-                            self.status.mop_pad_humidity = DreameVacuumMopPadHumidity.UNKNOWN
+                    if (
+                        values[2] > 0
+                        and values[2] is not None
+                        and values[2] in DreameVacuumMopPadHumidity._value2member_map_
+                    ):
+                        self.status.mop_pad_humidity = values[2]
                 if values[0] == 3:
                     new_cleaning_mode = DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING
                 elif not self.capability.mop_pad_lifting:
@@ -1541,66 +1544,7 @@ class DreameVacuumDevice:
                                 self.status.stream_status = DreameVacuumStreamStatus.RECORDING
 
     def _shortcuts_changed(self, previous_shortcuts: Any = None) -> None:
-        shortcuts = self.get_property(DreameVacuumProperty.SHORTCUTS)
-        if shortcuts and shortcuts != "":
-            shortcuts = json.loads(shortcuts)
-            if shortcuts:
-                new_shortcuts = {}
-                for shortcut in shortcuts:
-                    id = shortcut["id"]
-                    running = (
-                        False
-                        if "state" not in shortcut
-                        else bool(shortcut["state"] == "0" or shortcut["state"] == "1")
-                    )
-                    name = base64.decodebytes(shortcut["name"].encode("utf8")).decode("utf-8")
-                    new_shortcuts[id] = Shortcut(id=id, name=name, running=running)
-                self.status.shortcuts = new_shortcuts
-
-                def callback(response):
-                    detail = {}
-                    if response and "out" in response:
-                        data = response["out"]
-                        if data and len(data):
-                            if "value" in data[0] and data[0]["value"] != "":
-                                for task in json.loads(data[0]["value"]):
-                                    detail[task["id"]] = task["mapId"]
-
-                    new_shortcuts = {}
-                    for shortcut in shortcuts:
-                        id = shortcut["id"]
-                        running = (
-                            False
-                            if "state" not in shortcut
-                            else bool(shortcut["state"] == "0" or shortcut["state"] == "1")
-                        )
-                        name = base64.decodebytes(shortcut["name"].encode("utf8")).decode("utf-8")
-                        map_id = detail[id] if id in detail else None
-                        tasks = None
-                        response = self.call_shortcut_action("GET_COMMAND_BY_ID", {"id": id})
-                        if response and "out" in response:
-                            data = response["out"]
-                            if data and len(data):
-                                if "value" in data[0] and data[0]["value"] != "":
-                                    tasks = []
-                                    for task in json.loads(data[0]["value"]):
-                                        segments = []
-                                        for segment in task:
-                                            segments.append(
-                                                ShortcutTask(
-                                                    segment_id=segment[0],
-                                                    suction_level=segment[1],
-                                                    water_volume=segment[2],
-                                                    cleaning_times=segment[3],
-                                                    cleaning_mode=segment[4],
-                                                )
-                                            )
-                                        tasks.append(segments)
-                        new_shortcuts[id] = Shortcut(id=id, name=name, map_id=map_id, running=running, tasks=tasks)
-                    self.status.shortcuts = new_shortcuts
-                    self._property_changed()
-
-                self.call_shortcut_action_async(callback, "GET_COMMANDS")
+        self.reload_shortcuts()
 
     def _voice_assistant_language_changed(self, previous_voice_assistant_language: Any = None) -> None:
         value = self.get_property(DreameVacuumProperty.VOICE_ASSISTANT_LANGUAGE)
@@ -1645,7 +1589,7 @@ class DreameVacuumDevice:
 
     def _water_volume_changed(self, previous_water_volume: Any = None) -> None:
         if self.capability.wetness and not self.capability.wetness_level:
-            self.status.mop_pad_humidity = DreameVacuumMopPadHumidity(self.status.water_volume.value)
+            self.status.mop_pad_humidity = self.status.water_volume.value
         if previous_water_volume is not None and self.status.go_to_zone:
             self.status.go_to_zone.water_volume = None
 
@@ -1664,7 +1608,7 @@ class DreameVacuumDevice:
                 elif wetness_level < 6:
                     water_level = 1
 
-            self.status.mop_pad_humidity = DreameVacuumMopPadHumidity(water_level)
+            self.status.mop_pad_humidity = water_level
 
             if (
                 self.capability.self_wash_base
@@ -2060,7 +2004,7 @@ class DreameVacuumDevice:
         current_cleaning_mode = int(self.status.cleaning_mode.value)
         current_suction_level = int(self.status.suction_level.value)
         current_water_level = int(
-            self.status.mop_pad_humidity.value if self.capability.self_wash_base else self.status.water_volume.value
+            self.status.mop_pad_humidity if self.capability.self_wash_base else self.status.water_volume.value
         )
 
         new_cleaning_mode = None
@@ -3937,10 +3881,7 @@ class DreameVacuumDevice:
             self._update_suction_level(suction_level[0] if isinstance(suction_level, list) else suction_level)
 
         if water_volume is None or water_volume == "":
-            if self.capability.self_wash_base:
-                water_volume = self.status.mop_pad_humidity.value
-            else:
-                water_volume = self.status.water_volume.value
+            water_volume = self.status.water_volume.value
         else:
             self._update_water_level(int(water_volume[0] if isinstance(water_volume, list) else water_volume))
 
@@ -3974,7 +3915,7 @@ class DreameVacuumDevice:
                     water = water_volume[index]
                 else:
                     if self.capability.self_wash_base:
-                        water = self.status.mop_pad_humidity.value
+                        water = self.status.mop_pad_humidity
                     else:
                         water = self.status.water_volume.value
             else:
@@ -4052,10 +3993,7 @@ class DreameVacuumDevice:
             suction_level = self.status.suction_level.value
 
         if water_volume is None or water_volume == "":
-            if self.capability.self_wash_base:
-                water_volume = self.status.mop_pad_humidity.value
-            else:
-                water_volume = self.status.water_volume.value
+            water_volume = self.status.water_volume.value
 
         if cleaning_times is None or cleaning_times == "":
             cleaning_times = 1
@@ -4093,7 +4031,7 @@ class DreameVacuumDevice:
                     water = segments[segment_id].water_volume
                 else:
                     if self.capability.self_wash_base:
-                        water = self.status.mop_pad_humidity.value
+                        water = self.status.mop_pad_humidity
                     else:
                         water = self.status.water_volume.value
             else:
@@ -4150,10 +4088,7 @@ class DreameVacuumDevice:
             self._update_suction_level(suction_level[0] if isinstance(suction_level, list) else suction_level)
 
         if water_volume is None or water_volume == "":
-            if self.capability.self_wash_base:
-                water_volume = self.status.mop_pad_humidity.value
-            else:
-                water_volume = self.status.water_volume.value
+            water_volume = self.status.water_volume.value
         else:
             self._update_water_level(int(water_volume[0] if isinstance(water_volume, list) else water_volume))
 
@@ -4184,7 +4119,7 @@ class DreameVacuumDevice:
                     water = water_volume[index]
                 else:
                     if self.capability.self_wash_base:
-                        water = self.status.mop_pad_humidity.value
+                        water = self.status.mop_pad_humidity
                     else:
                         water = self.status.water_volume.value
             else:
@@ -4586,6 +4521,69 @@ class DreameVacuumDevice:
                         str(json.dumps(data, separators=(",", ":"))).replace(" ", ""),
                     )
 
+    def reload_shortcuts(self) -> None:
+        shortcuts = self.get_property(DreameVacuumProperty.SHORTCUTS)
+        if shortcuts and shortcuts != "":
+            shortcuts = json.loads(shortcuts)
+            if shortcuts:
+                new_shortcuts = {}
+                for shortcut in shortcuts:
+                    id = shortcut["id"]
+                    running = (
+                        False
+                        if "state" not in shortcut
+                        else bool(shortcut["state"] == "0" or shortcut["state"] == "1")
+                    )
+                    name = base64.decodebytes(shortcut["name"].encode("utf8")).decode("utf-8")
+                    new_shortcuts[id] = Shortcut(id=id, name=name, running=running)
+                self.status.shortcuts = new_shortcuts
+                self._property_changed()
+
+                def callback(response):
+                    detail = {}
+                    if response and "out" in response:
+                        data = response["out"]
+                        if data and len(data):
+                            if "value" in data[0] and data[0]["value"] != "":
+                                for task in json.loads(data[0]["value"]):
+                                    detail[task["id"]] = task["mapId"]
+
+                    new_shortcuts = {}
+                    for shortcut in shortcuts:
+                        id = shortcut["id"]
+                        running = (
+                            False
+                            if "state" not in shortcut
+                            else bool(shortcut["state"] == "0" or shortcut["state"] == "1")
+                        )
+                        name = base64.decodebytes(shortcut["name"].encode("utf8")).decode("utf-8")
+                        map_id = detail[id] if id in detail else None
+                        tasks = None
+                        response = self.call_shortcut_action("GET_COMMAND_BY_ID", {"id": id})
+                        if response and "out" in response:
+                            data = response["out"]
+                            if data and len(data):
+                                if "value" in data[0] and data[0]["value"] != "":
+                                    tasks = []
+                                    for task in json.loads(data[0]["value"]):
+                                        segments = []
+                                        for segment in task:
+                                            segments.append(
+                                                ShortcutTask(
+                                                    segment_id=segment[0],
+                                                    suction_level=segment[1],
+                                                    water_volume=segment[2],
+                                                    cleaning_times=segment[3],
+                                                    cleaning_mode=segment[4],
+                                                )
+                                            )
+                                        tasks.append(segments)
+                        new_shortcuts[id] = Shortcut(id=id, name=name, map_id=map_id, running=running, tasks=tasks)
+                    self.status.shortcuts = new_shortcuts
+                    self._property_changed()
+
+                self.call_shortcut_action_async(callback, "GET_COMMANDS")
+
     def clear_warning(self) -> dict[str, Any] | None:
         """Clear warning error code from the vacuum cleaner."""
         if self.status.draining_complete:
@@ -4917,7 +4915,7 @@ class DreameVacuumDevice:
                 result = self.set_auto_switch_property(DreameVacuumAutoSwitchProperty.CUSTOM_MOPPING_MODE, 1)
                 if result:
                     self._update_water_level(
-                        self.status.mop_pad_humidity.value
+                        self.status.mop_pad_humidity
                         if self.capability.self_wash_base
                         else self.status.water_volume.value
                     )
@@ -5260,7 +5258,9 @@ class DreameVacuumDevice:
 
         if self._map_manager:
             if self.status.current_map and not (
-                self.status.current_map.virtual_thresholds is not None or self.capability.floor_material
+                self.status.current_map.virtual_thresholds is not None
+                or self.status.current_map.passable_thresholds is not None
+                or self.capability.floor_material
             ):
                 raise InvalidActionException("Virtual thresholds are not supported on this device")
 
@@ -5994,7 +5994,9 @@ class DreameVacuumDevice:
     def set_segment_wetness_level(self, segment_id: int, wetness_level: int) -> dict[str, Any] | None:
         """Update wetness level of a segment on current map"""
         if self.capability.wetness_level and self._map_manager and not self.status.has_temporary_map:
-            return self.set_cleanset(self._map_manager.editor.set_segment_wetness_level(segment_id, wetness_level))
+            return self.set_cleanset(
+                self._map_manager.editor.set_segment_wetness_level(segment_id, int(wetness_level))
+            )
 
     def set_segment_cleaning_mode(self, segment_id: int, cleaning_mode: int) -> dict[str, Any] | None:
         """Update mop pad humidity of a segment on current map"""
@@ -6194,7 +6196,7 @@ class DreameVacuumDeviceStatus:
         ]
 
         self.cleaning_mode = None
-        self.mop_pad_humidity = None
+        self.mop_pad_humidity = 1
         self.previous_self_clean_area = 0
         self.previous_self_clean_time = 25
         self.self_clean_area_min = 10
@@ -6264,8 +6266,23 @@ class DreameVacuumDeviceStatus:
     @property
     def water_volume(self) -> DreameVacuumWaterVolume:
         """Return water volume of the device."""
-        if self._capability.wetness_level:
-            return self.mop_pad_humidity
+        if self._capability.self_wash_base:
+            if self.mop_pad_humidity is None:
+                if self._capability.wetness_level:
+                    wetness_level = self.status.wetness_level
+                    if wetness_level > 32:
+                        if wetness_level > 200:
+                            return DreameVacuumMopPadHumidity.WET
+                        elif wetness_level < 200:
+                            return DreameVacuumMopPadHumidity.SLIGHTLY_DRY
+                    else:
+                        if wetness_level > (14 if self._capability.mop_clean_frequency else 26):
+                            return DreameVacuumMopPadHumidity.WET
+                        elif wetness_level < 6:
+                            return DreameVacuumMopPadHumidity.SLIGHTLY_DRY
+                    return DreameVacuumMopPadHumidity.MOIST
+                return DreameVacuumMopPadHumidity.UNKNOWN
+            return DreameVacuumMopPadHumidity(self.mop_pad_humidity)
 
         value = self._get_property(DreameVacuumProperty.WATER_VOLUME)
         if value is not None and value in DreameVacuumWaterVolume._value2member_map_:
@@ -6282,7 +6299,7 @@ class DreameVacuumDeviceStatus:
     @property
     def mop_pad_humidity_name(self) -> str:
         """Return mop pad humidity as string for translation."""
-        return MOP_PAD_HUMIDITY_CODE_TO_NAME.get(self.mop_pad_humidity, STATE_UNKNOWN)
+        return MOP_PAD_HUMIDITY_CODE_TO_NAME.get(DreameVacuumMopPadHumidity(self.mop_pad_humidity), STATE_UNKNOWN)
 
     @property
     def cleaning_mode_name(self) -> str:
@@ -7036,7 +7053,7 @@ class DreameVacuumDeviceStatus:
         """Returns true when robot is docked and can start auto emptying."""
         return bool(
             (
-                self._get_property(DreameVacuumProperty.DUST_COLLECTION)
+                self._get_property(DreameVacuumProperty.DUST_COLLECTION) == 1
                 or (
                     (self._capability.auto_empty_mode or self._capability.gen5)
                     and self.started
@@ -7365,7 +7382,7 @@ class DreameVacuumDeviceStatus:
     @property
     def charging(self) -> bool:
         """Returns true when device is currently charging."""
-        return bool(self.charging_status is DreameVacuumChargingStatus.CHARGING)
+        return bool(self.charging_status is DreameVacuumChargingStatus.CHARGING and self.battery_level < 100)
 
     @property
     def docked(self) -> bool:
@@ -8841,8 +8858,10 @@ class DreameVacuumDeviceStatus:
                         "tasks": shortcut.tasks,
                     }
 
+        attributes[ATTR_BATTERY] = self.battery_level
         attributes[ATTR_CLEANING_SEQUENCE] = self.segment_order
-        attributes[ATTR_CHARGING] = self.docked
+        attributes[ATTR_CHARGING] = self.charging
+        attributes[ATTR_DOCKED] = self.docked
         attributes[ATTR_STARTED] = self.started
         attributes[ATTR_PAUSED] = self.paused
         attributes[ATTR_RUNNING] = self.running

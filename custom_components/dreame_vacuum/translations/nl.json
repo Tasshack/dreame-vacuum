@@ -10,9 +10,10 @@
       "unsupported": "Apparaat wordt niet ondersteund",
       "wrong_token": "Checksum fout, verkeerd token",
       "2fa_failed": "Verificatie mislukt.",
+      "wrong_captcha": "Verkeerde captcha.",
       "credentials_incomplete": "Inloggegevens onvolledig, vul alstublieft gebruikersnaam, wachtwoord en land in",
       "login_error": "Kon niet inloggen, controleer de inloggegevens.",
-      "no_devices": "Geen ondersteunde apparaten gevonden op dit account in het geselecteerde land."
+      "no_devices": "Geen ondersteunde apparaten gevonden op dit account in het geselecteerde land.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "Twee-factor verificatiecode"
         },
         "description": "## Deze inlog vereist beveiligingsverificatie\nOpen de verificatiepagina om de mobiele/email verificatiecode te verzenden. Nadat je de verificatiecode hebt ontvangen, verifieer deze dan niet op de webpagina. Ga terug naar HomeAssistant en voer deze in het onderstaande invoerveld in.\n### [Verificatiecode verzenden]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Code"
+        },
+        "description": "## Captcha-verificatie is vereist.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "Kleurenschema van de kaart",
           "icon_set": "Icoonset van de kaart",
           "notify": "Notificatie",
-          "map_objects": "Kaartobjecten",
+          "hidden_map_objects": "Verborgen kaartobjecten",
           "low_resolution": "Kaart met lage resolutie",
           "square": "Vierkante kaart"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "Kleurenschema van de kaart",
           "icon_set": "Icoonset van de kaart",
           "notify": "Notificatie",
-          "map_objects": "Kaartobjecten",
+          "hidden_map_objects": "Verborgen kaartobjecten",
           "low_resolution": "Kaart met lage resolutie",
           "square": "Vierkante kaart",
           "configuration_type": "Configuratie Type",
@@ -439,7 +446,9 @@
         "state": {
           "unknown": "Onbekend",
           "not_available": "Niet beschikbaar",
-          "available": "Beschikbaar"
+          "available": "Beschikbaar",
+          "over_use": "Overmatig gebruik",
+          "never": "Nooit"
         }
       },
       "auto_empty_status": {

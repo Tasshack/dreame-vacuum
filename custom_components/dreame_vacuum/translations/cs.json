@@ -10,9 +10,10 @@
       "unsupported": "Zařízení není podporováno",
       "wrong_token": "Chyba kontrolního součtu, špatný token",
       "2fa_failed": "Ověření selhalo.",
+      "wrong_captcha": "Špatný captcha.",
       "credentials_incomplete": "Přihlašovací údaje jsou neúplné, vyplňte prosím uživatelské jméno, heslo a zemi",
       "login_error": "Nepodařilo se přihlásit, zkontrolujte přihlašovací údaje.",
-      "no_devices": "Na tomto účtu v zvolené zemi nebyla nalezena žádná podporovaná zařízení."
+      "no_devices": "Na tomto účtu v zvolené zemi nebyla nalezena žádná podporovaná zařízení.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "Kód pro dvoufázové ověření"
         },
         "description": "## Tento přístup vyžaduje bezpečnostní ověření\nOtevřete ověřovací stránku a pošlete ověřovací kód na mobilní telefon nebo e-mail. Po obdržení kódu jej neověřujte na webové stránce. Vraťte se zpět do HomeAssistant a zadejte jej do níže uvedeného vstupního pole.\n### [Odeslat ověřovací kód]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Kód"
+        },
+        "description": "## Ověření captcha je povinné.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "Barevné schéma mapy",
           "icon_set": "Sada ikon mapy",
           "notify": "Oznámení",
-          "map_objects": "Objekty na mapě",
+          "hidden_map_objects": "Skryté objekty mapy",
           "low_resolution": "Mapa v nízkém rozlišení",
           "square": "Čtvercová mapa"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "Barevné schéma mapy",
           "icon_set": "Sada ikon mapy",
           "notify": "Oznámení",
-          "map_objects": "Objekty na mapě",
+          "hidden_map_objects": "Skryté objekty mapy",
           "low_resolution": "Mapa v nízkém rozlišení",
           "square": "Čtvercová mapa",
           "configuration_type": "Typ konfigurace",
@@ -436,7 +443,9 @@
         "state": {
           "unknown": "Neznámý",
           "not_available": "Není dostupné",
-          "available": "Dostupné"
+          "available": "Dostupné",
+          "over_use": "Nadměrné použití",
+          "never": "Nikdy"
         }
       },
       "auto_empty_status": {

@@ -10,9 +10,10 @@
       "unsupported": "El dispositivo no es compatible",
       "wrong_token": "Error de suma de comprobación, token incorrecto",
       "2fa_failed": "Verificación fallida.",
+      "wrong_captcha": "Captcha incorrecto.",
       "credentials_incomplete": "Credenciales incompletas, por favor introduzca el usuario, la contraseña y el país",
       "login_error": "No se pudo iniciar sesión en Xiaomi Miio Cloud, verifique las credenciales.",
-      "no_devices": "No se encontraron dispositivos compatibles en esta cuenta de Xiaomi Miio cloud en el país seleccionado."
+      "no_devices": "No se encontraron dispositivos compatibles en esta cuenta para el país seleccionado.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "Código de verificación de dos factores"
         },
         "description": "## Este inicio de sesión requiere verificación de seguridad\nPor favor, abra la página de verificación para enviar el código de verificación móvil/correo electrónico. Después de recibir el código de verificación, no lo verifique en la página web. Regrese a HomeAssistant e ingréselo en el cuadro de entrada a continuación.\n### [Enviar código de verificación]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Código"
+        },
+        "description": "## Se requiere verificación de captcha.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "Esquema de color del mapa",
           "icon_set": "Conjunto de iconos del mapa",
           "notify": "Notificaciones",
-          "map_objects": "Objetos del mapa",
+          "hidden_map_objects": "Objetos de mapa ocultos",
           "low_resolution": "Mapa de baja resolución",
           "square": "Mapa cuadrado"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "Esquema de color del mapa",
           "icon_set": "Conjunto de iconos del mapa",
           "notify": "Notificaciones",
-          "map_objects": "Objetos del mapa",
+          "hidden_map_objects": "Objetos de mapa ocultos",
           "low_resolution": "Mapa de baja resolución",
           "square": "Mapa cuadrado",
           "configuration_type": "Tipo de configuración",
@@ -436,7 +443,9 @@
         "state": {
           "unknown": "Desconocido",
           "not_available": "No disponible",
-          "available": "Disponible"
+          "available": "Disponible",
+          "over_use": "Uso excesivo",
+          "never": "Nunca"
         }
       },
       "auto_empty_status": {

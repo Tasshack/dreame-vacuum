@@ -10,9 +10,10 @@
       "unsupported": "L'appareil n'est pas pris en charge.",
       "wrong_token": "Erreur de somme de contrôle, mauvais jeton",
       "2fa_failed": "Vérification échouée.",
+      "wrong_captcha": "Captcha incorrect.",
       "credentials_incomplete": "Identifiants incomplets, merci de renseigner le nom d'utilisateur, le mot de passe et le pays",
       "login_error": "Impossible de se connecter, vérifiez vos identifiants.",
-      "no_devices": "Aucun appareil compatible n'a été trouvé sur ce compte pour le pays sélectionné."
+      "no_devices": "Aucun appareil compatible n'a été trouvé sur ce compte pour le pays sélectionné.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "Code de vérification à deux facteurs"
         },
         "description": "## Cette connexion nécessite une vérification de sécurité\nVeuillez ouvrir la page de vérification pour envoyer le code de vérification mobile/email. Après avoir reçu le code de vérification, ne le vérifiez pas sur la page web. Revenez à HomeAssistant et saisissez-le dans la zone de saisie ci-dessous.\n### [Envoyer le code de vérification]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Code"
+        },
+        "description": "## Vérification du captcha requise.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "Palette de couleurs de la carte",
           "icon_set": "Jeu d'icônes de la carte",
           "notify": "Notification",
-          "map_objects": "Objets de la carte",
+          "hidden_map_objects": "Objets de carte cachés",
           "low_resolution": "Carte basse résolution",
           "square": "Carte carrée"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "Palette de couleurs de la carte",
           "icon_set": "Jeu d'icônes de la carte",
           "notify": "Notification",
-          "map_objects": "Objets de la carte",
+          "hidden_map_objects": "Objets de carte cachés",
           "low_resolution": "Carte basse résolution",
           "square": "Carte carrée",
           "configuration_type": "Type de configuration",
@@ -438,7 +445,9 @@
         "state": {
           "unknown": "Inconnu",
           "not_available": "Non disponible",
-          "available": "Disponible"
+          "available": "Disponible",
+          "over_use": "Utilisation excessive",
+          "never": "Jamais"
         }
       },
       "auto_empty_status": {

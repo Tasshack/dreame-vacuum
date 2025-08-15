@@ -10,9 +10,10 @@
       "unsupported": "Device is not supported",
       "wrong_token": "Checksum error, wrong token",
       "2fa_failed": "Verification failed.",
+      "wrong_captcha": "Wrong captcha.",
       "credentials_incomplete": "Credentials incomplete, please fill in username, password and country",
       "login_error": "Could not login, check the credentials.",
-      "no_devices": "No supported devices found in this account on selected country."
+      "no_devices": "No supported devices found in this account on selected country.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "Two-factor verification code"
         },
         "description": "## This login requires security verification\nPlease open the verification page to send the mobile/email verification code. After receiving the verification code, do not verify it on the webpage. Go back to HomeAssistant and enter it in the input box below.\n### [Send Verification Code]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Code"
+        },
+        "description": "## Captcha verification is required\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "Map color scheme",
           "icon_set": "Map icon set",
           "notify": "Notification",
-          "map_objects": "Map objects",
+          "hidden_map_objects": "Hidden map objects",
           "low_resolution": "Low resolution map",
           "square": "Square map"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "Map color scheme",
           "icon_set": "Map icon set",
           "notify": "Notification",
-          "map_objects": "Map objects",
+          "hidden_map_objects": "Hidden map objects",
           "low_resolution": "Low resolution map",
           "square": "Square map",
           "configuration_type": "Configuration type",
@@ -436,7 +443,9 @@
         "state": {
           "unknown": "Unknown",
           "not_available": "Not available",
-          "available": "Available"
+          "available": "Available",
+          "over_use": "Over use",
+          "never": "Never"
         }
       },
       "auto_empty_status": {

@@ -10,9 +10,10 @@
       "unsupported": "Urządzenie nie jest obsługiwane",
       "wrong_token": "Błąd sumy kontrolnej, zły token",
       "2fa_failed": "Weryfikacja nie powiodła się.",
+      "wrong_captcha": "Nieprawidłowy captcha.",
       "credentials_incomplete": "Niepoprawne dane logowania, proszę podać nazwę użytkownika, hasło i kraj",
       "login_error": "Nie można się zalogować, sprawdź swoje dane logowania.",
-      "no_devices": "Nie znaleziono obsługiwanych urządzeń na tym koncie w wybranym kraju."
+      "no_devices": "Nie znaleziono obsługiwanych urządzeń na tym koncie w wybranym kraju.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "Kod weryfikacji dwuetapowej"
         },
         "description": "## To logowanie wymaga weryfikacji bezpieczeństwa\nProszę otworzyć stronę weryfikacji, aby wysłać kod weryfikacji na telefon komórkowy/e-mail. Po otrzymaniu kodu weryfikacji, nie weryfikuj go na stronie internetowej. Wróć do HomeAssistant i wprowadź go w poniższym polu wejściowym.\n### [Wyślij kod weryfikacji]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Kod"
+        },
+        "description": "## Wymagana jest weryfikacja captcha.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "Schemat kolorów mapy",
           "icon_set": "Zestaw ikon mapy",
           "notify": "Powiadomienia",
-          "map_objects": "Mapuj obiekty",
+          "hidden_map_objects": "Ukryte obiekty mapy",
           "low_resolution": "Mapa w niskiej rozdzielczości",
           "square": "Kwadratowa mapa"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "Schemat kolorów mapy",
           "icon_set": "Zestaw ikon mapy",
           "notify": "Powiadomienia",
-          "map_objects": "Mapuj obiekty",
+          "hidden_map_objects": "Ukryte obiekty mapy",
           "low_resolution": "Mapa w niskiej rozdzielczości",
           "square": "Kwadratowa mapa",
           "configuration_type": "Typ konfiguracji",
@@ -436,7 +443,9 @@
         "state": {
           "unknown": "Nieznany",
           "not_available": "Niedostępny",
-          "available": "Dostępny"
+          "available": "Dostępny",
+          "over_use": "Nadmierne użycie",
+          "never": "Nigdy"
         }
       },
       "auto_empty_status": {

@@ -10,9 +10,10 @@
       "unsupported": "장치가 지원되지 않습니다.",
       "wrong_token": "체크섬 오류, 잘못된 토큰입니다.",
       "2fa_failed": "인증에 실패했습니다.",
+      "wrong_captcha": "캡차가 올바르지 않습니다.",
       "credentials_incomplete": "자격 증명이 불완전합니다. 사용자 이름, 비밀번호, 국가를 입력하세요.",
       "login_error": "로그인할 수 없습니다. 자격 증명을 확인하세요.",
-      "no_devices": "선택한 국가의 이 계정에서 지원되는 장치를 찾을 수 없습니다."
+      "no_devices": "선택한 국가의 이 계정에서 지원되는 장치를 찾을 수 없습니다.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "2단계 인증 코드"
         },
         "description": "## 이 로그인은 보안 인증이 필요합니다\n인증 페이지를 열어 모바일/이메일 인증 코드를 보내세요. 인증 코드를 받은 후 웹페이지에서 인증하지 마세요. HomeAssistant로 돌아가서 아래 입력 상자에 입력하세요.\n### [인증 코드 보내기]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "코드"
+        },
+        "description": "## 캡차 확인이 필요합니다.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "지도 색상 구성표",
           "icon_set": "지도 아이콘 세트",
           "notify": "알림",
-          "map_objects": "지도 개체",
+          "hidden_map_objects": "숨겨진 지도 객체들",
           "low_resolution": "저해상도 지도",
           "square": "정사각형 지도"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "지도 색상 구성표",
           "icon_set": "지도 아이콘 세트",
           "notify": "알림",
-          "map_objects": "지도 개체",
+          "hidden_map_objects": "숨겨진 지도 객체들",
           "low_resolution": "저해상도 지도",
           "square": "정사각형 지도",
           "configuration_type": "구성 유형",
@@ -436,7 +443,9 @@
         "state": {
           "unknown": "알 수 없음",
           "not_available": "사용할 수 없음",
-          "available": "사용 가능"
+          "available": "사용 가능",
+          "over_use": "과도한 사용",
+          "never": "절대 안됨"
         }
       },
       "auto_empty_status": {

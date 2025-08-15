@@ -18,8 +18,8 @@
     "requests",
     "pycryptodome",
     "python-miio",
-    "py-mini-racer",
+    "mini-racer",
     "paho-mqtt"
   ],
-  "version": "v2.0.0b19"
+  "version": "v2.0.0b20"
 }

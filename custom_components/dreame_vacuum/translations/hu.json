@@ -10,9 +10,10 @@
       "unsupported": "Az eszköz nem támogatott",
       "wrong_token": "Ellenőrzőösszeg hiba, helytelen token",
       "2fa_failed": "Hitelesítés nem sikerült.",
+      "wrong_captcha": "Hibás captcha.",
       "credentials_incomplete": "A hitelesítési adatok hiányosak, kérjük, töltse ki a felhasználónevét, jelszavát és a szerver régiót",
       "login_error": "Nem sikerült bejelentkezni, ellenőrizze a hitelesítési adatokat.",
-      "no_devices": "Nincs támogatott eszköz ezen a fiókon a választott szerver régióban."
+      "no_devices": "Nincs támogatott eszköz ezen a fiókon a választott szerver régióban.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "Kéttényezős hitelesítési kód"
         },
         "description": "## Ez a bejelentkezés biztonsági ellenőrzést igényel\nKérjük, nyissa meg az ellenőrzési oldalt a mobil/email ellenőrző kód elküldéséhez. Miután megkapta az ellenőrző kódot, ne ellenőrizze azt a weboldalon. Térjen vissza a HomeAssistantba, és adja meg az alábbi bemeneti mezőbe.\n### [Ellenőrző kód küldése]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Kód"
+        },
+        "description": "## Captcha ellenőrzés szükséges.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "Térkép színséma",
           "icon_set": "Térkép ikonkészlet",
           "notify": "Értesítés",
-          "map_objects": "Térkép objektumok",
+          "hidden_map_objects": "Rejtett térképelemek",
           "low_resolution": "Alacsony felbontású térkép",
           "square": "Négyzet alakú térkép"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "Térkép színséma",
           "icon_set": "Térkép ikonkészlet",
           "notify": "Értesítés",
-          "map_objects": "Térkép objektumok",
+          "hidden_map_objects": "Rejtett térképelemek",
           "low_resolution": "Alacsony felbontású térkép",
           "square": "Négyzet alakú térkép",
           "configuration_type": "Konfigurációs típus",
@@ -436,7 +443,9 @@
         "state": {
           "unknown": "Ismeretlen",
           "not_available": "Nem elérhető",
-          "available": "Elérhető"
+          "available": "Elérhető",
+          "over_use": "Túlzott használat",
+          "never": "Soha"
         }
       },
       "auto_empty_status": {

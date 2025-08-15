@@ -12,7 +12,6 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import config_validation as cv, entity_platform
 from homeassistant.exceptions import HomeAssistantError
-from homeassistant.helpers.icon import icon_for_battery_level
 from homeassistant.components.vacuum import (
     StateVacuumEntity,
     VacuumEntityFeature,
@@ -28,13 +27,7 @@ from .dreame.const import (
     STATE_PAUSED,
     STATE_RETURNING,
 )
-from .dreame import (
-    DreameVacuumState,
-    DreameVacuumSuctionLevel,
-    DreameVacuumAction,
-    InvalidActionException,
-    ACTION_AVAILABILITY,
-)
+from .dreame import DreameVacuumState, DreameVacuumSuctionLevel, DreameVacuumAction, InvalidActionException
 from .const import (
     DOMAIN,
     FAN_SPEED_SILENT,
@@ -132,15 +125,6 @@ from .const import (
     CONSUMABLE_DEODORIZER,
     CONSUMABLE_WHEEL,
     CONSUMABLE_SCALE_INHIBITOR,
-)
-
-SUPPORT_DREAME = (
-    VacuumEntityFeature.SEND_COMMAND
-    | VacuumEntityFeature.LOCATE
-    | VacuumEntityFeature.STATE
-    | VacuumEntityFeature.STATUS
-    | VacuumEntityFeature.BATTERY
-    | VacuumEntityFeature.MAP
 )
 
 STATE_CODE_TO_STATE: Final = {
@@ -691,8 +675,21 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         super().__init__(coordinator)
 
         self._attr_device_class = DOMAIN
-        self._attr_name = coordinator.device.name
+        self._attr_name = (
+            f" {coordinator.device.name}"  ## Add whitespace to display entity on top at the device configuration page
+        )
         self._attr_unique_id = f"{coordinator.device.mac}_" + DOMAIN
+        self._attr_supported_features = (
+            VacuumEntityFeature.SEND_COMMAND
+            | VacuumEntityFeature.LOCATE
+            | VacuumEntityFeature.STATE
+            | VacuumEntityFeature.STATUS
+            | VacuumEntityFeature.MAP
+            | VacuumEntityFeature.START
+            | VacuumEntityFeature.PAUSE
+            | VacuumEntityFeature.STOP
+            | VacuumEntityFeature.RETURN_HOME
+        )
 
         ## For backwards compatibility
         try:
@@ -736,7 +733,6 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         else:
             self._attr_icon = "mdi:robot-vacuum"
 
-        self._attr_supported_features = SUPPORT_DREAME
         if (
             not (
                 self.device.status
@@ -755,17 +751,6 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             self._attr_fan_speed = None
             self._attr_fan_speed_list = []
 
-        # if ACTION_AVAILABILITY[DreameVacuumAction.START.name](self.device):
-        self._attr_supported_features = self._attr_supported_features | VacuumEntityFeature.START
-        # if ACTION_AVAILABILITY[DreameVacuumAction.PAUSE.name](self.device):
-        self._attr_supported_features = self._attr_supported_features | VacuumEntityFeature.PAUSE
-        # if ACTION_AVAILABILITY[DreameVacuumAction.STOP.name](self.device):
-        self._attr_supported_features = self._attr_supported_features | VacuumEntityFeature.STOP
-        # if ACTION_AVAILABILITY[DreameVacuumAction.CHARGE.name](self.device):
-        self._attr_supported_features = self._attr_supported_features | VacuumEntityFeature.RETURN_HOME
-
-        self._attr_battery_level = self.device.status.battery_level
-        self._attr_charging = self.device.status.charging
         self._vacuum_state = STATE_CODE_TO_STATE.get(self.device.status.state, STATE_UNKNOWN)
         if self._activity_class is None:
             self._attr_state = self._vacuum_state
@@ -780,11 +765,6 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     def extra_state_attributes(self) -> dict[str, str] | None:
         """Return the extra state attributes of the entity."""
         return self._attr_extra_state_attributes
-
-    @property
-    def battery_icon(self) -> str:
-        """Return the battery icon for the vacuum cleaner."""
-        return icon_for_battery_level(battery_level=self._attr_battery_level, charging=self._attr_charging)
 
     @property
     def activity(self):

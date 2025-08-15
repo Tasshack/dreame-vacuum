@@ -147,6 +147,10 @@ ATTR_DETECTED_CARPETS: Final = "detected_carpets"
 ATTR_PREDEFINED_POINTS: Final = "predefined_points"
 ATTR_VIRTUAL_WALLS: Final = "virtual_walls"
 ATTR_VIRTUAL_THRESHOLDS: Final = "virtual_thresholds"
+ATTR_PASSABLE_THRESHOLDS: Final = "passable_thresholds"
+ATTR_IMPASSABLE_THRESHOLDS: Final = "impassable_thresholds"
+ATTR_RAMPS: Final = "ramps"
+ATTR_CURTAINS: Final = "curtains"
 ATTR_LOW_LYING_AREAS: Final = "low_lying_areas"
 ATTR_ROOMS: Final = "rooms"
 ATTR_ROBOT_POSITION: Final = "vacuum_position"
@@ -548,6 +552,8 @@ class DreameVacuumDustCollection(IntEnum):
     UNKNOWN = -1
     NOT_AVAILABLE = 0
     AVAILABLE = 1
+    OVER_USE = 2
+    NEVER = 3
 
 
 class DreameVacuumAutoEmptyStatus(IntEnum):
@@ -1593,7 +1599,8 @@ PROPERTY_AVAILABILITY: Final = {
     and not device.status.fast_mapping
     and not device.status.scheduled_clean
     and not device.status.cruising
-    and not device.status.cleangenius_cleaning,
+    and not device.status.cleangenius_cleaning
+    and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)),
     DreameVacuumProperty.CLEANING_MODE.name: lambda device: (
         not device.status.started or not device.status.mopping_after_sweeping
     )
@@ -2492,7 +2499,7 @@ class Obstacle(Point):
         y: float,
         type: int,
         possibility: int,
-        object_id: int = None,
+        object_id: str = None,
         file_name: str = None,
         key: int = None,
         pos_x: float = None,
@@ -2523,7 +2530,7 @@ class Obstacle(Point):
             if ignore_status in ObstacleIgnoreStatus._value2member_map_
             else ObstacleIgnoreStatus.UNKNOWN
         )
-        self.id = str(self.object_id) if self.object_id else f"0{int(self.x)}0{int(self.y)}"
+        self.id = self.object_id if self.object_id else f"0{int(self.x)}0{int(self.y)}"
 
         if file_name and "/" in file_name:
             self.object_name = file_name.split("/")[-1]
@@ -2570,8 +2577,9 @@ class Obstacle(Point):
             other is None
             or self.x != other.x
             or self.y != other.y
-            or self.type != other.type
             or self.possibility != other.possibility
+            or self.type != other.type
+            or self.object_id != other.object_id
             or self.key != other.key
             or self.file_name != other.file_name
             or self.pos_x != other.pos_x
@@ -3454,6 +3462,10 @@ class MapData:
         self.no_mopping_areas: Optional[List[Area]] = None  # Data json: vw.mop
         self.virtual_walls: Optional[List[Wall]] = None  # Data json: vw.line
         self.virtual_thresholds: Optional[List[Wall]] = None  # Data json: vws.vwsl
+        self.passable_thresholds: Optional[List[Wall]] = None  # Data json: vws.vwsl
+        self.impassable_thresholds: Optional[List[Wall]] = None  # Data json: vws.npthrsd
+        self.ramps: Optional[List[Area]] = None  # Data json: vws.ramp
+        self.curtains: Optional[List[Wall]] = None  # Data json: ct.line
         self.path: Optional[Path] = None  # Data json: tr
         self.active_segments: Optional[int] = None  # Data json: sa
         self.active_areas: Optional[List[Area]] = None  # Data json: da2
@@ -3582,7 +3594,19 @@ class MapData:
         if self.virtual_thresholds != other.virtual_thresholds:
             return False
 
+        if self.passable_thresholds != other.passable_thresholds:
+            return False
+
+        if self.impassable_thresholds != other.impassable_thresholds:
+            return False
+
+        if self.ramps != other.ramps:
+            return False
+
         if self.low_lying_areas != other.low_lying_areas:
+            return False
+
+        if self.curtains != other.curtains:
             return False
 
         if self.docked != other.docked:
@@ -3688,6 +3712,12 @@ class MapData:
             attributes_list[ATTR_VIRTUAL_WALLS] = self.virtual_walls
         if self.virtual_thresholds is not None:
             attributes_list[ATTR_VIRTUAL_THRESHOLDS] = self.virtual_thresholds
+        if self.passable_thresholds is not None:
+            attributes_list[ATTR_PASSABLE_THRESHOLDS] = self.passable_thresholds
+        if self.impassable_thresholds is not None:
+            attributes_list[ATTR_IMPASSABLE_THRESHOLDS] = self.impassable_thresholds
+        if self.ramps is not None:
+            attributes_list[ATTR_RAMPS] = self.ramps
         if self.low_lying_areas is not None:
             attributes_list[ATTR_LOW_LYING_AREAS] = self.low_lying_areas
         if self.no_go_areas is not None:
@@ -3700,6 +3730,8 @@ class MapData:
             attributes_list[ATTR_IGNORED_CARPETS] = self.ignored_carpets
         if self.detected_carpets is not None:
             attributes_list[ATTR_DETECTED_CARPETS] = self.detected_carpets
+        if self.curtains is not None:
+            attributes_list[ATTR_CURTAINS] = self.curtains
         if self.empty_map is not None:
             attributes_list[ATTR_IS_EMPTY] = self.empty_map
         if self.frame_id:
@@ -3751,7 +3783,7 @@ class Shortcut:
     
     def as_dict(self) -> Dict[str, Any]:
         return asdict(self)
-    
+
 
 @dataclass
 class ShortcutTask:
@@ -3760,7 +3792,7 @@ class ShortcutTask:
     water_volume: int = None
     cleaning_times: int = None
     cleaning_mode: int = None
-
+    
     def as_dict(self) -> Dict[str, Any]:
         return asdict(self)
 
@@ -3777,11 +3809,11 @@ class ScheduleTask:
     suction_level: int = None
     water_volume: int = None
     options: str = None
-
+    
     def as_dict(self) -> Dict[str, Any]:
         return asdict(self)
-    
-    
+
+
 @dataclass
 class GoToZoneSettings:
     x: int = None
@@ -3792,9 +3824,6 @@ class GoToZoneSettings:
     cleaning_mode: int = None
     size: int = 50
 
-    def as_dict(self) -> Dict[str, Any]:
-        return asdict(self)
-    
 
 @dataclass
 class MapRendererConfig:
@@ -3825,6 +3854,8 @@ class MapRendererConfig:
     carpet: bool = True
     material: bool = True
     furniture: bool = True
+    curtain: bool = True
+    ramp: bool = True
     cruise_point: bool = True
 
 
@@ -3847,6 +3878,13 @@ class MapRendererColorScheme:
     no_mop_outline: tuple[int] = (153, 0, 210, 200)
     virtual_wall: tuple[int] = (199, 0, 0, 200)
     virtual_threshold: tuple[int] = (50, 215, 75, 255)
+    passable_threshold_outline: tuple[int] = (50, 215, 75, 255)
+    passable_threshold: tuple[int] = (50, 215, 75, 50)
+    impassable_threshold_outline: tuple[int] = (199, 0, 0, 255)
+    impassable_threshold: tuple[int] = (199, 0, 0, 50)
+    curtain: tuple[int] = (247, 123, 46, 255)
+    ramp: tuple[int] = (255, 255, 255, 50)
+    ramp_outline: tuple[int] = (10, 132, 255, 255)
     low_lying_area: tuple[int] = (157, 211, 246, 40)
     auto_low_lying_area_outline: tuple[int] = (121, 203, 255, 255)
     manual_low_lying_area_outline: tuple[int] = (100, 181, 232, 255)
@@ -4014,20 +4052,24 @@ class MapRendererLayer(IntEnum):
     NO_GO = 5
     WALL = 6
     VIRTUAL_THRESHOLD = 7
-    LOW_LYING_AREA = 8
-    FURNITURES = 9
-    FURNITURE = 10
-    ACTIVE_AREA = 11
-    ACTIVE_POINT = 12
-    SEGMENTS = 13
-    SEGMENT = 14
-    CHARGER = 15
-    ROBOT = 16
-    ROUTER = 17
-    OBSTACLES = 18
-    OBSTACLE = 19
-    CRUISE_POINTS = 20
-    CRUISE_POINT = 21
+    PASSABLE_THRESHOLD = 8
+    IMPASSABLE_THRESHOLD = 9
+    RAMP = 10
+    CURTAIN = 11
+    LOW_LYING_AREA = 12
+    FURNITURES = 13
+    FURNITURE = 14
+    ACTIVE_AREA = 15
+    ACTIVE_POINT = 16
+    SEGMENTS = 17
+    SEGMENT = 18
+    CHARGER = 19
+    ROBOT = 20
+    ROUTER = 21
+    OBSTACLES = 22
+    OBSTACLE = 23
+    CRUISE_POINTS = 24
+    CRUISE_POINT = 25
 
 
 @dataclass
@@ -4138,6 +4180,10 @@ class MapRendererData:
     detected_carpets: list[list[int]] | None = None
     virtual_walls: list[list[int]] = field(default_factory=lambda: [])
     virtual_thresholds: list[list[int]] | None = None
+    passable_thresholds: list[list[int]] | None = None
+    impassable_thresholds: list[list[int]] | None = None
+    ramps: list[list[int]] | None = None
+    curtains: list[list[int]] | None = None
     low_lying_areas: list[list[int]] | None = None
     obstacles: list[list[int | float]] = field(default_factory=lambda: [])
     furnitures: list[list[int | float]] | None = None

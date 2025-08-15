@@ -10,9 +10,10 @@
       "unsupported": "Gerät wird nicht unterstützt",
       "wrong_token": "Prüfsummenfehler, falscher Token",
       "2fa_failed": "Verifizierung fehlgeschlagen.",
+      "wrong_captcha": "Falscher Captcha.",
       "credentials_incomplete": "Anmeldedaten unvollständig, bitte gib Benutzername, Passwort und das Land ein",
       "login_error": "Anmeldung nicht möglich, bitte die Anmeldedaten überprüfen.",
-      "no_devices": "In diesem Konto wurden für das ausgewählte Land keine unterstützten Geräte gefunden."
+      "no_devices": "In diesem Konto wurden für das ausgewählte Land keine unterstützten Geräte gefunden.{devices}"
     },
     "step": {
       "user": {
@@ -42,6 +43,12 @@
           "verification_code": "Zwei-Faktor-Authentifizierungscode"
         },
         "description": "## Dieser Login erfordert eine Sicherheitsüberprüfung\nBitte öffnen Sie die Verifizierungsseite, um den mobilen E-Mail-Verifizierungscode zu senden. Nachdem Sie den Verifizierungscode erhalten haben, verifizieren Sie ihn nicht auf der Webseite. Kehren Sie zu HomeAssistant zurück und geben Sie ihn in das untenstehende Eingabefeld ein.\n### [Verifizierungscode senden]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Code"
+        },
+        "description": "## Captcha-Überprüfung ist erforderlich.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "dreame": {
         "data": {
@@ -77,7 +84,7 @@
           "color_scheme": "Farbschema der Karte",
           "icon_set": "Kartensymbol gesetzt",
           "notify": "Benachrichtigung",
-          "map_objects": "Karten-Objekte",
+          "hidden_map_objects": "Versteckte Kartenobjekte",
           "low_resolution": "Karte mit niedriger Auflösung",
           "square": "Quadratische Karte"
         }
@@ -95,7 +102,7 @@
           "color_scheme": "Farbschema der Karte",
           "icon_set": "Kartensymbol gesetzt",
           "notify": "Benachrichtigung",
-          "map_objects": "Karten-Objekte",
+          "hidden_map_objects": "Versteckte Kartenobjekte",
           "low_resolution": "Karte mit niedriger Auflösung",
           "square": "Quadratische Karte",
           "configuration_type": "Konfigurationstyp",
@@ -436,7 +443,9 @@
         "state": {
           "unknown": "Unbekannt",
           "not_available": "Nicht verfügbar",
-          "available": "Verfügbar"
+          "available": "Verfügbar",
+          "over_use": "Übermäßige Nutzung",
+          "never": "Nie"
         }
       },
       "auto_empty_status": {

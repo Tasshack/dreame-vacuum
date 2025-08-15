@@ -12,12 +12,10 @@ import copy
 import numpy as np
 import hashlib
 import textwrap
-from datetime import datetime
 from py_mini_racer import MiniRacer
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
-from Crypto.Util.Padding import unpad
 from PIL import (
     Image,
     ImageDraw,
@@ -1076,7 +1074,7 @@ class DreameMapVacuumMapManager:
                 try:
                     object_name = (
                         f"{obstacle.file_name}-{obstacle.object_id}"
-                        if self._protocol.dreame_cloud
+                        if self._protocol.dreame_cloud and obstacle.object_id
                         else obstacle.file_name
                     )
                     _LOGGER.info(
@@ -1108,7 +1106,7 @@ class DreameMapVacuumMapManager:
                                 ),
                                 obstacle,
                             )
-                except Exception as ex:
+                except:
                     _LOGGER.warning(
                         "Obstacle (%s) image decryption failed: %s",
                         index,
@@ -1871,13 +1869,17 @@ class DreameMapVacuumMapEditor:
 
     def set_virtual_thresholds(self, virtual_thresholds) -> None:
         map_data = self._map_data
-        if not map_data or not self._selected_map_id or map_data.virtual_thresholds is None:
+        if (
+            not map_data
+            or not self._selected_map_id
+            or not (map_data.virtual_thresholds is not None or map_data.passable_thresholds is not None)
+        ):
             return
 
-        map_data.virtual_thresholds = []
+        thresholds = []
         if virtual_thresholds:
             for line in virtual_thresholds:
-                map_data.virtual_thresholds.append(
+                thresholds.append(
                     Wall(
                         line[0],
                         line[1],
@@ -1886,7 +1888,12 @@ class DreameMapVacuumMapEditor:
                     )
                 )
 
-        self._saved_map_data[self._selected_map_id].virtual_thresholds = map_data.virtual_thresholds
+        if map_data.passable_thresholds is not None:
+            map_data.passable_thresholds = thresholds
+            self._saved_map_data[self._selected_map_id].passable_thresholds = map_data.passable_thresholds
+        else:
+            map_data.virtual_thresholds = thresholds
+            self._saved_map_data[self._selected_map_id].virtual_thresholds = map_data.virtual_thresholds
         self._set_updated_frame_id(map_data.frame_id)
         self.refresh_map(self._selected_map_id)
         self.refresh_map()
@@ -2328,6 +2335,7 @@ class DreameMapVacuumMapEditor:
     ) -> list[list[int]] | None:
         map_data = self._map_data
         if map_data and map_data.segments and segment_id in map_data.segments:
+            wetness_level = int(wetness_level)
             map_data.cleanset[str(segment_id)][1] = wetness_level
             map_data.segments[segment_id].wetness_level = wetness_level
 
@@ -2955,10 +2963,7 @@ class DreameVacuumMapDecoder:
                 if "ct" in data_json:
                     value = data_json["ct"]
                     if isinstance(value, int) or isinstance(value, float) or isinstance(value, str):
-                        map_data.cleaning_time = int(data_json["ct"])
-                    else:
-                        ## TODO: Some idiot decided to use "ct" as curtain info data in the saved map but it was used for cleaning time on the cleaning history maps.
-                        pass
+                        map_data.cleaning_time = int(value)
 
                 if "wm" in data_json:
                     map_data.work_status = int(data_json["wm"])
@@ -3411,10 +3416,14 @@ class DreameVacuumMapDecoder:
                         map_data.no_mopping_areas = saved_map_data.no_mopping_areas
                         map_data.virtual_walls = saved_map_data.virtual_walls
                         map_data.virtual_thresholds = saved_map_data.virtual_thresholds
+                        map_data.passable_thresholds = saved_map_data.passable_thresholds
+                        map_data.impassable_thresholds = saved_map_data.impassable_thresholds
+                        map_data.ramps = saved_map_data.ramps
                         map_data.carpets = saved_map_data.carpets
                         map_data.ignored_carpets = saved_map_data.ignored_carpets
                         map_data.detected_carpets = saved_map_data.detected_carpets
                         map_data.router_position = saved_map_data.router_position
+                        map_data.curtains = saved_map_data.curtains
                         if saved_map_data.saved_furnitures is not None:
                             map_data.furnitures = saved_map_data.saved_furnitures
                             map_data.furniture_version = saved_map_data.furniture_version
@@ -3536,11 +3545,11 @@ class DreameVacuumMapDecoder:
                     if size >= 4:
                         obstacle_type = int(obstacle[2])
                         if obstacle_type in ObstacleType._value2member_map_:
-                            id = int(obstacle[4])
+                            id = obstacle[4]
                             x = float(obstacle[0])
                             y = float(obstacle[1])
                             possibility = int(float(obstacle[3]) * 100)
-                            if size >= 7 and (id >= 1000 or obstacle_type == ObstacleType.NEGLECTED_ROOM.value):
+                            if size >= 7 and (float(id) >= 1000 or obstacle_type == ObstacleType.NEGLECTED_ROOM.value):
                                 if size >= 8:
                                     if obstacle_type == ObstacleType.NEGLECTED_ROOM.value:
                                         segment_id = int(x)
@@ -3695,10 +3704,45 @@ class DreameVacuumMapDecoder:
                             )
                         )
 
-                # if "npthrsd" in virtual_thresholds and not map_data.ramps:
-                #    map_data.npthrsd = []
-                #    for line in virtual_thresholds["npthrsd"]:
-                #        map_data.npthrsd.append(
+                if "npthrsd" in virtual_thresholds:
+                    map_data.passable_thresholds = map_data.virtual_thresholds
+                    map_data.virtual_thresholds = None
+
+                    if not map_data.impassable_thresholds:
+                        map_data.impassable_thresholds = []
+                        for line in virtual_thresholds["npthrsd"]:
+                            map_data.impassable_thresholds.append(
+                                Wall(
+                                    line[0],
+                                    line[1],
+                                    line[2],
+                                    line[3],
+                                )
+                            )
+
+                if "ramp" in virtual_thresholds and not map_data.ramps:
+                    map_data.ramps = []
+                    for area in virtual_thresholds["ramp"]:
+                        x_coords = sorted([area[0], area[2]])
+                        y_coords = sorted([area[1], area[3]])
+                        map_data.ramps.append(
+                            Area(
+                                x_coords[0],
+                                y_coords[0],
+                                x_coords[1],
+                                y_coords[0],
+                                x_coords[1],
+                                y_coords[1],
+                                x_coords[0],
+                                y_coords[1],
+                                area[4] if len(area) > 4 else None,
+                            )
+                        )
+
+                # if "cliff" in virtual_thresholds and not map_data.cliffs:
+                #    map_data.cliffs = []
+                #    for line in virtual_thresholds["cliff"]:
+                #        map_data.cliffs.append(
                 #            Wall(
                 #                line[0],
                 #                line[1],
@@ -3706,30 +3750,20 @@ class DreameVacuumMapDecoder:
                 #                line[3],
                 #            )
                 #        )
-                #
-                # if "pthrsd" in virtual_thresholds and not map_data.ramps:
-                #    map_data.pthrsd = []
-                #    for line in virtual_thresholds["pthrsd"]:
-                #        map_data.pthrsd.append(
-                #            Wall(
-                #                line[0],
-                #                line[1],
-                #                line[2],
-                #                line[3],
-                #            )
-                #        )
-                #
-                # if "ramp" in virtual_thresholds and not map_data.ramps:
-                #    map_data.ramps = []
-                #    for line in virtual_thresholds["ramp"]:
-                #        map_data.ramps.append(
-                #            Wall(
-                #                line[0],
-                #                line[1],
-                #                line[2],
-                #                line[3],
-                #            )
-                #        )
+
+            if "ct" in data_json:
+                curtains = data_json["ct"]
+                if isinstance(curtains, dict) and "line" in curtains and not map_data.curtains:
+                    map_data.curtains = []
+                    for line in curtains["line"]:
+                        map_data.curtains.append(
+                            Wall(
+                                line[0],
+                                line[1],
+                                line[2],
+                                line[3],
+                            )
+                        )
 
             if "carpet_polygon" in data_json and len(data_json["carpet_polygon"]) and not map_data.detected_carpets:
                 map_data.detected_carpets = []
@@ -5047,7 +5081,7 @@ class DreameVacuumMapRenderer:
         self,
         color_scheme: str = None,
         icon_set: str = None,
-        map_objects: list[str] = None,
+        hidden_map_objects: list[str] = None,
         robot_type: int = 0,
         low_resolution: bool = False,
         square: bool = False,
@@ -5056,9 +5090,9 @@ class DreameVacuumMapRenderer:
         self.color_scheme: MapRendererColorScheme = MAP_COLOR_SCHEME_LIST.get(color_scheme, MapRendererColorScheme())
         self.icon_set: int = MAP_ICON_SET_LIST.get(icon_set, 0)
         self.config: MapRendererConfig = MapRendererConfig()
-        if map_objects is not None:
+        if hidden_map_objects is not None:
             for attr in self.config.__dict__.keys():
-                if attr not in map_objects:
+                if attr in hidden_map_objects:
                     setattr(self.config, attr, False)
 
         self._map_data: MapData = None
@@ -5244,8 +5278,12 @@ class DreameVacuumMapRenderer:
         no_go_areas,
         walls,
         virtual_thresholds,
+        passable_thresholds,
+        impassable_thresholds,
+        ramps,
         furnitures,
         furniture_version,
+        curtains,
         segments,
         padding,
         min_width,
@@ -5318,6 +5356,36 @@ class DreameVacuumMapRenderer:
                 min_y = min(min(y_coords), min_y)
                 max_y = max(max(y_coords), max_y)
 
+        if passable_thresholds:
+            for line in passable_thresholds:
+                p = line.to_coord(dimensions)
+                x_coords = [p.x0, p.x1]
+                y_coords = [p.y0, p.y1]
+                min_x = min(min(x_coords), min_x)
+                max_x = max(max(x_coords), max_x)
+                min_y = min(min(y_coords), min_y)
+                max_y = max(max(y_coords), max_y)
+
+        if impassable_thresholds:
+            for line in impassable_thresholds:
+                p = line.to_coord(dimensions)
+                x_coords = [p.x0, p.x1]
+                y_coords = [p.y0, p.y1]
+                min_x = min(min(x_coords), min_x)
+                max_x = max(max(x_coords), max_x)
+                min_y = min(min(y_coords), min_y)
+                max_y = max(max(y_coords), max_y)
+
+        if ramps:
+            for area in ramps:
+                p = area.to_coord(dimensions)
+                x_coords = [p.x0, p.x1, p.x2, p.x3]
+                y_coords = [p.y0, p.y1, p.y2, p.y3]
+                min_x = min(min(x_coords), min_x)
+                max_x = max(max(x_coords), max_x)
+                min_y = min(min(y_coords), min_y)
+                max_y = max(max(y_coords), max_y)
+
         if furnitures:
             if furniture_version >= 2:
                 furniture_images = (
@@ -5343,6 +5411,16 @@ class DreameVacuumMapRenderer:
                 max_x = max(p.x + w, max_x)
                 min_y = min(p.y - h, min_y)
                 max_y = max(p.y + h, max_y)
+
+        if curtains:
+            for line in curtains:
+                p = line.to_coord(dimensions)
+                x_coords = [p.x0, p.x1]
+                y_coords = [p.y0, p.y1]
+                min_x = min(min(x_coords), min_x)
+                max_x = max(max(x_coords), max_x)
+                min_y = min(min(y_coords), min_y)
+                max_y = max(max(y_coords), max_y)
 
         if min_x < 0:
             padding[0] = padding[0] + int(-min_x)
@@ -5512,12 +5590,23 @@ class DreameVacuumMapRenderer:
             return (int(outRGB[0]), int(outRGB[1]), int(outRGB[2]), int(outA * 255))
         return source
 
-    def _combine_layers(self, cached_layers, layer_size, parent, sub):
+    @staticmethod
+    def _combine_layers(cached_layers, layer_size, parent, sub):
         cached_layers[parent] = Image.new("RGBA", layer_size, (255, 255, 255, 0))
         if sub in cached_layers:
             for k, v in sorted(cached_layers[sub].items()):
                 if v is not None:
                     cached_layers[parent] = Image.alpha_composite(cached_layers[parent], v)
+
+    @staticmethod
+    def _coords_on_line(x0, y0, x1, y1, spacing, size=None):
+        x = x1 - x0
+        y = y1 - y0
+        count = size - 1 if size else math.floor(math.sqrt(x * x + y * y) / spacing)
+        points = []
+        for i in range(count + 1):
+            points.append((x0 + x * (i / count), y0 + y * (i / count)))
+        return points
 
     def get_data_string(
         self,
@@ -5925,6 +6014,34 @@ class DreameVacuumMapRenderer:
                     if map_data.virtual_thresholds is not None
                     else None
                 ),
+                passable_thresholds=(
+                    [[wall.x0, wall.y0, wall.x1, wall.y1] for wall in map_data.passable_thresholds]
+                    if map_data.passable_thresholds is not None
+                    else None
+                ),
+                impassable_thresholds=(
+                    [[wall.x0, wall.y0, wall.x1, wall.y1] for wall in map_data.impassable_thresholds]
+                    if map_data.impassable_thresholds is not None
+                    else None
+                ),
+                ramps=(
+                    [
+                        [
+                            area.x0,
+                            area.y0,
+                            area.x1,
+                            area.y1,
+                            area.x2,
+                            area.y2,
+                            area.x3,
+                            area.y3,
+                            area.angle,
+                        ]
+                        for area in map_data.ramps
+                    ]
+                    if map_data.ramps
+                    else None
+                ),
                 low_lying_areas=(
                     [
                         [
@@ -5974,6 +6091,11 @@ class DreameVacuumMapRenderer:
                     else None
                 ),
                 furniture_version=map_data.furniture_version,
+                curtains=(
+                    [[wall.x0, wall.y0, wall.x1, wall.y1] for wall in map_data.curtains]
+                    if map_data.curtains is not None
+                    else None
+                ),
                 resources=resources,
             )
 
@@ -6224,7 +6346,11 @@ class DreameVacuumMapRenderer:
                 or self._map_data.no_go_areas != map_data.no_go_areas
                 or self._map_data.virtual_walls != map_data.virtual_walls
                 or self._map_data.virtual_thresholds != map_data.virtual_thresholds
+                or self._map_data.passable_thresholds != map_data.passable_thresholds
+                or self._map_data.impassable_thresholds != map_data.impassable_thresholds
+                or self._map_data.ramps != map_data.ramps
                 or self._map_data.carpets != map_data.carpets
+                or self._map_data.curtains != map_data.curtains
                 or self._map_data.segments != map_data.segments
                 or self._map_data.dimensions != map_data.dimensions
                 or self._map_data.restored_map != map_data.restored_map
@@ -6236,8 +6362,12 @@ class DreameVacuumMapRenderer:
                     map_data.no_go_areas if self.config.no_go else None,
                     map_data.virtual_walls if self.config.virtual_wall else None,
                     map_data.virtual_thresholds if self.config.pathway else None,
+                    map_data.passable_thresholds if self.config.pathway else None,
+                    map_data.impassable_thresholds if self.config.pathway else None,
+                    map_data.ramps if self.config.ramp else None,
                     map_data.furnitures if self.config.furniture else None,
                     map_data.furniture_version,
+                    map_data.curtains if self.config.curtain else None,
                     map_data.segments,
                     [14, 14, 14, 14],
                     120,
@@ -6979,6 +7109,99 @@ class DreameVacuumMapRenderer:
             changes.append(layer)
             del cached_layers[layer]
 
+        layer = MapRendererLayer.PASSABLE_THRESHOLD
+        if map_data.passable_thresholds and self.config.pathway:
+            layers.append(layer)
+            if (
+                not self._cache
+                or self._map_data is None
+                or self._map_data.passable_thresholds != map_data.passable_thresholds
+                or not cached_layers.get(layer)
+            ):
+                changes.append(layer)
+                cached_layers[layer] = self.render_thresholds(
+                    map_data.passable_thresholds,
+                    self.color_scheme.passable_threshold_outline,
+                    self.color_scheme.passable_threshold,
+                    layer_size,
+                    map_data.dimensions,
+                    line_width,
+                    scale,
+                )
+        elif self._cache and cached_layers.get(layer):
+            changes.append(layer)
+            del cached_layers[layer]
+
+        layer = MapRendererLayer.IMPASSABLE_THRESHOLD
+        if map_data.impassable_thresholds and self.config.pathway:
+            layers.append(layer)
+            if (
+                not self._cache
+                or self._map_data is None
+                or self._map_data.impassable_thresholds != map_data.impassable_thresholds
+                or not cached_layers.get(layer)
+            ):
+                changes.append(layer)
+                cached_layers[layer] = self.render_thresholds(
+                    map_data.impassable_thresholds,
+                    self.color_scheme.impassable_threshold_outline,
+                    self.color_scheme.impassable_threshold,
+                    layer_size,
+                    map_data.dimensions,
+                    line_width,
+                    scale,
+                )
+        elif self._cache and cached_layers.get(layer):
+            changes.append(layer)
+            del cached_layers[layer]
+
+        layer = MapRendererLayer.RAMP
+        if map_data.ramps and self.config.ramp:
+            layers.append(layer)
+            if (
+                not self._cache
+                or self._map_data is None
+                or self._map_data.ramps != map_data.ramps
+                or self._map_data.rotation != map_data.rotation
+                or not cached_layers.get(layer)
+            ):
+                changes.append(layer)
+                cached_layers[layer] = self.render_ramps(
+                    map_data.ramps,
+                    self.color_scheme.ramp_outline,
+                    self.color_scheme.ramp,
+                    layer_size,
+                    map_data.dimensions,
+                    line_width,
+                    scale,
+                    map_data.rotation,
+                )
+        elif self._cache and cached_layers.get(layer):
+            changes.append(layer)
+            del cached_layers[layer]
+
+        layer = MapRendererLayer.CURTAIN
+        if map_data.curtains and self.config.curtain:
+            layers.append(layer)
+            if (
+                not self._cache
+                or self._map_data is None
+                or self._map_data.curtains != map_data.curtains
+                or not cached_layers.get(layer)
+            ):
+                changes.append(layer)
+                cached_layers[layer] = self.render_curtains(
+                    map_data.curtains,
+                    self.color_scheme.curtain,
+                    layer_size,
+                    map_data.dimensions,
+                    line_width,
+                    scale,
+                )
+        elif self._cache and cached_layers.get(layer):
+            changes.append(layer)
+            del cached_layers[layer]
+
         layer = MapRendererLayer.LOW_LYING_AREA
         if map_data.low_lying_areas and self.config.low_lying_area:
             layers.append(layer)
@@ -7041,7 +7264,9 @@ class DreameVacuumMapRenderer:
 
                 if changed:
                     changes.append(layer)
-                    self._combine_layers(cached_layers, layer_size, layer, MapRendererLayer.FURNITURE)
+                    DreameVacuumMapRenderer._combine_layers(
+                        cached_layers, layer_size, layer, MapRendererLayer.FURNITURE
+                    )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -7192,7 +7417,7 @@ class DreameVacuumMapRenderer:
 
                 if changed:
                     changes.append(layer)
-                    self._combine_layers(cached_layers, layer_size, layer, MapRendererLayer.SEGMENT)
+                    DreameVacuumMapRenderer._combine_layers(cached_layers, layer_size, layer, MapRendererLayer.SEGMENT)
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -7524,7 +7749,9 @@ class DreameVacuumMapRenderer:
 
                 if changed:
                     changes.append(layer)
-                    self._combine_layers(cached_layers, layer_size, layer, MapRendererLayer.OBSTACLE)
+                    DreameVacuumMapRenderer._combine_layers(
+                        cached_layers, layer_size, layer, MapRendererLayer.OBSTACLE
+                    )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -7569,7 +7796,9 @@ class DreameVacuumMapRenderer:
 
                 if changed:
                     changes.append(layer)
-                    self._combine_layers(cached_layers, layer_size, layer, MapRendererLayer.CRUISE_POINT)
+                    DreameVacuumMapRenderer._combine_layers(
+                        cached_layers, layer_size, layer, MapRendererLayer.CRUISE_POINT
+                    )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -7606,17 +7835,21 @@ class DreameVacuumMapRenderer:
         draw = ImageDraw.Draw(new_layer, "RGBA")
         for area in areas:
             p = area.to_img(dimensions)
-            coords = [
-                p.x0 * scale,
-                p.y0 * scale,
-                p.x1 * scale,
-                p.y1 * scale,
-                p.x2 * scale,
-                p.y2 * scale,
-                p.x3 * scale,
-                p.y3 * scale,
-            ]
-            draw.polygon(coords, fill, color, width=(width * scale))
+            draw.polygon(
+                [
+                    p.x0 * scale,
+                    p.y0 * scale,
+                    p.x1 * scale,
+                    p.y1 * scale,
+                    p.x2 * scale,
+                    p.y2 * scale,
+                    p.x3 * scale,
+                    p.y3 * scale,
+                ],
+                fill,
+                color,
+                width=(width * scale),
+            )
         return new_layer
 
     def render_points(self, points, color, fill, layer_size, dimensions, width, scale):
@@ -7659,6 +7892,172 @@ class DreameVacuumMapRenderer:
                 color,
                 width=(width * scale),
             )
+        return new_layer
+
+    def render_thresholds(self, thresholds, color, fill, layer_size, dimensions, width, scale):
+        new_layer = Image.new("RGBA", layer_size, (255, 255, 255, 0))
+        draw = ImageDraw.Draw(new_layer, "RGBA")
+        for wall in thresholds:
+            p = wall.to_img(dimensions)
+
+            thickness = width * 8
+            w = -(p.y1 - p.y0)
+            h = p.x1 - p.x0
+            t = math.sqrt(w * w + h * h)
+            x = w / t * thickness / 2
+            y = h / t * thickness / 2
+
+            draw.polygon(
+                [
+                    (p.x0 - x) * scale,
+                    (p.y0 - y) * scale,
+                    (p.x1 - x) * scale,
+                    (p.y1 - y) * scale,
+                    (p.x1 + x) * scale,
+                    (p.y1 + y) * scale,
+                    (p.x0 + x) * scale,
+                    (p.y0 + y) * scale,
+                ],
+                fill,
+                color,
+                width=(width * scale),
+            )
+
+            thickness = thickness - width
+            x = w / t * thickness / 2
+            y = h / t * thickness / 2
+
+            coords = [
+                (p.x0 - x) * scale,
+                (p.y0 - y) * scale,
+                (p.x1 - x) * scale,
+                (p.y1 - y) * scale,
+                (p.x1 + x) * scale,
+                (p.y1 + y) * scale,
+                (p.x0 + x) * scale,
+                (p.y0 + y) * scale,
+            ]
+
+            bp = DreameVacuumMapRenderer._coords_on_line(coords[0], coords[1], coords[2], coords[3], thickness * scale)
+            tp = DreameVacuumMapRenderer._coords_on_line(coords[6], coords[7], coords[4], coords[5], thickness * scale)
+
+            for i in range(len(tp) - 1):
+                draw.line(
+                    [tp[i][0], tp[i][1], bp[i + 1][0], bp[i + 1][1]], color, width=(width * scale), joint="curve"
+                )
+        return new_layer
+
+    def render_curtains(self, curtains, color, layer_size, dimensions, width, scale):
+        new_layer = Image.new("RGBA", layer_size, (255, 255, 255, 0))
+        draw = ImageDraw.Draw(new_layer, "RGBA")
+        for wall in curtains:
+            p = wall.to_img(dimensions)
+
+            w = -(p.y1 - p.y0)
+            h = p.x1 - p.x0
+            t = math.sqrt(w * w + h * h)
+            x = w / t * 5
+            y = h / t * 5
+
+            coords = [
+                (p.x0 - x) * scale,
+                (p.y0 - y) * scale,
+                (p.x1 - x) * scale,
+                (p.y1 - y) * scale,
+                (p.x1 + x) * scale,
+                (p.y1 + y) * scale,
+                (p.x0 + x) * scale,
+                (p.y0 + y) * scale,
+            ]
+
+            t = int(
+                math.floor(
+                    math.sqrt((wall.x0 - wall.x1) * (wall.x0 - wall.x1) + (wall.y0 - wall.y1) * (wall.y0 - wall.y1))
+                    / 150
+                )
+            )
+            tp = DreameVacuumMapRenderer._coords_on_line(coords[6], coords[7], coords[4], coords[5], 0, t + 1)
+            bp = DreameVacuumMapRenderer._coords_on_line(coords[0], coords[1], coords[2], coords[3], 0, t + 1)
+
+            path = []
+            for i in range(0, len(tp) - 1, 2):
+                path.extend([tp[i][0], tp[i][1], bp[i + 1][0], bp[i + 1][1]])
+            draw.line(path, color, width=(width * scale), joint="curve")
+
+        return new_layer
+
+    def render_ramps(self, ramps, color, fill, layer_size, dimensions, width, scale, rotation):
+        new_layer = Image.new("RGBA", layer_size, (255, 255, 255, 0))
+        draw = ImageDraw.Draw(new_layer, "RGBA")
+        for area in ramps:
+            p = area.to_img(dimensions)
+            draw.polygon(
+                [
+                    p.x0 * scale,
+                    p.y0 * scale,
+                    p.x1 * scale,
+                    p.y1 * scale,
+                    p.x2 * scale,
+                    p.y2 * scale,
+                    p.x3 * scale,
+                    p.y3 * scale,
+                ],
+                fill,
+                color,
+                width=(width * scale),
+            )
+
+            p0 = Point(area.x0, area.y0).to_img(dimensions)
+            p1 = Point(area.x2, area.y2).to_img(dimensions)
+
+            x_coords = sorted([p0.x, p1.x])
+            y_coords = sorted([p0.y, p1.y])
+            min_x = x_coords[0]
+            min_y = y_coords[0]
+            max_x = x_coords[1]
+            max_y = y_coords[1]
+            w = max_x - min_x
+            h = max_y - min_y
+
+            m = min(w, h)
+            s = width
+            size = 8.165 * dimensions.scale
+
+            if m < size:
+                s /= 2
+                size = m * 0.6
+
+            sx = int(w / size)
+            sy = int(h / size)
+            rw = size * 0.6
+            rh = rw / 2
+            xx = (w - sx * rw) / (sx + 1)
+            yy = (h - sy * rh) / (sy + 1)
+
+            arrow_image = Image.new("RGBA", (int(w * scale), int(h * scale)), (255, 255, 255, 0))
+            arrow_draw = ImageDraw.Draw(arrow_image, "RGBA")
+
+            for k in range(sx):
+                for j in range(sy):
+                    x = xx * (k + 1) + rw * k
+                    y = h - yy * (j + 1) - rh * j
+                    arrow_draw.line(
+                        [x * scale, y * scale, (x + rh) * scale, (y - rh) * scale, (x + (rh * 2)) * scale, y * scale],
+                        width=int(s * scale),
+                        fill=color,
+                        joint="curve",
+                    )
+
+            arrow_image = arrow_image.rotate(area.angle, expand=1)
+            new_layer.paste(
+                arrow_image,
+                (
+                    int(((min_x + (w / 2)) * scale) - (arrow_image.size[0] / 2)),
+                    int(((min_y + (h / 2)) * scale) - (arrow_image.size[1] / 2)),
+                ),
+                arrow_image,
+            )
+
         return new_layer
 
     def render_path(self, path, color, mop_color, layer_size, mask, dimensions, width, scale):
@@ -10884,7 +11283,7 @@ class DreameVacuumMapOptimizer:
             if js_optimizer:
                 if self._js_optimizer == None:
                     self._js_optimizer = MiniRacer()
-                    self._js_optimizer.eval(base64.b64decode(MAP_OPTIMIZER_JS))
+                    self._js_optimizer.eval(base64.b64decode(MAP_OPTIMIZER_JS).decode("utf-8"))
 
                 data = map_data.pixel_type.tolist()
                 data_size = [
@@ -11039,8 +11438,8 @@ class DreameVacuumMapOptimizer:
                 map_data.frame_id,
                 time.time() - now,
             )
-        except Exception as ex:
-            _LOGGER.warning("Optimize map failed: %s", ex)
+        except:
+            _LOGGER.warning("Optimize map failed: %s", traceback.format_exc())
 
             self._merge_saved_map_data(map_data, saved_map_data)
 

@@ -13,7 +13,7 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-
+from homeassistant.helpers.icon import icon_for_battery_level
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -173,6 +173,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.BATTERY,
         native_unit_of_measurement=UNIT_PERCENT,
         state_class=SensorStateClass.MEASUREMENT,
+        icon_fn=lambda value, device: icon_for_battery_level(device.status.battery_level, device.status.charging),
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.MAIN_BRUSH_LEFT,
