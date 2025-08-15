@@ -1,23 +1,19 @@
 """DataUpdateCoordinator for Dreame Vacuum."""
+
 from __future__ import annotations
 
 import math
 import traceback
 from homeassistant.components import persistent_notification
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (
-    CONF_NAME,
-    CONF_HOST,
-    CONF_TOKEN,
-    CONF_PASSWORD,
-    CONF_USERNAME,
-    ATTR_ENTITY_ID
-)
+from homeassistant.const import CONF_NAME, CONF_HOST, CONF_TOKEN, CONF_PASSWORD, CONF_USERNAME, ATTR_ENTITY_ID
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity import generate_entity_id
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from .dreame import DreameVacuumDevice, DreameVacuumProperty
+
+from .dreame import DreameVacuumDevice, DreameVacuumProperty, VERSION
 from .dreame.resources import CONSUMABLE_IMAGE
 from .const import (
     DOMAIN,
@@ -25,7 +21,14 @@ from .const import (
     CONF_NOTIFY,
     CONF_COUNTRY,
     CONF_MAC,
+    CONF_DID,
+    CONF_AUTH_KEY,
     CONF_PREFER_CLOUD,
+    CONF_MAP_OBJECTS,
+    CONF_HIDDEN_MAP_OBJECTS,
+    CONF_DONATED,
+    CONF_VERSION,
+    MAP_OBJECTS,
     CONTENT_TYPE,
     NOTIFICATION_CLEANUP_COMPLETED,
     NOTIFICATION_MAIN_BRUSH_NO_LIFE_LEFT,
@@ -40,7 +43,7 @@ from .const import (
     NOTIFICATION_RESUME_CLEANING_NOT_PERFORMED,
     NOTIFICATION_REPLACE_MULTI_MAP,
     NOTIFICATION_REPLACE_MAP,
-    NOTIFICATION_2FA_LOGIN,
+    NOTIFICATION_SPONSOR,
     NOTIFICATION_ID_DUST_COLLECTION,
     NOTIFICATION_ID_CLEANING_PAUSED,
     NOTIFICATION_ID_REPLACE_MAIN_BRUSH,
@@ -56,13 +59,11 @@ from .const import (
     NOTIFICATION_ID_INFORMATION,
     NOTIFICATION_ID_CONSUMABLE,
     NOTIFICATION_ID_REPLACE_TEMPORARY_MAP,
-    NOTIFICATION_ID_2FA_LOGIN,
     EVENT_TASK_STATUS,
     EVENT_CONSUMABLE,
     EVENT_WARNING,
     EVENT_ERROR,
     EVENT_INFORMATION,
-    EVENT_2FA_LOGIN,
     CONSUMABLE_MAIN_BRUSH,
     CONSUMABLE_SIDE_BRUSH,
     CONSUMABLE_FILTER,
@@ -88,11 +89,35 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         self._token = entry.data[CONF_TOKEN]
         self._host = entry.data[CONF_HOST]
         self._notify = entry.options.get(CONF_NOTIFY, True)
+        self._auth_key = entry.data.get(CONF_AUTH_KEY)
         self._entry = entry
+        self._ready = False
         self._available = False
         self._has_warning = False
         self._has_temporary_map = None
-        self._two_factor_url = None
+
+        LOGGER.info("Integration loading: %s", entry.data[CONF_NAME])
+
+        if entry.options.get(CONF_VERSION) != VERSION:
+            options = entry.options.copy()
+
+            ## Migration: Convert map objects to hidden map objects
+            if CONF_MAP_OBJECTS in entry.options and CONF_HIDDEN_MAP_OBJECTS not in options:
+                options[CONF_HIDDEN_MAP_OBJECTS] = []
+                for key in list(MAP_OBJECTS.keys()):
+                    if key not in options[CONF_MAP_OBJECTS]:
+                        options[CONF_HIDDEN_MAP_OBJECTS].append(key)
+                del options[CONF_MAP_OBJECTS]
+
+            options[CONF_VERSION] = VERSION
+            if not options.get(CONF_DONATED):
+                persistent_notification.create(
+                    hass=hass,
+                    message=NOTIFICATION_SPONSOR,
+                    title="Dreame Vacuum",
+                    notification_id=f"{DOMAIN}_sponsor",
+                )
+            hass.config_entries.async_update_entry(entry=entry, options=options)
 
         self.device = DreameVacuumDevice(
             entry.data[CONF_NAME],
@@ -102,19 +127,15 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             entry.data.get(CONF_USERNAME),
             entry.data.get(CONF_PASSWORD),
             entry.data.get(CONF_COUNTRY),
-            entry.options.get(CONF_PREFER_CLOUD, False),
+            entry.options.get(CONF_PREFER_CLOUD, True),
+            entry.data.get(CONF_DID),
+            self._auth_key,
         )
-        
-        self.device.listen(
-            self._dust_collection_changed, DreameVacuumProperty.DUST_COLLECTION
-        )
+
+        self.device.listen(self._dust_collection_changed, DreameVacuumProperty.DUST_COLLECTION)
         self.device.listen(self._error_changed, DreameVacuumProperty.ERROR)
-        self.device.listen(
-            self._task_status_changed, DreameVacuumProperty.TASK_STATUS
-        )
-        self.device.listen(
-            self._cleaning_paused_changed, DreameVacuumProperty.CLEANING_PAUSED
-        )
+        self.device.listen(self._task_status_changed, DreameVacuumProperty.TASK_STATUS)
+        self.device.listen(self._cleaning_paused_changed, DreameVacuumProperty.CLEANING_PAUSED)
         self.device.listen(self.set_updated_data)
         self.device.listen_error(self.set_update_error)
 
@@ -139,8 +160,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                     NOTIFICATION_ID_DUST_COLLECTION,
                 )
             else:
-                self._remove_persistent_notification(
-                    NOTIFICATION_ID_DUST_COLLECTION)
+                self._remove_persistent_notification(NOTIFICATION_ID_DUST_COLLECTION)
 
     def _cleaning_paused_changed(self, previous_value=None) -> None:
         if previous_value is not None and self.device.status.cleaning_paused:
@@ -155,55 +175,50 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             else:
                 self._fire_event(EVENT_INFORMATION, {EVENT_INFORMATION: NOTIFICATION_ID_CLEANING_PAUSED})
 
-            self._create_persistent_notification(
-                notification, NOTIFICATION_ID_CLEANING_PAUSED
-            )
+            self._create_persistent_notification(notification, NOTIFICATION_ID_CLEANING_PAUSED)
         else:
-            self._remove_persistent_notification(
-                NOTIFICATION_ID_CLEANING_PAUSED)
+            self._remove_persistent_notification(NOTIFICATION_ID_CLEANING_PAUSED)
 
     def _task_status_changed(self, previous_value=None) -> None:
         if previous_value is not None:
             if self.device.cleanup_completed:
                 self._fire_event(EVENT_TASK_STATUS, self.device.status.job)
-                self._create_persistent_notification(
-                    NOTIFICATION_CLEANUP_COMPLETED, NOTIFICATION_ID_CLEANUP_COMPLETED
-                )
+                self._create_persistent_notification(NOTIFICATION_CLEANUP_COMPLETED, NOTIFICATION_ID_CLEANUP_COMPLETED)
 
                 if self.device.status.main_brush_life == 0:
                     self._create_persistent_notification(
-                        f'{NOTIFICATION_MAIN_BRUSH_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_MAIN_BRUSH)})',
+                        f"{NOTIFICATION_MAIN_BRUSH_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_MAIN_BRUSH)})",
                         NOTIFICATION_ID_REPLACE_MAIN_BRUSH,
                     )
                     self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: CONSUMABLE_MAIN_BRUSH})
                 if self.device.status.side_brush_life == 0:
                     self._create_persistent_notification(
-                        f'{NOTIFICATION_SIDE_BRUSH_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_SIDE_BRUSH)})',
+                        f"{NOTIFICATION_SIDE_BRUSH_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_SIDE_BRUSH)})",
                         NOTIFICATION_ID_REPLACE_SIDE_BRUSH,
                     )
                     self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: CONSUMABLE_SIDE_BRUSH})
                 if self.device.status.filter_life == 0:
                     self._create_persistent_notification(
-                        f'{NOTIFICATION_FILTER_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_FILTER)})',
+                        f"{NOTIFICATION_FILTER_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_FILTER)})",
                         NOTIFICATION_ID_REPLACE_FILTER,
                     )
                     self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: CONSUMABLE_FILTER})
                 if self.device.status.sensor_dirty_life == 0:
                     self._create_persistent_notification(
-                        f'{NOTIFICATION_SENSOR_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_SENSOR)})',
+                        f"{NOTIFICATION_SENSOR_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_SENSOR)})",
                         NOTIFICATION_ID_CLEAN_SENSOR,
                     )
                     self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: CONSUMABLE_SENSOR})
                 if self.device.status.mop_life == 0:
                     self._create_persistent_notification(
-                        f'{NOTIFICATION_MOP_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_MOP_PAD)})',
-                        NOTIFICATION_ID_REPLACE_MOP
+                        f"{NOTIFICATION_MOP_NO_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_MOP_PAD)})",
+                        NOTIFICATION_ID_REPLACE_MOP,
                     )
                     self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: CONSUMABLE_MOP_PAD})
                 if self.device.status.silver_ion_life == 0:
                     self._create_persistent_notification(
-                        f'{NOTIFICATION_SILVER_ION_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_SILVER_ION)})',
-                        NOTIFICATION_ID_SILVER_ION
+                        f"{NOTIFICATION_SILVER_ION_LIFE_LEFT}\n![image](data:{CONTENT_TYPE};base64,{CONSUMABLE_IMAGE.get(CONSUMABLE_SILVER_ION)})",
+                        NOTIFICATION_ID_SILVER_ION,
                     )
                     self._fire_event(EVENT_CONSUMABLE, {EVENT_CONSUMABLE: CONSUMABLE_SILVER_ION})
                 if self.device.status.detergent_life == 0:
@@ -218,11 +233,12 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
     def _error_changed(self, previous_value=None) -> None:
         has_warning = self.device.status.has_warning
         if has_warning:
-            self._fire_event(EVENT_WARNING, {EVENT_WARNING: self.device.status.error_description[0], "code": self.device.status.error.value})
-
-            self._create_persistent_notification(
-                self.device.status.error_description[0], NOTIFICATION_ID_WARNING
+            self._fire_event(
+                EVENT_WARNING,
+                {EVENT_WARNING: self.device.status.error_description[0], "code": self.device.status.error.value},
             )
+
+            self._create_persistent_notification(self.device.status.error_description[0], NOTIFICATION_ID_WARNING)
         elif self._has_warning:
             self._has_warning = False
             self._remove_persistent_notification(NOTIFICATION_ID_WARNING)
@@ -246,26 +262,21 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             self._fire_event(EVENT_WARNING, {EVENT_WARNING: NOTIFICATION_REPLACE_MULTI_MAP})
 
             self._create_persistent_notification(
-                NOTIFICATION_REPLACE_MULTI_MAP
-                if self.device.status.multi_map
-                else NOTIFICATION_REPLACE_MAP,
+                NOTIFICATION_REPLACE_MULTI_MAP if self.device.status.multi_map else NOTIFICATION_REPLACE_MAP,
                 NOTIFICATION_ID_REPLACE_TEMPORARY_MAP,
             )
         else:
             self._fire_event(EVENT_WARNING, {EVENT_WARNING: NOTIFICATION_ID_REPLACE_TEMPORARY_MAP})
 
-            self._remove_persistent_notification(
-                NOTIFICATION_ID_REPLACE_TEMPORARY_MAP)
+            self._remove_persistent_notification(NOTIFICATION_ID_REPLACE_TEMPORARY_MAP)
 
     def _create_persistent_notification(self, content, notification_id) -> None:
-        if self._notify or notification_id == NOTIFICATION_ID_2FA_LOGIN:
-            if isinstance(self._notify, list) and notification_id != NOTIFICATION_ID_2FA_LOGIN:
+        if not self.device.disconnected and self.device.device_connected and self._notify:
+            if isinstance(self._notify, list):
                 if notification_id == NOTIFICATION_ID_CLEANUP_COMPLETED:
                     if NOTIFICATION_ID_CLEANUP_COMPLETED not in self._notify:
                         return
-                elif (
-                    NOTIFICATION_ID_WARNING in notification_id
-                ):
+                elif NOTIFICATION_ID_WARNING in notification_id:
                     if NOTIFICATION_ID_WARNING not in self._notify:
                         return
                 elif NOTIFICATION_ID_ERROR in notification_id:
@@ -277,44 +288,31 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 ):
                     if NOTIFICATION_ID_INFORMATION not in self._notify:
                         return
-                elif (
-                    notification_id != NOTIFICATION_ID_REPLACE_TEMPORARY_MAP
-                ):
+                elif notification_id != NOTIFICATION_ID_REPLACE_TEMPORARY_MAP:
                     if NOTIFICATION_ID_CONSUMABLE not in self._notify:
-                       return
-
+                        return
 
             persistent_notification.create(
                 self.hass,
                 content,
                 title=self.device.name,
-                notification_id=f"{DOMAIN}_{self.device.mac}_{notification_id}"
+                notification_id=f"{DOMAIN}_{self.device.mac}_{notification_id}",
             )
 
     def _remove_persistent_notification(self, notification_id) -> None:
-        persistent_notification.dismiss(
-            self.hass, f"{DOMAIN}_{self.device.mac}_{notification_id}")
+        persistent_notification.dismiss(self.hass, f"{DOMAIN}_{self.device.mac}_{notification_id}")
 
     def _notification_dismiss_listener(self, type, data) -> None:
         if type == persistent_notification.UpdateType.REMOVED and self.device:
             notifications = self.hass.data.get(persistent_notification.DOMAIN)
             if self._has_warning:
-                if (
-                    f"{DOMAIN}_{self.device.mac}_{NOTIFICATION_ID_WARNING}"
-                    not in notifications
-                ):
+                if f"{DOMAIN}_{self.device.mac}_{NOTIFICATION_ID_WARNING}" not in notifications:
                     if NOTIFICATION_ID_WARNING in self._notify:
                         self.device.clear_warning()
                     self._has_warning = self.device.status.has_warning
-            if self._two_factor_url:
-                if (
-                    f"{DOMAIN}_{self.device.mac}_{NOTIFICATION_ID_2FA_LOGIN}"
-                    not in notifications
-                ):
-                    self._two_factor_url = None
 
     def _fire_event(self, event_id, data) -> None:
-        event_data =  {ATTR_ENTITY_ID: generate_entity_id("vacuum.{}", self.device.name, hass=self.hass)}
+        event_data = {ATTR_ENTITY_ID: generate_entity_id("vacuum.{}", self.device.name, hass=self.hass)}
         if data:
             event_data.update(data)
         self.hass.bus.fire(f"{DOMAIN}_{event_id}", event_data)
@@ -324,10 +322,18 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
         try:
             LOGGER.info("Integration starting...")
             await self.hass.async_add_executor_job(self.device.update)
-            self.device.schedule_update()
-            self.async_set_updated_data()
-            return self.device
+            if self.device and not self.device.disconnected:
+                if self.device.auth_failed:
+                    self.device.listen(None)
+                    self.device.disconnect()
+                    raise ConfigEntryAuthFailed() from None
+                self.device.schedule_update()
+                self.async_set_updated_data()
+                return self.device
         except Exception as ex:
+            if self.device.auth_failed:
+                raise ConfigEntryAuthFailed("Authentication Failed!") from ex
+
             LOGGER.warning("Integration start failed: %s", traceback.format_exc())
             if self.device is not None:
                 self.device.listen(None)
@@ -338,7 +344,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
 
     def set_update_error(self, ex=None) -> None:
         self.hass.loop.call_soon_threadsafe(self.async_set_update_error, ex)
- 
+
     def set_updated_data(self, device=None) -> None:
         self.hass.loop.call_soon_threadsafe(self.async_set_updated_data, device)
 
@@ -348,24 +354,27 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             self._has_temporary_map_changed(self._has_temporary_map)
             self._has_temporary_map = self.device.status.has_temporary_map
 
-        if self.device.token != self._token or self.device.host != self._host:
-            data = self._entry.data.copy()
-            self._host = self.device.host
-            self._token = self.device.token
-            data[CONF_HOST] = self._host
-            data[CONF_TOKEN] = self._token
-            self.hass.config_entries.async_update_entry(self._entry, data=data)
-            
-        if self._two_factor_url != self.device.two_factor_url:
-            if self.device.two_factor_url:
-                self._create_persistent_notification(
-                    f"{NOTIFICATION_2FA_LOGIN}[{self.device.two_factor_url}]({self.device.two_factor_url})", NOTIFICATION_ID_2FA_LOGIN
-                )
-                self._fire_event(EVENT_2FA_LOGIN, {"url": self.device.two_factor_url})
-            else:
-                self._remove_persistent_notification(NOTIFICATION_ID_2FA_LOGIN)
+        if not self._ready:
+            self._ready = True
+            if (self.device.token and self.device.token != self._token) or (
+                self.device.host and self.device.host != self._host
+            ):
+                data = self._entry.data.copy()
+                self._host = self.device.host
+                self._token = self.device.token
+                data[CONF_HOST] = self._host
+                data[CONF_TOKEN] = self._token
+                self.hass.config_entries.async_update_entry(self._entry, data=data)
 
-            self._two_factor_url = self.device.two_factor_url
+            if self.device._protocol.cloud and self.device._protocol.cloud.auth_key != self._auth_key:
+                self._auth_key = self.device._protocol.cloud.auth_key
+                data = self._entry.data.copy()
+                data[CONF_AUTH_KEY] = self._auth_key
+                self.hass.config_entries.async_update_entry(self._entry, data=data)
+        elif self.device.auth_failed:
+            ## Reload entry to trigger reauth and unload
+            self._entry.async_schedule_reload(self._entry.entry_id)
+            return
 
         self._available = self.device.available
 

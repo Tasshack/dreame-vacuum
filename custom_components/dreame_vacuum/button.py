@@ -1,4 +1,5 @@
 """Support for Dreame Vacuum buttons."""
+
 from __future__ import annotations
 
 from typing import Any
@@ -24,9 +25,7 @@ from .dreame import DreameVacuumAction
 
 
 @dataclass
-class DreameVacuumButtonEntityDescription(
-    DreameVacuumEntityDescription, ButtonEntityDescription
-):
+class DreameVacuumButtonEntityDescription(DreameVacuumEntityDescription, ButtonEntityDescription):
     """Describes Dreame Vacuum Button entity."""
 
     parameters_fn: Callable[[object], Any] = None
@@ -57,8 +56,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:air-filter",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.status.filter_life is not None
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.status.filter_life is not None
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -75,8 +73,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:hydro-power",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.status.mop_life is not None
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.status.mop_life is not None
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -93,20 +90,18 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:chart-bubble",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.status.detergent_life is not None
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.status.detergent_life is not None
         ),
     ),
     DreameVacuumButtonEntityDescription(
         action_key=DreameVacuumAction.START_AUTO_EMPTY,
-        icon_fn=lambda value, device: "mdi:delete-off"
-        if not device.status.dust_collection_available
-        else "mdi:delete-restore"
-        if device.status.auto_emptying
-        else "mdi:delete-empty",
+        icon_fn=lambda value, device: (
+            "mdi:delete-off"
+            if not device.status.dust_collection_available
+            else "mdi:delete-restore" if device.status.auto_emptying else "mdi:delete-empty"
+        ),
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device)
-            and device.status.auto_empty_base_available
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.status.auto_empty_base_available
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -137,7 +132,8 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         key="self_clean",
         icon="mdi:washing-machine",
         available_fn=lambda device: bool(
-            device.status.washing_available or device.status.returning_to_wash_paused or device.status.washing_paused),
+            device.status.washing_available or device.status.returning_to_wash_paused or device.status.washing_paused
+        ),
         action_fn=lambda device: device.start_washing(),
         exists_fn=lambda description, device: device.status.self_wash_base_available,
     ),
@@ -152,16 +148,14 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
     DreameVacuumButtonEntityDescription(
         key="start_drying",
         icon="mdi:weather-sunny",
-        available_fn=lambda device: bool(
-            device.status.drying_available and not device.status.drying),
+        available_fn=lambda device: bool(device.status.drying_available and not device.status.drying),
         action_fn=lambda device: device.start_drying(),
         exists_fn=lambda description, device: device.status.self_wash_base_available,
     ),
     DreameVacuumButtonEntityDescription(
         key="stop_drying",
         icon="mdi:weather-sunny-off",
-        available_fn=lambda device: bool(
-            device.status.drying_available and device.status.drying),
+        available_fn=lambda device: bool(device.status.drying_available and device.status.drying),
         action_fn=lambda device: device.stop_drying(),
         exists_fn=lambda description, device: device.status.self_wash_base_available,
     ),

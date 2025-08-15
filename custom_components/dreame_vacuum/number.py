@@ -1,4 +1,5 @@
 """Support for Dreame Vacuum numbers."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -23,9 +24,7 @@ from .dreame import DreameVacuumAction, DreameVacuumProperty
 
 
 @dataclass
-class DreameVacuumNumberEntityDescription(
-    DreameVacuumEntityDescription, NumberEntityDescription
-):
+class DreameVacuumNumberEntityDescription(DreameVacuumEntityDescription, NumberEntityDescription):
     """Describes Dreame Vacuum Number entity."""
 
     mode: NumberMode = NumberMode.AUTO
@@ -35,9 +34,7 @@ class DreameVacuumNumberEntityDescription(
 NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.VOLUME,
-        icon_fn=lambda value, device: "mdi:volume-off"
-        if value == 0
-        else "mdi:volume-high",
+        icon_fn=lambda value, device: "mdi:volume-off" if value == 0 else "mdi:volume-high",
         mode=NumberMode.SLIDER,
         native_min_value=0,
         native_max_value=100,
@@ -65,8 +62,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_step=1,
         entity_category=EntityCategory.CONFIG,
         value_fn=lambda value, device: value.split(":")[0],
-        format_fn=lambda value, device: "{:02d}:".format(value)
-        + device.status.dnd_start.split(":")[1],
+        format_fn=lambda value, device: "{:02d}:".format(value) + device.status.dnd_start.split(":")[1],
         entity_registry_enabled_default=False,
     ),
     DreameVacuumNumberEntityDescription(
@@ -79,8 +75,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_step=1,
         entity_category=EntityCategory.CONFIG,
         value_fn=lambda value, device: value.split(":")[1],
-        format_fn=lambda value, device: device.status.dnd_start.split(":")[0]
-        + ":{:02d}".format(value),
+        format_fn=lambda value, device: device.status.dnd_start.split(":")[0] + ":{:02d}".format(value),
         entity_registry_enabled_default=False,
     ),
     DreameVacuumNumberEntityDescription(
@@ -93,8 +88,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_step=1,
         entity_category=EntityCategory.CONFIG,
         value_fn=lambda value, device: value.split(":")[0],
-        format_fn=lambda value, device: "{:02d}:".format(value)
-        + device.status.dnd_end.split(":")[1],
+        format_fn=lambda value, device: "{:02d}:".format(value) + device.status.dnd_end.split(":")[1],
         entity_registry_enabled_default=False,
     ),
     DreameVacuumNumberEntityDescription(
@@ -107,8 +101,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_step=1,
         entity_category=EntityCategory.CONFIG,
         value_fn=lambda value, device: value.split(":")[1],
-        format_fn=lambda value, device: device.status.dnd_end.split(":")[0]
-        + ":{:02d}".format(value),
+        format_fn=lambda value, device: device.status.dnd_end.split(":")[0] + ":{:02d}".format(value),
         entity_registry_enabled_default=False,
     ),
 )

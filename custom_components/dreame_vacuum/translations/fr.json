@@ -2,16 +2,18 @@
   "config": {
     "abort": {
       "already_configured": "L'appareil est déjà configuré",
-      "cannot_connect": "Impossible d'établir la connexion."
+      "cannot_connect": "Impossible d'établir la connexion.",
+      "reauth_successful": "La réauthentification a réussi"
     },
     "error": {
       "cannot_connect": "Impossible d'établir la connexion.",
       "unsupported": "L'appareil n'est pas pris en charge.",
       "wrong_token": "Erreur de somme de contrôle, mauvais jeton",
-      "2fa_required": "Connexion à double facteur requise\n{url}",
+      "2fa_failed": "Vérification échouée.",
+      "wrong_captcha": "Captcha incorrect.",
       "credentials_incomplete": "Identifiants incomplets, merci de renseigner le nom d'utilisateur, le mot de passe et le pays",
-      "login_error": "Impossible de se connecter à Xiaomi Miio Cloud, vérifiez vos identifiants.",
-      "no_devices": "Aucun appareil pris en charge n'a été trouvé sur ce compte Xiaomi Miio cloud pour le pays sélectionné."
+      "login_error": "Impossible de se connecter, vérifiez vos identifiants.",
+      "no_devices": "Aucun appareil compatible n'a été trouvé sur ce compte pour le pays sélectionné.{devices}"
     },
     "step": {
       "user": {
@@ -20,14 +22,14 @@
         },
         "description": "La fonctionnalité de cartographie nécessite une connexion au cloud et offre une configuration automatique. Si vous ne souhaitez pas utiliser la fonctionnalité de cartographie, vous pouvez sélectionner la configuration manuelle."
       },
-      "without_map": {
+      "local": {
         "data": {
           "host": "Hôte",
           "token": "Jeton"
         },
         "description": "Vous aurez besoin d'un jeton d'API de 32 caractères, consultez https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token pour obtenir des instructions."
       },
-      "with_map": {
+      "mi": {
         "data": {
           "username": "Nom d'utilisateur",
           "password": "Mot de passe",
@@ -36,11 +38,29 @@
         },
         "description": "Connexion à Xiaomi Miio cloud, consultez https://www.openhab.org/addons/bindings/miio/#country-servers pour déterminer le serveur cloud à utiliser."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Code de vérification à deux facteurs"
+        },
+        "description": "## Cette connexion nécessite une vérification de sécurité\nVeuillez ouvrir la page de vérification pour envoyer le code de vérification mobile/email. Après avoir reçu le code de vérification, ne le vérifiez pas sur la page web. Revenez à HomeAssistant et saisissez-le dans la zone de saisie ci-dessous.\n### [Envoyer le code de vérification]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Code"
+        },
+        "description": "## Vérification du captcha requise.\n![captcha](data:image/jpeg;base64,{img})"
+      },
       "devices": {
         "data": {
           "devices": "Appareils pris en charge"
         },
         "description": "Merci de sélectionner l'aspirateur Dreame que vous souhaitez configurer."
+      },
+      "donation": {
+        "data": {
+          "donated": "J’ai fait un don"
+        },
+        "description": "## N'oubliez pas de soutenir le projet.{text}"
       },
       "options": {
         "data": {
@@ -70,7 +90,8 @@
           "low_resolution": "Carte basse résolution",
           "square": "Carte carrée",
           "configuration_type": "Type de configuration",
-          "prefer_cloud": "Privilégier la connexion cloud"
+          "prefer_cloud": "Privilégier la connexion cloud",
+          "donated": "J’ai fait un don"
         }
       }
     },

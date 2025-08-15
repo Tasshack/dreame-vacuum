@@ -9,6 +9,7 @@ from .coordinator import DreameVacuumDataUpdateCoordinator
 PLATFORMS = (
     Platform.VACUUM,
     Platform.SENSOR,
+    Platform.BINARY_SENSOR,
     Platform.SWITCH,
     Platform.BUTTON,
     Platform.NUMBER,

@@ -124,30 +124,30 @@ Selectable room, vacuum and charger icon types:
 - **Mijia**: Icons from the official Mijia App.
 - **Material**: Icons from the Material Design.
 
-### Map Objects
+### Hidden Map Objects
 
 Configurable map object rendering options: 
 
-> Map object can be selected from integration configuration options.
-- **Room Colors**: Render rooms with colors
-- **Room Icons**: Render room icons instead of names
-- **Room Names**: Render custom and default room names
-- **Room Order**: Render cleaning sequence number of the room
-- **Room Suction Level**: Render customized cleaning suction level of the room
-- **Room Water Volume**: Render customized cleaning water volume of the room
-- **Room Cleaning Times**: Render customized cleaning times of the room
-- **Room Cleaning Mode**: Render customized cleaning cleaning mode of the room *(Only on supported devices)*
-- **Path**: Render path
-- **No Go Zones**: Render no go zones
-- **No Mop Zones**: Render no mop zones
-- **Virtual Walls**: Render virtual walls
-- **Active Areas**: Render active areas
-- **Active Points**: Render active points
-- **Charger Icon**: Render charger icon
-- **Robot Icon**: Render robot icon
-- **Cleaning Direction**: Render cleaning direction *(Not supported yet)*
-- **AI Obstacle**: Render obstacle icon
-- **Carpet Area**: Render carpet areas *(Not supported yet)*
+> Hidden Map objects can be selected from integration configuration options.
+- **Room Colors**: Disable rooms with colors
+- **Room Icons**: Disable room icons instead of names
+- **Room Names**: Disable custom and default room names
+- **Room Order**: Disable cleaning sequence number of the room
+- **Room Suction Level**: Disable customized cleaning suction level of the room
+- **Room Water Volume**: Disable customized cleaning water volume of the room
+- **Room Cleaning Times**: Disable customized cleaning times of the room
+- **Room Cleaning Mode**: Disable customized cleaning cleaning mode of the room *(Only on supported devices)*
+- **Path**: Disable path
+- **No Go Zones**: Disable no go zones
+- **No Mop Zones**: Disable no mop zones
+- **Virtual Walls**: Disable virtual walls
+- **Active Areas**: Disable active areas
+- **Active Points**: Disable active points
+- **Charger Icon**: Disable charger icon
+- **Robot Icon**: Disable robot icon
+- **Cleaning Direction**: Disable cleaning direction *(Not supported yet)*
+- **AI Obstacle**: Disable obstacle icon
+- **Carpet Area**: Disable carpet areas *(Not supported yet)*
 
 ### Map recovery
 

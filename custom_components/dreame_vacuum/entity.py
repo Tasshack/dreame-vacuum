@@ -36,10 +36,7 @@ class DreameVacuumEntityDescription:
     property_key: DreameVacuumProperty = None
     action_key: DreameVacuumAction = None
     exists_fn: Callable[[object, object], bool] = lambda description, device: bool(
-        (
-            description.action_key is not None
-            and description.action_key in device.action_mapping
-        )
+        (description.action_key is not None and description.action_key in device.action_mapping)
         or description.property_key is None
         or description.property_key.value in device.data
     )
@@ -82,11 +79,9 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
 
             if description.available_fn is None:
                 if description.property_key is not None:
-                    description.available_fn = PROPERTY_AVAILABILITY.get(
-                        description.property_key)
+                    description.available_fn = PROPERTY_AVAILABILITY.get(description.property_key)
                 elif description.action_key is not None:
-                    description.available_fn = ACTION_AVAILABILITY.get(
-                        description.action_key)
+                    description.available_fn = ACTION_AVAILABILITY.get(description.action_key)
 
         super().__init__(coordinator=coordinator)
         if description:
@@ -98,9 +93,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
     def _set_id(self) -> None:
         if self.entity_description:
             if self.entity_description.icon_fn is not None:
-                self._attr_icon = self.entity_description.icon_fn(
-                    self.native_value, self.device
-                )
+                self._attr_icon = self.entity_description.icon_fn(self.native_value, self.device)
 
             self._attr_name = f"{self.device.name} {self.entity_description.name}"
             self._attr_unique_id = f"{self.device.mac}_{self.entity_description.key}"
@@ -108,9 +101,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
     @callback
     def _handle_coordinator_update(self) -> None:
         if self.entity_description.icon_fn is not None:
-            self._attr_icon = self.entity_description.icon_fn(
-                self.native_value, self.device
-            )
+            self._attr_icon = self.entity_description.icon_fn(self.native_value, self.device)
         super()._handle_coordinator_update()
 
     async def _try_command(self, mask_error, func, *args, **kwargs) -> bool:
@@ -154,8 +145,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
         """Return the native value of the entity."""
         value = None
         if self.entity_description.property_key is not None:
-            value = self.device.get_property(
-                self.entity_description.property_key)
+            value = self.device.get_property(self.entity_description.property_key)
         if self.entity_description.value_fn is not None:
             return self.entity_description.value_fn(value, self.device)
         return value
@@ -166,11 +156,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
         attrs = None
         if self.entity_description.value_fn is not None:
             if self.entity_description.property_key is not None:
-                attrs = {
-                    ATTR_VALUE: self.device.get_property(
-                        self.entity_description.property_key
-                    )
-                }
+                attrs = {ATTR_VALUE: self.device.get_property(self.entity_description.property_key)}
             elif self.entity_description.attrs_fn is not None:
                 attrs = self.entity_description.attrs_fn(self.device)
         return attrs

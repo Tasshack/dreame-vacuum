@@ -74,13 +74,13 @@ TASK_STATUS_MOPPING_PAUSE: Final = "mopping_paused"
 TASK_STATUS_ZONE_MOPPING_PAUSE: Final = "zone_mopping_paused"
 TASK_STATUS_SEGMENT_MOPPING_PAUSE: Final = "room_mopping_paused"
 TASK_STATUS_AUTO_MOPPING_PAUSE: Final = "mopping_paused"
-TASK_STATUS_MONITOR_CRUISE : Final = "monitor_cruise"
-TASK_STATUS_MONITOR_CRUISE_PAUSE : Final = "monitor_cruise_pause"
-TASK_STATUS_MONITOR_SPOT : Final = "monitor_spot"
-TASK_STATUS_MONITOR_SPOT_PAUSE : Final = "monitor_spot_pause"
-TASK_STATUS_SUMMON_CLEAN_PAUSE : Final = "summon_clean_pause"
-TASK_STATUS_RETURNING_INSTALL_MOP : Final = "returning_to_install_mop"
-TASK_STATUS_RETURNING_REMOVE_MOP : Final = "returning_to_remove_mop"
+TASK_STATUS_MONITOR_CRUISE: Final = "monitor_cruise"
+TASK_STATUS_MONITOR_CRUISE_PAUSE: Final = "monitor_cruise_pause"
+TASK_STATUS_MONITOR_SPOT: Final = "monitor_spot"
+TASK_STATUS_MONITOR_SPOT_PAUSE: Final = "monitor_spot_pause"
+TASK_STATUS_SUMMON_CLEAN_PAUSE: Final = "summon_clean_pause"
+TASK_STATUS_RETURNING_INSTALL_MOP: Final = "returning_to_install_mop"
+TASK_STATUS_RETURNING_REMOVE_MOP: Final = "returning_to_remove_mop"
 
 STATUS_CLEANING: Final = "cleaning"
 STATUS_FOLLOW_WALL: Final = "follow_wall_cleaning"
@@ -318,7 +318,9 @@ MAP_DATA_PARAMETER_FLOOR: Final = "floor"
 MAP_DATA_PARAMETER_WALL: Final = "wall"
 MAP_DATA_PARAMETER_SEGMENT: Final = "segment"
 
-DEVICE_MAP_KEY: Final = "H4sICGt+oGMEAGRldmljZWtleS50eHQAbc67DoIwAIXhd+nsQG8obhaDKFChEg0jBEGJgSIGgsZ3lwbcmL+c/OcDJIKQVGANdN+6u37k2W7/kEshwEIZMZQJfiQS0wQFTly1tjmZpmxVlycjrfMQm1LurvBvctbGXjzfeyKkGQPVlnNrq00trNDPHK6PRMlAneg1mkVucPCErXvFSFBXT0hjtjhA7JVczmzP0GiYDsRFV7KCWg33c8aTcJpBNUvLVAT4vdqYxTbdehX4/gAN9AoFFgEAAA=="
+DEVICE_MAP_KEY: Final = (
+    "H4sICGt+oGMEAGRldmljZWtleS50eHQAbc67DoIwAIXhd+nsQG8obhaDKFChEg0jBEGJgSIGgsZ3lwbcmL+c/OcDJIKQVGANdN+6u37k2W7/kEshwEIZMZQJfiQS0wQFTly1tjmZpmxVlycjrfMQm1LurvBvctbGXjzfeyKkGQPVlnNrq00trNDPHK6PRMlAneg1mkVucPCErXvFSFBXT0hjtjhA7JVczmzP0GiYDsRFV7KCWg33c8aTcJpBNUvLVAT4vdqYxTbdehX4/gAN9AoFFgEAAA=="
+)
 
 PROPERTY_TO_NAME: Final = {
     DreameVacuumProperty.STATE: ["state", "State"],

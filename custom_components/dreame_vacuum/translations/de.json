@@ -2,16 +2,18 @@
   "config": {
     "abort": {
       "already_configured": "Gerät ist bereits konfiguriert",
-      "cannot_connect": "Verbindung fehlgeschlagen."
+      "cannot_connect": "Verbindung fehlgeschlagen.",
+      "reauth_successful": "Die erneute Authentifizierung war erfolgreich"
     },
     "error": {
       "cannot_connect": "Verbindung fehlgeschlagen.",
       "unsupported": "Gerät wird nicht unterstützt",
       "wrong_token": "Prüfsummenfehler, falscher Token",
-      "2fa_required": "Zweifaktoren Anmeldung erforderlich\n{url}",
-      "credentials_incomplete": "Anmeldedaten unvollständig, bitte geben Sie Benutzername, Passwort und das Land ein",
-      "login_error": "Anmeldung bei Xiaomi Miio Cloud nicht möglich, bitte überprüfen Sie die Anmeldedaten.",
-      "no_devices": "Keine unterstützten Geräte in diesem Xiaomi Miio Cloud-Konto für das ausgewählte Land gefunden."
+      "2fa_failed": "Verifizierung fehlgeschlagen.",
+      "wrong_captcha": "Falscher Captcha.",
+      "credentials_incomplete": "Anmeldedaten unvollständig, bitte gib Benutzername, Passwort und das Land ein",
+      "login_error": "Anmeldung nicht möglich, bitte die Anmeldedaten überprüfen.",
+      "no_devices": "In diesem Konto wurden für das ausgewählte Land keine unterstützten Geräte gefunden.{devices}"
     },
     "step": {
       "user": {
@@ -20,14 +22,14 @@
         },
         "description": "Die Kartenfunktion erfordert eine Cloud-Verbindung und bietet eine automatische Konfiguration. Wenn Sie die Kartenfunktion nicht verwenden möchten, können Sie die manuelle Konfiguration wählen."
       },
-      "without_map": {
+      "local": {
         "data": {
           "host": "Host",
           "token": "Token"
         },
         "description": "Sie benötigen das 32 Zeichen lange API-Token, siehe https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token für weitere Informationen."
       },
-      "with_map": {
+      "mi": {
         "data": {
           "username": "Benutzername",
           "password": "Passwort",
@@ -35,12 +37,30 @@
           "prefer_cloud": "Bevorzugen Sie eine Cloud-Verbindung"
         },
         "description": "Melden Sie sich bei der Xiaomi Miio Cloud an, siehe https://www.openhab.org/addons/bindings/miio/#country-servers für den zu verwendenden Cloud-Server."
+      },      
+      "2fa": {
+        "data": {
+          "verification_code": "Two-factor verification code"
+        },
+        "description": "## This login requires security verification\nPlease open the verification page to send the mobile/email verification code. After receiving the verification code, do not verify it on the webpage. Go back to HomeAssistant and enter it in the input box below.\n### [Send Verification Code]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Code"
+        },
+        "description": "## Captcha verification is required.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "devices": {
         "data": {
           "devices": "Unterstützte Geräte"
         },
         "description": "Bitte wählen Sie den Dreame Wischroboter aus, das Sie einrichten möchten."
+      },
+      "donation": {
+        "data": {
+          "donated": "Ich habe gespendet"
+        },
+        "description": "## Vergessen Sie nicht, das Projekt zu unterstützen.{text}"
       },
       "options": {
         "data": {
@@ -70,7 +90,8 @@
           "low_resolution": "Karte mit niedriger Auflösung",
           "square": "Quadratische Karte",
           "configuration_type": "Konfigurationstyp",
-          "prefer_cloud": "Cloud-Verbindung bevorzugen"
+          "prefer_cloud": "Cloud-Verbindung bevorzugen",
+          "donated": "Ich habe gespendet"
         }
       }
     },

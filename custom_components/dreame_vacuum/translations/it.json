@@ -2,16 +2,18 @@
   "config": {
     "abort": {
       "already_configured": "Il dispositivo è già stato configurato",
-      "cannot_connect": "Impossibile connettersi."
+      "cannot_connect": "Impossibile connettersi.",
+      "reauth_successful": "La riautenticazione è andata a buon fine"
     },
     "error": {
       "cannot_connect": "Impossibile connettersi.",
       "unsupported": "Dispositivo non supportato",
       "wrong_token": "Checksum error, token errato",
-      "2fa_required": "Richiesta autenticazione 2FA\n{url}",
+      "2fa_failed": "Verifica fallita.",
+      "wrong_captcha": "Captcha errato.",
       "credentials_incomplete": "Credenziali incomplete, per favore inserisci username, password e località",
-      "login_error": "Non è stato possibile accedere a Xiaomi Miio Cloud, controlla le credenziali.",
-      "no_devices": "Non è stato trovato nessun dispositivo supportato in questo account Xiaomi Miio Cloud nella località selezionata."
+      "login_error": "Controlla le tue credenziali.",
+      "no_devices": "Nessun dispositivo supportato è stato trovato in questo account nella posizione selezionata.{devices}"
     },
     "step": {
       "user": {
@@ -20,14 +22,14 @@
         },
         "description": "La presenza della mappa richiede una connessione al cloud e fornisce una configurazione automatica. Se non sei interessato ad usare la mappa, puoi selezionare la configurazione manuale."
       },
-      "without_map": {
+      "local": {
         "data": {
           "host": "Host",
           "token": "Token"
         },
         "description": "Avrai bisogno dell' API token da 32 caratteri, consulta https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token for instructions."
       },
-      "with_map": {
+      "mi": {
         "data": {
           "username": "Username",
           "password": "Password",
@@ -36,11 +38,29 @@
         },
         "description": "Effettua il login su Xiaomi Miio cloud, consulta https://www.openhab.org/addons/bindings/miio/#country-servers per sapere quale server devi selezionare."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Codice di verifica a due fattori"
+        },
+        "description": "## Questo accesso richiede una verifica di sicurezza\nSi prega di aprire la pagina di verifica per inviare il codice di verifica mobile/email. Dopo aver ricevuto il codice di verifica, non verificarlo sulla pagina web. Torna su HomeAssistant e inseriscilo nel campo di input sottostante.\n### [Invia codice di verifica]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Codice"
+        },
+        "description": "## È richiesta la verifica del captcha.\n![captcha](data:image/jpeg;base64,{img})"
+      },
       "devices": {
         "data": {
           "devices": "Dispositivi Supportati"
         },
         "description": "Per favore seleziona il dispositivo Dreame che vuoi configurare."
+      },
+      "donation": {
+        "data": {
+          "donated": "Ho fatto una donazione"
+        },
+        "description": "## Non dimenticatevi di sostenere il progetto.{text}"
       },
       "options": {
         "data": {
@@ -70,7 +90,8 @@
           "low_resolution": "Mappa a bassa risoluzione",
           "square": "Mappa quadrata",
           "configuration_type": "Tipo di configurazione",
-          "prefer_cloud": "Preferisci la connessione cloud"
+          "prefer_cloud": "Preferisci la connessione cloud",
+          "donated": "Ho fatto una donazione"
         }
       }
     },

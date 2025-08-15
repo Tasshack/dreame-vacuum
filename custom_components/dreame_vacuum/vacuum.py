@@ -22,12 +22,14 @@ from .dreame.const import (
     STATE_PAUSED,
     STATE_RETURNING,
 )
-from homeassistant.components.vacuum import (
-    StateVacuumEntity,
-    VacuumEntityFeature
-)
+from homeassistant.components.vacuum import StateVacuumEntity, VacuumEntityFeature
 
-from .dreame import DreameVacuumState, DreameVacuumSuctionLevel, DreameVacuumAction, InvalidActionException, SUCTION_LEVEL_QUIET
+from .dreame import (
+    DreameVacuumState,
+    DreameVacuumSuctionLevel,
+    DreameVacuumAction,
+    InvalidActionException,
+)
 from .const import (
     DOMAIN,
     FAN_SPEED_SILENT,
@@ -43,7 +45,6 @@ from .const import (
     INPUT_LINE,
     INPUT_MAP_ID,
     INPUT_MAP_NAME,
-    INPUT_MAP_URL,
     INPUT_MD5,
     INPUT_MOP_ARRAY,
     INPUT_REPEATS,
@@ -101,7 +102,6 @@ SUPPORT_DREAME = (
     | VacuumEntityFeature.LOCATE
     | VacuumEntityFeature.STATE
     | VacuumEntityFeature.STATUS
-    | VacuumEntityFeature.BATTERY
     | VacuumEntityFeature.MAP
 )
 
@@ -141,6 +141,7 @@ CONSUMABLE_RESET_ACTION = {
     CONSUMABLE_SILVER_ION: DreameVacuumAction.RESET_SILVER_ION,
     CONSUMABLE_DETERGENT: DreameVacuumAction.RESET_DETERGENT,
 }
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -215,11 +216,9 @@ async def async_setup_entry(
                         vol.Coerce(int),
                         vol.Coerce(int),
                     ]
-                )
+                ),
             ),
-            vol.Optional(INPUT_REPEATS): vol.Any(
-                vol.Coerce(int), [vol.Coerce(int)]
-            ),
+            vol.Optional(INPUT_REPEATS): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
         },
         DreameVacuum.async_clean_zone.__name__,
     )
@@ -227,18 +226,10 @@ async def async_setup_entry(
     platform.async_register_entity_service(
         SERVICE_CLEAN_SEGMENT,
         {
-            vol.Required(INPUT_SEGMENTS_ARRAY): vol.Any(
-                vol.Coerce(int), [vol.Coerce(int)]
-            ),
-            vol.Optional(INPUT_REPEATS): vol.Any(
-                vol.Coerce(int), [vol.Coerce(int)]
-            ),
-            vol.Optional(INPUT_SUCTION_LEVEL): vol.Any(
-                vol.Coerce(int), [vol.Coerce(int)]
-            ),
-            vol.Optional(INPUT_WATER_VOLUME): vol.Any(
-                vol.Coerce(int), [vol.Coerce(int)]
-            ),
+            vol.Required(INPUT_SEGMENTS_ARRAY): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Optional(INPUT_REPEATS): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Optional(INPUT_SUCTION_LEVEL): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Optional(INPUT_WATER_VOLUME): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
         },
         DreameVacuum.async_clean_segment.__name__,
     )
@@ -246,18 +237,10 @@ async def async_setup_entry(
     platform.async_register_entity_service(
         SERVICE_CLEAN_SPOT,
         {
-            vol.Required(INPUT_POINTS): vol.Any(
-                vol.Coerce(int), [vol.Coerce(int)]
-            ),
-            vol.Optional(INPUT_REPEATS): vol.Any(
-                vol.Coerce(int), [vol.Coerce(int)]
-            ),
-            vol.Optional(INPUT_SUCTION_LEVEL): vol.Any(
-                vol.Coerce(int), [vol.Coerce(int)]
-            ),
-            vol.Optional(INPUT_WATER_VOLUME): vol.Any(
-                vol.Coerce(int), [vol.Coerce(int)]
-            ),
+            vol.Required(INPUT_POINTS): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Optional(INPUT_REPEATS): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Optional(INPUT_SUCTION_LEVEL): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Optional(INPUT_WATER_VOLUME): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
         },
         DreameVacuum.async_clean_spot.__name__,
     )
@@ -311,12 +294,8 @@ async def async_setup_entry(
     platform.async_register_entity_service(
         SERVICE_MOVE_REMOTE_CONTROL_STEP,
         {
-            vol.Required(INPUT_VELOCITY): vol.All(
-                vol.Coerce(int), vol.Clamp(min=-600, max=600)
-            ),
-            vol.Required(INPUT_ROTATION): vol.All(
-                vol.Coerce(int), vol.Clamp(min=-360, max=360)
-            ),
+            vol.Required(INPUT_VELOCITY): vol.All(vol.Coerce(int), vol.Clamp(min=-600, max=600)),
+            vol.Required(INPUT_ROTATION): vol.All(vol.Coerce(int), vol.Clamp(min=-360, max=360)),
         },
         DreameVacuum.async_remote_control_move_step.__name__,
     )
@@ -345,9 +324,7 @@ async def async_setup_entry(
         SERVICE_MERGE_SEGMENTS,
         {
             vol.Optional(INPUT_MAP_ID): cv.positive_int,
-            vol.Required(INPUT_SEGMENTS_ARRAY): vol.All(
-                [vol.Coerce(int)]
-            ),
+            vol.Required(INPUT_SEGMENTS_ARRAY): vol.All([vol.Coerce(int)]),
         },
         DreameVacuum.async_merge_segments.__name__,
     )
@@ -445,7 +422,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         self._attr_unique_id = f"{coordinator.device.mac}_" + DOMAIN
 
         ## For backwards compatibility
-        try:            
+        try:
             module = importlib.import_module("homeassistant.components.vacuum")
             self._activity_class = module.VacuumActivity
         except:
@@ -467,7 +444,11 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             self._attr_icon = "mdi:water-circle"
         elif self.device.status.washing:
             self._attr_icon = "mdi:water-sync"
-        elif self.device.status.paused or self.device.status.washing_paused or self.device.status.returning_to_wash_paused:
+        elif (
+            self.device.status.paused
+            or self.device.status.washing_paused
+            or self.device.status.returning_to_wash_paused
+        ):
             self._attr_icon = "mdi:pause-circle"
         elif self.device.status.drying:
             self._attr_icon = "mdi:hair-dryer"
@@ -482,14 +463,16 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         else:
             self._attr_icon = "mdi:robot-vacuum"
 
-        if self.device.status.started and (self.device.status.customized_cleaning and not (self.device.status.zone_cleaning or self.device.status.spot_cleaning)):
+        if self.device.status.started and (
+            self.device.status.customized_cleaning
+            and not (self.device.status.zone_cleaning or self.device.status.spot_cleaning)
+        ):
             self._attr_fan_speed_list = []
             self._attr_fan_speed = STATE_UNAVAILABLE.capitalize()
         else:
             self._attr_fan_speed_list = list(SUCTION_LEVEL_TO_FAN_SPEED.values())
             self._attr_fan_speed = SUCTION_LEVEL_TO_FAN_SPEED.get(self.device.status.suction_level, STATE_UNKNOWN)
-            
-        self._attr_battery_level = self.device.status.battery_level
+
         self._attr_extra_state_attributes = self.device.status.attributes
         self._attr_status = self.device.status.status_name.replace("_", " ").capitalize()
         self._vacuum_state = STATE_CODE_TO_STATE.get(self.device.status.state, STATE_UNKNOWN)
@@ -505,7 +488,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     def supported_features(self) -> int:
         """Flag vacuum cleaner features that are supported."""
         return self._attr_supported_features
-    
+
     @property
     def extra_state_attributes(self) -> dict[str, str] | None:
         """Return the extra state attributes of the entity."""
@@ -532,9 +515,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
 
     async def async_start_pause(self) -> None:
         """Start or resume the cleaning task."""
-        await self._try_command(
-            "Unable to call start_pause: %s", self.device.start_pause
-        )
+        await self._try_command("Unable to call start_pause: %s", self.device.start_pause)
 
     async def async_stop(self, **kwargs) -> None:
         """Stop the vacuum cleaner."""
@@ -546,18 +527,12 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
 
     async def async_return_to_base(self, **kwargs) -> None:
         """Set the vacuum cleaner to return to the dock."""
-        await self._try_command(
-            "Unable to call return_to_base: %s", self.device.return_to_base
-        )
+        await self._try_command("Unable to call return_to_base: %s", self.device.return_to_base)
 
     async def async_clean_zone(self, zone, repeats=1) -> None:
-        await self._try_command(
-            "Unable to call clean_zone: %s", self.device.clean_zone, zone, repeats
-        )
+        await self._try_command("Unable to call clean_zone: %s", self.device.clean_zone, zone, repeats)
 
-    async def async_clean_segment(
-        self, segments, repeats=1, suction_level="", water_volume=""
-    ) -> None:
+    async def async_clean_segment(self, segments, repeats=1, suction_level="", water_volume="") -> None:
         """Clean selected segments."""
         await self._try_command(
             "Unable to call clean_segment: %s",
@@ -568,11 +543,10 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             water_volume,
         )
 
-    async def async_clean_spot(
-        self, points, repeats=1, suction_level="", water_volume=""
-    ) -> None:
+    async def async_clean_spot(self, points, repeats=1, suction_level="", water_volume="") -> None:
         await self._try_command(
-            "Unable to call clean_spot: %s", self.device.clean_spot, points, repeats, suction_level, water_volume)
+            "Unable to call clean_spot: %s", self.device.clean_spot, points, repeats, suction_level, water_volume
+        )
 
     async def async_set_restricted_zone(self, walls="", zones="", no_mops="") -> None:
         """Create restricted zone."""
@@ -584,9 +558,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             no_mops,
         )
 
-    async def async_remote_control_move_step(
-        self, rotation: int = 0, velocity: int = 0
-    ) -> None:
+    async def async_remote_control_move_step(self, rotation: int = 0, velocity: int = 0) -> None:
         """Remote control the robot."""
         await self._try_command(
             "Unable to call remote_control_move_step: %s",
@@ -597,10 +569,11 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
 
     async def async_set_fan_speed(self, fan_speed, **kwargs) -> None:
         """Set fan speed."""
-        if self.device.status.started and (self.device.status.customized_cleaning and not (self.device.status.zone_cleaning or self.device.status.spot_cleaning)):
-            raise InvalidActionException(
-                "Cannot set fan speed when customized cleaning is enabled"
-            )
+        if self.device.status.started and (
+            self.device.status.customized_cleaning
+            and not (self.device.status.zone_cleaning or self.device.status.spot_cleaning)
+        ):
+            raise InvalidActionException("Cannot set fan speed when customized cleaning is enabled")
 
         if isinstance(fan_speed, str) and fan_speed.isnumeric():
             fan_speed = int(fan_speed)
@@ -610,7 +583,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 raise HomeAssistantError("Invalid fan speed")
         else:
             fan_speed = fan_speed.lower()
-            fan_speed_list = ({v.lower(): k for k, v in SUCTION_LEVEL_TO_FAN_SPEED.items()})
+            fan_speed_list = {v.lower(): k for k, v in SUCTION_LEVEL_TO_FAN_SPEED.items()}
             if fan_speed in fan_speed_list:
                 fan_speed = fan_speed_list[fan_speed]
             else:
@@ -619,33 +592,23 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                     self.fan_speed_list,
                 ) from None
 
-        await self._try_command(
-            "Unable to set fan speed: %s", self.device.set_suction_level, fan_speed
-        )
+        await self._try_command("Unable to set fan speed: %s", self.device.set_suction_level, fan_speed)
 
     async def async_select_map(self, map_id) -> None:
         """Switch selected map."""
-        await self._try_command(
-            "Unable to switch to selected map: %s", self.device.select_map, map_id
-        )
+        await self._try_command("Unable to switch to selected map: %s", self.device.select_map, map_id)
 
     async def async_delete_map(self, map_id=None) -> None:
         """Delete a map."""
-        await self._try_command(
-            "Unable to delete map: %s", self.device.delete_map, map_id
-        )
+        await self._try_command("Unable to delete map: %s", self.device.delete_map, map_id)
 
     async def async_save_temporary_map(self) -> None:
         """Save the temporary map."""
-        await self._try_command(
-            "Unable to save map: %s", self.device.save_temporary_map
-        )
+        await self._try_command("Unable to save map: %s", self.device.save_temporary_map)
 
     async def async_discard_temporary_map(self) -> None:
         """Discard the temporary map."""
-        await self._try_command(
-            "Unable to discard temporary map: %s", self.device.discard_temporary_map
-        )
+        await self._try_command("Unable to discard temporary map: %s", self.device.discard_temporary_map)
 
     async def async_replace_temporary_map(self, map_id=None) -> None:
         """Replace the temporary map with another saved map."""
@@ -657,9 +620,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
 
     async def async_request_map(self) -> None:
         """Request new map."""
-        await self._try_command(
-            "Unable to call request_map: %s", self.device.request_map
-        )
+        await self._try_command("Unable to call request_map: %s", self.device.request_map)
 
     async def async_rename_map(self, map_id, map_name="") -> None:
         """Rename a map"""
@@ -746,9 +707,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
 
     async def async_send_command(self, command: str, params, **kwargs) -> None:
         """Send a command to a vacuum cleaner."""
-        await self._try_command(
-            "Unable to call send_command: %s", self.device.send_command, command, params
-        )
+        await self._try_command("Unable to call send_command: %s", self.device.send_command, command, params)
 
     async def async_set_dnd(self, dnd_enabled, dnd_start="", dnd_end="") -> None:
         """Set do not disturb function"""
@@ -758,13 +717,9 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             dnd_enabled,
         )
         if dnd_start != "" and dnd_start is not None:
-            await self._try_command(
-                "Unable to call set_dnd_start: %s", self.device.set_dnd_start, dnd_start
-            )
+            await self._try_command("Unable to call set_dnd_start: %s", self.device.set_dnd_start, dnd_start)
         if dnd_end != "" and dnd_end is not None:
-            await self._try_command(
-                "Unable to call set_dnd_end: %s", self.device.set_dnd_end, dnd_end
-            )
+            await self._try_command("Unable to call set_dnd_end: %s", self.device.set_dnd_end, dnd_end)
 
     async def async_reset_consumable(self, consumable: str) -> None:
         """Reset consumable"""

@@ -195,6 +195,7 @@ class DreameVacuumErrorCode(IntEnum):
     DIRTY_TANK_LEVEL = 118
     WASHBOARD_LEVEL = 119
 
+
 class DreameVacuumState(IntEnum):
     """Dreame Vacuum state"""
 
@@ -311,6 +312,7 @@ class DreameVacuumTaskStatus(IntEnum):
     RETURNING_INSTALL_MOP = 25
     RETURNING_REMOVE_MOP = 26
 
+
 class DreameVacuumStatus(IntEnum):
     """Dreame Vacuum status"""
 
@@ -371,6 +373,7 @@ class DreameVacuumSelfWashBaseStatus(IntEnum):
     CLEAN_ADD_WATER = 5
     ADDING_WATER = 6
 
+
 class DreameVacuumSelfCleanArea(IntEnum):
     """Dreame Vacuum self clean area"""
 
@@ -380,6 +383,7 @@ class DreameVacuumSelfCleanArea(IntEnum):
     TEN_SQUARE_METERS = 10
     FIFTEEN_SQUARE_METERS = 15
 
+
 class DreameVacuumMopWashLevel(IntEnum):
     """Dreame Vacuum mop wash level"""
 
@@ -388,6 +392,7 @@ class DreameVacuumMopWashLevel(IntEnum):
     DAILY = 1
     DEEP = 2
 
+
 class DreameVacuumMoppingType(IntEnum):
     """Dreame Vacuum mopping type"""
 
@@ -395,6 +400,7 @@ class DreameVacuumMoppingType(IntEnum):
     DAILY = 0
     ACCURATE = 1
     DEEP = 2
+
 
 class DreameVacuumProperty(IntEnum):
     """Dreame Vacuum properties"""
@@ -523,6 +529,7 @@ class DreameVacuumProperty(IntEnum):
     STREAM_RESET_CODE = 121
     STREAM_SPACE = 122
 
+
 class DreameVacuumAction(IntEnum):
     """Dreame Vacuum actions"""
 
@@ -555,6 +562,7 @@ class DreameVacuumAction(IntEnum):
     STREAM_AUDIO = 27
     STREAM_PROPERTY = 28
     STREAM_CODE = 29
+
 
 # Dreame Vacuum property mapping
 DreameVacuumPropertyMapping = {
@@ -609,7 +617,7 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.QUICK_COMMAND: {"siid": 4, "piid": 48},
     DreameVacuumProperty.INTELLIGENT_RECOGNITION: {"siid": 4, "piid": 49},
     DreameVacuumProperty.AUTO_SWITCH_SETTINGS: {"siid": 4, "piid": 50},
-    DreameVacuumProperty.AUTO_WATER_REFILLING: {"siid": 4, "piid": 51},    
+    DreameVacuumProperty.AUTO_WATER_REFILLING: {"siid": 4, "piid": 51},
     DreameVacuumProperty.MOP_IN_STATION: {"siid": 4, "piid": 52},
     DreameVacuumProperty.MOP_PAD_INSTALLED: {"siid": 4, "piid": 53},
     # DreameVacuumProperty.COMBINED_DATA: {"siid": 4, "piid": 99},
@@ -628,9 +636,9 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.RECOVERY_MAP_LIST: {"siid": 6, "piid": 9},
     DreameVacuumProperty.MAP_RECOVERY: {"siid": 6, "piid": 10},
     DreameVacuumProperty.MAP_RECOVERY_STATUS: {"siid": 6, "piid": 11},
-    DreameVacuumProperty.OLD_MAP_DATA: {"siid": 6, "piid": 13},    
-    DreameVacuumProperty.BACKUP_MAP_STATUS: {"siid": 6, "piid": 14},    
-    DreameVacuumProperty.WIFI_MAP: {"siid": 6, "piid": 15},    
+    DreameVacuumProperty.OLD_MAP_DATA: {"siid": 6, "piid": 13},
+    DreameVacuumProperty.BACKUP_MAP_STATUS: {"siid": 6, "piid": 14},
+    DreameVacuumProperty.WIFI_MAP: {"siid": 6, "piid": 15},
     DreameVacuumProperty.VOLUME: {"siid": 7, "piid": 1},
     DreameVacuumProperty.VOICE_PACKET_ID: {"siid": 7, "piid": 2},
     DreameVacuumProperty.VOICE_CHANGE_STATUS: {"siid": 7, "piid": 3},
@@ -656,7 +664,7 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.DUST_COLLECTION: {"siid": 15, "piid": 3},
     DreameVacuumProperty.AUTO_EMPTY_STATUS: {"siid": 15, "piid": 5},
     DreameVacuumProperty.SENSOR_DIRTY_LEFT: {"siid": 16, "piid": 1},
-    DreameVacuumProperty.SENSOR_DIRTY_TIME_LEFT: {"siid": 16, "piid": 2},    
+    DreameVacuumProperty.SENSOR_DIRTY_TIME_LEFT: {"siid": 16, "piid": 2},
     DreameVacuumProperty.SECONDARY_FILTER_LEFT: {"siid": 17, "piid": 1},
     DreameVacuumProperty.SECONDARY_FILTER_TIME_LEFT: {"siid": 17, "piid": 2},
     DreameVacuumProperty.MOP_PAD_LEFT: {"siid": 18, "piid": 1},
@@ -709,7 +717,7 @@ DreameVacuumActionMapping = {
     DreameVacuumAction.START_AUTO_EMPTY: {"siid": 15, "aiid": 1},
     DreameVacuumAction.RESET_SECONDARY_FILTER: {"siid": 17, "aiid": 1},
     DreameVacuumAction.RESET_MOP_PAD: {"siid": 18, "aiid": 1},
-    DreameVacuumAction.RESET_SILVER_ION: {"siid": 19, "aiid": 1},    
+    DreameVacuumAction.RESET_SILVER_ION: {"siid": 19, "aiid": 1},
     DreameVacuumAction.RESET_DETERGENT: {"siid": 20, "aiid": 1},
     DreameVacuumAction.STREAM_CAMERA: {"siid": 10001, "aiid": 1},
     DreameVacuumAction.STREAM_AUDIO: {"siid": 10001, "aiid": 2},
@@ -718,23 +726,42 @@ DreameVacuumActionMapping = {
 }
 
 PROPERTY_AVAILABILITY: Final = {
-    DreameVacuumProperty.CUSTOMIZED_CLEANING: lambda device: not device.status.started and (device.status.has_saved_map or device.status.current_map is None),
+    DreameVacuumProperty.CUSTOMIZED_CLEANING: lambda device: not device.status.started
+    and (device.status.has_saved_map or device.status.current_map is None),
     DreameVacuumProperty.TIGHT_MOPPING: lambda device: device.status.water_tank_or_mop_installed,
     DreameVacuumProperty.MULTI_FLOOR_MAP: lambda device: not device.status.has_temporary_map,
     DreameVacuumProperty.DND_START: lambda device: device.status.dnd_enabled,
     DreameVacuumProperty.DND_END: lambda device: device.status.dnd_enabled,
-    DreameVacuumProperty.SUCTION_LEVEL: lambda device: not device.status.mopping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping,
-    DreameVacuumProperty.WATER_VOLUME: lambda device: device.status.water_tank_or_mop_installed and not device.status.sweeping and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning)) and not device.status.fast_mapping,
-    DreameVacuumProperty.CLEANING_MODE: lambda device: not device.status.fast_mapping and not device.status.cleaning_paused and not device.status.scheduled_clean,
-    DreameVacuumProperty.CARPET_SENSITIVITY: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_BOOST)),
-    DreameVacuumProperty.CARPET_BOOST: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
-    DreameVacuumProperty.CARPET_AVOIDANCE: lambda device: bool(device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0),
-    DreameVacuumProperty.AUTO_EMPTY_FREQUENCY: lambda device: bool(device.get_property(DreameVacuumProperty.AUTO_DUST_COLLECTING)),
+    DreameVacuumProperty.SUCTION_LEVEL: lambda device: not device.status.mopping
+    and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning))
+    and not device.status.fast_mapping,
+    DreameVacuumProperty.WATER_VOLUME: lambda device: device.status.water_tank_or_mop_installed
+    and not device.status.sweeping
+    and not (device.status.customized_cleaning and not (device.status.zone_cleaning or device.status.spot_cleaning))
+    and not device.status.fast_mapping,
+    DreameVacuumProperty.CLEANING_MODE: lambda device: not device.status.fast_mapping
+    and not device.status.cleaning_paused
+    and not device.status.scheduled_clean,
+    DreameVacuumProperty.CARPET_SENSITIVITY: lambda device: bool(
+        device.get_property(DreameVacuumProperty.CARPET_BOOST)
+    ),
+    DreameVacuumProperty.CARPET_BOOST: lambda device: bool(
+        device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0
+    ),
+    DreameVacuumProperty.CARPET_AVOIDANCE: lambda device: bool(
+        device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0
+    ),
+    DreameVacuumProperty.AUTO_EMPTY_FREQUENCY: lambda device: bool(
+        device.get_property(DreameVacuumProperty.AUTO_DUST_COLLECTING)
+    ),
     DreameVacuumProperty.CLEANING_TIME: lambda device: not device.status.fast_mapping,
     DreameVacuumProperty.CLEANED_AREA: lambda device: not device.status.fast_mapping,
     DreameVacuumProperty.RELOCATION_STATUS: lambda device: not device.status.fast_mapping,
-    DreameVacuumProperty.MOP_WASH_LEVEL: lambda device: device.status.water_tank_or_mop_installed and not device.status.sweeping,
-    DreameVacuumProperty.AUTO_ADD_DETERGENT: lambda device: bool(device.get_property(DreameVacuumProperty.AUTO_ADD_DETERGENT) != 2),
+    DreameVacuumProperty.MOP_WASH_LEVEL: lambda device: device.status.water_tank_or_mop_installed
+    and not device.status.sweeping,
+    DreameVacuumProperty.AUTO_ADD_DETERGENT: lambda device: bool(
+        device.get_property(DreameVacuumProperty.AUTO_ADD_DETERGENT) != 2
+    ),
 }
 
 ACTION_AVAILABILITY: Final = {
@@ -748,9 +775,15 @@ ACTION_AVAILABILITY: Final = {
     DreameVacuumAction.RESET_DETERGENT: lambda device: bool(device.status.detergent_life < 100),
     DreameVacuumAction.START_AUTO_EMPTY: lambda device: device.status.dust_collection_available,
     DreameVacuumAction.CLEAR_WARNING: lambda device: device.status.has_warning,
-    DreameVacuumAction.START: lambda device: not device.status.started or device.status.returning or device.status.returning_paused,
-    DreameVacuumAction.START_CUSTOM: lambda device: not device.status.started or device.status.returning or device.status.returning_paused,
-    DreameVacuumAction.PAUSE: lambda device: device.status.started and not device.status.returning_paused and not device.status.paused,
+    DreameVacuumAction.START: lambda device: not device.status.started
+    or device.status.returning
+    or device.status.returning_paused,
+    DreameVacuumAction.START_CUSTOM: lambda device: not device.status.started
+    or device.status.returning
+    or device.status.returning_paused,
+    DreameVacuumAction.PAUSE: lambda device: device.status.started
+    and not device.status.returning_paused
+    and not device.status.paused,
     DreameVacuumAction.CHARGE: lambda device: not device.status.docked and not device.status.returning,
     DreameVacuumAction.STOP: lambda device: not device.status.fast_mapping and device.status.started,
 }
@@ -767,10 +800,11 @@ def DIID(property: DreameVacuumProperty, mapping=DreameVacuumPropertyMapping) ->
 
 
 class PathType(str, Enum):
-    LINE = 'L'
-    SWEEP = 'S'
-    SWEEP_AND_MOP = 'W'
-    MOP = 'M'
+    LINE = "L"
+    SWEEP = "S"
+    SWEEP_AND_MOP = "W"
+    MOP = "M"
+
 
 class ObstacleType(IntEnum):
     BASE = 128
@@ -785,6 +819,7 @@ class ObstacleType(IntEnum):
     FABRIC = 137
     THREAD = 138
     STAIN = 139
+
 
 class Point:
     def __init__(self, x: float, y: float, a=None) -> None:
@@ -801,12 +836,7 @@ class Point:
         return self.__str__()
 
     def __eq__(self: Point, other: Point) -> bool:
-        return (
-            other is not None
-            and self.x == other.x
-            and self.y == other.y
-            and self.a == other.a
-        )
+        return other is not None and self.x == other.x and self.y == other.y and self.a == other.a
 
     def as_dict(self) -> Dict[str, Any]:
         if self.a is None:
@@ -818,20 +848,20 @@ class Point:
 
     def to_coord(self, image_dimensions) -> Point:
         return image_dimensions.to_coord(self)
-    
+
     def rotated(self, image_dimensions, degree) -> Point:
         w = int(
-            (image_dimensions.width * image_dimensions.scale) 
-            + image_dimensions.padding[0] 
-            + image_dimensions.padding[2] 
-            - image_dimensions.crop[0] 
+            (image_dimensions.width * image_dimensions.scale)
+            + image_dimensions.padding[0]
+            + image_dimensions.padding[2]
+            - image_dimensions.crop[0]
             - image_dimensions.crop[2]
         )
         h = int(
-            (image_dimensions.height * image_dimensions.scale) 
-            + image_dimensions.padding[1] 
-            + image_dimensions.padding[3] 
-            - image_dimensions.crop[1] 
+            (image_dimensions.height * image_dimensions.scale)
+            + image_dimensions.padding[1]
+            + image_dimensions.padding[3]
+            - image_dimensions.crop[1]
             - image_dimensions.crop[3]
         )
         x = self.x
@@ -866,7 +896,16 @@ class Path(Point):
 
 
 class Obstacle(Point):
-    def __init__(self, x: float, y: float, obstacle_type: ObstacleType, possibility: int, key: int = None, file_name: str = None, random: int = None) -> None:
+    def __init__(
+        self,
+        x: float,
+        y: float,
+        obstacle_type: ObstacleType,
+        possibility: int,
+        key: int = None,
+        file_name: str = None,
+        random: int = None,
+    ) -> None:
         super().__init__(x, y)
         self.obstacle_type = obstacle_type
         self.possibility = possibility
@@ -907,9 +946,7 @@ class Zone:
         return {ATTR_X0: self.x0, ATTR_Y0: self.y0, ATTR_X1: self.x1, ATTR_Y1: self.y1}
 
     def as_area(self) -> Area:
-        return Area(
-            self.x0, self.y0, self.x0, self.y1, self.x1, self.y1, self.x1, self.y0
-        )
+        return Area(self.x0, self.y0, self.x0, self.y1, self.x1, self.y1, self.x1, self.y0)
 
     def to_img(self, image_dimensions) -> Zone:
         p0 = Point(self.x0, self.y0).to_img(image_dimensions)
@@ -920,6 +957,7 @@ class Zone:
         p0 = Point(self.x0, self.y0).to_coord(image_dimensions)
         p1 = Point(self.x1, self.y1).to_coord(image_dimensions)
         return Zone(p0.x, p0.y, p1.x, p1.y)
+
 
 class Segment(Zone):
     def __init__(
@@ -977,7 +1015,11 @@ class Segment(Zone):
     @property
     def letter(self) -> str:
         letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        return f'{letters[((self.segment_id % 26) - 1)]}{math.floor(self.segment_id / 26)}' if self.segment_id > 26 else letters[self.segment_id - 1]
+        return (
+            f"{letters[((self.segment_id % 26) - 1)]}{math.floor(self.segment_id / 26)}"
+            if self.segment_id > 26
+            else letters[self.segment_id - 1]
+        )
 
     def set_name(self) -> None:
         if self.custom_name is not None:
@@ -1009,9 +1051,9 @@ class Segment(Zone):
             name = f"{v}"
             if index > 0:
                 name = f"{name} {index + 1}"
-                
+
             list[k] = name
-        
+
         name = f"Room {self.segment_id}"
         if self.type == 0:
             name = f"{self.name}"
@@ -1049,7 +1091,7 @@ class Segment(Zone):
             attributes[ATTR_UNIQUE_ID] = self.unique_id
         if self.x is not None and self.y is not None:
             attributes[ATTR_X] = self.x
-            attributes[ATTR_Y] = self.y        
+            attributes[ATTR_Y] = self.y
         attributes[ATTR_LETTER] = self.letter
 
         return attributes
@@ -1206,31 +1248,18 @@ class MapImageDimensions:
 
     def to_img(self, point: Point) -> Point:
         return Point(
-            ((point.x - self.left) / self.grid_size) * self.scale
-            + self.padding[0] - self.crop[0],
-            (
-                (
-                    (self.height - 1) * self.grid_size
-                    - (point.y - self.top)
-                )
-                / self.grid_size
-            )
-            * self.scale
-            + self.padding[1] - self.crop[1],
+            ((point.x - self.left) / self.grid_size) * self.scale + self.padding[0] - self.crop[0],
+            (((self.height - 1) * self.grid_size - (point.y - self.top)) / self.grid_size) * self.scale
+            + self.padding[1]
+            - self.crop[1],
         )
 
     def to_coord(self, point: Point) -> Point:
         return Point(
             ((point.x - self.left) / self.grid_size),
-            (
-                (
-                    (self.height - 1) * self.grid_size
-                    - (point.y - self.top)
-                )
-                / self.grid_size
-            ),
+            (((self.height - 1) * self.grid_size - (point.y - self.top)) / self.grid_size),
         )
-    
+
     def __eq__(self: MapImageDimensions, other: MapImageDimensions) -> bool:
         return (
             other is not None
@@ -1278,7 +1307,7 @@ class MapData:
         self.robot_position: Optional[Point] = None
         # Map header: charger x, charger y, charger angle
         self.charger_position: Optional[Point] = None
-        self.optimized_charger_position: Optional[Point] = None        
+        self.optimized_charger_position: Optional[Point] = None
         # Map header: top, left, height, width, grid_size
         self.dimensions: Optional[MapImageDimensions] = None
         self.optimized_dimensions: Optional[MapImageDimensions] = None
@@ -1302,14 +1331,12 @@ class MapData:
         self.frame_map: Optional[bool] = None  # Data json: fsm
         self.docked: Optional[bool] = None  # Data json: oc
         self.clean_log: Optional[bool] = None  # Data json: iscleanlog
-        self.cleanset: Optional[Dict[str, List[int]]
-                                ] = None  # Data json: cleanset
+        self.cleanset: Optional[Dict[str, List[int]]] = None  # Data json: cleanset
         self.l2r: Optional[bool] = None  # Data json: l2r
         self.temporary_map: Optional[int] = None  # Data json: suw
         self.cleaned_area: Optional[int] = None  # Data json: cs
         self.recovery_map: Optional[bool] = None  # Data json: us
-        self.obstacles: Optional[List[Obstacle]
-                                   ] = None  # Data json: ai_obstacle
+        self.obstacles: Optional[List[Obstacle]] = None  # Data json: ai_obstacle
         self.new_map: Optional[bool] = None  # Data json: risp
         # Generated
         self.custom_name: Optional[str] = None  # Map list json: name
@@ -1400,8 +1427,12 @@ class MapData:
 
     def as_dict(self) -> Dict[str, Any]:
         attributes_list = {}
-        if self.charger_position is not None:            
-            attributes_list[ATTR_CHARGER] = self.optimized_charger_position if self.optimized_charger_position is not None else self.charger_position
+        if self.charger_position is not None:
+            attributes_list[ATTR_CHARGER] = (
+                self.optimized_charger_position
+                if self.optimized_charger_position is not None
+                else self.charger_position
+            )
         if self.segments is not None and (self.saved_map or self.saved_map_status == 2 or self.restored_map):
             attributes_list[ATTR_ROOMS] = {k: v.as_dict() for k, v in sorted(self.segments.items())}
         if not self.saved_map and self.robot_position is not None:
@@ -1413,8 +1444,7 @@ class MapData:
         if self.rotation is not None:
             attributes_list[ATTR_ROTATION] = self.rotation
         if self.last_updated is not None:
-            attributes_list[ATTR_UPDATED] = datetime.fromtimestamp(
-                self.last_updated)
+            attributes_list[ATTR_UPDATED] = datetime.fromtimestamp(self.last_updated)
         if self.used_times is not None:
             attributes_list[ATTR_USED_TIMES] = self.used_times
         if not self.saved_map and self.active_areas is not None:
@@ -1462,6 +1492,7 @@ class MapRendererConfig:
     obstacle: bool = True
     carpet: bool = True
 
+
 @dataclass
 class MapRendererColorScheme:
     floor: tuple[int] = (221, 221, 221, 255)
@@ -1493,40 +1524,40 @@ class MapRendererColorScheme:
     text_stroke: tuple[int] = (255, 255, 255, 100)
     invert: bool = False
     dark: bool = False
-    
+
 
 MAP_COLOR_SCHEME_LIST: Final = {
     "Dreame Light": MapRendererColorScheme(),
     "Dreame Dark": MapRendererColorScheme(
-        floor = (110, 110, 110, 255),
-        wall = (64, 64, 64, 255),
-        passive_segment = (100, 100, 100, 255),
-        new_segment = (0, 91, 244, 255),
-        no_go = (133, 0, 0, 128),
-        no_go_outline = (149, 0, 0, 200),
-        no_mop = (134, 0, 226, 128),
-        no_mop_outline = (115, 0, 157, 200),
-        virtual_wall = (133, 0, 0, 200),
-        active_area = (200, 200, 200, 80),
-        active_area_outline = (9, 54, 129, 200),
-        active_point = (200, 200, 200, 80),
-        active_point_outline = (9, 54, 129, 200),
-        path = (200, 200, 200, 255),
-        segment = (
+        floor=(110, 110, 110, 255),
+        wall=(64, 64, 64, 255),
+        passive_segment=(100, 100, 100, 255),
+        new_segment=(0, 91, 244, 255),
+        no_go=(133, 0, 0, 128),
+        no_go_outline=(149, 0, 0, 200),
+        no_mop=(134, 0, 226, 128),
+        no_mop_outline=(115, 0, 157, 200),
+        virtual_wall=(133, 0, 0, 200),
+        active_area=(200, 200, 200, 80),
+        active_area_outline=(9, 54, 129, 200),
+        active_point=(200, 200, 200, 80),
+        active_point_outline=(9, 54, 129, 200),
+        path=(200, 200, 200, 255),
+        segment=(
             [(13, 64, 155, 255), (0, 55, 150, 255)],
             [(143, 75, 7, 255), (117, 53, 0, 255)],
             [(0, 106, 176, 255), (0, 96, 158, 255)],
             [(76, 107, 36, 255), (44, 107, 36, 255)],
         ),
-        settings_icon_background = (255, 255, 255, 195),
-        dark = True,
-    ),        
+        settings_icon_background=(255, 255, 255, 195),
+        dark=True,
+    ),
     "Mijia Light": MapRendererColorScheme(
-        new_segment = (131, 178, 255, 255),
-        virtual_wall = (255, 45, 45, 200),
-        no_go = (230, 30, 30, 128),
-        no_go_outline = (255, 45, 45, 200),
-        segment = (
+        new_segment=(131, 178, 255, 255),
+        virtual_wall=(255, 45, 45, 200),
+        no_go=(230, 30, 30, 128),
+        no_go_outline=(255, 45, 45, 200),
+        segment=(
             [(131, 178, 255, 255), (105, 142, 204, 255)],
             [(245, 201, 66, 255), (196, 161, 53, 255)],
             [(103, 207, 229, 255), (82, 165, 182, 255)],
@@ -1534,65 +1565,61 @@ MAP_COLOR_SCHEME_LIST: Final = {
         ),
     ),
     "Mijia Dark": MapRendererColorScheme(
-        floor = (150, 150, 150, 255),
-        wall = (119, 133, 153, 255),
-        new_segment = (99, 148, 230, 255),
-        passive_segment = (100, 100, 100, 255),
-        no_go = (133, 0, 0, 128),
-        no_go_outline = (149, 0, 0, 200),
-        no_mop = (134, 0, 226, 128),
-        no_mop_outline = (115, 0, 157, 200),
-        virtual_wall = (133, 0, 0, 200),
-        active_area = (200, 200, 200, 80),
-        active_area_outline = (9, 54, 129, 200),
-        active_point = (200, 200, 200, 80),
-        active_point_outline = (9, 54, 129, 200),
-        path = (200, 200, 200, 255),
-        segment = (
+        floor=(150, 150, 150, 255),
+        wall=(119, 133, 153, 255),
+        new_segment=(99, 148, 230, 255),
+        passive_segment=(100, 100, 100, 255),
+        no_go=(133, 0, 0, 128),
+        no_go_outline=(149, 0, 0, 200),
+        no_mop=(134, 0, 226, 128),
+        no_mop_outline=(115, 0, 157, 200),
+        virtual_wall=(133, 0, 0, 200),
+        active_area=(200, 200, 200, 80),
+        active_area_outline=(9, 54, 129, 200),
+        active_point=(200, 200, 200, 80),
+        active_point_outline=(9, 54, 129, 200),
+        path=(200, 200, 200, 255),
+        segment=(
             [(108, 141, 195, 255), (76, 99, 137, 255)],
             [(188, 157, 62, 255), (133, 111, 44, 255)],
             [(88, 161, 176, 255), (62, 113, 123, 255)],
             [(195, 125, 87, 255), (138, 89, 62, 255)],
         ),
-        settings_icon_background = (255, 255, 255, 195),
-        dark = True,
+        settings_icon_background=(255, 255, 255, 195),
+        dark=True,
     ),
     "Grayscale": MapRendererColorScheme(
-        floor = (100, 100, 100, 255),
-        wall = (40, 40, 40, 255),
-        passive_segment = (50, 50, 50, 255),
-        new_segment = (80, 80, 80, 255),
-        no_go = (133, 0, 0, 128),
-        no_go_outline = (149, 0, 0, 200),
-        no_mop = (134, 0, 226, 128),
-        no_mop_outline = (115, 0, 157, 200),
-        virtual_wall = (133, 0, 0, 200),
-        active_area = (221, 221, 221, 80),
-        active_area_outline = (22, 103, 238, 200),
-        active_point = (221, 221, 221, 80),
-        active_point_outline = (22, 103, 238, 200),
-        path = (200, 200, 200, 255),
-        segment = (
+        floor=(100, 100, 100, 255),
+        wall=(40, 40, 40, 255),
+        passive_segment=(50, 50, 50, 255),
+        new_segment=(80, 80, 80, 255),
+        no_go=(133, 0, 0, 128),
+        no_go_outline=(149, 0, 0, 200),
+        no_mop=(134, 0, 226, 128),
+        no_mop_outline=(115, 0, 157, 200),
+        virtual_wall=(133, 0, 0, 200),
+        active_area=(221, 221, 221, 80),
+        active_area_outline=(22, 103, 238, 200),
+        active_point=(221, 221, 221, 80),
+        active_point_outline=(22, 103, 238, 200),
+        path=(200, 200, 200, 255),
+        segment=(
             [(90, 90, 90, 255), (95, 95, 95, 255)],
             [(80, 80, 80, 255), (85, 85, 85, 255)],
             [(70, 70, 70, 255), (75, 75, 75, 255)],
             [(60, 60, 60, 255), (65, 65, 65, 255)],
         ),
-        icon_background = (200, 200, 200, 200),
-        settings_icon_background = (255, 255, 255, 205),
-        text = (0, 0, 0, 255),
-        text_stroke = (0, 0, 0, 100),
-        invert = True,
-        dark = True,
+        icon_background=(200, 200, 200, 200),
+        settings_icon_background=(255, 255, 255, 205),
+        text=(0, 0, 0, 255),
+        text_stroke=(0, 0, 0, 100),
+        invert=True,
+        dark=True,
     ),
 }
 
-MAP_ICON_SET_LIST: Final = {
-    "Dreame": 0,
-    "Dreame Old": 1,
-    "Mijia": 2,
-    "Material": 3
-}
+MAP_ICON_SET_LIST: Final = {"Dreame": 0, "Dreame Old": 1, "Mijia": 2, "Material": 3}
+
 
 class MapRendererLayer(IntEnum):
     IMAGE = 0
@@ -1620,7 +1647,7 @@ class CleaningHistory:
     completed: bool = None
     water_tank: DreameVacuumWaterTank = None
 
-    
+
 @dataclass
 class Line:
     x: int | List[int] = None
@@ -1628,23 +1655,27 @@ class Line:
     ishorizontal: bool = False
     direction: int = 0
 
+
 @dataclass
 class CLine(Line):
     length: int = 0
     findEnd: bool = False
 
+
 @dataclass
-class ALine():
+class ALine:
     p0: Line = field(default_factory=lambda: Line(0, 0, False, 0))
     p1: Line = field(default_factory=lambda: Line(0, 0, False, 0))
     length: int = 0
+
 
 @dataclass
 class Paths:
     clines: List[CLine] = field(default_factory=lambda: [])
     alines: List[ALine] = field(default_factory=lambda: [])
     length: int = 0
-    
+
+
 @dataclass
 class Angle:
     lines: List[ALine] = field(default_factory=lambda: [])

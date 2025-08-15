@@ -6,7 +6,7 @@
   ],
   "config_flow": true,
   "documentation": "https://github.com/Tasshack/dreame-vacuum",
-  "iot_class": "local_polling",
+  "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Tasshack/dreame-vacuum/issues",
   "requirements": [
     "pillow",
@@ -15,8 +15,8 @@
     "requests",
     "pycryptodome",
     "python-miio",
-    "py-mini-racer",
+    "mini-racer",
     "paho-mqtt"
   ],
-  "version": "v1.0.5"
+  "version": "v1.0.6"
 }
