@@ -66,6 +66,14 @@
         },
         "description": "Logga in på Movahome Cloud."
       },
+      "trouver": {
+        "data": {
+          "username": "Användarnamn",
+          "password": "Löserord",
+          "country": "Server-land"
+        },
+        "description": "Logga in på Trouver Cloud."
+      },
       "devices": {
         "data": {
           "devices": "Enheter som stöds"

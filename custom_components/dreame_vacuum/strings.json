@@ -66,6 +66,14 @@
         },
         "description": "Log in to the Movahome cloud."
       },
+      "trouver": {
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "country": "Server country"
+        },
+        "description": "Log in to the Trouver cloud."
+      },
       "devices": {
         "data": {
           "devices": "Supported Devices"

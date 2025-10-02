@@ -66,6 +66,14 @@
         },
         "description": "Inicieu sessió al núvol de Movahome."
       },
+      "trouver": {
+        "data": {
+          "username": "Nom d'usuari",
+          "password": "Contrasenya",
+          "country": "País del servidor"
+        },
+        "description": "Inicieu sessió al núvol de Trouver."
+      },
       "devices": {
         "data": {
           "devices": "Dispositius suportats"

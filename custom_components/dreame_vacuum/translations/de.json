@@ -66,6 +66,14 @@
         },
         "description": "Melde dich bei der Movahome Cloud an."
       },
+      "trouver": {
+        "data": {
+          "username": "Benutzername",
+          "password": "Passwort",
+          "country": "Cloudserver"
+        },
+        "description": "Melde dich bei der Trouver Cloud an."
+      },
       "devices": {
         "data": {
           "devices": "Unterstützte Geräte"

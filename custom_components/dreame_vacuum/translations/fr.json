@@ -66,6 +66,14 @@
         },
         "description": "Connexion à Movahome cloud."
       },
+      "trouver": {
+        "data": {
+          "username": "Nom d'utilisateur",
+          "password": "Mot de passe",
+          "country": "Pays du serveur"
+        },
+        "description": "Connexion à Trouver cloud."
+      },
       "devices": {
         "data": {
           "devices": "Appareils pris en charge"

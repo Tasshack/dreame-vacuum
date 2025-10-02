@@ -66,6 +66,14 @@
         },
         "description": "登录Mova账号"
       },
+      "trouver": {
+        "data": {
+          "username": "用户名",
+          "password": "密码",
+          "country": "服务器所在区域"
+        },
+        "description": "登录Trouver账号"
+      },
       "devices": {
         "data": {
           "devices": "支持的设备"

@@ -66,6 +66,14 @@
         },
         "description": "Movahome 클라우드에 로그인하세요."
       },
+      "trouver": {
+        "data": {
+          "username": "사용자 이름",
+          "password": "비밀번호",
+          "country": "서버 국가"
+        },
+        "description": "Trouver 클라우드에 로그인하세요."
+      },
       "devices": {
         "data": {
           "devices": "지원되는 장치"

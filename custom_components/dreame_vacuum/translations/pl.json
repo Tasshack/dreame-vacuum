@@ -66,6 +66,14 @@
         },
         "description": "Zaloguj się do chmury Movahome."
       },
+      "trouver": {
+        "data": {
+          "username": "Nazwa użytkownika",
+          "password": "Hasło",
+          "country": "Kraj serwera"
+        },
+        "description": "Zaloguj się do chmury Trouver."
+      },
       "devices": {
         "data": {
           "devices": "Obsługiwane urządzenia"

@@ -28,7 +28,7 @@ DATA_JSON: Final = (
     "e3siY2xpZW50X2lkIjoiezB9IiwiZXZlbnRzIjpbe3sicGFyYW1zIjp7eyJ2ZXJzaW9uIjoiezF9IiwibW9kZWwiOiJ7Mn0iLCJkZXZpY2VfaWQiOiJ7MH0iLCJzZXNzaW9uX2lkIjp7M30sImVuZ2FnZW1lbnRfdGltZV9tc2VjIjoxMDB9fSwibmFtZSI6Ins0fSJ9fV19fQ=="
 )
 DREAME_STRINGS: Final = (
-    "H4sICAAAAAAEAGNsb3VkX3N0cmluZ3MuanNvbgCFU9tuGjEQ/RUUKaiVysIuiKWKeKAgBK2qbbikIVWFBtvLuvFla5sQ+vUd26Q0fek+2HPmPsc7364Srl1CDQPJEsdIdfXuKu1m/RzvxegkNuPrUi4/1fn16ieqJsFxu5RgXKUla2dJmrxvvOFfKq3YTYMXy0Y6SHpJetNYEhCs3U06nbc+KRl0dt18kO+yrN/P8/6OUNIbpGU3p4MSetkO0g50O1AOUujTspVi0AewnDQeZh/F5msq7rPpkcw2z8Xj9PZeLrLbWT1ap9OHO1UVxWQ/xIBO+FCwDtzBoiDBOmbWnKK844pOtASuENRG18y4E4pIwZx6lQBXaiOH82LZtATtQxCiuTeg3NadEKKTYaVhtto6/chU8xXy5hqsPWpDmwfLjAIZYpov2gBCJiBEH5RD3I7st+DgqrYOZ8iGJnRi1sbkl9J/MHuuOSq2PBr3XHvBMeX7DROfU/teWjhlnNUjT0VEkamLhYIDH8meOGEoCG7dXebtqtTRUKzG8wi0I14KcxuQ9uwf8N5HS02ZCN0RHN9eWsJqLaKlfyqm6FhLCS8dlVz4UH95As9v5WM9c3hVWEIb/3J75iah0Uns2v6DJ7HYCElFtPY0jPZMuYtpIQgC76AN/wUucrgKHLbCXzHWyjEEq1gc6lpwEhzbP2zwrrd4bM/t6KMSGujaiKgorE3pK23cOamfoOU3Lok0fEb812KlSZb0/r9Y338DqLVvecIDAAA="
+    "H4sICAAAAAAEAGNsb3VkX3N0cmluZ3MuanNvbgCNU21v2jAQ/iuoUtEmjZAERJiqfmCgqt00ZS3QlU4TOmyHePVLZhso+/U723SUfWo+2Pfc+z3O/ThLuHYJNQwkSxwj9dmHs6yXDwq870Z7sRifV3L6pSnOZ79RNQmOy6kE42otWTdPsuRj6x3/VmvFLlq8nLayYdJPsovWlIBg3V6Spu99UjJMV71iWKzyfDAoisGKUNIfZlWvoMMK+vkKshR6KVTDDAa06mQY9AksJ63H689i8T0TD/nVjlwvnsunq9sHeZffXjejeXb1eK/qspysLzEgDR8K1oHbWBQkWMfMnFOUV1zRiZbAFYLG6IYZt0cRKbihXiXAVdrIy5ty2rYE7ZcgRHttQLml2yNEJ8Mqw2y9dPqJqfYJ8uYGrN1pQ9sby4wCGWLaL9oAQiYgRG+UQ9yN7Hdg4+quDmfIhiZ0YtbG5MfS/zB7bjgqljwa11x7wTHl+w0TH1L7Xjo4ZZzVI09FRJGpo4WCAx/JtpwwFAS37j73dlXpaChn45sItCNeCnMbkPbgH/DaR0tNmQjdERzfHlvCah2ipX8qpuhYSwkvHVVc+FB/eQIPb+VjPXN41VhCG/9ya+YmodFJ7Nr+hyex2AhJRTT3NIzWTLmj6U4QBN5BG/4HXORwFjjshL9irJVjCGaxODSN4CQ4dn/Z4N0s8Vge2tE7JTTQuRFRUVqb0RNt3Dmpt9DxG5dEGr4ifrVYWZIn/bcsVkjmjN5smXmdbxZVJynTt+zqz79+P0MhFQQAAA=="
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -333,10 +333,14 @@ class DreameVacuumDreameHomeCloudProtocol:
 
         if self._strings is None:
             self._strings = json.loads(zlib.decompress(base64.b64decode(DREAME_STRINGS), zlib.MAX_WBITS | 32))
-            if self._account_type != "dreame":
+            if self._account_type == "mova":
                 self._strings[0] = self._strings[57]
                 self._strings[3] = self._strings[58]
                 self._strings[6] = f"{self._strings[6][:5]}2"
+            elif self._account_type == "trouver":
+                self._strings[0] = self._strings[59]
+                self._strings[3] = self._strings[60]
+                self._strings[6] = f"{self._strings[6][:5]}5"
 
         self._auth_failed = False
         try:

@@ -397,15 +397,29 @@
 | X10+                               | dreame.vacuum.p2114a |
 | X20+                               | xiaomi.vacuum.c102gl |
 
-## TROUVER
-| Name	    | Model  |
-|-------------|--------|
-| E10         | dreame.vacuum.r2438r |
-| E30 Ultra   | dreame.vacuum.r2427c |
-| E30 Ultra   | dreame.vacuum.r2427r |
-| LDS Finder  | dreame.vacuum.p2036  |
-| M1          | dreame.vacuum.r2380r |
-| S10         | dreame.vacuum.r2382r |
+## Trouver
+| Name	                  | Model  |
+|---------------------------|--------|
+| E10                       | dreame.vacuum.r2438r  |
+| E20 Plus                  | dreame.vacuum.r2459r  |
+| E20 Pro                   | dreame.vacuum.r2478r  |
+| E20 Pro                   | dreame.vacuum.r2478v  |
+| E20 Pro Plus              | dreame.vacuum.r2463r  |
+| E20s Pro                  | trouver.vacuum.r2569r |
+| E20s Pro Plus             | trouver.vacuum.r2567r |
+| E30 Aqua                  | trouver.vacuum.r2461r |
+| E30 Ultra                 | dreame.vacuum.r2427c  |
+| E30 Ultra                 | dreame.vacuum.r2427r  |
+| E40 Ultra                 | trouver.vacuum.r9504r |
+| LDS Finder                | dreame.vacuum.p2036   |
+| M1                        | dreame.vacuum.r2380r  |
+| MOBIUS 60                 | trouver.vacuum.r2599v |
+| P50 Pro Ultra             | trouver.vacuum.r2475r |
+| P50 Ultra                 | trouver.vacuum.r2519r |
+| S10                       | dreame.vacuum.r2382r  |
+| V50 Ultra complete        | trouver.vacuum.r2582r |
+| Z50 Ultra                 | trouver.vacuum.2430v  |
+| Z60 Ultra Roller Complete | trouver.vacuum.r9540v |
 
 
 # Unsupported Devices
