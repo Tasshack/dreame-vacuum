@@ -121,7 +121,7 @@
         "state": {
           "quiet": "Leise",
           "standard": "Standard",
-          "strong": "Stark",
+          "strong": "Max",
           "turbo": "Turbo"
         }
       },
@@ -262,22 +262,22 @@
       },
       "cleangenius_mode": {
         "state": {
-          "vacuum_and_mop": "Vakuum und Mopp",
-          "mop_after_vacuum": "Mop nach Vakuum"
+          "vacuum_and_mop": "Staubsaugen und Wischen",
+          "mop_after_vacuum": "Wischen nach dem Saugen"
         }
       },
       "washing_mode": {
         "state": {
-          "light": "Licht",
+          "light": "Leicht",
           "standard": "Standard",
-          "deep": "Tief",
-          "ultra_washing": "Ultra -Waschen"
+          "deep": "Tiefenreinigung",
+          "ultra_washing": "Ultra - Waschen"
         }
       },
       "water_temperature": {
         "state": {
           "normal": "Normal",
-          "mild": "Leicht",
+          "mild": "Lauwarm",
           "warm": "Warm",
           "hot": "Heiß"
         }
@@ -372,7 +372,7 @@
           "factory": "Factory",
           "error": "Fehler",
           "remote_control": "Ferngesteuert",
-          "sleeping": "schlafend",
+          "sleeping": "Schlafend",
           "self_test": "Selbsttest",
           "factory_test": "Werkstest",
           "standby": "Standby",
@@ -414,7 +414,7 @@
           "summon_clean_paused": "Zur Reinigung rufen wurde angehalten",
           "returning_to_install_mop": "Zurückkehren zum anbringen des Wischpads",
           "returning_to_remove_mop": "Zurückkehren zum entfernen des Wischpads",
-          "station_cleaning": "Stationreinigung",
+          "station_cleaning": "Stationsreinigung",
           "pet_finding": "Haustierfindung",
           "auto_cleaning_washing_paused": "Automatisch Reinigung waschen im Pause",
           "area_cleaning_washing_paused": "Reinigungsreinigung waschen pausieren",
