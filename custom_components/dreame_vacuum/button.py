@@ -221,7 +221,8 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:waves-arrow-up",
         entity_category=EntityCategory.DIAGNOSTIC,
         action_fn=lambda device: device.start_draining(True),
-        exists_fn=lambda description, device: device.capability.self_wash_base and device.capability.empty_water_tank,
+        exists_fn=lambda description, device: device.capability.self_wash_base
+        and (device.capability.empty_water_tank or device.capability.ultra_clean_mode),
     ),
     DreameVacuumButtonEntityDescription(
         key="base_station_self_repair",
