@@ -4446,8 +4446,7 @@ class DreameVacuumDevice:
     def start_draining(self, clean_water_tank=False) -> dict[str, Any] | None:
         """Start draining water if self-wash base is present."""
         if clean_water_tank:
-            if self.capability.empty_water_tank:
-                return self.start_self_wash_base("9,1")
+            return self.start_self_wash_base("9,1")
         if self.status.washing_available and self.status.drying_available:
             return self.start_self_wash_base("7,1")
 
