@@ -675,9 +675,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         super().__init__(coordinator)
 
         self._attr_device_class = DOMAIN
-        self._attr_name = (
-            f" {coordinator.device.name}"  ## Add whitespace to display entity on top at the device configuration page
-        )
+        self._attr_name = None
         self._attr_unique_id = f"{coordinator.device.mac}_" + DOMAIN
         self._attr_supported_features = (
             VacuumEntityFeature.SEND_COMMAND
