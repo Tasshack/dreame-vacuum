@@ -18,5 +18,8 @@
     "mini-racer",
     "paho-mqtt"
   ],
-  "version": "v1.0.6"
+  "version": "1.0.6",
+  "supported_models": [
+    "xiaomi.vacuum.c102gl"
+  ]
 }
