@@ -149,10 +149,10 @@
       },
       "cleaning_mode": {
         "state": {
-          "sweeping": "Vegen",
+          "sweeping": "Stofzuigen",
           "mopping": "Dweilen",
-          "sweeping_and_mopping": "Vegen en dweilen",
-          "mopping_after_sweeping": "Dweilen na vegen"
+          "sweeping_and_mopping": "Stofzuigen en dweilen",
+          "mopping_after_sweeping": "Dweilen na stofzuigen"
         }
       },
       "carpet_sensitivity": {
@@ -325,7 +325,7 @@
       "state": {
         "state": {
           "unknown": "Onbekend",
-          "sweeping": "Vegen",
+          "sweeping": "Stofzuigen",
           "charging": "Opladen",
           "error": "Fout",
           "idle": "Inactief",
@@ -336,7 +336,7 @@
           "washing": "Wassen",
           "returning_to_wash": "Terugkeren om te wassen",
           "building": "Bouwen",
-          "sweeping_and_mopping": "Vegen en dweilen",
+          "sweeping_and_mopping": "Stofzuigen en dweilen",
           "charging_completed": "Opladen voltooid",
           "upgrading": "Upgraden",
           "clean_summon": "Oproepen om schoon te maken",
