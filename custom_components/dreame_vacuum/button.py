@@ -247,7 +247,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
     ),
     DreameVacuumButtonEntityDescription(
         key="reload_shortcuts",
-        name="Reload Shourtcuts",
+        name="Reload Shortcuts",
         icon="mdi:motion-play-outline",
         entity_category=EntityCategory.DIAGNOSTIC,
         action_fn=lambda device: device.reload_shortcuts(),
