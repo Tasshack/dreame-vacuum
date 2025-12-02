@@ -66,6 +66,14 @@
         },
         "description": "登入追觅账号"
       },
+      "trouver": {
+        "data": {
+          "username": "使用者名称",
+          "password": "密码",
+          "country": "登入您的 Trouver 帳戶"
+        },
+        "description": "登入追觅账号"
+      },
       "devices": {
         "data": {
           "devices": "可支持的设备"

@@ -66,6 +66,14 @@
         },
         "description": "Přihlaste se do cloudu Movahome."
       },
+      "trouver": {
+        "data": {
+          "username": "Uživatelské jméno",
+          "password": "Heslo",
+          "country": "Země serveru"
+        },
+        "description": "Přihlaste se do cloudu Trouver."
+      },
       "devices": {
         "data": {
           "devices": "Podporovaná zařízení"

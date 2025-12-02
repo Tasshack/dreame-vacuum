@@ -66,6 +66,14 @@
         },
         "description": "Autentificați-vă în cloud-ul Movahome."
       },
+      "trouver": {
+        "data": {
+          "username": "Nume de utilizator",
+          "password": "Parolă",
+          "country": "Țara serverului"
+        },
+        "description": "Autentificați-vă în cloud-ul Trouver."
+      },
       "devices": {
         "data": {
           "devices": "Dispozitive Suportate"

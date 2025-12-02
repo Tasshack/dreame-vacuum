@@ -53,12 +53,14 @@ from .const import (
 ACCOUNT_TYPE_DREAME = "dreame"
 ACCOUNT_TYPE_MOVA = "mova"
 ACCOUNT_TYPE_MI = "mi"
+ACCOUNT_TYPE_TROUVER = "trouver"
 ACCOUNT_TYPE_LOCAL = "local"
 
 ACCOUNT_TYPE: Final = {
     "Dreamehome Account": ACCOUNT_TYPE_DREAME,
     "Xiaomi Home Account": ACCOUNT_TYPE_MI,
     "Movahome Account": ACCOUNT_TYPE_MOVA,
+    "Trouver Account": ACCOUNT_TYPE_TROUVER,
     "Manual Connection (Without map)": ACCOUNT_TYPE_LOCAL,
 }
 
@@ -210,7 +212,11 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         error = None
         if self.prefer_cloud or (self.token and len(self.token) == 32):
             try:
-                if self.account_type != ACCOUNT_TYPE_DREAME and self.account_type != ACCOUNT_TYPE_MOVA:
+                if (
+                    self.account_type != ACCOUNT_TYPE_DREAME
+                    and self.account_type != ACCOUNT_TYPE_MOVA
+                    and self.account_type != ACCOUNT_TYPE_TROUVER
+                ):
                     if self.protocol is not None:
                         self.protocol.disconnect()
 
@@ -311,6 +317,8 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             return await self.async_step_dreame(error=error)
         if self.account_type == ACCOUNT_TYPE_MOVA:
             return await self.async_step_mova(error=error)
+        if self.account_type == ACCOUNT_TYPE_TROUVER:
+            return await self.async_step_trouver(error=error)
         return await self.async_step_local(error=error)
 
     async def async_step_mi(
@@ -486,6 +494,16 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
 
         return await self.async_step_dreame(user_input, errors, error)
 
+    async def async_step_trouver(
+        self,
+        user_input: dict[str, Any] | None = None,
+        errors: dict[str, Any] | None = {},
+        error: str | None = None,
+    ) -> FlowResult:
+        """Configure a dreame vacuum device through the Trouver Cloud."""
+
+        return await self.async_step_dreame(user_input, errors, error)
+
     async def async_step_devices(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Handle Dreame Vacuum devices found."""
 
@@ -558,7 +576,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             default_color_scheme = "Dreame Light"
             default_icon_set = "Dreame"
             model = re.sub(r"[^0-9]", "", self.model)
-            if not (model.isnumeric() and int(model) >= 2215):
+            if (not (model.isnumeric() and int(model) >= 2215)) or self.models[self.model] == 3:
                 hidden_map_objects.append("name_background")
                 hidden_map_objects.append("name")
 
@@ -626,7 +644,11 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 self.name = device_info["name"]
             self.token = device_info["token"]
             self.device_id = device_info["did"]
-        elif self.account_type == ACCOUNT_TYPE_DREAME or self.account_type == ACCOUNT_TYPE_MOVA:
+        elif (
+            self.account_type == ACCOUNT_TYPE_DREAME
+            or self.account_type == ACCOUNT_TYPE_MOVA
+            or self.account_type == ACCOUNT_TYPE_TROUVER
+        ):
             if self.token is None:
                 self.token = " "
             if self.host is None:
@@ -651,7 +673,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 info = device_info[0][device_info[3][k]]
                 if info:
                     self.models[
-                        f"{"xiaomi" if info[0] == 1 else ACCOUNT_TYPE_MOVA if info[0] == 2 else ACCOUNT_TYPE_DREAME}.vacuum.{k}"
+                        f"{"xiaomi" if info[0] == 1 else ACCOUNT_TYPE_MOVA if info[0] == 2 else ACCOUNT_TYPE_TROUVER if info[0] == 3 else ACCOUNT_TYPE_DREAME}.vacuum.{k}"
                     ] = info[1]
 
     @property
@@ -676,10 +698,16 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 }
             )
 
+        country_list = ["eu", "cn", "us", "ru", "sg"]
+        if self.account_type == ACCOUNT_TYPE_MOVA:
+            country_list.pop(2)
+        elif self.account_type == ACCOUNT_TYPE_TROUVER:
+            country_list.pop(1)
+
         return vol.Schema(
             {
                 vol.Required(CONF_USERNAME, default=self.username): str,
                 vol.Required(CONF_PASSWORD, default=self.password): str,
-                vol.Required(CONF_COUNTRY, default=self.country): vol.In(["eu", "cn", "us", "ru", "sg"]),
+                vol.Required(CONF_COUNTRY, default=self.country): vol.In(country_list),
             }
         )

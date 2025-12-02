@@ -66,6 +66,14 @@
         },
         "description": "Acesse a nuvem Movahome."
       },
+      "trouver": {
+        "data": {
+          "username": "Usuário",
+          "password": "Senha",
+          "country": "País do servidor"
+        },
+        "description": "Acesse a nuvem Trouver."
+      },
       "devices": {
         "data": {
           "devices": "Dispositivos suportados"

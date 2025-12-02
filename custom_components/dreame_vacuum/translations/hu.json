@@ -66,6 +66,14 @@
         },
         "description": "Jelentkezzen be a Movahome felhőbe."
       },
+      "trouver": {
+        "data": {
+          "username": "Felhasználónév",
+          "password": "Jelszó",
+          "country": "Szerver régió"
+        },
+        "description": "Jelentkezzen be a Trouver felhőbe."
+      },
       "devices": {
         "data": {
           "devices": "Támogatott eszközök"

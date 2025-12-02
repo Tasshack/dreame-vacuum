@@ -66,6 +66,14 @@
         },
         "description": "Log in op de Movahome cloud."
       },
+      "trouver": {
+        "data": {
+          "username": "Gebruikersnaam",
+          "password": "Wachtwoord",
+          "country": "Serverland"
+        },
+        "description": "Log in op de Trouver cloud."
+      },
       "devices": {
         "data": {
           "devices": "Ondersteunde Apparaten"

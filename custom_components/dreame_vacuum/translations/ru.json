@@ -66,6 +66,14 @@
         },
         "description": "Подключитесь к облаку Movahome."
       },
+      "trouver": {
+        "data": {
+          "username": "Имя пользователя",
+          "password": "Пароль",
+          "country": "Регион/сервер"
+        },
+        "description": "Подключитесь к облаку Trouver."
+      },
       "donation": {
         "data": {
           "donated": "Было сделано пожертвование"

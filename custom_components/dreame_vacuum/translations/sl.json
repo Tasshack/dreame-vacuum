@@ -66,6 +66,14 @@
         },
         "description": "Prijavite se v Movahome oblak."
       },
+      "trouver": {
+        "data": {
+          "username": "Uporabniško ime",
+          "password": "Geslo",
+          "country": "Država strežnika"
+        },
+        "description": "Prijavite se v Trouver oblak."
+      },
       "devices": {
         "data": {
           "devices": "Podprte naprave"

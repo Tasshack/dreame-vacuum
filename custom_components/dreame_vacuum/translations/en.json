@@ -66,6 +66,14 @@
         },
         "description": "Log in to the Movahome cloud."
       },
+      "trouver": {
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "country": "Server country"
+        },
+        "description": "Log in to the Trouver cloud."
+      },
       "devices": {
         "data": {
           "devices": "Supported Devices"
@@ -84,7 +92,7 @@
           "color_scheme": "Map color scheme",
           "icon_set": "Map icon set",
           "notify": "Notification",
-          "hidden_map_objects": "Map objects",
+          "hidden_map_objects": "Hidden Map objects",
           "low_resolution": "Low resolution map",
           "square": "Square map"
         }
@@ -102,7 +110,7 @@
           "color_scheme": "Map color scheme",
           "icon_set": "Map icon set",
           "notify": "Notification",
-          "hidden_map_objects": "Map objects",
+          "hidden_map_objects": "Hidden Map objects",
           "low_resolution": "Low resolution map",
           "square": "Square map",
           "configuration_type": "Configuration type",

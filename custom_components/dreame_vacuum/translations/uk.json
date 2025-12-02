@@ -66,6 +66,14 @@
         },
         "description": "Увійдіть у хмару Movahome."
       },
+      "trouver": {
+        "data": {
+          "username": "Ім'я користувача",
+          "password": "Пароль",
+          "country": "Країна сервера"
+        },
+        "description": "Увійдіть у хмару Trouver."
+      },
       "devices": {
         "data": {
           "devices": "Підтримувані пристрої"

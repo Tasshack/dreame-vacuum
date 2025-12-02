@@ -66,6 +66,14 @@
         },
         "description": "Effettua il login su Movahome cloud."
       },
+      "trouver": {
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "country": "Località del Server"
+        },
+        "description": "Effettua il login su Trouver cloud."
+      },
       "devices": {
         "data": {
           "devices": "Dispositivi Supportati"
