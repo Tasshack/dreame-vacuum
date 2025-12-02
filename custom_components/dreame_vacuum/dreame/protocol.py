@@ -1026,7 +1026,7 @@ class DreameVacuumMiHomeCloudProtocol:
         return self._logged_in
 
     def verify_code(self, code) -> bool:
-        path = "identity/authStart"
+        path = "fe/service/identity/authStart"
         if code and self.verification_url and self._session and path in self.verification_url:
             try:
                 response = self._session.get(
