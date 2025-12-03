@@ -66,14 +66,6 @@
         },
         "description": "Melde dich bei der Movahome Cloud an."
       },
-      "trouver": {
-        "data": {
-          "username": "Benutzername",
-          "password": "Passwort",
-          "country": "Cloudserver"
-        },
-        "description": "Melde dich bei der Trouver Cloud an."
-      },
       "devices": {
         "data": {
           "devices": "Unterstützte Geräte"
@@ -213,10 +205,7 @@
         "state": {
           "none": "Kein Material",
           "tile": "Bodenfliese",
-          "wood": "Holzboden",
-          "low_pile_carpet": "Niedrigfloriger Teppich",
-          "medium_pile_carpet": "Mittelfloriger Teppich",
-          "carpet": "Teppich"
+          "wood": "Holzboden"
         }
       },
       "voice_assistant_language": {
