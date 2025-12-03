@@ -68,9 +68,7 @@
           "color_scheme": "Schema colori della mappa",
           "icon_set": "Set di icone",
           "notify": "Notifica",
-          "map_objects": "Oggetti della mappa",
-          "low_resolution": "Mappa a bassa risoluzione",
-          "square": "Mappa quadrata"
+          "hidden_map_objects": "Oggetti mappa nascosti"
         }
       },
       "reauth_confirm": {
@@ -86,9 +84,7 @@
           "color_scheme": "Schema colori della mappa",
           "icon_set": "Set di icone",
           "notify": "Notifica",
-          "map_objects": "Oggetti della mappa",
-          "low_resolution": "Mappa a bassa risoluzione",
-          "square": "Mappa quadrata",
+          "hidden_map_objects": "Oggetti mappa nascosti",
           "configuration_type": "Tipo di configurazione",
           "prefer_cloud": "Preferisci la connessione cloud",
           "donated": "Ho fatto una donazione"

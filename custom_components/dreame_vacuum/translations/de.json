@@ -68,9 +68,7 @@
           "color_scheme": "Farbschema der Karte",
           "icon_set": "Kartensymbol gesetzt",
           "notify": "Benachrichtigung",
-          "map_objects": "Karten-Objekte",
-          "low_resolution": "Karte mit niedriger Auflösung",
-          "square": "Quadratische Karte"
+          "hidden_map_objects": "Versteckte Kartenobjekte"
         }
       },
       "reauth_confirm": {
@@ -86,9 +84,7 @@
           "color_scheme": "Farbschema der Karte",
           "icon_set": "Kartensymbol gesetzt",
           "notify": "Benachrichtigung",
-          "map_objects": "Karten-Objekte",
-          "low_resolution": "Karte mit niedriger Auflösung",
-          "square": "Quadratische Karte",
+          "hidden_map_objects": "Versteckte Kartenobjekte",
           "configuration_type": "Konfigurationstyp",
           "prefer_cloud": "Cloud-Verbindung bevorzugen",
           "donated": "Ich habe gespendet"
@@ -105,7 +101,7 @@
         "state": {
           "quiet": "Leise",
           "standard": "Standard",
-          "strong": "Stark",
+          "strong": "Max",
           "turbo": "Turbo"
         }
       },
@@ -249,7 +245,7 @@
           "factory": "Factory",
           "error": "Fehler",
           "remote_control": "Ferngesteuert",
-          "sleeping": "schlafend",
+          "sleeping": "Schlafend",
           "self_test": "Selbsttest",
           "factory_test": "Werkstest",
           "standby": "Standby",
@@ -289,7 +285,7 @@
           "cruising_point": "Eine Fahrt zu einem Punkt",
           "cruising_point_paused": "Die Fahrt zu einem Punkt wurde unterbrochen",
           "summon_clean_paused": "Zur Reinigung rufen wurde angehalten",
-          "returning_to_install_mop": "Zurückkehren zum Installieren des Wischpads",
+          "returning_to_install_mop": "Zurückkehren zum Anbringen des Wischpads",
           "returning_to_remove_mop": "Zurückkehren zum Entfernen des Wischpads"
         }
       },

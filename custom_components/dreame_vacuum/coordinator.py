@@ -373,7 +373,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 self.hass.config_entries.async_update_entry(self._entry, data=data)
         elif self.device.auth_failed:
             ## Reload entry to trigger reauth and unload
-            self._entry.async_schedule_reload(self._entry.entry_id)
+            self.hass.config_entries.async_schedule_reload(self._entry.entry_id)
             return
 
         self._available = self.device.available

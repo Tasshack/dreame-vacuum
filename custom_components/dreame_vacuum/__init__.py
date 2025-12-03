@@ -5,6 +5,17 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from .const import DOMAIN
 from .coordinator import DreameVacuumDataUpdateCoordinator
+import warnings
+
+# Suppress python-miio FutureWarning on Python 3.13
+warnings.filterwarnings(
+    "ignore",
+    category=FutureWarning,
+    module="miio.miot_device",
+)
+
+# Suppress RuntimeWarning overflow encountered in scalar add
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 PLATFORMS = (
     Platform.VACUUM,

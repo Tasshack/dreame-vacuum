@@ -295,7 +295,7 @@ class DreameVacuumCloudProtocol:
         return self._logged_in
 
     def verify_code(self, code) -> bool:
-        path = "identity/authStart"
+        path = "fe/service/identity/authStart"
         if code and self.verification_url and self._session and path in self.verification_url:
             try:
                 response = self._session.get(
@@ -443,8 +443,8 @@ class DreameVacuumCloudProtocol:
 
     def get_supported_devices(self, models, host=None, mac=None) -> Any:
         response = self.get_devices()
-        devices = {}
-        unsupported_devices = {}
+        devices = []
+        unsupported_devices = []
         if response:
             all_devices = list(
                 filter(
@@ -453,41 +453,40 @@ class DreameVacuumCloudProtocol:
                 )
             )
             for device in all_devices:
-                name = device["name"]
                 model = device["model"]
-                list_name = f"{name} - {model}"
                 if model in models:
-                    devices[list_name] = device
+                    devices.append(device)
 
                     if (host is not None and device.get("localip") == host) or (
                         mac is not None and device.get("mac") == mac
                     ):
-                        devices = {list_name: device}
+                        devices = [device]
                         break
                 elif ".vacuum." in model:
-                    unsupported_devices[list_name] = device
+                    unsupported_devices.append(device)
 
             if mac is None:
                 try:
                     session_id = random.randint(1000, 100000000)
                     for device in all_devices:
                         model = device["model"]
-                        device_id = hashlib.sha256(
-                            (device["mac"].replace(":", "").lower()).encode(encoding="UTF-8")
-                        ).hexdigest()
-                        requests.post(
-                            base64.b64decode(DATA_URL),
-                            data=base64.b64decode(DATA_JSON)
-                            .decode("utf-8")
-                            .format(
-                                device_id,
-                                VERSION,
-                                model,
-                                session_id,
-                                "device" if model in models else "unsupported_device",
-                            ),
-                            timeout=5,
-                        )
+                        if ".vacuum." in model:
+                            device_id = hashlib.sha256(
+                                (device["mac"].replace(":", "").lower()).encode(encoding="UTF-8")
+                            ).hexdigest()
+                            requests.post(
+                                base64.b64decode(DATA_URL),
+                                data=base64.b64decode(DATA_JSON)
+                                .decode("utf-8")
+                                .format(
+                                    device_id,
+                                    VERSION,
+                                    model,
+                                    session_id,
+                                    "device" if model in models else "unsupported_device",
+                                ),
+                                timeout=5,
+                            )
                 except:
                     pass
         return devices, unsupported_devices

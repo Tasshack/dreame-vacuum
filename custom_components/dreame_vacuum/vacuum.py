@@ -7,6 +7,7 @@ import importlib
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity
 
+from homeassistant.helpers.importlib import async_import_module
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.core import HomeAssistant, callback
@@ -107,7 +108,7 @@ SUPPORT_DREAME = (
 
 
 STATE_CODE_TO_STATE: Final = {
-    DreameVacuumState.UNKNOWN: STATE_UNKNOWN,
+    DreameVacuumState.UNKNOWN: STATE_IDLE,
     DreameVacuumState.SWEEPING: STATE_CLEANING,
     DreameVacuumState.IDLE: STATE_IDLE,
     DreameVacuumState.PAUSED: STATE_PAUSED,
@@ -406,27 +407,33 @@ async def async_setup_entry(
         DreameVacuum.async_reset_consumable.__name__,
     )
 
-    async_add_entities([DreameVacuum(coordinator)])
+    activity_class = None
+    ## For backwards compatibility
+    try:
+        module = await async_import_module(hass, f"homeassistant.components.vacuum")
+        activity_class = module.VacuumActivity
+    except:
+        pass
+
+    async_add_entities([DreameVacuum(coordinator, activity_class)])
 
 
 class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     """Representation of a Dreame Vacuum cleaner robot."""
 
-    def __init__(self, coordinator: DreameVacuumDataUpdateCoordinator) -> None:
+    def __init__(self, coordinator: DreameVacuumDataUpdateCoordinator, activity_class) -> None:
         """Initialize the button entity."""
         super().__init__(coordinator)
 
         self._attr_supported_features = SUPPORT_DREAME
         self._attr_device_class = DOMAIN
-        self._attr_name = coordinator.device.name
+        self._attr_name = (
+            f" {coordinator.device.name}"  ## Add whitespace to display entity on top at the device configuration page
+        )
+        self._attr_has_entity_name = False
         self._attr_unique_id = f"{coordinator.device.mac}_" + DOMAIN
 
-        ## For backwards compatibility
-        try:
-            module = importlib.import_module("homeassistant.components.vacuum")
-            self._activity_class = module.VacuumActivity
-        except:
-            self._activity_class = None
+        self._activity_class = activity_class
 
         self._set_attrs()
 
@@ -475,7 +482,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
 
         self._attr_extra_state_attributes = self.device.status.attributes
         self._attr_status = self.device.status.status_name.replace("_", " ").capitalize()
-        self._vacuum_state = STATE_CODE_TO_STATE.get(self.device.status.state, STATE_UNKNOWN)
+        self._vacuum_state = STATE_CODE_TO_STATE.get(self.device.status.state, STATE_IDLE)
         if self._activity_class is None:
             self._attr_state = self._vacuum_state
 

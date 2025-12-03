@@ -50,6 +50,8 @@ class DreameVacuumEntityDescription:
 class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
     """Defines a base Dreame Vacuum entity."""
 
+    _attr_has_entity_name = True
+  
     def __init__(
         self,
         coordinator: DreameVacuumDataUpdateCoordinator,
@@ -95,7 +97,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
             if self.entity_description.icon_fn is not None:
                 self._attr_icon = self.entity_description.icon_fn(self.native_value, self.device)
 
-            self._attr_name = f"{self.device.name} {self.entity_description.name}"
+            self._attr_name = self.entity_description.name
             self._attr_unique_id = f"{self.device.mac}_{self.entity_description.key}"
 
     @callback

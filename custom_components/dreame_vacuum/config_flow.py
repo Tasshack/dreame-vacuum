@@ -162,19 +162,19 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
                     {
                         vol.Required(
                             CONF_PREFER_CLOUD,
-                            default=self._config_entry.options.get(CONF_PREFER_CLOUD, True),
+                            default=self._config_entry.options.get(CONF_PREFER_CLOUD, False),
                         ): bool,
                     }
                 )
 
-            data_schema = data_schema.extend(
-                {
-                    vol.Required(
-                        CONF_DONATED,
-                        default=False,
-                    ): bool
-                }
-            )
+        data_schema = data_schema.extend(
+            {
+                vol.Required(
+                    CONF_DONATED,
+                    default=self._config_entry.options.get(CONF_DONATED, False),
+                ): bool
+            }
+        )
 
         return self.async_show_form(
             step_id="init",
@@ -362,6 +362,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
     ) -> FlowResult:
         """Configure a dreame vacuum device through the Miio Cloud."""
 
+        description_placeholders = {}
         if user_input is not None:
             username = user_input.get(CONF_USERNAME)
             password = user_input.get(CONF_PASSWORD)
@@ -397,13 +398,19 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 errors["base"] = "credentials_incomplete"
         elif error:
             errors["base"] = error
+            devices = ""
+            if error == "no_devices" and self.unsupported_devices:
+                for device in self.unsupported_devices:
+                    devices = f"{devices} ({device.get("model", "unknown")})"
+
+            description_placeholders = {"devices": devices}
         else:
             errors = {}
 
         return self.async_show_form(
             step_id=self.account_type,
             data_schema=self.login_schema,
-            description_placeholders={"devices": ""},
+            description_placeholders=description_placeholders,
             errors=errors,
         )
 
@@ -476,11 +483,11 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                     return await self.async_step_login(error="no_devices")
 
                 self.devices = {}
-                for k, v in supported_devices.items():
+                for device in supported_devices:
                     if self.reauth or not self.hass.config_entries.async_entry_for_domain_unique_id(
-                        self.handler, format_mac(v["mac"])
+                        self.handler, format_mac(device["mac"])
                     ):
-                        self.devices[k] = v
+                        self.devices[f"{device.get("name", device["model"])} - {device["mac"]}"] = device
 
                 if not self.devices:
                     if self.unsupported_devices:

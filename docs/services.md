@@ -298,10 +298,13 @@ Set customized room cleaning parameters on current map.
 
 **Examples:**
 
-- Set room 1 fan speed to quiet, water level to low, cleaning times to 2 and room 2 fan speed to turbo, water level to medium, repeats to 1
+- Set room 1 fan speed to quiet, water level to low, cleaning times to 2 and room 5 fan speed to turbo, water level to medium, repeats to 1
     ```yaml
     service: dreame_vacuum.vacuum_set_custom_cleaning
     data:
+        segment_id: 
+          - 1
+          - 5
         suction_level: 
           - 0
           - 3

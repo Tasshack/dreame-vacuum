@@ -999,7 +999,7 @@ class DreameMapVacuumMapManager:
             self._device_running = running
             if self._device_docked != docked:
                 if self._vslam_map and docked and self._map_data and self._map_data.saved_map_status == 1:
-                    saved_map_data = self._map_manager.selected_map
+                    saved_map_data = self.selected_map
                     self._map_data.segments = copy.deepcopy(saved_map_data.segments)
                     self._map_data.data = copy.deepcopy(saved_map_data.data)
                     self._map_data.pixel_type = copy.deepcopy(saved_map_data.pixel_type)

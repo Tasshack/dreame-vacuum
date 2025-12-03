@@ -68,9 +68,7 @@
           "color_scheme": "Map color scheme",
           "icon_set": "Map icon set",
           "notify": "Notification",
-          "map_objects": "Map objects",
-          "low_resolution": "Low resolution map",
-          "square": "Square map"
+          "hidden_map_objects": "Hidden map objects"
         }
       },
       "reauth_confirm": {
@@ -86,9 +84,7 @@
           "color_scheme": "Map color scheme",
           "icon_set": "Map icon set",
           "notify": "Notification",
-          "map_objects": "Map objects",
-          "low_resolution": "Low resolution map",
-          "square": "Square map",
+          "hidden_map_objects": "Hidden map objects",
           "configuration_type": "Configuration type",
           "prefer_cloud": "Prefer cloud connection",
           "donated": "Donated"

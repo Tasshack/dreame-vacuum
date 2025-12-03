@@ -68,9 +68,7 @@
           "color_scheme": "Palette de couleurs de la carte",
           "icon_set": "Jeu d'icônes de la carte",
           "notify": "Notification",
-          "map_objects": "Objets de la carte",
-          "low_resolution": "Carte basse résolution",
-          "square": "Carte carrée"
+          "hidden_map_objects": "Objets de carte cachés"
         }
       },
       "reauth_confirm": {
@@ -86,9 +84,7 @@
           "color_scheme": "Palette de couleurs de la carte",
           "icon_set": "Jeu d'icônes de la carte",
           "notify": "Notification",
-          "map_objects": "Objets de la carte",
-          "low_resolution": "Carte basse résolution",
-          "square": "Carte carrée",
+          "hidden_map_objects": "Objets de carte cachés",
           "configuration_type": "Type de configuration",
           "prefer_cloud": "Privilégier la connexion cloud",
           "donated": "J’ai fait un don"
