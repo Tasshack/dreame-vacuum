@@ -50,6 +50,30 @@
         },
         "description": "## È richiesta la verifica del captcha.\n![captcha](data:image/jpeg;base64,{img})"
       },
+      "dreame": {
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "country": "Località del Server"
+        },
+        "description": "Effettua il login su Dreamehome cloud."
+      },
+      "mova": {
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "country": "Località del Server"
+        },
+        "description": "Effettua il login su Movahome cloud."
+      },
+      "trouver": {
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "country": "Località del Server"
+        },
+        "description": "Effettua il login su Trouver cloud."
+      },
       "devices": {
         "data": {
           "devices": "Dispositivi Supportati"
@@ -68,7 +92,7 @@
           "color_scheme": "Schema colori della mappa",
           "icon_set": "Set di icone",
           "notify": "Notifica",
-          "map_objects": "Oggetti della mappa",
+          "hidden_map_objects": "Oggetti mappa nascosti",
           "low_resolution": "Mappa a bassa risoluzione",
           "square": "Mappa quadrata"
         }
@@ -86,7 +110,7 @@
           "color_scheme": "Schema colori della mappa",
           "icon_set": "Set di icone",
           "notify": "Notifica",
-          "map_objects": "Oggetti della mappa",
+          "hidden_map_objects": "Oggetti mappa nascosti",
           "low_resolution": "Mappa a bassa risoluzione",
           "square": "Mappa quadrata",
           "configuration_type": "Tipo di configurazione",
@@ -142,7 +166,11 @@
         "state": {
           "avoidance": "Evitare",
           "adaptation": "Adattamento",
-          "remove_mop": "Rimuovi la scopa"
+          "remove_mop": "Rimuovi la scopa",
+          "adaptation_without_route": "Adattamento senza percorso",
+          "vacuum_and_mop": "Aspira e lava",
+          "ignore": "Ignorare",
+          "cross": "Attraversare"
         }
       },
       "mop_wash_level": {
@@ -174,6 +202,13 @@
           "weekly": "settimanalmente"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Standard",
+          "intelligent": "Intelligente",
+          "high": "Alto"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "Nessuno",
@@ -192,6 +227,97 @@
       "order": {
         "state": {
           "not_set": "Non impostato"
+        }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "Per zona",
+          "by_time": "Col tempo",
+          "by_room": "Per stanza"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
+          "by_room": "Per stanza"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Spento",
+          "standard": "Standard",
+          "high_frequency": "Alta frequenza",
+          "low_frequency": "Bassa frequenza"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Verticale",
+          "horizontal": "Orizzontale"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Visibile",
+          "hidden": "Nascosto"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Spento",
+          "routine_cleaning": "Pulizia ordinaria",
+          "deep_cleaning": "Pulizia profonda"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Vuoto e MOP",
+          "mop_after_vacuum": "MOP dopo il vuoto"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Leggero",
+          "standard": "Standard",
+          "deep": "Profondo",
+          "ultra_washing": "Lavaggio ultra"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normale",
+          "mild": "Blando",
+          "warm": "Caldo",
+          "hot": "Caldo"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Spento",
+          "in_deep_mode": "In modalità profonda",
+          "in_all_modes": "In tutte le modalità"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Spento",
+          "in_deep_mode": "In modalità profonda",
+          "in_all_modes": "In tutte le modalità"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "Presto",
+          "standard": "Standard",
+          "intensive": "Intensivo",
+          "deep": "Profondo"
+        }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Spento",
+          "standard": "Standard",
+          "intensive": "Intensivo",
+          "deep": "Profondo"
         }
       }
     },
@@ -227,6 +353,11 @@
           "human_following": "Seguito umano",
           "spot_cleaning": "Pulizia delle macchie",
           "returning_auto_empty": "Ritorno allo svuotamento automatico",
+          "waiting_for_task": "In attesa del compito",
+          "station_cleaning": "Pulizia della stazione",
+          "returning_to_drain": "Ritornando allo scarico",
+          "draining": "Drenante",
+          "auto_water_draining": "Scarico automatico dell'acqua",
           "shortcut": "Scorciatoia",
           "monitoring": "Monitoraggio",
           "monitoring_paused": "Monitoraggio in pausa"
@@ -290,7 +421,12 @@
           "cruising_point_paused": "La crociera fino a un punto si fermò",
           "summon_clean_paused": "Evoca per pulire in pausa",
           "returning_to_install_mop": "Sta tornando a installare il mocio",
-          "returning_to_remove_mop": "Sta tornando per rimuovere il mocio"
+          "returning_to_remove_mop": "Sta tornando per rimuovere il mocio",
+          "station_cleaning": "Pulizia della stazione",
+          "pet_finding": "Trovamento degli animali domestici",
+          "auto_cleaning_washing_paused": "Il lavaggio della pulizia automatica si è fermata",
+          "area_cleaning_washing_paused": "Il lavaggio della pulizia della zona in pausa",
+          "custom_cleaning_washing_paused": "Lavaggio di pulizia personalizzato in pausa"
         }
       },
       "water_tank": {
@@ -315,7 +451,9 @@
         "state": {
           "unknown": "Sconosciuto",
           "not_available": "Non disponibile",
-          "available": "Disponibile"
+          "available": "Disponibile",
+          "over_use": "Uso eccessivo",
+          "never": "Mai"
         }
       },
       "auto_empty_status": {
@@ -405,7 +543,14 @@
           "dirty_tank_level": "Il serbatoio dell'acqua sporca è quasi pieno, controlla il livello per tempo.",
           "washboard_level": "Il livello dell'acqua nella base di lavaggio è troppo elevato.",
           "no_mop_in_station": "Mop pad non è nella stazione.",
-          "dust_bag_full": "Il sacchetto per la polvere è pieno o le prese d'aria sono ostruite."
+          "dust_bag_full": "Il sacchetto per la polvere è pieno o le prese d'aria sono ostruite.",
+          "self_test_failed": "Scarico anomalo dell'acqua dal serbatoio dell'acqua pulita dei moduli dell'acqua superiore e inferiore.",
+          "mop_install_failed": "L'installazione del tampone per la pulizia non è riuscita.",
+          "low_battery_turn_off": "Batteria scarica. ",
+          "dirty_tank_not_installed": "Il serbatoio dell'acqua usata del robot non è installato.",
+          "robot_in_hidden_room": "Zona nascosta. ",
+          "washboard_not_working": "Washboard smette di funzionare.",
+          "return_to_charge_failed": "Impossibile tornare alla carica."
         }
       },
       "charging_status": {
@@ -467,6 +612,52 @@
           "draining_failed": "Scarico fallito"
         }
       },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Sconosciuto",
+          "not_available": "Non disponibile",
+          "not_installed": "Non installato",
+          "low_water": "Acqua bassa",
+          "installed": "Installato"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Sconosciuto",
+          "installed": "Installato",
+          "not_installed_or_full": "Non installato o pieno"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Sconosciuto",
+          "installed": "Installato",
+          "not_installed": "Non installato",
+          "check": "Controllo"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Sconosciuto",
+          "installed": "Installato",
+          "disabled": "Disabile",
+          "low_detergent": "Detersivo basso"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Sconosciuto",
+          "disabled": "Disabile",
+          "enabled": "Abilitato"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Sconosciuto",
+          "idle": "Oziare",
+          "draining": "Drenaggio"
+        }
+      },
       "task_type": {
         "state": {
           "standard": "Pulizia ordinaria",
@@ -482,7 +673,11 @@
           "partial": "Pulizia parziale",
           "partial_paused": "Pulizia parziale sospesa",
           "summon": "Chiamare la pulizia",
-          "summon_paused": "Richiamare la pulizia in pausa"
+          "summon_paused": "Richiamare la pulizia in pausa",
+          "water_stain": "Pulizia delle macchie d'acqua",
+          "water_stain_paused": "Pulizia delle macchie d'acqua in pausa",
+          "boosted_edge_cleaning": "Pulizia del bordo potenziata",
+          "hair_compressing": "Compressione dei capelli"
         }
       }
     }
@@ -554,24 +749,6 @@
         }
       }
     },
-    "vacuum_set_dnd": {
-      "name": "Set DnD",
-      "description": "Enable/disable DnD functionality and/or setting its start and end time.",
-      "fields": {
-        "dnd_enabled": {
-          "name": "DnD Enabled",
-          "description": "Enable or disable DnD feature."
-        },
-        "dnd_start": {
-          "name": "DnD Start",
-          "description": "Start time of DnD feature."
-        },
-        "dnd_end": {
-          "name": "Dnd End",
-          "description": "End time of DnD feature."
-        }
-      }
-    },
     "vacuum_goto": {
       "name": "Vai a",
       "description": "Vai alle coordinate della mappa e fermati.",
@@ -593,6 +770,16 @@
         "points": {
           "name": "Punti",
           "description": "Elenco delle coordinate del percorso."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "Avvia scorciatoia",
+      "description": "Avvia un'attività di scorciatoia. (Solo su dispositivi supportati)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID scorciatoia",
+          "description": "ID della scorciatoia."
         }
       }
     },
@@ -712,7 +899,7 @@
         },
         "file_url": {
           "name": "URL del file",
-          "description": "URL del file bz2.gz o tar.gz salvato"
+          "description": "URL del file tbz2.gz o tar.gz salvato"
         }
       }
     },
@@ -808,6 +995,28 @@
         }
       }
     },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Imposta pulizia personalizzata tappeto",
+      "description": "Imposta la configurazione di pulizia personalizzata per i tappeti. (Solo su dispositivi supportati)",
+      "fields": {
+        "id": {
+          "name": "ID tappeto",
+          "description": "ID dei tappeti."
+        },
+        "type": {
+          "name": "Tipo di oggetto",
+          "description": "Tipo dell'oggetto con l'ID. (0 = Tappeto rilevato automaticamente, 1 = Tappeto creato manualmente, 2 = Tappeto della stanza (se supportato))"
+        },
+        "carpet_cleaning": {
+          "name": "Pulizia tappeto",
+          "description": "Impostazione personalizzata della pulizia per ogni tappeto."
+        },
+        "carpet_settings": {
+          "name": "Impostazioni tappeto",
+          "description": "Impostazioni personalizzate per ogni tappeto con un array di opzioni abilitate."
+        }
+      }
+    },
     "vacuum_set_restricted_zone": {
       "name": "Imposta zona riservata",
       "description": "Definisci muri virtuali, zone limitate e/o zone senza spazzolone.",
@@ -864,11 +1073,11 @@
         }
       }
     },
-    "vacuum_set_pathway": {
+    "vacuum_set_virtual_threshold": {
       "name": "Imposta il percorso",
       "description": "Definire percorsi.",
       "fields": {
-        "pathways": {
+        "virtual_thresholds": {
           "name": "Percorsi",
           "description": "Coordinate della linea del percorso."
         }
@@ -895,10 +1104,6 @@
         "y": {
           "name": "Y",
           "description": "Y Coordinata dell'ostacolo."
-        },
-        "obstacle_type": {
-          "name": "Tipo di ostacolo",
-          "description": "Tipo di ostacolo che verrà ignorato."
         },
         "obstacle_ignored": {
           "name": "Ostacolo ignorato",

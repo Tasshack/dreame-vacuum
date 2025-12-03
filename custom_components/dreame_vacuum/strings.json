@@ -1,16 +1,19 @@
 {
   "config": {
     "abort": {
-      "already_configured": "Device is already configured",
-      "cannot_connect": "Failed to connect."
+      "already_configured": "[%key:common::config_flow::abort::already_configured_account%]",
+      "cannot_connect": "Failed to connect.",
+      "reauth_successful": "[%key:common::config_flow::abort::reauth_successful%]"
     },
     "error": {
       "cannot_connect": "Failed to connect.",
       "unsupported": "Device is not supported",
       "wrong_token": "Checksum error, wrong token",
+      "2fa_failed": "Verification failed.",
+      "wrong_captcha": "Wrong captcha.",
       "credentials_incomplete": "Credentials incomplete, please fill in username, password and country",
-      "login_error": "Could not login to Xiaomi Miio Cloud, check the credentials.",
-      "no_devices": "No supported devices found in this Xiaomi Miio cloud account on selected country."
+      "login_error": "Could not login, check the credentials.",
+      "no_devices": "No supported devices found in this account on selected country.{devices}"
     },
     "step": {
       "user": {
@@ -19,14 +22,14 @@
         },
         "description": "Map feature requires cloud connection and provides automatic configuration. If you don't want to use the map feature, you can select manual configuration."
       },
-      "without_map": {
+      "local": {
         "data": {
           "host": "Host",
           "token": "Token"
         },
         "description": "You will need the 32 character API Token, see https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token for instructions."
       },
-      "with_map": {
+      "mi": {
         "data": {
           "username": "Username",
           "password": "Password",
@@ -35,11 +38,53 @@
         },
         "description": "Log in to the Xiaomi Miio cloud, see https://www.openhab.org/addons/bindings/miio/#country-servers for the cloud server to use."
       },
+      "2fa": {
+        "data": {
+          "verification_code": "Two-factor verification code"
+        },
+        "description": "## This login requires security verification\nPlease open the verification page to send the mobile/email verification code. After receiving the verification code, do not verify it on the webpage. Go back to HomeAssistant and enter it in the input box below.\n### [Send Verification Code]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Code"
+        },
+        "description": "## Captcha verification is required\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "country": "Server country"
+        },
+        "description": "Log in to the Dreamehome cloud."
+      },
+      "mova": {
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "country": "Server country"
+        },
+        "description": "Log in to the Movahome cloud."
+      },
+      "trouver": {
+        "data": {
+          "username": "Username",
+          "password": "Password",
+          "country": "Server country"
+        },
+        "description": "Log in to the Trouver cloud."
+      },
       "devices": {
         "data": {
           "devices": "Supported Devices"
         },
         "description": "Please select the Dreame Vacuum device you want to setup."
+      },
+      "donation": {
+        "data": {
+          "donated": "Donated"
+        },
+        "description": "## Do not forget to support the project.{text}"
       },
       "options": {
         "data": {
@@ -47,7 +92,7 @@
           "color_scheme": "Map color scheme",
           "icon_set": "Map icon set",
           "notify": "Notification",
-          "map_objects": "Map objects",
+          "hidden_map_objects": "Hidden map objects",
           "low_resolution": "Low resolution map",
           "square": "Square map"
         }
@@ -65,11 +110,12 @@
           "color_scheme": "Map color scheme",
           "icon_set": "Map icon set",
           "notify": "Notification",
-          "map_objects": "Map objects",
+          "hidden_map_objects": "Hidden map objects",
           "low_resolution": "Low resolution map",
           "square": "Square map",
           "configuration_type": "Configuration type",
-          "prefer_cloud": "Prefer cloud connection"
+          "prefer_cloud": "Prefer cloud connection",
+          "donated": "Donated"
         }
       }
     },
@@ -120,7 +166,11 @@
         "state": {
           "avoidance": "Avoidance",
           "adaptation": "Adaptation",
-          "remove_mop": "Remove Mop"
+          "remove_mop": "Remove Mop",
+          "adaptation_without_route": "Adaptation Without Route",
+          "vacuum_and_mop": "Vacuum and Mop",
+          "ignore": "Ignore",
+          "cross": "Cross"
         }
       },
       "mop_wash_level": {
@@ -152,11 +202,18 @@
           "weekly": "Weekly"
         }
       },
+      "mop_extend_frequency": {
+        "state": {
+          "standard": "Standard",
+          "intelligent": "Intelligent",
+          "high": "High"
+        }
+      },
       "floor_material": {
         "state": {
           "none": "None",
-          "tile": "Floor tile",
-          "wood": "Wood floor"
+          "tile": "Floor Tile",
+          "wood": "Wood Floor"
         }
       },
       "voice_assistant_language": {
@@ -171,6 +228,97 @@
         "state": {
           "not_set": "Not Set"
         }
+      },
+      "self_clean_frequency": {
+        "state": {
+          "by_area": "By Area",
+          "by_time": "By Time",
+          "by_room": "By Room"
+        }
+      },
+      "mop_clean_frequency": {
+        "state": {
+          "by_room": "By Room"
+        }
+      },
+      "auto_empty_mode": {
+        "state": {
+          "off": "Off",
+          "standard": "Standard",
+          "high_frequency": "High Frequency",
+          "low_frequency": "Low Frequency"
+        }
+      },
+      "floor_material_direction": {
+        "state": {
+          "vertical": "Vertical",
+          "horizontal": "Horizontal"
+        }
+      },
+      "visibility": {
+        "state": {
+          "visible": "Visible",
+          "hidden": "Hidden"
+        }
+      },
+      "cleangenius": {
+        "state": {
+          "off": "Off",
+          "routine_cleaning": "Routine Cleaning",
+          "deep_cleaning": "Deep Cleaning"
+        }
+      },
+      "cleangenius_mode": {
+        "state": {
+          "vacuum_and_mop": "Vacuum and Mop",
+          "mop_after_vacuum": "Mop after Vacuum"
+        }
+      },
+      "washing_mode": {
+        "state": {
+          "light": "Light",
+          "standard": "Standard",
+          "deep": "Deep",
+          "ultra_washing": "Ultra Washing"
+        }
+      },
+      "water_temperature": {
+        "state": {
+          "normal": "Normal",
+          "mild": "Mild",
+          "warm": "Warm",
+          "hot": "Hot"
+        }
+      },
+      "auto_recleaning": {
+        "state": {
+          "off": "Off",
+          "in_deep_mode": "In Deep Mode",
+          "in_all_modes": "In All Modes"
+        }
+      },
+      "auto_rewashing": {
+        "state": {
+          "off": "Off",
+          "in_deep_mode": "In Deep Mode",
+          "in_all_modes": "In All Modes"
+        }
+      },
+      "cleaning_route": {
+        "state": {
+          "quick": "Quick",
+          "standard": "Standard",
+          "intensive": "Intensive",
+          "deep": "Deep"
+        }
+      },
+      "custom_mopping_route": {
+        "state": {
+          "off": "Off",
+          "standard": "Standard",
+          "intensive": "Intensive",
+          "deep": "Deep"
+        }
       }
     },
     "sensor": {
@@ -180,8 +328,8 @@
           "sweeping": "Sweeping",
           "charging": "Charging",
           "error": "Error",
-          "idle": "Idle",
-          "paused": "Paused",
+          "idle": "[%key:common::state::idle%]",
+          "paused": "[%key:common::state::paused%]",
           "returning": "Returning to dock",
           "mopping": "Mopping",
           "drying": "Drying",
@@ -205,6 +353,11 @@
           "human_following": "Human following",
           "spot_cleaning": "Spot cleaning",
           "returning_auto_empty": "Returning to Auto-Empty",
+          "waiting_for_task": "Waiting for task",
+          "station_cleaning": "Station cleaning",
+          "returning_to_drain": "Returning to drain",
+          "draining": "Draining",
+          "auto_water_draining": "Auto water draining",
           "shortcut": "Shortcut",
           "monitoring": "Monitoring",
           "monitoring_paused": "Monitoring paused"
@@ -213,8 +366,8 @@
       "status": {
         "state": {
           "unknown": "Unknown",
-          "idle": "Idle",
-          "paused": "Paused",
+          "idle": "[%key:common::state::idle%]",
+          "paused": "[%key:common::state::paused%]",
           "cleaning": "Cleaning",
           "returning": "Returning to dock",
           "spot_cleaning": "Spot cleaning",
@@ -228,7 +381,7 @@
           "error": "Error",
           "remote_control": "Remote control",
           "sleeping": "Sleeping",
-          "self_test": "Self test",
+          "self_repair": "Self repair",
           "factory_test": "Factory test",
           "standby": "Standby",
           "room_cleaning": "Room cleaning",
@@ -268,10 +421,15 @@
           "cruising_point_paused": "Cruising to a point paused",
           "summon_clean_paused": "Summon to clean paused",
           "returning_to_install_mop": "Returning to install mop",
-          "returning_to_remove_mop": "Returning to remove mop"
+          "returning_to_remove_mop": "Returning to remove mop",
+          "station_cleaning": "Station cleaning",
+          "pet_finding": "Pet finding",
+          "auto_cleaning_washing_paused": "Auto cleaning washing paused",
+          "area_cleaning_washing_paused": "Area cleaning washing paused",
+          "custom_cleaning_washing_paused": "Custom cleaning washing paused"
         }
       },
-      "water_tank": {
+      "mop": {
         "state": {
           "unknown": "Unknown",
           "installed": "Installed",
@@ -280,7 +438,7 @@
           "in_station": "In station"
         }
       },
-      "mop_pad": {
+      "water_tank": {
         "state": {
           "unknown": "Unknown",
           "installed": "Installed",
@@ -293,13 +451,15 @@
         "state": {
           "unknown": "Unknown",
           "not_available": "Not available",
-          "available": "Available"
+          "available": "Available",
+          "over_use": "Over use",
+          "never": "Never"
         }
       },
       "auto_empty_status": {
         "state": {
           "unknown": "Unknown",
-          "idle": "Idle",
+          "idle": "[%key:common::state::idle%]",
           "active": "Active",
           "not_performed": "Not performed"
         }
@@ -383,7 +543,13 @@
           "dirty_tank_level": "The water level in the used water tank is too high.",
           "washboard_level": "Water level in the washboard is too high.",
           "no_mop_in_station": "Mop pad is not in the station.",
-          "dust_bag_full": "Dust bag is full or vents are blocked."
+          "dust_bag_full": "Dust bag is full or vents are blocked.",
+          "mop_install_failed": "Mop pad installation failed.",
+          "low_battery_turn_off": "Low battery. Robot will shut down soon.",
+          "dirty_tank_not_installed": "The used water tank of robot is not installed.",
+          "robot_in_hidden_room": "Hidden area. Please move the robot to the appropriate area and retry.",
+          "washboard_not_working": "Washboard stops working.",
+          "return_to_charge_failed": "Failed to return to charge."
         }
       },
       "charging_status": {
@@ -407,7 +573,7 @@
       "self_wash_base_status": {
         "state": {
           "unknown": "Unknown",
-          "idle": "Idle",
+          "idle": "[%key:common::state::idle%]",
           "washing": "Washing",
           "drying": "Drying",
           "paused": "Paused",
@@ -430,7 +596,7 @@
       "stream_status": {
         "state": {
           "unknown": "Unknown",
-          "idle": "Idle",
+          "idle": "[%key:common::state::idle%]",
           "video": "Video",
           "audio": "Audio",
           "recording": "Recording"
@@ -439,10 +605,56 @@
       "drainage_status": {
         "state": {
           "unknown": "Unknown",
-          "idle": "Idle",
+          "idle": "[%key:common::state::idle%]",
           "draining": "Draining",
           "draining_successful": "Draining successful",
           "draining_failed": "Draining failed"
+        }
+      },
+      "clean_water_tank_status": {
+        "state": {
+          "unknown": "Unknown",
+          "not_available": "Not available",
+          "not_installed": "Not installed",
+          "low_water": "Low water",
+          "installed": "Installed"
+        }
+      },
+      "dirty_water_tank_status": {
+        "state": {
+          "unknown": "Unknown",
+          "installed": "Installed",
+          "not_installed_or_full": "Not installed or full"
+        }
+      },
+      "dust_bag_status": {
+        "state": {
+          "unknown": "Unknown",
+          "installed": "Installed",
+          "not_installed": "Not installed",
+          "check": "Check"
+        }
+      },
+      "detergent_status": {
+        "state": {
+          "unknown": "Unknown",
+          "installed": "Installed",
+          "disabled": "Disabled",
+          "low_detergent": "Low detergent"
+        }
+      },
+      "hot_water_status": {
+        "state": {
+          "unknown": "Unknown",
+          "disabled": "Disabled",
+          "enabled": "Enabled"
+        }
+      },
+      "station_drainage_status": {
+        "state": {
+          "unknown": "Unknown",
+          "idle": "[%key:common::state::idle%]",
+          "draining": "Draining"
         }
       },
       "task_type": {
@@ -460,7 +672,11 @@
           "partial": "Partial cleaning",
           "partial_paused": "Partial cleaning paused",
           "summon": "Summon cleaning",
-          "summon_paused": "Summon cleaning paused"
+          "summon_paused": "Summon cleaning paused",
+          "water_stain": "Water stain cleaning",
+          "water_stain_paused": "Water stain cleaning paused",
+          "boosted_edge_cleaning": "Boosted edge cleaning",
+          "hair_compressing": "Hair compressing"
         }
       }
     }
@@ -532,24 +748,6 @@
         }
       }
     },
-    "vacuum_set_dnd": {
-      "name": "Set DnD",
-      "description": "Enable/disable DnD functionality and/or setting its start and end time.",
-      "fields": {
-        "dnd_enabled": {
-          "name": "DnD Enabled",
-          "description": "Enable or disable DnD feature."
-        },
-        "dnd_start": {
-          "name": "DnD Start",
-          "description": "Start time of DnD feature."
-        },
-        "dnd_end": {
-          "name": "Dnd End",
-          "description": "End time of DnD feature."
-        }
-      }
-    },
     "vacuum_goto": {
       "name": "Go To",
       "description": "Go to the coordinate of the map and stop.",
@@ -571,6 +769,16 @@
         "points": {
           "name": "Points",
           "description": "List of coordinates of the path."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "Start Shortcut",
+      "description": "Start a shortcut task. (Only on supported devices)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Shortcut ID",
+          "description": "ID of the shortcut."
         }
       }
     },
@@ -690,7 +898,7 @@
         },
         "file_url": {
           "name": "File Url",
-          "description": "Url of the saved bz2.gz or tar.gz file"
+          "description": "Url of the saved tbz2.gz or tar.gz file"
         }
       }
     },
@@ -755,7 +963,7 @@
       "description": "Set room cleaning sequence. (Only on supported devices)",
       "fields": {
         "cleaning_sequence": {
-          "name": "Cleanin sequence",
+          "name": "Cleaning sequence",
           "description": "Segment ID list of cleaning sequence."
         }
       }
@@ -776,6 +984,10 @@
           "name": "Water Volume",
           "description": "Water volume for each room."
         },
+        "wetness_level": {
+          "name": "Wetness Level",
+          "description": "Wetness level for each room. (On supported devices)"
+        },
         "cleaning_mode": {
           "name": "Cleaning Mode",
           "description": "Cleaning for each room (only supported on vacuums with mop pad lifting feature)."
@@ -786,8 +998,30 @@
         }
       }
     },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Set Custom Carpet Cleaning",
+      "description": "Set custom cleaning setting for carpets. (Only on supported devices)",
+      "fields": {
+        "id": {
+          "name": "Carpet ID",
+          "description": "Carpet IDs."
+        },
+        "type": {
+          "name": "Type of the object",
+          "description": "Type of the object with the ID. (0 = Automatically Detected Carpet, 1 = Manually Created Carpet, 2 = Room Carpet (If supported))"
+        },
+        "carpet_cleaning": {
+          "name": "Carpet Cleaning",
+          "description": "Custom carpet cleaning setting for each carpet."
+        },
+        "carpet_settings": {
+          "name": "Carpet Settings",
+          "description": "Custom carpet settings setting for each carpet with an array of enabled settings."
+        }
+      }
+    },
     "vacuum_set_restricted_zone": {
-      "name": "Set Restriced Zone",
+      "name": "Set Restricted Zone",
       "description": "Define virtual walls, restricted zones, and/or no mop zones.",
       "fields": {
         "walls": {
@@ -842,13 +1076,13 @@
         }
       }
     },
-    "vacuum_set_pathway": {
-      "name": "Set Pathway",
-      "description": "Define pathways.",
+    "vacuum_set_virtual_threshold": {
+      "name": "Set Virtual Threshold",
+      "description": "Define virtual thresholds.",
       "fields": {
-        "pathways": {
-          "name": "Pathways",
-          "description": "Pathway line coordinates."
+        "virtual_thresholds": {
+          "name": "Virtual Thresholds",
+          "description": "Virtual threshold line coordinates."
         }
       }
     },
@@ -873,10 +1107,6 @@
         "y": {
           "name": "Y",
           "description": "Y Coordinate of the obstacle."
-        },
-        "obstacle_type": {
-          "name": "Obstacle Type",
-          "description": "Type of the obstacle that will be ignored."
         },
         "obstacle_ignored": {
           "name": "Obstacle Ignored",

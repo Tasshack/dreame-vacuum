@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from homeassistant.components.binary_sensor import (
+    ENTITY_ID_FORMAT,
     BinarySensorEntity,
     BinarySensorEntityDescription,
     BinarySensorDeviceClass,
@@ -31,11 +32,7 @@ BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
         key="charging_state",
         name="Charging State",
         device_class=BinarySensorDeviceClass.BATTERY_CHARGING,
-        icon_fn=lambda value, device: (
-            "mdi:power-plug-battery"
-            if device.status.charging
-            else "mdi:power-plug-off" if not device.status.docked else "mdi:power-plug"
-        ),
+        icon_fn=lambda value, device: "mdi:power-plug-battery" if device.status.charging else "mdi:power-plug-off" if not device.status.docked else "mdi:power-plug",
         value_fn=lambda value, device: device.status.charging,
     ),
 )
@@ -65,6 +62,7 @@ class DreameVacuumBinarySensorEntity(DreameVacuumEntity, BinarySensorEntity):
     ) -> None:
         """Initialize a Dreame Vacuum BinarySensor entity."""
         super().__init__(coordinator, description)
+        self._generate_entity_id(ENTITY_ID_FORMAT)
 
     @property
     def is_on(self) -> bool | None:

@@ -3,6 +3,7 @@ The integration adds the following services to vacuum domain.
 
 ## Vacuum Services
 Services for actions that are not available via an entity.
+
 <a href="https://my.home-assistant.io/redirect/developer_services/" target="_blank"><img src="https://my.home-assistant.io/badges/developer_services.svg" alt="Open your Home Assistant instance and show your service developer tools." /></a>
 
 ### `dreame_vacuum.vacuum_clean_segment`
@@ -214,42 +215,29 @@ Start selected spot cleaning with optional customized cleaning parameters.
         - 3
     target:
       entity_id: vacuum.vacuum
-    ```tity_id: vacuum.vacuum
     ```
 
-### `dreame_vacuum.vacuum_set_dnd`
+### `dreame_vacuum.vacuum_goto`
 
-Set do not disturb settings. *(This service exists because the lack of **date_time** entity on Home Assistant)*
+TODO
 
-**Examples:**
-
-- Set DND start time
+- Go to at [819, -2235] and stop
     ```yaml
-    service: dreame_vacuum.vacuum_set_dnd
+    service: dreame_vacuum.vacuum_goto
     data:
-      dnd_start: "20:00"
+      x: 819
+      y: -2235
     target:
       entity_id: vacuum.vacuum
     ```
 
-- Set DND start and end times
-    ```yaml
-    service: dreame_vacuum.vacuum_set_dnd
-    data:
-        dnd_start: "20:00"
-        dnd_end: "08:00"
-    target:
-        entity_id: vacuum.vacuum
-    ```
+### `dreame_vacuum.vacuum_follow_path`
 
-- Disable DND feature
-    ```yaml
-    service: dreame_vacuum.vacuum_set_dnd
-    data:
-        dnd_enabled: false
-    target:
-        entity_id: vacuum.vacuum
-    ```
+TODO
+
+### `dreame_vacuum.vacuum_start_shortcut_`
+
+TODO
 
 ### `dreame_vacuum.vacuum_remote_control_move_step`
 
@@ -298,10 +286,13 @@ Set customized room cleaning parameters on current map.
 
 **Examples:**
 
-- Set room 1 fan speed to quiet, water level to low, cleaning times to 2 and room 2 fan speed to turbo, water level to medium, repeats to 1
+- Set room 1 fan speed to quiet, water level to low, cleaning times to 2 and room 5 fan speed to turbo, water level to medium, repeats to 1
     ```yaml
     service: dreame_vacuum.vacuum_set_custom_cleaning
     data:
+        segment_id: 
+          - 1
+          - 5
         suction_level: 
           - 0
           - 3
@@ -315,11 +306,40 @@ Set customized room cleaning parameters on current map.
         entity_id: vacuum.vacuum
     ```
 
+- Set room 3 wetness level to 16
+    ```yaml
+    service: dreame_vacuum.vacuum_set_custom_cleaning
+    data:
+        segment_id: 
+          - 3
+        wetness_level: 
+          - 16
+    target:
+        entity_id: vacuum.vacuum
+    ```
+
 ### `dreame_vacuum.vacuum_reset_consumable`
 
 Reset a consumable life by type.
 
+> Possible values for consumable
+>  - `main_brush`
+>  - `side_brush`
+>  - `filter`
+>  - `tank_filter`
+>  - `sensor`
+>  - `mop_pad`
+>  - `silver_ion`
+>  - `detergent`
+>  - `squeege`
+>  - `dirty_water_tank`
+>  - `onboard_dirty_water_tank`
+>  - `deodorizer`
+>  - `wheel`
+>  - `scale_inhibitor`
+
 **Examples:**
+
 - Reset Main Brush Life
     ```yaml
     service: dreame_vacuum.vacuum_reset_consumable
@@ -395,9 +415,9 @@ Request device to upload a new map to the cloud. *(This service is useful when c
 
 Change currently selected map. (Only possible of multi-floor map is enabled)
 
-> You can acquire map id from saved map camera entity attributes.
+> - You can acquire map id from saved map camera entity attributes.
 
-> Robot will end active job when selected map is changed.
+> - Robot will end active job when selected map is changed.
 
 **Example:**
 
@@ -415,7 +435,7 @@ Change currently selected map. (Only possible of multi-floor map is enabled)
 Delete a map.
 
 > - You can acquire map id from saved map camera entity attributes.
->  - When multi-floor map feature is enabled map indexes may change after deletion. <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/#multi-floor-map-support" target="_blank">(More about multi-floor map support)</a>
+> - When multi-floor map feature is enabled map indexes may change after deletion. <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/#multi-floor-map-support" target="_blank">(More about multi-floor map support)</a>
 
 **Example:**
 
@@ -447,6 +467,84 @@ Rename a map.
         entity_id: vacuum.vacuum
     ```
 
+### `dreame_vacuum.vacuum_restore_map`
+
+Restore a map from previous state that are created and uploaded by the device.
+> - It is not guaranteed that map recovery will be successful. Cloud does not store the files forever and recovery files usually be deleted from the cloud after 365 days from the last access.
+>  - Cloud connection is required with this service.
+
+**Examples:**
+
+- Restore selected map to second saved recovery map in the recovery map list
+    ```yaml
+    service: dreame_vacuum.vacuum_restore_map
+    data:
+        recovery_map_index: 2
+    target:
+        entity_id: vacuum.vacuum
+    ```
+
+- Restore saved map with id 14 to original state
+    ```yaml
+    service: dreame_vacuum.vacuum_restore_map
+    data:
+        map_id: 14
+        recovery_map_index: 1
+    target:
+        entity_id: vacuum.vacuum
+    ```
+
+### `dreame_vacuum.vacuum_restore_map_from_file`
+
+Restore a map from previously saved recovery map file.
+> - This service can be used for offline recovery if you download and place the recovery map file to the /www/ folder of Home Assistant (Vacuum and server must be at the same network).
+> - Map Id is required if cloud connection is not enabled.
+
+**Examples:**
+
+- Restore selected map from saved recovery map file
+    ```yaml
+    service: dreame_vacuum.vacuum_restore_map_from_file
+    data:
+        file_url: http://192.168.1.10/local/2023-11-04-1724223415-423528451_284320462.1156.mb.tbz2
+    target:
+        entity_id: vacuum.vacuum
+    ```
+
+- Restore saved map with id 14 saved recovery map file
+    ```yaml
+    service: dreame_vacuum.vacuum_restore_map_from_file
+    data:
+        map_id: 14
+        file_url: https://dreame-cn.oss-cn-shanghai.aliyuncs.com/iot/tmp/000000/ali_dreame/YR649291/648921668/101?Expires=1699189998&OSSAccessKeyId=LTAI5t96WkBXXNzQrX4HtQti&Signature=ttRrjg8p7aC650H3DwI3%2F2ngOOE%3D
+    target:
+        entity_id: vacuum.vacuum
+    ```
+
+### `dreame_vacuum.vacuum_backup_map`
+
+Trigger upload of a saved map as a recovery map to the cloud.
+> - Cloud can store only one backup map for every saved map. This service will override the previously backup map if you have one.
+> - Vacuums without a camera or a lidar sensor does not have this feature, map backup trigger only works on supported devices.
+
+**Examples:**
+
+- Trigger backup of selected map
+    ```yaml
+    service: dreame_vacuum.vacuum_backup_map
+    target:
+        entity_id: vacuum.vacuum
+    ```
+
+- Trigger backup of map with id 15
+    ```yaml
+    service: dreame_vacuum.vacuum_backup_map
+    data:
+        map_id: 15
+    target:
+        entity_id: vacuum.vacuum
+    ```
+
 ### `dreame_vacuum.vacuum_set_restricted_zone`
 
 Set invisible walls, no go and no mopping zones on current map.
@@ -455,6 +553,7 @@ Set invisible walls, no go and no mopping zones on current map.
 > - All object must be passed at one, you cannot add or remove single wall or no zone. You can acquire current line and zone coordinates from selected map camera entity attributes.
 
 **Examples:**
+
 - Define virtual walls, restricted zones, and/or no mop zones
     ```yaml
     service: dreame_vacuum.vacuum_set_restricted_zone
@@ -544,7 +643,7 @@ Merge two rooms from a map.
 Split a map room into to different rooms.
 
 > - You can acquire map and segment ids from saved map camera entity attributes.
-> You can acquire line coordinates coordinates with <a href="https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card/blob/master/docs/templates/setup.md#getting-coordinates" target="_blank_">Xiaomi Vacuum Map Card</a>.
+> - You can acquire line coordinates coordinates with <a href="https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card/blob/master/docs/templates/setup.md#getting-coordinates" target="_blank_">Xiaomi Vacuum Map Card</a>.
 > - Line coordinates must cover selected room area.
 > - Deleted segment ids are not used again and new segment always will be at highest next available index.
 > - When multi-floor map feature is enabled selected map will change to edited map.
@@ -583,6 +682,32 @@ Set custom name for a room in current map.
     target:
         entity_id: vacuum.vacuum
     ```
+
+### `dreame_vacuum.vacuum_rename_shortcut`
+
+TODO
+
+
+### `dreame_vacuum.vacuum_set_obstacle_ignore`
+
+TODO
+
+### `dreame_vacuum.vacuum_set_router_position`
+
+TODO
+
+### `dreame_vacuum.vacuum_set_pathway`
+
+TODO
+
+### `dreame_vacuum.vacuum_set_carpet_area`
+
+TODO
+
+### `dreame_vacuum.vacuum_set_predefined_points`
+
+TODO
+
 
 ## Other Services
 Integration adds <a href="https://www.home-assistant.io/integrations/input_select/#services" target="_blank_">**input_select** services</a> that are missing from the **select** entity to generated select entities for ease of use.

@@ -12,9 +12,14 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import config_validation as cv, entity_platform
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.components.vacuum import (
+    StateVacuumEntity,
+    VacuumEntityFeature,
+)
+from .recorder import VACUUM_UNRECORDED_ATTRIBUTES
+
 from .dreame.const import (
     STATE_UNKNOWN,
-    STATE_UNAVAILABLE,
     STATE_CLEANING,
     STATE_DOCKED,
     STATE_ERROR,
@@ -22,14 +27,7 @@ from .dreame.const import (
     STATE_PAUSED,
     STATE_RETURNING,
 )
-from homeassistant.components.vacuum import StateVacuumEntity, VacuumEntityFeature
-
-from .dreame import (
-    DreameVacuumState,
-    DreameVacuumSuctionLevel,
-    DreameVacuumAction,
-    InvalidActionException,
-)
+from .dreame import DreameVacuumState, DreameVacuumSuctionLevel, DreameVacuumAction, InvalidActionException
 from .const import (
     DOMAIN,
     FAN_SPEED_SILENT,
@@ -37,17 +35,20 @@ from .const import (
     FAN_SPEED_STRONG,
     FAN_SPEED_TURBO,
     INPUT_CLEANING_SEQUENCE,
-    INPUT_DND_ENABLED,
-    INPUT_DND_END,
-    INPUT_DND_START,
     INPUT_SUCTION_LEVEL,
     INPUT_LANGUAGE_ID,
     INPUT_LINE,
     INPUT_MAP_ID,
     INPUT_MAP_NAME,
+    INPUT_FILE_URL,
+    INPUT_RECOVERY_MAP_INDEX,
     INPUT_MD5,
     INPUT_MOP_ARRAY,
     INPUT_REPEATS,
+    INPUT_CLEANING_MODE,
+    INPUT_CUSTOM_MOPPING_ROUTE,
+    INPUT_CLEANING_ROUTE,
+    INPUT_WETNESS_LEVEL,
     INPUT_ROTATION,
     INPUT_SEGMENT,
     INPUT_SEGMENT_ID,
@@ -62,49 +63,69 @@ from .const import (
     INPUT_ZONE_ARRAY,
     INPUT_CONSUMABLE,
     INPUT_POINTS,
+    INPUT_SHORTCUT_ID,
+    INPUT_SHORTCUT_NAME,
+    INPUT_CARPET_ARRAY,
+    INPUT_IGNORED_CARPET_ARRAY,
+    INPUT_VIRTUAL_THRESHOLD_ARRAY,
+    INPUT_X,
+    INPUT_Y,
+    INPUT_OBSTACLE_IGNORED,
+    INPUT_KEY,
+    INPUT_VALUE,
+    INPUT_ID,
+    INPUT_TYPE,
+    INPUT_CARPET_CLEANING,
+    INPUT_CARPET_SETTINGS,
     SERVICE_CLEAN_ZONE,
     SERVICE_CLEAN_SEGMENT,
     SERVICE_CLEAN_SPOT,
+    SERVICE_GOTO,
+    SERVICE_FOLLOW_PATH,
+    SERVICE_START_SHORTCUT,
     SERVICE_INSTALL_VOICE_PACK,
     SERVICE_MERGE_SEGMENTS,
     SERVICE_MOVE_REMOTE_CONTROL_STEP,
     SERVICE_RENAME_MAP,
     SERVICE_RENAME_SEGMENT,
+    SERVICE_SET_PROPERTY,
+    SERVICE_CALL_ACTION,
     SERVICE_REQUEST_MAP,
     SERVICE_SELECT_MAP,
     SERVICE_DELETE_MAP,
+    SERVICE_RESTORE_MAP,
+    SERVICE_RESTORE_MAP_FROM_FILE,
+    SERVICE_BACKUP_MAP,
     SERVICE_SET_CLEANING_SEQUENCE,
     SERVICE_SET_CUSTOM_CLEANING,
-    SERVICE_SET_DND,
+    SERVICE_SET_CUSTOM_CARPET_CLEANING,
     SERVICE_SET_RESTRICTED_ZONE,
+    SERVICE_SET_CARPET_AREA,
+    SERVICE_SET_VIRTUAL_THRESHOLD,
+    SERVICE_SET_PREDEFINED_POINTS,
     SERVICE_SPLIT_SEGMENTS,
     SERVICE_SAVE_TEMPORARY_MAP,
     SERVICE_DISCARD_TEMPORARY_MAP,
     SERVICE_REPLACE_TEMPORARY_MAP,
     SERVICE_RESET_CONSUMABLE,
+    SERVICE_RENAME_SHORTCUT,
+    SERVICE_SET_OBSTACLE_IGNORE,
+    SERVICE_SET_ROUTER_POSITION,
     CONSUMABLE_MAIN_BRUSH,
     CONSUMABLE_SIDE_BRUSH,
     CONSUMABLE_FILTER,
-    CONSUMABLE_SECONDARY_FILTER,
+    CONSUMABLE_TANK_FILTER,
     CONSUMABLE_SENSOR,
     CONSUMABLE_MOP_PAD,
     CONSUMABLE_SILVER_ION,
     CONSUMABLE_DETERGENT,
+    CONSUMABLE_SQUEEGEE,
+    CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
+    CONSUMABLE_DIRTY_WATER_TANK,
+    CONSUMABLE_DEODORIZER,
+    CONSUMABLE_WHEEL,
+    CONSUMABLE_SCALE_INHIBITOR,
 )
-
-SUPPORT_DREAME = (
-    VacuumEntityFeature.START
-    | VacuumEntityFeature.PAUSE
-    | VacuumEntityFeature.STOP
-    | VacuumEntityFeature.RETURN_HOME
-    | VacuumEntityFeature.FAN_SPEED
-    | VacuumEntityFeature.SEND_COMMAND
-    | VacuumEntityFeature.LOCATE
-    | VacuumEntityFeature.STATE
-    | VacuumEntityFeature.STATUS
-    | VacuumEntityFeature.MAP
-)
-
 
 STATE_CODE_TO_STATE: Final = {
     DreameVacuumState.UNKNOWN: STATE_UNKNOWN,
@@ -117,11 +138,34 @@ STATE_CODE_TO_STATE: Final = {
     DreameVacuumState.MOPPING: STATE_CLEANING,
     DreameVacuumState.DRYING: STATE_DOCKED,
     DreameVacuumState.WASHING: STATE_CLEANING,
-    DreameVacuumState.RETURNING_WASHING: STATE_RETURNING,
+    DreameVacuumState.RETURNING_TO_WASH: STATE_RETURNING,
     DreameVacuumState.BUILDING: STATE_DOCKED,
     DreameVacuumState.SWEEPING_AND_MOPPING: STATE_CLEANING,
     DreameVacuumState.CHARGING_COMPLETED: STATE_DOCKED,
     DreameVacuumState.UPGRADING: STATE_IDLE,
+    DreameVacuumState.CLEAN_SUMMON: STATE_CLEANING,
+    DreameVacuumState.STATION_RESET: STATE_IDLE,
+    DreameVacuumState.RETURNING_INSTALL_MOP: STATE_RETURNING,
+    DreameVacuumState.RETURNING_REMOVE_MOP: STATE_RETURNING,
+    DreameVacuumState.WATER_CHECK: STATE_DOCKED,
+    DreameVacuumState.CLEAN_ADD_WATER: STATE_CLEANING,
+    DreameVacuumState.WASHING_PAUSED: STATE_PAUSED,
+    DreameVacuumState.AUTO_EMPTYING: STATE_DOCKED,
+    DreameVacuumState.REMOTE_CONTROL: STATE_CLEANING,
+    DreameVacuumState.SMART_CHARGING: STATE_DOCKED,
+    DreameVacuumState.SECOND_CLEANING: STATE_CLEANING,
+    DreameVacuumState.HUMAN_FOLLOWING: STATE_CLEANING,
+    DreameVacuumState.SPOT_CLEANING: STATE_CLEANING,
+    DreameVacuumState.RETURNING_AUTO_EMPTY: STATE_RETURNING,
+    DreameVacuumState.SHORTCUT: STATE_CLEANING,
+    DreameVacuumState.WAITING_FOR_TASK: STATE_IDLE,
+    DreameVacuumState.STATION_CLEANING: STATE_CLEANING,
+    DreameVacuumState.RETURNING_TO_DRAIN: STATE_RETURNING,
+    DreameVacuumState.DRAINING: STATE_CLEANING,
+    DreameVacuumState.AUTO_WATER_DRAINING: STATE_CLEANING,
+    DreameVacuumState.SHORTCUT: STATE_CLEANING,
+    DreameVacuumState.MONITORING: STATE_CLEANING,
+    DreameVacuumState.MONITORING_PAUSED: STATE_PAUSED,
 }
 
 SUCTION_LEVEL_TO_FAN_SPEED: Final = {
@@ -135,11 +179,17 @@ CONSUMABLE_RESET_ACTION = {
     CONSUMABLE_MAIN_BRUSH: DreameVacuumAction.RESET_MAIN_BRUSH,
     CONSUMABLE_SIDE_BRUSH: DreameVacuumAction.RESET_SIDE_BRUSH,
     CONSUMABLE_FILTER: DreameVacuumAction.RESET_FILTER,
-    CONSUMABLE_SECONDARY_FILTER: DreameVacuumAction.RESET_SECONDARY_FILTER,
+    CONSUMABLE_TANK_FILTER: DreameVacuumAction.RESET_TANK_FILTER,
     CONSUMABLE_SENSOR: DreameVacuumAction.RESET_SENSOR,
     CONSUMABLE_MOP_PAD: DreameVacuumAction.RESET_MOP_PAD,
     CONSUMABLE_SILVER_ION: DreameVacuumAction.RESET_SILVER_ION,
     CONSUMABLE_DETERGENT: DreameVacuumAction.RESET_DETERGENT,
+    CONSUMABLE_SQUEEGEE: DreameVacuumAction.RESET_SQUEEGEE,
+    CONSUMABLE_ONBOARD_DIRTY_WATER_TANK: DreameVacuumAction.RESET_ONBOARD_DIRTY_WATER_TANK,
+    CONSUMABLE_DIRTY_WATER_TANK: DreameVacuumAction.RESET_DIRTY_WATER_TANK,
+    CONSUMABLE_DEODORIZER: DreameVacuumAction.RESET_DEODORIZER,
+    CONSUMABLE_WHEEL: DreameVacuumAction.RESET_WHEEL,
+    CONSUMABLE_SCALE_INHIBITOR: DreameVacuumAction.RESET_SCALE_INHIBITOR,
 }
 
 
@@ -219,6 +269,8 @@ async def async_setup_entry(
                 ),
             ),
             vol.Optional(INPUT_REPEATS): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Optional(INPUT_SUCTION_LEVEL): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Optional(INPUT_WATER_VOLUME): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
         },
         DreameVacuum.async_clean_zone.__name__,
     )
@@ -237,12 +289,62 @@ async def async_setup_entry(
     platform.async_register_entity_service(
         SERVICE_CLEAN_SPOT,
         {
-            vol.Required(INPUT_POINTS): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Required(INPUT_POINTS): vol.Any(
+                [
+                    vol.ExactSequence(
+                        [
+                            vol.Coerce(int),
+                            vol.Coerce(int),
+                        ]
+                    )
+                ],
+                vol.ExactSequence(
+                    [
+                        vol.Coerce(int),
+                        vol.Coerce(int),
+                    ]
+                ),
+            ),
             vol.Optional(INPUT_REPEATS): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
             vol.Optional(INPUT_SUCTION_LEVEL): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
             vol.Optional(INPUT_WATER_VOLUME): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
         },
         DreameVacuum.async_clean_spot.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_GOTO,
+        {
+            vol.Required(INPUT_X): vol.All(vol.Coerce(int)),
+            vol.Required(INPUT_Y): vol.All(vol.Coerce(int)),
+        },
+        DreameVacuum.async_goto.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_FOLLOW_PATH,
+        {
+            vol.Optional(INPUT_POINTS): vol.All(
+                list,
+                [
+                    vol.ExactSequence(
+                        [
+                            vol.Coerce(int),
+                            vol.Coerce(int),
+                        ]
+                    )
+                ],
+            ),
+        },
+        DreameVacuum.async_follow_path.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_START_SHORTCUT,
+        {
+            vol.Required(INPUT_SHORTCUT_ID): vol.All(vol.Coerce(int)),
+        },
+        DreameVacuum.async_start_shortcut.__name__,
     )
 
     platform.async_register_entity_service(
@@ -292,10 +394,82 @@ async def async_setup_entry(
     )
 
     platform.async_register_entity_service(
+        SERVICE_SET_CARPET_AREA,
+        {
+            vol.Optional(INPUT_CARPET_ARRAY): vol.All(
+                list,
+                [
+                    vol.ExactSequence(
+                        [
+                            vol.Coerce(int),
+                            vol.Coerce(int),
+                            vol.Coerce(int),
+                            vol.Coerce(int),
+                        ]
+                    )
+                ],
+            ),
+            vol.Optional(INPUT_IGNORED_CARPET_ARRAY): vol.All(
+                list,
+                [
+                    vol.ExactSequence(
+                        [
+                            vol.Coerce(int),
+                            vol.Coerce(int),
+                            vol.Coerce(int),
+                            vol.Coerce(int),
+                        ]
+                    )
+                ],
+            ),
+        },
+        DreameVacuum.async_set_carpet_area.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_SET_VIRTUAL_THRESHOLD,
+        {
+            vol.Optional(INPUT_VIRTUAL_THRESHOLD_ARRAY): vol.All(
+                list,
+                [
+                    vol.ExactSequence(
+                        [
+                            vol.Coerce(int),
+                            vol.Coerce(int),
+                            vol.Coerce(int),
+                            vol.Coerce(int),
+                        ]
+                    )
+                ],
+            ),
+        },
+        DreameVacuum.async_set_virtual_threshold.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_SET_PREDEFINED_POINTS,
+        {
+            vol.Optional(INPUT_POINTS): vol.All(
+                list,
+                [
+                    vol.ExactSequence(
+                        [
+                            vol.Coerce(int),
+                            vol.Coerce(int),
+                        ]
+                    )
+                ],
+            ),
+        },
+        DreameVacuum.async_set_predefined_points.__name__,
+    )
+
+    platform.async_register_entity_service(
         SERVICE_MOVE_REMOTE_CONTROL_STEP,
         {
             vol.Required(INPUT_VELOCITY): vol.All(vol.Coerce(int), vol.Clamp(min=-600, max=600)),
             vol.Required(INPUT_ROTATION): vol.All(vol.Coerce(int), vol.Clamp(min=-360, max=360)),
+            vol.Optional("prompt"): cv.boolean,
         },
         DreameVacuum.async_remote_control_move_step.__name__,
     )
@@ -304,7 +478,7 @@ async def async_setup_entry(
         SERVICE_INSTALL_VOICE_PACK,
         {
             vol.Required(INPUT_LANGUAGE_ID): cv.string,
-            vol.Required(INPUT_URL): cv.string,
+            vol.Required(INPUT_URL): cv.url,
             vol.Required(INPUT_MD5): cv.string,
             vol.Required(INPUT_SIZE): cv.positive_int,
         },
@@ -318,6 +492,32 @@ async def async_setup_entry(
             vol.Required(INPUT_MAP_NAME): cv.string,
         },
         DreameVacuum.async_rename_map.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_RESTORE_MAP,
+        {
+            vol.Required(INPUT_RECOVERY_MAP_INDEX): cv.positive_int,
+            vol.Optional(INPUT_MAP_ID): cv.positive_int,
+        },
+        DreameVacuum.async_restore_map.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_RESTORE_MAP_FROM_FILE,
+        {
+            vol.Required(INPUT_FILE_URL): cv.url,
+            vol.Optional(INPUT_MAP_ID): cv.positive_int,
+        },
+        DreameVacuum.async_restore_map_from_file.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_BACKUP_MAP,
+        {
+            vol.Optional(INPUT_MAP_ID): cv.positive_int,
+        },
+        DreameVacuum.async_backup_map.__name__,
     )
 
     platform.async_register_entity_service(
@@ -373,18 +573,25 @@ async def async_setup_entry(
             vol.Required(INPUT_SUCTION_LEVEL): cv.ensure_list,
             vol.Required(INPUT_WATER_VOLUME): cv.ensure_list,
             vol.Required(INPUT_REPEATS): cv.ensure_list,
+            vol.Optional(INPUT_CLEANING_MODE): cv.ensure_list,
+            vol.Optional(INPUT_CUSTOM_MOPPING_ROUTE): cv.ensure_list,
+            vol.Optional(INPUT_CLEANING_ROUTE): cv.ensure_list,
+            vol.Optional(INPUT_WETNESS_LEVEL): cv.ensure_list,
         },
         DreameVacuum.async_set_custom_cleaning.__name__,
     )
 
     platform.async_register_entity_service(
-        SERVICE_SET_DND,
+        SERVICE_SET_CUSTOM_CARPET_CLEANING,
         {
-            vol.Required(INPUT_DND_ENABLED): cv.boolean,
-            vol.Optional(INPUT_DND_START): cv.string,
-            vol.Optional(INPUT_DND_END): cv.string,
+            vol.Required(INPUT_ID): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Required(INPUT_TYPE): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Optional(INPUT_CARPET_CLEANING): vol.Any(vol.Coerce(int), [vol.Coerce(int)]),
+            vol.Optional(INPUT_CARPET_SETTINGS): vol.Any(
+                [vol.Coerce(str)], [[vol.Coerce(str)]], [vol.Coerce(int)], [[vol.Coerce(int)]]
+            ),
         },
-        DreameVacuum.async_set_dnd.__name__,
+        DreameVacuum.async_set_custom_carpet_cleaning.__name__,
     )
 
     platform.async_register_entity_service(
@@ -395,15 +602,64 @@ async def async_setup_entry(
                     CONSUMABLE_MAIN_BRUSH,
                     CONSUMABLE_SIDE_BRUSH,
                     CONSUMABLE_FILTER,
-                    CONSUMABLE_SECONDARY_FILTER,
+                    CONSUMABLE_TANK_FILTER,
                     CONSUMABLE_SENSOR,
                     CONSUMABLE_MOP_PAD,
                     CONSUMABLE_SILVER_ION,
                     CONSUMABLE_DETERGENT,
+                    CONSUMABLE_SQUEEGEE,
+                    CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
+                    CONSUMABLE_DIRTY_WATER_TANK,
+                    CONSUMABLE_DEODORIZER,
+                    CONSUMABLE_WHEEL,
+                    CONSUMABLE_SCALE_INHIBITOR,
                 ]
             ),
         },
         DreameVacuum.async_reset_consumable.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_RENAME_SHORTCUT,
+        {
+            vol.Required(INPUT_SHORTCUT_ID): cv.positive_int,
+            vol.Required(INPUT_SHORTCUT_NAME): cv.string,
+        },
+        DreameVacuum.async_rename_shortcut.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_SET_OBSTACLE_IGNORE,
+        {
+            vol.Required(INPUT_X): vol.All(vol.Coerce(float)),
+            vol.Required(INPUT_Y): vol.All(vol.Coerce(float)),
+            vol.Required(INPUT_OBSTACLE_IGNORED): vol.All(vol.Coerce(bool)),
+        },
+        DreameVacuum.async_set_obstacle_ignore.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_SET_ROUTER_POSITION,
+        {
+            vol.Required(INPUT_X): vol.All(vol.Coerce(int)),
+            vol.Required(INPUT_Y): vol.All(vol.Coerce(int)),
+        },
+        DreameVacuum.async_set_router_position.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_SET_PROPERTY,
+        {
+            vol.Required(INPUT_KEY): cv.string,
+            vol.Optional(INPUT_VALUE): vol.Any(vol.Coerce(int), vol.Coerce(str), vol.Coerce(bool)),
+        },
+        DreameVacuum.async_set_property.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_CALL_ACTION,
+        {vol.Required(INPUT_KEY): cv.string, vol.Optional(INPUT_VALUE): cv.string},
+        DreameVacuum.async_call_action.__name__,
     )
 
     async_add_entities([DreameVacuum(coordinator)])
@@ -412,14 +668,28 @@ async def async_setup_entry(
 class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     """Representation of a Dreame Vacuum cleaner robot."""
 
+    _unrecorded_attributes = frozenset(VACUUM_UNRECORDED_ATTRIBUTES)
+
     def __init__(self, coordinator: DreameVacuumDataUpdateCoordinator) -> None:
-        """Initialize the button entity."""
+        """Initialize the vacuum entity."""
         super().__init__(coordinator)
 
-        self._attr_supported_features = SUPPORT_DREAME
         self._attr_device_class = DOMAIN
-        self._attr_name = coordinator.device.name
+        self._attr_name = (
+            f" {coordinator.device.name}"  ## Add whitespace to display entity on top at the device configuration page
+        )
         self._attr_unique_id = f"{coordinator.device.mac}_" + DOMAIN
+        self._attr_supported_features = (
+            VacuumEntityFeature.SEND_COMMAND
+            | VacuumEntityFeature.LOCATE
+            | VacuumEntityFeature.STATE
+            | VacuumEntityFeature.STATUS
+            | VacuumEntityFeature.MAP
+            | VacuumEntityFeature.START
+            | VacuumEntityFeature.PAUSE
+            | VacuumEntityFeature.STOP
+            | VacuumEntityFeature.RETURN_HOME
+        )
 
         ## For backwards compatibility
         try:
@@ -438,7 +708,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     def _set_attrs(self):
         if self.device.status.has_error:
             self._attr_icon = "mdi:alert-octagon"
-        elif self.device.status.has_warning:
+        elif self.device.status.has_warning or self.device.status.low_water or self.device.status.draining_complete:
             self._attr_icon = "mdi:robot-vacuum-alert"
         elif self.device.status.returning_to_wash:
             self._attr_icon = "mdi:water-circle"
@@ -458,31 +728,33 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             self._attr_icon = "mdi:lightning-bolt-circle"
         elif self.device.status.docked:
             self._attr_icon = "mdi:ev-station"
-        elif self.device.status.paused:
-            self._attr_icon = "mdi:pause-circle"
+        elif self.device.status.cruising:
+            self._attr_icon = "mdi:map-marker-path"
         else:
             self._attr_icon = "mdi:robot-vacuum"
 
-        if self.device.status.started and (
-            self.device.status.customized_cleaning
-            and not (self.device.status.zone_cleaning or self.device.status.spot_cleaning)
+        if (
+            not (
+                self.device.status
+                and self.device.status.started
+                and (
+                    self.device.status.customized_cleaning
+                    and not (self.device.status.zone_cleaning or self.device.status.spot_cleaning)
+                )
+            )
+            and not self.device.status.scheduled_clean
         ):
-            self._attr_fan_speed_list = []
-            self._attr_fan_speed = STATE_UNAVAILABLE.capitalize()
-        else:
-            self._attr_fan_speed_list = list(SUCTION_LEVEL_TO_FAN_SPEED.values())
+            self._attr_supported_features = self._attr_supported_features | VacuumEntityFeature.FAN_SPEED
             self._attr_fan_speed = SUCTION_LEVEL_TO_FAN_SPEED.get(self.device.status.suction_level, STATE_UNKNOWN)
+            self._attr_fan_speed_list = list(SUCTION_LEVEL_TO_FAN_SPEED.values())
+        else:
+            self._attr_fan_speed = None
+            self._attr_fan_speed_list = []
 
-        self._attr_extra_state_attributes = self.device.status.attributes
-        self._attr_status = self.device.status.status_name.replace("_", " ").capitalize()
         self._vacuum_state = STATE_CODE_TO_STATE.get(self.device.status.state, STATE_UNKNOWN)
         if self._activity_class is None:
             self._attr_state = self._vacuum_state
-
-    @property
-    def status(self) -> str | None:
-        """Return the status of the vacuum cleaner."""
-        return self._attr_status
+        self._attr_extra_state_attributes = self.device.status.attributes
 
     @property
     def supported_features(self) -> int:
@@ -529,8 +801,15 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         """Set the vacuum cleaner to return to the dock."""
         await self._try_command("Unable to call return_to_base: %s", self.device.return_to_base)
 
-    async def async_clean_zone(self, zone, repeats=1) -> None:
-        await self._try_command("Unable to call clean_zone: %s", self.device.clean_zone, zone, repeats)
+    async def async_clean_zone(self, zone, repeats=1, suction_level="", water_volume="") -> None:
+        await self._try_command(
+            "Unable to call clean_zone: %s",
+            self.device.clean_zone,
+            zone,
+            repeats,
+            suction_level,
+            water_volume,
+        )
 
     async def async_clean_segment(self, segments, repeats=1, suction_level="", water_volume="") -> None:
         """Clean selected segments."""
@@ -544,9 +823,28 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         )
 
     async def async_clean_spot(self, points, repeats=1, suction_level="", water_volume="") -> None:
+        """Clean 1.5 square meters area of selected points."""
         await self._try_command(
-            "Unable to call clean_spot: %s", self.device.clean_spot, points, repeats, suction_level, water_volume
+            "Unable to call clean_spot: %s",
+            self.device.clean_spot,
+            points,
+            repeats,
+            suction_level,
+            water_volume,
         )
+
+    async def async_goto(self, x, y) -> None:
+        """Go to a point and take pictures around."""
+        if x is not None and y is not None and x != "" and y != "":
+            await self._try_command("Unable to call go_to: %s", self.device.go_to, x, y)
+
+    async def async_follow_path(self, points="") -> None:
+        """Start a survaliance job."""
+        await self._try_command("Unable to call follow_path: %s", self.device.follow_path, points)
+
+    async def async_start_shortcut(self, shortcut_id="") -> None:
+        """Start a shortct job."""
+        await self._try_command("Unable to call start_shortcut: %s", self.device.start_shortcut, shortcut_id)
 
     async def async_set_restricted_zone(self, walls="", zones="", no_mops="") -> None:
         """Create restricted zone."""
@@ -558,17 +856,48 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             no_mops,
         )
 
-    async def async_remote_control_move_step(self, rotation: int = 0, velocity: int = 0) -> None:
+    async def async_set_carpet_area(self, carpets="", ignored_carpets="") -> None:
+        """Create or update carpet areas."""
+        await self._try_command(
+            "Unable to call set_carpet_area: %s",
+            self.device.set_carpet_area,
+            carpets,
+            ignored_carpets,
+        )
+
+    async def async_set_virtual_threshold(self, virtual_thresholds="") -> None:
+        """Create or update virtual thresholds."""
+        await self._try_command(
+            "Unable to call set_virtual_threshold: %s",
+            self.device.set_virtual_threshold,
+            virtual_thresholds,
+        )
+
+    async def async_set_predefined_points(self, points="") -> None:
+        """Create or update predefined coordinates on the map."""
+        await self._try_command(
+            "Unable to call set_predefined_points: %s",
+            self.device.set_predefined_points,
+            points,
+        )
+
+    async def async_remote_control_move_step(
+        self, rotation: int = 0, velocity: int = 0, prompt: bool | None = None
+    ) -> None:
         """Remote control the robot."""
         await self._try_command(
             "Unable to call remote_control_move_step: %s",
             self.device.remote_control_move_step,
             rotation,
             velocity,
+            prompt,
         )
 
     async def async_set_fan_speed(self, fan_speed, **kwargs) -> None:
         """Set fan speed."""
+        if self.device.status.cruising:
+            raise InvalidActionException("Cannot set fan speed when cruising")
+
         if self.device.status.started and (
             self.device.status.customized_cleaning
             and not (self.device.status.zone_cleaning or self.device.status.spot_cleaning)
@@ -596,7 +925,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
 
     async def async_select_map(self, map_id) -> None:
         """Switch selected map."""
-        await self._try_command("Unable to switch to selected map: %s", self.device.select_map, map_id)
+        await self._try_command("Unable to switch to selected map: %s", self.device.set_selected_map, map_id)
 
     async def async_delete_map(self, map_id=None) -> None:
         """Delete a map."""
@@ -622,15 +951,52 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         """Request new map."""
         await self._try_command("Unable to call request_map: %s", self.device.request_map)
 
+    async def async_set_property(self, key, value) -> None:
+        """Set property."""
+        if key is not None and value is not None and key != "" and value != "":
+            await self._try_command("set_property failed: %s", self.device.set_property_value, key, value)
+
+    async def async_call_action(self, key, value=None) -> None:
+        """Call action."""
+        if key is not None and key != "":
+            await self._try_command("call_action failed: %s", self.device.call_action_value, key, value)
+
     async def async_rename_map(self, map_id, map_name="") -> None:
         """Rename a map"""
-        if map_name != "":
+        await self._try_command(
+            "Unable to call rename_map: %s",
+            self.device.rename_map,
+            map_id,
+            map_name,
+        )
+
+    async def async_restore_map(self, recovery_map_index, map_id=None) -> None:
+        """Restore a map"""
+        if recovery_map_index and recovery_map_index != "":
             await self._try_command(
-                "Unable to call rename_map: %s",
-                self.device.rename_map,
+                "Unable to call restore_map: %s",
+                self.device.restore_map,
+                recovery_map_index,
                 map_id,
-                map_name,
             )
+
+    async def async_restore_map_from_file(self, file_url, map_id=None) -> None:
+        """Restore a map from file"""
+        if file_url and file_url != "":
+            await self._try_command(
+                "Unable to call restore_map_from_file: %s",
+                self.device.restore_map_from_file,
+                file_url,
+                map_id,
+            )
+
+    async def async_backup_map(self, map_id=None) -> None:
+        """Backup a map"""
+        await self._try_command(
+            "Unable to call backup_map: %s",
+            self.device.backup_map,
+            map_id,
+        )
 
     async def async_rename_segment(self, segment_id, segment_name="") -> None:
         """Rename a segment"""
@@ -673,7 +1039,17 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 cleaning_sequence,
             )
 
-    async def async_set_custom_cleaning(self, segment_id, suction_level, water_volume, repeats) -> None:
+    async def async_set_custom_cleaning(
+        self,
+        segment_id,
+        suction_level,
+        water_volume,
+        repeats,
+        cleaning_mode=None,
+        custom_mopping_route=None,
+        cleaning_route=None,
+        wetness_level=None,
+    ) -> None:
         """Set custom cleaning"""
         if (
             segment_id != ""
@@ -692,6 +1068,28 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 suction_level,
                 water_volume,
                 repeats,
+                cleaning_mode,
+                custom_mopping_route,
+                cleaning_route,
+                wetness_level,
+            )
+
+    async def async_set_custom_carpet_cleaning(
+        self,
+        id,
+        type,
+        carpet_cleaning=None,
+        carpet_settings=None,
+    ) -> None:
+        """Set custom carpet cleaning"""
+        if id != "" and id is not None and type != "" and type is not None:
+            await self._try_command(
+                "Unable to call set_custom_carpet_cleaning: %s",
+                self.device.set_custom_carpet_cleaning,
+                id,
+                type,
+                carpet_cleaning,
+                carpet_settings,
             )
 
     async def async_install_voice_pack(self, lang_id, url, md5, size, **kwargs) -> None:
@@ -705,21 +1103,9 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             size,
         )
 
-    async def async_send_command(self, command: str, params, **kwargs) -> None:
+    async def async_send_command(self, command: str, params=None, **kwargs) -> None:
         """Send a command to a vacuum cleaner."""
         await self._try_command("Unable to call send_command: %s", self.device.send_command, command, params)
-
-    async def async_set_dnd(self, dnd_enabled, dnd_start="", dnd_end="") -> None:
-        """Set do not disturb function"""
-        await self._try_command(
-            "Unable to call set_dnd_enabled: %s",
-            self.device.set_dnd_enabled,
-            dnd_enabled,
-        )
-        if dnd_start != "" and dnd_start is not None:
-            await self._try_command("Unable to call set_dnd_start: %s", self.device.set_dnd_start, dnd_start)
-        if dnd_end != "" and dnd_end is not None:
-            await self._try_command("Unable to call set_dnd_end: %s", self.device.set_dnd_end, dnd_end)
 
     async def async_reset_consumable(self, consumable: str) -> None:
         """Reset consumable"""
@@ -729,4 +1115,35 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 "Unable to call reset_consumable: %s",
                 self.device.call_action,
                 action,
+            )
+
+    async def async_rename_shortcut(self, shortcut_id, shortcut_name) -> None:
+        """Rename a shortcut"""
+        if shortcut_name and shortcut_name != "":
+            await self._try_command(
+                "Unable to call rename_shortcut: %s",
+                self.device.rename_shortcut,
+                shortcut_id,
+                shortcut_name,
+            )
+
+    async def async_set_obstacle_ignore(self, x, y, obstacle_ignored) -> None:
+        """Set obstacle ignore status"""
+        if x is not None and x != "" and y is not None and y != "":
+            await self._try_command(
+                "Unable to call set_obstacle_ignore: %s",
+                self.device.set_obstacle_ignore,
+                x,
+                y,
+                obstacle_ignored,
+            )
+
+    async def async_set_router_position(self, x, y) -> None:
+        """Set router position on current map"""
+        if x is not None and x != "" and y is not None and y != "":
+            await self._try_command(
+                "Unable to call set_router_position: %s",
+                self.device.set_router_position,
+                x,
+                y,
             )

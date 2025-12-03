@@ -1,5 +1,5 @@
 #!/bin/bash
-# wget -O - https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/install | bash -
+# wget -O - https://raw.githubusercontent.com/Tasshack/dreame-vacuum/dev/install | bash -
 set -e
 
 declare path
@@ -27,7 +27,7 @@ if [ -n "$path" ]; then
         mkdir "$path/custom_components"
     fi
     cd "$path/custom_components"
-    wget "https://github.com/Tasshack/dreame-vacuum/releases/latest/download/dreame_vacuum.zip"
+    wget "https://github.com/Tasshack/dreame-vacuum/releases/download/v2.0.0b20/dreame_vacuum.zip"
     if [ -d "$path/custom_components/dreame_vacuum" ]; then
         rm -R "$path/custom_components/dreame_vacuum"
     fi

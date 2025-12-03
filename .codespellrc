@@ -1,0 +1,6 @@
+[codespell]
+# Ref: https://github.com/codespell-project/codespell#using-a-config-file
+skip = .git,.codespellrc,translations,resources.py
+check-hidden = true
+# ignore-regex = 
+ignore-words-list = hass,aline,laF

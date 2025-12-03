@@ -1,7 +1,10 @@
-VERSION = "v1.0.6"
+VERSION = "v2.0.0b20"
 
 from .types import (
     DreameVacuumProperty,
+    DreameVacuumAutoSwitchProperty,
+    DreameVacuumStrAIProperty,
+    DreameVacuumAIProperty,
     DreameVacuumAction,
     DreameVacuumRelocationStatus,
     DreameVacuumAutoEmptyStatus,
@@ -10,24 +13,58 @@ from .types import (
     DreameVacuumWaterVolume,
     DreameVacuumMopPadHumidity,
     DreameVacuumCarpetSensitivity,
+    DreameVacuumCarpetCleaning,
     DreameVacuumTaskStatus,
     DreameVacuumState,
-    DreameVacuumSelfCleanArea,
     DreameVacuumMopWashLevel,
+    DreameVacuumMopCleanFrequency,
     DreameVacuumMoppingType,
+    DreameVacuumStreamStatus,
+    DreameVacuumVoiceAssistantLanguage,
+    DreameVacuumWiderCornerCoverage,
+    DreameVacuumMopPadSwing,
+    DreameVacuumMopExtendFrequency,
+    DreameVacuumSecondCleaning,
+    DreameVacuumCleaningRoute,
+    DreameVacuumCustomMoppingRoute,
+    DreameVacuumSelfCleanFrequency,
+    DreameVacuumAutoEmptyMode,
+    DreameVacuumCleanGenius,
+    DreameVacuumCleanGeniusMode,
+    DreameVacuumFloorMaterial,
+    DreameVacuumFloorMaterialDirection,
+    DreameVacuumSegmentVisibility,
+    DreameVacuumDrainageStatus,
+    DreameVacuumLowWaterWarning,
+    DreameVacuumTaskType,
+    DreameVacuumWashingMode,
+    DreameVacuumWaterTemperature,
     PROPERTY_AVAILABILITY,
     ACTION_AVAILABILITY,
     MAP_COLOR_SCHEME_LIST,
     MAP_ICON_SET_LIST,
 )
 from .const import (
+    DEVICE_INFO,
     SUCTION_LEVEL_CODE_TO_NAME,
     WATER_VOLUME_CODE_TO_NAME,
     MOP_PAD_HUMIDITY_CODE_TO_NAME,
+    CLEANING_MODE_CODE_TO_NAME,
+    FLOOR_MATERIAL_CODE_TO_NAME,
+    FLOOR_MATERIAL_DIRECTION_CODE_TO_NAME,
+    SEGMENT_VISIBILITY_CODE_TO_NAME,
     PROPERTY_TO_NAME,
     ACTION_TO_NAME,
     SUCTION_LEVEL_QUIET,
+    STATUS_CODE_TO_NAME,
+    CUSTOM_MOPPING_ROUTE_TO_NAME,
+    CLEANING_ROUTE_TO_NAME,
 )
 from .device import DreameVacuumDevice
 from .protocol import DreameVacuumProtocol
-from .exceptions import DeviceException, DeviceUpdateFailedException, InvalidActionException, InvalidValueException
+from .exceptions import (
+    DeviceException,
+    DeviceUpdateFailedException,
+    InvalidActionException,
+    InvalidValueException,
+)
