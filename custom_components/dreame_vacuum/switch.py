@@ -131,6 +131,9 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         property_key=DreameVacuumProperty.SELF_CLEAN,
         icon_fn=lambda value, device: "mdi:water-off-outline" if value == 0 else "mdi:water-sync",
         entity_category=None,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.self_wash_base
+        ),
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.WATER_ELECTROLYSIS,
@@ -181,16 +184,28 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         format_fn=lambda value, device: int(value),
         exists_fn=lambda description, device: bool(
             DreameVacuumEntityDescription().exists_fn(description, device)
-            and (device.capability.detergent or device.capability.smart_mop_washing)
+            and device.capability.auto_add_detergent and not device.capability.mopping_with_detergent
         ),
     ),
     DreameVacuumSwitchEntityDescription(
-        property_key=DreameVacuumProperty.MOP_WASHING_WITH_DETERGENT,
+        property_key=DreameVacuumProperty.AUTO_ADD_DETERGENT,
+        name="Mop Washing With Detergent",
+        key="mop_washing_with_detergent",
         icon="mdi:hand-wash",
         entity_category=EntityCategory.CONFIG,
         format_fn=lambda value, device: int(value),
         exists_fn=lambda description, device: bool(
-            device.capability.mop_washing_with_detergent
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.capability.auto_add_detergent and device.capability.mopping_with_detergent
+        ),
+    ),
+    DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumProperty.MOPPING_WITH_DETERGENT,
+        icon="mdi:hand-wash",
+        entity_category=EntityCategory.CONFIG,
+        format_fn=lambda value, device: int(value),
+        exists_fn=lambda description, device: bool(
+            device.capability.mopping_with_detergent
             and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
     ),
@@ -356,8 +371,6 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
             device.capability.intensive_carpet_cleaning
             and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
-        available_fn=lambda device: not device.status.started
-        and (not device.status.carpet_recognition or device.status.carpet_avoidance),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
@@ -474,8 +487,6 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         exists_fn=lambda description, device: bool(
             device.capability.clean_carpets_first and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
-        available_fn=lambda device: not device.status.started
-        and (not device.status.carpet_recognition or device.status.carpet_avoidance),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
@@ -508,8 +519,6 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
             device.capability.side_brush_carpet_rotate
             and DreameVacuumEntityDescription().exists_fn(description, device)
         ),
-        available_fn=lambda device: not device.status.started
-        and (not device.status.carpet_recognition or device.status.carpet_avoidance),
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(

@@ -213,7 +213,10 @@
         "state": {
           "none": "Cap",
           "tile": "Rajola ceràmica",
-          "wood": "Parquet"
+          "wood": "Parquet",
+          "low_pile_carpet": "Catifa de baix pelatge",
+          "medium_pile_carpet": "Catifa de mitjà pelatge",
+          "carpet": "Catifa"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "Tornant a buidar",
           "draining": "Buidant",
           "auto_water_draining": "Buidatge automàtic d'aigua",
+          "emptying": "Buidant",
+          "dust_bag_drying": "Assecat de la bossa de pols",
+          "dust_bag_drying_paused": "Assecat de la bossa de pols en pausa",
+          "heading_to_extra_cleaning": "Anant a neteja extra",
+          "extra_cleaning": "Neteja extra",
+          "finding_pet_paused": "Localització de mascota en pausa",
+          "finding_pet": "Localitzant mascota",
           "shortcut": "Drecera",
           "monitoring": "Monitorant",
-          "monitoring_paused": "Monitoratge pausat"
+          "monitoring_paused": "Monitoratge pausat",
+          "initial_deep_cleaning": "Neteja profunda inicial",
+          "initial_deep_cleaning_paused": "Neteja profunda inicial en pausa",
+          "sanitizing": "Sanititzant",
+          "sanitizing_with_dry": "Sanititzant amb assecat"
         }
       },
       "status": {
@@ -677,7 +691,15 @@
           "water_stain": "Neteja de taques d'aigua",
           "water_stain_paused": "Neteja de taques d'aigua en pausa",
           "boosted_edge_cleaning": "Neteja d’avantguarda impulsada",
-          "hair_compressing": "Compressió del cabell"
+          "hair_compressing": "Compressió del cabell",    
+          "large_particle_cleaning": "Neteja de partícules grans",
+          "intensive_stain_cleaning": "Neteja intensiva de taques",
+          "stain_cleaning": "Neteja de taques",
+          "initial_deep_cleaning": "Neteja profunda inicial",
+          "initial_deep_cleaning_paused": "Neteja profunda inicial en pausa",
+          "mop_pad_heating": "Escalfament de coixinets de fregona",
+          "cleaning_after_mapping": "Neteja després de mapatge",
+          "small_particle_cleaning": "Neteja de partícules petites"
         }
       }
     }
@@ -1011,7 +1033,7 @@
           "name": "Neteja de la catifa",
           "description": "Configuració personalitzada de neteja de la catifa per a cada catifa."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Configuracions de la catifa",
           "description": "Configuració personalitzada de les configuracions de la catifa per a cada catifa amb una matriu de configuracions habilitades."
         }
@@ -1067,7 +1089,7 @@
           "name": "Catifes",
           "description": "Àrees de catifa."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Catifes Ignorades",
           "description": "Àrees de catifa ignorades per eliminar les catifes detectades automàticament."
         }

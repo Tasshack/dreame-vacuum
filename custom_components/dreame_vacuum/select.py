@@ -734,14 +734,14 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             device.status.segments and not device.status.fast_mapping and not device.status.has_temporary_map
         ),
         value_fn=lambda device, segment: (
-            device.status.segments[segment.segment_id].name if segment.segment_id in device.status.segments else None
+            device.status.segments[segment.id].name if segment.id in device.status.segments else None
         ),
         value_int_fn=lambda value, self: next(
             (type for name, type in self.segment.name_list(self.device.status.segments).items() if name == value),
             None,
         ),
         attrs_fn=lambda segment: {
-            "room_id": segment.segment_id,
+            "room_id": segment.id,
             "index": segment.index,
             "type": segment.type,
         },

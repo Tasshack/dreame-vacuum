@@ -213,7 +213,10 @@
         "state": {
           "none": "Noben",
           "tile": "Talna ploščica",
-          "wood": "Lesena tla"
+          "wood": "Lesena tla",
+          "low_pile_carpet": "Preproga z nizkim kupom",
+          "medium_pile_carpet": "Preproga s srednjim kupom",
+          "carpet": "Preproga"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "Vračanje za odvajanje",
           "draining": "Odvajanje",
           "auto_water_draining": "Samodejno odvajanje vode",
+          "emptying": "Prazenje",
+          "dust_bag_drying": "Sušenje vrečke za prah",
+          "dust_bag_drying_paused": "Sušenje vrečke za prah prekinjeno",
+          "heading_to_extra_cleaning": "Na poti k dodatnem čiščenju",
+          "extra_cleaning": "Dodatno čiščenje",
+          "finding_pet_paused": "Iskanje hišnega ljubljenčka prekinjeno",
+          "finding_pet": "Iskanje hišnega ljubljenčka",
           "shortcut": "Bližnjica",
           "monitoring": "Nadzor",
-          "monitoring_paused": "Nadzor zaustavljen"
+          "monitoring_paused": "Nadzor zaustavljen",
+          "initial_deep_cleaning": "Začetno globinsko čiščenje",
+          "initial_deep_cleaning_paused": "Začetno globinsko čiščenje prekinjeno",
+          "sanitizing": "Sanitizacija",
+          "sanitizing_with_dry": "Sanitizacija s sušenjem"
         }
       },
       "status": {
@@ -677,7 +691,15 @@
           "water_stain": "Čiščenje vodnih madežev",
           "water_stain_paused": "Čiščenje vodnih madežev zaustavljeno",
           "boosted_edge_cleaning": "Povišano čiščenje robov",
-          "hair_compressing": "Stiskanje las"
+          "hair_compressing": "Stiskanje las",
+          "large_particle_cleaning": "Čiščenje velikih delcev",
+          "intensive_stain_cleaning": "Intenzivno čiščenje madežev",
+          "stain_cleaning": "Čiščenje madežev",
+          "initial_deep_cleaning": "Začetno globinsko čiščenje",
+          "initial_deep_cleaning_paused": "Začetno globinsko čiščenje prekinjeno",
+          "mop_pad_heating": "Ogrevanje krp za mop",
+          "cleaning_after_mapping": "Čiščenje po mapiranju",
+          "small_particle_cleaning": "Čiščenje majhnih delcev"
         }
       }
     }
@@ -1011,7 +1033,7 @@
           "name": "Čiščenje preproge",
           "description": "Prilagojena nastavitev čiščenja za vsako preprogo."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Nastavitve preproge",
           "description": "Prilagojene nastavitve za vsako preprogo z naborom omogočenih nastavitev."
         }
@@ -1067,7 +1089,7 @@
           "name": "Preproge",
           "description": "Območja preprog."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Prezrte preproge",
           "description": "Prezrta območja preprog za brisanje samodejno zaznanih preprog."
         }

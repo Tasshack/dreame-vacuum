@@ -213,7 +213,10 @@
         "state": {
           "none": "Žádný",
           "tile": "Dlaždice",
-          "wood": "Dřevěná podlaha"
+          "wood": "Dřevěná podlaha",
+          "low_pile_carpet": "Nízký vlas koberec",
+          "medium_pile_carpet": "Středně vysoký vlas koberec",
+          "carpet": "Koberec"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "Vrací se k vypouštění",
           "draining": "Vypouštění",
           "auto_water_draining": "Automatické vypouštění vody",
+          "emptying": "Vyprazdňovanie",
+          "dust_bag_drying": "Sušení sáčku na prach",
+          "dust_bag_drying_paused": "Sušení sáčku pozastaveno",
+          "heading_to_extra_cleaning": "Míří k doplňkovému čištění",
+          "extra_cleaning": "Doplňkové čištění",
+          "finding_pet_paused": "Hledání domácího mazlíčka pozastaveno",
+          "finding_pet": "Hledání domácího mazlíčka",
           "shortcut": "Zkratka",
           "monitoring": "Monitorování",
-          "monitoring_paused": "Monitorování pozastaveno"
+          "monitoring_paused": "Monitorování pozastaveno",
+          "initial_deep_cleaning": "Počáteční hloubkové čištění",
+          "initial_deep_cleaning_paused": "Počáteční hloubkové čištění pozastaveno",
+          "sanitizing": "Dezinfekce",
+          "sanitizing_with_dry": "Dezinfekce s vysušením"
         }
       },
       "status": {
@@ -677,7 +691,15 @@
           "water_stain": "Uklízení vodních skvrn",
           "water_stain_paused": "Uklízení vodních skvrn pozastaveno",
           "boosted_edge_cleaning": "Zesílené uklízení okrajů",
-          "hair_compressing": "Kompresování vlasů"
+          "hair_compressing": "Kompresování vlasů",
+          "large_particle_cleaning": "Čištění velkých částic",
+          "intensive_stain_cleaning": "Intenzivní čištění skvrn",
+          "stain_cleaning": "Čištění skvrn",
+          "initial_deep_cleaning": "Počáteční hloubkové čištění",
+          "initial_deep_cleaning_paused": "Počáteční hloubkové čištění pozastaveno",
+          "mop_pad_heating": "Ohřev mopových podložek",
+          "cleaning_after_mapping": "Čištění po mapování",
+          "small_particle_cleaning": "Čištění malých částic"
         }
       }
     }
@@ -1011,7 +1033,7 @@
           "name": "Čištění koberce",
           "description": "Vlastní nastavení čištění koberce pro každý koberec."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Nastavení koberce",
           "description": "Vlastní nastavení koberce pro každý koberec s polem povolených nastavení."
         }
@@ -1067,7 +1089,7 @@
           "name": "Koberce",
           "description": "Plochy koberců."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Ignorované koberce",
           "description": "Ignorované kobercové plochy pro odstranění automaticky detekovaných koberců."
         }

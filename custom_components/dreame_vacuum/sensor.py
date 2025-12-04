@@ -344,7 +344,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         # entity_registry_enabled_default=False,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.deodorizer
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.deodorizer and device.capability.self_wash_base
         ),
     ),
     DreameVacuumSensorEntityDescription(
@@ -354,7 +354,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         # entity_registry_enabled_default=False,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.deodorizer
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.deodorizer and device.capability.self_wash_base
         ),
     ),
     DreameVacuumSensorEntityDescription(
@@ -450,6 +450,8 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.DETERGENT_STATUS,
         icon="mdi:chart-bubble",
+        exists_fn=lambda description, device: device.capability.self_wash_base
+        and DreameVacuumEntityDescription().exists_fn(description, device),
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
     DreameVacuumSensorEntityDescription(
@@ -472,7 +474,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         value_fn=lambda value, device: device.status.current_room.name,
         exists_fn=lambda description, device: device.capability.map and device.capability.lidar_navigation,
         attrs_fn=lambda device: {
-            ATTR_ROOM_ID: device.status.current_room.segment_id,
+            ATTR_ROOM_ID: device.status.current_room.id,
             ATTR_ROOM_ICON: device.status.current_room.icon,
         },
     ),
@@ -505,6 +507,8 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:water-percent",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=None,
+        exists_fn=lambda description, device: device.capability.self_wash_base
+        and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSensorEntityDescription(
         key="firmware_version",

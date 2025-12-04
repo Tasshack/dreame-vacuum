@@ -213,7 +213,10 @@
         "state": {
           "none": "None",
           "tile": "Floor Tile",
-          "wood": "Wood Floor"
+          "wood": "Wood Floor",
+          "low_pile_carpet": "Low pile carpet",
+          "medium_pile_carpet": "Medium pile carpet",
+          "carpet": "Carpet"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "Returning to drain",
           "draining": "Draining",
           "auto_water_draining": "Auto water draining",
+          "emptying": "Emptying",
+          "dust_bag_drying": "Dust bag drying",
+          "dust_bag_drying_paused": "Dust bag drying paused",
+          "heading_to_extra_cleaning": "Heading to extra cleaning",
+          "extra_cleaning": "Extra cleaning",
+          "finding_pet_paused": "Finding pet paused",
+          "finding_pet": "Finding pet",
           "shortcut": "Shortcut",
           "monitoring": "Monitoring",
-          "monitoring_paused": "Monitoring paused"
+          "monitoring_paused": "Monitoring paused",
+          "initial_deep_cleaning": "Initial deep cleaning",
+          "initial_deep_cleaning_paused": "Initial deep cleaning paused",
+          "sanitizing": "Sanitizing",
+          "sanitizing_with_dry": "Sanitizing with dry"
         }
       },
       "status": {
@@ -676,7 +690,15 @@
           "water_stain": "Water stain cleaning",
           "water_stain_paused": "Water stain cleaning paused",
           "boosted_edge_cleaning": "Boosted edge cleaning",
-          "hair_compressing": "Hair compressing"
+          "hair_compressing": "Hair compressing",
+          "large_particle_cleaning": "Large particle cleaning",
+          "intensive_stain_cleaning": "Intensive stain cleaning",
+          "stain_cleaning": "Stain cleaning",
+          "initial_deep_cleaning": "Initial deep cleaning",
+          "initial_deep_cleaning_paused": "Initial deep cleaning paused",
+          "mop_pad_heating": "Mop pad heating",
+          "cleaning_after_mapping": "Cleaning after mapping",
+          "small_particle_cleaning": "Small particle cleaning"
         }
       }
     }
@@ -1014,8 +1036,8 @@
           "name": "Carpet Cleaning",
           "description": "Custom carpet cleaning setting for each carpet."
         },
-        "carpet_settings": {
-          "name": "Carpet Settings",
+        "carpet_preferences": {
+          "name": "Carpet Preferences",
           "description": "Custom carpet settings setting for each carpet with an array of enabled settings."
         }
       }
@@ -1070,9 +1092,9 @@
           "name": "Carpets",
           "description": "Carpet areas."
         },
-        "ignored_carpets": {
-          "name": "Ignored Carpets",
-          "description": "Ignored carpet areas for deleting the automatically detected carpets."
+        "deleted_carpets": {
+          "name": "Deleted Carpets",
+          "description": "Deleted carpet areas for removing the automatically detected carpets."
         }
       }
     },

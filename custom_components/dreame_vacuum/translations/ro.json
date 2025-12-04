@@ -213,7 +213,10 @@
         "state": {
           "none": "Nimic",
           "tile": "Gresie",
-          "wood": "Parchet"
+          "wood": "Parchet",
+          "low_pile_carpet": "Covor cu fir scurt",
+          "medium_pile_carpet": "Covor cu fir mediu",
+          "carpet": "Covor"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "Întoarcere la scurgere",
           "draining": "Scurgere",
           "auto_water_draining": "Scurgere automată a apei",
+          "emptying": "Golire",
+          "dust_bag_drying": "Uscarea sacului de praf",
+          "dust_bag_drying_paused": "Uscarea sacului de praf întreruptă",
+          "heading_to_extra_cleaning": "Merg către curățare suplimentară",
+          "extra_cleaning": "Curățare suplimentară",
+          "finding_pet_paused": "Găsire animal în pauză",
+          "finding_pet": "Găsire animal",
           "shortcut": "Scurtătură",
           "monitoring": "Monitorizare",
-          "monitoring_paused": "Monitorizare în pauză"
+          "monitoring_paused": "Monitorizare în pauză",
+          "initial_deep_cleaning": "Curățare profundă inițială",
+          "initial_deep_cleaning_paused": "Curățare profundă inițială întreruptă",
+          "sanitizing": "Sanitizare",
+          "sanitizing_with_dry": "Sanitizare cu uscare"
         }
       },
       "status": {
@@ -677,7 +691,15 @@
           "water_stain": "Curățare pete de apă",
           "water_stain_paused": "Curățare pete de apă în pauză",
           "boosted_edge_cleaning": "Curățare intensificată a marginilor",
-          "hair_compressing": "Compresie păr"
+          "hair_compressing": "Compresie păr",
+          "large_particle_cleaning": "Curățare particule mari",
+          "intensive_stain_cleaning": "Curățare intensă a petelor",
+          "stain_cleaning": "Curățare pete",
+          "initial_deep_cleaning": "Curățare profundă inițială",
+          "initial_deep_cleaning_paused": "Curățare profundă inițială întreruptă",
+          "mop_pad_heating": "Încălzirea lavetei mop",
+          "cleaning_after_mapping": "Curățare după cartografiere",
+          "small_particle_cleaning": "Curățare particule mici"
         }
       }
     }
@@ -1011,7 +1033,7 @@
           "name": "Curățare covor",
           "description": "Configurare personalizată de curățare pentru fiecare covor."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Setări covor",
           "description": "Setări personalizate pentru fiecare covor cu o listă de setări activate."
         }
@@ -1067,7 +1089,7 @@
           "name": "Covoare",
           "description": "Zone cu covoare."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Covoare Ignorate",
           "description": "Zone cu covoare ignorate pentru ștergerea covoarelor detectate automat."
         }

@@ -460,7 +460,7 @@ vacuum_set_custom_carpet_cleaning:
         number:
           min: 0
           max: 6
-    carpet_settings:
+    carpet_preferences:
       example: "['carpet_boost'] or 'clean_carpets_first' or '-1' or []" 
       required: false
       selector:
@@ -543,7 +543,7 @@ vacuum_set_carpet_area:
       required: false
       selector:
         object:
-    ignored_carpets:
+    deleted_carpets:
       example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
       required: false
       selector:

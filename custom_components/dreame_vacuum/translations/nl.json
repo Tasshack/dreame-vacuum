@@ -213,7 +213,10 @@
         "state": {
           "none": "Geen",
           "tile": "Vloertegel",
-          "wood": "Houten vloer"
+          "wood": "Houten vloer",
+          "low_pile_carpet": "Laagpolig tapijt",
+          "medium_pile_carpet": "Middelhoogpolig tapijt",
+          "carpet": "Tapijt"
         }
       },
       "voice_assistant_language": {
@@ -358,12 +361,20 @@
           "returning_to_drain": "Terugkeren om te legen",
           "draining": "Legen",
           "auto_water_draining": "Automatisch water legen",
-          "shortcut_task": "Snelkoppelingstaak",
-          "streaming": "Streamen",
-          "streaming_paused": "Streamen gepauzeerd",
+          "emptying": "Leegmaken",
+          "dust_bag_drying": "Stofzak drogen",
+          "dust_bag_drying_paused": "Drogen stofzak gepauzeerd",
+          "heading_to_extra_cleaning": "Op weg naar extra reiniging",
+          "extra_cleaning": "Extra reiniging",
+          "finding_pet_paused": "Huisdier zoeken gepauzeerd",
+          "finding_pet": "Huisdier zoeken",
           "shortcut": "Snelkoppeling",
           "monitoring": "Monitoren",
-          "monitoring_paused": "Monitoren gepauzeerd"
+          "monitoring_paused": "Monitoren gepauzeerd",
+          "initial_deep_cleaning": "Initiële diepe reiniging",
+          "initial_deep_cleaning_paused": "Initiële diepe reiniging gepauzeerd",
+          "sanitizing": "Desinfecteren",
+          "sanitizing_with_dry": "Desinfecteren met drogen"
         }
       },
       "status": {
@@ -680,7 +691,15 @@
           "water_stain": "Water vlek schoonmaak",
           "water_stain_paused": "Water vlek schoonmaak gepauzeerd",
           "boosted_edge_cleaning": "Boosted randreiniging",
-          "hair_compressing": "Haar comprimeren"
+          "hair_compressing": "Haar comprimeren",
+          "large_particle_cleaning": "Reiniging grote deeltjes",
+          "intensive_stain_cleaning": "Intensieve vlekkenreiniging",
+          "stain_cleaning": "Vlekkenreiniging",
+          "initial_deep_cleaning": "Initiële diepe reiniging",
+          "initial_deep_cleaning_paused": "Initiële diepe reiniging gepauzeerd",
+          "mop_pad_heating": "Mop‑pad verwarming",
+          "cleaning_after_mapping": "Reiniging na mapping",
+          "small_particle_cleaning": "Reiniging kleine deeltjes"
         }
       }
     }
@@ -1014,7 +1033,7 @@
           "name": "Tapijtreiniging",
           "description": "Aangepaste tapijtreinigingsinstelling voor elk tapijt."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Tapijtinstellingen",
           "description": "Aangepaste tapijtinstellingen voor elk tapijt met een array van ingeschakelde instellingen."
         }
@@ -1070,7 +1089,7 @@
           "name": "Tapijten",
           "description": "Tapijtgebieden."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Genegeerde Tapijten",
           "description": "Genegeerde tapijtgebieden om automatisch gedetecteerde tapijten te verwijderen."
         }

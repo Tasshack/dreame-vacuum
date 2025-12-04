@@ -206,7 +206,10 @@
         "state": {
           "none": "Κανένα",
           "tile": "Πλακάκι",
-          "wood": "Ξύλινο πάτωμα"
+          "wood": "Ξύλινο πάτωμα",
+          "low_pile_carpet": "Χαλί με χαμηλό πέλος",
+          "medium_pile_carpet": "Χαλί με μεσαίο πέλος",
+          "carpet": "Χαλί"
         }
       },
       "voice_assistant_language": {
@@ -351,9 +354,20 @@
           "returning_to_drain": "Επιστροφή για άδειασμα",
           "draining": "Άδειασμα",
           "auto_water_draining": "Αυτόματο άδειασμα νερού",
+          "emptying": "Άδειασμα",
+          "dust_bag_drying": "Στέγνωμα σακούλας σκόνης",
+          "dust_bag_drying_paused": "Το στέγνωμα της σακούλας σκόνης έχει τεθεί σε παύση",
+          "heading_to_extra_cleaning": "Μετάβαση σε επιπλέον καθαρισμό",
+          "extra_cleaning": "Επιπλέον καθαρισμός",
+          "finding_pet_paused": "Εύρεση κατοικιδίου σε παύση",
+          "finding_pet": "Εύρεση κατοικιδίου",
           "shortcut": "Συντόμευση",
           "monitoring": "Παρακολούθηση",
-          "monitoring_paused": "Παρακολούθηση σε παύση"
+          "monitoring_paused": "Παρακολούθηση σε παύση",
+          "initial_deep_cleaning": "Αρχικός βαθύς καθαρισμός",
+          "initial_deep_cleaning_paused": "Ο αρχικός βαθύς καθαρισμός έχει τεθεί σε παύση",
+          "sanitizing": "Απολύμανση",
+          "sanitizing_with_dry": "Απολύμανση με στέγνωμα"
         }
       },
       "status": {
@@ -670,7 +684,15 @@
           "water_stain": "Καθαρισμός λεκέδων νερού",
           "water_stain_paused": "Ο καθαρισμός λεκέδων νερού έχει τεθεί σε παύση",
           "boosted_edge_cleaning": "Ενισχυμένος καθαρισμός ακμών",
-          "hair_compressing": "Συμπίεση τριχών"
+          "hair_compressing": "Συμπίεση τριχών",
+          "large_particle_cleaning": "Καθαρισμός μεγάλων σωματιδίων",
+          "intensive_stain_cleaning": "Εντατικός καθαρισμός λεκέδων",
+          "stain_cleaning": "Καθαρισμός λεκέδων",
+          "initial_deep_cleaning": "Αρχικός βαθύς καθαρισμός",
+          "initial_deep_cleaning_paused": "Ο αρχικός βαθύς καθαρισμός έχει τεθεί σε παύση",
+          "mop_pad_heating": "Θέρμανση πανιού σφουγγαρίστρας",
+          "cleaning_after_mapping": "Καθαρισμός μετά τη χαρτογράφηση",
+          "small_particle_cleaning": "Καθαρισμός μικρών σωματιδίων"
         }
       }
     }
@@ -975,8 +997,8 @@
           "description": "Επίπεδο αναρρόφησης για κάθε δωμάτιο."
         },
         "wetness_level": {
-        "name": "Επίπεδο υγρασίας",
-        "description": "Επίπεδο υγρασίας για κάθε δωμάτιο (σε υποστηριζόμενες συσκευές)."
+          "name": "Επίπεδο υγρασίας",
+          "description": "Επίπεδο υγρασίας για κάθε δωμάτιο (σε υποστηριζόμενες συσκευές)."
         },
         "water_volume": {
           "name": "Ποσότητα νερού",
@@ -992,7 +1014,7 @@
         }
       }
     },
-    "vacuum_set_restricted_zone": {
+    "vacuum_set_custom_carpet_cleaning": {
       "name": "Ορισμός περιορισμένης ζώνης",
       "description": "Ορισμός εικονικών τοίχων, περιορισμένων ζωνών και/ή ζωνών χωρίς σφουγγάρισμα.",
       "fields": {
@@ -1008,7 +1030,7 @@
           "name": "Καθαρισμός χαλιού",
           "description": "Προσαρμοσμένη ρύθμιση καθαρισμού για κάθε χαλί."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Ρυθμίσεις χαλιού",
           "description": "Προσαρμοσμένες ρυθμίσεις για κάθε χαλί με πίνακα ενεργοποιημένων επιλογών."
         }
@@ -1064,7 +1086,7 @@
           "name": "Χαλιά",
           "description": "Περιοχές χαλιών."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Αγνοημένα χαλιά",
           "description": "Περιοχές χαλιών που αγνοούνται για διαγραφή των αυτόματα εντοπισμένων χαλιών."
         }

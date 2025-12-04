@@ -213,7 +213,10 @@
         "state": {
           "none": "Не вибрано",
           "tile": "Плитка",
-          "wood": "Дерево"
+          "wood": "Дерево",
+          "low_pile_carpet": "Килим з низьким ворсом",
+          "medium_pile_carpet": "Килим зі середнім ворсом",
+          "carpet": "Килим"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "Повернення до зливу",
           "draining": "Злив",
           "auto_water_draining": "Автоматичний злив води",
+          "emptying": "Спорожнення",
+          "dust_bag_drying": "Сушіння мішка для пилу",
+          "dust_bag_drying_paused": "Сушіння мішка для пилу призупинено",
+          "heading_to_extra_cleaning": "Направляюсь до додаткового прибирання",
+          "extra_cleaning": "Додаткове прибирання",
+          "finding_pet_paused": "Пошук домашньої тварини призупинено",
+          "finding_pet": "Пошук домашньої тварини",
           "shortcut": "Шорткат",
           "monitoring": "Моніторинг",
-          "monitoring_paused": "Моніторинг призупинено"
+          "monitoring_paused": "Моніторинг призупинено",
+          "initial_deep_cleaning": "Початкова глибока очистка",
+          "initial_deep_cleaning_paused": "Початкова глибока очистка призупинено",
+          "sanitizing": "Дезинфекція",
+          "sanitizing_with_dry": "Дезинфекція з сушінням"
         }
       },
       "status": {
@@ -677,7 +691,15 @@
           "water_stain": "Очищення плям водою",
           "water_stain_paused": "Очищення плям від води призупинено",
           "boosted_edge_cleaning": "Підвищене очищення краю",
-          "hair_compressing": "Стиснення волосся"
+          "hair_compressing": "Стиснення волосся",
+          "large_particle_cleaning": "Прибирання великих часток",
+          "intensive_stain_cleaning": "Інтенсивне чищення плям",
+          "stain_cleaning": "Очищення плям",
+          "initial_deep_cleaning": "Початкова глибока очистка",
+          "initial_deep_cleaning_paused": "Початкова глибока очистка призупинено",
+          "mop_pad_heating": "Нагрів моп‑накладок",
+          "cleaning_after_mapping": "Прибирання після картографування",
+          "small_particle_cleaning": "Прибирання дрібних часток"
         }
       }
     }
@@ -1011,7 +1033,7 @@
           "name": "Чищення килима",
           "description": "Індивідуальні налаштування очищення для кожного килима."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Налаштування килима",
           "description": "Індивідуальні налаштування для кожного килима з масивом увімкнених параметрів."
         }
@@ -1067,7 +1089,7 @@
           "name": "Килими",
           "description": "Килимові зони."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Ігноровані килими",
           "description": "Ігноровані ділянки килима для видалення автоматично виявлених килимів."
         }

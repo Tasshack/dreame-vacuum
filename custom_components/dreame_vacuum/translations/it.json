@@ -213,7 +213,10 @@
         "state": {
           "none": "Nessuno",
           "tile": "Piastrella per pavimento",
-          "wood": "Pavimento in legno"
+          "wood": "Pavimento in legno",
+          "low_pile_carpet": "Tappeto a pelo basso",
+          "medium_pile_carpet": "Tappeto a pelo medio",
+          "carpet": "Tappeto"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "Ritornando allo scarico",
           "draining": "Drenante",
           "auto_water_draining": "Scarico automatico dell'acqua",
+          "emptying": "Svuotamento",
+          "dust_bag_drying": "Asciugatura della borsa della polvere",
+          "dust_bag_drying_paused": "Asciugatura della borsa della polvere in pausa",
+          "heading_to_extra_cleaning": "In cammino alla pulizia extra",
+          "extra_cleaning": "Pulizia extra",
+          "finding_pet_paused": "Ricerca animale in pausa",
+          "finding_pet": "Ricerca animale",
           "shortcut": "Scorciatoia",
           "monitoring": "Monitoraggio",
-          "monitoring_paused": "Monitoraggio in pausa"
+          "monitoring_paused": "Monitoraggio in pausa",
+          "initial_deep_cleaning": "Pulizia profonda iniziale",
+          "initial_deep_cleaning_paused": "Pulizia profonda iniziale in pausa",
+          "sanitizing": "Sanificazione",
+          "sanitizing_with_dry": "Sanificazione con asciugatura"
         }
       },
       "status": {
@@ -677,7 +691,15 @@
           "water_stain": "Pulizia delle macchie d'acqua",
           "water_stain_paused": "Pulizia delle macchie d'acqua in pausa",
           "boosted_edge_cleaning": "Pulizia del bordo potenziata",
-          "hair_compressing": "Compressione dei capelli"
+          "hair_compressing": "Compressione dei capelli",
+          "large_particle_cleaning": "Pulizia di particelle grandi",
+          "intensive_stain_cleaning": "Pulizia intensiva delle macchie",
+          "stain_cleaning": "Pulizia delle macchie",
+          "initial_deep_cleaning": "Pulizia profonda iniziale",
+          "initial_deep_cleaning_paused": "Pulizia profonda iniziale in pausa",
+          "mop_pad_heating": "Riscaldamento dei tappetini mop",
+          "cleaning_after_mapping": "Pulizia dopo mappatura",
+          "small_particle_cleaning": "Pulizia di particelle piccole"
         }
       }
     }
@@ -1011,7 +1033,7 @@
           "name": "Pulizia tappeto",
           "description": "Impostazione personalizzata della pulizia per ogni tappeto."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Impostazioni tappeto",
           "description": "Impostazioni personalizzate per ogni tappeto con un array di opzioni abilitate."
         }
@@ -1067,7 +1089,7 @@
           "name": "Tappeti",
           "description": "Aree di moquette."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Tappeti ignorati",
           "description": "Aree del tappeto ignorate per eliminare i tappeti rilevati automaticamente."
         }

@@ -213,7 +213,10 @@
         "state": {
           "none": "없음",
           "tile": "바닥 타일",
-          "wood": "나무 바닥"
+          "wood": "나무 바닥",
+          "low_pile_carpet": "낮은 깔개 카펫",
+          "medium_pile_carpet": "중간 깔개 카펫",
+          "carpet": "카펫"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "배수하러 복귀 중",
           "draining": "배수 중",
           "auto_water_draining": "자동 물 배수",
+          "emptying": "비우는 중",
+          "dust_bag_drying": "먼지봉투 건조 중",
+          "dust_bag_drying_paused": "먼지봉투 건조 중단됨",
+          "heading_to_extra_cleaning": "추가 청소로 이동 중",
+          "extra_cleaning": "추가 청소 중",
+          "finding_pet_paused": "반려동물 찾기 일시정지됨",
+          "finding_pet": "반려동물 찾는 중",
           "shortcut": "바로가기",
           "monitoring": "모니터링",
-          "monitoring_paused": "모니터링 일시 중지됨"
+          "monitoring_paused": "모니터링 일시 중지됨",
+          "initial_deep_cleaning": "초기 깊은 청소",
+          "initial_deep_cleaning_paused": "초기 깊은 청소 일시정지됨",
+          "sanitizing": "살균 중",
+          "sanitizing_with_dry": "살균 및 건조 중"
         }
       },
       "status": {
@@ -676,7 +690,15 @@
           "water_stain": "물 얼룩 청소",
           "water_stain_paused": "물 얼룩 청소 일시 중지됨",
           "boosted_edge_cleaning": "강화된 가장자리 청소",
-          "hair_compressing": "머리카락 압축"
+          "hair_compressing": "머리카락 압축",
+          "large_particle_cleaning": "대형 입자 청소",
+          "intensive_stain_cleaning": "강력 얼룩 제거",
+          "stain_cleaning": "얼룩 제거",
+          "initial_deep_cleaning": "초기 깊은 청소",
+          "initial_deep_cleaning_paused": "초기 깊은 청소 일시정지됨",
+          "mop_pad_heating": "걸레 패드 가열 중",
+          "cleaning_after_mapping": "매핑 후 청소 중",
+          "small_particle_cleaning": "미세 입자 청소"
         }
       }
     }
@@ -1014,7 +1036,7 @@
           "name": "카펫 청소",
           "description": "각 카펫에 대한 사용자 지정 카펫 청소 설정입니다."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "카펫 설정",
           "description": "활성화된 설정 배열이 있는 각 카펫에 대한 사용자 지정 카펫 설정입니다."
         }
@@ -1070,7 +1092,7 @@
           "name": "카펫",
           "description": "카펫 구역."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "무시된 카펫",
           "description": "자동으로 감지된 카펫을 삭제하기 위한 무시된 카펫 구역입니다."
         }

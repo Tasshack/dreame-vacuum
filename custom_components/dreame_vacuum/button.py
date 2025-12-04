@@ -124,7 +124,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:scent",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.deodorizer is not None
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.deodorizer and device.status.deodorizer_life is not None
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -132,7 +132,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:pipe",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.scale_inhibitor
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.scale_inhibitor and device.status.scale_inhibitor_life is not None
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -140,7 +140,7 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:tire",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.wheel
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.wheel and device.status.wheel_dirty_life is not None
         ),
     ),
     DreameVacuumButtonEntityDescription(
@@ -214,14 +214,14 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         icon="mdi:pump",
         entity_category=EntityCategory.DIAGNOSTIC,
         action_fn=lambda device: device.start_draining(),
-        exists_fn=lambda description, device: device.capability.self_wash_base and device.capability.drainage,
+        exists_fn=lambda description, device: device.capability.drainage,
     ),
     DreameVacuumButtonEntityDescription(
         key="empty_water_tank",
         icon="mdi:waves-arrow-up",
         entity_category=EntityCategory.DIAGNOSTIC,
         action_fn=lambda device: device.start_draining(True),
-        exists_fn=lambda description, device: device.capability.self_wash_base and device.capability.empty_water_tank,
+        exists_fn=lambda description, device: device.capability.water_tank_draining,
     ),
     DreameVacuumButtonEntityDescription(
         key="base_station_self_repair",

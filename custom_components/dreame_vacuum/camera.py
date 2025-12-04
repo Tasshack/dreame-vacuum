@@ -53,8 +53,11 @@ from .dreame.const import (
     ATTR_RECOVERY_MAP_PICTURE,
     ATTR_RECOVERY_MAP_FILE,
     ATTR_WIFI_MAP_PICTURE,
+    ATTR_MAP_ID,
+    ATTR_SAVED_MAP_ID,
     ATTR_COLOR_SCHEME,
 )
+from .dreame.types import MAP_ICON_SET_LIST    
 from .dreame.map import (
     DreameVacuumMapRenderer,
     DreameVacuumMapDataJsonRenderer,
@@ -107,20 +110,54 @@ class CameraDataView(CameraView):
 
     async def handle(self, request: web.Request, camera: Camera) -> web.Response:
         """Serve camera data."""
-        if not camera.map_data_json:
-            resources = request.query.get("resources")
+        resources = request.query.get("resources")
+        saved = request.query.get("saved")
+        file = False
+        object_name = None
+        if saved and (saved == True or saved == "true" or saved == "1"):
+            index = request.query.get("index")
+            if str(index).isnumeric():
+                recovery = request.query.get("recovery")
+                if recovery and (recovery == True or recovery == "true" or recovery == "1"):
+                    recovery_index = request.query.get("recovery_index")
+                    if str(recovery_index).isnumeric():
+                        file = request.query.get("file")
+                        file = file and (file == True or file == "true" or file == "1")
+                        data, map_url, object_name = await camera.recovery_map_data_string(
+                            index,
+                            recovery_index,
+                            resources and (resources == True or resources == "true" or resources == "1"),
+                            file,
+                        )
+                else:
+                    data = await camera.saved_map_data_string(
+                        index, resources and (resources == True or resources == "true" or resources == "1")
+                    )
+        else:
+            data = camera.map_data_string(resources and (resources == True or resources == "true" or resources == "1"))
+
+        if data:
             response = web.Response(
-                body=gzip.compress(
-                    bytes(
-                        camera.map_data_string(
-                            resources and (resources == True or resources == "true" or resources == "1")
-                        ),
-                        "utf-8",
+                body=(
+                    data
+                    if file
+                    else gzip.compress(
+                        bytes(
+                            data,
+                            "utf-8",
+                        )
                     )
                 ),
                 content_type=JSON_CONTENT_TYPE,
             )
-            response.headers["Content-Encoding"] = "gzip"
+
+            if object_name:
+                response.content_type = "application/x-tar+gzip"
+                response.headers["Content-Disposition"] = (
+                    f'attachment; filename={object_name.replace("/", "-").replace(".mb.tbz2", "")}.mb.tbz2'
+                )
+            else:
+                response.headers["Content-Encoding"] = "gzip"
             return response
         raise web.HTTPNotFound()
 
@@ -136,12 +173,14 @@ class CameraObstacleView(CameraView):
         if camera.map_index == 0:
             crop = request.query.get("crop")
             box = request.query.get("box")
+            color = request.query.get("color")
             file = request.query.get("file")
             file = file and (file == True or file == "true" or file == "1")
             result, object_name = await camera.obstacle_image(
                 request.query.get("index", 1),
                 not box or (box and (box == True or box == "true" or box == "1")),
                 not crop or (crop and (crop == True or crop == "true" or crop == "1")),
+                color,
             )
             if result:
                 response = web.Response(
@@ -168,6 +207,7 @@ class CameraObstacleHistoryView(CameraView):
         if camera.map_index == 0:
             crop = request.query.get("crop")
             box = request.query.get("box")
+            color = request.query.get("color")
             file = request.query.get("file")
             file = file and (file == True or file == "true" or file == "1")
             cruising = request.query.get("cruising")
@@ -177,6 +217,7 @@ class CameraObstacleHistoryView(CameraView):
                 cruising and (cruising == True or cruising == "true" or cruising == "1"),
                 not box or (box and (box == True or box == "true" or box == "1")),
                 not crop or (crop and (crop == True or crop == "true" or crop == "1")),
+                color,
             )
             if result:
                 response = web.Response(
@@ -200,19 +241,21 @@ class CameraHistoryView(CameraView):
 
     async def handle(self, request: web.Request, camera: Camera) -> web.Response:
         """Serve camera cleaning history or cruising data."""
-        if not camera.map_data_json and camera.map_index == 0:
+        if camera.map_index == 0:
             data = request.query.get("data")
             data = data and (data == True or data == "true" or data == "1")
             cruising = request.query.get("cruising")
             resources = request.query.get("resources")
-            dirty = request.query.get("dirty")
+            cleaning = request.query.get("cleaning")
+            wifi = request.query.get("wifi")
             info = request.query.get("info")
             result = await camera.history_map_image(
                 request.query.get("index", 1),
                 not info or (info and (info == True or info == "true" or info == "1")),
                 cruising and (cruising == True or cruising == "true" or cruising == "1"),
                 data,
-                dirty and (dirty == True or dirty == "true" or dirty == "1"),
+                cleaning and (cleaning == True or cleaning == "true" or cleaning == "1"),
+                wifi and (wifi == True or wifi == "true" or wifi == "1"),
                 data and resources and (resources == True or resources == "true" or resources == "1"),
             )
             if result:
@@ -234,36 +277,35 @@ class CameraRecoveryView(CameraView):
 
     async def handle(self, request: web.Request, camera: Camera) -> web.Response:
         """Serve camera recovery map data."""
-        if not camera.map_data_json:
-            index = request.query.get("index", 1)
-            file = request.query.get("file")
-            data = False
-            file = file and (file == True or file == "true" or file == "1")
+        index = request.query.get("index", 1)
+        file = request.query.get("file")
+        data = False
+        file = file and (file == True or file == "true" or file == "1")
+        if file:
+            result, map_url, object_name = await camera.recovery_map_file(index)
+        else:
+            data = request.query.get("data")
+            data = data and (data == True or data == "true" or data == "1")
+            resources = request.query.get("resources")
+            info = request.query.get("info")
+            result = await camera.recovery_map(
+                index,
+                not info or (info and (info == True or info == "true" or info == "1")),
+                data,
+                data and resources and (resources == True or resources == "true" or resources == "1"),
+            )
+        if result:
+            response = web.Response(
+                body=gzip.compress(bytes(result, "utf-8")) if data and not file else result,
+                content_type="application/x-tar+gzip" if file else JSON_CONTENT_TYPE if data else PNG_CONTENT_TYPE,
+            )
             if file:
-                result, map_url, object_name = await camera.recovery_map_file(index)
-            else:
-                data = request.query.get("data")
-                data = data and (data == True or data == "true" or data == "1")
-                resources = request.query.get("resources")
-                info = request.query.get("info")
-                result = await camera.recovery_map(
-                    index,
-                    not info or (info and (info == True or info == "true" or info == "1")),
-                    data,
-                    data and resources and (resources == True or resources == "true" or resources == "1"),
+                response.headers["Content-Disposition"] = (
+                    f'attachment; filename={object_name.replace("/", "-").replace(".mb.tbz2", "")}.mb.tbz2'
                 )
-            if result:
-                response = web.Response(
-                    body=gzip.compress(bytes(result, "utf-8")) if data and not file else result,
-                    content_type="application/x-tar+gzip" if file else JSON_CONTENT_TYPE if data else PNG_CONTENT_TYPE,
-                )
-                if file:
-                    response.headers["Content-Disposition"] = (
-                        f'attachment; filename={object_name.replace("/", "-").replace(".mb.tbz2", "")}.mb.tbz2'
-                    )
-                elif data:
-                    response.headers["Content-Encoding"] = "gzip"
-                return response
+            elif data:
+                response.headers["Content-Encoding"] = "gzip"
+            return response
         raise web.HTTPNotFound()
 
 
@@ -275,22 +317,21 @@ class CameraWifiView(CameraView):
 
     async def handle(self, request: web.Request, camera: Camera) -> web.Response:
         """Serve camera wifi map data."""
-        if not camera.map_data_json:
-            data = request.query.get("data")
-            data = data and (data == True or data == "true" or data == "1")
-            resources = request.query.get("resources")
-            result = await camera.wifi_map_data(
-                data,
-                data and resources and (resources == True or resources == "true" or resources == "1"),
+        data = request.query.get("data")
+        data = data and (data == True or data == "true" or data == "1")
+        resources = request.query.get("resources")
+        result = await camera.wifi_map_data(
+            data,
+            data and resources and (resources == True or resources == "true" or resources == "1"),
+        )
+        if result:
+            response = web.Response(
+                body=gzip.compress(bytes(result, "utf-8")) if data else result,
+                content_type=JSON_CONTENT_TYPE if data else PNG_CONTENT_TYPE,
             )
-            if result:
-                response = web.Response(
-                    body=gzip.compress(bytes(result, "utf-8")) if data else result,
-                    content_type=JSON_CONTENT_TYPE if data else PNG_CONTENT_TYPE,
-                )
-                if data:
-                    response.headers["Content-Encoding"] = "gzip"
-                return response
+            if data:
+                response.headers["Content-Encoding"] = "gzip"
+            return response
         raise web.HTTPNotFound()
 
 
@@ -308,12 +349,7 @@ class CameraResourcesView(HomeAssistantView):
 
     async def get(self, request: web.Request, entity_id: str) -> web.StreamResponse:
         """Serve resources data."""
-        if (
-            (camera := self.component.get_entity(entity_id)) is None
-            or camera.map_data_json
-            or camera.map_index != 0
-            or not camera.device
-        ):
+        if (camera := self.component.get_entity(entity_id)) is None or camera.map_index != 0 or not camera.device:
             raise web.HTTPNotFound
 
         icon_set = request.query.get("icon_set")
@@ -503,6 +539,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         self._error = None
         self._proxy_renderer = None
         self._color_scheme = color_scheme
+        self._icon_set =  MAP_ICON_SET_LIST.get(icon_set, 0)
 
         if description.map_type == DreameVacuumMapType.JSON_MAP_DATA:
             self._renderer = DreameVacuumMapDataJsonRenderer()
@@ -708,47 +745,70 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             self._last_updated = -1
             self._last_rendered = -1
 
-    async def obstacle_image(self, index, box=False, crop=False):
-        if self.map_index == 0 and not self.map_data_json:
+    async def obstacle_image(self, index, box=False, crop=False, color=None):
+        if self.map_index == 0:
             response, obstacle = await self.hass.async_add_executor_job(self.device.obstacle_image, index)
             if response and obstacle:
                 return (
-                    self._get_proxy_obstacle_image(response, obstacle, box, crop, "obstacle"),
+                    self._get_proxy_obstacle_image(
+                        response,
+                        obstacle,
+                        box,
+                        crop,
+                        DreameVacuumMapRenderer.color_to_tuple(color) if color else None,
+                        "obstacle",
+                    ),
                     obstacle.object_name,
                 )
         return (None, None)
 
-    async def obstacle_history_image(self, index, history_index, cruising, box=False, crop=False):
-        if self.map_index == 0 and not self.map_data_json:
+    async def obstacle_history_image(self, index, history_index, cruising, box=False, crop=False, color=None):
+        if self.map_index == 0:
             response, obstacle = await self.hass.async_add_executor_job(
                 self.device.obstacle_history_image, index, history_index, cruising
             )
             if response and obstacle:
                 return (
-                    self._get_proxy_obstacle_image(response, obstacle, box, crop, "obstacle_history", 1),
+                    self._get_proxy_obstacle_image(
+                        response,
+                        obstacle,
+                        box,
+                        crop,
+                        DreameVacuumMapRenderer.color_to_tuple(color) if color else None,
+                        "obstacle_history",
+                        1,
+                    ),
                     obstacle.object_name,
                 )
         return (None, None)
 
-    async def history_map_image(self, index, info_text, cruising, data_string, dirty_map, include_resources):
-        if self.map_index == 0 and not self.map_data_json:
+    async def history_map_image(self, index, info_text, cruising, data, cleaning_map, wifi_map, include_resources):
+        if self.map_index == 0:
             map_data = await self.hass.async_add_executor_job(self.device.history_map, index, cruising)
             if map_data:
-                map_data = (
-                    self.device.get_map_for_render(map_data)
-                    if cruising or not dirty_map or map_data.cleaning_map_data is None
-                    else map_data.cleaning_map_data
-                )
-                if data_string:
-                    return self._renderer.get_data_string(
-                        map_data,
-                        self._renderer.get_resources(self.device.capability) if include_resources else None,
+                if not cleaning_map and not cruising and wifi_map:
+                    if not map_data.wifi_map_data:
+                        return None
+                    map_data = self.device.get_map_for_render(map_data.wifi_map_data)
+                else:
+                    map_data = (
+                        self.device.get_map_for_render(map_data)
+                        if cruising or not cleaning_map or map_data.cleaning_map_data is None
+                        else map_data.cleaning_map_data
+                    )
+
+                if data:
+                    return DreameVacuumMapRenderer.get_data(
+                        map_data,                        
+                        self.device.capability,
+                        self._icon_set,
+                        include_resources,
                     )
                 return self._get_proxy_image(
                     index,
                     map_data,
                     info_text,
-                    "cruising" if cruising else "dirty" if dirty_map else "cleaning",
+                    "cruising" if cruising else "cleaning" if cleaning_map else "wifi" if wifi_map else "details",
                 )
 
     async def recovery_map_file(self, index):
@@ -762,7 +822,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 return await self.hass.async_add_executor_job(self.device.recovery_map_file, map_id, index)
         return (None, None, None)
 
-    async def recovery_map(self, index, info_text, data_string, include_resources):
+    async def recovery_map(self, index, info_text, data, include_resources):
         if not self.map_data_json and not self.wifi_map:
             if self.map_index == 0:
                 selected_map = self.device.status.selected_map
@@ -775,25 +835,29 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 map_data = await self.hass.async_add_executor_job(self.device.recovery_map, self._map_id, index)
             if map_data:
                 map_data = self.device.get_map_for_render(map_data)
-                if data_string:
-                    return self._renderer.get_data_string(
+                if data:
+                    return DreameVacuumMapRenderer.get_data(
                         map_data,
-                        self._renderer.get_resources(self.device.capability) if include_resources else None,
+                        self.device.capability,
+                        self._icon_set,
+                        include_resources,
                     )
                 else:
                     return self._get_proxy_image(index, map_data, info_text, "recovery")
 
-    async def wifi_map_data(self, data_string, include_resources):
-        if not self.map_data_json and not self.wifi_map:
+    async def wifi_map_data(self, data, include_resources):
+        if not self.wifi_map:
             map_data = self.device.status.selected_map if self.map_index == 0 else self.device.get_map(self.map_index)
             if map_data:
                 map_data = map_data.wifi_map_data
                 if map_data:
                     map_data = self.device.get_map_for_render(map_data)
-                    if data_string:
-                        return self._renderer.get_data_string(
+                    if data:
+                        return DreameVacuumMapRenderer.get_data(
                             map_data,
-                            self._renderer.get_resources(self.device.capability) if include_resources else None,
+                            self.device.capability,
+                            self._icon_set, 
+                            include_resources,
                         )
                     else:
                         return self._get_proxy_image(
@@ -805,22 +869,66 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                         )
 
     def map_data_string(self, include_resources) -> str:
-        if not self.map_data_json and self._map_data:
+        if self._map_data:
             if self.map_index == 0 and self.device:
                 self._last_map_request = time.time()
                 self.device.update_map()
-            return self._renderer.get_data_string(
+            return DreameVacuumMapRenderer.get_data(
                 self.device.get_map_for_render(self._map_data),
-                self._renderer.get_resources(self.device.capability) if include_resources else None,
+                self.device.capability,
+                self._icon_set,
+                include_resources,
                 self.device.status.robot_status,
                 self.device.status.station_status,
             )
-        return "{}"
+
+    async def saved_map_data_string(self, index, include_resources) -> str:
+        if self.device:
+            data = None
+            for v in self.device.status.map_data_list.values():
+                if v.map_index == int(index):
+                    data = v
+
+            if data:
+                return DreameVacuumMapRenderer.get_data(
+                    self.device.get_map_for_render(data),
+                    self.device.capability,
+                    self._icon_set,
+                    include_resources,
+                )
+
+    async def recovery_map_data_string(self, index, recovery_index, include_resources, file) -> str:
+        if self.device:
+            data = None
+            for v in self.device.status.map_data_list.values():
+                if v.map_index == int(index):
+                    data = v
+
+            if data:
+                map_list = data.recovery_map_list
+                if map_list:
+                    if file:
+                        return await self.hass.async_add_executor_job(
+                            self.device.recovery_map_file, data.map_id, recovery_index
+                        )
+                    else:
+                        data = await self.hass.async_add_executor_job(
+                            self.device.recovery_map, data.map_id, recovery_index
+                        )
+                        if data:
+                            return (
+                                DreameVacuumMapRenderer.get_data(
+                                    self.device.get_map_for_render(data),                                    
+                                    self.device.capability,
+                                    self._icon_set,
+                                    include_resources,
+                                ),
+                                None,
+                                None,
+                            )
 
     def resources(self, icon_set=None) -> str:
-        if self.device:
-            return self._renderer.get_resources(self.device.capability, True, icon_set)
-        return "{}"
+        return DreameVacuumMapRenderer.get_resources(self.device.capability, self._icon_set if icon_set is None or not str(icon_set).isdecimal() else int(icon_set), True) if self.device else "{}"
 
     async def _update_image(self, map_data, robot_status, station_status) -> None:
         try:
@@ -844,18 +952,14 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             self._proxy_images[cache_key][item_key] = image
             return image
 
-    def _get_proxy_obstacle_image(self, data, obstacle, box, crop, cache_key, max_item=3):
-        item_key = f"b{int(box)}_c{int(crop)}_d{obstacle.id}"
+    def _get_proxy_obstacle_image(self, data, obstacle, box, crop, color, cache_key, max_item=3):
+        item_key = f"b{int(box)}_c{int(crop)}_l{color}_d{obstacle.id}"
         if cache_key not in self._proxy_images:
             self._proxy_images[cache_key] = {}
         if item_key in self._proxy_images[cache_key]:
             return self._proxy_images[cache_key][item_key]
         image = self._renderer.render_obstacle_image(
-            data,
-            obstacle,
-            self.device.capability.obstacle_image_crop,
-            box,
-            crop,
+            data, obstacle, self.device.capability.obstacle_image_crop, box, crop, color
         )
         if image:
             while len(self._proxy_images[cache_key]) >= max_item:
@@ -911,9 +1015,9 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
 
     @property
     def extra_state_attributes(self) -> Dict[str, Any]:
+        map_data = self._map_data
+        attributes = None
         if not self.map_data_json:
-            attributes = None
-            map_data = self._map_data
             if (
                 map_data
                 and self.device.cloud_connected
@@ -943,7 +1047,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 attributes[ATTR_COLOR_SCHEME] = self._color_scheme
 
                 def get_key(index, history):
-                    return f"{index}: {time.strftime('%m/%d %H:%M', time.localtime(history.date.timestamp()))} - {'Second ' if history.second_cleaning else ''}{STATUS_CODE_TO_NAME.get(history.status, STATE_UNKNOWN).replace('_', ' ').title()} {'(Completed)' if history.completed else '(Interrupted)'}"
+                    return f"{index}: {time.strftime("%m/%d/%y %H:%M" if datetime.now().year != history.date.year else "%m/%d %H:%M", time.localtime(history.date.timestamp()))} - {'Second ' if history.second_cleaning else ''}{STATUS_CODE_TO_NAME.get(history.status, STATE_UNKNOWN).replace('_', ' ').title()} {'(Completed)' if history.completed else '(Interrupted)'}"
 
                 if self.device.status._cleaning_history is not None:
                     cleaning_history = {}
@@ -1040,4 +1144,15 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                         token,
                         int(wifi_map_data.last_updated if wifi_map_data.last_updated else map_data.last_updated),
                     )
-            return attributes
+        elif (
+            map_data
+            and self.device.cloud_connected
+            and not map_data.empty_map
+            and (self.map_index > 0 or self.device.status.located)
+        ):
+            return {
+                ATTR_MAP_ID: map_data.map_id,
+                ATTR_SAVED_MAP_ID: map_data.saved_map_id,
+                ATTR_COLOR_SCHEME: self._color_scheme,
+            }
+        return attributes

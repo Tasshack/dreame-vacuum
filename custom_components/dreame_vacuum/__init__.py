@@ -5,8 +5,19 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.components.frontend import DATA_EXTRA_MODULE_URL
+import warnings
 from pathlib import Path
 from .const import DOMAIN
+
+# Suppress python-miio FutureWarning on Python 3.13
+warnings.filterwarnings(
+    "ignore",
+    category=FutureWarning,
+    module="miio.miot_device",
+)
+
+# Suppress RuntimeWarning overflow encountered in scalar add
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 

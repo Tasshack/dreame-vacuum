@@ -213,7 +213,10 @@
         "state": {
           "none": "Не задано",
           "tile": "Напольная плитка",
-          "wood": "Деревянный пол"
+          "wood": "Деревянный пол",
+          "low_pile_carpet": "Ковёр с низким ворсом",
+          "medium_pile_carpet": "Ковёр со средним ворсом",
+          "carpet": "Ковёр"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "Возвращение для слива",
           "draining": "Слив",
           "auto_water_draining": "Автоматический слив воды",
+          "emptying": "Опустошение",
+          "dust_bag_drying": "Сушение пылевого мешка",
+          "dust_bag_drying_paused": "Сушение пылевого мешка приостановлено",
+          "heading_to_extra_cleaning": "Направляюсь к дополнительной уборке",
+          "extra_cleaning": "Дополнительная уборка",
+          "finding_pet_paused": "Поиск животного приостановлен",
+          "finding_pet": "Поиск животного",
           "shortcut": "Ярлык",
           "monitoring": "Мониторинг",
-          "monitoring_paused": "Мониторинг приостановлен"
+          "monitoring_paused": "Мониторинг приостановлен",
+          "initial_deep_cleaning": "Первичная глубинная уборка",
+          "initial_deep_cleaning_paused": "Первичная глубинная уборка приостановлена",
+          "sanitizing": "Дезинфекция",
+          "sanitizing_with_dry": "Дезинфекция с сушкой"
         }
       },
       "status": {
@@ -677,7 +691,15 @@
           "water_stain": "Оттирание пятен",
           "water_stain_paused": "Оттирание пятен приостановлено",
           "boosted_edge_cleaning": "Тщательная уборка вдоль краев",
-          "hair_compressing": "Сжатие волос"
+          "hair_compressing": "Сжатие волос",
+          "large_particle_cleaning": "Очистка крупных частиц",
+          "intensive_stain_cleaning": "Интенсивная очистка пятен",
+          "stain_cleaning": "Очистка пятен",
+          "initial_deep_cleaning": "Первичная глубинная уборка",
+          "initial_deep_cleaning_paused": "Первичная глубинная уборка приостановлена",
+          "mop_pad_heating": "Нагрев насадок для швабры",
+          "cleaning_after_mapping": "Очистка после составления карты",
+          "small_particle_cleaning": "Очистка мелких частиц"
         }
       }
     }
@@ -1011,7 +1033,7 @@
           "name": "Уборка ковра",
           "description": "Индивидуальная настройка уборки для каждого ковра."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Настройки ковра",
           "description": "Индивидуальные настройки ковра с массивом включенных опций."
         }
@@ -1067,7 +1089,7 @@
           "name": "Ковры",
           "description": "Ковровые зоны."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Игнорируемые ковры",
           "description": "Игнорируемые области для автоматически обнаруженных ковров."
         }

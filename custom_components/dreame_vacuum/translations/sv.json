@@ -213,7 +213,10 @@
         "state": {
           "none": "Inget",
           "tile": "Klinker",
-          "wood": "Trägolv"
+          "wood": "Trägolv",
+          "low_pile_carpet": "Låg lugg matta",
+          "medium_pile_carpet": "Mellanlugg matta",
+          "carpet": "Matta"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "Återgår för att dränera",
           "draining": "Dränerar",
           "auto_water_draining": "Automatisk dränering",
+          "emptying": "Tömning",
+          "dust_bag_drying": "Dammsugarpåse torkning",
+          "dust_bag_drying_paused": "Dammsugarpåse torkning pausad",
+          "heading_to_extra_cleaning": "På väg till extrarengöring",
+          "extra_cleaning": "Extrarengöring",
+          "finding_pet_paused": "Husdjurs‑sökning pausad",
+          "finding_pet": "Husdjurs‑sökning",
           "shortcut": "Genväg",
           "monitoring": "Övervakning",
-          "monitoring_paused": "Övervakning pausad"
+          "monitoring_paused": "Övervakning pausad",
+          "initial_deep_cleaning": "Initiering av djup rengöring",
+          "initial_deep_cleaning_paused": "Initiering av djup rengöring pausad",
+          "sanitizing": "Desinficering",
+          "sanitizing_with_dry": "Desinficering med torkning"
         }
       },
       "status": {
@@ -677,7 +691,15 @@
           "water_stain": "Fläckstädning",
           "water_stain_paused": "Fläckstädning pausad",
           "boosted_edge_cleaning": "Förstärkt kantrengöring",
-          "hair_compressing": "Hårkomprimering"
+          "hair_compressing": "Hårkomprimering",
+          "large_particle_cleaning": "Rengöring av stora partiklar",
+          "intensive_stain_cleaning": "Intensiv fläckrensning",
+          "stain_cleaning": "Fläckrengöring",
+          "initial_deep_cleaning": "Initiering av djup rengöring",
+          "initial_deep_cleaning_paused": "Initiering av djup rengöring pausad",
+          "mop_pad_heating": "Mop‑pads uppvärmning",
+          "cleaning_after_mapping": "Rengöring efter kartläggning",
+          "small_particle_cleaning": "Rengöring av små partiklar"
         }
       }
     }
@@ -1011,7 +1033,7 @@
           "name": "Mattstädning",
           "description": "Anpassade rengöringsinställningar för varje matta."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Mattinställningar",
           "description": "Anpassade mattinställningar för varje matta med en lista över aktiverade inställningar."
         }
@@ -1067,7 +1089,7 @@
           "name": "Mattor",
           "description": "Mattområden."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Ignorerade mattor",
           "description": "Ignorerade mattområden för att ta bort automatiskt detekterade mattor."
         }

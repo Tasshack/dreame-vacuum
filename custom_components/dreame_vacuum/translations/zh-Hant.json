@@ -213,7 +213,10 @@
         "state": {
           "none": "未设置",
           "tile": "瓷砖",
-          "wood": "木地板"
+          "wood": "木地板",
+          "low_pile_carpet": "低絨地毯",
+          "medium_pile_carpet": "中絨地毯",
+          "carpet": "地毯"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "返回排水中",
           "draining": "排水中",
           "auto_water_draining": "自动排水中",
+          "emptying": "正在清空",
+          "dust_bag_drying": "塵袋乾燥",
+          "dust_bag_drying_paused": "塵袋乾燥已暫停",
+          "heading_to_extra_cleaning": "正在前往額外清潔",
+          "extra_cleaning": "額外清潔",
+          "finding_pet_paused": "正在尋找寵物已暫停",
+          "finding_pet": "正在尋找寵物",
           "shortcut": "快捷指令",
           "monitoring": "监控中",
-          "monitoring_paused": "监控暂停"
+          "monitoring_paused": "监控暂停",
+          "initial_deep_cleaning": "初始深度清潔",
+          "initial_deep_cleaning_paused": "初始深度清潔已暫停",
+          "sanitizing": "正在消毒",
+          "sanitizing_with_dry": "消毒並乾燥"
         }
       },
       "status": {
@@ -676,7 +690,15 @@
           "water_stain": "水渍清洁模式",
           "water_stain_paused": "水渍清洁暂停",
           "boosted_edge_cleaning": "边角增强清洁",
-          "hair_compressing": "毛发压缩处理"
+          "hair_compressing": "毛发压缩处理",
+          "large_particle_cleaning": "大顆粒清潔",
+          "intensive_stain_cleaning": "強力污漬清潔",
+          "stain_cleaning": "污漬清潔",
+          "initial_deep_cleaning": "初始深度清潔",
+          "initial_deep_cleaning_paused": "初始深度清潔已暫停",
+          "mop_pad_heating": "拖把墊加熱",
+          "cleaning_after_mapping": "地圖後清潔",
+          "small_particle_cleaning": "小顆粒清潔"
         }
       }
     }
@@ -1014,7 +1036,7 @@
           "name": "地毯清洁",
           "description": "每个地毯的自定义清洁设置。"
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "地毯设置",
           "description": "每个地毯的自定义设置，包含启用设置的数组。"
         }
@@ -1070,7 +1092,7 @@
           "name": "地毯",
           "description": "地毯区域。"
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "忽略的地毯",
           "description": "忽略的地毯区域，用于删除自动侦测到的地毯。"
         }

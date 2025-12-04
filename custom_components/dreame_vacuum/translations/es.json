@@ -213,7 +213,10 @@
         "state": {
           "none": "Ninguno",
           "tile": "Azulejo",
-          "wood": "Madera"
+          "wood": "Madera",
+          "low_pile_carpet": "Alfombra de pelo corto",
+          "medium_pile_carpet": "Alfombra de pelo medio",
+          "carpet": "Alfombra"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "Regresando para vaciado",
           "draining": "Vaciando",
           "auto_water_draining": "Vaciado automático del agua",
+          "emptying": "Vaciando",
+          "dust_bag_drying": "Secado de la bolsa de polvo",
+          "dust_bag_drying_paused": "Secado de la bolsa de polvo pausado",
+          "heading_to_extra_cleaning": "Dirigiéndose a limpieza extra",
+          "extra_cleaning": "Limpieza extra",
+          "finding_pet_paused": "Búsqueda de mascota pausada",
+          "finding_pet": "Buscando mascota",
           "shortcut": "Acceso directo",
           "monitoring": "Monitoreando",
-          "monitoring_paused": "Monitorización pausada"
+          "monitoring_paused": "Monitorización pausada",
+          "initial_deep_cleaning": "Limpieza profunda inicial",
+          "initial_deep_cleaning_paused": "Limpieza profunda inicial pausada",
+          "sanitizing": "Sanitizando",
+          "sanitizing_with_dry": "Sanitizando con secado"
         }
       },
       "status": {
@@ -677,7 +691,15 @@
           "water_stain": "Limpieza de manchas de agua",
           "water_stain_paused": "Limpieza de manchas de agua pausada",
           "boosted_edge_cleaning": "Limpieza de borde impulsado",
-          "hair_compressing": "Compresión de cabello"
+          "hair_compressing": "Compresión de cabello",
+          "large_particle_cleaning": "Limpieza de partículas grandes",
+          "intensive_stain_cleaning": "Limpieza intensiva de manchas",
+          "stain_cleaning": "Limpieza de manchas",
+          "initial_deep_cleaning": "Limpieza profunda inicial",
+          "initial_deep_cleaning_paused": "Limpieza profunda inicial pausada",
+          "mop_pad_heating": "Calentamiento de almohadillas Mop",
+          "cleaning_after_mapping": "Limpieza tras mapeo",
+          "small_particle_cleaning": "Limpieza de partículas pequeñas"
         }
       }
     }
@@ -1011,7 +1033,7 @@
           "name": "Limpieza de alfombra",
           "description": "Configuración personalizada de limpieza de alfombra para cada alfombra."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Configuraciones de alfombra",
           "description": "Configuración personalizada de ajustes de alfombra para cada alfombra con una matriz de ajustes habilitados."
         }
@@ -1067,7 +1089,7 @@
           "name": "Alfombras",
           "description": "Áreas con alfombra."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Alfombras ignoradas",
           "description": "Áreas con alfombra ignoradas para eliminar las alfombras detectadas automáticamente."
         }

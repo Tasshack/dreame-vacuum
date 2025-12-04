@@ -160,8 +160,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_min_value=1,
         max_value_fn=lambda device: 15 if device.capability.mop_clean_frequency else 32,
         native_step=1,
-        exists_fn=lambda description, device: device.capability.wetness_level
-        and DreameVacuumEntityDescription().exists_fn(description, device),
+        exists_fn=lambda description, device: device.capability.wetness_level        
     ),
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.DRYING_TIME,

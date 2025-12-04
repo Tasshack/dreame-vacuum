@@ -9,7 +9,7 @@
       "cannot_connect": "Falha ao conectar.",
       "unsupported": "Dispositivo não suportado",
       "wrong_token": "Erro de checksum, token incorreto",
-      "2fa_failed": "Verificação falhou.",
+      "2fa_failed": "A verificação falhou.",
       "wrong_captcha": "Captcha incorreto.",
       "credentials_incomplete": "Credenciais incompletas, por favor preencha o nome de usuário, senha e país",
       "login_error": "Não foi possível fazer login, verifique as credenciais.",
@@ -20,14 +20,14 @@
         "data": {
           "configuration_type": "Tipo de configuração"
         },
-        "description": "A função de mapeamento requer conexão com a nuvem e fornece configuração automática. Se você não quiser usar a função de mapeamento, você pode selecionar a configuração manual."
+        "description": "A função de mapeamento requer conexão com a nuvem e fornece configuração automática. Se você não quiser usar a função de mapeamento, pode selecionar a configuração manual."
       },
       "local": {
         "data": {
           "host": "Host",
           "token": "Token"
         },
-        "description": "Você precisará do Token API de 32 caracteres, consulte https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token para obter instruções."
+        "description": "Você precisará do token da API de 32 caracteres, consulte https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token para obter instruções."
       },
       "mi": {
         "data": {
@@ -42,7 +42,7 @@
         "data": {
           "verification_code": "Código de verificação de dois fatores"
         },
-        "description": "## Este login requer verificação de segurança\nPor favor, abra a página de verificação para enviar o código de verificação por celular/e-mail. Após receber o código de verificação, não o verifique na página da web. Volte para o HomeAssistant e insira-o na caixa de entrada abaixo.\n### [Enviar código de verificação]({url})"
+        "description": "## Este login requer verificação de segurança\nPor favor, abra a página de verificação para enviar o código de verificação por celular/e-mail. Após receber o código de verificação, não o valide na página da web. Volte para o Home Assistant e insira-o na caixa de entrada abaixo.\n### [Enviar código de verificação]({url})"
       },
       "captcha": {
         "data": {
@@ -78,7 +78,7 @@
         "data": {
           "devices": "Dispositivos suportados"
         },
-        "description": "Por favor, selecione o dispositivo de Aspirador Dreame que você deseja configurar."
+        "description": "Por favor, selecione o dispositivo de aspirador Dreame que você deseja configurar."
       },
       "donation": {
         "data": {
@@ -98,7 +98,7 @@
         }
       },
       "reauth_confirm": {
-        "description": "A integração do Aspirador Dreame precisa reautenticar a sua conta para atualizar os tokens ou adicionar credenciais de nuvem ausentes.",
+        "description": "A integração do aspirador Dreame precisa reautenticar a sua conta para atualizar os tokens ou adicionar credenciais de nuvem ausentes.",
         "title": "Reautenticar integração"
       }
     }
@@ -143,7 +143,7 @@
       "mop_pad_humidity": {
         "state": {
           "slightly_dry": "Quase seco",
-          "moist": "Húmido",
+          "moist": "Úmido",
           "wet": "Molhado"
         }
       },
@@ -151,8 +151,8 @@
         "state": {
           "sweeping": "Aspirar",
           "mopping": "Lavar",
-          "sweeping_and_mopping": "Aspirar e Lavar",
-          "mopping_after_sweeping": "Lavar depois de Aspirar"
+          "sweeping_and_mopping": "Aspirar e lavar",
+          "mopping_after_sweeping": "Lavar depois de aspirar"
         }
       },
       "carpet_sensitivity": {
@@ -167,9 +167,9 @@
           "avoidance": "Evitar",
           "adaptation": "Adaptação",
           "remove_mop": "Remover pano",
-          "adaptation_without_route": "Adaptação Sem rota",
-          "vacuum_and_mop": "Odkurz i mopuj",
-          "ignore": "Ignorować",
+          "adaptation_without_route": "Adaptação sem rota",
+          "vacuum_and_mop": "Aspirar e passar pano",
+          "ignore": "Ignorar",
           "cross": "Atravessar"
         }
       },
@@ -213,7 +213,10 @@
         "state": {
           "none": "Nenhum",
           "tile": "Piso de azulejo",
-          "wood": "Piso de madeira"
+          "wood": "Piso de madeira",
+          "low_pile_carpet": "Carpete de pelo baixo",
+          "medium_pile_carpet": "Carpete de pelo médio",
+          "carpet": "Carpete"
         }
       },
       "voice_assistant_language": {
@@ -270,23 +273,23 @@
       },
       "cleangenius_mode": {
         "state": {
-          "vacuum_and_mop": "Vacuum e MOP",
-          "mop_after_vacuum": "MOP após vácuo"
+          "vacuum_and_mop": "Aspirar e passar pano",
+          "mop_after_vacuum": "Passar pano após aspirar"
         }
       },
       "washing_mode": {
         "state": {
-          "light": "Luz",
+          "light": "Leve",
           "standard": "Padrão",
           "deep": "Profundo",
-          "ultra_washing": "Ultra Lavagem"
+          "ultra_washing": "Ultra lavagem"
         }
       },
       "water_temperature": {
         "state": {
           "normal": "Normal",
           "mild": "Leve",
-          "warm": "Esquentar",
+          "warm": "Morno",
           "hot": "Quente"
         }
       },
@@ -358,9 +361,20 @@
           "returning_to_drain": "Voltando para drenar",
           "draining": "Drenagem",
           "auto_water_draining": "Drenagem automática de água",
+          "emptying": "Esvaziando",
+          "dust_bag_drying": "Secagem do saco de pó",
+          "dust_bag_drying_paused": "Secagem do saco de pó pausada",
+          "heading_to_extra_cleaning": "A caminho da limpeza extra",
+          "extra_cleaning": "Limpeza extra",
+          "finding_pet_paused": "Busca de animal de estimação pausada",
+          "finding_pet": "Buscando animal de estimação",
           "shortcut": "Atalho",
           "monitoring": "Monitoramento",
-          "monitoring_paused": "Monitoramento pausado"
+          "monitoring_paused": "Monitoramento pausado",
+          "initial_deep_cleaning": "Limpeza profunda inicial",
+          "initial_deep_cleaning_paused": "Limpeza profunda inicial pausada",
+          "sanitizing": "Sanitizando",
+          "sanitizing_with_dry": "Sanitizando com secagem"
         }
       },
       "status": {
@@ -375,7 +389,7 @@
           "charging": "A carregar",
           "ota": "OTA",
           "fct": "FCT",
-          "wifi_set": "Configuração de WiFi",
+          "wifi_set": "Configuração de Wi-Fi",
           "power_off": "Desligado",
           "factory": "Fábrica",
           "error": "Erro",
@@ -387,7 +401,7 @@
           "room_cleaning": "Limpeza de quarto",
           "zone_cleaning": "Limpeza da zona",
           "fast_mapping": "Mapeamento rápido",
-          "cruising_path": "Cruiseiro em trajeto",
+          "cruising_path": "Cruzeiro em trajeto",
           "cruising_point": "Cruzeiro até um ponto",
           "summon_clean": "Chamar para limpar",
           "shortcut": "Atalho",
@@ -423,10 +437,10 @@
           "returning_to_install_mop": "Retornando para instalar o pano",
           "returning_to_remove_mop": "Retornando para remover o pano",
           "station_cleaning": "Limpeza da estação",
-          "pet_finding": "Pet Econd",
-          "auto_cleaning_washing_paused": "Lavagem de limpeza automática fez uma pausa",
-          "area_cleaning_washing_paused": "Lavagem de área para lavar a lavagem parada",
-          "custom_cleaning_washing_paused": "Lavagem de limpeza personalizada fez uma pausa"
+          "pet_finding": "Busca de animal de estimação",
+          "auto_cleaning_washing_paused": "Lavagem de limpeza automática em pausa",
+          "area_cleaning_washing_paused": "Lavagem de área em pausa",
+          "custom_cleaning_washing_paused": "Lavagem personalizada em pausa"
         }
       },
       "water_tank": {
@@ -546,11 +560,11 @@
           "dust_bag_full": "O saco de coleta de poeira está cheio ou as saídas de ar estão bloqueadas.",
           "self_test_failed": "Descarga anormal de água do tanque de água limpa dos módulos de água superior e inferior.",
           "mop_install_failed": "A instalação do esfregão falhou.",
-          "low_battery_turn_off": "Bateria Fraca. ",
-          "dirty_tank_not_installed": "O tanque de água usado do robô não está instalado.",
-          "robot_in_hidden_room": "Área escondida. ",
-          "washboard_not_working": "A tábua de lavar para de funcionar.",
-          "return_to_charge_failed": "Falha ao retornar à cobrança."
+          "low_battery_turn_off": "Bateria fraca.",
+          "dirty_tank_not_installed": "O tanque de água usada do robô não está instalado.",
+          "robot_in_hidden_room": "Área escondida.",
+          "washboard_not_working": "A tábua de lavar parou de funcionar.",
+          "return_to_charge_failed": "Falha ao retornar ao carregador."
         }
       },
       "charging_status": {
@@ -589,7 +603,7 @@
           "no_water_left_dismiss": "Verifique o tanque de água limpa.",
           "no_water_left": "A água no tanque de água limpa está prestes a acabar. Verifique e encha o tanque de água limpa prontamente.",
           "no_water_left_after_clean": "O pano de limpeza foi limpo. Detectou-se que a água no tanque de água limpa está insuficiente, por favor, encha o tanque de água limpa e esvazie o tanque de água suja.",
-          "no_water_for_clean": "Baixo nível de água no tanque de água limpa. O robô mudou para o Modo de Aspiração.",
+          "no_water_for_clean": "Baixo nível de água no tanque de água limpa. O robô mudou para o modo de aspiração.",
           "low_water": "Prestes a ficar sem água. Por favor, encha o tanque de água limpa.",
           "tank_not_installed": "O tanque de água limpa não está instalado."
         }
@@ -677,7 +691,15 @@
           "water_stain": "Limpeza de manchas de água",
           "water_stain_paused": "Limpeza de manchas de água pausada",
           "boosted_edge_cleaning": "Limpeza de borda aumentada",
-          "hair_compressing": "Comprimindo o cabelo"
+          "hair_compressing": "Comprimindo o cabelo",
+          "large_particle_cleaning": "Limpeza de partículas grandes",
+          "intensive_stain_cleaning": "Limpeza intensiva de manchas",
+          "stain_cleaning": "Limpeza de manchas",
+          "initial_deep_cleaning": "Limpeza profunda inicial",
+          "initial_deep_cleaning_paused": "Limpeza profunda inicial pausada",
+          "mop_pad_heating": "Aquecimento das almofadas do esfregão",
+          "cleaning_after_mapping": "Limpeza após mapeamento",
+          "small_particle_cleaning": "Limpeza de partículas pequenas"
         }
       }
     }
@@ -689,7 +711,7 @@
       "fields": {
         "segments": {
           "name": "Segmentos",
-          "description": "Lista de quartos a serem limpos. Somente o caractere do quarto ou uma matriz de caracteres do quarto, tempos de limpeza, velocidade do ventilador e modo de esfregão para substituir os valores padrão por quarto."
+          "description": "Lista de quartos a serem limpos. Somente o identificador do quarto ou uma matriz de identificadores do quarto, tempos de limpeza, velocidade do ventilador e modo de esfregão para substituir os valores padrão por quarto."
         },
         "repeats": {
           "name": "Repetições",
@@ -751,7 +773,7 @@
     },
     "vacuum_goto": {
       "name": "Ir para",
-      "description": "Ir para as coordenadas do mapa e para.",
+      "description": "Ir para as coordenadas do mapa e parar.",
       "fields": {
         "x": {
           "name": "X",
@@ -764,8 +786,8 @@
       }
     },
     "vacuum_follow_path": {
-      "name": "Segue trajeto",
-      "description": "Siga a lista de coordenadas no mapa e retorne à base. (Somente suportado em aspiradores com câmera)",
+      "name": "Seguir trajeto",
+      "description": "Segue a lista de coordenadas no mapa e retorna à base. (Somente suportado em aspiradores com câmera)",
       "fields": {
         "points": {
           "name": "Pontos",
@@ -802,7 +824,7 @@
       "description": "Instalar pacote de voz oficial ou personalizado.",
       "fields": {
         "lang_id": {
-          "name": "ID do Idioma",
+          "name": "ID do idioma",
           "description": "ID do idioma deste pacote."
         },
         "url": {
@@ -814,7 +836,7 @@
           "description": "Checksum MD5 do pacote de idioma."
         },
         "size": {
-          "name": "Size",
+          "name": "Tamanho",
           "description": "Tamanho do pacote de idioma em bytes."
         }
       }
@@ -838,7 +860,7 @@
       "description": "Excluir um mapa.",
       "fields": {
         "map_id": {
-          "name": "ID do Mapa",
+          "name": "ID do mapa",
           "description": "ID do mapa a ser excluído."
         }
       }
@@ -891,7 +913,7 @@
     },
     "vacuum_restore_map_from_file": {
       "name": "Restaurar mapa do arquivo",
-      "description": "Restaure um mapa do arquivo.",
+      "description": "Restaurar um mapa a partir de arquivo.",
       "fields": {
         "map_id": {
           "name": "ID do mapa",
@@ -905,11 +927,11 @@
     },
     "vacuum_backup_map": {
       "name": "Mapa de backup",
-      "description": "Faça backup de um mapa na nuvem.",
+      "description": "Fazer backup de um mapa na nuvem.",
       "fields": {
         "map_id": {
           "name": "ID do mapa",
-          "description": "ID do mapa a ser restaurado."
+          "description": "ID do mapa a ser salvo."
         }
       }
     },
@@ -950,7 +972,7 @@
       "description": "Renomear um segmento.",
       "fields": {
         "segment_id": {
-          "name": "ID do Segmento",
+          "name": "ID do segmento",
           "description": "ID do segmento."
         },
         "segment_name": {
@@ -964,7 +986,7 @@
       "description": "Definir a sequência de limpeza das divisões. (Apenas em dispositivos compatíveis)",
       "fields": {
         "cleaning_sequence": {
-          "name": "Sequência de Limpeza",
+          "name": "Sequência de limpeza",
           "description": "Lista de IDs das divisões na sequência de limpeza."
         }
       }
@@ -1011,7 +1033,7 @@
           "name": "Limpeza do tapete",
           "description": "Configuração personalizada de limpeza para cada tapete."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Configurações do tapete",
           "description": "Configuração personalizada para cada tapete com uma lista de configurações ativadas."
         }
@@ -1041,7 +1063,7 @@
       "fields": {
         "consumable": {
           "name": "Consumível",
-          "description": "tipo de consumível."
+          "description": "Tipo de consumível."
         }
       }
     },
@@ -1067,7 +1089,7 @@
           "name": "Tapetes",
           "description": "Áreas de tapete."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Tapetes ignorados",
           "description": "Áreas de tapete ignoradas para deletar os tapetes detectados automaticamente."
         }
@@ -1113,7 +1135,7 @@
     },
     "vacuum_set_router_position": {
       "name": "Definir posição do roteador",
-      "description": "Define a posição do roteador no mapa atual. (Apenas suportado em aspiradores com a função de mapa WiFi)",
+      "description": "Define a posição do roteador no mapa atual. (Apenas suportado em aspiradores com a função de mapa Wi-Fi)",
       "fields": {
         "x": {
           "name": "X",
@@ -1140,7 +1162,7 @@
       "description": "Selecionar a primeira opção de uma entidade de seleção."
     },
     "select_select_last": {
-      "name": "Selecionar Último",
+      "name": "Selecionar último",
       "description": "Selecionar a última opção de uma entidade de seleção."
     },
     "select_select_next": {

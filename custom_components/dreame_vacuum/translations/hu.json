@@ -213,7 +213,10 @@
         "state": {
           "none": "Nincs",
           "tile": "Csempe",
-          "wood": "Fa"
+          "wood": "Fa",
+          "low_pile_carpet": "Alacsony szálhosszúságú szőnyeg",
+          "medium_pile_carpet": "Közepes szálhosszúságú szőnyeg",
+          "carpet": "Szőnyeg"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "Visszatérve a lefolyóba",
           "draining": "Leeresztés",
           "auto_water_draining": "Automatikus vízelvezetés",
+          "emptying": "Kiürítés",
+          "dust_bag_drying": "Porzsák szárítása",
+          "dust_bag_drying_paused": "Porzsák szárítása szünetel",
+          "heading_to_extra_cleaning": "Kiegészítő takarításhoz tart",
+          "extra_cleaning": "Kiegészítő takarítás",
+          "finding_pet_paused": "Kisállat keresése szünetel",
+          "finding_pet": "Kisállat keresése",
           "shortcut": "Gyorsindítás",
           "monitoring": "Felügyelet",
-          "monitoring_paused": "Felügyelet szüneteltetve"
+          "monitoring_paused": "Felügyelet szüneteltetve",
+          "initial_deep_cleaning": "Kezdeti mélytisztítás",
+          "initial_deep_cleaning_paused": "Kezdeti mélytisztítás szünetel",
+          "sanitizing": "Fertőtlenítés",
+          "sanitizing_with_dry": "Fertőtlenítés szárítással"
         }
       },
       "status": {
@@ -677,7 +691,15 @@
           "water_stain": "Vízfolt tisztítás",
           "water_stain_paused": "A vízfoltok tisztítása szünetel",
           "boosted_edge_cleaning": "Fokozott éltisztítás",
-          "hair_compressing": "Haj tömörítése"
+          "hair_compressing": "Haj tömörítése",
+          "large_particle_cleaning": "Nagy részecskék takarítása",
+          "intensive_stain_cleaning": "Intenzív folteltávolítás",
+          "stain_cleaning": "Folteltávolítás",
+          "initial_deep_cleaning": "Kezdeti mélytisztítás",
+          "initial_deep_cleaning_paused": "Kezdeti mélytisztítás szünetel",
+          "mop_pad_heating": "Felmos lap fűtése",
+          "cleaning_after_mapping": "Takarítás térképezés után",
+          "small_particle_cleaning": "Kis részecskék takarítása"
         }
       }
     }
@@ -1011,7 +1033,7 @@
           "name": "Szőnyegtisztítás",
           "description": "Egyedi szőnyegtisztítási beállítás minden szőnyeghez."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Szőnyeg beállítások",
           "description": "Egyedi beállítások minden szőnyeghez egy engedélyezett beállítások listájával."
         }
@@ -1067,7 +1089,7 @@
           "name": "Szőnyegek",
           "description": "Szőnyegterületek."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Figyelmen kívül hagyott szőnyegek",
           "description": "Figyelmen kívül hagyott szőnyegterületek az automatikusan észlelt szőnyegek törléséhez."
         }

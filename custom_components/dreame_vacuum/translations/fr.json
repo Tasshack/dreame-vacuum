@@ -213,7 +213,10 @@
         "state": {
           "none": "Aucun",
           "tile": "Carrelage",
-          "wood": "Parquet"
+          "wood": "Parquet",
+          "low_pile_carpet": "Moquette à poils ras",
+          "medium_pile_carpet": "Moquette à poils moyens",
+          "carpet": "Moquette"
         }
       },
       "voice_assistant_language": {
@@ -358,11 +361,20 @@
           "returning_to_drain": "Retour à l'égout",
           "draining": "Évacuation",
           "auto_water_draining": "Vidange automatique de l'eau",
-          "streaming": "Streaming",
-          "streaming_paused": "Diffusion interrompue",
+          "emptying": "Vidange",
+          "dust_bag_drying": "Séchage du sac à poussière",
+          "dust_bag_drying_paused": "Séchage du sac à poussière en pause",
+          "heading_to_extra_cleaning": "En route vers nettoyage extra",
+          "extra_cleaning": "Nettoyage supplémentaire",
+          "finding_pet_paused": "Recherche d’animal en pause",
+          "finding_pet": "Recherche d’animal",
           "shortcut": "Raccourci",
           "monitoring": "Surveillance",
-          "monitoring_paused": "Surveillance en pause"
+          "monitoring_paused": "Surveillance en pause",
+          "initial_deep_cleaning": "Nettoyage en profondeur initial",
+          "initial_deep_cleaning_paused": "Nettoyage en profondeur initial en pause",
+          "sanitizing": "Assainissement",
+          "sanitizing_with_dry": "Assainissement avec séchage"
         }
       },
       "status": {
@@ -679,7 +691,15 @@
           "water_stain": "Nettoyage des taches d'eau",
           "water_stain_paused": "Nettoyage des taches d'eau interrompu",
           "boosted_edge_cleaning": "Nettoyage des bords boosté",
-          "hair_compressing": "Compression de cheveux"
+          "hair_compressing": "Compression de cheveux",
+          "large_particle_cleaning": "Nettoyage des grosses particules",
+          "intensive_stain_cleaning": "Nettoyage intensif des taches",
+          "stain_cleaning": "Nettoyage des taches",
+          "initial_deep_cleaning": "Nettoyage en profondeur initial",
+          "initial_deep_cleaning_paused": "Nettoyage en profondeur initial en pause",
+          "mop_pad_heating": "Chauffage des tampons de lavage",
+          "cleaning_after_mapping": "Nettoyage après cartographie",
+          "small_particle_cleaning": "Nettoyage des petites particules"
         }
       }
     }
@@ -1013,7 +1033,7 @@
           "name": "Nettoyage du tapis",
           "description": "Paramètre de nettoyage personnalisé du tapis pour chaque tapis."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Paramètres du tapis",
           "description": "Paramètre de réglage personnalisé du tapis pour chaque tapis avec un tableau de paramètres activés."
         }
@@ -1069,7 +1089,7 @@
           "name": "Les tapis",
           "description": "Zones de moquette."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Tapis ignorés",
           "description": "Zones de tapis ignorées pour supprimer les tapis détectés automatiquement."
         }

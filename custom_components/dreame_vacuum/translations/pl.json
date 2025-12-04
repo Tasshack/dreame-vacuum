@@ -213,7 +213,10 @@
         "state": {
           "none": "Nic",
           "tile": "Płytka podłogowa",
-          "wood": "Drewniana podłoga"
+          "wood": "Drewniana podłoga",
+          "low_pile_carpet": "Dywan o niskim runie",
+          "medium_pile_carpet": "Dywan o średnim runie",
+          "carpet": "Dywan"
         }
       },
       "voice_assistant_language": {
@@ -358,9 +361,20 @@
           "returning_to_drain": "Wracając do drenażu",
           "draining": "Opróżnianie",
           "auto_water_draining": "Automatyczne odprowadzanie wody",
+          "emptying": "Opróżnianie",
+          "dust_bag_drying": "Suszenie worka na kurz",
+          "dust_bag_drying_paused": "Suszenie worka na kurz wstrzymane",
+          "heading_to_extra_cleaning": "Kierowanie do czyszczenia dodatkowego",
+          "extra_cleaning": "Czyszczenie dodatkowe",
+          "finding_pet_paused": "Wyszukiwanie zwierzęcia wstrzymane",
+          "finding_pet": "Wyszukiwanie zwierzęcia",
           "shortcut": "Skrót",
           "monitoring": "Monitorowanie",
-          "monitoring_paused": "Monitorowanie zostało wstrzymane"
+          "monitoring_paused": "Monitorowanie zostało wstrzymane",
+          "initial_deep_cleaning": "Wstępne głębokie czyszczenie",
+          "initial_deep_cleaning_paused": "Wstępne głębokie czyszczenie wstrzymane",
+          "sanitizing": "Dezynfekcja",
+          "sanitizing_with_dry": "Dezynfekcja z suszeniem"
         }
       },
       "status": {
@@ -677,7 +691,15 @@
           "water_stain": "Czyszczenie plam po wodzie",
           "water_stain_paused": "Usuwanie plam wodnych zostało wstrzymane",
           "boosted_edge_cleaning": "Zwiększone czyszczenie krawędzi",
-          "hair_compressing": "Kompresowanie włosów"
+          "hair_compressing": "Kompresowanie włosów",
+          "large_particle_cleaning": "Czyszczenie dużych cząstek",
+          "intensive_stain_cleaning": "Intensywne czyszczenie plam",
+          "stain_cleaning": "Czyszczenie plam",
+          "initial_deep_cleaning": "Wstępne głębokie czyszczenie",
+          "initial_deep_cleaning_paused": "Wstępne głębokie czyszczenie wstrzymane",
+          "mop_pad_heating": "Podgrzewanie podkładek mop",
+          "cleaning_after_mapping": "Czyszczenie po mapowaniu",
+          "small_particle_cleaning": "Czyszczenie drobnych cząstek"
         }
       }
     }
@@ -1011,7 +1033,7 @@
           "name": "Czyszczenie dywanu",
           "description": "Niestandardowe ustawienie czyszczenia dla każdego dywanu."
         },
-        "carpet_settings": {
+        "carpet_preferences": {
           "name": "Ustawienia dywanu",
           "description": "Niestandardowe ustawienia dywanu dla każdego dywanu z listą włączonych ustawień."
         }
@@ -1067,7 +1089,7 @@
           "name": "Dywany",
           "description": "Obszary dywanowe."
         },
-        "ignored_carpets": {
+        "deleted_carpets": {
           "name": "Ignorowane dywany",
           "description": "Zignorowano obszary dywanów w celu usunięcia automatycznie wykrytych dywanów."
         }
