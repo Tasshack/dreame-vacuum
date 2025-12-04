@@ -746,10 +746,10 @@ PROPERTY_AVAILABILITY: Final = {
         device.get_property(DreameVacuumProperty.CARPET_BOOST)
     ),
     DreameVacuumProperty.CARPET_BOOST: lambda device: bool(
-        device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0
+        device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 1
     ),
     DreameVacuumProperty.CARPET_AVOIDANCE: lambda device: bool(
-        device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 0
+        device.get_property(DreameVacuumProperty.CARPET_RECOGNITION) != 1
     ),
     DreameVacuumProperty.AUTO_EMPTY_FREQUENCY: lambda device: bool(
         device.get_property(DreameVacuumProperty.AUTO_DUST_COLLECTING)

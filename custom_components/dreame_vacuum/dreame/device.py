@@ -1864,6 +1864,20 @@ class DreameVacuumDevice:
                 self._property_changed()
             return result
 
+    def set_carpet_recognition(self, value: int) -> dict[str, Any] | None:
+        if self.capability.carpet_recognition:
+            current_value = self.get_property(DreameVacuumProperty.CARPET_RECOGNITION)
+            if current_value is not None:
+                if bool(value):
+                    value = 1
+                else:
+                    value = 3 if self.get_property(DreameVacuumProperty.CARPET_BOOST) == 1 else 0
+                if self.set_property(DreameVacuumProperty.CARPET_RECOGNITION, value):
+                    if value == 1 and current_value == 3:
+                        self.set_property(DreameVacuumProperty.CARPET_BOOST, 1)
+                    else:
+                        self._update_property(DreameVacuumProperty.CARPET_BOOST, 0)
+
     def set_multi_map(self, enabled: bool) -> bool:
         if self.set_property(DreameVacuumProperty.MULTI_FLOOR_MAP, int(enabled)):
             if (

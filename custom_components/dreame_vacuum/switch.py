@@ -87,6 +87,7 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         property_key=DreameVacuumProperty.CARPET_RECOGNITION,
         icon="mdi:rug",
         entity_category=EntityCategory.CONFIG,
+        set_fn=lambda device, value: device.set_carpet_recognition(value),
     ),
     DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumProperty.SELF_CLEAN,
