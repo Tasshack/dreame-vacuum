@@ -420,7 +420,7 @@ class DreameVacuumShortcutButtonEntity(DreameVacuumEntity, ButtonEntity):
         else:
             name = f"{key}_{self.id}"
 
-        self._attr_name = f"{self.device.name} {name.replace('_', ' ').title()}"
+        self._attr_name = name.replace('_', ' ').title()
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -478,7 +478,7 @@ class DreameVacuumMapButtonEntity(DreameVacuumEntity, ButtonEntity):
             if self._map_name is None
             else f"{self._map_name.replace('_', ' ').replace('-', ' ').title()}"
         )
-        self._attr_name = f"{self.device.name} Backup Saved Map {name}"
+        self._attr_name = f"Backup Saved Map {name}"
 
     @callback
     def _handle_coordinator_update(self) -> None:

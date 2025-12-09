@@ -589,7 +589,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             self._attr_unique_id = f"{self.device.mac}_{'wifi_' if self.wifi_map else ''}map_{self.map_index}"
             self.entity_id = f"camera.{self.device.name.lower().replace(' ','_')}_{'wifi_' if self.wifi_map else ''}map_{self.map_index}"
         else:
-            self._attr_name = f"{self.device.name} Current {'Wifi ' if self.wifi_map else ''}{description.name}"
+            self._attr_name = f"Current {'Wifi ' if self.wifi_map else ''}{description.name}"
             self._attr_unique_id = f"{self.device.mac}_map_{'wifi_' if self.wifi_map else ''}{description.key}"
             self.entity_id = f"camera.{self.device.name.lower().replace(' ','_')}_{'wifi_' if self.wifi_map else ''}{description.key.lower()}"
 
@@ -601,7 +601,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             if self._map_name is None
             else f"{self._map_name.replace('_', ' ').replace('-', ' ').title()}"
         )
-        self._attr_name = f"{self.device.name} Saved {'Wifi ' if wifi_map else ''}Map {name}"
+        self._attr_name = f"Saved {'Wifi ' if wifi_map else ''}Map {name}"
 
     @callback
     def _handle_coordinator_update(self) -> None:
