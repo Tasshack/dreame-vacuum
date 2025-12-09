@@ -1902,7 +1902,7 @@ ACTION_AVAILABILITY: Final = {
     and not device.status.drying
     and not device.status.auto_emptying,
     "start_recleaning": lambda device: device.status.second_cleaning_available,
-    "empty_water_tank": lambda device: not device.status.water_tank_emptying_available,
+    "empty_water_tank": lambda device: device.status.water_tank_emptying_available,
 }
 
 
