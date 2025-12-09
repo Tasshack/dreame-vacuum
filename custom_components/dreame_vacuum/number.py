@@ -380,7 +380,7 @@ class DreameVacuumSegmentNumberEntity(DreameVacuumEntity, NumberEntity):
         else:
             name = f"{self.entity_description.key}_room_unavailable"
 
-        self._attr_name = f"{self.device.name} {name.replace('_', ' ').title()}"
+        self._attr_name = name.replace('_', ' ').title()
 
         if self.entity_description.segment_icon_fn is not None:
             self._attr_icon = self.entity_description.segment_icon_fn(
