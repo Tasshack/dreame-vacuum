@@ -40,21 +40,21 @@
       },      
       "2fa": {
         "data": {
-          "verification_code": "Two-factor verification code"
+          "verification_code": "Zwei-Faktor-Bestätigungscode"
         },
-        "description": "## This login requires security verification\nPlease open the verification page to send the mobile/email verification code. After receiving the verification code, do not verify it on the webpage. Go back to HomeAssistant and enter it in the input box below.\n### [Send Verification Code]({url})"
+        "description": "## Diese Anmeldung erfordert eine Sicherheitsüberprüfung\nBitte öffnen Sie die Bestätigungsseite, um den Mobil-/E-Mail-Bestätigungscode zu senden. Nach Erhalt des Bestätigungscodes verifizieren Sie ihn NICHT auf der Webseite. Gehen Sie zurück zu Home Assistant und geben Sie ihn in das Eingabefeld unten ein.\n### [Bestätigungscode senden]({url})"
       },
       "captcha": {
         "data": {
           "code": "Code"
         },
-        "description": "## Captcha verification is required.\n![captcha](data:image/jpeg;base64,{img})"
+        "description": "## Captcha-Bestätigung ist erforderlich.\n![captcha](data:image/jpeg;base64,{img})"
       },
       "devices": {
         "data": {
           "devices": "Unterstützte Geräte"
         },
-        "description": "Bitte wählen Sie den Dreame Wischroboter aus, das Sie einrichten möchten."
+        "description": "Bitte wählen Sie den Dreame Wischroboter aus, den Sie einrichten möchten."
       },
       "donation": {
         "data": {
@@ -66,7 +66,7 @@
         "data": {
           "name": "Name",
           "color_scheme": "Farbschema der Karte",
-          "icon_set": "Kartensymbol gesetzt",
+          "icon_set": "Karten-Icon-Set",
           "notify": "Benachrichtigung",
           "hidden_map_objects": "Versteckte Kartenobjekte"
         }
@@ -82,7 +82,7 @@
       "init": {
         "data": {
           "color_scheme": "Farbschema der Karte",
-          "icon_set": "Kartensymbol gesetzt",
+          "icon_set": "Karten-Icon-Set",
           "notify": "Benachrichtigung",
           "hidden_map_objects": "Versteckte Kartenobjekte",
           "configuration_type": "Konfigurationstyp",
@@ -114,7 +114,7 @@
       },
       "mop_pad_humidity": {
         "state": {
-          "slightly_dry": "Leicht Trocken",
+          "slightly_dry": "Leicht trocken",
           "moist": "Feucht",
           "wet": "Nass"
         }
@@ -137,7 +137,7 @@
       "carpet_cleaning": {
         "state": {
           "avoidance": "Vermeidung",
-          "adaptation": "Intelligent",
+          "adaptation": "Anpassung",
           "remove_mop": "Wischpad demontieren"
         }
       },
@@ -236,7 +236,7 @@
           "cleaning": "Reinigen",
           "returning": "Kehre zum Dock zurück",
           "spot_cleaning": "Spotreinigung",
-          "follow_wall_cleaning": "Folge Wand Reinigung",
+          "follow_wall_cleaning": "Wandfolge-Reinigung",
           "charging": "Aufladen",
           "ota": "OTA",
           "fct": "FCT",
@@ -252,8 +252,8 @@
           "room_cleaning": "Raumreinigung",
           "zone_cleaning": "Zonenreinigung",
           "fast_mapping": "Schnelles Mapping",
-          "cruising_path": "Cruising auf dem Weg",
-          "cruising_point": "Eine Kreuzfahrt zu einem Punkt",
+          "cruising_path": "Pfadfahrt",
+          "cruising_point": "Fahrt zu einem Punkt",
           "summon_clean": "Zur Reinigung rufen",
           "shortcut": "Verknüpfung",
           "person_follow": "Person folgen",
@@ -280,10 +280,10 @@
           "room_mopping_paused": "Raumwischen pausiert",
           "zone_docking_paused": "Zonenwischen pausiert",
           "room_docking_paused": "Raumdocking pausiert",
-          "cruising_path": "Cruising auf dem Weg",
-          "cruising_path_paused": "Die Fahrt wurde auf dem Weg unterbrochen",
-          "cruising_point": "Eine Fahrt zu einem Punkt",
-          "cruising_point_paused": "Die Fahrt zu einem Punkt wurde unterbrochen",
+          "cruising_path": "Pfadfahrt",
+          "cruising_path_paused": "Pfadfahrt pausiert",
+          "cruising_point": "Fahrt zu einem Punkt",
+          "cruising_point_paused": "Fahrt zu einem Punkt pausiert",
           "summon_clean_paused": "Zur Reinigung rufen wurde angehalten",
           "returning_to_install_mop": "Zurückkehren zum Anbringen des Wischpads",
           "returning_to_remove_mop": "Zurückkehren zum Entfernen des Wischpads"
@@ -294,7 +294,7 @@
           "unknown": "Unbekannt",
           "installed": "Installiert",
           "not_installed": "Nicht installiert",
-          "mop_installed": "Wassertank installiert",
+          "mop_installed": "Wischpad installiert",
           "in_station": "In der Station"
         }
       },
@@ -303,7 +303,7 @@
           "unknown": "Unbekannt",
           "installed": "Installiert",
           "not_installed": "Nicht installiert",
-          "mop_installed": "Wassertank installiert",
+          "mop_installed": "Wischpad installiert",
           "in_station": "In der Station"
         }
       },
@@ -359,8 +359,8 @@
           "left_wheell_speed": "Linkes Rad ist möglicherweise durch Fremdkörper blockiert",
           "right_wheell_speed": "Rechtes Rad ist möglicherweise durch Fremdkörper blockiert",
           "bmi055_acce": "Beschleunigungssensor Fehler",
-          "bmi055_gyro": "Beschleunigungssensor Fehler",
-          "xv7001": "Beschleunigungssensor Fehler",
+          "bmi055_gyro": "Gyroskop-Fehler",
+          "xv7001": "Gyroskop-Fehler",
           "left_magnet": "Fehler des linken Magnetsensors",
           "right_magnet": "Fehler des rechten Magnetsensors",
           "flow_error": "Durchflusssensor Fehler",
@@ -372,7 +372,7 @@
           "auto_key_trig": "Interner Fehler",
           "p3v3": "Interner Fehler",
           "camera_idle": "Interner Fehler",
-          "blocked": "Reinigungsroute ist blockiert kehre zur Dock zurück",
+          "blocked": "Reinigungsroute ist blockiert, kehre zur Ladestation zurück",
           "lds_error": "Laserentfernungssensors Fehler",
           "lds_bumper": "Laserentfernungssensors (Bumper) Fehler",
           "filter_blocked": "Der Filter ist nicht trocken oder verstopft",
@@ -438,9 +438,9 @@
         "state": {
           "no_warning": "Keine Warnung",
           "no_water_left_dismiss": "Bitte den Frischwassertank überprüfen.",
-          "no_water_left": "Das Wasser im Frischwassertank ist bald aufgebraucht.",
-          "no_water_left_after_clean": "Wischpad wurde gereinigt.",
-          "no_water_for_clean": "Niedriger Wasserstand im Frischwassertank.",
+          "no_water_left": "Das Wasser im Frischwassertank ist bald aufgebraucht. Bitte den Frischwassertank überprüfen und nachfüllen.",
+          "no_water_left_after_clean": "Wischpad wurde gereinigt. Es wurde festgestellt, dass das Wasser im Frischwassertank nicht ausreicht. Bitte den Frischwassertank nachfüllen und den Schmutzwassertank leeren.",
+          "no_water_for_clean": "Niedriger Wasserstand im Frischwassertank. Der Roboter ist in den Saugmodus gewechselt.",
           "low_water": "Das Wasser geht mir bald aus.",
           "tank_not_installed": "Der Frischwassertank ist nicht installiert."
         }
@@ -490,7 +490,7 @@
       "fields": {
         "segments": {
           "name": "Segmente",
-          "description": "Liste der Räume, die gereinigt werden sollen. Entweder der Raumname oder ein Array mit Raumnamen, Reinigungszeiten, Lüftergeschwindigkeiten und Wischmodus, um die Standardwerte pro Raum zu überschreiben."
+          "description": "Liste der Räume, die gereinigt werden sollen. Entweder die Raumnamen oder ein Array mit Raumnamen, Reinigungszeiten, Lüftergeschwindigkeiten und Wischmodus, um die Standardwerte pro Raum zu überschreiben."
         },
         "repeats": {
           "name": "Wiederholungen",
@@ -551,20 +551,20 @@
       }
     },
     "vacuum_set_dnd": {
-      "name": "Set DnD",
-      "description": "Enable/disable DnD functionality and/or setting its start and end time.",
+      "name": "Nicht stören einstellen",
+      "description": "Nicht-stören-Funktion aktivieren/deaktivieren und/oder Start- und Endzeit festlegen.",
       "fields": {
         "dnd_enabled": {
-          "name": "DnD Enabled",
-          "description": "Enable or disable DnD feature."
+          "name": "Nicht stören aktiviert",
+          "description": "Nicht-stören-Funktion aktivieren oder deaktivieren."
         },
         "dnd_start": {
-          "name": "DnD Start",
-          "description": "Start time of DnD feature."
+          "name": "Nicht stören Start",
+          "description": "Startzeit der Nicht-stören-Funktion."
         },
         "dnd_end": {
-          "name": "Dnd End",
-          "description": "End time of DnD feature."
+          "name": "Nicht stören Ende",
+          "description": "Endzeit der Nicht-stören-Funktion."
         }
       }
     },
@@ -686,7 +686,7 @@
     },
     "vacuum_restore_map_from_file": {
       "name": "Karte aus Datei wiederherstellen",
-      "description": "Stellen Sie eine Karte aus einer Datei wieder her.",
+      "description": "Stelle eine Karte aus einer Datei wieder her.",
       "fields": {
         "map_id": {
           "name": "Karten-ID",
@@ -700,7 +700,7 @@
     },
     "vacuum_backup_map": {
       "name": "Backup-Karte",
-      "description": "Sichern Sie eine Karte in der Cloud.",
+      "description": "Sichere eine Karte in der Cloud.",
       "fields": {
         "map_id": {
           "name": "Karten-ID",
@@ -800,7 +800,7 @@
         },
         "zones": {
           "name": "Zonen",
-          "description": "Nicht-Bereichszonen."
+          "description": "Sperrzonen (No-Go-Zonen)."
         },
         "no_mops": {
           "name": "Kein Wischen",
@@ -904,7 +904,7 @@
     },
     "select_select_previous": {
       "name": "Vorheriges auswählen",
-      "description": "Wähle die vorherigen Optionen eines Auswahlelements aus.",
+      "description": "Wähle die vorherige Option eines Auswahlelements aus.",
       "fields": {
         "cycle": {
           "name": "Zyklus",
@@ -922,7 +922,7 @@
     },
     "select_select_next": {
       "name": "Nächstes auswählen",
-      "description": "Wähle die nächsten Optionen eines Auswahlelements aus.",
+      "description": "Wähle die nächste Option eines Auswahlelements aus.",
       "fields": {
         "cycle": {
           "name": "Zyklus",

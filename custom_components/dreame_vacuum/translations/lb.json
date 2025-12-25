@@ -1,0 +1,935 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Apparat ass scho konfiguréiert",
+      "cannot_connect": "Verbindung ass feelgeschloen.",
+      "reauth_successful": "D'Nei-Authentifizéierung war erfollegräich"
+    },
+    "error": {
+      "cannot_connect": "Verbindung ass feelgeschloen.",
+      "unsupported": "Apparat gëtt net ënnerstëtzt",
+      "wrong_token": "Prüfsummefehler, falschen Token",
+      "2fa_failed": "Verifizéierung feelgeschloen.",
+      "wrong_captcha": "Falschen Captcha.",
+      "credentials_incomplete": "Umeldedaten onvollstänneg, gitt w.e.g. Benotzernumm, Passwuert an d'Land an",
+      "login_error": "Umelden net méiglech, kontrolléiert w.e.g. d'Umeldedaten.",
+      "no_devices": "An dësem Kont goufe fir d'ausgewielt Land keng ënnerstëtzte Apparater fonnt.{devices}"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Konfiguratiounstyp"
+        },
+        "description": "D'Kaartefunktioun verlaangt eng Cloud-Verbindung a bitt eng automatesch Konfiguratioun. Wann Dir d'Kaartefunktioun net benotze wëllt, kënnt Dir d'manuell Konfiguratioun wielen."
+      },
+      "local": {
+        "data": {
+          "host": "Host",
+          "token": "Token"
+        },
+        "description": "Dir braucht de 32 Zeechen laangen API-Token, kuckt https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token fir weider Informatiounen."
+      },
+      "mi": {
+        "data": {
+          "username": "Benotzernumm",
+          "password": "Passwuert",
+          "country": "Cloudserver",
+          "prefer_cloud": "Preferéiert eng Cloud-Verbindung"
+        },
+        "description": "Mellt Iech bei der Xiaomi Miio Cloud un, kuckt https://www.openhab.org/addons/bindings/miio/#country-servers fir de Cloud-Server deen ze benotzen ass."
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "Zwee-Faktor-Bestätegungscode"
+        },
+        "description": "## Dës Umeldung verlaangt eng Sécherheetsiwwerpréiwung\nOpent w.e.g. d'Bestätegungssäit fir de Mobil-/E-Mail-Bestätegungscode ze schécken. Nodeem Dir de Bestätegungscode kritt hutt, verifizéiert en NET op der Websäit. Gitt zréck zu Home Assistant a gitt en an d'Inputfeld ënnen an.\n### [Bestätegungscode schécken]({url})"
+      },
+      "captcha": {
+        "data": {
+          "code": "Code"
+        },
+        "description": "## Captcha-Bestätegung ass néideg.\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "devices": {
+        "data": {
+          "devices": "Ënnerstëtzte Apparater"
+        },
+        "description": "Wielt w.e.g. de Dreame Botzrobot aus, deen Dir astellen wëllt."
+      },
+      "donation": {
+        "data": {
+          "donated": "Ech hunn gespend"
+        },
+        "description": "## Vergiesst net, de Projet ze ënnerstëtzen.{text}"
+      },
+      "options": {
+        "data": {
+          "name": "Numm",
+          "color_scheme": "Faarfschema vun der Kaart",
+          "icon_set": "Kaart-Icon-Set",
+          "notify": "Notifikatioun",
+          "hidden_map_objects": "Verstoppte Kaartobjekter"
+        }
+      },
+      "reauth_confirm": {
+        "description": "D'Dreame Botzrobot-Integratioun brauch eng nei Authentifizéierung vun Ärem Kont fir d'Tokenen ze aktualiséieren oder fir déi feelend Cloud-Umeldedaten derbäi ze setzen",
+        "title": "Integratioun nei authentifizéieren"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Faarfschema vun der Kaart",
+          "icon_set": "Kaart-Icon-Set",
+          "notify": "Notifikatioun",
+          "hidden_map_objects": "Verstoppte Kaartobjekter",
+          "configuration_type": "Konfiguratiounstyp",
+          "prefer_cloud": "Cloud-Verbindung preferéieren",
+          "donated": "Ech hunn gespend"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Umeldedaten onvollstänneg, gitt w.e.g. Benotzernumm, Passwuert an d'Land an"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "state": {
+          "quiet": "Roueg",
+          "standard": "Standard",
+          "strong": "Max",
+          "turbo": "Turbo"
+        }
+      },
+      "water_volume": {
+        "state": {
+          "low": "Niddreg",
+          "medium": "Mëttel",
+          "high": "Héich"
+        }
+      },
+      "mop_pad_humidity": {
+        "state": {
+          "slightly_dry": "Liicht dréchen",
+          "moist": "Ficht",
+          "wet": "Naass"
+        }
+      },
+      "cleaning_mode": {
+        "state": {
+          "sweeping": "Saugen",
+          "mopping": "Wischen",
+          "sweeping_and_mopping": "Saugen a Wischen",
+          "mopping_after_sweeping": "Wischen no dem Saugen"
+        }
+      },
+      "carpet_sensitivity": {
+        "state": {
+          "low": "Niddreg",
+          "medium": "Mëttel",
+          "high": "Héich"
+        }
+      },
+      "carpet_cleaning": {
+        "state": {
+          "avoidance": "Vermeidung",
+          "adaptation": "Upassung",
+          "remove_mop": "Wischpad demontéieren"
+        }
+      },
+      "mop_wash_level": {
+        "state": {
+          "water_saving": "Waasserspuerend",
+          "daily": "Dagelécht",
+          "deep": "Déifbotz"
+        }
+      },
+      "mopping_type": {
+        "state": {
+          "accurate": "Genau",
+          "daily": "Dagelécht",
+          "deep": "Déifbotz"
+        }
+      },
+      "wider_corner_coverage": {
+        "state": {
+          "off": "Aus",
+          "high_frequency": "Héichfrequenz",
+          "low_frequency": "Niddregfrequenz"
+        }
+      },
+      "mop_pad_swing": {
+        "state": {
+          "off": "Aus",
+          "auto": "Auto",
+          "daily": "Dagelécht",
+          "weekly": "Wochentlech"
+        }
+      },
+      "floor_material": {
+        "state": {
+          "none": "Keng Material",
+          "tile": "Buedemfläis",
+          "wood": "Holzbuedem"
+        }
+      },
+      "voice_assistant_language": {
+        "state": {
+          "default": "Standard",
+          "english": "Englesch",
+          "german": "Däitsch",
+          "chinese": "Chineesesch"
+        }
+      },
+      "order": {
+        "state": {
+          "not_set": "Net agestallt"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "state": {
+          "unknown": "Onbekannt",
+          "sweeping": "Saugen",
+          "charging": "Oplueden",
+          "error": "Feeler",
+          "idle": "Inaktiv",
+          "paused": "Pauséiert",
+          "returning": "Géi zréck zum Dock",
+          "mopping": "Wischen",
+          "drying": "Dréchnen",
+          "washing": "Wäschen",
+          "returning_to_wash": "Zréckgoen zum Wäschen",
+          "building": "Zesummenbauen",
+          "sweeping_and_mopping": "Saugen a Wischen",
+          "charging_completed": "Oplueden ofgeschloss",
+          "upgrading": "Upgrade maachen",
+          "clean_summon": "Zum Botzen ruffen",
+          "station_reset": "Station zrécksetzen",
+          "returning_install_mop": "Zréck zur Installatioun vum Wischpad",
+          "returning_remove_mop": "Zréck zum Ewechhuele vum Wischpad",
+          "water_check": "Waasserkontroll",
+          "clean_add_water": "Botzen a Waasser derbäi setzen",
+          "washing_paused": "De Wäschvorgang gouf ënnerbrach",
+          "auto_emptying": "Automatesch Eidelung",
+          "remote_control": "Fernstéierung",
+          "smart_charging": "Intelligentes Oplueden",
+          "second_cleaning": "Zum zweete Mol gebotzt",
+          "human_following": "Persoun follegen",
+          "spot_cleaning": "Spotbotz",
+          "returning_auto_empty": "Zréckgoen zur automatescher Eidelung",
+          "shortcut": "Verknëppung",
+          "monitoring": "Iwwerwaachung",
+          "monitoring_paused": "Iwwerwaachung pauséiert"
+        }
+      },
+      "status": {
+        "state": {
+          "unknown": "Onbekannt",
+          "idle": "Inaktiv",
+          "paused": "Pauséiert",
+          "cleaning": "Botzen",
+          "returning": "Géi zréck zum Dock",
+          "spot_cleaning": "Spotbotz",
+          "follow_wall_cleaning": "Wandfolleg-Botz",
+          "charging": "Oplueden",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "WiFi astellen",
+          "power_off": "Power aus",
+          "factory": "Factory",
+          "error": "Feeler",
+          "remote_control": "Fernstéiert",
+          "sleeping": "Schlofend",
+          "self_test": "Selbsttest",
+          "factory_test": "Wierkstest",
+          "standby": "Standby",
+          "room_cleaning": "Raumbotz",
+          "zone_cleaning": "Zonbotz",
+          "fast_mapping": "Schnellt Kartéierung",
+          "cruising_path": "Padfaart",
+          "cruising_point": "Faart zu engem Punkt",
+          "summon_clean": "Zur Botz ruffen",
+          "shortcut": "Verknëppung",
+          "person_follow": "Persoun follegen",
+          "water_check": "Waasserkontroll"
+        }
+      },
+      "task_status": {
+        "state": {
+          "unknown": "Onbekannt",
+          "completed": "Fäerdeg",
+          "cleaning": "Botzen",
+          "zone_cleaning": "Zonbotz",
+          "room_cleaning": "Raumbotz",
+          "spot_cleaning": "Spotbotz",
+          "fast_mapping": "Schnellt Kartéierung",
+          "cleaning_paused": "Botz pauséiert",
+          "room_cleaning_paused": "Raumbotz pauséiert",
+          "zone_cleaning_paused": "Zonbotz pauséiert",
+          "spot_cleaning_paused": "Spotbotz pauséiert",
+          "map_cleaning_paused": "Kaartbotz pauséiert",
+          "docking_paused": "Docking pauséiert",
+          "mopping_paused": "Wischen pauséiert",
+          "zone_mopping_paused": "Zonwischen pauséiert",
+          "room_mopping_paused": "Raumwischen pauséiert",
+          "zone_docking_paused": "Zonwischen pauséiert",
+          "room_docking_paused": "Raumdocking pauséiert",
+          "cruising_path": "Padfaart",
+          "cruising_path_paused": "Padfaart pauséiert",
+          "cruising_point": "Faart zu engem Punkt",
+          "cruising_point_paused": "Faart zu engem Punkt pauséiert",
+          "summon_clean_paused": "Zur Botz ruffen gouf gestoppt",
+          "returning_to_install_mop": "Zréckgoen zum Ubannen vum Wischpad",
+          "returning_to_remove_mop": "Zréckgoen zum Ewechhuele vum Wischpad"
+        }
+      },
+      "water_tank": {
+        "state": {
+          "unknown": "Onbekannt",
+          "installed": "Installéiert",
+          "not_installed": "Net installéiert",
+          "mop_installed": "Wischpad installéiert",
+          "in_station": "An der Statioun"
+        }
+      },
+      "mop_pad": {
+        "state": {
+          "unknown": "Onbekannt",
+          "installed": "Installéiert",
+          "not_installed": "Net installéiert",
+          "mop_installed": "Wischpad installéiert",
+          "in_station": "An der Statioun"
+        }
+      },
+      "dust_collection": {
+        "state": {
+          "unknown": "Onbekannt",
+          "not_available": "Net disponibel",
+          "available": "Disponibel"
+        }
+      },
+      "auto_empty_status": {
+        "state": {
+          "unknown": "Onbekannt",
+          "idle": "Inaktiv",
+          "active": "Aktiv",
+          "not_performed": "Net gemaach"
+        }
+      },
+      "error": {
+        "state": {
+          "unknown": "Onbekannte Feelercode",
+          "no_error": "Keen Feeler",
+          "drop": "Rieder an der Loft",
+          "cliff": "Klippesensorfeeler",
+          "bumper": "Opraffsensor klémmt",
+          "gesture": "Robot ass gekippt",
+          "bumper_repeat": "Kollisiounssensor klémmt",
+          "drop_repeat": "Rieder an der Loft",
+          "optical_flow": "Feeler vum optesche Flow-Sensor",
+          "no_box": "Staubbehälter net installéiert",
+          "no_tank_box": "Waassertank net installéiert",
+          "water_box_empty": "Waassertank ass eidel",
+          "box_full": "De Filter ass net dréchen oder verstopft",
+          "brush": "D'Haaptbiischt ass agewéckelt",
+          "side_brush": "D'Säitebiischt ass agewéckelt",
+          "fan": "De Filter ass net dréchen oder verstopft",
+          "left_wheel_motor": "De Robot steet fest, oder säi lénkt Rad ass eventuell duerch Främdkierper blockéiert",
+          "right_wheel_motor": "De Robot steet fest, oder säi riets Rad ass eventuell duerch Främdkierper blockéiert",
+          "turn_suffocate": "De Robot steet fest oder kann sech net dréinen",
+          "forward_suffocate": "De Robot steet fest oder kann net viru fueren",
+          "charger_get": "Kann d'Ladestatioun net fannen",
+          "battery_low": "Batterie schwaach",
+          "charge_fault": "Feeler beim Oplueden",
+          "battery_percentage": "Feeler beim Batteriestand",
+          "heart": "Internen Feeler",
+          "camera_occlusion": "Feeler vum visuellen Positiounssensor",
+          "move": "Feeler vum Beweegungssensor",
+          "flow_shielding": "Optesche Sensorfeeler",
+          "infrared_shielding": "Infraroutofschiermung Feeler",
+          "charge_no_electric": "D'Ladestatioun ass net ageschalt",
+          "battery_fault": "Batterie Feeler",
+          "fan_speed_error": "Feeler vum Lüfterdréizahlsensor",
+          "left_wheell_speed": "Lénkt Rad ass eventuell duerch Främdkierper blockéiert",
+          "right_wheell_speed": "Riets Rad ass eventuell duerch Främdkierper blockéiert",
+          "bmi055_acce": "Beschleunigungssensor Feeler",
+          "bmi055_gyro": "Gyroskop-Feeler",
+          "xv7001": "Gyroskop-Feeler",
+          "left_magnet": "Feeler vum lénkten Magnetsensor",
+          "right_magnet": "Feeler vum rietsen Magnetsensor",
+          "flow_error": "Duerchflusssensor Feeler",
+          "infrared_fault": "Infraroutsensor Feeler",
+          "camera_fault": "Kamera Feeler",
+          "strong_magnet": "Staarkt Magnéitfeld festgestallt",
+          "water_pump": "Waasserpomp Feeler",
+          "rtc": "RTC Feeler",
+          "auto_key_trig": "Internen Feeler",
+          "p3v3": "Internen Feeler",
+          "camera_idle": "Internen Feeler",
+          "blocked": "Botzstreck ass blockéiert, géi zréck zur Ladestatioun",
+          "lds_error": "Laserofstandssensor Feeler",
+          "lds_bumper": "Laserofstandssensor (Bumper) Feeler",
+          "filter_blocked": "De Filter ass net dréchen oder verstopft",
+          "edge": "Kantsensor Feeler",
+          "carpet": "Startt w.e.g. de Robot an engem Beräich ouni Teppech.",
+          "laser": "De 3D-Hënnernisvermeidungssensor ass defekt.",
+          "ultrasonic": "De Ultraschallsensor ass gestéiert.",
+          "no_go_zone": "No-Go-Zon oder virtuell Wand erkannt.",
+          "route": "D'Botzstreck ass blockéiert.",
+          "restricted": "Et gouf festgestallt datt de Staubsauger an engem Sperrgebitt ass.",
+          "remove_mop": "Wischen ofgeschloss. Ewecht w.e.g. de Wischpad zäitgerecht a botzt en.",
+          "mop_removed": "De Wischpad huet sech wärend der Botz geléist.",
+          "mop_pad_stop_rotate": "De Wischpad dréit sech net méi",
+          "bin_full": "De Staubsammelbeutel ass voll, oder de Loftkanal ass verstopft.",
+          "bin_open": "D'iewescht Ofdeckung vum automatesche Eidelbehälter ass net zougemaach, oder de Staubbeutel ass net installéiert.",
+          "water_tank": "De Frëschwaassertank ass net installéiert.",
+          "dirty_water_tank": "De Schmutzwassertank ass voll oder net installéiert.",
+          "water_tank_dry": "Niddrege Waasserstand am Frëschwaassertank, fëllt w.e.g. zäitgerecht Waasser no.",
+          "dirty_water_tank_blocked": "Schmutzwassertank blockéiert.",
+          "dirty_water_tank_pump": "Schmutzwassertank Pompfeeler.",
+          "mop_pad": "De Wischpad ass net richteg installéiert.",
+          "wet_mop_pad": "De Waasserstand vum Wischpad ass ongewéinlech, botzt w.e.g. de Wischpad zäitgerecht.",
+          "clean_mop_pad": "D'Botzaufgab ass ofgeschloss, botzt w.e.g. de Wischpad.",
+          "clean_tank_level": "Kontrolléiert w.e.g. de Frëschwaassertank direkt a fëllt en no.",
+          "station_disconnected": "Basisstatioun net ageschalt",
+          "dirty_tank_level": "De Waasserstand am Schmutzwassertank ass ze héich.",
+          "washboard_level": "Waasserstand am Wäschbrétt ass ze héich.",
+          "no_mop_in_station": "Wischpad ass net an der Statioun.",
+          "dust_bag_full": "De Staubbeutel ass voll oder d'Lüftungsschlëtzer sinn blockéiert."
+        }
+      },
+      "charging_status": {
+        "state": {
+          "unknown": "Onbekannt",
+          "charging": "Oplueden",
+          "not_charging": "Net Oplueden",
+          "return_to_charge": "Zum Oplueden zréckgoen",
+          "charging_completed": "Oplueden ofgeschloss"
+        }
+      },
+      "relocation_status": {
+        "state": {
+          "unknown": "Onbekannt",
+          "located": "Lokaliséiert",
+          "locating": "Lokaliséieren",
+          "failed": "Feelgeschloen",
+          "success": "Erfollegräich"
+        }
+      },
+      "self_wash_base_status": {
+        "state": {
+          "unknown": "Onbekannt",
+          "idle": "Inaktiv",
+          "washing": "Wäschen",
+          "drying": "Dréchnen",
+          "paused": "Pauséiert",
+          "returning": "Zréckgoen zum Wäschen",
+          "clean_add_water": "Botz a Waasser nofëllen",
+          "adding_water": "Waasser nofëllen"
+        }
+      },
+      "low_water_warning": {
+        "state": {
+          "no_warning": "Keng Warnung",
+          "no_water_left_dismiss": "Kontrolléiert w.e.g. de Frëschwaassertank.",
+          "no_water_left": "D'Waasser am Frëschwaassertank ass bal opgebraucht. Kontrolléiert w.e.g. de Frëschwaassertank a fëllt en no.",
+          "no_water_left_after_clean": "Wischpad gouf gebotzt. Et gouf festgestallt datt d'Waasser am Frëschwaassertank net ausräicht. Fëllt w.e.g. de Frëschwaassertank no a eidelt de Schmutzwassertank.",
+          "no_water_for_clean": "Niddrege Waasserstand am Frëschwaassertank. De Robot ass an de Saugmodus gewiesselt.",
+          "low_water": "D'Waasser geet mir bal aus.",
+          "tank_not_installed": "De Frëschwaassertank ass net installéiert."
+        }
+      },
+      "stream_status": {
+        "state": {
+          "unknown": "Onbekannt",
+          "idle": "Léierlaf",
+          "video": "Video",
+          "audio": "Audio",
+          "recording": "Opzeechnung"
+        }
+      },
+      "drainage_status": {
+        "state": {
+          "unknown": "Onbekannt",
+          "idle": "Léierlaf",
+          "draining": "Eidelen",
+          "draining_successful": "Eidelung erfollegräich",
+          "draining_failed": "D'Eidelung ass feelgeschloen"
+        }
+      },
+      "task_type": {
+        "state": {
+          "standard": "Standardbotz",
+          "standard_paused": "Standardbotz gestoppt",
+          "custom": "Individuell Botz",
+          "custom_paused": "Benotzerdefinéiert Botz gestoppt",
+          "shortcut": "Ofkierzungsbotz",
+          "shortcut_paused": "Verknëppungsbotz gestoppt",
+          "scheduled": "Geplangt Botz",
+          "scheduled_paused": "Geplangt Botz pauséiert",
+          "smart": "Intelligent Botz",
+          "smart_paused": "Intelligent Botz pauséiert",
+          "partial": "Deelweis Botz",
+          "partial_paused": "Deelbotz pauséiert",
+          "summon": "Zur Botz hieruffen",
+          "summon_paused": "Botz hieruffen pauséiert"
+        }
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "Botz Segment",
+      "description": "Start de Botzvorgang an den ausgewielte Räim.",
+      "fields": {
+        "segments": {
+          "name": "Segmenter",
+          "description": "Lëscht vun de Räim déi gebotzt solle ginn. Entweder d'Raumnimm oder en Array mat Raumnimm, Botzzeiten, Lüftervitessen a Wischmodus fir d'Standardwäerter pro Raum ze iwwerschreiwen."
+        },
+        "repeats": {
+          "name": "Widderhuelungen",
+          "description": "Zuel vun de Botzdurchegäng fir all ausgewielten Raum (soulaang net duerch benotzerdefinéiert Botzparameteren iwwerschriwwen)."
+        },
+        "suction_level": {
+          "name": "Saugstuf",
+          "description": "Lüftervitess fir all ausgewielten Raum (soulaang net duerch benotzerdefinéiert Botzparameteren iwwerschriwwen)."
+        },
+        "water_volume": {
+          "name": "Waassermeng",
+          "description": "Waasserstand fir all ausgewielten Raum (soulaang net duerch benotzerdefinéiert Botzparameteren iwwerschriwwen)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "Beräich botzen",
+      "description": "Start de Botzvorgang am ausgewielten Beräich.",
+      "fields": {
+        "zone": {
+          "name": "Beräich",
+          "description": "Koordinaten."
+        },
+        "repeats": {
+          "name": "Widderhuelungen",
+          "description": "Zuel vun de Botzdurchegäng fir all ausgewielten Beräich."
+        },
+        "suction_level": {
+          "name": "Saugstuf",
+          "description": "Lüftervitess fir all ausgewielten Beräich."
+        },
+        "water_volume": {
+          "name": "Waassermeng",
+          "description": "Waasserstand fir all ausgewielten Beräich."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "Punkt botzen",
+      "description": "Start de Botzvorgang un den ausgewielte Punkten op der Kaart.",
+      "fields": {
+        "points": {
+          "name": "Punkten",
+          "description": "Lëscht vun Koordinaten déi gebotzt solle ginn."
+        },
+        "repeats": {
+          "name": "Widderhuelungen",
+          "description": "Zuel vun de Botzdurchegäng fir all ausgewielten Beräich."
+        },
+        "suction_level": {
+          "name": "Saugstuf",
+          "description": "Lüftervitess fir all ausgewielten Beräich."
+        },
+        "water_volume": {
+          "name": "Waassermeng",
+          "description": "Waasserstand fir all ausgewielten Beräich."
+        }
+      }
+    },
+    "vacuum_set_dnd": {
+      "name": "Net stéieren astellen",
+      "description": "Net-stéieren-Funktioun aktivéieren/deaktivéieren a/oder Ufanks- an Ennzäit festleeën.",
+      "fields": {
+        "dnd_enabled": {
+          "name": "Net stéieren aktivéiert",
+          "description": "Net-stéieren-Funktioun aktivéieren oder deaktivéieren."
+        },
+        "dnd_start": {
+          "name": "Net stéieren Ufank",
+          "description": "Ufankszäit vun der Net-stéieren-Funktioun."
+        },
+        "dnd_end": {
+          "name": "Net stéieren Enn",
+          "description": "Ennzäit vun der Net-stéieren-Funktioun."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "Géi zu",
+      "description": "Géi zu de Koordinaten op der Kaart a stopp.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X-Koordinate vum Punkt."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y-Koordinate vum Punkt."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Pad verfollegen",
+      "description": "Follegt enger Lëscht vun Koordinaten op der Kaart a kënnt zréck zur Basis. (Nëmme bei Staubsauger mat Kamera ënnerstëtzt)",
+      "fields": {
+        "points": {
+          "name": "Punkten",
+          "description": "Lëscht vun Koordinaten vum Pad."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "Schrëttweis Fernstéierung",
+      "description": "Beweegt de Robot fernstéiert e Schrëtt.",
+      "fields": {
+        "rotation": {
+          "name": "Rotatioun",
+          "description": "Dréiung a binäre Grad tëscht -128 a 128."
+        },
+        "velocity": {
+          "name": "Vitess",
+          "description": "Beweegungsvitess, vun 100 (viru) bis -300 (zréck)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "Sproochpak installéieren",
+      "description": "Installéiert e offiziellt oder benotzerdefinéiert Sproochpak.",
+      "fields": {
+        "lang_id": {
+          "name": "Sprooch-ID",
+          "description": "Sprooch-ID vun dësem Pak."
+        },
+        "url": {
+          "name": "URL",
+          "description": "URL vun dësem Pak dee vum Staubsaugerrobot erreechbar soll sinn."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "MD5-Prüfsumm vum Sproochpak."
+        },
+        "size": {
+          "name": "Gréisst",
+          "description": "Gréisst vum Sproochpak a Bytes."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "Kaart ufroen",
+      "description": "Frot Kaartedaten un."
+    },
+    "vacuum_select_map": {
+      "name": "Kaart auswielen",
+      "description": "Wielt d'aktuell Kaart aus. Gëtt benotzt wann e puer Kaarten/Stäck vorhanden sinn.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart-ID",
+          "description": "ID vun der auszewielender Kaart."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "Kaart läschen",
+      "description": "Läscht eng Kaart.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart-ID",
+          "description": "ID vun der ze läschenger Kaart."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "Temporär Kaart späicheren",
+      "description": "Späichert d'temporär Kaart."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "Temporär Kaart verworf",
+      "description": "Verwerft d'temporär Kaart."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "Temporär Kaart ersetzen",
+      "description": "Ersetzt d'temporär Kaart duerch eng aner gespäichert Kaart.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart-ID",
+          "description": "ID vun der Kaart déi ersat soll ginn."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "Kaart ëmbenennen",
+      "description": "Benennt eng Kaart ëm.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart-ID",
+          "description": "ID vun der Kaart."
+        },
+        "map_name": {
+          "name": "Kaartnumm",
+          "description": "Neien Numm vun der Kaart."
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Kaart aus Fichier zréckstellen",
+      "description": "Stellt eng Kaart aus engem Fichier zréck.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart-ID",
+          "description": "ID vun der zréckzestellender Kaart."
+        },
+        "file_url": {
+          "name": "Fichier-URL",
+          "description": "URL vun der gespäicherter bz2.gz- oder tar.gz-Fichier"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Backup-Kaart",
+      "description": "Séchert eng Kaart an der Cloud.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart-ID",
+          "description": "ID vun der zréckzestellender Kaart."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Segmenter zesummeleeën",
+      "description": "Räim zesummeleeën.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart-ID",
+          "description": "ID vun der Kaart."
+        },
+        "segments": {
+          "name": "Segmenter",
+          "description": "Raum-IDs."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Segmenter opdeelen",
+      "description": "Räim opdeelen.",
+      "fields": {
+        "map_id": {
+          "name": "Kaart-ID",
+          "description": "ID vun der Kaart."
+        },
+        "segment": {
+          "name": "Segment",
+          "description": "Raum-ID."
+        },
+        "line": {
+          "name": "Linn",
+          "description": "Koordinaten vun der Opdeelungslinn."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "Segment ëmbenennen",
+      "description": "Benennt e Segment ëm.",
+      "fields": {
+        "segment_id": {
+          "name": "Segment-ID",
+          "description": "ID vum Segment"
+        },
+        "segment_name": {
+          "name": "Segmentnumm",
+          "description": "Neien Numm vum Segment"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "Reiefolleg vun der Botz festleeën",
+      "description": "Reiefolleg vun der Raumbotz festleeën. (Nëmme bei ënnerstëtzte Apparater)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "Botzreiefolleg",
+          "description": "Segment-ID-Lëscht fir d'Botzreiefolleg."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "Benotzerdefinéiert Botz festleeën",
+      "description": "Benotzerdefinéiert Botzparameteren festleeën. (Nëmme bei ënnerstëtzte Apparater)",
+      "fields": {
+        "segment_id": {
+          "name": "Segment-ID",
+          "description": "Raum-IDs."
+        },
+        "suction_level": {
+          "name": "Saugstuf",
+          "description": "Saugstuf fir all Raum."
+        },
+        "water_volume": {
+          "name": "Waassermeng",
+          "description": "Waassermeng fir all Raum."
+        },
+        "cleaning_mode": {
+          "name": "Botzmodus",
+          "description": "Botzmodus fir all Raum (nëmme bei Staubsauger mat Wischpad-Hiewfunktioun ënnerstëtzt)."
+        },
+        "repeats": {
+          "name": "Widderhuelungen",
+          "description": "Botzzeiten fir all Raum."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Eingeschränkten Beräich festleeën",
+      "description": "Virtuell Mauer, eingeschränkt Beräicher a/oder Keng-Wischzonen definéieren.",
+      "fields": {
+        "walls": {
+          "name": "Maueren",
+          "description": "Virtuell Maueren."
+        },
+        "zones": {
+          "name": "Zonen",
+          "description": "Sperrzonen (No-Go-Zonen)."
+        },
+        "no_mops": {
+          "name": "Keng Wischen",
+          "description": "Keng-Wischzonen."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "Verbrauchsmaterial zrécksetzen",
+      "description": "E Verbrauchsmaterial zrécksetzen.",
+      "fields": {
+        "consumable": {
+          "name": "Verbrauchsmaterial",
+          "description": "Verbrauchsmaterialtyp."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Verknëppung ëmbenennen",
+      "description": "Benennt eng Verknëppung ëm. (Nëmme bei ënnerstëtzte Apparater)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Verknëppungs-ID",
+          "description": "ID vun der Verknëppung."
+        },
+        "shortcut_name": {
+          "name": "Verknëppungsnumm",
+          "description": "Neien Numm vun der Verknëppung."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Teppechberäich festleeën",
+      "description": "Teppecher an ignoréiert Teppecher definéieren. (Nëmme bei ënnerstëtzte Apparater)",
+      "fields": {
+        "carpets": {
+          "name": "Teppecher",
+          "description": "Teppechberäicher."
+        },
+        "ignored_carpets": {
+          "name": "Ignoréiert Teppecher",
+          "description": "Beräicher vun ignoréierte Teppecher fir d'automatesch erkannt Teppecher ze läschen."
+        }
+      }
+    },
+    "vacuum_set_pathway": {
+      "name": "Wee festleeën",
+      "description": "Weeër definéieren.",
+      "fields": {
+        "pathways": {
+          "name": "Weeër",
+          "description": "Koordinaten vun de Weelinnen."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Vordefinéiert Punkten festleeën",
+      "description": "Vordefinéiert Koordinaten op der aktueller Kaart festleeën. (Nëmme bei Staubsauger mat Kamera ënnerstëtzt)",
+      "fields": {
+        "points": {
+          "name": "Punkten",
+          "description": "Lëscht vun Koordinaten fir ze späicheren."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Hënnernis ignoréieren festleeën",
+      "description": "Deen Ignoréierstatus vun engem Hënnernis festleeën. (Nëmme bei Staubsauger mat AI-Hënnerniserkennungsfunktioun ënnerstëtzt)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X-Koordinate vum Hënnernis."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y-Koordinate vum Hënnernis."
+        },
+        "obstacle_type": {
+          "name": "Hënnernistyp",
+          "description": "Typ vum Hënnernis deen ignoréiert soll ginn."
+        },
+        "obstacle_ignored": {
+          "name": "Hënnernis ignoréieren",
+          "description": "Ob d'Hënnernis ignoréiert gëtt oder net."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Routerpositioun festleeën",
+      "description": "D'Positioun vum Router op der aktueller Kaart festleeën. (Nëmme bei Staubsauger mat WLAN-Kartéierungsfunktioun ënnerstëtzt)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X-Koordinate vum Router."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y-Koordinate vum Router."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "Viregten auswielen",
+      "description": "Wielt déi viregt Optioun vun engem Auswellelement aus.",
+      "fields": {
+        "cycle": {
+          "name": "Zyklus",
+          "description": "Ob d'Optioun vum éischten bis zum leschten Element duerchleefe soll."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "Éischt auswielen",
+      "description": "Wielt déi éischt Optioun vun engem Auswellelement aus."
+    },
+    "select_select_last": {
+      "name": "Lescht auswielen",
+      "description": "Wielt déi lescht Optioun vun engem Auswellelement aus."
+    },
+    "select_select_next": {
+      "name": "Nächst auswielen",
+      "description": "Wielt déi nächst Optioun vun engem Auswellelement aus.",
+      "fields": {
+        "cycle": {
+          "name": "Zyklus",
+          "description": "Ob d'Optioun vum éischten bis zum leschten Element duerchleefe soll."
+        }
+      }
+    }
+  }
+}
+
