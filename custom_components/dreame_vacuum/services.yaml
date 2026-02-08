@@ -312,7 +312,12 @@ vacuum_set_custom_cleaning:
       required: true
       selector:
         object:
-        
+    cleaning_mode:
+      example: "[2,2,0,1,2]"
+      required: false
+      selector:
+        object:
+
 vacuum_set_restricted_zone:
   target:
     entity:

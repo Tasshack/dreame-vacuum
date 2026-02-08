@@ -37,6 +37,7 @@ from .const import (
     FAN_SPEED_STANDARD,
     FAN_SPEED_STRONG,
     FAN_SPEED_TURBO,
+    INPUT_CLEANING_MODE,
     INPUT_CLEANING_SEQUENCE,
     INPUT_DND_ENABLED,
     INPUT_DND_END,
@@ -374,6 +375,7 @@ async def async_setup_entry(
             vol.Required(INPUT_SUCTION_LEVEL): cv.ensure_list,
             vol.Required(INPUT_WATER_VOLUME): cv.ensure_list,
             vol.Required(INPUT_REPEATS): cv.ensure_list,
+            vol.Optional(INPUT_CLEANING_MODE): cv.ensure_list,
         },
         DreameVacuum.async_set_custom_cleaning.__name__,
     )
@@ -680,7 +682,9 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 cleaning_sequence,
             )
 
-    async def async_set_custom_cleaning(self, segment_id, suction_level, water_volume, repeats) -> None:
+    async def async_set_custom_cleaning(
+        self, segment_id, suction_level, water_volume, repeats, cleaning_mode=None
+    ) -> None:
         """Set custom cleaning"""
         if (
             segment_id != ""
@@ -699,6 +703,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 suction_level,
                 water_volume,
                 repeats,
+                cleaning_mode,
             )
 
     async def async_install_voice_pack(self, lang_id, url, md5, size, **kwargs) -> None:

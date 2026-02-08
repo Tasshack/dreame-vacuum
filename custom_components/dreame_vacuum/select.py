@@ -53,6 +53,7 @@ from .dreame import (
     SUCTION_LEVEL_CODE_TO_NAME,
     WATER_VOLUME_CODE_TO_NAME,
     MOP_PAD_HUMIDITY_CODE_TO_NAME,
+    CLEANING_MODE_CODE_TO_NAME,
 )
 
 SUCTION_LEVEL_TO_ICON = {
@@ -72,6 +73,12 @@ MOP_PAD_HUMIDITY_TO_ICON = {
     DreameVacuumMopPadHumidity.SLIGHTLY_DRY: "mdi:water-minus",
     DreameVacuumMopPadHumidity.MOIST: "mdi:water",
     DreameVacuumMopPadHumidity.WET: "mdi:water-plus",
+}
+
+CLEANING_MODE_TO_ICON = {
+    DreameVacuumCleaningMode.SWEEPING: "mdi:broom",
+    DreameVacuumCleaningMode.MOPPING: "mdi:cup-water",
+    DreameVacuumCleaningMode.SWEEPING_AND_MOPPING: "mdi:hydro-power",
 }
 
 
@@ -323,6 +330,25 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         set_fn=lambda device, segment_id, value: device.set_segment_mop_pad_humidity(segment_id, value),
         exists_fn=lambda description, device: device.status.customized_cleaning_available
         and device.status.self_wash_base_available,
+    ),
+    DreameVacuumSelectEntityDescription(
+        key="cleaning_mode",
+        device_class=f"{DOMAIN}__cleaning_mode",
+        icon_fn=lambda value, segment: (
+            CLEANING_MODE_TO_ICON.get(segment.cleaning_mode, "mdi:hydro-power") if segment else "mdi:broom"
+        ),
+        options=lambda device, segment: list(device.status.cleaning_mode_list),
+        available_fn=lambda device: bool(
+            device.status.segments
+            and next(iter(device.status.segments.values())).cleaning_mode is not None
+            and device.status.customized_cleaning
+            and not (device.status.zone_cleaning or device.status.spot_cleaning)
+            and not device.status.fast_mapping
+        ),
+        value_fn=lambda device, segment: CLEANING_MODE_CODE_TO_NAME.get(segment.cleaning_mode, STATE_UNKNOWN),
+        value_int_fn=lambda value, self: DreameVacuumCleaningMode[value.upper()],
+        set_fn=lambda device, segment_id, value: device.set_segment_cleaning_mode(segment_id, value),
+        exists_fn=lambda description, device: device.status.customized_cleaning_available,
     ),
     DreameVacuumSelectEntityDescription(
         key="cleaning_times",
