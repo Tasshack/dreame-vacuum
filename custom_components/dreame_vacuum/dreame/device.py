@@ -2126,7 +2126,12 @@ class DreameVacuumDevice:
             return self.update_map_data({"customeClean": cleanset})
 
     def set_custom_cleaning(
-        self, segment_id: list[int], suction_level: list[int], water_volume: list[int], cleaning_times: list[int]
+        self,
+        segment_id: list[int],
+        suction_level: list[int],
+        water_volume: list[int],
+        cleaning_times: list[int],
+        cleaning_mode: list[int] = None,
     ) -> dict[str, Any] | None:
         """Set customized cleaning settings on current map.
         Device will use these settings even you pass another setting for custom segment cleaning."""
@@ -2148,17 +2153,24 @@ class DreameVacuumDevice:
                     len(segment_id) != count
                     or len(suction_level) != count
                     or len(water_volume) != count
-                    or len(cleaning_times) != cleaning_times
+                    or len(cleaning_times) != count
                 ):
+                    return
+                if cleaning_mode is not None and len(cleaning_mode) != count:
                     return
 
             custom_cleaning = []
             index = 0
             for segment in segment_id:
-                custom_cleaning.append(
-                    # for some reason cleanset uses different int values for water volume
-                    [segment, suction_level[index], water_volume[index] + 1, cleaning_times[index]]
-                )
+                entry = [
+                    segment,
+                    suction_level[index],
+                    water_volume[index] + 1,  # for some reason cleanset uses different int values for water volume
+                    cleaning_times[index],
+                ]
+                if cleaning_mode is not None:
+                    entry.append(cleaning_mode[index])
+                custom_cleaning.append(entry)
                 index = index + 1
 
             return self.set_cleanset(custom_cleaning)
@@ -2200,6 +2212,11 @@ class DreameVacuumDevice:
 
         if self._map_manager and not self.status.has_temporary_map:
             return self.set_cleanset(self._map_manager.editor.set_segment_cleaning_times(segment_id, cleaning_times))
+
+    def set_segment_cleaning_mode(self, segment_id: int, cleaning_mode: int) -> dict[str, Any] | None:
+        """Update cleaning mode of a segment on current map"""
+        if self._map_manager and not self.status.has_temporary_map:
+            return self.set_cleanset(self._map_manager.editor.set_segment_cleaning_mode(segment_id, cleaning_mode))
 
     @property
     def _update_interval(self) -> float:
