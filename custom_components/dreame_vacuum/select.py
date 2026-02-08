@@ -340,7 +340,10 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         options=lambda device, segment: list(device.status.cleaning_mode_list),
         available_fn=lambda device: bool(
             device.status.segments
-            and next(iter(device.status.segments.values())).cleaning_mode is not None
+            and (
+                next(iter(device.status.segments.values())).cleaning_mode is not None
+                or getattr(device.status, "mop_pad_lifting_available", False)
+            )
             and device.status.customized_cleaning
             and not (device.status.zone_cleaning or device.status.spot_cleaning)
             and not device.status.fast_mapping

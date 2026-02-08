@@ -1596,7 +1596,10 @@ class DreameMapVacuumMapEditor:
         map_data = self._map_data
         if map_data and map_data.segments and segment_id in map_data.segments and not map_data.temporary_map:
             map_data.segments[segment_id].cleaning_mode = cleaning_mode
-            map_data.cleanset[str(segment_id)][4] = cleaning_mode
+            entry = map_data.cleanset[str(segment_id)]
+            while len(entry) < 5:
+                entry.append(2)  # default sweeping_and_mopping
+            entry[4] = cleaning_mode
             if self._saved_map_data and map_data.map_id in self._saved_map_data:
                 self._saved_map_data[map_data.map_id].cleanset = copy.deepcopy(map_data.cleanset)
             self._set_updated_frame_id(map_data.frame_id + 1)
