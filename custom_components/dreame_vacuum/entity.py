@@ -34,6 +34,37 @@ from .dreame import (
 )
 
 
+def remove_entities(hass, entry, coordinator, domain, descriptions):
+    """Remove entities from registry that are no longer provided by the integration"""
+
+    registry = entity_registry.async_get(hass)
+    for entry in entity_registry.async_entries_for_config_entry(registry, entry.entry_id):
+        entity_id = entry.entity_id
+        if (
+            entity_id.startswith(f"{domain}.")
+            and "_map_" not in entity_id
+            and "_room_" not in entity_id
+            and "_shortcut_" not in entity_id
+        ):
+            if entry.translation_key is not None:
+                found = False
+                for description in descriptions:
+                    key = description.key
+                    if key is None and description.property_key is not None:
+                        key = description.property_key.name.lower()
+                    if key is None and description.action_key is not None:
+                        key = description.action_key.name.lower()
+                    if key is None and description.name is not None:
+                        key = description.name.lower().replace(" ", "_")
+
+                    if key == entry.translation_key:
+                        found = description.exists_fn(description, coordinator.device)
+                        break
+
+                if not found:
+                    registry.async_remove(entity_id)
+
+
 @dataclass
 class DreameVacuumEntityDescription:
     key: str = None
@@ -67,7 +98,6 @@ class DreameVacuumEntityDescription:
     format_fn: Callable[[str, object], Any] = None
     available_fn: Callable[[object], bool] = None
     icon_fn: Callable[[str, object], str] = None
-    name_fn: Callable[[str, object], str] = None
     attrs_fn: Callable[[object, Dict]] = None
 
 
@@ -135,16 +165,12 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
             if self.entity_description.icon_fn is not None:
                 self._attr_icon = self.entity_description.icon_fn(self.native_value, self.device)
 
-            name = self.entity_description.name
-            if self.entity_description.name_fn is not None:
-                name = self.entity_description.name_fn(self.native_value, self.device)
+            self._attr_name = self.entity_description.name
 
-            self._attr_name = name
-            
     def _generate_entity_id(self, format) -> None:
         if self.entity_description.key:
             self.entity_id = async_generate_entity_id(
-                format, f"{self.device.name} {self.entity_description.key}", hass=self.coordinator.hass
+                format, f"{self.device.name}_{self.entity_description.key}", hass=self.coordinator.hass
             )
 
     @callback

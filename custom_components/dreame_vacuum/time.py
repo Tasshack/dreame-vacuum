@@ -20,7 +20,7 @@ from homeassistant.exceptions import HomeAssistantError
 from .const import DOMAIN
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
-from .entity import DreameVacuumEntity, DreameVacuumEntityDescription
+from .entity import DreameVacuumEntity, DreameVacuumEntityDescription, remove_entities
 
 
 @dataclass
@@ -69,6 +69,8 @@ async def async_setup_entry(
 ) -> None:
     """Set up Dreame Vacuum time based on a config entry."""
     coordinator: DreameVacuumDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+
+    remove_entities(hass, entry, coordinator, "time", TIMES)
     async_add_entities(
         DreameVacuumTimeEntity(coordinator, description)
         for description in TIMES

@@ -27,7 +27,7 @@
           "host": "Gazdă",
           "token": "Token"
         },
-        "description": "Veți avea nevoie de tokenul API de 32 de caractere, consultați https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token pentru instrucțiuni."
+        "description": "Veți avea nevoie de tokenul API de 32 de caractere."
       },
       "mi": {
         "data": {
@@ -36,7 +36,7 @@
           "country": "Țara serverului",
           "prefer_cloud": "Preferă conexiunea cloud"
         },
-        "description": "Autentificați-vă în cloud-ul Xiaomi Miio, consultați https://www.openhab.org/addons/bindings/miio/#country-servers pentru serverul cloud de utilizat."
+        "description": "Autentificați-vă în cloud-ul Xiaomi Miio."
       },
       "2fa": {
         "data": {
@@ -224,7 +224,43 @@
           "default": "Implicit",
           "english": "Engleză",
           "german": "Germană",
-          "chinese": "Chineză"
+          "chinese": "Chineză",
+          "russian": "Rusă",
+          "italian": "Italiană",
+          "french": "Franceză",
+          "korean": "Coreeană"
+        }
+      },
+      "mop_pressure": {
+        "state": {
+          "light": "Ușoară",
+          "normal": "Normală"
+        }
+      },
+      "mop_temperature": {
+        "state": {
+          "normal": "Normală",
+          "warm": "Caldă"
+        }
+      },
+      "low_lying_area_frequency": {
+        "state": {
+          "weekly": "Săptămânal",
+          "daily": "Zilnic"
+        }
+      },
+      "scraper_frequency": {
+        "state": {
+          "off": "Oprit",
+          "weekly": "Săptămânal",
+          "daily": "Zilnic"
+        }
+      },
+      "auto_lds_coverage": {
+        "state": {
+          "off": "Oprit",
+          "security": "Securitate",
+          "extreme": "Extrem"
         }
       },
       "order": {
@@ -236,7 +272,8 @@
         "state": {
           "by_area": "După Arie",
           "by_time": "După Timp",
-          "by_room": "După Cameră"
+          "by_room": "După Cameră",
+          "intelligent": "Inteligent"
         }
       },
       "mop_clean_frequency": {
@@ -249,7 +286,9 @@
           "off": "Oprit",
           "standard": "Standard",
           "high_frequency": "Frecvență înaltă",
-          "low_frequency": "Frecvență joasă"
+          "low_frequency": "Frecvență joasă",
+          "custom_frequency": "Frecvență personalizată",
+          "intelligent": "Inteligent"
         }
       },
       "floor_material_direction": {
@@ -290,7 +329,8 @@
           "normal": "Normal",
           "mild": "Delicat",
           "warm": "Călduț",
-          "hot": "Fierbinte"
+          "hot": "Fierbinte",
+          "max": "Maxim"
         }
       },
       "auto_recleaning": {
@@ -374,7 +414,11 @@
           "initial_deep_cleaning": "Curățare profundă inițială",
           "initial_deep_cleaning_paused": "Curățare profundă inițială întreruptă",
           "sanitizing": "Sanitizare",
-          "sanitizing_with_dry": "Sanitizare cu uscare"
+          "sanitizing_with_dry": "Sanitizare cu uscare",
+          "changing_mop": "Schimbare mop",
+          "changing_mop_paused": "Schimbare mop întreruptă",
+          "floor_maintaining": "Întreținere podea",
+          "floor_maintaining_paused": "Întreținere podea întreruptă"
         }
       },
       "status": {
@@ -564,7 +608,40 @@
           "dirty_tank_not_installed": "Rezervorul de apă uzată al robotului nu este instalat.",
           "robot_in_hidden_room": "Zonă ascunsă. Vă rugăm să mutați robotul în zona corespunzătoare și să reîncercați.",
           "washboard_not_working": "Suportul de spălare nu funcționează.",
-          "return_to_charge_failed": "Întoarcerea la încărcare a eșuat."
+          "return_to_charge_failed": "Întoarcerea la încărcare a eșuat.",
+          "lds_failed_to_lift": "Nu s-a putut ridica modulul LDS.",
+          "robot_stuck": "LDS nu poate fi ridicat aici pentru poziționare.",
+          "robot_stuck_repeat": "Mutați robotul într-o zonă deschisă și reluați sarcina.",
+          "slippery_floor": "Podea alunecoasă. Vă rugăm să încercați din nou mai târziu.",
+          "check_mop_install": "Vă rugăm să verificați dacă mopul este instalat corect.",
+          "dirty_water_tank_full": "Nivel anormal al apei în rezervorul de apă murdară.",
+          "retractable_leg_stuck": "Vă rugăm să verificați dacă picioarele retractabile sunt blocate.",
+          "internal_error": "Defecțiune din cauza unei erori interne. Încercați să reporniți robotul.",
+          "robot_stuck_on_tables": "Robotul s-a blocat între mese și scaune.",
+          "robot_stuck_on_passage": "Robotul s-a blocat în pasaj îngust.",
+          "robot_stuck_on_threshold": "Robotul s-a blocat la prag/treaptă.",
+          "robot_stuck_on_low_lying_area": "Robotul s-a blocat într-o zonă joasă.",
+          "robot_stuck_on_ramp": "Robotul a detectat rampe periculoase pe traseu.",
+          "robot_stuck_on_obstacle": "Robotul a detectat obstacole pe traseu.",
+          "robot_stuck_on_pet": "Robotul a detectat oameni sau animale pe traseu.",
+          "robot_stuck_on_slippery_surface": "Robotul este blocat din cauza alunecării.",
+          "robot_stuck_on_carpet": "Robotul alunecă pe covor",
+          "drainage_failed": "Drenaj anormal din rezervorul de apă murdară",
+          "mop_not_detected": "Mop nedetectat.",
+          "mop_holder_error": "Eroare cantitate/plasare suport mop în stație.",
+          "dock_error": "Eroare stație.",
+          "wash_failed": "Spălarea mopului murdar a eșuat.",
+          "robot_stuck_on_curtain": "Robotul alunecă în zona perdelei",
+          "edge_mop_stop_rotate": "Mopul de margine s-a oprit din rotație.",
+          "edge_mop_detached": "Mopul de margine s-a desprins.",
+          "chassis_lift_malfunction": "Defecțiune ridicare șasiu.",
+          "mop_cover_error": "Verificați dacă există resturi lângă rola mopului și capac.",
+          "roller_mop_error": "Verificați dacă există resturi lângă rola mopului și capac.",
+          "onboard_water_tank_empty": "Nivel scăzut în rezervorul de apă curată al robotului.",
+          "onboard_dirty_water_tank_full": "Rezervorul de apă murdară al robotului este plin.",
+          "mop_not_installed": "Mop neinstalat.",
+          "fluffing_roller_error": "Eroare rolă pufoasă.",
+          "blocked_by_obstacle": "Robot blocat de obstacol."
         }
       },
       "charging_status": {
@@ -699,7 +776,19 @@
           "initial_deep_cleaning_paused": "Curățare profundă inițială întreruptă",
           "mop_pad_heating": "Încălzirea lavetei mop",
           "cleaning_after_mapping": "Curățare după cartografiere",
-          "small_particle_cleaning": "Curățare particule mici"
+          "small_particle_cleaning": "Curățare particule mici",
+          "changing_mop": "Schimbare mop",
+          "changing_mop_paused": "Schimbare mop întreruptă",
+          "floor_maintaining": "Întreținere podea",
+          "floor_maintaining_paused": "Întreținere podea întreruptă",
+          "wood_floor_maintaining": "Întreținere podea de lemn"
+        }
+      },
+      "dust_bag_drying_status": {
+        "state": {
+          "idle": "Inactiv",
+          "drying": "Uscare",
+          "paused": "Pauză"
         }
       }
     }
@@ -1078,6 +1167,16 @@
         "shortcut_name": {
           "name": "Nume Scurtătură",
           "description": "Noul nume al comenzii rapide."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Șterge scurtătura",
+      "description": "Șterge o scurtătură. (Doar pe dispozitivele acceptate)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID scurtătură",
+          "description": "ID-ul scurtăturii."
         }
       }
     },

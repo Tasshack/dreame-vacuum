@@ -10,12 +10,14 @@ from .entity import DreameVacuumEntity
 from homeassistant.helpers.importlib import async_import_module
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.entity import async_generate_entity_id
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import config_validation as cv, entity_platform
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.components.vacuum import (
     StateVacuumEntity,
     VacuumEntityFeature,
+    ENTITY_ID_FORMAT,
 )
 from .recorder import VACUUM_UNRECORDED_ATTRIBUTES
 
@@ -50,6 +52,8 @@ from .const import (
     INPUT_CUSTOM_MOPPING_ROUTE,
     INPUT_CLEANING_ROUTE,
     INPUT_WETNESS_LEVEL,
+    INPUT_MOP_TEMPERATURE,
+    INPUT_MOP_PRESSURE,
     INPUT_ROTATION,
     INPUT_SEGMENT,
     INPUT_SEGMENT_ID,
@@ -88,6 +92,7 @@ from .const import (
     INPUT_AREA,
     INPUT_FURNITURE_ARRAY,
     INPUT_CURTAIN_ARRAY,
+    INPUT_MOP_TYPE,
     SERVICE_CLEAN_ZONE,
     SERVICE_CLEAN_SEGMENT,
     SERVICE_CLEAN_SPOT,
@@ -116,6 +121,7 @@ from .const import (
     SERVICE_SET_LOW_LYING_AREA,
     SERVICE_SET_FURNITURE,
     SERVICE_SET_CURTAIN,
+    SERVICE_SET_MOP_TYPE,
     SERVICE_SET_RESTRICTED_ZONE,
     SERVICE_SET_CARPET_AREA,
     SERVICE_SET_CARPET_TYPE,
@@ -128,6 +134,7 @@ from .const import (
     SERVICE_REPLACE_TEMPORARY_MAP,
     SERVICE_RESET_CONSUMABLE,
     SERVICE_RENAME_SHORTCUT,
+    SERVICE_DELETE_SHORTCUT,
     SERVICE_SET_OBSTACLE_IGNORE,
     SERVICE_SET_ROUTER_POSITION,
     CONSUMABLE_MAIN_BRUSH,
@@ -140,10 +147,13 @@ from .const import (
     CONSUMABLE_DETERGENT,
     CONSUMABLE_SQUEEGEE,
     CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
-    CONSUMABLE_DIRTY_WATER_TANK,
+    CONSUMABLE_DIRTY_WATER_CHANNEL,
     CONSUMABLE_DEODORIZER,
     CONSUMABLE_WHEEL,
     CONSUMABLE_SCALE_INHIBITOR,
+    CONSUMABLE_FLUFFING_ROLLER,
+    CONSUMABLE_ROLLER_MOP_FILTER,
+    CONSUMABLE_WATER_OUTLET_FILTER,
 )
 
 STATE_CODE_TO_STATE: Final = {
@@ -215,10 +225,13 @@ CONSUMABLE_RESET_ACTION = {
     CONSUMABLE_DETERGENT: DreameVacuumAction.RESET_DETERGENT,
     CONSUMABLE_SQUEEGEE: DreameVacuumAction.RESET_SQUEEGEE,
     CONSUMABLE_ONBOARD_DIRTY_WATER_TANK: DreameVacuumAction.RESET_ONBOARD_DIRTY_WATER_TANK,
-    CONSUMABLE_DIRTY_WATER_TANK: DreameVacuumAction.RESET_DIRTY_WATER_TANK,
+    CONSUMABLE_DIRTY_WATER_CHANNEL: DreameVacuumAction.RESET_DIRTY_WATER_CHANNEL,
     CONSUMABLE_DEODORIZER: DreameVacuumAction.RESET_DEODORIZER,
     CONSUMABLE_WHEEL: DreameVacuumAction.RESET_WHEEL,
     CONSUMABLE_SCALE_INHIBITOR: DreameVacuumAction.RESET_SCALE_INHIBITOR,
+    CONSUMABLE_FLUFFING_ROLLER: DreameVacuumAction.RESET_FLUFFING_ROLLER,
+    CONSUMABLE_ROLLER_MOP_FILTER: DreameVacuumAction.RESET_ROLLER_MOP_FILTER,
+    CONSUMABLE_WATER_OUTLET_FILTER: DreameVacuumAction.RESET_WATER_OUTLET_FILTER,
 }
 
 
@@ -773,6 +786,8 @@ async def async_setup_entry(
             vol.Optional(INPUT_CUSTOM_MOPPING_ROUTE): cv.ensure_list,
             vol.Optional(INPUT_CLEANING_ROUTE): cv.ensure_list,
             vol.Optional(INPUT_WETNESS_LEVEL): cv.ensure_list,
+            vol.Optional(INPUT_MOP_TEMPERATURE): cv.ensure_list,
+            vol.Optional(INPUT_MOP_PRESSURE): cv.ensure_list,
         },
         DreameVacuum.async_set_custom_cleaning.__name__,
     )
@@ -885,6 +900,15 @@ async def async_setup_entry(
     )
 
     platform.async_register_entity_service(
+        SERVICE_SET_MOP_TYPE,
+        {
+            vol.Required(INPUT_MOP_TYPE): vol.Any(dict[int, str]),
+            vol.Optional(INPUT_MAP_ID): vol.Coerce(int),
+        },
+        DreameVacuum.async_set_mop_type.__name__,
+    )
+
+    platform.async_register_entity_service(
         SERVICE_RESET_CONSUMABLE,
         {
             vol.Required(INPUT_CONSUMABLE): vol.In(
@@ -899,10 +923,13 @@ async def async_setup_entry(
                     CONSUMABLE_DETERGENT,
                     CONSUMABLE_SQUEEGEE,
                     CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
-                    CONSUMABLE_DIRTY_WATER_TANK,
+                    CONSUMABLE_DIRTY_WATER_CHANNEL,
                     CONSUMABLE_DEODORIZER,
                     CONSUMABLE_WHEEL,
                     CONSUMABLE_SCALE_INHIBITOR,
+                    CONSUMABLE_FLUFFING_ROLLER,
+                    CONSUMABLE_ROLLER_MOP_FILTER,
+                    CONSUMABLE_WATER_OUTLET_FILTER,
                 ]
             ),
         },
@@ -916,6 +943,12 @@ async def async_setup_entry(
             vol.Required(INPUT_SHORTCUT_NAME): cv.string,
         },
         DreameVacuum.async_rename_shortcut.__name__,
+    )
+
+    platform.async_register_entity_service(
+        SERVICE_DELETE_SHORTCUT,
+        {vol.Required(INPUT_SHORTCUT_ID): cv.positive_int},
+        DreameVacuum.async_delete_shortcut.__name__,
     )
 
     platform.async_register_entity_service(
@@ -979,6 +1012,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         )
         self._attr_has_entity_name = False
         self._attr_unique_id = f"{coordinator.device.mac}_" + DOMAIN
+        self.entity_id = async_generate_entity_id(ENTITY_ID_FORMAT, f"{self.device.name}", hass=self.coordinator.hass)
         self._attr_supported_features = (
             VacuumEntityFeature.SEND_COMMAND
             | VacuumEntityFeature.LOCATE
@@ -1168,8 +1202,8 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         """Set carpet type"""
         if id != "" and id is not None and type != "" and type is not None:
             await self._try_command(
-                "Unable to call async_set_carpet_type: %s",
-                self.device.async_set_carpet_type,
+                "Unable to call set_carpet_type: %s",
+                self.device.set_carpet_type,
                 id,
                 object_type,
                 carpet_type,
@@ -1369,6 +1403,8 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         custom_mopping_route=None,
         cleaning_route=None,
         wetness_level=None,
+        mop_temperature=None,
+        mop_pressure=None,
     ) -> None:
         """Set custom cleaning"""
         if (
@@ -1392,6 +1428,8 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 custom_mopping_route,
                 cleaning_route,
                 wetness_level,
+                mop_temperature,
+                mop_pressure,
             )
 
     async def async_set_custom_carpet_cleaning(
@@ -1470,6 +1508,15 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         if curtains != "" and curtains is not None:
             await self._try_command("Unable to call set_curtain: %s", self.device.set_curtain, curtains)
 
+    async def async_set_mop_type(
+        self,
+        mop_type,
+        map_id=None,
+    ) -> None:
+        """Set mop type"""
+        if mop_type != "" and mop_type is not None:
+            await self._try_command("Unable to call set_mop_type: %s", self.device.set_mop_type, mop_type, map_id)
+
     async def async_install_voice_pack(self, lang_id, url, md5, size, **kwargs) -> None:
         """install a custom language pack"""
         await self._try_command(
@@ -1503,6 +1550,15 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 self.device.rename_shortcut,
                 shortcut_id,
                 shortcut_name,
+            )
+
+    async def async_delete_shortcut(self, shortcut_id) -> None:
+        """Delete a shortcut"""
+        if shortcut_id and shortcut_id != "":
+            await self._try_command(
+                "Unable to call delete_shortcut: %s",
+                self.device.delete_shortcut,
+                shortcut_id,
             )
 
     async def async_set_obstacle_ignore(self, x, y, obstacle_ignored) -> None:

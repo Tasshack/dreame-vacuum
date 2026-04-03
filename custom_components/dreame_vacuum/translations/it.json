@@ -27,7 +27,7 @@
           "host": "Host",
           "token": "Token"
         },
-        "description": "Avrai bisogno dell' API token da 32 caratteri, consulta https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token for instructions."
+        "description": "Avrai bisogno dell' API token da 32 caratteri."
       },
       "mi": {
         "data": {
@@ -36,7 +36,7 @@
           "country": "Località del Server",
           "prefer_cloud": "Preferisci la connessione cloud"
         },
-        "description": "Effettua il login su Xiaomi Miio cloud, consulta https://www.openhab.org/addons/bindings/miio/#country-servers per sapere quale server devi selezionare."
+        "description": "Effettua il login su Xiaomi Miio cloud."
       },
       "2fa": {
         "data": {
@@ -224,7 +224,43 @@
           "default": "Predefinito",
           "english": "Inglese",
           "german": "Tedesco",
-          "chinese": "Cinese"
+          "chinese": "Cinese",
+          "russian": "Russo",
+          "italian": "Italiano",
+          "french": "Francese",
+          "korean": "Coreano"
+        }
+      },
+      "mop_pressure": {
+        "state": {
+          "light": "Leggero",
+          "normal": "Normale"
+        }
+      },
+      "mop_temperature": {
+        "state": {
+          "normal": "Normale",
+          "warm": "Calda"
+        }
+      },
+      "low_lying_area_frequency": {
+        "state": {
+          "weekly": "Settimanalmente",
+          "daily": "Giornalmente"
+        }
+      },
+      "scraper_frequency": {
+        "state": {
+          "off": "Spento",
+          "weekly": "Settimanalmente",
+          "daily": "Giornalmente"
+        }
+      },
+      "auto_lds_coverage": {
+        "state": {
+          "off": "Spento",
+          "security": "Sicurezza",
+          "extreme": "Estremo"
         }
       },
       "order": {
@@ -236,7 +272,8 @@
         "state": {
           "by_area": "Per zona",
           "by_time": "Col tempo",
-          "by_room": "Per stanza"
+          "by_room": "Per stanza",
+          "intelligent": "Intelligente"
         }
       },
       "mop_clean_frequency": {
@@ -249,7 +286,9 @@
           "off": "Spento",
           "standard": "Standard",
           "high_frequency": "Alta frequenza",
-          "low_frequency": "Bassa frequenza"
+          "low_frequency": "Bassa frequenza",
+          "custom_frequency": "Frequenza personalizzata",
+          "intelligent": "Intelligente"
         }
       },
       "floor_material_direction": {
@@ -290,7 +329,8 @@
           "normal": "Normale",
           "mild": "Blando",
           "warm": "Caldo",
-          "hot": "Caldo"
+          "hot": "Caldo",
+          "max": "Massimo"
         }
       },
       "auto_recleaning": {
@@ -374,7 +414,11 @@
           "initial_deep_cleaning": "Pulizia profonda iniziale",
           "initial_deep_cleaning_paused": "Pulizia profonda iniziale in pausa",
           "sanitizing": "Sanificazione",
-          "sanitizing_with_dry": "Sanificazione con asciugatura"
+          "sanitizing_with_dry": "Sanificazione con asciugatura",
+          "changing_mop": "Sostituzione mocio",
+          "changing_mop_paused": "Sostituzione mocio in pausa",
+          "floor_maintaining": "Manutenzione pavimento",
+          "floor_maintaining_paused": "Manutenzione pavimento in pausa"
         }
       },
       "status": {
@@ -564,7 +608,40 @@
           "dirty_tank_not_installed": "Il serbatoio dell'acqua usata del robot non è installato.",
           "robot_in_hidden_room": "Zona nascosta. ",
           "washboard_not_working": "Washboard smette di funzionare.",
-          "return_to_charge_failed": "Impossibile tornare alla carica."
+          "return_to_charge_failed": "Impossibile tornare alla carica.",
+          "lds_failed_to_lift": "Impossibile sollevare il modulo LDS.",
+          "robot_stuck": "LDS non può essere sollevato qui per il posizionamento.",
+          "robot_stuck_repeat": "Spostare il robot in un'area aperta e riprendere l'attività.",
+          "slippery_floor": "Pavimento scivoloso. Riprovare più tardi.",
+          "check_mop_install": "Controllare se il mocio è installato correttamente.",
+          "dirty_water_tank_full": "Livello anomalo nel serbatoio dell'acqua sporca.",
+          "retractable_leg_stuck": "Controllare se le gambe retrattili sono impigliate.",
+          "internal_error": "Malfunzionamento dovuto a errore interno. Provare a riavviare il robot.",
+          "robot_stuck_on_tables": "Il robot è bloccato tra tavoli e sedie.",
+          "robot_stuck_on_passage": "Il robot è bloccato in un passaggio stretto.",
+          "robot_stuck_on_threshold": "Il robot è bloccato su un gradino/soglia.",
+          "robot_stuck_on_low_lying_area": "Il robot è bloccato in un'area bassa.",
+          "robot_stuck_on_ramp": "Il robot ha rilevato rampe pericolose sul percorso.",
+          "robot_stuck_on_obstacle": "Il robot ha rilevato ostacoli sul percorso.",
+          "robot_stuck_on_pet": "Il robot ha rilevato persone o animali sul percorso.",
+          "robot_stuck_on_slippery_surface": "Il robot è bloccato a causa dello scivolamento.",
+          "robot_stuck_on_carpet": "Il robot scivola sul tappeto",
+          "drainage_failed": "Drenaggio anomalo dal serbatoio dell'acqua sporca",
+          "mop_not_detected": "Mocio non rilevato.",
+          "mop_holder_error": "Errore quantità/posizionamento supporto mocio nella base.",
+          "dock_error": "Errore della base.",
+          "wash_failed": "Lavaggio del mocio sporco fallito.",
+          "robot_stuck_on_curtain": "Il robot scivola nell'area della tenda",
+          "edge_mop_stop_rotate": "Il mocio laterale ha smesso di ruotare.",
+          "edge_mop_detached": "Il mocio laterale si è staccato.",
+          "chassis_lift_malfunction": "Malfunzionamento sollevamento telaio.",
+          "mop_cover_error": "Controllare detriti vicino al rullo del mocio e alla copertura.",
+          "roller_mop_error": "Controllare detriti vicino al rullo del mocio e alla copertura.",
+          "onboard_water_tank_empty": "Livello acqua basso nel serbatoio pulito del robot.",
+          "onboard_dirty_water_tank_full": "Il serbatoio dell'acqua sporca del robot è pieno.",
+          "mop_not_installed": "Mocio non installato.",
+          "fluffing_roller_error": "Errore rullo lanuginoso.",
+          "blocked_by_obstacle": "Robot bloccato da un ostacolo."
         }
       },
       "charging_status": {
@@ -699,7 +776,19 @@
           "initial_deep_cleaning_paused": "Pulizia profonda iniziale in pausa",
           "mop_pad_heating": "Riscaldamento dei tappetini mop",
           "cleaning_after_mapping": "Pulizia dopo mappatura",
-          "small_particle_cleaning": "Pulizia di particelle piccole"
+          "small_particle_cleaning": "Pulizia di particelle piccole",
+          "changing_mop": "Sostituzione mocio",
+          "changing_mop_paused": "Sostituzione mocio in pausa",
+          "floor_maintaining": "Manutenzione pavimento",
+          "floor_maintaining_paused": "Manutenzione pavimento in pausa",
+          "wood_floor_maintaining": "Manutenzione pavimenti in legno"
+        }
+      },
+      "dust_bag_drying_status": {
+        "state": {
+          "idle": "Inattivo",
+          "drying": "Asciugatura",
+          "paused": "In pausa"
         }
       }
     }
@@ -1078,6 +1167,16 @@
         "shortcut_name": {
           "name": "Nome della scorciatoia",
           "description": "Nuovo nome della scorciatoia."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Elimina scorciatoia",
+      "description": "Elimina una scorciatoia. (Solo su dispositivi supportati)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID scorciatoia",
+          "description": "ID della scorciatoia."
         }
       }
     },

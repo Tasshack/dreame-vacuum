@@ -1,4 +1,4 @@
-"""Config flow for Dremae Vacuum."""
+"""Config flow for Dreame Vacuum."""
 
 from __future__ import annotations
 from typing import Any, Final
@@ -364,7 +364,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         elif error:
             errors["base"] = error
             devices = ""
-            if error == "no_devices" and self.unsupported_devices:
+            if error == "no_devices" and self.unsupported_devices and not self.reauth:
                 for device in self.unsupported_devices:
                     devices = f"{devices} ({device.get("model", "unknown")})"
 
@@ -476,7 +476,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         elif error:
             errors["base"] = error
             devices = ""
-            if error == "no_devices" and self.unsupported_devices:
+            if error == "no_devices" and self.unsupported_devices and not self.reauth:
                 for device in self.unsupported_devices:
                     devices = f"{devices} ({device.get("model", "unknown")})"
 
@@ -518,20 +518,29 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             if not self.devices:
                 self.load_devices()
                 supported_devices, self.unsupported_devices = await self.hass.async_add_executor_job(
-                    self.protocol.cloud.get_supported_devices, self.models, self.host, self.mac
+                    self.protocol.cloud.get_supported_devices, self.models, self.host, self.mac, self.device_id
                 )
                 if not supported_devices:
                     return await self.async_step_login(error="no_devices")
 
                 self.devices = {}
                 for device in supported_devices:
-                    if self.reauth or not self.hass.config_entries.async_entry_for_domain_unique_id(
+                    key = f"{device.get("name", device["model"])} - {device["mac"]}"
+                    if self.reauth:
+                        if (
+                            (self.mac and device["mac"].lower() == self.mac.lower())
+                            or (self.device_id and device["did"] == self.device_id)
+                            or (self.host and "localip" in device and device["localip"] == self.host)
+                        ):
+                            self.devices[key] = device
+                            break
+                    elif not self.hass.config_entries.async_entry_for_domain_unique_id(
                         self.handler, format_mac(device["mac"])
                     ):
-                        self.devices[f"{device.get("name", device["model"])} - {device["mac"]}"] = device
+                        self.devices[key] = device
 
                 if not self.devices:
-                    if self.unsupported_devices:
+                    if self.unsupported_devices or self.reauth:
                         return await self.async_step_login(error="no_devices")
                     raise AbortFlow("already_configured")
 
@@ -707,9 +716,11 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
 
         country_list = ["eu", "cn", "us", "ru", "sg", "kr"]
         if self.account_type == ACCOUNT_TYPE_MOVA:
-            country_list.pop(2)
+            country_list.pop(3)
         elif self.account_type == ACCOUNT_TYPE_TROUVER:
             country_list.pop(1)
+        elif self.account_type == ACCOUNT_TYPE_DREAME:
+            country_list.append("kr")
 
         return vol.Schema(
             {

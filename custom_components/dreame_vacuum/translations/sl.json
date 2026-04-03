@@ -27,7 +27,7 @@
           "host": "Gostitelj",
           "token": "Žeton"
         },
-        "description": "Potrebovali boste 32-mestni API žeton, glejte https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token za navodila."
+        "description": "Potrebovali boste 32-mestni API žeton."
       },
       "mi": {
         "data": {
@@ -36,7 +36,7 @@
           "country": "Država strežnika",
           "prefer_cloud": "Raje uporabljajte povezavo v oblak"
         },
-        "description": "Prijavite se v Xiaomi Miio oblak, glejte https://www.openhab.org/addons/bindings/miio/#country-servers za izbiro strežnika."
+        "description": "Prijavite se v Xiaomi Miio oblak."
       },
       "2fa": {
         "data": {
@@ -224,7 +224,43 @@
           "default": "Privzeto",
           "english": "Angleščina",
           "german": "Nemščina",
-          "chinese": "Kitajščina"
+          "chinese": "Kitajščina",
+          "russian": "Ruščina",
+          "italian": "Italijanščina",
+          "french": "Francoščina",
+          "korean": "Korejščina"
+        }
+      },
+      "mop_pressure": {
+        "state": {
+          "light": "Lahek",
+          "normal": "Normalen"
+        }
+      },
+      "mop_temperature": {
+        "state": {
+          "normal": "Normalna",
+          "warm": "Topla"
+        }
+      },
+      "low_lying_area_frequency": {
+        "state": {
+          "weekly": "Tedensko",
+          "daily": "Dnevno"
+        }
+      },
+      "scraper_frequency": {
+        "state": {
+          "off": "Izklopljeno",
+          "weekly": "Tedensko",
+          "daily": "Dnevno"
+        }
+      },
+      "auto_lds_coverage": {
+        "state": {
+          "off": "Izklopljeno",
+          "security": "Varnost",
+          "extreme": "Ekstremno"
         }
       },
       "order": {
@@ -236,7 +272,8 @@
         "state": {
           "by_area": "Po območju",
           "by_time": "Po času",
-          "by_room": "Po sobi"
+          "by_room": "Po sobi",
+          "intelligent": "Inteligentno"
         }
       },
       "mop_clean_frequency": {
@@ -249,7 +286,9 @@
           "off": "Izklopljeno",
           "standard": "Standardno",
           "high_frequency": "Visoka frekvenca",
-          "low_frequency": "Nizka frekvenca"
+          "low_frequency": "Nizka frekvenca",
+          "custom_frequency": "Frekvenca po meri",
+          "intelligent": "Inteligentno"
         }
       },
       "floor_material_direction": {
@@ -290,7 +329,8 @@
           "normal": "Normalno",
           "mild": "Blago",
           "warm": "Toplo",
-          "hot": "Vroče"
+          "hot": "Vroče",
+          "max": "Maksimalna"
         }
       },
       "auto_recleaning": {
@@ -374,7 +414,11 @@
           "initial_deep_cleaning": "Začetno globinsko čiščenje",
           "initial_deep_cleaning_paused": "Začetno globinsko čiščenje prekinjeno",
           "sanitizing": "Sanitizacija",
-          "sanitizing_with_dry": "Sanitizacija s sušenjem"
+          "sanitizing_with_dry": "Sanitizacija s sušenjem",
+          "changing_mop": "Menjava krpe",
+          "changing_mop_paused": "Menjava krpe začasno ustavljena",
+          "floor_maintaining": "Vzdrževanje tal",
+          "floor_maintaining_paused": "Vzdrževanje tal začasno ustavljeno"
         }
       },
       "status": {
@@ -564,7 +608,40 @@
           "dirty_tank_not_installed": "Rezervoar za umazano vodo robota ni nameščen.",
           "robot_in_hidden_room": "Skrito območje. Prosimo, premaknite robota na ustrezno območje in poskusite znova.",
           "washboard_not_working": "Pralna deska ne deluje.",
-          "return_to_charge_failed": "Vračanje na polnjenje ni uspelo."
+          "return_to_charge_failed": "Vračanje na polnjenje ni uspelo.",
+          "lds_failed_to_lift": "Dvig modula LDS ni uspel.",
+          "robot_stuck": "LDS se tukaj ne more dvigniti za pozicioniranje.",
+          "robot_stuck_repeat": "Premaknite robota na odprto območje in nadaljujte z nalogo.",
+          "slippery_floor": "Spolzka tla. Poskusite znova kasneje.",
+          "check_mop_install": "Preverite, ali je krpa pravilno nameščena.",
+          "dirty_water_tank_full": "Nenormalen nivo vode v rezervoarju za umazano vodo.",
+          "retractable_leg_stuck": "Preverite, ali so zložljive noge zapletene.",
+          "internal_error": "Motnja v delovanju zaradi notranje napake. Poskusite znova zagnati robota.",
+          "robot_stuck_on_tables": "Robot se je zataknil med mizami in stoli.",
+          "robot_stuck_on_passage": "Robot se je zataknil v ozkem prehodu.",
+          "robot_stuck_on_threshold": "Robot se je zataknil na stopnici/pragu.",
+          "robot_stuck_on_low_lying_area": "Robot se je zataknil v nizkem območju.",
+          "robot_stuck_on_ramp": "Robot je zaznal nevarne klančine na poti.",
+          "robot_stuck_on_obstacle": "Robot je zaznal ovire na poti.",
+          "robot_stuck_on_pet": "Robot je zaznal ljudi ali živali na poti.",
+          "robot_stuck_on_slippery_surface": "Robot je obtičal zaradi zdrsa.",
+          "robot_stuck_on_carpet": "Robot drsi na preprogi",
+          "drainage_failed": "Nenormalno odtekanje iz rezervoarja za umazano vodo",
+          "mop_not_detected": "Krpa ni zaznana.",
+          "mop_holder_error": "Napaka količine/namestitve držala krpe v postaji.",
+          "dock_error": "Napaka postaje.",
+          "wash_failed": "Pranje umazane krpe ni uspelo.",
+          "robot_stuck_on_curtain": "Robot drsi v območju zavese",
+          "edge_mop_stop_rotate": "Robna krpa se je prenehala vrteti.",
+          "edge_mop_detached": "Robna krpa se je ločila.",
+          "chassis_lift_malfunction": "Motnja dviga šasije.",
+          "mop_cover_error": "Preverite morebitne ostanke v bližini valja krpe in pokrova.",
+          "roller_mop_error": "Preverite morebitne ostanke v bližini valja krpe in pokrova.",
+          "onboard_water_tank_empty": "Nizek nivo vode v rezervoarju za čisto vodo robota.",
+          "onboard_dirty_water_tank_full": "Rezervoar za umazano vodo robota je poln.",
+          "mop_not_installed": "Krpa ni nameščena.",
+          "fluffing_roller_error": "Napaka valja.",
+          "blocked_by_obstacle": "Robot blokiran z oviro."
         }
       },
       "charging_status": {
@@ -699,7 +776,19 @@
           "initial_deep_cleaning_paused": "Začetno globinsko čiščenje prekinjeno",
           "mop_pad_heating": "Ogrevanje krp za mop",
           "cleaning_after_mapping": "Čiščenje po mapiranju",
-          "small_particle_cleaning": "Čiščenje majhnih delcev"
+          "small_particle_cleaning": "Čiščenje majhnih delcev",
+          "changing_mop": "Menjava krpe",
+          "changing_mop_paused": "Menjava krpe začasno ustavljena",
+          "floor_maintaining": "Vzdrževanje tal",
+          "floor_maintaining_paused": "Vzdrževanje tal začasno ustavljeno",
+          "wood_floor_maintaining": "Vzdrževanje lesenih tal"
+        }
+      },
+      "dust_bag_drying_status": {
+        "state": {
+          "idle": "V mirovanju",
+          "drying": "Sušenje",
+          "paused": "Začasno ustavljeno"
         }
       }
     }
@@ -1078,6 +1167,16 @@
         "shortcut_name": {
           "name": "Ime bližnjice",
           "description": "Novo ime bližnjice."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Izbriši bližnjico",
+      "description": "Izbriši bližnjico. (Samo na podprtih napravah)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID bližnjice",
+          "description": "ID bližnjice."
         }
       }
     },

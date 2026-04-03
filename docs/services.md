@@ -332,11 +332,14 @@ Reset a consumable life by type.
 >  - `silver_ion`
 >  - `detergent`
 >  - `squeege`
->  - `dirty_water_tank`
+>  - `dirty_water_channel`
 >  - `onboard_dirty_water_tank`
 >  - `deodorizer`
 >  - `wheel`
 >  - `scale_inhibitor`
+>  - `fluffing_roller`
+>  - `rollermop_filter`
+>  - `water_outlet_filter`
 
 **Examples:**
 
@@ -687,6 +690,10 @@ Set custom name for a room in current map.
 
 TODO
 
+### `dreame_vacuum.vacuum_delete_shortcut`
+
+TODO
+
 
 ### `dreame_vacuum.vacuum_set_obstacle_ignore`
 
@@ -696,7 +703,7 @@ TODO
 
 TODO
 
-### `dreame_vacuum.vacuum_set_pathway`
+### `dreame_vacuum.vacuum_set_virtual_threshold`
 
 TODO
 

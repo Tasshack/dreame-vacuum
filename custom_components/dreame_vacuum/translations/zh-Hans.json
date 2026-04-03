@@ -27,7 +27,7 @@
           "host": "设备IP",
           "token": "Token"
         },
-        "description": "您需要32位数字元的API Token，请至 https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token 参考说明"
+        "description": "您需要32位数字元的API Token"
       },
       "mi": {
         "data": {
@@ -36,7 +36,7 @@
           "country": "服务器所在国家",
           "prefer_cloud": "使用云端联机"
         },
-        "description": "登入小米云端账号请至 https://www.openhab.org/addons/bindings/miio/#country-servers 选择适当的服务器所在国家"
+        "description": "登入小米云端账号请至"
       },
       "2fa": {
         "data": {
@@ -221,10 +221,46 @@
       },
       "voice_assistant_language": {
         "state": {
-          "default": "预设",
-          "english": "英文",
-          "german": "德文",
-          "chinese": "中文"
+          "default": "默认",
+          "english": "英语",
+          "german": "德语",
+          "chinese": "中文",
+          "russian": "俄语",
+          "italian": "意大利语",
+          "french": "法语",
+          "korean": "韩语"
+        }
+      },
+      "mop_pressure": {
+        "state": {
+          "light": "轻柔",
+          "normal": "标准"
+        }
+      },
+      "mop_temperature": {
+        "state": {
+          "normal": "常温",
+          "warm": "温热"
+        }
+      },
+      "low_lying_area_frequency": {
+        "state": {
+          "weekly": "每周",
+          "daily": "每天"
+        }
+      },
+      "scraper_frequency": {
+        "state": {
+          "off": "关闭",
+          "weekly": "每周",
+          "daily": "每天"
+        }
+      },
+      "auto_lds_coverage": {
+        "state": {
+          "off": "关闭",
+          "security": "安全",
+          "extreme": "极致"
         }
       },
       "order": {
@@ -236,7 +272,8 @@
         "state": {
           "by_area": "根据面积",
           "by_time": "根据时间",
-          "by_room": "根据房间"
+          "by_room": "根据房间",
+          "intelligent": "智能"
         }
       },
       "mop_clean_frequency": {
@@ -249,7 +286,9 @@
           "off": "关闭",
           "standard": "标准",
           "high_frequency": "高频率",
-          "low_frequency": "低频率"
+          "low_frequency": "低频率",
+          "custom_frequency": "自定义频率",
+          "intelligent": "智能"
         }
       },
       "floor_material_direction": {
@@ -290,7 +329,8 @@
           "normal": "普通的",
           "mild": "温和的",
           "warm": "温暖的",
-          "hot": "热的"
+          "hot": "热的",
+          "max": "最高"
         }
       },
       "auto_recleaning": {
@@ -374,7 +414,11 @@
           "initial_deep_cleaning": "初始深度清洁",
           "initial_deep_cleaning_paused": "初始深度清洁已暂停",
           "sanitizing": "正在消毒",
-          "sanitizing_with_dry": "消毒并干燥"
+          "sanitizing_with_dry": "消毒并干燥",
+          "changing_mop": "正在更换拖布",
+          "changing_mop_paused": "更换拖布已暂停",
+          "floor_maintaining": "地板养护中",
+          "floor_maintaining_paused": "地板养护已暂停"
         }
       },
       "status": {
@@ -564,7 +608,40 @@
           "dirty_tank_not_installed": "未安装扫地机的污水箱",
           "robot_in_hidden_room": "隐藏区域，请将扫地机移至适当区域并重试",
           "washboard_not_working": "洗涤板停止工作",
-          "return_to_charge_failed": "返回充电失败"
+          "return_to_charge_failed": "返回充电失败",
+          "lds_failed_to_lift": "LDS模块升降失败。",
+          "robot_stuck": "此处无法升起LDS进行定位。",
+          "robot_stuck_repeat": "请将机器人移至开阔区域并恢复任务。",
+          "slippery_floor": "地面湿滑，请稍后重试。",
+          "check_mop_install": "请检查拖布是否安装正确。",
+          "dirty_water_tank_full": "污水箱水位异常。",
+          "retractable_leg_stuck": "请检查伸缩腿是否被缠绕。",
+          "internal_error": "内部错误导致故障，请尝试重启机器人。",
+          "robot_stuck_on_tables": "机器人卡在桌椅之间。",
+          "robot_stuck_on_passage": "机器人卡在狭窄通道中。",
+          "robot_stuck_on_threshold": "机器人卡在台阶/门槛上。",
+          "robot_stuck_on_low_lying_area": "机器人卡在低矮区域。",
+          "robot_stuck_on_ramp": "机器人检测到路径上有危险坡道。",
+          "robot_stuck_on_obstacle": "机器人检测到路径上有障碍物。",
+          "robot_stuck_on_pet": "机器人检测到路径上有人或宠物。",
+          "robot_stuck_on_slippery_surface": "机器人因打滑被困。",
+          "robot_stuck_on_carpet": "机器人在地毯上打滑",
+          "drainage_failed": "污水箱排水异常",
+          "mop_not_detected": "未检测到拖布。",
+          "mop_holder_error": "基站内拖布支架数量/位置错误。",
+          "dock_error": "基站错误。",
+          "wash_failed": "清洗脏拖布失败。",
+          "robot_stuck_on_curtain": "机器人在窗帘区域打滑",
+          "edge_mop_stop_rotate": "边拖停止旋转。",
+          "edge_mop_detached": "边拖脱落。",
+          "chassis_lift_malfunction": "底盘升降故障。",
+          "mop_cover_error": "请检查滚筒拖布和盖板附近是否有杂物。",
+          "roller_mop_error": "请检查滚筒拖布和盖板附近是否有杂物。",
+          "onboard_water_tank_empty": "主机清水箱水位低。",
+          "onboard_dirty_water_tank_full": "主机污水箱已满。",
+          "mop_not_installed": "拖布未安装。",
+          "fluffing_roller_error": "绒毛滚筒错误。",
+          "blocked_by_obstacle": "机器人被障碍物阻挡。"
         }
       },
       "charging_status": {
@@ -699,7 +776,19 @@
           "initial_deep_cleaning_paused": "初始深度清洁已暂停",
           "mop_pad_heating": "拖把垫加热",
           "cleaning_after_mapping": "地图后清洁",
-          "small_particle_cleaning": "小颗粒清洁"
+          "small_particle_cleaning": "小颗粒清洁",
+          "changing_mop": "正在更换拖布",
+          "changing_mop_paused": "更换拖布已暂停",
+          "floor_maintaining": "地板养护中",
+          "floor_maintaining_paused": "地板养护已暂停",
+          "wood_floor_maintaining": "木地板养护"
+        }
+      },
+      "dust_bag_drying_status": {
+        "state": {
+          "idle": "空闲",
+          "drying": "烘干中",
+          "paused": "已暂停"
         }
       }
     }
@@ -1078,6 +1167,16 @@
         "shortcut_name": {
           "name": "快捷方式名称",
           "description": "快捷方式的新名称。"
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "删除捷径",
+      "description": "删除捷径。（仅限支持的设备）",
+      "fields": {
+        "shortcut_id": {
+          "name": "捷径 ID",
+          "description": "捷径的 ID。"
         }
       }
     },

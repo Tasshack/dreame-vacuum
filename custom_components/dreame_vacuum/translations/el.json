@@ -28,7 +28,7 @@
           "host": "Διεύθυνση (Host)",
           "token": "Token"
         },
-        "description": "Θα χρειαστείτε το 32-ψήφιο API Token. Δείτε οδηγίες στο https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token."
+        "description": "Θα χρειαστείτε το 32-ψήφιο API Token."
       },
       "mi": {
         "data": {
@@ -37,7 +37,7 @@
           "country": "Χώρα server",
           "prefer_cloud": "Προτίμηση σύνδεσης μέσω cloud"
         },
-        "description": "Συνδεθείτε στο cloud Xiaomi Miio. Δείτε τη λίστα διαθέσιμων servers στο https://www.openhab.org/addons/bindings/miio/#country-servers."
+        "description": "Συνδεθείτε στο cloud Xiaomi Miio."
       },    
       "2fa": {
         "data": {
@@ -186,7 +186,7 @@
           "high_frequency": "Υψηλή συχνότητα",
           "low_frequency": "Χαμηλή συχνότητα"
         }
-      },      
+      },
       "mop_pad_swing": {
         "state": {
           "off": "Ανενεργό",
@@ -217,7 +217,43 @@
           "default": "Προεπιλογή",
           "english": "Αγγλικά",
           "german": "Γερμανικά",
-          "chinese": "Κινέζικα"
+          "chinese": "Κινέζικα",
+          "russian": "Ρωσικά",
+          "italian": "Ιταλικά",
+          "french": "Γαλλικά",
+          "korean": "Κορεάτικα"
+        }
+      },
+      "mop_pressure": {
+        "state": {
+          "light": "Ελαφριά",
+          "normal": "Κανονική"
+        }
+      },
+      "mop_temperature": {
+        "state": {
+          "normal": "Κανονική",
+          "warm": "Ζεστή"
+        }
+      },
+      "low_lying_area_frequency": {
+        "state": {
+          "weekly": "Εβδομαδιαία",
+          "daily": "Καθημερινά"
+        }
+      },
+      "scraper_frequency": {
+        "state": {
+          "off": "Ανενεργό",
+          "weekly": "Εβδομαδιαία",
+          "daily": "Καθημερινά"
+        }
+      },
+      "auto_lds_coverage": {
+        "state": {
+          "off": "Ανενεργό",
+          "security": "Ασφάλεια",
+          "extreme": "Ακραία"
         }
       },
       "order": {
@@ -229,9 +265,10 @@
         "state": {
           "by_area": "Ανά περιοχή",
           "by_time": "Ανά χρόνο",
-          "by_room": "Ανά δωμάτιο"
+          "by_room": "Ανά δωμάτιο",
+          "intelligent": "Έξυπνη"
         }
-      },      
+      },
       "mop_clean_frequency": {
         "state": {
           "by_room": "Ανά δωμάτιο"
@@ -242,7 +279,9 @@
           "off": "Ανενεργό",
           "standard": "Κανονικό",
           "high_frequency": "Συχνό",
-          "low_frequency": "Αραιό"
+          "low_frequency": "Αραιό",
+          "custom_frequency": "Προσαρμοσμένη συχνότητα",
+          "intelligent": "Έξυπνη"
         }
       },
       "floor_material_direction": {
@@ -283,7 +322,8 @@
           "normal": "Κανονική",
           "mild": "Μέτρια",
           "warm": "Ζεστή",
-          "hot": "Καυτή"
+          "hot": "Καυτή",
+          "max": "Μέγιστη"
         }
       },
       "auto_recleaning": {
@@ -367,7 +407,11 @@
           "initial_deep_cleaning": "Αρχικός βαθύς καθαρισμός",
           "initial_deep_cleaning_paused": "Ο αρχικός βαθύς καθαρισμός έχει τεθεί σε παύση",
           "sanitizing": "Απολύμανση",
-          "sanitizing_with_dry": "Απολύμανση με στέγνωμα"
+          "sanitizing_with_dry": "Απολύμανση με στέγνωμα",
+          "changing_mop": "Αλλαγή πανιού",
+          "changing_mop_paused": "Παύση αλλαγής πανιού",
+          "floor_maintaining": "Συντήρηση δαπέδου",
+          "floor_maintaining_paused": "Παύση συντήρησης δαπέδου"
         }
       },
       "status": {
@@ -557,7 +601,40 @@
           "dirty_tank_not_installed": "Η δεξαμενή χρησιμοποιημένου νερού του ρομπότ δεν είναι εγκατεστημένη.",
           "robot_in_hidden_room": "Κρυφή περιοχή. Μετακινήστε το ρομπότ στην κατάλληλη περιοχή και δοκιμάστε ξανά.",
           "washboard_not_working": "Η επιφάνεια καθαρισμού δεν λειτουργεί.",
-          "return_to_charge_failed": "Αποτυχία επιστροφής στη βάση φόρτισης."
+          "return_to_charge_failed": "Αποτυχία επιστροφής στη βάση φόρτισης.",
+          "lds_failed_to_lift": "Αποτυχία ανύψωσης μονάδας LDS.",
+          "robot_stuck": "Το LDS δεν μπορεί να ανυψωθεί εδώ για εντοπισμό θέσης.",
+          "robot_stuck_repeat": "Μετακινήστε το ρομπότ σε ανοιχτό χώρο και συνεχίστε την εργασία.",
+          "slippery_floor": "Ολισθηρό δάπεδο. Παρακαλώ δοκιμάστε ξανά αργότερα.",
+          "check_mop_install": "Ελέγξτε αν το πανί είναι σωστά τοποθετημένο.",
+          "dirty_water_tank_full": "Ασυνήθιστη στάθμη νερού στον κάδο ακάθαρτου νερού.",
+          "retractable_leg_stuck": "Ελέγξτε αν τα ανασυρόμενα πόδια έχουν μπλέξει.",
+          "internal_error": "Δυσλειτουργία λόγω εσωτερικού σφάλματος. Δοκιμάστε επανεκκίνηση.",
+          "robot_stuck_on_tables": "Το ρομπότ κόλλησε ανάμεσα σε τραπέζια και καρέκλες.",
+          "robot_stuck_on_passage": "Το ρομπότ κόλλησε σε στενό πέρασμα.",
+          "robot_stuck_on_threshold": "Το ρομπότ κόλλησε σε σκαλοπάτι/κατώφλι.",
+          "robot_stuck_on_low_lying_area": "Το ρομπότ κόλλησε σε περιοχή με χαμηλό ύψος.",
+          "robot_stuck_on_ramp": "Το ρομπότ εντόπισε επικίνδυνες ράμπες.",
+          "robot_stuck_on_obstacle": "Το ρομπότ εντόπισε εμπόδια στη διαδρομή.",
+          "robot_stuck_on_pet": "Το ρομπότ εντόπισε ανθρώπους ή κατοικίδια στη διαδρομή.",
+          "robot_stuck_on_slippery_surface": "Το ρομπότ κόλλησε λόγω ολίσθησης.",
+          "robot_stuck_on_carpet": "Το ρομπότ γλιστράει στο χαλί",
+          "drainage_failed": "Ασυνήθιστη αποστράγγιση από τον κάδο ακάθαρτου νερού",
+          "mop_not_detected": "Δεν εντοπίστηκε πανί.",
+          "mop_holder_error": "Σφάλμα ποσότητας/τοποθέτησης βάσης πανιού.",
+          "dock_error": "Σφάλμα βάσης.",
+          "wash_failed": "Αποτυχία πλύσης βρώμικου πανιού.",
+          "robot_stuck_on_curtain": "Το ρομπότ γλιστράει στην περιοχή της κουρτίνας",
+          "edge_mop_stop_rotate": "Το πλευρικό πανί σταμάτησε να περιστρέφεται.",
+          "edge_mop_detached": "Το πλευρικό πανί αποκολλήθηκε.",
+          "chassis_lift_malfunction": "Δυσλειτουργία ανύψωσης σασί.",
+          "mop_cover_error": "Ελέγξτε για υπολείμματα κοντά στο ρολό πανιού και το κάλυμμα.",
+          "roller_mop_error": "Ελέγξτε για υπολείμματα κοντά στο ρολό πανιού και το κάλυμμα.",
+          "onboard_water_tank_empty": "Χαμηλή στάθμη νερού στον κάδο καθαρού νερού του ρομπότ.",
+          "onboard_dirty_water_tank_full": "Ο κάδος ακάθαρτου νερού του ρομπότ είναι γεμάτος.",
+          "mop_not_installed": "Το πανί δεν έχει εγκατασταθεί.",
+          "fluffing_roller_error": "Σφάλμα ρολού χνουδιού.",
+          "blocked_by_obstacle": "Το ρομπότ μπλοκαρίστηκε από εμπόδιο."
         }
       },
       "charging_status": {
@@ -692,7 +769,19 @@
           "initial_deep_cleaning_paused": "Ο αρχικός βαθύς καθαρισμός έχει τεθεί σε παύση",
           "mop_pad_heating": "Θέρμανση πανιού σφουγγαρίστρας",
           "cleaning_after_mapping": "Καθαρισμός μετά τη χαρτογράφηση",
-          "small_particle_cleaning": "Καθαρισμός μικρών σωματιδίων"
+          "small_particle_cleaning": "Καθαρισμός μικρών σωματιδίων",
+          "changing_mop": "Αλλαγή πανιού",
+          "changing_mop_paused": "Παύση αλλαγής πανιού",
+          "floor_maintaining": "Συντήρηση δαπέδου",
+          "floor_maintaining_paused": "Παύση συντήρησης δαπέδου",
+          "wood_floor_maintaining": "Συντήρηση ξύλινου δαπέδου"
+        }
+      },
+      "dust_bag_drying_status": {
+        "state": {
+          "idle": "Σε αδράνεια",
+          "drying": "Στέγνωμα",
+          "paused": "Σε παύση"
         }
       }
     }
@@ -1075,6 +1164,16 @@
         "shortcut_name": {
           "name": "Όνομα συντόμευσης",
           "description": "Το νέο όνομα της συντόμευσης."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Διαγραφή συντόμευσης",
+      "description": "Διαγραφή συντόμευσης. (Μόνο σε υποστηριζόμενες συσκευές)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID συντόμευσης",
+          "description": "ID της συντόμευσης."
         }
       }
     },

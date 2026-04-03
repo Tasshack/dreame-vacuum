@@ -24,7 +24,7 @@ from homeassistant.components.camera import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import STATE_UNAVAILABLE, CONTENT_TYPE_MULTIPART
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity import EntityCategory, async_generate_entity_id
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers import entity_platform, entity_registry
 from .recorder import CAMERA_UNRECORDED_ATTRIBUTES
@@ -57,7 +57,7 @@ from .dreame.const import (
     ATTR_SAVED_MAP_ID,
     ATTR_COLOR_SCHEME,
 )
-from .dreame.types import MAP_ICON_SET_LIST    
+from .dreame.types import MAP_ICON_SET_LIST
 from .dreame.map import (
     DreameVacuumMapRenderer,
     DreameVacuumMapDataJsonRenderer,
@@ -521,7 +521,6 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     ) -> None:
         """Initialize a Dreame Vacuum Camera entity."""
         super().__init__(coordinator, description)
-        self._generate_entity_id(ENTITY_ID_FORMAT)
         self.content_type = PNG_CONTENT_TYPE
         self.stream = None
         self._access_token_update_counter = 0
@@ -539,7 +538,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         self._error = None
         self._proxy_renderer = None
         self._color_scheme = color_scheme
-        self._icon_set =  MAP_ICON_SET_LIST.get(icon_set, 0)
+        self._icon_set = MAP_ICON_SET_LIST.get(icon_set, 0)
 
         if description.map_type == DreameVacuumMapType.JSON_MAP_DATA:
             self._renderer = DreameVacuumMapDataJsonRenderer()
@@ -570,7 +569,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                     False,
                 )
         self._image = None
-        self._default_map = True
+        self._default_map = None
         self._proxy_images = {}
         self.map_index = map_index
         self._state = STATE_UNAVAILABLE
@@ -587,11 +586,19 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 self._map_name = None
             self._set_map_name(self.wifi_map)
             self._attr_unique_id = f"{self.device.mac}_{'wifi_' if self.wifi_map else ''}map_{self.map_index}"
-            self.entity_id = f"camera.{self.device.name.lower().replace(' ','_')}_{'wifi_' if self.wifi_map else ''}map_{self.map_index}"
+            self.entity_id = async_generate_entity_id(
+                ENTITY_ID_FORMAT,
+                f"{self.device.name}_{'wifi_' if self.wifi_map else ''}map_{self.map_index}",
+                hass=self.coordinator.hass,
+            )
         else:
-            self._attr_name = f"{self.device.name} Current {'Wifi ' if self.wifi_map else ''}{description.name}"
+            self._attr_name = f"Current {'Wifi ' if self.wifi_map else ''}{description.name}"
             self._attr_unique_id = f"{self.device.mac}_map_{'wifi_' if self.wifi_map else ''}{description.key}"
-            self.entity_id = f"camera.{self.device.name.lower().replace(' ','_')}_{'wifi_' if self.wifi_map else ''}{description.key.lower()}"
+            self.entity_id = async_generate_entity_id(
+                ENTITY_ID_FORMAT,
+                f"{self.device.name}_{'wifi_' if self.wifi_map else ''}{description.key.lower()}",
+                hass=self.coordinator.hass,
+            )
 
         self.update()
 
@@ -601,7 +608,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             if self._map_name is None
             else f"{self._map_name.replace('_', ' ').replace('-', ' ').title()}"
         )
-        self._attr_name = f"{self.device.name} Saved {'Wifi ' if wifi_map else ''}Map {name}"
+        self._attr_name = f"Saved {'Wifi ' if wifi_map else ''}Map {name}"
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -627,7 +634,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                     self._last_updated = None
 
             if (
-                self._default_map == True
+                self._default_map != False
                 or self._frame_id != map_data.frame_id
                 or self._last_updated != map_data.last_updated
             ):
@@ -658,7 +665,10 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 if self.map_index == 0 and self.device:
                     self.device.update_map()
                 self.update()
-                if self._last_updated and self._last_rendered != self._last_updated and self._renderer.render_complete:
+                if (
+                    self._last_updated and self._last_rendered != self._last_updated and self._renderer.render_complete
+                ) or (self._default_map != False and self._state != STATE_UNAVAILABLE):
+                    self._default_map = False
                     await self._update_image(
                         self.device.get_map_for_render(self._map_data),
                         self.device.status.robot_status,
@@ -727,6 +737,17 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     def update(self) -> None:
         map_data = self._map_data
         if map_data and self.device.cloud_connected and (self.map_index > 0 or self.device.status.located):
+            if self._default_map == True:
+                self._default_map = False
+                self._image = self._renderer.render_map(
+                    self.device.get_map_for_render(map_data),
+                    self.device.status.robot_status,
+                    self.device.status.station_status,
+                )
+                self._last_rendered = map_data.last_updated
+                if not self.map_data_json:
+                    self._calibration_points = self._renderer.calibration_points
+
             self._device_active = self.device.status.active
             if map_data.last_updated:
                 self._state = datetime.fromtimestamp(int(map_data.last_updated))
@@ -736,7 +757,6 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             if map_data.last_updated != self._last_updated:
                 self._last_updated = map_data.last_updated
                 self._frame_id = map_data.frame_id
-                self._default_map = False
         elif not self._default_map:
             self._state = STATE_UNAVAILABLE
             self._image = self._default_map_image
@@ -799,7 +819,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
 
                 if data:
                     return DreameVacuumMapRenderer.get_data(
-                        map_data,                        
+                        map_data,
                         self.device.capability,
                         self._icon_set,
                         include_resources,
@@ -856,7 +876,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                         return DreameVacuumMapRenderer.get_data(
                             map_data,
                             self.device.capability,
-                            self._icon_set, 
+                            self._icon_set,
                             include_resources,
                         )
                     else:
@@ -918,7 +938,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                         if data:
                             return (
                                 DreameVacuumMapRenderer.get_data(
-                                    self.device.get_map_for_render(data),                                    
+                                    self.device.get_map_for_render(data),
                                     self.device.capability,
                                     self._icon_set,
                                     include_resources,
@@ -928,7 +948,15 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                             )
 
     def resources(self, icon_set=None) -> str:
-        return DreameVacuumMapRenderer.get_resources(self.device.capability, self._icon_set if icon_set is None or not str(icon_set).isdecimal() else int(icon_set), True) if self.device else "{}"
+        return (
+            DreameVacuumMapRenderer.get_resources(
+                self.device.capability,
+                self._icon_set if icon_set is None or not str(icon_set).isdecimal() else int(icon_set),
+                True,
+            )
+            if self.device
+            else "{}"
+        )
 
     async def _update_image(self, map_data, robot_status, station_status) -> None:
         try:

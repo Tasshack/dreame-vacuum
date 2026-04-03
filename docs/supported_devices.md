@@ -44,6 +44,10 @@
 | D20                                          | dreame.vacuum.r2563v |
 | D20                                          | dreame.vacuum.r5413v |
 | D20                                          | dreame.vacuum.r5413a |
+| D20 Air                                      | dreame.vacuum.r9526c |
+| D20 Air                                      | dreame.vacuum.r9526k |
+| D20 Air Plus                                 | dreame.vacuum.r531rh |
+| D20 Air Plus                                 | dreame.vacuum.r531ra |
 | D20 Plus                                     | dreame.vacuum.r2564b |
 | D20 Plus                                     | dreame.vacuum.r2564z |
 | D20 Plus                                     | dreame.vacuum.r5314z |
@@ -61,6 +65,7 @@
 | D20 Ultra                                    | dreame.vacuum.r5022a |
 | D30 Ultra                                    | dreame.vacuum.r5057k |
 | D30 Ultra                                    | dreame.vacuum.r5057r |
+| D30 Ultra                                    | dreame.vacuum.r50573 |
 | D9                                           | dreame.vacuum.p2009  |
 | D9 Max                                       | dreame.vacuum.p2259  |
 | D9 Max                                       | dreame.vacuum.r2312  |
@@ -74,11 +79,22 @@
 | F10                                          | dreame.vacuum.r9523h |
 | F10 Plus                                     | dreame.vacuum.r9524a |
 | F10 Plus                                     | dreame.vacuum.r9524h |
+| F20                                          | dreame.vacuum.r9526a |
+| F20                                          | dreame.vacuum.r9526h |
+| F20 Eco                                      | dreame.vacuum.r95267 |
+| F20 Eco Plus                                 | dreame.vacuum.r95277 |
+| F20 Plus                                     | dreame.vacuum.r9527a |
+| F20 Plus                                     | dreame.vacuum.r9527v |
+| F21                                          | dreame.vacuum.r95266 |
+| F21                                          | dreame.vacuum.r95265 |
+| F21 Plus                                     | dreame.vacuum.r95275 |
+| F21 Plus                                     | dreame.vacuum.r9527f |
 | F9 Pro                                       | dreame.vacuum.r2328  |
 | GoVac 100 Lite                               | dreame.vacuum.r2422c |
 | GoVac 200                                    | dreame.vacuum.r9524b |
 | GoVac 200 Kit                                | dreame.vacuum.r95249 |
 | GoVac 200 lite                               | dreame.vacuum.r9523b |
+| Govac 205 plus                               | dreame.vacuum.r95279 |
 | GoVac 300                                    | dreame.vacuum.r2564s |
 | GoVac 300                                    | dreame.vacuum.r5314s |
 | GoVac 300 Kit                                | dreame.vacuum.r25642 |
@@ -88,6 +104,7 @@
 | GoVac 400 Complete                           | dreame.vacuum.r5021u |
 | GoVac 500                                    | dreame.vacuum.r25799 |
 | GoVac 508                                    | dreame.vacuum.r24162 |
+| GoVac 510 Complete                           | dreame.vacuum.r25513 |
 | GoVac 600                                    | dreame.vacuum.r9493c |
 | GoVac 800                                    | dreame.vacuum.r2489d |
 | L10 Plus                                     | dreame.vacuum.p2028a |
@@ -118,11 +135,13 @@
 | L10s Ultra CE                                | dreame.vacuum.r5021k |
 | L10s Ultra Gen 2                             | dreame.vacuum.r2469a |
 | L10s Ultra Gen 2                             | dreame.vacuum.r2469x |
+| L10s Ultra Gen 2                             | dreame.vacuum.r5020a |
 | L10s Ultra Gen 3                             | dreame.vacuum.r5025b |
 | L10s Ultra Gen 3                             | dreame.vacuum.r5023e |
 | L10s Ultra Gen 3                             | dreame.vacuum.r5023a |
 | L10s Ultra Gen 3                             | dreame.vacuum.r5025t |
 | L10s Ultra Heat                              | dreame.vacuum.r2367  |
+| L10s Ultra Heat                              | dreame.vacuum.r500xb |
 | L20 Ultra                                    | dreame.vacuum.r2253b |
 | L20 Ultra                                    | dreame.vacuum.r2253m |
 | L20 Ultra                                    | dreame.vacuum.r2253t |
@@ -173,9 +192,24 @@
 | L50 Pro Ultra                                | dreame.vacuum.r9445d |
 | L50 Ultra                                    | dreame.vacuum.r9493a |
 | L50 Ultra                                    | dreame.vacuum.r9493h |
+| L50 Ultra AE                                 | dreame.vacuum.r5061a |
 | L50 Ultra CE                                 | dreame.vacuum.r5024b |
+| L50s Pro Nano                                | dreame.vacuum.r5239f |
+| L50s Pro Ultra                               | dreame.vacuum.r5039h |
+| L50s Pro Ultra                               | dreame.vacuum.r5039a |
+| L50s Pro Ultra                               | dreame.vacuum.r5039e |
+| L50s Pro Ultra                               | dreame.vacuum.r5039f |
+| L50s Pro Ultra                               | dreame.vacuum.r5039r |
+| L50s Ultra                                   | dreame.vacuum.r50399 |
+| L50s Ultra                                   | dreame.vacuum.r50393 |
+| L60 Pro Ultra                                | dreame.vacuum.r501da |
+| L60 Ultra PE                                 | dreame.vacuum.r50398 |
+| L60 Ultra PE                                 | dreame.vacuum.r50397 |
+| M50 Ultra                                    | dreame.vacuum.r50855 |
+| M50 Ultra (Ultra-Thin embedded)              | dreame.vacuum.r51855 |
 | Master One                                   | dreame.vacuum.r2310a |
 | Master Pro                                   | dreame.vacuum.r2310  |
+| Matrix10 Pro                                 | dreame.vacuum.r5082a |
 | Matrix10 Ultra                               | dreame.vacuum.r2513  |
 | Matrix10 Ultra                               | dreame.vacuum.r2513a |
 | Matrix10 Ultra                               | dreame.vacuum.r2513h |
@@ -222,7 +256,7 @@
 | S30 Pro Ultra (Selected Edition)             | dreame.vacuum.r9498  |
 | S30 Pro Ultra (Selected Ultra-Thin embedded) | dreame.vacuum.r2504  |
 | S30 Pro Ultra (Ultra-Thin embedded)          | dreame.vacuum.r2310d |
-| S30 Pro Ultra Gen2                           | dreame.vacuum.r2437  |
+| S30 Pro Ultra Gen 2                          | dreame.vacuum.r2437  |
 | S30 Ultra Member (Water Tank Version)        | dreame.vacuum.r2441  |
 | S30 Ultra Member (Water Tank Version)        | dreame.vacuum.r9478  |
 | S40                                          | dreame.vacuum.r2553  |
@@ -250,6 +284,7 @@
 | S50 (Ultra-Thin embedded)                    | dreame.vacuum.r9551  |
 | S50 Max                                      | dreame.vacuum.r5039  |
 | S50 Max (Ultra-Thin embedded)                | dreame.vacuum.r5139  |
+| S50 Max-D                                    | dreame.vacuum.r50391 |
 | S50 Plus                                     | dreame.vacuum.r5061  |
 | S50 Pro                                      | dreame.vacuum.r2508  |
 | S50 Pro                                      | dreame.vacuum.r9517  |
@@ -259,6 +294,9 @@
 | S50 Ultra                                    | dreame.vacuum.r9516  |
 | S50 Ultra (Ultra-Thin embedded)              | dreame.vacuum.r2548  |
 | S50 Ultra (Ultra-Thin embedded)              | dreame.vacuum.r9518  |
+| S60 Pro (Roller Drainage)                    | dreame.vacuum.r520b  |
+| S60 Pro (Roller Drainage)                    | dreame.vacuum.r510b  |
+| S60 Pro (Roller)                             | dreame.vacuum.r500b  |
 | W10                                          | dreame.vacuum.p2027  |
 | W10 Pro                                      | dreame.vacuum.r2104  |
 | W10s                                         | dreame.vacuum.r2251o |
@@ -290,6 +328,7 @@
 | X40 (Enhanced Edition)                       | dreame.vacuum.r2571  |
 | X40 (Ultra-Thin embedded)                    | dreame.vacuum.r9422  |
 | X40 Master                                   | dreame.vacuum.r2465a |
+| X40 Master                                   | dreame.vacuum.r2465b |
 | X40 Master                                   | dreame.vacuum.r2465h |
 | X40 Pro                                      | dreame.vacuum.r2416  |
 | X40 Pro                                      | dreame.vacuum.r2440  |
@@ -326,6 +365,7 @@
 | X50 Master                                   | dreame.vacuum.r9434l |
 | X50 Master                                   | dreame.vacuum.r9434v |
 | X50 Master                                   | dreame.vacuum.r94345 |
+| X50 Master                                   | dreame.vacuum.r94346 |
 | X50 Plus                                     | dreame.vacuum.r5049  |
 | X50 Plus (Ultra-Thin embedded)               | dreame.vacuum.r5149  |
 | X50 Pro                                      | dreame.vacuum.r2489  |
@@ -362,6 +402,7 @@
 | X50 Ultra                                    | dreame.vacuum.r24896 |
 | X50 Ultra                                    | dreame.vacuum.r9538h |
 | X50 Ultra                                    | dreame.vacuum.r9538a |
+| X50 Ultra                                    | dreame.vacuum.r24898 |
 | X50 Ultra (Enhanced Edition)                 | dreame.vacuum.r2518  |
 | X50 Ultra (Enhanced Ultra-Thin embedded)     | dreame.vacuum.r2501  |
 | X50 Ultra (Tracked Version)                  | dreame.vacuum.r2527  |
@@ -370,7 +411,6 @@
 | X50 Ultra Complete                           | dreame.vacuum.r2532h |
 | X50 Ultra Complete                           | dreame.vacuum.r2532v |
 | X50 Ultra Complete                           | dreame.vacuum.r2532z |
-| X50 Ultra Complete                           | dreame.vacuum.r2532w |
 | X50 Ultra Complete                           | dreame.vacuum.r2538a |
 | X50 Ultra Complete                           | dreame.vacuum.r9446a |
 | X50 Ultra Complete                           | dreame.vacuum.r9446c |
@@ -379,9 +419,22 @@
 | X50 Ultra Complete                           | dreame.vacuum.r2538z |
 | X50 Ultra Complete                           | dreame.vacuum.r5048h |
 | X50 Ultra Complete                           | dreame.vacuum.r5048a |
+| X50 Ultra Complete                           | dreame.vacuum.r2532w |
+| X50 Ultra Complete                           | dreame.vacuum.r50485 |
 | X50s Pro Master                              | dreame.vacuum.r2501p |
 | X50s Pro Ultra                               | dreame.vacuum.r2518f |
 | X50s Pro Ultra                               | dreame.vacuum.r2518p |
+| X60 Master                                   | dreame.vacuum.r5189u |
+| X60 Master                                   | dreame.vacuum.r5189j |
+| X60 Master (Ultimate edition)                | dreame.vacuum.r501w  |
+| X60 Master (Ultimate Ultra-Thin embedded)    | dreame.vacuum.r512g  |
+| X60 Pro (Roller Drainage)                    | dreame.vacuum.r520c  |
+| X60 Pro (Roller Drainage)                    | dreame.vacuum.r510c  |
+| X60 Pro (Roller)                             | dreame.vacuum.r500c  |
+| X60 Ultra                                    | dreame.vacuum.r9515e |
+| X60 Ultra                                    | dreame.vacuum.r9515a |
+| X60 Ultra                                    | dreame.vacuum.r5089u |
+| X60 Ultra                                    | dreame.vacuum.r5089b |
 | Z10 Pro                                      | dreame.vacuum.p2028  |
 | 澄净 Pro                                     | dreame.vacuum.r5016  |
 | 澄净 Pro (Ultra-Thin embedded)               | dreame.vacuum.r5117  |
@@ -406,6 +459,7 @@
 | E30 Ultra                   | dreame.vacuum.r2427  |
 | E30 Ultra                   | dreame.vacuum.r2427a |
 | E40 Ultra                   | mova.vacuum.r9504a   |
+| E40 Ultra                   | mova.vacuum.r5732a   |
 | G20                         | dreame.vacuum.r2350  |
 | G20 Master                  | dreame.vacuum.r2212  |
 | G20 Pro                     | dreame.vacuum.r2385  |
@@ -417,6 +471,7 @@
 | MOBIUS 60                   | mova.vacuum.r2599k   |
 | P10 Pro Ultra               | mova.vacuum.r2491a   |
 | P10 Pro Ultra               | dreame.vacuum.r9406  |
+| P10 Pro Ultra Gen 2         | mova.vacuum.r5730c   |
 | P10 Ultra                   | mova.vacuum.r2462a   |
 | P10s Ultra                  | dreame.vacuum.r2491  |
 | P20 Ultra                   | mova.vacuum.r2432b   |
@@ -430,6 +485,8 @@
 | S10                         | dreame.vacuum.r2382k |
 | S10 Plus                    | dreame.vacuum.r2383a |
 | S10 Plus                    | dreame.vacuum.r2383k |
+| S70 Roller                  | mova.vacuum.r5769a   |
+| S70 Roller                  | mova.vacuum.r5769h   |
 | V30                         | dreame.vacuum.r2432  |
 | V30 Pro                     | dreame.vacuum.r9420  |
 | V50 Ultra                   | mova.vacuum.r2525a   |
@@ -442,6 +499,7 @@
 | Z50 Ultra                   | mova.vacuum.r2430a   |
 | Z50 Ultra                   | mova.vacuum.r2430u   |
 | Z500                        | dreame.vacuum.p2156o |
+| Z60 Roller                  | mova.vacuum.r9544t   |
 | Z60 Ultra Roller            | mova.vacuum.r9473e   |
 | Z60 Ultra Roller Complete   | mova.vacuum.r9540n   |
 | Z60 Ultra Roller Complete   | mova.vacuum.r9540a   |
@@ -450,6 +508,7 @@
 | Z60 Ultra Roller Complete   | mova.vacuum.r9540u   |
 | Z60 Ultra Roller SA         | mova.vacuum.r9544b   |
 | Z60 Ultra Roller Standalone | mova.vacuum.r9544a   |
+| Z70 Ultra Roller SE         | mova.vacuum.r9543a   |
 | 免洗10                      | dreame.vacuum.r2386  |
 
 ## Mijia
@@ -480,12 +539,12 @@
 | X20+                               | xiaomi.vacuum.c102gl |
 
 ## Trouver
-| Name	                  | Model  |
+| Name	                    | Model  |
 |---------------------------|--------|
 | E10                       | dreame.vacuum.r2438r  |
 | E20 Plus                  | dreame.vacuum.r2459r  |
 | E20 Pro                   | dreame.vacuum.r2478r  |
-| E20 Pro                   | dreame.vacuum.r2478v  |
+| E20 Pro                   | dreame.vacuum.r2478v  | 
 | E20 Pro Plus              | dreame.vacuum.r2463r  |
 | E20s Pro                  | trouver.vacuum.r2569r |
 | E20s Pro Plus             | trouver.vacuum.r2567r |
@@ -499,13 +558,14 @@
 | P50 Pro Ultra             | trouver.vacuum.r2475r |
 | P50 Ultra                 | trouver.vacuum.r2519r |
 | S10                       | dreame.vacuum.r2382r  |
+| S70 Roller                | trouver.vacuum.r5769r |
 | V50 Ultra complete        | trouver.vacuum.r2582r |
 | Z50 Ultra                 | trouver.vacuum.2430v  |
 | Z60 Ultra Roller Complete | trouver.vacuum.r9540v |
 
 
 # Unsupported Devices
-| Name	                                  | Model  |
+| Name	                                    | Model  |
 |-------------------------------------------|--------|
 | 1C                                        | dreame.vacuum.ma1808 |
 | 1C                                        | dreame.vacuum.md1808 |

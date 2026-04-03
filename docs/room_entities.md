@@ -220,9 +220,11 @@ entities:
   {%- endfor %}
   - type: divider
   - entity: switch.{{vacuum_name}}_customized_cleaning
-    name: Customized Cleaning
+    name: Customized Cleaning    
+{%- if states['switch.' + vacuum_name + '_cleaning_sequence'] is not none %}
   - entity: switch.{{vacuum_name}}_cleaning_sequence
     name: Cleaning Sequence
+{%- endif %}
 ```
 
 #### <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md#select-entities-for-rooms">For more information about room entities</a>

@@ -27,7 +27,7 @@
           "host": "Host",
           "token": "Token"
         },
-        "description": "Você precisará do token da API de 32 caracteres, consulte https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token para obter instruções."
+        "description": "Você precisará do token da API de 32 caracteres."
       },
       "mi": {
         "data": {
@@ -36,7 +36,7 @@
           "country": "País do servidor",
           "prefer_cloud": "Preferir conexão com a nuvem"
         },
-        "description": "Faça login na Xiaomi Miio Cloud, consulte https://www.openhab.org/addons/bindings/miio/#country-servers para saber qual servidor de nuvem usar."
+        "description": "Faça login na Xiaomi Miio Cloud."
       },
       "2fa": {
         "data": {
@@ -224,7 +224,43 @@
           "default": "Padrão",
           "english": "Inglês",
           "german": "Alemão",
-          "chinese": "Chinês"
+          "chinese": "Chinês",
+          "russian": "Russo",
+          "italian": "Italiano",
+          "french": "Francês",
+          "korean": "Coreano"
+        }
+      },
+      "mop_pressure": {
+        "state": {
+          "light": "Leve",
+          "normal": "Normal"
+        }
+      },
+      "mop_temperature": {
+        "state": {
+          "normal": "Normal",
+          "warm": "Morno"
+        }
+      },
+      "low_lying_area_frequency": {
+        "state": {
+          "weekly": "Semanalmente",
+          "daily": "Diariamente"
+        }
+      },
+      "scraper_frequency": {
+        "state": {
+          "off": "Desligado",
+          "weekly": "Semanalmente",
+          "daily": "Diariamente"
+        }
+      },
+      "auto_lds_coverage": {
+        "state": {
+          "off": "Desligado",
+          "security": "Segurança",
+          "extreme": "Extremo"
         }
       },
       "order": {
@@ -236,7 +272,8 @@
         "state": {
           "by_area": "Por área",
           "by_time": "Por tempo",
-          "by_room": "Por quarto"
+          "by_room": "Por quarto",
+          "intelligent": "Inteligente"
         }
       },
       "mop_clean_frequency": {
@@ -249,7 +286,9 @@
           "off": "Desligado",
           "standard": "Padrão",
           "high_frequency": "Alta frequência",
-          "low_frequency": "Baixa frequência"
+          "low_frequency": "Baixa frequência",
+          "custom_frequency": "Frequência personalizada",
+          "intelligent": "Inteligente"
         }
       },
       "floor_material_direction": {
@@ -290,7 +329,8 @@
           "normal": "Normal",
           "mild": "Leve",
           "warm": "Morno",
-          "hot": "Quente"
+          "hot": "Quente",
+          "max": "Máximo"
         }
       },
       "auto_recleaning": {
@@ -374,7 +414,11 @@
           "initial_deep_cleaning": "Limpeza profunda inicial",
           "initial_deep_cleaning_paused": "Limpeza profunda inicial pausada",
           "sanitizing": "Sanitizando",
-          "sanitizing_with_dry": "Sanitizando com secagem"
+          "sanitizing_with_dry": "Sanitizando com secagem",
+          "changing_mop": "Trocando esfregão",
+          "changing_mop_paused": "Troca de esfregão pausada",
+          "floor_maintaining": "Manutenção do piso",
+          "floor_maintaining_paused": "Manutenção do piso pausada"
         }
       },
       "status": {
@@ -564,7 +608,40 @@
           "dirty_tank_not_installed": "O tanque de água usada do robô não está instalado.",
           "robot_in_hidden_room": "Área escondida.",
           "washboard_not_working": "A tábua de lavar parou de funcionar.",
-          "return_to_charge_failed": "Falha ao retornar ao carregador."
+          "return_to_charge_failed": "Falha ao retornar ao carregador.",
+          "lds_failed_to_lift": "Falha ao levantar o módulo LDS.",
+          "robot_stuck": "O LDS não pode ser levantado aqui para posicionamento.",
+          "robot_stuck_repeat": "Mova o robô para uma área aberta e retome a tarefa.",
+          "slippery_floor": "Piso escorregadio. Por favor, tente novamente mais tarde.",
+          "check_mop_install": "Verifique se o esfregão está instalado corretamente.",
+          "dirty_water_tank_full": "Nível de água anormal no tanque de água suja.",
+          "retractable_leg_stuck": "Verifique se as pernas retráteis estão presas.",
+          "internal_error": "Mau funcionamento devido a erro interno. Tente reiniciar o robô.",
+          "robot_stuck_on_tables": "O robô ficou preso entre mesas e cadeiras.",
+          "robot_stuck_on_passage": "O robô ficou preso em uma passagem estreita.",
+          "robot_stuck_on_threshold": "O robô ficou preso em um degrau/batente.",
+          "robot_stuck_on_low_lying_area": "O robô ficou preso em uma área baixa.",
+          "robot_stuck_on_ramp": "O robô detectou rampas perigosas no caminho.",
+          "robot_stuck_on_obstacle": "O robô detectou obstáculos no caminho.",
+          "robot_stuck_on_pet": "O robô detectou pessoas ou animais no caminho.",
+          "robot_stuck_on_slippery_surface": "O robô está preso devido a escorregamento.",
+          "robot_stuck_on_carpet": "O robô escorrega no tapete",
+          "drainage_failed": "Drenagem anormal do tanque de água suja",
+          "mop_not_detected": "Esfregão não detectado.",
+          "mop_holder_error": "Erro de quantidade/colocação do suporte do esfregão na base.",
+          "dock_error": "Erro da base.",
+          "wash_failed": "Falha ao lavar o esfregão sujo.",
+          "robot_stuck_on_curtain": "O robô escorrega na área da cortina",
+          "edge_mop_stop_rotate": "O esfregão de borda parou de girar.",
+          "edge_mop_detached": "O esfregão de borda se soltou.",
+          "chassis_lift_malfunction": "Mau funcionamento da elevação do chassi.",
+          "mop_cover_error": "Verifique se há detritos perto do rolo do esfregão e da tampa.",
+          "roller_mop_error": "Verifique se há detritos perto do rolo do esfregão e da tampa.",
+          "onboard_water_tank_empty": "Nível baixo de água no tanque de água limpa do robô.",
+          "onboard_dirty_water_tank_full": "O tanque de água suja do robô está cheio.",
+          "mop_not_installed": "Esfregão não instalado.",
+          "fluffing_roller_error": "Erro do rolo de felpa.",
+          "blocked_by_obstacle": "Robô bloqueado por obstáculo."
         }
       },
       "charging_status": {
@@ -699,7 +776,19 @@
           "initial_deep_cleaning_paused": "Limpeza profunda inicial pausada",
           "mop_pad_heating": "Aquecimento das almofadas do esfregão",
           "cleaning_after_mapping": "Limpeza após mapeamento",
-          "small_particle_cleaning": "Limpeza de partículas pequenas"
+          "small_particle_cleaning": "Limpeza de partículas pequenas",
+          "changing_mop": "Trocando esfregão",
+          "changing_mop_paused": "Troca de esfregão pausada",
+          "floor_maintaining": "Manutenção do piso",
+          "floor_maintaining_paused": "Manutenção do piso pausada",
+          "wood_floor_maintaining": "Manutenção de piso de madeira"
+        }
+      },
+      "dust_bag_drying_status": {
+        "state": {
+          "idle": "Ocioso",
+          "drying": "Secando",
+          "paused": "Pausado"
         }
       }
     }
@@ -1078,6 +1167,16 @@
         "shortcut_name": {
           "name": "Nome do atalho",
           "description": "Novo nome do atalho."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Excluir atalho",
+      "description": "Excluir um atalho. (Apenas em dispositivos suportados)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID do atalho",
+          "description": "ID do atalho."
         }
       }
     },

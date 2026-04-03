@@ -64,10 +64,13 @@ from .const import (
     NOTIFICATION_ID_REPLACE_DETERGENT,
     NOTIFICATION_ID_REPLACE_SQUEEGEE,
     NOTIFICATION_ID_CLEAN_ONBOARD_DIRTY_WATER_TANK,
-    NOTIFICATION_ID_CLEAN_DIRTY_WATER_TANK,
+    NOTIFICATION_ID_CLEAN_DIRTY_WATER_CHANNEL,
     NOTIFICATION_ID_REPLACE_DEODORIZER,
     NOTIFICATION_ID_CLEAN_WHEEL,
     NOTIFICATION_ID_REPLACE_SCALE_INHIBITOR,
+    NOTIFICATION_ID_CLEAN_FLUFFING_ROLLER,
+    NOTIFICATION_ID_CLEAN_ROLLER_MOP_FILTER,
+    NOTIFICATION_ID_CLEAN_WATER_OUTLET_FILTER,
     NOTIFICATION_ID_CLEANUP_COMPLETED,
     NOTIFICATION_ID_WARNING,
     NOTIFICATION_ID_ERROR,
@@ -93,10 +96,13 @@ from .const import (
     CONSUMABLE_DETERGENT,
     CONSUMABLE_SQUEEGEE,
     CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
-    CONSUMABLE_DIRTY_WATER_TANK,
+    CONSUMABLE_DIRTY_WATER_CHANNEL,
     CONSUMABLE_DEODORIZER,
     CONSUMABLE_WHEEL,
     CONSUMABLE_SCALE_INHIBITOR,
+    CONSUMABLE_FLUFFING_ROLLER,
+    CONSUMABLE_ROLLER_MOP_FILTER,
+    CONSUMABLE_WATER_OUTLET_FILTER,
 )
 
 
@@ -128,7 +134,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
 
         if entry.options.get(CONF_VERSION) != VERSION:
             options = entry.options.copy()
-            
+
             ## Migration: Convert map objects to hidden map objects
             if CONF_MAP_OBJECTS in entry.options and CONF_HIDDEN_MAP_OBJECTS not in options:
                 options[CONF_HIDDEN_MAP_OBJECTS] = []
@@ -356,31 +362,33 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             NOTIFICATION_ID_REPLACE_TANK_FILTER,
             DreameVacuumProperty.TANK_FILTER_LEFT,
         )
-        if not self.device.capability.disable_sensor_cleaning:
+        if not self._device.capability.disable_sensor_cleaning:
             self._check_consumable(
                 CONSUMABLE_SENSOR,
                 NOTIFICATION_ID_CLEAN_SENSOR,
                 DreameVacuumProperty.SENSOR_DIRTY_LEFT,
             )
-        self._check_consumable(
-            CONSUMABLE_MOP_PAD,
-            NOTIFICATION_ID_REPLACE_MOP,
-            DreameVacuumProperty.MOP_PAD_LEFT,
-        )
-        self._check_consumable(
-            CONSUMABLE_SQUEEGEE,
-            NOTIFICATION_ID_REPLACE_SQUEEGEE,
-            DreameVacuumProperty.SQUEEGEE_LEFT,
-        )
+        if not self._device.capability.disable_mop_consumable:
+            self._check_consumable(
+                CONSUMABLE_MOP_PAD,
+                NOTIFICATION_ID_REPLACE_MOP,
+                DreameVacuumProperty.MOP_PAD_LEFT,
+            )
+        if self._device.capability.squeegee:
+            self._check_consumable(
+                CONSUMABLE_SQUEEGEE,
+                NOTIFICATION_ID_REPLACE_SQUEEGEE,
+                DreameVacuumProperty.SQUEEGEE_LEFT,
+            )
         self._check_consumable(
             CONSUMABLE_ONBOARD_DIRTY_WATER_TANK,
             NOTIFICATION_ID_CLEAN_ONBOARD_DIRTY_WATER_TANK,
             DreameVacuumProperty.ONBOARD_DIRTY_WATER_TANK_LEFT,
         )
         self._check_consumable(
-            CONSUMABLE_DIRTY_WATER_TANK,
-            NOTIFICATION_ID_CLEAN_DIRTY_WATER_TANK,
-            DreameVacuumProperty.DIRTY_WATER_TANK_LEFT,
+            CONSUMABLE_DIRTY_WATER_CHANNEL,
+            NOTIFICATION_ID_CLEAN_DIRTY_WATER_CHANNEL,
+            DreameVacuumProperty.DIRTY_WATER_CHANNEL_DIRTY_LEFT,
         )
         if self._device.capability.self_wash_base:
             self._check_consumable(
@@ -388,6 +396,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 NOTIFICATION_ID_SILVER_ION,
                 DreameVacuumProperty.SILVER_ION_LEFT,
             )
+        if self._device.capability.detergent:
             self._check_consumable(
                 CONSUMABLE_DETERGENT,
                 NOTIFICATION_ID_REPLACE_DETERGENT,
@@ -411,9 +420,27 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 NOTIFICATION_ID_REPLACE_SCALE_INHIBITOR,
                 DreameVacuumProperty.SCALE_INHIBITOR_LEFT,
             )
+        if self._device.capability.fluffing_roller:
+            self._check_consumable(
+                CONSUMABLE_FLUFFING_ROLLER,
+                NOTIFICATION_ID_CLEAN_FLUFFING_ROLLER,
+                DreameVacuumProperty.FLUFFING_ROLLER_DIRTY_LEFT,
+            )
+        if self._device.capability.roller_mop_filter:
+            self._check_consumable(
+                CONSUMABLE_ROLLER_MOP_FILTER,
+                NOTIFICATION_ID_CLEAN_ROLLER_MOP_FILTER,
+                DreameVacuumProperty.ROLLER_MOP_FILTER_DIRTY_LEFT,
+            )
+        if self._device.capability.water_outlet_filter:
+            self._check_consumable(
+                CONSUMABLE_WATER_OUTLET_FILTER,
+                NOTIFICATION_ID_CLEAN_WATER_OUTLET_FILTER,
+                DreameVacuumProperty.WATER_OUTLET_FILTER_DIRTY_LEFT,
+            )
 
     def _create_persistent_notification(self, content, notification_id) -> None:
-        if not self.device.disconnected and self.device.device_connected and self._notify:
+        if not self._device.disconnected and self._device.device_connected and self._notify:
             if isinstance(self._notify, list):
                 if notification_id == NOTIFICATION_ID_CLEANUP_COMPLETED:
                     if NOTIFICATION_ID_CLEANUP_COMPLETED not in self._notify:

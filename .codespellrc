@@ -3,4 +3,4 @@
 skip = .git,.codespellrc,translations,resources.py
 check-hidden = true
 # ignore-regex = 
-ignore-words-list = hass,aline,laF
+ignore-words-list = hass,aline,laF,visibile

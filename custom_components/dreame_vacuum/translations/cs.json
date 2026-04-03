@@ -27,7 +27,7 @@
           "host": "Hostitel",
           "token": "Token"
         },
-        "description": "Budete potřebovat 32 znakový API token, viz https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token pro pokyny."
+        "description": "Budete potřebovat 32 znakový API token."
       },
       "mi": {
         "data": {
@@ -36,7 +36,7 @@
           "country": "Země serveru",
           "prefer_cloud": "Preferovat připojení přes cloud"
         },
-        "description": "Přihlaste se do Xiaomi Miio cloudu, viz https://www.openhab.org/addons/bindings/miio/#country-servers pro výběr cloudového serveru."
+        "description": "Přihlaste se do Xiaomi Miio cloudu."
       },
       "2fa": {
         "data": {
@@ -224,7 +224,43 @@
           "default": "Výchozí",
           "english": "Angličtina",
           "german": "Němčina",
-          "chinese": "Čínština"
+          "chinese": "Čínština",
+          "russian": "Ruština",
+          "italian": "Italština",
+          "french": "Francouzština",
+          "korean": "Korejština"
+        }
+      },
+      "mop_pressure": {
+        "state": {
+          "light": "Lehký",
+          "normal": "Normální"
+        }
+      },
+      "mop_temperature": {
+        "state": {
+          "normal": "Normální",
+          "warm": "Teplá"
+        }
+      },
+      "low_lying_area_frequency": {
+        "state": {
+          "weekly": "Týdně",
+          "daily": "Denně"
+        }
+      },
+      "scraper_frequency": {
+        "state": {
+          "off": "Vypnuto",
+          "weekly": "Týdně",
+          "daily": "Denně"
+        }
+      },
+      "auto_lds_coverage": {
+        "state": {
+          "off": "Vypnuto",
+          "security": "Bezpečnost",
+          "extreme": "Extrémní"
         }
       },
       "order": {
@@ -236,7 +272,8 @@
         "state": {
           "by_area": "Podle oblasti",
           "by_time": "Podle času",
-          "by_room": "Podle místnosti"
+          "by_room": "Podle místnosti",
+          "intelligent": "Inteligentní"
         }
       },
       "mop_clean_frequency": {
@@ -249,7 +286,9 @@
           "off": "Vypnuto",
           "standard": "Standardní",
           "high_frequency": "Vysoká frekvence",
-          "low_frequency": "Nízká frekvence"
+          "low_frequency": "Nízká frekvence",
+          "custom_frequency": "Vlastní frekvence",
+          "intelligent": "Inteligentní"
         }
       },
       "floor_material_direction": {
@@ -290,7 +329,8 @@
           "normal": "Normální",
           "mild": "Vlažná",
           "warm": "Teplá",
-          "hot": "Horká"
+          "hot": "Horká",
+          "max": "Maximum"
         }
       },
       "auto_recleaning": {
@@ -374,7 +414,11 @@
           "initial_deep_cleaning": "Počáteční hloubkové čištění",
           "initial_deep_cleaning_paused": "Počáteční hloubkové čištění pozastaveno",
           "sanitizing": "Dezinfekce",
-          "sanitizing_with_dry": "Dezinfekce s vysušením"
+          "sanitizing_with_dry": "Dezinfekce s vysušením",
+          "changing_mop": "Výměna mopu",
+          "changing_mop_paused": "Výměna mopu pozastavena",
+          "floor_maintaining": "Údržba podlahy",
+          "floor_maintaining_paused": "Údržba podlahy pozastavena"
         }
       },
       "status": {
@@ -564,7 +608,40 @@
           "dirty_tank_not_installed": "Nádrž na špinavou vodu robota není nainstalována.",
           "robot_in_hidden_room": "Skrytá oblast. Přesuňte robota do vhodné oblasti a zkuste to znovu.",
           "washboard_not_working": "Mycí deska přestala fungovat.",
-          "return_to_charge_failed": "Nepodařilo se vrátit na nabíječku."
+          "return_to_charge_failed": "Nepodařilo se vrátit na nabíječku.",
+          "lds_failed_to_lift": "Nepodařilo se zvednout modul LDS.",
+          "robot_stuck": "LDS zde nelze zvednout pro určení polohy.",
+          "robot_stuck_repeat": "Přesuňte robota do otevřeného prostoru a obnovte úkol.",
+          "slippery_floor": "Kluzká podlaha. Zkuste to prosím později.",
+          "check_mop_install": "Zkontrolujte, zda je mop správně nainstalován.",
+          "dirty_water_tank_full": "Abnormální hladina vody v nádrži na špinavou vodu.",
+          "retractable_leg_stuck": "Zkontrolujte, zda nejsou zamotané výsuvné nohy.",
+          "internal_error": "Porucha způsobená vnitřní chybou. Zkuste robota restartovat.",
+          "robot_stuck_on_tables": "Robot uvízl mezi stoly a židlemi.",
+          "robot_stuck_on_passage": "Robot uvízl v úzkém průchodu.",
+          "robot_stuck_on_threshold": "Robot uvízl na schodu/prahu.",
+          "robot_stuck_on_low_lying_area": "Robot uvízl v oblasti s nízkou světlou výškou.",
+          "robot_stuck_on_ramp": "Robot detekoval na trase rampy s rizikem pádu.",
+          "robot_stuck_on_obstacle": "Robot detekoval překážky na trase.",
+          "robot_stuck_on_pet": "Robot detekoval na trase lidi nebo zvířata.",
+          "robot_stuck_on_slippery_surface": "Robot uvízl kvůli prokluzování.",
+          "robot_stuck_on_carpet": "Robot prokluzuje na koberci",
+          "drainage_failed": "Abnormální vypouštění vody z nádrže na špinavou vodu",
+          "mop_not_detected": "Mop nebyl detekován.",
+          "mop_holder_error": "Chyba množství/umístění držáku mopu v stanici.",
+          "dock_error": "Chyba stanice.",
+          "wash_failed": "Nepodařilo se umýt špinavý mop.",
+          "robot_stuck_on_curtain": "Robot prokluzuje v oblasti záclon",
+          "edge_mop_stop_rotate": "Boční mop se přestal otáčet.",
+          "edge_mop_detached": "Boční mop se odpojil.",
+          "chassis_lift_malfunction": "Porucha zdvihu podvozku.",
+          "mop_cover_error": "Zkontrolujte nečistoty v blízkosti válcového mopu a krytu.",
+          "roller_mop_error": "Zkontrolujte nečistoty v blízkosti válcového mopu a krytu.",
+          "onboard_water_tank_empty": "Nízká hladina vody v nádrži na čistou vodu v robotovi.",
+          "onboard_dirty_water_tank_full": "Nádrž na špinavou vodu v robotovi je plná.",
+          "mop_not_installed": "Mop není nainstalován.",
+          "fluffing_roller_error": "Chyba načechrávacího válce.",
+          "blocked_by_obstacle": "Robot je blokován překážkou."
         }
       },
       "charging_status": {
@@ -699,7 +776,19 @@
           "initial_deep_cleaning_paused": "Počáteční hloubkové čištění pozastaveno",
           "mop_pad_heating": "Ohřev mopových podložek",
           "cleaning_after_mapping": "Čištění po mapování",
-          "small_particle_cleaning": "Čištění malých částic"
+          "small_particle_cleaning": "Čištění malých částic",
+          "changing_mop": "Výměna mopu",
+          "changing_mop_paused": "Výměna mopu pozastavena",
+          "floor_maintaining": "Údržba podlahy",
+          "floor_maintaining_paused": "Údržba podlahy pozastavena",
+          "wood_floor_maintaining": "Údržba dřevěné podlahy"
+        }
+      },
+      "dust_bag_drying_status": {
+        "state": {
+          "idle": "Nečinný",
+          "drying": "Sušení",
+          "paused": "Pozastaveno"
         }
       }
     }
@@ -1078,6 +1167,16 @@
         "shortcut_name": {
           "name": "Název zkratky",
           "description": "Nový název zkratky."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Smazat zkratku",
+      "description": "Smazat zkratku. (Pouze na podporovaných zařízeních)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID zkratky",
+          "description": "ID zkratky."
         }
       }
     },

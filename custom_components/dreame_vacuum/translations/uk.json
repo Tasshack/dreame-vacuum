@@ -27,7 +27,7 @@
           "host": "Хост",
           "token": "Токен"
         },
-        "description": "Вам знадобиться 32-знаковий API-токен, див. https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token для інструкцій."
+        "description": "Вам знадобиться 32-знаковий API-токен."
       },
       "mi": {
         "data": {
@@ -36,7 +36,7 @@
           "country": "Країна сервера",
           "prefer_cloud": "Перевага хмарного з'єднання"
         },
-        "description": "Увійдіть до хмари Xiaomi, див. https://www.openhab.org/addons/bindings/miio/#country-servers для використання хмарного сервера."
+        "description": "Увійдіть до хмари Xiaomi."
       },
       "2fa": {
         "data": {
@@ -224,7 +224,43 @@
           "default": "За замовчуванням",
           "english": "Англійська",
           "german": "Німецька",
-          "chinese": "Китайська"
+          "chinese": "Китайська",
+          "russian": "Російська",
+          "italian": "Італійська",
+          "french": "Французька",
+          "korean": "Корейська"
+        }
+      },
+      "mop_pressure": {
+        "state": {
+          "light": "Легкий",
+          "normal": "Нормальний"
+        }
+      },
+      "mop_temperature": {
+        "state": {
+          "normal": "Нормальна",
+          "warm": "Тепла"
+        }
+      },
+      "low_lying_area_frequency": {
+        "state": {
+          "weekly": "Щотижня",
+          "daily": "Щодня"
+        }
+      },
+      "scraper_frequency": {
+        "state": {
+          "off": "Вимкнено",
+          "weekly": "Щотижня",
+          "daily": "Щодня"
+        }
+      },
+      "auto_lds_coverage": {
+        "state": {
+          "off": "Вимкнено",
+          "security": "Безпека",
+          "extreme": "Екстремальний"
         }
       },
       "order": {
@@ -236,7 +272,8 @@
         "state": {
           "by_area": "За площею",
           "by_time": "За часом",
-          "by_room": "По кімнаті"
+          "by_room": "По кімнаті",
+          "intelligent": "Інтелектуальна"
         }
       },
       "mop_clean_frequency": {
@@ -249,7 +286,9 @@
           "off": "Вимкнено",
           "standard": "Стандартний",
           "high_frequency": "Висока частота",
-          "low_frequency": "Низька частота"
+          "low_frequency": "Низька частота",
+          "custom_frequency": "Користувацька частота",
+          "intelligent": "Інтелектуальний"
         }
       },
       "floor_material_direction": {
@@ -290,7 +329,8 @@
           "normal": "Нормальний",
           "mild": "Помірний",
           "warm": "Зігрівати",
-          "hot": "Гарячий"
+          "hot": "Гарячий",
+          "max": "Максимум"
         }
       },
       "auto_recleaning": {
@@ -374,7 +414,11 @@
           "initial_deep_cleaning": "Початкова глибока очистка",
           "initial_deep_cleaning_paused": "Початкова глибока очистка призупинено",
           "sanitizing": "Дезинфекція",
-          "sanitizing_with_dry": "Дезинфекція з сушінням"
+          "sanitizing_with_dry": "Дезинфекція з сушінням",
+          "changing_mop": "Заміна швабри",
+          "changing_mop_paused": "Заміна швабры призупинена",
+          "floor_maintaining": "Догляд за підлогою",
+          "floor_maintaining_paused": "Догляд за підлогою призупинено"
         }
       },
       "status": {
@@ -564,7 +608,40 @@
           "dirty_tank_not_installed": "Бак для використаної води робота не встановлено.",
           "robot_in_hidden_room": "Прихована зона. ",
           "washboard_not_working": "Пральна дошка перестає працювати.",
-          "return_to_charge_failed": "Не вдалося повернутися до зарядки."
+          "return_to_charge_failed": "Не вдалося повернутися до зарядки.",
+          "lds_failed_to_lift": "Не вдалося підняти модуль LDS.",
+          "robot_stuck": "LDS не може бути піднятий тут для позиціонування.",
+          "robot_stuck_repeat": "Перемістіть робота на відкрите місце і відновіть завдання.",
+          "slippery_floor": "Слизька підлога. Спробуйте пізніше.",
+          "check_mop_install": "Перевірте, чи правильно встановлена швабра.",
+          "dirty_water_tank_full": "Аномальний рівень води в баку для брудної води.",
+          "retractable_leg_stuck": "Перевірте, чи не заплуталися висувні ніжки.",
+          "internal_error": "Збій через внутрішню помилку. Спробуйте перезавантажити робота.",
+          "robot_stuck_on_tables": "Робот застряг між столами та стільцями.",
+          "robot_stuck_on_passage": "Робот застряг у вузькому проході.",
+          "robot_stuck_on_threshold": "Робот застряг на порозі/сходинці.",
+          "robot_stuck_on_low_lying_area": "Робот застряг у низькій зоні.",
+          "robot_stuck_on_ramp": "Робот виявив небезпечні рампи на шляху.",
+          "robot_stuck_on_obstacle": "Робот виявив перешкоди на шляху.",
+          "robot_stuck_on_pet": "Робот виявив людей або тварин на шляху.",
+          "robot_stuck_on_slippery_surface": "Робот застряг через ковзання.",
+          "robot_stuck_on_carpet": "Робот ковзає на килимі",
+          "drainage_failed": "Аномальний злив з бака для брудної води",
+          "mop_not_detected": "Швабра не виявлена.",
+          "mop_holder_error": "Помилка кількості/розміщення тримача швабри на станції.",
+          "dock_error": "Помилка станції.",
+          "wash_failed": "Не вдалося промити брудну швабру.",
+          "robot_stuck_on_curtain": "Робот ковзає в зоні штор",
+          "edge_mop_stop_rotate": "Бічна швабра перестала обертатися.",
+          "edge_mop_detached": "Бічна швабра від'єдналася.",
+          "chassis_lift_malfunction": "Несправність підйому шасі.",
+          "mop_cover_error": "Перевірте наявність сміття біля роликової швабри та кришки.",
+          "roller_mop_error": "Перевірте наявність сміття біля роликової швабри та кришки.",
+          "onboard_water_tank_empty": "Низький рівень води в баку для чистої води робота.",
+          "onboard_dirty_water_tank_full": "Бак для брудної води робота повний.",
+          "mop_not_installed": "Швабра не встановлена.",
+          "fluffing_roller_error": "Помилка ворсистого ролика.",
+          "blocked_by_obstacle": "Робот заблокований перешкодою."
         }
       },
       "charging_status": {
@@ -699,7 +776,19 @@
           "initial_deep_cleaning_paused": "Початкова глибока очистка призупинено",
           "mop_pad_heating": "Нагрів моп‑накладок",
           "cleaning_after_mapping": "Прибирання після картографування",
-          "small_particle_cleaning": "Прибирання дрібних часток"
+          "small_particle_cleaning": "Прибирання дрібних часток",
+          "changing_mop": "Заміна швабри",
+          "changing_mop_paused": "Заміна швабры призупинена",
+          "floor_maintaining": "Догляд за підлогою",
+          "floor_maintaining_paused": "Догляд за підлогою призупинено",
+          "wood_floor_maintaining": "Догляд за дерев'яною підлогою"
+        }
+      },
+      "dust_bag_drying_status": {
+        "state": {
+          "idle": "Бездіяльність",
+          "drying": "Сушіння",
+          "paused": "Пауза"
         }
       }
     }
@@ -1078,6 +1167,16 @@
         "shortcut_name": {
           "name": "Назва ярлика",
           "description": "Нова назва ярлика."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Видалити ярлик",
+      "description": "Видалити ярлик. (Тільки на підтримуваних пристроях)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID ярлика",
+          "description": "Ідентифікатор ярлика."
         }
       }
     },

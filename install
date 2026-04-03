@@ -27,7 +27,7 @@ if [ -n "$path" ]; then
         mkdir "$path/custom_components"
     fi
     cd "$path/custom_components"
-    wget "https://github.com/Tasshack/dreame-vacuum/releases/download/v2.0.0b21/dreame_vacuum.zip"
+    wget "https://github.com/Tasshack/dreame-vacuum/releases/download/v2.0.0b22/dreame_vacuum.zip"
     if [ -d "$path/custom_components/dreame_vacuum" ]; then
         rm -R "$path/custom_components/dreame_vacuum"
     fi

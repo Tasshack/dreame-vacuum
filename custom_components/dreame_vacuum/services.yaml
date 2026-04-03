@@ -434,6 +434,16 @@ vacuum_set_custom_cleaning:
       required: true
       selector:
         object:
+    mop_temperature:
+      example: "[0,0,1,0,1]"
+      required: true
+      selector:
+        object:
+    mop_pressure:
+      example: "[2,0,0,2,0]"
+      required: true
+      selector:
+        object:
         
 vacuum_set_custom_carpet_cleaning:
   target:
@@ -513,6 +523,9 @@ vacuum_reset_consumable:
             - "deodorizer"
             - "wheel"
             - "scale_inhibitor"
+            - "fluffing_roller"
+            - "roller_mop_filter"
+            - "water_outlet_filter"
 
 vacuum_rename_shortcut:
   target:
@@ -531,6 +544,19 @@ vacuum_rename_shortcut:
       required: true
       selector:
         text:
+
+vacuum_delete_shortcut:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    shortcut_id:
+      example: "34"
+      required: true
+      selector:
+        number:
+          mode: box
 
 vacuum_set_carpet_area:
   target:

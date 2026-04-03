@@ -27,7 +27,7 @@
           "host": "Host",
           "token": "Token"
         },
-        "description": "You will need the 32 character API Token, see https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token for instructions."
+        "description": "You will need the 32 character API Token."
       },
       "mi": {
         "data": {
@@ -36,8 +36,8 @@
           "country": "Server country",
           "prefer_cloud": "Prefer cloud connection"
         },
-        "description": "Log in to the Xiaomi Miio cloud, see https://www.openhab.org/addons/bindings/miio/#country-servers for the cloud server to use."
-      },      
+        "description": "Log in to the Xiaomi Miio cloud."
+      },
       "2fa": {
         "data": {
           "verification_code": "Two-factor verification code"
@@ -224,7 +224,43 @@
           "default": "Default",
           "english": "English",
           "german": "German",
-          "chinese": "Chinese"
+          "chinese": "Chinese",
+          "russian": "Russian",
+          "italian": "Italian",
+          "french": "French",
+          "korean": "Korean"
+        }
+      },
+      "mop_pressure": {
+        "state": {
+          "light": "Light",
+          "normal": "Normal"
+        }
+      },
+      "mop_temperature": {
+        "state": {
+          "normal": "Normal",
+          "warm": "Warm"
+        }
+      },
+      "low_lying_area_frequency": {
+        "state": {
+          "weekly": "Weekly",
+          "daily": "Daily"
+        }
+      },
+      "scraper_frequency": {
+        "state": {
+          "off": "Off",
+          "weekly": "Weekly",
+          "daily": "Daily"
+        }
+      },
+      "auto_lds_coverage": {
+        "state": {
+          "off": "Off",
+          "security": "Security",
+          "extreme": "Extreme"
         }
       },
       "order": {
@@ -236,9 +272,10 @@
         "state": {
           "by_area": "By Area",
           "by_time": "By Time",
-          "by_room": "By Room"
+          "by_room": "By Room",
+          "intelligent": "Intelligent"
         }
-      },      
+      },
       "mop_clean_frequency": {
         "state": {
           "by_room": "By Room"
@@ -249,7 +286,9 @@
           "off": "Off",
           "standard": "Standard",
           "high_frequency": "High Frequency",
-          "low_frequency": "Low Frequency"
+          "low_frequency": "Low Frequency",
+          "custom_frequency": "Custom Frequency",
+          "intelligent": "Intelligent"
         }
       },
       "floor_material_direction": {
@@ -290,7 +329,8 @@
           "normal": "Normal",
           "mild": "Mild",
           "warm": "Warm",
-          "hot": "Hot"
+          "hot": "Hot",
+          "max": "Max"
         }
       },
       "auto_recleaning": {
@@ -374,7 +414,11 @@
           "initial_deep_cleaning": "Initial deep cleaning",
           "initial_deep_cleaning_paused": "Initial deep cleaning paused",
           "sanitizing": "Sanitizing",
-          "sanitizing_with_dry": "Sanitizing with dry"
+          "sanitizing_with_dry": "Sanitizing with dry",
+          "changing_mop": "Changing mop",
+          "changing_mop_paused": "Changing mop paused",
+          "floor_maintaining": "Floor maintaining",
+          "floor_maintaining_paused": "Floor maintaining paused"
         }
       },
       "status": {
@@ -564,7 +608,40 @@
           "dirty_tank_not_installed": "The used water tank of robot is not installed.",
           "robot_in_hidden_room": "Hidden area. Please move the robot to the appropriate area and retry.",
           "washboard_not_working": "Washboard stops working.",
-          "return_to_charge_failed": "Failed to return to charge."
+          "return_to_charge_failed": "Failed to return to charge.",
+          "lds_failed_to_lift": "Failed to lift LDS module.",
+          "robot_stuck": "LDS cannot be raised here for positioning.",
+          "robot_stuck_repeat": "Move robot to an open area and resume the task.",
+          "slippery_floor": "Slippery floor. Please try again later.",
+          "check_mop_install": "Please check if the mop is installed properly.",
+          "dirty_water_tank_full": "Abnormal water level in the robot's used water tank.",
+          "retractable_leg_stuck": "Please check if the retractable legs are tangled.",
+          "internal_error": "Malfunction due to an internal error. Try to restart the robot.",
+          "robot_stuck_on_tables": "Robot stuck among the tables and chairs.",
+          "robot_stuck_on_passage": "Robot stuck in the narrow passage.",
+          "robot_stuck_on_threshold": "Robot stuck at the step/threshold.",
+          "robot_stuck_on_low_lying_area": "Robot stuck in a low-clearance area.",
+          "robot_stuck_on_ramp": "Robot has detected Easy-to-Fall ramps on the path.",
+          "robot_stuck_on_obstacle": "Robot has detected obstacles on the path.",
+          "robot_stuck_on_pet": "Robot has detected people or pets on the path.",
+          "robot_stuck_on_slippery_surface": "Robot is stuck due to slipping.",
+          "robot_stuck_on_carpet": "Robot slips on the carpet",
+          "drainage_failed": "Abnormal water drainage from used water tank",
+          "mop_not_detected": "Mop not detected.",
+          "mop_holder_error": "Mop holder quantity/placement error in the dock.",
+          "dock_error": "Dock Error.",
+          "wash_failed": "Failed to wash dirty mop.",
+          "robot_stuck_on_curtain": "Robot slips in the curtain area",
+          "edge_mop_stop_rotate": "Edge mop stopped rotating.",
+          "edge_mop_detached": "Edge mop detached.",
+          "chassis_lift_malfunction": "Chassis lift malfunction.",
+          "mop_cover_error": "Check for any debris near the roller mop and mop cover.",
+          "roller_mop_error": "Check for any debris near the roller mop and mop cover.",
+          "onboard_water_tank_empty": "Low water level in robot’s clean water box.",
+          "onboard_dirty_water_tank_full": "Robot's used water box is full.",
+          "mop_not_installed": "Mop Not Installed.",
+          "fluffing_roller_error": "Fluffing Roller Error.",
+          "blocked_by_obstacle": "Robot blocked by obstacle."
         }
       },
       "charging_status": {
@@ -699,7 +776,19 @@
           "initial_deep_cleaning_paused": "Initial deep cleaning paused",
           "mop_pad_heating": "Mop pad heating",
           "cleaning_after_mapping": "Cleaning after mapping",
-          "small_particle_cleaning": "Small particle cleaning"
+          "small_particle_cleaning": "Small particle cleaning",
+          "changing_mop": "Changing mop",
+          "changing_mop_paused": "Changing mop paused",
+          "floor_maintaining": "Floor maintaining",
+          "floor_maintaining_paused": "Floor maintaining paused",
+          "wood_floor_maintaining": "Wood floor maintaining"
+        }
+      },
+      "dust_bag_drying_status": {
+        "state": {
+          "idle": "Idle",
+          "drying": "Drying",
+          "paused": "Paused"
         }
       }
     }
@@ -1006,7 +1095,7 @@
         "water_volume": {
           "name": "Water Volume",
           "description": "Water volume for each room."
-        },        
+        },
         "wetness_level": {
           "name": "Wetness Level",
           "description": "Wetness level for each room (On supported devices)."
@@ -1082,6 +1171,16 @@
         "shortcut_name": {
           "name": "Shortcut Name",
           "description": "New name of the shortcut."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Delete Shortcut",
+      "description": "Delete a shortcut. (Only on supported devices)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Shortcut ID",
+          "description": "ID of the shortcut."
         }
       }
     },

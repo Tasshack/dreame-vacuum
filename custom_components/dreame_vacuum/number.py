@@ -16,7 +16,7 @@ from homeassistant.components.number import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity import EntityCategory, async_generate_entity_id
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import entity_registry
@@ -24,7 +24,7 @@ from homeassistant.helpers import entity_registry
 from .const import DOMAIN, UNIT_MINUTES, UNIT_HOURS, UNIT_AREA, UNIT_PERCENT
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
-from .entity import DreameVacuumEntity, DreameVacuumEntityDescription
+from .entity import DreameVacuumEntity, DreameVacuumEntityDescription, remove_entities
 from .dreame import DreameVacuumAction, DreameVacuumProperty
 
 
@@ -116,7 +116,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         and not device.capability.mop_clean_frequency,
         min_value_fn=lambda device: device.status.self_clean_time_min,
         max_value_fn=lambda device: device.status.self_clean_time_max,
-        native_step=1,
+        native_step=5,
         entity_category=None,
         value_fn=lambda value, device: (
             (
@@ -139,8 +139,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_min_value=40,
         native_max_value=100,
         native_step=1,
-        exists_fn=lambda description, device: device.capability.camera_streaming
-        and device.capability.fill_light,  # and DreameVacuumEntityDescription().exists_fn(description, device),
+        exists_fn=lambda description, device: device.capability.camera_streaming and device.capability.fill_light,
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.CONFIG,
     ),
@@ -160,7 +159,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_min_value=1,
         max_value_fn=lambda device: 15 if device.capability.mop_clean_frequency else 32,
         native_step=1,
-        exists_fn=lambda description, device: device.capability.wetness_level        
+        exists_fn=lambda description, device: device.capability.wetness_level,
     ),
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.DRYING_TIME,
@@ -171,8 +170,19 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_max_value=12,
         native_step=1,
         entity_category=None,
-        exists_fn=lambda description, device: device.capability.mop_clean_frequency
+        exists_fn=lambda description, device: device.capability.mop_clean_frequency,
+    ),
+    DreameVacuumNumberEntityDescription(
+        property_key=DreameVacuumProperty.AUTO_EMPTY_AREA,
+        icon="mdi:recycle",
+        mode=NumberMode.SLIDER,
+        native_min_value=5,
+        native_max_value=15,
+        native_step=1,
+        exists_fn=lambda description, device: device.capability.auto_empty_area
+        and device.capability.auto_empty_mode
         and DreameVacuumEntityDescription().exists_fn(description, device),
+        native_unit_of_measurement=UNIT_AREA,
     ),
 )
 
@@ -214,6 +224,8 @@ async def async_setup_entry(
 ) -> None:
     """Set up Dreame Vacuum number based on a config entry."""
     coordinator: DreameVacuumDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+
+    remove_entities(hass, entry, coordinator, "number", NUMBERS)
     async_add_entities(
         DreameVacuumNumberEntity(coordinator, description)
         for description in NUMBERS
@@ -366,7 +378,11 @@ class DreameVacuumSegmentNumberEntity(DreameVacuumEntity, NumberEntity):
 
         super().__init__(coordinator, description)
         self._attr_unique_id = f"{self.device.mac}_room_{segment_id}_{description.key.lower()}"
-        self.entity_id = f"number.{self.device.name.lower()}_room_{segment_id}_{description.key.lower()}"
+        self.entity_id = async_generate_entity_id(
+            ENTITY_ID_FORMAT,
+            f"{self.device.name}_room_{segment_id}_{description.key.lower()}",
+            hass=self.coordinator.hass,
+        )
         self._attr_native_value = None
         if self.segment:
             self._attr_native_value = description.value_fn(coordinator.device, self.segment)
@@ -380,7 +396,7 @@ class DreameVacuumSegmentNumberEntity(DreameVacuumEntity, NumberEntity):
         else:
             name = f"{self.entity_description.key}_room_unavailable"
 
-        self._attr_name = f"{self.device.name} {name.replace('_', ' ').title()}"
+        self._attr_name = name.replace("_", " ").title()
 
         if self.entity_description.segment_icon_fn is not None:
             self._attr_icon = self.entity_description.segment_icon_fn(

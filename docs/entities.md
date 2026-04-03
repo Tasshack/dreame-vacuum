@@ -74,11 +74,23 @@
 | `silent_drying`   | TODO | 
 | `hair_compression`   | TODO | 
 | `side_brush_carpet_rotate`   | TODO | 
-| `auto_lds_lifting`   | TODO | 
 | `smart_mop_washing`   | TODO | 
 | `dnd_disable_resume_cleaning`   | TODO | 
 | `dnd_disable_auto_empty`   | TODO | 
 | `dnd_reduce_volume`   | TODO | 
+| `auto_change_mop`   | TODO | 
+| `lift_chassis_on_carpet`   | TODO | 
+| `close_roller_cover_on_carpet`   | TODO | 
+| `dust_bag_drying`   | TODO | 
+| `ring_light_always_on`   | TODO | 
+| `active_suspension_crossing`   | TODO | 
+| `dynamic_obstacle_cleaning`   | TODO | 
+| `active_suspension_crossing`   | TODO | 
+| `pressurized_cleaning`   | TODO | 
+| `lds_state`   | TODO | 
+| `mop_washing_with_detergent`   | TODO | 
+| `mopping_with_detergent`   | TODO | 
+| `synchronized_obstacle_crossing`   | TODO | 
 
 
 ## Sensor
@@ -104,6 +116,25 @@
 | `total_cleaning_time`   | Total cleaning duration |
 | `cleaning_count`   | Total cleaning times |
 | `total_cleaned_area`   | Total cleaned area |
+| `cleaning_history`   | Previous cleaning job details as attributes | Available with map feature
+| `current_room`   | Current room that vacuum currently in | Available with map feature
+| `stream_status`   | TODO | 
+| `drainage_status`   | TODO | 
+| `low_water_warning`   | TODO | 
+| `task_type`   | TODO | 
+| `firmware_version`   | TODO | 
+| `cruising_history`   | TODO | 
+| `cleaning_progress`   | TODO | 
+| `drying_progress`   | TODO | 
+| `drying_left`   | TODO | 
+| `dust_bag_drying_left`   | TODO | 
+| `dust_bag_drying_status`   | TODO | 
+| `clean_water_tank_status`   | TODO | 
+| `dirty_water_tank_status`   | TODO | 
+| `dust_bag_status`   | TODO | 
+| `detergent_status`   | TODO | 
+| `hot_water_status`   | TODO | 
+| `station_drainage_status`   | TODO | 
 | `main_brush_left`   | Main brush life left in percent |
 | `main_brush_time_left`   | Main brush life left in hours |
 | `side_brush_left`   | Side brush life left in percent |
@@ -120,26 +151,10 @@
 | `silver_ion_time_left`   | Silver-ion life left in hours | Available on vacuums with silver-ion feature
 | `detergent_left`   | Detergent left in percent | Available on vacuums has detergent cartridge
 | `detergent_time_left`   | Detergent left in hours | Available on vacuums has detergent cartridge
-| `cleaning_history`   | Previous cleaning job details as attributes | Available with map feature
-| `current_room`   | Current room that vacuum currently in | Available with map feature
-| `stream_status`   | TODO | 
-| `drainage_status`   | TODO | 
-| `low_water_warning`   | TODO | 
-| `task_type`   | TODO | 
-| `firmware_version`   | TODO | 
-| `cruising_history`   | TODO | 
-| `cleaning_progress`   | TODO | 
-| `drying_progress`   | TODO | 
-| `clean_water_tank_status`   | TODO | 
-| `dirty_water_tank_status`   | TODO | 
-| `dust_bag_status`   | TODO | 
-| `detergent_status`   | TODO | 
-| `hot_water_status`   | TODO | 
-| `station_drainage_status`   | TODO | 
 | `squeegee_left`   | TODO | 
 | `squeegee_time_left`   | TODO | 
-| `dirty_water_tank_left`   | TODO | 
-| `dirty_water_tank_time_left`   | TODO | 
+| `dirty_water_channel_left`   | TODO | 
+| `dirty_water_channel_time_left`   | TODO | 
 | `onboard_dirty_water_tank_left`   | TODO | 
 | `onboard_dirty_water_tank_time_left`   | TODO | 
 | `deodorizer_left`   | TODO | 
@@ -148,6 +163,20 @@
 | `wheel_dirty_time_left`   | TODO | 
 | `scale_inhibitor_left`   | TODO | 
 | `scale_inhibitor_time_left`   | TODO | 
+| `fluffing_roller_left`   | TODO | 
+| `fluffing_roller_time_left`   | TODO | 
+| `roller_mop_filter_left`   | TODO | 
+| `roller_mop_filter_time_left`   | TODO | 
+| `water_outlet_filter_left`   | TODO | 
+| `water_outlet_filter_time_left`   | TODO | 
+
+## Binary Sensor
+
+| Name  | Description  | Notes |
+| ----------------------- | -------------------- | -------------------- |
+| `charging_state`   | TODO | 
+| `roller_cover_status`   | TODO | 
+| `lds_state`   | TODO | 
 
 ## Number
 
@@ -160,6 +189,7 @@
 | `self_clean_time`   | TODO | 
 | `wetness_level`   | TODO | 
 | `drying_time`   | TODO | 
+| `auto_empty_area`   | TODO | 
 
 ## Time
 
@@ -182,17 +212,21 @@
 | `reset_silver_ion`   | Reset silver-ion remaining life left | Available on vacuums with silver-ion feature
 | `reset_detergent`   | Reset detergent remaining life left | Available on vacuums with self-wash base has detergent cartridge
 | `reset_squeegee`   | TODO | 
-| `reset_dirty_water_tank`   | TODO | 
+| `reset_dirty_water_channel`   | TODO | 
 | `reset_onboard_dirty_water_tank`   | TODO | 
 | `reset_deodorizer`   | TODO | 
 | `reset_wheel`   | TODO | 
 | `reset_scale_inhibitor`   | TODO | 
+| `reset_fluffing_roller`   | TODO | 
+| `reset_roller_mop_filter`   | TODO | 
+| `reset_water_outlet_filter`   | TODO | 
 | `start_auto_empty`   | Start auto-emptying | Available on vacuums with auto-empty station
 | `clear_warning`   | Clear warning | Unavailable when there is no warning to clear
 | `start_fast_mapping`   | Start fast mapping | Unavailable when maximum map count reached
 | `start_mapping`   | Create new map with cleaning the whole floor | Unavailable when maximum map count reached
-| `self_clean_`   | Manually start/pause mop washing | Available on vacuums with self-wash base, unavailable when washing is not possible
-| `manual_drying`   | Manually starti/stop mop drying | Available on vacuums with self-wash base, unavailable when drying is not possible
+| `self_clean`   | Manually start/pause mop washing | Available on vacuums with self-wash base, unavailable when washing is not possible
+| `manual_drying`   | Manually start/stop mop drying | Available on vacuums with self-wash base, unavailable when drying is not possible
+| `manual_dust_bag_drying`   | TODO | 
 | `water_tank_draining`   | TODO | 
 | `base_station_self_repair`   | TODO | 
 | `start_recleaning`   | TODO | 
@@ -234,7 +268,14 @@
 | `mop_clean_frequency`   | TODO |
 | `cleangenius_mode`   | TODO |
 | `washing_mode`   | TODO |
-| `water_temperature`   | TODO |
+| `water_temperature`   | TODO | 
+| `mop_pressure`   | TODO | 
+| `mop_temperature`   | TODO | 
+| `low_lying_area_frequency`   | TODO | 
+| `scraper_frequency`   | TODO | 
+| `battery_charge_level`   | TODO | 
+| `auto_lds_coverage`   | TODO | 
+
 
 ### Select Entities for rooms
 - Room select entities are only available with cloud connection. 
@@ -256,6 +297,9 @@
 | `wetness_level`   | TODO | 
 | `cleaning_route`   | TODO |
 | `custom_mopping_route`   | TODO |
+| `mop_pressure`   | TODO | 
+| `mop_temperature`   | TODO | 
+| `mop_type`   | TODO |
 | `floor_material`   | TODO |
 | `floor_material_direction`   | TODO | 
 | `visibility`   | TODO |

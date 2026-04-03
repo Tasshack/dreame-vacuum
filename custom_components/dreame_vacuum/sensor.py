@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from homeassistant.components.sensor import (
     ENTITY_ID_FORMAT,
@@ -36,7 +36,7 @@ from .dreame.const import ATTR_VALUE
 from .dreame.types import ATTR_ROOM_ID, ATTR_ROOM_ICON
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
-from .entity import DreameVacuumEntity, DreameVacuumEntityDescription
+from .entity import DreameVacuumEntity, DreameVacuumEntityDescription, remove_entities
 
 
 STREAM_STATUS_TO_ICON = {
@@ -63,6 +63,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.CLEANING_TIME,
         icon="mdi:timer-sand",
+        device_class=SensorDeviceClass.DURATION,
         native_unit_of_measurement=UNIT_MINUTES,
     ),
     DreameVacuumSensorEntityDescription(
@@ -70,6 +71,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         name="Mapping Time",
         key="mapping_time",
         icon="mdi:map-clock",
+        device_class=SensorDeviceClass.DURATION,
         native_unit_of_measurement=UNIT_MINUTES,
         available_fn=lambda device: device.status.fast_mapping,
         exists_fn=lambda description, device: device.capability.lidar_navigation,
@@ -77,7 +79,9 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.CLEANED_AREA,
         icon="mdi:ruler-square",
+        device_class=SensorDeviceClass.AREA,
         native_unit_of_measurement=UNIT_AREA,
+        suggested_display_precision=0,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.STATE,
@@ -173,56 +177,55 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.BATTERY,
         native_unit_of_measurement=UNIT_PERCENT,
         state_class=SensorStateClass.MEASUREMENT,
-        icon_fn=lambda value, device: icon_for_battery_level(device.status.battery_level, device.status.charging),
+        icon_fn=lambda value, device: (
+            "mdi:battery-heart-variant"
+            if device.status.battery_charge_level != 100
+            and not device.status.charging
+            and device.status.battery_level == device.status.battery_charge_level
+            else icon_for_battery_level(device.status.battery_level, device.status.charging)
+        ),
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.MAIN_BRUSH_LEFT,
         icon="mdi:car-turbocharger",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.MAIN_BRUSH_TIME_LEFT,
         icon="mdi:car-turbocharger",
         native_unit_of_measurement=UNIT_HOURS,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.SIDE_BRUSH_LEFT,
         icon="mdi:pinwheel-outline",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.SIDE_BRUSH_TIME_LEFT,
         icon="mdi:pinwheel-outline",
         native_unit_of_measurement=UNIT_HOURS,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.FILTER_LEFT,
         icon="mdi:air-filter",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.FILTER_TIME_LEFT,
         icon="mdi:air-filter",
         native_unit_of_measurement=UNIT_HOURS,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.SENSOR_DIRTY_LEFT,
         icon="mdi:radar",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
         exists_fn=lambda description, device: not device.capability.disable_sensor_cleaning,
     ),
     DreameVacuumSensorEntityDescription(
@@ -230,7 +233,6 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:radar",
         native_unit_of_measurement=UNIT_HOURS,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
         exists_fn=lambda description, device: not device.capability.disable_sensor_cleaning,
     ),
     DreameVacuumSensorEntityDescription(
@@ -238,42 +240,44 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:air-filter",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.TANK_FILTER_TIME_LEFT,
         icon="mdi:air-filter",
         native_unit_of_measurement=UNIT_HOURS,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.MOP_PAD_LEFT,
         icon="mdi:hydro-power",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and not device.capability.disable_mop_consumable
+        ),
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.MOP_PAD_TIME_LEFT,
         icon="mdi:hydro-power",
         native_unit_of_measurement=UNIT_HOURS,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and not device.capability.disable_mop_consumable
+        ),
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.SILVER_ION_LEFT,
         icon="mdi:shimmer",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.SILVER_ION_TIME_LEFT,
         icon="mdi:shimmer",
         native_unit_of_measurement=UNIT_DAYS,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.DETERGENT_LEFT,
@@ -283,7 +287,6 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         exists_fn=lambda description, device: bool(
             DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.detergent
         ),
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.DETERGENT_TIME_LEFT,
@@ -293,58 +296,66 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         exists_fn=lambda description, device: bool(
             DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.detergent
         ),
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.SQUEEGEE_LEFT,
         icon="mdi:squeegee",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.squeegee
+        ),
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.SQUEEGEE_TIME_LEFT,
         icon="mdi:squeegee",
         native_unit_of_measurement=UNIT_DAYS,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.squeegee
+        ),
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.ONBOARD_DIRTY_WATER_TANK_LEFT,
         icon="mdi:train-car-tank",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.capability.onboard_dirty_water_tank
+        ),
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.ONBOARD_DIRTY_WATER_TANK_TIME_LEFT,
         icon="mdi:train-car-tank",
         native_unit_of_measurement=UNIT_DAYS,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.capability.onboard_dirty_water_tank
+        ),
     ),
     DreameVacuumSensorEntityDescription(
-        property_key=DreameVacuumProperty.DIRTY_WATER_TANK_LEFT,
+        property_key=DreameVacuumProperty.DIRTY_WATER_CHANNEL_DIRTY_LEFT,
         icon="mdi:cup",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
-        property_key=DreameVacuumProperty.DIRTY_WATER_TANK_TIME_LEFT,
+        property_key=DreameVacuumProperty.DIRTY_WATER_CHANNEL_DIRTY_TIME_LEFT,
         icon="mdi:cup",
         native_unit_of_measurement=UNIT_DAYS,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.DEODORIZER_LEFT,
         icon="mdi:scent",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.deodorizer and device.capability.self_wash_base
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.capability.deodorizer
+            and device.capability.self_wash_base
         ),
     ),
     DreameVacuumSensorEntityDescription(
@@ -352,9 +363,10 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:scent",
         native_unit_of_measurement=UNIT_DAYS,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
         exists_fn=lambda description, device: bool(
-            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.deodorizer and device.capability.self_wash_base
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.capability.deodorizer
+            and device.capability.self_wash_base
         ),
     ),
     DreameVacuumSensorEntityDescription(
@@ -362,7 +374,6 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:tire",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
         exists_fn=lambda description, device: bool(
             DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.wheel
         ),
@@ -372,7 +383,6 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:tire",
         native_unit_of_measurement=UNIT_DAYS,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
         exists_fn=lambda description, device: bool(
             DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.wheel
         ),
@@ -382,7 +392,6 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:pipe",
         native_unit_of_measurement=UNIT_PERCENT,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
         exists_fn=lambda description, device: bool(
             DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.scale_inhibitor
         ),
@@ -392,9 +401,62 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:pipe",
         native_unit_of_measurement=UNIT_DAYS,
         entity_category=EntityCategory.DIAGNOSTIC,
-        # entity_registry_enabled_default=False,
         exists_fn=lambda description, device: bool(
             DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.scale_inhibitor
+        ),
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.FLUFFING_ROLLER_DIRTY_LEFT,
+        icon="mdi:blinds-open",
+        native_unit_of_measurement=UNIT_HOURS,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.fluffing_roller
+        ),
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.FLUFFING_ROLLER_DIRTY_TIME_LEFT,
+        icon="mdi:blinds-open",
+        native_unit_of_measurement=UNIT_HOURS,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.fluffing_roller
+        ),
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.ROLLER_MOP_FILTER_DIRTY_LEFT,
+        icon="mdi:blinds-open",
+        native_unit_of_measurement=UNIT_HOURS,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.roller_mop_filter
+        ),
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.ROLLER_MOP_FILTER_DIRTY_TIME_LEFT,
+        icon="mdi:filter-settings",
+        native_unit_of_measurement=UNIT_HOURS,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.roller_mop_filter
+        ),
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.WATER_OUTLET_FILTER_DIRTY_LEFT,
+        icon="mdi:filter-settings",
+        native_unit_of_measurement=UNIT_HOURS,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.water_outlet_filter
+        ),
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.WATER_OUTLET_FILTER_DIRTY_TIME_LEFT,
+        icon="mdi:filter-settings",
+        native_unit_of_measurement=UNIT_HOURS,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.water_outlet_filter
         ),
     ),
     DreameVacuumSensorEntityDescription(
@@ -405,11 +467,11 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         value_fn=lambda value, device: datetime.fromtimestamp(value).replace(
             tzinfo=datetime.now().astimezone().tzinfo
         ),
-        # entity_registry_enabled_default=False,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.TOTAL_CLEANING_TIME,
         icon="mdi:timer-outline",
+        state_class=SensorStateClass.TOTAL_INCREASING,
         native_unit_of_measurement=UNIT_MINUTES,
         device_class=SensorDeviceClass.DURATION,
         entity_category=EntityCategory.DIAGNOSTIC,
@@ -417,13 +479,17 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.CLEANING_COUNT,
         icon="mdi:counter",
+        state_class=SensorStateClass.TOTAL_INCREASING,
         native_unit_of_measurement=UNIT_TIMES,
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.TOTAL_CLEANED_AREA,
         icon="mdi:set-square",
+        device_class=SensorDeviceClass.AREA,
+        state_class=SensorStateClass.TOTAL_INCREASING,
         native_unit_of_measurement=UNIT_AREA,
+        suggested_display_precision=0,
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
     DreameVacuumSensorEntityDescription(
@@ -469,6 +535,13 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
     DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.DUST_BAG_DRYING_STATUS,
+        icon="mdi:fire-circle",
+        exists_fn=lambda description, device: device.capability.dust_bag_drying
+        or device.capability.manual_dust_bag_drying
+        and DreameVacuumEntityDescription().exists_fn(description, device),
+    ),
+    DreameVacuumSensorEntityDescription(
         key="current_room",
         icon="mdi:home-map-marker",
         value_fn=lambda value, device: device.status.current_room.name,
@@ -511,6 +584,28 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSensorEntityDescription(
+        key="drying_left",
+        property_key=DreameVacuumProperty.DRYING_PROGRESS,
+        icon="mdi:water-percent",
+        device_class=SensorDeviceClass.DURATION,
+        native_unit_of_measurement=UNIT_MINUTES,
+        value_fn=lambda value, device: device.status.drying_left_time,
+        entity_category=None,
+        exists_fn=lambda description, device: device.capability.self_wash_base
+        and (device.capability.dust_bag_drying or device.capability.manual_dust_bag_drying)
+        and DreameVacuumEntityDescription().exists_fn(description, device),
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.DUST_BAG_DRYING_LEFT,
+        icon="mdi:water-percent",
+        device_class=SensorDeviceClass.DURATION,
+        native_unit_of_measurement=UNIT_MINUTES,
+        value_fn=lambda value, device: int(value / 60) if value > 60 else 1,
+        entity_category=None,
+        exists_fn=lambda description, device: device.capability.dust_bag_drying
+        or device.capability.manual_dust_bag_drying,
+    ),
+    DreameVacuumSensorEntityDescription(
         key="firmware_version",
         icon="mdi:chip",
         value_fn=lambda value, device: device.info.version,
@@ -526,6 +621,8 @@ async def async_setup_entry(
 ) -> None:
     """Set up Dreame Vacuum sensor based on a config entry."""
     coordinator: DreameVacuumDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
+
+    remove_entities(hass, entry, coordinator, "sensor", SENSORS)
     async_add_entities(
         DreameVacuumSensorEntity(coordinator, description)
         for description in SENSORS
@@ -549,6 +646,5 @@ class DreameVacuumSensorEntity(DreameVacuumEntity, SensorEntity):
                 prop = f"{description.key.lower()}_name"
             if hasattr(coordinator.device.status, prop):
                 description.value_fn = lambda value, device: getattr(device.status, prop)
-
         super().__init__(coordinator, description)
         self._generate_entity_id(ENTITY_ID_FORMAT)

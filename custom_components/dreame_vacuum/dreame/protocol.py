@@ -28,7 +28,7 @@ DATA_JSON: Final = (
     "e3siY2xpZW50X2lkIjoiezB9IiwiZXZlbnRzIjpbe3sicGFyYW1zIjp7eyJ2ZXJzaW9uIjoiezF9IiwibW9kZWwiOiJ7Mn0iLCJkZXZpY2VfaWQiOiJ7MH0iLCJzZXNzaW9uX2lkIjp7M30sImVuZ2FnZW1lbnRfdGltZV9tc2VjIjoxMDB9fSwibmFtZSI6Ins0fSJ9fV19fQ=="
 )
 DREAME_STRINGS: Final = (
-    "H4sICAAAAAAEAGNsb3VkX3N0cmluZ3MuanNvbgCNU21v2jAQ/iuoUtEmjZAERJiqfmCgqt00ZS3QlU4TOmyHePVLZhso+/U723SUfWo+2Pfc+z3O/ThLuHYJNQwkSxwj9dmHs6yXDwq870Z7sRifV3L6pSnOZ79RNQmOy6kE42otWTdPsuRj6x3/VmvFLlq8nLayYdJPsovWlIBg3V6Spu99UjJMV71iWKzyfDAoisGKUNIfZlWvoMMK+vkKshR6KVTDDAa06mQY9AksJ63H689i8T0TD/nVjlwvnsunq9sHeZffXjejeXb1eK/qspysLzEgDR8K1oHbWBQkWMfMnFOUV1zRiZbAFYLG6IYZt0cRKbihXiXAVdrIy5ty2rYE7ZcgRHttQLml2yNEJ8Mqw2y9dPqJqfYJ8uYGrN1pQ9sby4wCGWLaL9oAQiYgRG+UQ9yN7Hdg4+quDmfIhiZ0YtbG5MfS/zB7bjgqljwa11x7wTHl+w0TH1L7Xjo4ZZzVI09FRJGpo4WCAx/JtpwwFAS37j73dlXpaChn45sItCNeCnMbkPbgH/DaR0tNmQjdERzfHlvCah2ipX8qpuhYSwkvHVVc+FB/eQIPb+VjPXN41VhCG/9ya+YmodFJ7Nr+hyex2AhJRTT3NIzWTLmj6U4QBN5BG/4HXORwFjjshL9irJVjCGaxODSN4CQ4dn/Z4N0s8Vge2tE7JTTQuRFRUVqb0RNt3Dmpt9DxG5dEGr4ifrVYWZIn/bcsVkjmjN5smXmdbxZVJynTt+zqz79+P0MhFQQAAA=="
+    "H4sICAAAAAAEAGNsb3VkX3N0cmluZ3MuanNvbgCNU9tuGjEQ/RUUKaiVyt5ALFWUBwpCSatqmwBpkqpCg+3ddePL1ja59Os7tklJ+pR9WM+Z+xx7fhwlXLuEGgaSJY6R9ujDUT4sxiWel9MncTM7ruXyS1cer36jah4cN0sJxrVasrRI8uRj7x3/1mrFTnq8WvbySTJK8pPekoBg6TDJsvc+KZlk22E5KbdFMR6X5XhLKBlN8npY0kkNo2ILeQbDDOpJDmNaD3IM+gSWk97t2Wdx8z0X18XigZzdPFZ3i4treVlcnHXTdb64vVJtVc2bUwzIwoeCdeB2FgUJ1jGz5hTlLVd0riVwhaAzumPGPaGIFJxTrxLgam3k6Xm17FuC9lMQot8YUG7jnhCik2G1YbbdOH3HVP8V8uYOrH3QhvZ3lhkFMsT0n7UBhExAiN4phziN7A9g59pUh3/IhiZ0YtbG5IfS/zB77DgqNjwaG6694Jjy/YaJ96l9LwOcMs7qkaciosjUwULBgY9k95wwFAS37qrwdlXraKhWs/MItCNeCnMbkHbvH3Djo6WmTITuCI5vDy1htQHR0l8VU3SmpYTnjmoufKg/PIH7u/Kxnjk8Wiyhjb+5hrl5aHQeu7b/4XksNkVSEa09DdOGKXcwXQqCwDtow/+AixyuAoeD8CpmWjmGYBWLQ9cJToJj+ssG726Dv82+Hf2ghAa6NiIqKmtz+kobd07qexj4jUsiDV8Rv1isPCmS0VsWKyRzRu/umXmZbxVVr1Jmb9vV1FM/2BpOG5b6N5EGnrknduEv5+dfaHOmATgEAAA="
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -230,6 +230,10 @@ class DreameVacuumDreameHomeCloudProtocol:
             if not self._client_connected:
                 self._client_connected = True
                 _LOGGER.info("Connected to the device client")
+            if (
+                self._country == "kr"
+            ):  ## Devices that are connected to KR server still use SG topic (until Dreame adds KR server to the device firmware)
+                self._client.subscribe(f"/{self._strings[7]}/{self._did}/{self._uid}/{self._model}/sg/")
             client.subscribe(f"/{self._strings[7]}/{self._did}/{self._uid}/{self._model}/{self._country}/")
             if self._connected_callback:
                 self._client_queue.put((self._connected_callback, None))
@@ -295,6 +299,8 @@ class DreameVacuumDreameHomeCloudProtocol:
 
                         try:
                             host = self._host.split(":")
+                            if self._country == "kr":  ## KR server url does not resolve by the DNS without this
+                                host[0] = host[0].replace("10100", "10000")
                             key = f"{self._strings[53]}{self._uid}{self._strings[54]}{DreameVacuumDreameHomeCloudProtocol.get_random_agent_id()}{self._strings[54]}{host[0]}"
                             if paho.mqtt.__version__[0] > "1":
                                 self._client = Client(
@@ -317,9 +323,9 @@ class DreameVacuumDreameHomeCloudProtocol:
                             self._client.tls_insecure_set(True)
                             self._set_client_key()
                             self._client.connect_timeout = 10
+                            self._client.disable_logger()
                             self._client.connect(host[0], port=int(host[1]), keepalive=60)
                             self._client.loop_start()
-                            self._client.disable_logger()
                         except Exception as ex:
                             _LOGGER.error("Connecting to the device client failed: %s", ex)
                     elif not self._client_connected:
@@ -404,26 +410,26 @@ class DreameVacuumDreameHomeCloudProtocol:
             self._connected = True
         return self._logged_in
 
-    def get_supported_devices(self, models, host=None, mac=None) -> Any:
+    def get_supported_devices(self, models, host=None, mac=None, device_id=None) -> Any:
         response = self.get_devices()
         devices = []
         unsupported_devices = []
         if response:
             all_devices = list(response["page"]["records"])
-            for device in all_devices:
+            for device in all_devices:                
                 model = device["model"]
                 if model in models:
                     device["name"] = (
                         device["customName"] if device["customName"] else device["deviceInfo"]["displayName"]
                     )
                     devices.append(device)
-
-                    if (host is not None and device.get("localip") == host) or (
-                        mac is not None and device.get("mac") == mac
+                    if (mac is not None and device.get("mac") == mac) or (
+                        device_id is not None and device.get("did") == device_id
                     ):
                         devices = [device]
                         break
                 elif ".vacuum." in model:
+                    _LOGGER.warning("Unsupported device: %s", device)
                     unsupported_devices.append(device)
 
             if mac is None:
@@ -570,54 +576,46 @@ class DreameVacuumDreameHomeCloudProtocol:
                 ## Success is true but no data, retry once
                 if api_response.get("success") is True and retry_count > 0:
                     return self.send(method, parameters, 0)
-                _LOGGER.warn("Failed to execute api call: %s", api_response)
+                _LOGGER.warning("Failed to execute api call: %s", api_response)
             return None
         return api_response["data"]["result"]
 
-    def get_device_file(self, file_name, file_type="obstacle") -> Any:
-        raise DeviceException("Local files are not supported yet!") from None
-
+    def get_device_file(self, file_name, file_type) -> Any:
         try:
-            headers = {
-                "Accept": "*/*",
-                # "Content-Type": "application/x-www-form-urlencoded",
-                # "Accept-Language": "en-US;q=0.8",
-                # "Accept-Encoding": "gzip, deflate",
-                self._strings[47]: self._strings[3],
-                self._strings[49]: self._strings[5],
-                self._strings[50]: self._ti if self._ti else self._strings[6],
-                self._strings[46]: self._key,
-            }
-
-            if self._country == "cn":
-                headers[self._strings[48]] = self._strings[4]
-
-            data = {
-                "did": str(self._did),
-                "uid": str(self._uid),
-                "fileinfo": json.dumps({"filename": file_name, "type": file_type}, separators=(",", ":")),
-            }
+            if self._key_expire and time.time() > self._key_expire:
+                if not self.login():
+                    return None
 
             response = self._session.post(
-                f"{self.get_api_url()}/file-bridge/user/getDeiviceFile",
-                headers=headers,
-                json=data,
+                f"{self.get_api_url()}{self._strings[61]}",
+                headers={
+                    "Accept": "*/*",
+                    self._strings[47]: self._strings[3],
+                    self._strings[49]: self._strings[5],
+                    self._strings[50]: self._ti if self._ti else self._strings[6],
+                    self._strings[46]: self._key,
+                    self._strings[48]: self._strings[4] if self._country == "cn" else None,
+                },
+                json={
+                    "did": str(self._did),
+                    "uid": str(self._uid),
+                    "fileinfo": json.dumps({"filename": file_name, "type": file_type}, separators=(",", ":")),
+                },
                 timeout=15,
             )
+            if response.status_code == 200:
+                return response.content
+            elif response.status_code == 401 and self._secondary_key:
+                _LOGGER.warning("Execute api call failed: Token Expired")
+                if self.login():
+                    return self.get_device_file(file_name, file_name)
+            _LOGGER.warning("Get device file failed! (%s)", response.text)
+
         except requests.exceptions.Timeout:
-            response = None
-            _LOGGER.warning(
-                "Error while executing request: Read timed out. (read timeout=15): %s",
-                data,
-            )
+            _LOGGER.warning("Error while executing request: Read timed out. (timeout=15)")
         except Exception as ex:
-            response = None
             _LOGGER.warning("Error while executing request: %s", str(ex))
-
-        if response is None:
-            return None
-
-        return response
+        return None
 
     def get_file(self, url: str, retry_count: int = 4) -> Any:
         retries = 0
@@ -723,15 +721,17 @@ class DreameVacuumDreameHomeCloudProtocol:
 
     def request(self, url: str, data, retry_count=2, timeout=None) -> Any:
         retries = 0
+        if not timeout:
+            timeout = 6
+
+        if self._key_expire and time.time() > self._key_expire:
+            if not self.login():
+                return None
+
         if not retry_count or retry_count < 0:
             retry_count = 0
         while retries < retry_count + 1:
             try:
-                if self._key_expire and time.time() > self._key_expire:
-                    if not self.login():
-                        response = None
-                        break
-
                 headers = {
                     "Accept": "*/*",
                     "Content-Type": "application/x-www-form-urlencoded",
@@ -746,15 +746,14 @@ class DreameVacuumDreameHomeCloudProtocol:
 
                 if self._country == "cn":
                     headers[self._strings[48]] = self._strings[4]
-                response = self._session.post(url, headers=headers, data=data, timeout=timeout if timeout else 6)
+                response = self._session.post(url, headers=headers, data=data, timeout=timeout)
                 break
             except requests.exceptions.Timeout:
                 retries = retries + 1
                 response = None
                 if self._connected:
                     _LOGGER.warning(
-                        "Error while executing request: Read timed out. (read timeout=6): %s",
-                        data,
+                        f"Error while executing request: Read timed out. (timeout={timeout})"
                     )
             except Exception as ex:
                 retries = retries + 1
@@ -1231,7 +1230,7 @@ class DreameVacuumMiHomeCloudProtocol:
                 return found[0]["token"], found[0]["localip"]
         return None, None
 
-    def get_supported_devices(self, models, host=None, mac=None) -> Any:
+    def get_supported_devices(self, models, host=None, mac=None, device_id=None) -> Any:
         response = self.get_devices()
         devices = []
         unsupported_devices = []
@@ -1246,8 +1245,10 @@ class DreameVacuumMiHomeCloudProtocol:
                 model = device["model"]
                 if model in models:
                     devices.append(device)
-                    if (host is not None and device.get("localip") == host) or (
-                        mac is not None and device.get("mac") == mac
+                    if (
+                        (mac is not None and device.get("mac") == mac)
+                        or (device_id is not None and device.get("did") == device_id)
+                        or (host is not None and device.get("localip") == host)
                     ):
                         devices = [device]
                         break

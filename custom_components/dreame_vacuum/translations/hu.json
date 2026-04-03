@@ -27,7 +27,7 @@
           "host": "Hoszt",
           "token": "Token"
         },
-        "description": "Szüksége lesz a 32 karakteres API Tokenre, lásd: https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token a részletekért."
+        "description": "Szüksége lesz a 32 karakteres API Tokenre."
       },
       "mi": {
         "data": {
@@ -36,7 +36,7 @@
           "country": "Szerver régió",
           "prefer_cloud": "Felhőkapcsolatot részesítse előnyben"
         },
-        "description": "Jelentkezzen be a Xiaomi Miio felhőbe, lásd: https://www.openhab.org/addons/bindings/miio/#country-servers a felhőszerver használatához."
+        "description": "Jelentkezzen be a Xiaomi Miio felhőbe."
       },
       "2fa": {
         "data": {
@@ -224,7 +224,43 @@
           "default": "Alapértelmezett",
           "english": "Angol",
           "german": "Német",
-          "chinese": "Kínai"
+          "chinese": "Kínai",
+          "russian": "Orosz",
+          "italian": "Olasz",
+          "french": "Francia",
+          "korean": "Koreai"
+        }
+      },
+      "mop_pressure": {
+        "state": {
+          "light": "Enyhe",
+          "normal": "Normál"
+        }
+      },
+      "mop_temperature": {
+        "state": {
+          "normal": "Normál",
+          "warm": "Meleg"
+        }
+      },
+      "low_lying_area_frequency": {
+        "state": {
+          "weekly": "Hetente",
+          "daily": "Naponta"
+        }
+      },
+      "scraper_frequency": {
+        "state": {
+          "off": "Ki",
+          "weekly": "Hetente",
+          "daily": "Naponta"
+        }
+      },
+      "auto_lds_coverage": {
+        "state": {
+          "off": "Ki",
+          "security": "Biztonsági",
+          "extreme": "Extrém"
         }
       },
       "order": {
@@ -236,7 +272,8 @@
         "state": {
           "by_area": "Terület szerint",
           "by_time": "Idő szerint",
-          "by_room": "Szoba szerint"
+          "by_room": "Szoba szerint",
+          "intelligent": "Intelligens"
         }
       },
       "mop_clean_frequency": {
@@ -249,7 +286,9 @@
           "off": "Kikapcsolva",
           "standard": "Alapértelmezett",
           "high_frequency": "Magas gyakoriság",
-          "low_frequency": "Alacsony gyakoriság"
+          "low_frequency": "Alacsony gyakoriság",
+          "custom_frequency": "Egyéni gyakoriság",
+          "intelligent": "Intelligens"
         }
       },
       "floor_material_direction": {
@@ -290,7 +329,8 @@
           "normal": "Normál",
           "mild": "Enyhe",
           "warm": "Meleg",
-          "hot": "Forró"
+          "hot": "Forró",
+          "max": "Maximum"
         }
       },
       "auto_recleaning": {
@@ -374,7 +414,11 @@
           "initial_deep_cleaning": "Kezdeti mélytisztítás",
           "initial_deep_cleaning_paused": "Kezdeti mélytisztítás szünetel",
           "sanitizing": "Fertőtlenítés",
-          "sanitizing_with_dry": "Fertőtlenítés szárítással"
+          "sanitizing_with_dry": "Fertőtlenítés szárítással",
+          "changing_mop": "Felmosó cseréje",
+          "changing_mop_paused": "Felmosócsere szüneteltetve",
+          "floor_maintaining": "Padlókarbantartás",
+          "floor_maintaining_paused": "Padlókarbantartás szüneteltetve"
         }
       },
       "status": {
@@ -564,7 +608,40 @@
           "dirty_tank_not_installed": "A robot szennyezet víztartálya nincs telepítve.",
           "robot_in_hidden_room": "Rejtett terület. Kérjük, mozgassa a robotot megfelelő területre és próbálja újra.",
           "washboard_not_working": "A mosódeszka nem működik.",
-          "return_to_charge_failed": "A töltésre való visszatérés sikertelen."
+          "return_to_charge_failed": "A töltésre való visszatérés sikertelen.",
+          "lds_failed_to_lift": "Nem sikerült felemelni az LDS modult.",
+          "robot_stuck": "Az LDS itt nem emelhető fel a pozicionáláshoz.",
+          "robot_stuck_repeat": "Helyezze a robotot nyílt területre, és folytassa a feladatot.",
+          "slippery_floor": "Csúszós padló. Kérjük, próbálja újra később.",
+          "check_mop_install": "Kérjük, ellenőrizze, hogy a felmosó megfelelően van-e felszerelve.",
+          "dirty_water_tank_full": "Rendellenes vízszint a piszkosvíz-tartályban.",
+          "retractable_leg_stuck": "Kérjük, ellenőrizze, hogy a behúzható lábak nem akadtak-e el.",
+          "internal_error": "Belső hiba miatti működési zavar. Próbálja újraindítani a robotot.",
+          "robot_stuck_on_tables": "A robot asztalok és székek közé szorult.",
+          "robot_stuck_on_passage": "A robot szűk átjáróba szorult.",
+          "robot_stuck_on_threshold": "A robot küszöbön vagy lépcsőn akadt el.",
+          "robot_stuck_on_low_lying_area": "A robot alacsony belmagasságú helyen rekedt.",
+          "robot_stuck_on_ramp": "A robot veszélyes rámpákat észlelt az útvonalon.",
+          "robot_stuck_on_obstacle": "A robot akadályokat észlelt az útvonalon.",
+          "robot_stuck_on_pet": "A robot embereket vagy állatokat észlelt az útvonalon.",
+          "robot_stuck_on_slippery_surface": "A robot elakadt csúszás miatt.",
+          "robot_stuck_on_carpet": "A robot csúszik a szőnyegen",
+          "drainage_failed": "Rendellenes vízelvezetés a piszkosvíz-tartályból",
+          "mop_not_detected": "Felmosó nem észlelhető.",
+          "mop_holder_error": "Felmosótartó mennyiségi/elhelyezési hiba a dokkolóban.",
+          "dock_error": "Dokkoló hiba.",
+          "wash_failed": "Nem sikerült a piszkos felmosó kimosása.",
+          "robot_stuck_on_curtain": "A robot csúszik a függöny területén",
+          "edge_mop_stop_rotate": "Az éltisztító felmosó forgása leállt.",
+          "edge_mop_detached": "Az éltisztító felmosó levált.",
+          "chassis_lift_malfunction": "Alvázemelő hiba.",
+          "mop_cover_error": "Ellenőrizze, nincs-e törmelék a felmosóhenger és a burkolat közelében.",
+          "roller_mop_error": "Ellenőrizze, nincs-e törmelék a felmosóhenger és a burkolat közelében.",
+          "onboard_water_tank_empty": "Alacsony vízszint a robot tisztavíz-tartályában.",
+          "onboard_dirty_water_tank_full": "A robot piszkosvíz-tartálya megtelt.",
+          "mop_not_installed": "A felmosó nincs felszerelve.",
+          "fluffing_roller_error": "Bolyhosító henger hiba.",
+          "blocked_by_obstacle": "A robotot akadály blokkolja."
         }
       },
       "charging_status": {
@@ -699,7 +776,19 @@
           "initial_deep_cleaning_paused": "Kezdeti mélytisztítás szünetel",
           "mop_pad_heating": "Felmos lap fűtése",
           "cleaning_after_mapping": "Takarítás térképezés után",
-          "small_particle_cleaning": "Kis részecskék takarítása"
+          "small_particle_cleaning": "Kis részecskék takarítása",
+          "changing_mop": "Felmosó cseréje",
+          "changing_mop_paused": "Felmosócsere szüneteltetve",
+          "floor_maintaining": "Padlókarbantartás",
+          "floor_maintaining_paused": "Padlókarbantartás szüneteltetve",
+          "wood_floor_maintaining": "Fapadló karbantartása"
+        }
+      },
+      "dust_bag_drying_status": {
+        "state": {
+          "idle": "Tétlen",
+          "drying": "Szárítás",
+          "paused": "Szüneteltetve"
         }
       }
     }
@@ -1078,6 +1167,16 @@
         "shortcut_name": {
           "name": "Gyorsgomb neve",
           "description": "A gyorsgomb új neve."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Parancsikon törlése",
+      "description": "Parancsikon törlése. (Csak támogatott eszközökön)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Parancsikon azonosítója",
+          "description": "A parancsikon azonosítója."
         }
       }
     },

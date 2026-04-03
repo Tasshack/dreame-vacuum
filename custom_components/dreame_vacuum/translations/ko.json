@@ -27,7 +27,7 @@
           "host": "호스트",
           "token": "토큰"
         },
-        "description": "32자 API 토큰이 필요합니다. 지침은 https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token 을 참조하세요."
+        "description": "32자 API 토큰이 필요합니다."
       },
       "mi": {
         "data": {
@@ -36,7 +36,7 @@
           "country": "서버 국가",
           "prefer_cloud": "클라우드 연결 선호"
         },
-        "description": "Xiaomi Miio 클라우드에 로그인하세요. 사용할 클라우드 서버는 https://www.openhab.org/addons/bindings/miio/#country-servers 를 참조하세요."
+        "description": "Xiaomi Miio 클라우드에 로그인하세요."
       },
       "2fa": {
         "data": {
@@ -224,7 +224,43 @@
           "default": "기본값",
           "english": "영어",
           "german": "독일어",
-          "chinese": "중국어"
+          "chinese": "중국어",
+          "russian": "러시아어",
+          "italian": "이탈리아어",
+          "french": "프랑스어",
+          "korean": "한국어"
+        }
+      },
+      "mop_pressure": {
+        "state": {
+          "light": "가볍게",
+          "normal": "보통"
+        }
+      },
+      "mop_temperature": {
+        "state": {
+          "normal": "보통",
+          "warm": "따뜻함"
+        }
+      },
+      "low_lying_area_frequency": {
+        "state": {
+          "weekly": "매주",
+          "daily": "매일"
+        }
+      },
+      "scraper_frequency": {
+        "state": {
+          "off": "꺼짐",
+          "weekly": "매주",
+          "daily": "매일"
+        }
+      },
+      "auto_lds_coverage": {
+        "state": {
+          "off": "꺼짐",
+          "security": "보안",
+          "extreme": "최고"
         }
       },
       "order": {
@@ -236,7 +272,8 @@
         "state": {
           "by_area": "면적별",
           "by_time": "시간별",
-          "by_room": "방별"
+          "by_room": "방별",
+          "intelligent": "지능형"
         }
       },
       "mop_clean_frequency": {
@@ -249,7 +286,9 @@
           "off": "끄기",
           "standard": "표준",
           "high_frequency": "고주파",
-          "low_frequency": "저주파"
+          "low_frequency": "저주파",
+          "custom_frequency": "사용자 지정 빈도",
+          "intelligent": "지능형"
         }
       },
       "floor_material_direction": {
@@ -290,7 +329,8 @@
           "normal": "상온",
           "mild": "미온",
           "warm": "온수",
-          "hot": "고온"
+          "hot": "고온",
+          "max": "최대"
         }
       },
       "auto_recleaning": {
@@ -331,8 +371,8 @@
           "sweeping": "쓸기",
           "charging": "충전 중",
           "error": "오류",
-          "idle": "[%key:common::state::idle%]",
-          "paused": "[%key:common::state::paused%]",
+          "idle": "대기 중",
+          "paused": "일시 중지됨",
           "returning": "도크로 복귀 중",
           "mopping": "닦기",
           "drying": "건조 중",
@@ -374,14 +414,18 @@
           "initial_deep_cleaning": "초기 깊은 청소",
           "initial_deep_cleaning_paused": "초기 깊은 청소 일시정지됨",
           "sanitizing": "살균 중",
-          "sanitizing_with_dry": "살균 및 건조 중"
+          "sanitizing_with_dry": "살균 및 건조 중",
+          "changing_mop": "걸레 교체 중",
+          "changing_mop_paused": "걸레 교체 일시 중지됨",
+          "floor_maintaining": "바닥 유지 관리 중",
+          "floor_maintaining_paused": "바닥 유지 관리 일시 중지됨"
         }
       },
       "status": {
         "state": {
           "unknown": "알 수 없음",
-          "idle": "[%key:common::state::idle%]",
-          "paused": "[%key:common::state::paused%]",
+          "idle": "대기 중",
+          "paused": "일시 중지됨",
           "cleaning": "청소 중",
           "returning": "도크로 복귀 중",
           "spot_cleaning": "부분 청소",
@@ -473,7 +517,7 @@
       "auto_empty_status": {
         "state": {
           "unknown": "알 수 없음",
-          "idle": "[%key:common::state::idle%]",
+          "idle": "대기 중",
           "active": "활성",
           "not_performed": "수행되지 않음"
         }
@@ -563,7 +607,40 @@
           "dirty_tank_not_installed": "로봇의 사용한 물탱크가 설치되지 않았습니다.",
           "robot_in_hidden_room": "숨겨진 구역입니다. 로봇을 적절한 구역으로 이동하고 다시 시도하세요.",
           "washboard_not_working": "세척판이 작동을 멈췄습니다.",
-          "return_to_charge_failed": "충전하러 복귀하는 데 실패했습니다."
+          "return_to_charge_failed": "충전하러 복귀하는 데 실패했습니다.",
+          "lds_failed_to_lift": "LDS 모듈을 들어 올리지 못했습니다.",
+          "robot_stuck": "위치 인식을 위해 여기서 LDS를 올릴 수 없습니다.",
+          "robot_stuck_repeat": "로봇을 개방된 구역으로 이동하고 작업을 다시 시작하세요.",
+          "slippery_floor": "바닥이 미끄럽습니다. 나중에 다시 시도하세요.",
+          "check_mop_install": "걸레가 올바르게 설치되었는지 확인하세요.",
+          "dirty_water_tank_full": "오수 탱크의 수위가 비정상적입니다.",
+          "retractable_leg_stuck": "접이식 다리가 엉켰는지 확인하세요.",
+          "internal_error": "내부 오류로 인한 오작동입니다. 로봇을 재시작해 보세요.",
+          "robot_stuck_on_tables": "로봇이 테이블과 의자 사이에 끼었습니다.",
+          "robot_stuck_on_passage": "로봇이 좁은 통로에 끼었습니다.",
+          "robot_stuck_on_threshold": "로봇이 문턱/계단에 걸렸습니다.",
+          "robot_stuck_on_low_lying_area": "로봇이 낮은 높이의 구역에 갇혔습니다.",
+          "robot_stuck_on_ramp": "이동 경로에 추락 위험이 있는 경사로가 감지되었습니다.",
+          "robot_stuck_on_obstacle": "이동 경로에 장애물이 감지되었습니다.",
+          "robot_stuck_on_pet": "이동 경로에 사람이나 반려동물이 감지되었습니다.",
+          "robot_stuck_on_slippery_surface": "미끄러짐으로 인해 로봇이 꼼짝 못합니다.",
+          "robot_stuck_on_carpet": "카펫에서 로봇이 미끄러집니다.",
+          "drainage_failed": "오수 탱크 배수 이상",
+          "mop_not_detected": "걸레가 감지되지 않았습니다.",
+          "mop_holder_error": "스테이션 내 걸레 받침대 수량/위치 오류.",
+          "dock_error": "도크 오류.",
+          "wash_failed": "걸레 세척 실패.",
+          "robot_stuck_on_curtain": "커튼 구역에서 로봇이 미끄러집니다.",
+          "edge_mop_stop_rotate": "가장자리 걸레가 회전을 멈췄습니다.",
+          "edge_mop_detached": "가장자리 걸레가 분리되었습니다.",
+          "chassis_lift_malfunction": "섀시 리프트 오작동.",
+          "mop_cover_error": "롤러 걸레 및 커버 근처에 이물질이 있는지 확인하세요.",
+          "roller_mop_error": "롤러 걸레 및 커버 근처에 이물질이 있는지 확인하세요.",
+          "onboard_water_tank_empty": "로봇 내부 정수 탱크 수위가 낮습니다.",
+          "onboard_dirty_water_tank_full": "로봇 내부 오수 탱크가 가득 찼습니다.",
+          "mop_not_installed": "걸레가 설치되지 않았습니다.",
+          "fluffing_roller_error": "플러핑 롤러 오류.",
+          "blocked_by_obstacle": "장애물에 의해 로봇이 차단되었습니다."
         }
       },
       "charging_status": {
@@ -587,7 +664,7 @@
       "self_wash_base_status": {
         "state": {
           "unknown": "알 수 없음",
-          "idle": "[%key:common::state::idle%]",
+          "idle": "대기 중",
           "washing": "세척 중",
           "drying": "건조 중",
           "paused": "일시 중지됨",
@@ -610,7 +687,7 @@
       "stream_status": {
         "state": {
           "unknown": "알 수 없음",
-          "idle": "[%key:common::state::idle%]",
+          "idle": "대기 중",
           "video": "비디오",
           "audio": "오디오",
           "recording": "녹화 중"
@@ -619,7 +696,7 @@
       "drainage_status": {
         "state": {
           "unknown": "알 수 없음",
-          "idle": "[%key:common::state::idle%]",
+          "idle": "대기 중",
           "draining": "배수 중",
           "draining_successful": "배수 성공",
           "draining_failed": "배수 실패"
@@ -667,7 +744,7 @@
       "station_drainage_status": {
         "state": {
           "unknown": "알 수 없음",
-          "idle": "[%key:common::state::idle%]",
+          "idle": "대기 중",
           "draining": "배수 중"
         }
       },
@@ -698,7 +775,19 @@
           "initial_deep_cleaning_paused": "초기 깊은 청소 일시정지됨",
           "mop_pad_heating": "걸레 패드 가열 중",
           "cleaning_after_mapping": "매핑 후 청소 중",
-          "small_particle_cleaning": "미세 입자 청소"
+          "small_particle_cleaning": "미세 입자 청소",
+          "changing_mop": "걸레 교체 중",
+          "changing_mop_paused": "걸레 교체 일시 중지됨",
+          "floor_maintaining": "바닥 유지 관리 중",
+          "floor_maintaining_paused": "바닥 유지 관리 일시 중지됨",
+          "wood_floor_maintaining": "나무 바닥 유지 관리"
+        }
+      },
+      "dust_bag_drying_status": {
+        "state": {
+          "idle": "대기 중",
+          "drying": "건조 중",
+          "paused": "일시 중지됨"
         }
       }
     }
@@ -1081,6 +1170,16 @@
         "shortcut_name": {
           "name": "바로가기 이름",
           "description": "바로가기의 새 이름입니다."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "단축어 삭제",
+      "description": "단축어를 삭제합니다. (지원되는 기기에서만 가능)",
+      "fields": {
+        "shortcut_id": {
+          "name": "단축어 ID",
+          "description": "단축어의 ID입니다."
         }
       }
     },

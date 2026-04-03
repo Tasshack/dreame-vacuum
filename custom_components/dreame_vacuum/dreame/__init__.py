@@ -1,4 +1,4 @@
-VERSION = "v2.0.0b21"
+VERSION = "v2.0.0b22"
 
 from .types import (
     DreameVacuumProperty,
@@ -21,6 +21,10 @@ from .types import (
     DreameVacuumMoppingType,
     DreameVacuumStreamStatus,
     DreameVacuumVoiceAssistantLanguage,
+    DreameVacuumMopPressure,
+    DreameVacuumMopTemperature,
+    DreameVacuumLowLyingAreaFrequency,
+    DreameVacuumScraperFrequency,
     DreameVacuumWiderCornerCoverage,
     DreameVacuumMopPadSwing,
     DreameVacuumMopExtendFrequency,
@@ -29,6 +33,7 @@ from .types import (
     DreameVacuumCustomMoppingRoute,
     DreameVacuumSelfCleanFrequency,
     DreameVacuumAutoEmptyMode,
+    DreameVacuumAutoEmptyModeV2,
     DreameVacuumCleanGenius,
     DreameVacuumCleanGeniusMode,
     DreameVacuumFloorMaterial,
@@ -39,6 +44,7 @@ from .types import (
     DreameVacuumTaskType,
     DreameVacuumWashingMode,
     DreameVacuumWaterTemperature,
+    DreameVacuumAutoLDSCoverage,
     PROPERTY_AVAILABILITY,
     ACTION_AVAILABILITY,
     MAP_COLOR_SCHEME_LIST,
@@ -59,6 +65,10 @@ from .const import (
     STATUS_CODE_TO_NAME,
     CUSTOM_MOPPING_ROUTE_TO_NAME,
     CLEANING_ROUTE_TO_NAME,
+    MOP_PRESSURE_TO_NAME,
+    MOP_TEMPERATURE_TO_NAME,
+    LOW_LYING_AREA_FREQUENCY_TO_NAME,
+    SCRAPER_FREQUENCY_TO_NAME,
 )
 from .device import DreameVacuumDevice
 from .protocol import DreameVacuumProtocol

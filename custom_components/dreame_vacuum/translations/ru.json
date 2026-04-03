@@ -27,7 +27,7 @@
           "host": "IP-адрес",
           "token": "Токен"
         },
-        "description": "Вам необходим 32-х значный ключ (токен), подробнее о его получении можете узнать тут: https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token"
+        "description": "Вам необходим 32-х значный ключ (токен)"
       },
       "mi": {
         "data": {
@@ -36,7 +36,7 @@
           "country": "Регион/сервер",
           "prefer_cloud": "Предпочитаю облачное подключение"
         },
-        "description": "Подключитесь к облаку Xiaomi, посмотрите https://www.openhab.org/addons/bindings/miio/#country-servers для определения используемого вами сервера в зависимости от вашей страны."
+        "description": "Подключитесь к облаку Xiaomi."
       },
       "2fa": {
         "data": {
@@ -224,7 +224,43 @@
           "default": "По умолчанию",
           "english": "Английский",
           "german": "Немецкий",
-          "chinese": "Китайский"
+          "chinese": "Китайский",
+          "russian": "Русский",
+          "italian": "Итальянский",
+          "french": "Французский",
+          "korean": "Корейский"
+        }
+      },
+      "mop_pressure": {
+        "state": {
+          "light": "Легкий",
+          "normal": "Нормальный"
+        }
+      },
+      "mop_temperature": {
+        "state": {
+          "normal": "Нормальная",
+          "warm": "Теплая"
+        }
+      },
+      "low_lying_area_frequency": {
+        "state": {
+          "weekly": "Еженедельно",
+          "daily": "Ежедневно"
+        }
+      },
+      "scraper_frequency": {
+        "state": {
+          "off": "Выкл",
+          "weekly": "Еженедельно",
+          "daily": "Ежедневно"
+        }
+      },
+      "auto_lds_coverage": {
+        "state": {
+          "off": "Выкл",
+          "security": "Безопасность",
+          "extreme": "Экстремальный"
         }
       },
       "order": {
@@ -236,7 +272,8 @@
         "state": {
           "by_area": "По площади",
           "by_time": "По времени",
-          "by_room": "По комнате"
+          "by_room": "По комнате",
+          "intelligent": "Интеллектуальная"
         }
       },
       "mop_clean_frequency": {
@@ -249,7 +286,9 @@
           "off": "Выключено",
           "standard": "Стандартный",
           "high_frequency": "Высокая периодичность",
-          "low_frequency": "Низкая периодичность"
+          "low_frequency": "Низкая периодичность",
+          "custom_frequency": "Пользовательская частота",
+          "intelligent": "Интеллектуальный"
         }
       },
       "floor_material_direction": {
@@ -290,7 +329,8 @@
           "normal": "Нормальная",
           "mild": "Умеренная",
           "warm": "Теплая",
-          "hot": "Горячая"
+          "hot": "Горячая",
+          "max": "Максимум"
         }
       },
       "auto_recleaning": {
@@ -374,7 +414,11 @@
           "initial_deep_cleaning": "Первичная глубинная уборка",
           "initial_deep_cleaning_paused": "Первичная глубинная уборка приостановлена",
           "sanitizing": "Дезинфекция",
-          "sanitizing_with_dry": "Дезинфекция с сушкой"
+          "sanitizing_with_dry": "Дезинфекция с сушкой",
+          "changing_mop": "Замена швабры",
+          "changing_mop_paused": "Замена швабры приостановлена",
+          "floor_maintaining": "Уход за полом",
+          "floor_maintaining_paused": "Уход за полом приостановлен"
         }
       },
       "status": {
@@ -564,7 +608,40 @@
           "dirty_tank_not_installed": "Резервуар для использованной воды не установлен",
           "robot_in_hidden_room": "Робот находится в скрытой области, переместите его и повторите попытку",
           "washboard_not_working": "Станция для стирки салфеток не работает",
-          "return_to_charge_failed": "Не удалось вернуться на зарядку"
+          "return_to_charge_failed": "Не удалось вернуться на зарядку",
+          "lds_failed_to_lift": "Не удалось поднять модуль LDS.",
+          "robot_stuck": "LDS не может быть поднят здесь для позиционирования.",
+          "robot_stuck_repeat": "Переместите робота на открытое место и возобновите задачу.",
+          "slippery_floor": "Скользкий пол. Пожалуйста, повторите попытку позже.",
+          "check_mop_install": "Пожалуйста, проверьте, правильно ли установлена швабра.",
+          "dirty_water_tank_full": "Аномальный уровень воды в баке для грязной воды.",
+          "retractable_leg_stuck": "Пожалуйста, проверьте, не запутались ли выдвижные ножки.",
+          "internal_error": "Сбой из-за внутренней ошибки. Попробуйте перезагрузить робота.",
+          "robot_stuck_on_tables": "Робот застрял между столами и стульями.",
+          "robot_stuck_on_passage": "Робот застрял в узком проходе.",
+          "robot_stuck_on_threshold": "Робот застрял на пороге/ступеньке.",
+          "robot_stuck_on_low_lying_area": "Робот застрял в низкой зоне.",
+          "robot_stuck_on_ramp": "Робот обнаружил опасные рампы на пути.",
+          "robot_stuck_on_obstacle": "Робот обнаружил препятствия на пути.",
+          "robot_stuck_on_pet": "Робот обнаружил людей или животных на пути.",
+          "robot_stuck_on_slippery_surface": "Робот застрял из-за скольжения.",
+          "robot_stuck_on_carpet": "Робот скользит на ковре",
+          "drainage_failed": "Аномальный слив из бака для грязной воды",
+          "mop_not_detected": "Швабра не обнаружена.",
+          "mop_holder_error": "Ошибка количества/размещения держателя швабры в станции.",
+          "dock_error": "Ошибка станции.",
+          "wash_failed": "Не удалось промыть грязную швабру.",
+          "robot_stuck_on_curtain": "Робот скользит в зоне штор",
+          "edge_mop_stop_rotate": "Боковая швабра перестала вращаться.",
+          "edge_mop_detached": "Боковая швабра отсоединилась.",
+          "chassis_lift_malfunction": "Неисправность подъема шасси.",
+          "mop_cover_error": "Проверьте наличие мусора рядом с роликовой шваброй и крышкой.",
+          "roller_mop_error": "Проверьте наличие мусора рядом с роликовой шваброй и крышкой.",
+          "onboard_water_tank_empty": "Низкий уровень воды в баке для чистой воды робота.",
+          "onboard_dirty_water_tank_full": "Бак для грязной воды робота полон.",
+          "mop_not_installed": "Швабра не установлена.",
+          "fluffing_roller_error": "Ошибка ворсистого ролика.",
+          "blocked_by_obstacle": "Робот заблокирован препятствием."
         }
       },
       "charging_status": {
@@ -699,7 +776,19 @@
           "initial_deep_cleaning_paused": "Первичная глубинная уборка приостановлена",
           "mop_pad_heating": "Нагрев насадок для швабры",
           "cleaning_after_mapping": "Очистка после составления карты",
-          "small_particle_cleaning": "Очистка мелких частиц"
+          "small_particle_cleaning": "Очистка мелких частиц",
+          "changing_mop": "Замена швабры",
+          "changing_mop_paused": "Замена швабры приостановлена",
+          "floor_maintaining": "Уход за полом",
+          "floor_maintaining_paused": "Уход за полом приостановлен",
+          "wood_floor_maintaining": "Уход за деревянным полом"
+        }
+      },
+      "dust_bag_drying_status": {
+        "state": {
+          "idle": "Бездействие",
+          "drying": "Сушка",
+          "paused": "Пауза"
         }
       }
     }
@@ -1078,6 +1167,16 @@
         "shortcut_name": {
           "name": "Имя ярлыка",
           "description": "Новое имя ярлыка."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Удалить ярлык",
+      "description": "Удалить ярлык. (Только на поддерживаемых устройствах)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID ярлыка",
+          "description": "Идентификатор ярлыка."
         }
       }
     },

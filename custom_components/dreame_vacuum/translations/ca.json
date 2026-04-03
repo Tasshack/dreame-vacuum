@@ -27,7 +27,7 @@
           "host": "Amfitrió",
           "token": "Testimoni"
         },
-        "description": "Necessitareu la clau API de 32 caràcters, consulteu les instruccions a https://www.home-assistant.io/integrations/xiaomi_miio#retrieving-the-access-token."
+        "description": "Necessitareu la clau API de 32 caràcters."
       },
       "mi": {
         "data": {
@@ -36,7 +36,7 @@
           "country": "País del servidor",
           "prefer_cloud": "Es prefereix connexió al núvol"
         },
-        "description": "Inicia sessió al núvol Xiaomi Miio, consulta https://www.openhab.org/addons/bindings/miio/#country-servers per obtenir el servidor al núvol."
+        "description": "Inicia sessió al núvol Xiaomi Miio."
       },
       "2fa": {
         "data": {
@@ -224,7 +224,43 @@
           "default": "Per defecte",
           "english": "Anglès",
           "german": "Alemany",
-          "chinese": "Xinès"
+          "chinese": "Xinès",
+          "russian": "Rus",
+          "italian": "Italià",
+          "french": "Francès",
+          "korean": "Coreà"
+        }
+      },
+      "mop_pressure": {
+        "state": {
+          "light": "Lleu",
+          "normal": "Normal"
+        }
+      },
+      "mop_temperature": {
+        "state": {
+          "normal": "Normal",
+          "warm": "Tibi"
+        }
+      },
+      "low_lying_area_frequency": {
+        "state": {
+          "weekly": "Setmanalment",
+          "daily": "Diàriament"
+        }
+      },
+      "scraper_frequency": {
+        "state": {
+          "off": "Desactivat",
+          "weekly": "Setmanalment",
+          "daily": "Diàriament"
+        }
+      },
+      "auto_lds_coverage": {
+        "state": {
+          "off": "Desactivat",
+          "security": "Seguretat",
+          "extreme": "Extrem"
         }
       },
       "order": {
@@ -236,9 +272,10 @@
         "state": {
           "by_area": "Per àrea",
           "by_time": "Per temps",
-          "by_room": "Per habitació"
+          "by_room": "Per habitació",
+          "intelligent": "Intel·ligent"
         }
-      },      
+      },
       "mop_clean_frequency": {
         "state": {
           "by_room": "Per habitació"
@@ -249,7 +286,9 @@
           "off": "Desactivat",
           "standard": "Estàndard",
           "high_frequency": "Alta freqüència",
-          "low_frequency": "Baixa freqüència"
+          "low_frequency": "Baixa freqüència",
+          "custom_frequency": "Freqüència personalitzada",
+          "intelligent": "Intel·ligent"
         }
       },
       "floor_material_direction": {
@@ -290,7 +329,8 @@
           "normal": "Normal",
           "mild": "Dolç",
           "warm": "Calent",
-          "hot": "Calent"
+          "hot": "Calent",
+          "max": "Màxim"
         }
       },
       "auto_recleaning": {
@@ -374,7 +414,11 @@
           "initial_deep_cleaning": "Neteja profunda inicial",
           "initial_deep_cleaning_paused": "Neteja profunda inicial en pausa",
           "sanitizing": "Sanititzant",
-          "sanitizing_with_dry": "Sanititzant amb assecat"
+          "sanitizing_with_dry": "Sanititzant amb assecat",
+          "changing_mop": "Canviant mopa",
+          "changing_mop_paused": "Canvi de mopa pausat",
+          "floor_maintaining": "Manteniment del terra",
+          "floor_maintaining_paused": "Manteniment del terra pausat"
         }
       },
       "status": {
@@ -564,7 +608,40 @@
           "dirty_tank_not_installed": "El dipòsit d'aigua bruta del robot no està instal·lat.",
           "robot_in_hidden_room": "Àrea oculta. Si us plau, trasllada el robot a l'àrea adequada i torna a provar-ho.",
           "washboard_not_working": "El rentaplats deixa de funcionar.",
-          "return_to_charge_failed": "No s'ha pogut tornar a carregar."
+          "return_to_charge_failed": "No s'ha pogut tornar a carregar.",
+          "lds_failed_to_lift": "No s'ha pogut aixecar el mòdul LDS.",
+          "robot_stuck": "El LDS no es pot aixecar aquí per al posicionament.",
+          "robot_stuck_repeat": "Moveu el robot a una àrea oberta i reprengueu la tasca.",
+          "slippery_floor": "Terra relliscós. Torneu-ho a provar més tard.",
+          "check_mop_install": "Comproveu si la mopa està instal·lada correctament.",
+          "dirty_water_tank_full": "Nivell d'aigua anormal al dipòsit d'aigua bruta.",
+          "retractable_leg_stuck": "Comproveu si les potes retràctils estan encallades.",
+          "internal_error": "Mal funcionament per error intern. Proveu de reiniciar el robot.",
+          "robot_stuck_on_tables": "El robot s'ha encallat entre taules i cadires.",
+          "robot_stuck_on_passage": "El robot s'ha encallat al pas estret.",
+          "robot_stuck_on_threshold": "El robot s'ha encallat al graó/llindar.",
+          "robot_stuck_on_low_lying_area": "El robot s'ha encallat en una zona de poca alçada.",
+          "robot_stuck_on_ramp": "El robot ha detectat rampes perilloses al camí.",
+          "robot_stuck_on_obstacle": "El robot ha detectat obstacles al camí.",
+          "robot_stuck_on_pet": "El robot ha detectat persones o mascotes al camí.",
+          "robot_stuck_on_slippery_surface": "El robot està encallat perquè rellisca.",
+          "robot_stuck_on_carpet": "El robot rellisca a la catifa",
+          "drainage_failed": "Drenatge anormal del dipòsit d'aigua bruta",
+          "mop_not_detected": "Mopa no detectada.",
+          "mop_holder_error": "Error de quantitat/col·locació del suport de la mopa a la base.",
+          "dock_error": "Error de la base.",
+          "wash_failed": "No s'ha pogut rentar la mopa bruta.",
+          "robot_stuck_on_curtain": "El robot rellisca a la zona de la cortina",
+          "edge_mop_stop_rotate": "La mopa de vores ha deixat de girar.",
+          "edge_mop_detached": "La mopa de vores s'ha desprès.",
+          "chassis_lift_malfunction": "Mal funcionament de l'elevació del xassís.",
+          "mop_cover_error": "Comproveu si hi ha residus a prop del corró de mopa i la coberta.",
+          "roller_mop_error": "Comproveu si hi ha residus a prop del corró de mopa i la coberta.",
+          "onboard_water_tank_empty": "Nivell baix d'aigua al dipòsit net del robot.",
+          "onboard_dirty_water_tank_full": "El dipòsit d'aigua bruta del robot està ple.",
+          "mop_not_installed": "Mopa no instal·lada.",
+          "fluffing_roller_error": "Error del corró de borrissol.",
+          "blocked_by_obstacle": "Robot bloquejat per un obstacle."
         }
       },
       "charging_status": {
@@ -691,7 +768,7 @@
           "water_stain": "Neteja de taques d'aigua",
           "water_stain_paused": "Neteja de taques d'aigua en pausa",
           "boosted_edge_cleaning": "Neteja d’avantguarda impulsada",
-          "hair_compressing": "Compressió del cabell",    
+          "hair_compressing": "Compressió del cabell",
           "large_particle_cleaning": "Neteja de partícules grans",
           "intensive_stain_cleaning": "Neteja intensiva de taques",
           "stain_cleaning": "Neteja de taques",
@@ -699,7 +776,19 @@
           "initial_deep_cleaning_paused": "Neteja profunda inicial en pausa",
           "mop_pad_heating": "Escalfament de coixinets de fregona",
           "cleaning_after_mapping": "Neteja després de mapatge",
-          "small_particle_cleaning": "Neteja de partícules petites"
+          "small_particle_cleaning": "Neteja de partícules petites",
+          "changing_mop": "Canviant mopa",
+          "changing_mop_paused": "Canvi de mopa pausat",
+          "floor_maintaining": "Manteniment del terra",
+          "floor_maintaining_paused": "Manteniment del terra pausat",
+          "wood_floor_maintaining": "Manteniment de terra de fusta"
+        }
+      },
+      "dust_bag_drying_status": {
+        "state": {
+          "idle": "Inactiu",
+          "drying": "Assecant",
+          "paused": "Pausat"
         }
       }
     }
@@ -1078,6 +1167,16 @@
         "shortcut_name": {
           "name": "Nom de la Drecera",
           "description": "Nou nom de la drecera."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Suprimeix la drecera",
+      "description": "Suprimeix una drecera. (Només en dispositius compatibles)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID de la drecera",
+          "description": "ID de la drecera."
         }
       }
     },
