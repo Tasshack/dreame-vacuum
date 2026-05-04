@@ -344,6 +344,7 @@ class DreameVacuumDevice:
         self._last_change: float = 0  # Last property change time
         self._last_update_failed: float = None  # Last update failed time
         self._cleaning_history_update: float = 0  # Cleaning history update time
+        self._cleaning_history_retry_after: float = 0  # Next allowed cleaning history retry time
         self._update_fail_count: int = 0  # Update failed counter
         self._draining_complete_time: int = None
         self._map_select_time: float = None
@@ -1738,21 +1739,26 @@ class DreameVacuumDevice:
 
     def _request_cleaning_history(self) -> None:
         """Get and parse the cleaning history from cloud event data and set it to memory"""
+        now = time.time()
         if (
             self.cloud_connected
             and self._cleaning_history_update != 0
+            and now >= self._cleaning_history_retry_after
             and (
                 self._cleaning_history_update == -1
                 or self.status._cleaning_history is None
                 or (
-                    time.time() - self._cleaning_history_update >= 5
+                    now - self._cleaning_history_update >= 5
                     and self.status.task_status is DreameVacuumTaskStatus.COMPLETED
                 )
             )
         ):
+            pending_cleaning_history_update = self._cleaning_history_update
             self._cleaning_history_update = 0
+            self._cleaning_history_retry_after = 0
 
             _LOGGER.info("Get Cleaning History")
+            request_failed = False
             try:
                 # Limit the results
                 start = None
@@ -1776,6 +1782,8 @@ class DreameVacuumDevice:
                     limit,
                     start,
                 )
+                if result is None:
+                    request_failed = True
                 if result:
                     cleaning_history = []
                     history_size = 0
@@ -1812,6 +1820,8 @@ class DreameVacuumDevice:
                         limit,
                         start,
                     )
+                    if result is None:
+                        request_failed = True
                     if result:
                         cruising_history = []
                         history_size = 0
@@ -1871,7 +1881,12 @@ class DreameVacuumDevice:
                         self._property_changed()
 
             except Exception as ex:
+                request_failed = True
                 _LOGGER.warning("Get Cleaning History failed!: %s", ex)
+            finally:
+                if request_failed:
+                    self._cleaning_history_update = pending_cleaning_history_update
+                    self._cleaning_history_retry_after = time.time() + 300
 
     def _property_changed(self, delay=True) -> None:
         """Call external listener when a property changed"""
