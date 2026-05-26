@@ -128,6 +128,7 @@ class DreameVacuumDevice:
         prefer_cloud: bool = False,
         device_id: str = None,
         auth_key: str = None,
+        telemetry: bool = True,
     ) -> None:
         # Used for tracking the task status is changed from cleaning to completed
         self.cleanup_completed: bool = False
@@ -182,7 +183,7 @@ class DreameVacuumDevice:
         self.listen(self._intelligent_recognition_changed, DreameVacuumProperty.INTELLIGENT_RECOGNITION)
 
         self._protocol = DreameVacuumProtocol(
-            self.host, self.token, username, password, country, prefer_cloud, device_id, auth_key
+            self.host, self.token, username, password, country, prefer_cloud, device_id, auth_key, telemetry
         )
         if self._protocol.cloud:
             self._map_manager = DreameMapVacuumMapManager(self._protocol)

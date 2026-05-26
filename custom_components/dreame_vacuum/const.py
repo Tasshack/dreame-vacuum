@@ -27,6 +27,8 @@ CONF_HIDDEN_MAP_OBJECTS: Final = "hidden_map_objects"
 CONF_PREFER_CLOUD: Final = "prefer_cloud"
 CONF_ACCOUNT_TYPE: Final = "account_type"
 CONF_DONATED: Final = "donated"
+CONF_TELEMETRY: Final = "telemetry"
+CONF_AI_IMAGE_UPLOAD: Final = "ai_obstacle_image_upload"
 CONF_VERSION: Final = "version"
 
 CONTENT_TYPE: Final = "image/png"

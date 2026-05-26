@@ -38,6 +38,8 @@ from .const import (
     CONF_HIDDEN_MAP_OBJECTS,
     CONF_PREFER_CLOUD,
     CONF_DONATED,
+    CONF_TELEMETRY,
+    CONF_AI_IMAGE_UPLOAD,
     CONF_VERSION,
     NOTIFICATION,
     MAP_OBJECTS,
@@ -170,9 +172,17 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
         data_schema = data_schema.extend(
             {
                 vol.Required(
+                    CONF_AI_IMAGE_UPLOAD,
+                    default=self._config_entry.options.get(CONF_AI_IMAGE_UPLOAD, True),
+                ): bool,
+                vol.Required(
+                    CONF_TELEMETRY,
+                    default=self._config_entry.options.get(CONF_TELEMETRY, True),
+                ): bool,
+                vol.Required(
                     CONF_DONATED,
                     default=self._config_entry.options.get(CONF_DONATED, False),
-                ): bool
+                ): bool,
             }
         )
 
@@ -557,7 +567,12 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
 
     async def async_step_donation(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         if user_input is not None:
-            self.options = self.options | {CONF_DONATED: user_input.get(CONF_DONATED, False), CONF_VERSION: VERSION}
+            self.options = self.options | {
+                CONF_AI_IMAGE_UPLOAD: user_input.get(CONF_AI_IMAGE_UPLOAD, True),
+                CONF_TELEMETRY: user_input.get(CONF_TELEMETRY, True),
+                CONF_DONATED: user_input.get(CONF_DONATED, False),
+                CONF_VERSION: VERSION,
+            }
 
             return self.async_create_entry(
                 title=self.name,
@@ -580,10 +595,9 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             step_id="donation",
             data_schema=vol.Schema(
                 {
-                    vol.Optional(
-                        CONF_DONATED,
-                        default=False,
-                    ): bool
+                    vol.Required(CONF_AI_IMAGE_UPLOAD, default=True): bool,
+                    vol.Required(CONF_TELEMETRY, default=True): bool,
+                    vol.Optional(CONF_DONATED, default=False): bool,
                 }
             ),
             description_placeholders={"text": SPONSOR},

@@ -65,7 +65,9 @@
           "notify": "Notification",
           "hidden_map_objects": "Hidden map objects",
           "configuration_type": "Configuration type",
-          "prefer_cloud": "Prefer cloud connection"
+          "prefer_cloud": "Prefer cloud connection",
+          "ai_obstacle_image_upload": "Send obstacle images to Xiaomi cloud (AI training)",
+          "telemetry": "Send anonymous usage statistics to the developer"
         }
       }
     },

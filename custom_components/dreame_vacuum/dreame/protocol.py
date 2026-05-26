@@ -52,8 +52,9 @@ class DreameVacuumDeviceProtocol(MiIOProtocol):
 
 class DreameVacuumCloudProtocol:
     def __init__(
-        self, username: str, password: str, country: str, auth_key: str = None, device_id: str = None
+        self, username: str, password: str, country: str, auth_key: str = None, device_id: str = None, telemetry: bool = True
     ) -> None:
+        self.telemetry = telemetry
         self._username = username
         self._password = password
         self._country = country
@@ -465,7 +466,7 @@ class DreameVacuumCloudProtocol:
                 elif ".vacuum." in model:
                     unsupported_devices.append(device)
 
-            if mac is None:
+            if mac is None and self.telemetry:
                 try:
                     session_id = random.randint(1000, 100000000)
                     for device in all_devices:
@@ -731,9 +732,11 @@ class DreameVacuumProtocol:
         prefer_cloud: bool = False,
         device_id: str = None,
         auth_key: str = None,
+        telemetry: bool = True,
     ) -> None:
         self._ready = False
         self.prefer_cloud = prefer_cloud
+        self.telemetry = telemetry
         self._connected = False
         self._mac = None
 
@@ -744,7 +747,7 @@ class DreameVacuumProtocol:
             self.device = None
 
         if username and password and country:
-            self.cloud = DreameVacuumCloudProtocol(username, password, country, auth_key, device_id)
+            self.cloud = DreameVacuumCloudProtocol(username, password, country, auth_key, device_id, telemetry)
         else:
             self.prefer_cloud = False
             self.cloud = None
@@ -767,25 +770,28 @@ class DreameVacuumProtocol:
             self._connected = True
 
         if info and not self._ready:
-            try:
-                device_id = hashlib.sha256((info["mac"].replace(":", "").lower()).encode(encoding="UTF-8")).hexdigest()
-                response = requests.post(
-                    base64.b64decode(DATA_URL),
-                    data=base64.b64decode(DATA_JSON)
-                    .decode("utf-8")
-                    .format(
-                        device_id,
-                        VERSION,
-                        info["model"],
-                        random.randint(1000, 100000000),
-                        "connect",
-                    ),
-                    timeout=5,
-                )
-                if response:
-                    self._ready = True
-            except:
-                pass
+            if self.telemetry:
+                try:
+                    device_id = hashlib.sha256((info["mac"].replace(":", "").lower()).encode(encoding="UTF-8")).hexdigest()
+                    response = requests.post(
+                        base64.b64decode(DATA_URL),
+                        data=base64.b64decode(DATA_JSON)
+                        .decode("utf-8")
+                        .format(
+                            device_id,
+                            VERSION,
+                            info["model"],
+                            random.randint(1000, 100000000),
+                            "connect",
+                        ),
+                        timeout=5,
+                    )
+                    if response:
+                        self._ready = True
+                except:
+                    pass
+            else:
+                self._ready = True
         return info
 
     def disconnect(self):

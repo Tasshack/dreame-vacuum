@@ -58,6 +58,8 @@
       },
       "donation": {
         "data": {
+          "ai_obstacle_image_upload": "Send obstacle images to Xiaomi cloud (AI training)",
+          "telemetry": "Send anonymous usage statistics to the developer",
           "donated": "Donated"
         },
         "description": "## Do not forget to support the project.{text}"
@@ -87,6 +89,8 @@
           "hidden_map_objects": "Hidden map objects",
           "configuration_type": "Configuration type",
           "prefer_cloud": "Prefer cloud connection",
+          "ai_obstacle_image_upload": "Send obstacle images to Xiaomi cloud (AI training)",
+          "telemetry": "Send anonymous usage statistics to the developer",
           "donated": "Donated"
         }
       }

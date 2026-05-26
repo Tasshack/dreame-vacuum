@@ -28,6 +28,8 @@ from .const import (
     CONF_HIDDEN_MAP_OBJECTS,
     CONF_ACCOUNT_TYPE,
     CONF_DONATED,
+    CONF_TELEMETRY,
+    CONF_AI_IMAGE_UPLOAD,
     CONF_VERSION,
     MAP_OBJECTS,
     CONTENT_TYPE,
@@ -134,6 +136,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             entry.options.get(CONF_PREFER_CLOUD, True),
             entry.data.get(CONF_DID),
             self._auth_key,
+            entry.options.get(CONF_TELEMETRY, True),
         )
 
         self.device.listen(self._dust_collection_changed, DreameVacuumProperty.DUST_COLLECTION)
@@ -331,6 +334,14 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                     self.device.listen(None)
                     self.device.disconnect()
                     raise ConfigEntryAuthFailed() from None
+                configured_upload = self._entry.options.get(CONF_AI_IMAGE_UPLOAD, True)
+                if (
+                    self.device.status.obstacle_image_upload is not None
+                    and self.device.status.obstacle_image_upload != configured_upload
+                ):
+                    await self.hass.async_add_executor_job(
+                        self.device.set_obstacle_image_upload, configured_upload
+                    )
                 self.device.schedule_update()
                 self.async_set_updated_data()
                 return self.device
