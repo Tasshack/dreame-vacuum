@@ -1,12 +1,10 @@
-[![Version](https://img.shields.io/github/manifest-json/v/Tasshack/dreame-vacuum/master?filename=custom_components%2Fdreame_vacuum%2Fmanifest.json&color=slateblue&label=Version&style=for-the-badge)](https://github.com/Tasshack/dreame-vacuum/releases)
+[![Version](https://img.shields.io/github/manifest-json/v/Tasshack/dreame-vacuum/dev?filename=custom_components%2Fdreame_vacuum%2Fmanifest.json&color=slateblue&label=Version&style=for-the-badge)](https://github.com/Tasshack/dreame-vacuum/releases)
 ![Downloads](https://img.shields.io/github/downloads/Tasshack/dreame-vacuum/total?label=Downloads&style=for-the-badge)
 ![Stars](https://img.shields.io/github/stars/Tasshack/dreame-vacuum?label=Stars&color=darkgoldenrod&style=for-the-badge)
 [![HACS](https://img.shields.io/badge/HACS-Default-orange.svg?logo=HomeAssistantCommunityStore&logoColor=white&style=for-the-badge)](https://github.com/hacs/integration)
 [![Community Forum](https://img.shields.io/static/v1.svg?label=Community&message=Forum&color=41bdf5&logo=HomeAssistant&logoColor=white&style=for-the-badge)](https://community.home-assistant.io/t/custom-component-dreame-vacuum/473026)
 [![Ko-Fi](https://img.shields.io/static/v1.svg?label=%20&message=Ko-Fi&color=F16061&logo=ko-fi&logoColor=white&style=for-the-badge)](https://www.ko-fi.com/Tasshack)
 [![PayPal.Me](https://img.shields.io/static/v1.svg?label=%20&message=PayPal.Me&logo=paypal&color=blue&style=for-the-badge)](https://paypal.me/Tasshackk)
-
-![Logo](https://raw.githubusercontent.com/Tasshack/dreame-vacuum/dev/docs/media/logo.png)
 
 # Dreame vacuum integration for Home Assistant
 
@@ -18,100 +16,108 @@ Complete app replacement with Home Assistant for Dreame robot vacuums.
 
 ## Features
 
-- [Auto generated device entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md)
-- [Live and multi floor map support](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md)
-- [Customized room cleaning entities](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/room_entities.md)
-- [Services for device and map with examples](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/services.md)
-- [Persistent notifications and error reporting](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md)
-- [Events for automations](https://github.com/Tasshack/dreame-vacuum/blob/master/docs/events.md)
-- [Valetudo map card support](#with-valetudo-map-card)
+- [Supported devices](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/supported_devices.md)
+- [Auto generated device entities](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/entities.md)
+- [Live and multi floor map support](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md)
+- [Map obstacle photos](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#obstacle-photos)
+- [Cleaning and cruising history maps](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#cleaning-and-cruising-history-maps)
+- [Cloud and local map backup/recovery](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#backup-and-recovery)
+- [Saved WiFi maps](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#wifi-map)
+- [Customized room cleaning entities](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/room_entities.md)
+- [Services for device and map with examples](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/services.md)
+- [Persistent notifications and error reporting](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/notifications.md)
+- [Events for automations](https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/events.md)
+- Dreamehome account support
+- Movahome account support
 
-## Supported Devices
-- **Dreame**
-  - `dreame.vacuum.p2008` *(F9)*
-  - `dreame.vacuum.p2009` *(D9)*
-  - `dreame.vacuum.p2259` *(D9 Max)*
-  - `dreame.vacuum.p2187` *(D9 Pro)*
-  - `dreame.vacuum.r2205` *(D10 Plus)*
-  - `dreame.vacuum.p2029` *(L10 Pro)*
-  - `dreame.vacuum.p2028a` *(L10 Plus)*
-  - `dreame.vacuum.r2228o` *(L10s Ultra)*
-  - `dreame.vacuum.r2215o` *(L10s Pro)*
-  - `dreame.vacuum.r2216o` *(L10s Pro)*
-  - `dreame.vacuum.p2028` *(Z10 Pro)*
-  - `dreame.vacuum.p2027` *(W10)*
-  - `dreame.vacuum.r2104` *(W10 Pro)*
-  - `dreame.vacuum.r2251o` *(W10s)*
-  - `dreame.vacuum.r2232a` *(W10s Pro)*
-  - `dreame.vacuum.r2228` *(S10)*
-  - `dreame.vacuum.r2211o` *(S10+)*
-  - `dreame.vacuum.r2233` *(S10 Pro)*
-  - `dreame.vacuum.r2247` *(S10 Pro Plus)*
-  - `dreame.vacuum.r2246` *(S10 Plus)*
-  - `dreame.vacuum.r2215` *(X10)*
-  - `dreame.vacuum.r2235` *(X10 Ultra)*
-- **Mijia**
-  - `dreame.vacuum.p2036` *(Trouver LDS Finder)*
-  - `dreame.vacuum.p2150o` *(Vacuum-Mop)*
-  - `dreame.vacuum.p2150a` *(Vacuum-Mop 2 Ultra)*
-  - `dreame.vacuum.p2150b` *(Vacuum-Mop 2 Ultra Set)*
-  - `dreame.vacuum.p2114o` *(Self-Cleaning Robot Vacuum-Mop)* 
-  - `dreame.vacuum.p2149o` *(Self-Cleaning Robot Vacuum-Mop Pro)*
-  - `dreame.vacuum.r2254` *(1S)*
-  - `dreame.vacuum.r2209` *(X10)*
-  - `dreame.vacuum.p2114a` *(X10+)*
-  - `dreame.vacuum.p2041` *(1T)*
-  - `dreame.vacuum.p2140a` *(2C)*
-  - `dreame.vacuum.p2140` *(2C)*
-  - `dreame.vacuum.p2140q` *(Mi Robot Vacuum-Mop 2)*
-  - `dreame.vacuum.p2140p` *(Mi Robot Vacuum-Mop 2)*
-  - `dreame.vacuum.p2140o` *(Mi Robot Vacuum-Mop 2)*
-  - `dreame.vacuum.p2148o` *(Mi Robot Vacuum Mop Ultra Slim)*
-  - `dreame.vacuum.p2041o` *(Mi Robot Vacuum-Mop 2 Pro+)*
-- **MOVA** 
-  - `dreame.vacuum.p2157` *(L600)*
-  - `dreame.vacuum.p2156o` *(MOVA Z500)*
 
 ## Configuration
-- Use this button: <a href="https://my.home-assistant.io/redirect/config_flow_start/?domain=dreame_vacuum" target="_blank"><img src="https://my.home-assistant.io/badges/config_flow_start.svg" alt="Open your Home Assistant instance and start setting up a new integration." /></a> or:
-  - Add the **Dreame Vacuum** integration in Settings -> Devices & Services -> Add Integration
-  - Select **Dreame Vacuum** from the list
-  - Confirm form submission
+
+<a href="https://my.home-assistant.io/redirect/config_flow_start/?domain=dreame_vacuum" target="_blank"><img src="https://my.home-assistant.io/badges/config_flow_start.svg" alt="Open your Home Assistant instance and start setting up a new integration." /></a>
 - Select configuration type:
 
-    <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow.png" width="550px">
+    TODO
 
-    <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md" target="_blank">About map feature</a>
+    <a href="https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md" target="_blank">About map feature</a>
 
 - Enter required credentials according to the selected configuration type. 
   > Please make sure that the devices are at same subnet for both configuration types. <a href="https://python-miio.readthedocs.io/en/latest/troubleshooting.html#discover-devices-across-subnets" target="_blank">python-miio article about this issue.</a>
 - Set your device name and integration settings:
 
-    <img src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/master/docs/media/config_flow_settings.png" width="350px">
+    TODO
 
-    <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/notifications.md" target="_blank">About notifications feature</a><br><a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/map.md#color-schemes" target="_blank">About map color schemes</a>
+    <a href="https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/notifications.md" target="_blank">About notifications feature</a><br><a href="https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/map.md#color-schemes" target="_blank">About map color schemes</a>
 - Navigate to device page for disabling or enabling entities that you want to use.
 
-    <a href="https://github.com/Tasshack/dreame-vacuum/blob/master/docs/entities.md" target="_blank">About entities</a>
- 
-## How to Use
+    <a href="https://github.com/Tasshack/dreame-vacuum/blob/dev/docs/entities.md" target="_blank">About entities</a>
 
+
+## How To Use
 Integration is compatible with all available Lovelace vacuum cards but if you want to use zone cleaning feature you can prefer the Xiaomi Vacuum Card.
 
 #### With [Xiaomi Vacuum Map Card](https://github.com/PiotrMachowski/lovelace-xiaomi-vacuum-map-card)
-
+ > Template for room and zone cleaning.
+<a href="https://my.home-assistant.io/redirect/developer_template/" target="_blank"><img src="https://my.home-assistant.io/badges/developer_template.svg" alt="Open your Home Assistant instance and show your template developer tools." /></a>
 ```yaml
+{# ----------------- PROVIDE YOUR OWN ENTITY IDS HERE ----------------- #}
+{% set camera_entity = "camera." %}
+{% set vacuum_entity = "vacuum." %}
+{# ------------------- DO NOT CHANGE ANYTHING BELOW ------------------- #}
+{% set attributes = states[camera_entity].attributes %}
+
 type: custom:xiaomi-vacuum-map-card
-entity: # Your vacuum entity
+vacuum_platform: default
+entity: {{ vacuum_entity }}
 map_source:
-  camera: # Map Entity
+  camera: {{ camera_entity }}
 calibration_source:
   camera: true
-vacuum_platform: Tasshack/dreame-vacuum
+map_modes:
+  - template: vacuum_clean_zone
+    max_selections: 10
+    repeats_type: EXTERNAL
+    max_repeats: 3
+    service_call_schema:
+      service: dreame_vacuum.vacuum_clean_zone
+      service_data:
+        entity_id: '[[entity_id]]'
+        zone: '[[selection]]'
+        repeats: '[[repeats]]'
+  - template: vacuum_clean_segment
+    repeats_type: EXTERNAL
+    max_repeats: 3
+    service_call_schema:
+      service: dreame_vacuum.vacuum_clean_segment
+      service_data:
+        entity_id: '[[entity_id]]'
+        segments: '[[selection]]'
+        repeats: '[[repeats]]'
+    predefined_selections:
+{%- for room_id in attributes.rooms | default([]) %}
+{%- set room = attributes.rooms[room_id] %}
+      - id: {{room_id}}
+        outline:
+          - - {{room["x0"]}}
+            - {{room["y0"]}}
+          - - {{room["x0"]}}
+            - {{room["y1"]}}
+          - - {{room["x1"]}}
+            - {{room["y1"]}}
+          - - {{room["x1"]}}
+            - {{room["y0"]}}
+{%- endfor %}
+  - name: Clean Spot
+    icon: mdi:map-marker-plus
+    max_repeats: 3
+    selection_type: MANUAL_POINT
+    repeats_type: EXTERNAL
+    service_call_schema:
+      service: dreame_vacuum.vacuum_clean_spot
+      service_data:
+        entity_id: '[[entity_id]]'
+        points: '[[selection]]'
+        repeats: '[[repeats]]'
 ```
-
-> Open card editor, click "Generate rooms config" button, check (adjust if needed) your config using yaml editor and save changes.
-<img src="https://user-images.githubusercontent.com/6118709/189792603-c5ad2089-7405-4d1b-850d-77af8f170618.png">
 
 #### With [Vacuum Card](https://github.com/denysdovhan/vacuum-card)
 
@@ -136,7 +142,7 @@ stats:
       subtitle: Sensors
   cleaning:
     - attribute: cleaned_area
-      unit: m²
+      unit: m2
       subtitle: Cleaned area
     - attribute: cleaning_time
       unit: min
@@ -238,16 +244,18 @@ attributes:
 
 #### With Dreame Vacuum Card
 
-*Coming Soon*
+*Work in progress*
+
 
 ## Thanks To
 
  - [xiaomi_vacuum](https://github.com/pooyashahidi/xiaomi_vacuum) by [@pooyashahidi](https://github.com/pooyashahidi)
  - [Xiaomi MIoT for Home Assistant](https://github.com/ha0y/xiaomi_miot_raw) by [@ha0y](https://github.com/ha0y)
  - [Xiaomi Cloud Map Extractor](https://github.com/PiotrMachowski/Home-Assistant-custom-components-Xiaomi-Cloud-Map-Extractor) by [@PiotrMachowski](https://github.com/PiotrMachowski)
- 
+ - Dreame cloud authentication by [@kuudori](https://github.com/kuudori)
+ - Mova cloud help by [@r1si](https://github.com/r1si)
 
-## Do not forget to support the project!
+ ## Do not forget to support the project!
 
 <a href="https://ko-fi.com/tasshack"><img width="300" src="https://raw.githubusercontent.com/Tasshack/dreame-vacuum/refs/heads/dev/.github/icons/kofi.png"/></a>
 

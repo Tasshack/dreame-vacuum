@@ -1,0 +1,2438 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "기기가 이미 구성되었습니다",
+      "cannot_connect": "연결에 실패했습니다.",
+      "reauth_successful": "재인증에 성공했습니다"
+    },
+    "error": {
+      "cannot_connect": "연결에 실패했습니다.",
+      "unsupported": "지원하지 않는 기기입니다",
+      "wrong_token": "체크섬(Checksum) 오류, 잘못된 토큰입니다",
+      "2fa_failed": "인증에 실패했습니다.",
+      "wrong_captcha": "잘못된 캡차 코드입니다.",
+      "credentials_incomplete": "계정 정보가 누락되었습니다. 사용자 이름, 비밀번호, 지역을 모두 입력해 주세요.",
+      "login_error": "로그인할 수 없습니다. 계정 정보를 확인해 주세요.",
+      "no_devices": "선택한 지역의 해당 계정에서 지원되는 기기를 찾을 수 없습니다.{devices}",
+      "2fa_send_failed": "인증 코드 전송 실패. 다시 시도하십시오.",
+      "2fa_limit_reached": "인증 코드 일일 전송 한도에 도달했습니다. 내일 다시 시도해 주세요.",
+      "2fa_cooldown_active": "연속 요청이 너무 많습니다. 다시 시도하기 전에 몇 분 동안 기다려 주십시오."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "구성 유형"
+        },
+        "description": "지도 기능을 사용하려면 클라우드 연결이 필요하며 자동 구성이 제공됩니다. 지도 기능을 사용하지 않으려면 수동 구성을 선택하세요."
+      },
+      "local": {
+        "data": {
+          "host": "호스트",
+          "token": "토큰"
+        },
+        "description": "32자리 API 토큰이 필요합니다."
+      },
+      "mi": {
+        "data": {
+          "username": "사용자 이름",
+          "password": "비밀번호",
+          "country": "서버 지역",
+          "prefer_cloud": "클라우드 연결 우선"
+        },
+        "description": "Xiaomi Miio 클라우드에 로그인하세요."
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "2단계 인증 코드"
+        },
+        "description": "## 보안 확인이 필요합니다\n인증 코드가 {dest} (으)로 전송되었습니다. 아래에 코드를 입력하세요."
+      },
+      "captcha": {
+        "data": {
+          "code": "코드"
+        },
+        "description": "## 캡차 인증이 필요합니다\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "사용자 이름",
+          "password": "비밀번호",
+          "country": "서버 지역"
+        },
+        "description": "Dreamehome 클라우드에 로그인하세요."
+      },
+      "mova": {
+        "data": {
+          "username": "사용자 이름",
+          "password": "비밀번호",
+          "country": "서버 지역"
+        },
+        "description": "Movahome 클라우드에 로그인하세요."
+      },
+      "trouver": {
+        "data": {
+          "username": "사용자 이름",
+          "password": "비밀번호",
+          "country": "서버 지역"
+        },
+        "description": "Trouver 클라우드에 로그인하세요."
+      },
+      "devices": {
+        "data": {
+          "devices": "지원되는 기기"
+        },
+        "description": "설정하려는 Dreame 로봇청소기를 선택해 주세요."
+      },
+      "donation": {
+        "data": {
+          "donated": "후원 완료"
+        },
+        "description": "## 프로젝트를 후원해 주시는 것을 잊지 마세요.{text}"
+      },
+      "options": {
+        "data": {
+          "name": "이름",
+          "color_scheme": "지도 색상 테마",
+          "icon_set": "지도 아이콘 세트",
+          "notify": "알림",
+          "hidden_map_objects": "숨겨진 지도 개체",
+          "low_resolution": "저해상도 지도",
+          "square": "정사각형 지도"
+        }
+      },
+      "reauth_confirm": {
+        "description": "토큰을 업데이트하거나 누락된 클라우드 정보를 추가하기 위해 Dreame Vacuum 통합 구성 요소의 계정 재인증이 필요합니다.",
+        "title": "통합 구성 요소 재인증"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "지도 색상 테마",
+          "icon_set": "지도 아이콘 세트",
+          "notify": "알림",
+          "hidden_map_objects": "숨겨진 지도 개체",
+          "low_resolution": "저해상도 지도",
+          "square": "정사각형 지도",
+          "configuration_type": "구성 유형",
+          "prefer_cloud": "클라우드 연결 우선",
+          "donated": "후원 완료"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "클라우드 계정 정보가 누락되었습니다. 사용자 이름, 비밀번호, 지역을 모두 입력해 주세요."
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "name": "흡입력 레벨",
+        "state": {
+          "quiet": "저소음",
+          "standard": "표준",
+          "strong": "강력",
+          "turbo": "터보",
+          "full_power": "최대 파워"
+        }
+      },
+      "water_volume": {
+        "name": "물량",
+        "state": {
+          "low": "낮음",
+          "medium": "중간",
+          "high": "높음"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "걸레 습도",
+        "state": {
+          "slightly_dry": "약간 건조",
+          "moist": "촉촉함",
+          "wet": "젖음"
+        }
+      },
+      "cleaning_mode": {
+        "name": "청소 모드",
+        "state": {
+          "sweeping": "진공 청소",
+          "mopping": "물걸레 청소",
+          "sweeping_and_mopping": "진공 및 물걸레 청소",
+          "mopping_after_sweeping": "진공 후 물걸레 청소"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "카펫 민감도",
+        "state": {
+          "low": "낮음",
+          "medium": "중간",
+          "high": "높음"
+        }
+      },
+      "carpet_cleaning": {
+        "name": "카펫 청소",
+        "state": {
+          "avoidance": "회피",
+          "adaptation": "적응",
+          "remove_mop": "걸레 패드 제거",
+          "adaptation_without_route": "경로 없이 적응",
+          "vacuum_and_mop": "진공 및 물걸레 청소",
+          "ignore": "무시",
+          "cross": "가로지르기"
+        }
+      },
+      "mop_wash_level": {
+        "name": "걸레 세척 모드",
+        "state": {
+          "water_saving": "절수 세척",
+          "daily": "표준 세척",
+          "deep": "강력 세척",
+          "ultra_clean_mode": "울트라 클린"
+        }
+      },
+      "mopping_type": {
+        "name": "걸레질 유형",
+        "state": {
+          "accurate": "고정밀",
+          "daily": "표준형",
+          "deep": "집중 청소"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "더 넓은 모서리 커버리지",
+        "state": {
+          "off": "꺼짐",
+          "high_frequency": "고빈도",
+          "low_frequency": "저빈도"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "걸레 패드 스윙",
+        "state": {
+          "off": "꺼짐",
+          "auto": "자동",
+          "daily": "매일",
+          "weekly": "매주"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "걸레 확장 빈도",
+        "state": {
+          "standard": "표준",
+          "intelligent": "지능형 전환",
+          "high": "높음"
+        }
+      },
+      "floor_material": {
+        "name": "바닥 재질",
+        "state": {
+          "none": "없음",
+          "tile": "타일 바닥",
+          "wood": "마루 바닥",
+          "low_pile_carpet": "단모 카펫",
+          "medium_pile_carpet": "장모 카펫",
+          "carpet": "카펫"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "음성 비서 언어",
+        "state": {
+          "default": "기본",
+          "english": "영어",
+          "german": "독일어",
+          "chinese": "중국어",
+          "russian": "러시아어",
+          "italian": "이탈리아어",
+          "french": "프랑스어",
+          "korean": "한국어"
+        }
+      },
+      "mop_pressure": {
+        "name": "걸레 압력",
+        "state": {
+          "light": "약하게",
+          "normal": "표준"
+        }
+      },
+      "mop_temperature": {
+        "name": "걸레 온도",
+        "state": {
+          "normal": "표준",
+          "warm": "온수"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "낮은 지역 빈도",
+        "state": {
+          "weekly": "매주",
+          "daily": "매일"
+        }
+      },
+      "scraper_frequency": {
+        "name": "스크레이퍼 빈도",
+        "state": {
+          "off": "꺼짐",
+          "weekly": "매주",
+          "daily": "매일"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "자동 LDS 커버리지",
+        "state": {
+          "off": "꺼짐",
+          "security": "안전 범위",
+          "extreme": "최대"
+        }
+      },
+      "order": {
+        "name": "순서",
+        "state": {
+          "not_set": "설정되지 않음"
+        }
+      },
+      "self_clean_frequency": {
+        "name": "자동 세척 빈도",
+        "state": {
+          "by_area": "면적 기준",
+          "by_time": "시간 기준",
+          "by_room": "구역(방) 기준",
+          "intelligent": "지능형"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "걸레 세척 빈도",
+        "state": {
+          "by_room": "방별",
+          "5sqm": "5제곱미터",
+          "8sqm": "8제곱미터",
+          "10sqm": "10제곱미터",
+          "15sqm": "15제곱미터",
+          "20sqm": "20제곱미터",
+          "25sqm": "25제곱미터",
+          "86sqf": "86제곱피트",
+          "108sqf": "108제곱피트",
+          "54sqf": "54제곱피트",
+          "162sqf": "162제곱피트",
+          "216sqf": "216제곱피트",
+          "270sqf": "270제곱피트"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "자동 비움 모드",
+        "state": {
+          "off": "꺼짐",
+          "standard": "표준",
+          "high_frequency": "고빈도",
+          "low_frequency": "저빈도",
+          "custom_frequency": "사용자 지정 빈도",
+          "intelligent": "지능형"
+        }
+      },
+      "floor_material_direction": {
+        "name": "바닥 방향",
+        "state": {
+          "vertical": "세로 방향",
+          "horizontal": "가로 방향"
+        }
+      },
+      "visibility": {
+        "name": "가시성",
+        "state": {
+          "visible": "표시",
+          "hidden": "숨김"
+        }
+      },
+      "cleangenius": {
+        "name": "Cleangenius",
+        "state": {
+          "off": "꺼짐",
+          "routine_cleaning": "일상 클리닝",
+          "deep_cleaning": "정밀 클리닝"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "Cleangenius 모드",
+        "state": {
+          "vacuum_and_mop": "진공 및 물걸레 청소",
+          "mop_after_vacuum": "진공 후 물걸레 청소"
+        }
+      },
+      "washing_mode": {
+        "name": "세척 모드",
+        "state": {
+          "smart": "스마트",
+          "light": "절약 세척",
+          "standard": "표준 세척",
+          "deep": "강력 세척",
+          "ultra_washing": "초강력 세척"
+        }
+      },
+      "water_temperature": {
+        "name": "수온",
+        "state": {
+          "normal": "상온",
+          "mild": "미온수",
+          "warm": "온수",
+          "hot": "고온수",
+          "max": "최대(100도)"
+        }
+      },
+      "auto_recleaning": {
+        "name": "자동 재청소",
+        "state": {
+          "off": "꺼짐",
+          "in_deep_mode": "정밀 모드에서만",
+          "in_all_modes": "모든 모드에서"
+        }
+      },
+      "auto_rewashing": {
+        "name": "자동 재세척",
+        "state": {
+          "off": "꺼짐",
+          "in_deep_mode": "정밀 모드에서만",
+          "in_all_modes": "모든 모드에서"
+        }
+      },
+      "cleaning_route": {
+        "name": "경로",
+        "state": {
+          "quick": "빠른 청소",
+          "standard": "표준 청소",
+          "intensive": "집중 청소",
+          "deep": "정밀 청소"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "맞춤형 걸레질 경로",
+        "state": {
+          "off": "꺼짐",
+          "standard": "표준 청소",
+          "intensive": "집중 청소",
+          "deep": "정밀 청소"
+        }
+      },
+      "task_type": {
+        "name": "작업 유형",
+        "state": {
+          "go_to": "지정된 위치로 이동",
+          "segment": "방 청소",
+          "all": "전체 청소",
+          "zone": "구역 청소",
+          "spot": "지점 청소"
+        }
+      },
+      "cleaning_times": {
+        "name": "청소 횟수",
+        "state": {
+          "x1": "1회",
+          "x2": "2회",
+          "x3": "3회"
+        }
+      },
+      "auto_empty_frequency": {
+        "name": "자동 먼지 비움 빈도",
+        "state": {
+          "x1": "매 작업 후",
+          "x2": "청소 2회 후",
+          "x3": "청소 3회 후"
+        }
+      },
+      "drying_time": {
+        "name": "건조 시간",
+        "state": {
+          "silent": "저소음"
+        }
+      },
+      "battery_charge_level": {
+        "name": "배터리 충전 수준"
+      },
+      "object_type": {
+        "name": "객체 유형",
+        "state": {
+          "predefined_point": "미리 정의된 점",
+          "low_lying_area": "낮은 지역",
+          "curtain": "커튼",
+          "threshold": "문턱",
+          "furniture": "가구",
+          "carpet": "카펫",
+          "restricted": "제한 구역"
+        }
+      },
+      "edit_type": {
+        "name": "편집 유형",
+        "state": {
+          "door": "문 편집",
+          "split": "방 분할",
+          "merge": "방 병합",
+          "visibility": "방 가시성",
+          "material": "바닥 재질",
+          "type": "방 이름",
+          "wall": "벽 편집"
+        }
+      },
+      "map_type": {
+        "name": "지도 유형",
+        "state": {
+          "cleaning": "청소 지도",
+          "history": "청소 세부 정보",
+          "wifi": "와이파이 지도"
+        }
+      },
+      "carpet_type": {
+        "name": "카펫 유형",
+        "state": {
+          "medium_pile": "중간 내지 긴 파일",
+          "low_pile": "짧은 파일",
+          "floor_mat": "발판",
+          "other": "기타"
+        }
+      },
+      "mop_type": {
+        "name": "걸레 유형",
+        "state": {
+          "a": "걸레 A",
+          "b": "걸레 B",
+          "c": "걸레 C"
+        }
+      },
+      "carpet_shape": {
+        "name": "모양",
+        "state": {
+          "square": "정사각형",
+          "round": "원형"
+        }
+      },
+      "mopping_pattern": {
+        "name": "걸레질 패턴",
+        "state": {
+          "daily": "일상 걸레질",
+          "deep": "꼼꼼한 걸레질"
+        }
+      },
+      "wetness_level": {
+        "name": "물걸레 습도",
+        "state": {
+          "slightly_dry": "약간 건조",
+          "moist": "축축함",
+          "wet": "젖음"
+        }
+      },
+      "task_repeats": {
+        "name": "작업 반복",
+        "state": {
+          "once": "한 번",
+          "daily": "매일",
+          "workdays": "평일",
+          "weekends": "주말"
+        }
+      },
+      "segment_name": {
+        "name": "방 이름",
+        "state": {
+          "room": "방",
+          "living_room": "거실",
+          "primary_bedroom": "안방",
+          "study": "서재",
+          "kitchen": "주방",
+          "dining_hall": "식당",
+          "bathroom": "욕실",
+          "balcony": "발코니",
+          "corridor": "복도",
+          "utility_room": "다용도실",
+          "closet": "옷장",
+          "meeting_room": "회의실",
+          "office": "사무실",
+          "fitness_area": "피트니스 구역",
+          "recreation_area": "여가 구역",
+          "secondary_bedroom": "침실"
+        }
+      },
+      "furniture_type": {
+        "name": "가구 유형",
+        "state": {
+          "single_bed": "싱글 침대",
+          "double_bed": "더블 침대",
+          "arm_chair": "안락의자",
+          "two_seat_sofa": "2인용 소파",
+          "three_seat_sofa": "3인용 소파",
+          "dining_table": "식탁",
+          "nightstant": "협탁",
+          "coffee_table": "커피 테이블",
+          "toilet": "변기",
+          "litter_box": "고양이 배변함",
+          "pet_bed": "반려동물 침대",
+          "food_bowl": "식기",
+          "pet_toilet": "반려동물 화장실",
+          "refrigerator": "냉장고",
+          "washing_machine": "세탁기",
+          "enclosed_litter_box": "폐쇄형 고양이 배변함",
+          "air_conditioner": "에어컨",
+          "tv_cabinet": "TV 장",
+          "bookshelf": "책장",
+          "shoe_cabinet": "신발장",
+          "wardrobe": "옷장",
+          "greenery": "식물",
+          "floor_mirror": "전신 거울",
+          "l_shaped_sofa": "L자형 소파",
+          "round_coffee_table": "원형 커피 테이블",
+          "table": "테이블",
+          "arm_chair_narrow": "좁은 안락의자",
+          "three_seat_sofa_narrow": "좁은 3인용 소파",
+          "l_shaped_sofa_right": "오른쪽 L자형 소파"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "name": "상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "sweeping": "진공 청소 중",
+          "charging": "충전 중",
+          "error": "오류 발생",
+          "idle": "대기 중",
+          "paused": "일시 정지됨",
+          "returning": "도크로 복귀 중",
+          "mopping": "물걸레 청소 중",
+          "drying": "건조 중",
+          "washing": "세척 중",
+          "returning_to_wash": "세척을 위해 복귀 중",
+          "building": "지도 구성 중",
+          "sweeping_and_mopping": "진공 및 물걸레 청소 중",
+          "charging_completed": "충전 완료",
+          "upgrading": "업그레이드 중",
+          "clean_summon": "청소를 위해 호출됨",
+          "station_reset": "스테이션 초기화 중",
+          "returning_install_mop": "걸레 장착을 위해 복귀 중",
+          "returning_remove_mop": "걸레 제거를 위해 복귀 중",
+          "water_check": "수위 확인 중",
+          "clean_add_water": "세척 및 급수 중",
+          "washing_paused": "세척 일시 정지됨",
+          "auto_emptying": "먼지 비움 중",
+          "remote_control": "원격 제어 중",
+          "smart_charging": "스마트 충전 중",
+          "second_cleaning": "2회차 청소 중",
+          "human_following": "사용자 추종 중",
+          "spot_cleaning": "지점 청소 중",
+          "returning_auto_empty": "먼지 비움을 위해 복귀 중",
+          "waiting_for_task": "작업 대기 중",
+          "station_cleaning": "스테이션 세척 중",
+          "returning_to_drain": "배수를 위해 복귀 중",
+          "draining": "배수 중",
+          "auto_water_draining": "자동 배수 중",
+          "emptying": "비움 중",
+          "dust_bag_drying": "먼지 봉투 건조 중",
+          "dust_bag_drying_paused": "먼지 봉투 건조 일시 정지됨",
+          "heading_to_extra_cleaning": "추가 청소를 위해 이동 중",
+          "extra_cleaning": "추가 청소 중",
+          "finding_pet_paused": "반려동물 찾기 일시 정지됨",
+          "finding_pet": "반려동물 찾는 중",
+          "shortcut": "단축 명령 수행 중",
+          "monitoring": "모니터링 중",
+          "monitoring_paused": "모니터링 일시 정지됨",
+          "initial_deep_cleaning": "초기 정밀 청소",
+          "initial_deep_cleaning_paused": "초기 정밀 청소 일시 정지됨",
+          "sanitizing": "살균 중",
+          "sanitizing_with_dry": "살균 및 건조 중",
+          "changing_mop": "걸레 교체 중",
+          "changing_mop_paused": "걸레 교체 일시 정지됨",
+          "floor_maintaining": "바닥 관리 중",
+          "floor_maintaining_paused": "바닥 관리 일시 정지됨",
+          "remote_pickup": "원격 집기 중",
+          "arranging_items": "물건 정리 중",
+          "pet_guarding": "반려동물 가드 중",
+          "pet_guarding_paused": "반려동물 가드 일시 정지됨",
+          "installing_mop": "걸레 장착 중",
+          "uninstalling_mop": "걸레 탈거 중",
+          "intelligent_recharging": "지능형 재충전 중",
+          "assisted_cleaning": "보조 청소 중",
+          "entering_dock": "도크 진입 중",
+          "leaving_dock": "도크 이탈 중",
+          "navigating_to_climber": "클라이머로 이동 중",
+          "docking_to_climber": "클라이머에 도킹 중",
+          "climber_docked": "클라이머 도킹됨",
+          "climber_navigating": "클라이머 이동 중",
+          "climbing_stairs": "계단 오르는 중",
+          "climbing_stairs_completed": "계단 오르기 완료",
+          "climber_at_dock": "클라이머 도크에 있음",
+          "climber_leaving_dock": "클라이머 도크 이탈 중"
+        }
+      },
+      "status": {
+        "name": "상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "idle": "대기 중",
+          "paused": "일시 정지됨",
+          "cleaning": "청소 중",
+          "returning": "도크로 복귀 중",
+          "spot_cleaning": "지점 청소 중",
+          "follow_wall_cleaning": "벽면 밀착 청소 중",
+          "charging": "충전 중",
+          "ota": "오버더에어(OTA) 업데이트 중",
+          "fct": "FCT 테스트 중",
+          "wifi_set": "WiFi 설정 중",
+          "power_off": "전원 꺼짐",
+          "factory": "공장 초기 상태",
+          "error": "오류",
+          "remote_control": "원격 제어",
+          "sleeping": "절전 모드",
+          "self_test": "자가 검사",
+          "factory_test": "공장 테스트",
+          "standby": "대기",
+          "room_cleaning": "구역(방) 청소",
+          "zone_cleaning": "영역 청소",
+          "fast_mapping": "빠른 지도 생성",
+          "cruising_path": "경로 이동 중",
+          "cruising_point": "지점 이동 중",
+          "summon_clean": "호출 청소",
+          "shortcut": "단축 명령",
+          "person_follow": "사람 추종",
+          "water_check": "수위 확인",
+          "pet_guarding": "반려동물 가드",
+          "auto_arrangement": "자동 배치",
+          "smart_arrangement": "스마트 배치",
+          "zoned_arrangement": "영역 배치"
+        }
+      },
+      "task_status": {
+        "name": "작업 상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "completed": "완료됨",
+          "cleaning": "청소 중",
+          "zone_cleaning": "영역 청소 중",
+          "room_cleaning": "구역(방) 청소 중",
+          "spot_cleaning": "지점 청소 중",
+          "fast_mapping": "빠른 지도 생성 중",
+          "cleaning_paused": "청소 일시 정지됨",
+          "room_cleaning_paused": "구역 청소 일시 정지됨",
+          "zone_cleaning_paused": "영역 청소 일시 정지됨",
+          "spot_cleaning_paused": "지점 청소 일시 정지됨",
+          "map_cleaning_paused": "지도 청소 일시 정지됨",
+          "docking_paused": "도킹 일시 정지됨",
+          "mopping_paused": "물걸레 청소 일시 정지됨",
+          "zone_mopping_paused": "영역 물걸레 청소 일시 정지됨",
+          "room_mopping_paused": "구역 물걸레 청소 일시 정지됨",
+          "zone_docking_paused": "영역 도킹 일시 정지됨",
+          "room_docking_paused": "구역 도킹 일시 정지됨",
+          "cruising_path": "경로 이동 중",
+          "cruising_path_paused": "경로 이동 일시 정지됨",
+          "cruising_point": "지점 이동 중",
+          "cruising_point_paused": "지점 이동 일시 정지됨",
+          "summon_clean_paused": "호출 청소 일시 정지됨",
+          "returning_to_install_mop": "걸레 장착을 위해 복귀 중",
+          "returning_to_remove_mop": "걸레 제거를 위해 복귀 중",
+          "station_cleaning": "스테이션 세척 중",
+          "pet_finding": "반려동물 찾기 중",
+          "auto_cleaning_washing_paused": "자동 청소 중 세척 일시 정지됨",
+          "area_cleaning_washing_paused": "영역 청소 중 세척 일시 정지됨",
+          "custom_cleaning_washing_paused": "사용자 지정 청소 중 세척 일시 정지됨",
+          "picking_up_item": "물건 집는 중",
+          "picking_up_item_paused": "물건 집기 일시 정지됨",
+          "picking_up_item_success": "물건 집기 성공",
+          "remote_pickup_initializing": "원격 집기 초기화 중",
+          "remote_pickup_identifing": "원격 집기 확인 중",
+          "manual_remote_pickup": "수동 원격 집기",
+          "automatic_remote_pickup": "자동 원격 집기",
+          "remote_pickup_in_progress": "원격 집기 진행 중",
+          "remote_pickup_paused": "원격 집기 일시 정지됨",
+          "placing_item": "물건 놓는 중",
+          "placing_item_paused": "물건 놓기 일시 정지됨"
+        }
+      },
+      "water_tank": {
+        "name": "물탱크",
+        "state": {
+          "unknown": "알 수 없음",
+          "installed": "장착됨",
+          "not_installed": "장착되지 않음",
+          "mop_installed": "걸레 패드 장착됨",
+          "in_station": "스테이션에 있음"
+        }
+      },
+      "mop_pad": {
+        "name": "걸레 패드",
+        "state": {
+          "unknown": "알 수 없음",
+          "installed": "장착됨",
+          "not_installed": "장착되지 않음",
+          "mop_installed": "걸레 패드 장착됨",
+          "in_station": "스테이션에 있음"
+        }
+      },
+      "dust_collection": {
+        "name": "먼지 수집",
+        "state": {
+          "unknown": "알 수 없음",
+          "not_available": "사용 불가",
+          "available": "사용 가능",
+          "over_use": "과다 사용",
+          "never": "안 함"
+        }
+      },
+      "auto_empty_status": {
+        "name": "자동 비움 상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "idle": "대기 중",
+          "active": "진행 중",
+          "not_performed": "수행되지 않음"
+        }
+      },
+      "error": {
+        "name": "오류",
+        "state": {
+          "unknown": "알 수 없는 오류 코드",
+          "no_error": "정상",
+          "drop": "바퀴가 들려 있습니다. 바닥에 내려놓고 다시 시작해 주세요.",
+          "cliff": "낙하 방지 센서가 오염되었습니다. 센서를 닦아주세요.",
+          "bumper": "충돌 센서가 끼어 이동할 수 없습니다. 장애물을 확인해 주세요.",
+          "gesture": "기기 평형 상실 또는 심한 기울어짐이 감지되었습니다. 평평한 곳으로 옮겨주세요.",
+          "bumper_repeat": "충돌 센서가 반복해서 끼었습니다. 주변 장애물을 제거해 주세요.",
+          "drop_repeat": "바퀴가 반복해서 들립니다. 바닥 상태를 확인해 주세요.",
+          "optical_flow": "옵티컬 플로우 센서 오류",
+          "no_box": "먼지통이 장착되지 않았습니다.",
+          "no_tank_box": "물통이 장착되지 않았습니다.",
+          "water_box_empty": "물통에 물이 없습니다. 물을 채워주세요.",
+          "box_full": "필터가 젖었거나 막혀 있습니다. 필터를 확인해 주세요.",
+          "brush": "메인 브러시에 이물질이 걸렸습니다. 브러시를 청소해 주세요.",
+          "side_brush": "사이드 브러시에 이물질이 걸렸습니다. 사이드 브러시를 확인해 주세요.",
+          "fan": "필터가 젖었거나 막혀 공기 흐름이 원활하지 않습니다.",
+          "left_wheel_motor": "로봇이 갇혔거나 왼쪽 바퀴가 막혔습니다. 이물질을 제거해 주세요.",
+          "right_wheel_motor": "로봇이 갇혔거나 오른쪽 바퀴가 막혔습니다. 이물질을 제거해 주세요.",
+          "turn_suffocate": "로봇이 갇혀 회전할 수 없습니다. 열린 공간으로 옮겨주세요.",
+          "forward_suffocate": "로봇이 갇혀 전진할 수 없습니다. 이동 경로를 확인해 주세요.",
+          "charger_get": "충전 도크를 찾을 수 없습니다. 경로를 확인해 주세요.",
+          "battery_low": "배터리가 부족합니다.",
+          "charge_fault": "충전 오류가 발생했습니다.",
+          "battery_percentage": "배터리 수치 인식 오류",
+          "heart": "내부 통신 오류",
+          "camera_occlusion": "시각적 포지셔닝 센서가 가려졌거나 오류가 발생했습니다.",
+          "move": "이동 센서 오류",
+          "flow_shielding": "광학 센서 오류",
+          "infrared_shielding": "적외선 센서 가려짐 오류",
+          "charge_no_electric": "충전 도크의 전원이 켜져 있지 않습니다.",
+          "battery_fault": "배터리 자체 오류",
+          "fan_speed_error": "팬 속도 센서 오류",
+          "left_wheell_speed": "왼쪽 바퀴에 이물질이 걸려 회전 속도가 비정성적입니다.",
+          "right_wheell_speed": "오른쪽 바퀴에 이물질이 걸려 회전 속도가 비정상적입니다.",
+          "bmi055_acce": "가속도 센서 오류",
+          "bmi055_gyro": "자이로 센서 오류",
+          "xv7001": "자이로 센서 오류",
+          "left_magnet": "왼쪽 자석 센서 오류",
+          "right_magnet": "오른쪽 자석 센서 오류",
+          "flow_error": "플로우 센서 오류",
+          "infrared_fault": "적외선 센서 오류",
+          "camera_fault": "카메라 모듈 오류",
+          "strong_magnet": "주변에 강한 자기장이 감지되었습니다.",
+          "water_pump": "워터 펌프 오류",
+          "rtc": "실시간 시계(RTC) 오류",
+          "auto_key_trig": "내부 제어 오류",
+          "p3v3": "내부 전력 오류",
+          "camera_idle": "카메라 대기 중 오류",
+          "blocked": "청소 경로가 막혔습니다. 도크로 복귀합니다.",
+          "lds_error": "레이저 거리 센서(LDS) 오류",
+          "lds_bumper": "레이저 센서 범퍼 오류",
+          "filter_blocked": "필터가 젖었거나 막혀 있습니다.",
+          "edge": "엣지 센서 오류",
+          "carpet": "로봇을 카펫이 없는 평평한 바닥에서 다시 시작해 주세요.",
+          "laser": "3D 장애물 회피 센서 오작동",
+          "ultrasonic": "초음파 센서 오작동",
+          "no_go_zone": "제한 구역 또는 가상벽이 감지되었습니다.",
+          "route": "청소 경로가 가로막혔습니다.",
+          "restricted": "제한 구역 내에 기기가 있습니다.",
+          "remove_mop": "물걸레 청소가 완료되었습니다. 걸레 패드를 분리하여 세척해 주세요.",
+          "mop_removed": "청소 중에 걸레 패드가 분리되었습니다.",
+          "mop_pad_stop_rotate": "걸레 패드의 회전이 멈추었습니다.",
+          "bin_full": "먼지 봉투가 가득 찼거나 공기 통로가 막혔습니다.",
+          "bin_open": "충전 스테이션 덮개가 열려 있거나 먼지 봉투가 장착되지 않았습니다.",
+          "water_tank": "정수통이 장착되지 않았습니다.",
+          "dirty_water_tank": "오수통이 가득 찼거나 장착되지 않았습니다.",
+          "water_tank_dry": "정수통의 물이 부족합니다. 물을 채워주세요.",
+          "dirty_water_tank_blocked": "오수통 배수구가 막혔습니다.",
+          "dirty_water_tank_pump": "오수통 펌프 오류가 발생했습니다.",
+          "mop_pad": "워시보드가 제대로 장착되지 않았습니다.",
+          "wet_mop_pad": "워시보의 수위가 비정상입니다. 워시보드를 청소해 주세요.",
+          "clean_mop_pad": "청소가 완료되었습니다. 걸레 패드와 워시보드를 청소해 주세요.",
+          "clean_tank_level": "정수통 수위를 확인하고 물을 채워주세요.",
+          "station_disconnected": "베이스 스테이션의 전원이 켜져 있지 않습니다.",
+          "dirty_tank_level": "오수통의 수위가 너무 높습니다.",
+          "washboard_level": "워시보드의 수위가 너무 높습니다.",
+          "no_mop_in_station": "스테이션에 걸레 패드가 없습니다.",
+          "dust_bag_full": "먼지 봉투가 가득 찼거나 통풍구가 막혔습니다.",
+          "self_test_failed": "상하수도 모듈 정수 탱크 출수 이상",
+          "mop_install_failed": "걸레 패드 장착에 실패했습니다.",
+          "low_battery_turn_off": "배터리가 매우 부족하여 곧 전원이 꺼집니다.",
+          "dirty_tank_not_installed": "로봇의 오수통이 장착되지 않았습니다.",
+          "robot_in_hidden_room": "숨겨진 구역입니다. 로봇을 적절한 위치로 옮기고 다시 시도해 주세요.",
+          "washboard_not_working": "워시보드 작동이 멈추었습니다.",
+          "return_to_charge_failed": "충전 복귀에 실패했습니다.",
+          "lds_failed_to_lift": "LDS 모듈을 올리는 데 실패했습니다.",
+          "robot_stuck": "이 위치에서는 포지셔닝을 위한 LDS 상승이 불가합니다.",
+          "robot_stuck_repeat": "로봇을 열린 공간으로 옮기고 작업을 다시 시작해 주세요.",
+          "slippery_floor": "바닥이 미끄럽습니다. 나중에 다시 시도해 주세요.",
+          "check_mop_install": "걸레 패드가 제대로 장착되어 있는지 확인해 주세요.",
+          "dirty_water_tank_full": "로봇 오수통의 수위가 비정상입니다.",
+          "retractable_leg_stuck": "접이식 다리가 꼬였는지 확인해 주세요.",
+          "internal_error": "내부 오류로 인한 오작동입니다. 로봇을 재시작해 보세요.",
+          "robot_stuck_on_tables": "테이블이나 의자 사이에 로봇이 갇혔습니다.",
+          "robot_stuck_on_passage": "좁은 통로에 로봇이 갇혔습니다.",
+          "robot_stuck_on_threshold": "문턱/턱에 로봇이 걸렸습니다.",
+          "robot_stuck_on_low_lying_area": "낮은 공간에 로봇이 끼었습니다.",
+          "robot_stuck_on_ramp": "경로에서 추락 위험이 있는 경사로가 감지되었습니다.",
+          "robot_stuck_on_obstacle": "경로에 장애물이 감지되었습니다.",
+          "robot_stuck_on_pet": "경로에 사람이나 반려동물이 감지되었습니다.",
+          "robot_stuck_on_slippery_surface": "바닥이 미끄러워 로봇이 헛도느라 갇힌 상태입니다.",
+          "robot_stuck_on_carpet": "카펫에서 로봇이 헛돌고 있습니다.",
+          "drainage_failed": "오수통 배수 과정에서 오류가 발생했습니다.",
+          "mop_not_detected": "걸레 패드가 감지되지 않습니다.",
+          "mop_holder_error": "도크의 걸레 홀더 개수나 배치가 잘못되었습니다.",
+          "dock_error": "도크(베이스) 오류입니다.",
+          "wash_failed": "더러워진 걸레를 세척하는 데 실패했습니다.",
+          "robot_stuck_on_curtain": "커튼 구역에서 로봇이 헛돌고 있습니다.",
+          "edge_mop_stop_rotate": "엣지 물걸레의 회전이 멈추었습니다.",
+          "edge_mop_detached": "엣지 물걸레가 분리되었습니다.",
+          "chassis_lift_malfunction": "본체 리프팅 모듈 오작동입니다.",
+          "mop_cover_error": "롤러 걸레 및 덮개 주변의 이물질을 확인해 주세요.",
+          "roller_mop_error": "롤러 걸레 및 덮개 주변의 이물질을 확인해 주세요.",
+          "onboard_water_tank_empty": "로봇 내부 정수통의 물이 부족합니다.",
+          "onboard_dirty_water_tank_full": "로봇 내부 오수통이 가득 찼습니다.",
+          "mop_not_installed": "걸레 패드가 장착되지 않았습니다.",
+          "fluffing_roller_error": "플러핑 롤러 오류입니다.",
+          "blocked_by_obstacle": "장애물에 의해 로봇이 가로막혔습니다.",
+          "robotic_arm_stopped": "로봇 암 정지됨",
+          "drainage_outlet_filter": "로봇 배수구 필터가 막혔습니다.",
+          "main_wheels_error": "메인 바퀴 오류"
+        }
+      },
+      "charging_status": {
+        "name": "충전 상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "charging": "충전 중",
+          "not_charging": "충전 대기",
+          "return_to_charge": "충전을 위해 복귀 중",
+          "charging_completed": "충전 완료"
+        }
+      },
+      "relocation_status": {
+        "name": "재배치 상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "located": "위치 파악 완료",
+          "locating": "위치 파악 중",
+          "failed": "실패",
+          "success": "성공"
+        }
+      },
+      "self_wash_base_status": {
+        "name": "자동 세척 베이스 상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "idle": "대기 중",
+          "washing": "세척 중",
+          "drying": "건조 중",
+          "paused": "일시 정지됨",
+          "returning": "세척을 위해 복귀 중",
+          "clean_add_water": "세척 및 급수 중",
+          "adding_water": "급수 중"
+        }
+      },
+      "low_water_warning": {
+        "name": "부족한 물 경고",
+        "state": {
+          "no_warning": "정상",
+          "no_water_left": "정수통에 물이 거의 없습니다. 확인하고 채워주세요.",
+          "no_water_left_after_clean": "물걸레가 세척되었습니다. 정수통 물이 부족합니다. 정수통을 채우고 오수통을 비워주세요.",
+          "no_water_for_clean": "정수통의 물이 부족하여 로봇이 진공 청소 모드로 전환되었습니다.",
+          "low_water": "물이 부족합니다. 정수통에 물을 채워주세요.",
+          "tank_not_installed": "정수통이 장착되지 않았습니다."
+        }
+      },
+      "stream_status": {
+        "name": "스트림 상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "idle": "대기 중",
+          "video": "영상 통화 진행 중",
+          "audio": "음성 통화 진행 중",
+          "recording": "영상 녹화 중"
+        }
+      },
+      "drainage_status": {
+        "name": "배수 상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "idle": "대기 중",
+          "draining": "배수 중",
+          "draining_successful": "배수 완료",
+          "draining_failed": "배수 실패"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "정수 탱크 상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "not_available": "사용 불가",
+          "not_installed": "장착되지 않음",
+          "low_water": "물 부족",
+          "installed": "장착됨"
+        }
+      },
+      "dirty_water_tank_status": {
+        "name": "오수 탱크 상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "installed": "장착됨",
+          "not_installed_or_full": "장착되지 않거나 가득 참"
+        }
+      },
+      "dust_bag_status": {
+        "name": "먼지 봉투 상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "installed": "장착됨",
+          "not_installed": "장착되지 않음",
+          "check": "확인"
+        }
+      },
+      "detergent_status": {
+        "name": "세제 상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "installed": "장착됨",
+          "disabled": "비활성화됨",
+          "low_detergent": "세제 부족"
+        }
+      },
+      "hot_water_status": {
+        "name": "온수 상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "disabled": "비활성화됨",
+          "enabled": "활성화됨"
+        }
+      },
+      "station_drainage_status": {
+        "name": "스테이션 배수 상태",
+        "state": {
+          "unknown": "알 수 없음",
+          "idle": "대기 중",
+          "draining": "배수 중"
+        }
+      },
+      "task_type": {
+        "name": "작업 유형",
+        "state": {
+          "standard": "표준 청소",
+          "standard_paused": "표준 청소 일시 정지됨",
+          "custom": "사용자 지정 청소",
+          "custom_paused": "사용자 지정 청소 일시 정지됨",
+          "shortcut": "단축 청소",
+          "shortcut_paused": "단축 청소 일시 정지됨",
+          "scheduled": "예약 청소",
+          "scheduled_paused": "예약 청소 일시 정지됨",
+          "smart": "스마트 청소",
+          "smart_paused": "스마트 청소 일시 정지됨",
+          "partial": "구역 청소",
+          "partial_paused": "구역 청소 일시 정지됨",
+          "summon": "호출 청소",
+          "summon_paused": "호출 청소 일시 정지됨",
+          "water_stain": "물 얼룩 청소",
+          "water_stain_paused": "물 얼룩 청소 일시 정지됨",
+          "boosted_edge_cleaning": "가장자리 강화 청소",
+          "hair_compressing": "머리카락 압축",
+          "large_particle_cleaning": "큰 입자 집중 청소",
+          "intensive_stain_cleaning": "강력 얼룩 제거",
+          "stain_cleaning": "일반 얼룩 제거",
+          "initial_deep_cleaning": "초기 정밀 청소",
+          "initial_deep_cleaning_paused": "초기 정밀 청소 일시 정지됨",
+          "mop_pad_heating": "걸레 패드 가열 중",
+          "cleaning_after_mapping": "빠른 지도 생성 완료 후 청소 중",
+          "small_particle_cleaning": "미세 입자 청소",
+          "changing_mop": "걸레 교체 중",
+          "changing_mop_paused": "걸레 교체 일시 정지됨",
+          "floor_maintaining": "바닥 관리 중",
+          "floor_maintaining_paused": "바닥 관리 일시 정지됨",
+          "arranging_items": "물건 정리 중",
+          "arranging_items_paused": "물건 정리 일시 정지됨",
+          "intensive_hair_cleaning": "집중 머리카락 청소",
+          "accessory_handling": "액세서리 조작",
+          "increased_drum_speed_cleaning": "드럼 속도 향상 청소",
+          "pressurized_cleaning": "가압 청소",
+          "steam_cleaning": "스팀 청소",
+          "steam_cleaning_paused": "스팀 청소 일시 정지됨"
+        }
+      },
+      "dust_bag_drying_status": {
+        "name": "먼지 봉투 건조 상태",
+        "state": {
+          "idle": "대기 중",
+          "drying": "건조 중",
+          "paused": "일시 정지됨"
+        }
+      },
+      "nation_matched": {
+        "name": "지역 잠금",
+        "state": {
+          "unknown": "비활성화됨",
+          "matched": "잠금 해제됨",
+          "unmatched": "잠김",
+          "na": "사용 가능하지 않음"
+        }
+      },
+      "startup_method": {
+        "name": "시작 주체",
+        "state": {
+          "button": "버튼",
+          "app": "앱",
+          "scheduled": "예약됨",
+          "voice": "음성",
+          "second_cleaning": "두 번째 청소",
+          "unknown": "알 수 없음"
+        }
+      },
+      "cleaning_status": {
+        "name": "청소",
+        "state": {
+          "interrupted": "중단됨",
+          "completed": "완료됨",
+          "manually_ended": "수동으로 종료됨",
+          "failed": "실패함",
+          "unknown": "알 수 없음"
+        }
+      },
+      "cleanup_method": {
+        "name": "청소 방식",
+        "state": {
+          "other": "기타",
+          "default": "기본",
+          "customized": "사용자 정의",
+          "cleangenius": "CleanGenius",
+          "water_stain": "물자국",
+          "unknown": "알 수 없음"
+        }
+      },
+      "task_end_type": {
+        "name": "완료자",
+        "state": {
+          "other": "기타",
+          "manual_docking": "수동 도킹",
+          "docking": "도킹",
+          "failed_docking": "도킹 실패",
+          "stop": "정지",
+          "unknown": "알 수 없음"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "중단 이유",
+        "state": {
+          "abnormal_docking": "도킹 이상",
+          "base_station_powered_off": "베이스 스테이션 전원 꺼짐",
+          "brush_entangled_by_carpet": "브러시가 카펫에 걸림",
+          "brush_entangled_by_object": "브러시가 물체에 걸림",
+          "brush_entangled_by_obstacle": "브러시가 장애물에 걸림",
+          "cannot_find_base_station": "베이스 스테이션을 찾을 수 없음",
+          "cliff_sensor_error": "낙하 방지 센서 오류",
+          "laser_distance_sensor_error": "레이저 거리 센서 오류",
+          "mop_pad_abnormally_removed": "걸레 패드가 비정상적으로 제거됨",
+          "mop_pad_fallen_off": "걸레 패드가 떨어짐",
+          "mop_pad_fallen_off_by_obstacle": "걸레 패드가 장애물 때문에 떨어짐",
+          "mop_pad_fallen_off_by_table": "걸레 패드가 테이블 때문에 떨어짐",
+          "mop_pad_fallen_off_crossing_obstacle": "걸레 패드가 장애물을 넘다가 떨어짐",
+          "mop_pad_removed": "걸레 패드 제거됨",
+          "mop_pad_stuck": "걸레 패드 걸림",
+          "robot_fallen": "로봇 추락",
+          "robot_is_stuck_on_obstacle": "로봇이 장애물에 걸림",
+          "robot_is_stuck_on_step": "로봇이 턱에 걸림",
+          "robot_lifted": "로봇 들림",
+          "task_completed": "작업 완료됨",
+          "unknown": "알 수 없음"
+        }
+      },
+      "recovery_map_type": {
+        "name": "지도 유형",
+        "state": {
+          "original": "원본 지도",
+          "edited": "편집된 지도",
+          "backup": "백업 지도"
+        }
+      },
+      "obstacle_type": {
+        "name": "장애물 유형",
+        "state": {
+          "unknown": "알 수 없음",
+          "base": "베이스",
+          "scale": "체중계",
+          "thread": "실",
+          "wire": "전선",
+          "toy": "장난감",
+          "shoes": "신발",
+          "sock": "양말",
+          "fece": "배설물",
+          "trash_can": "쓰레기통",
+          "fabric": "천",
+          "power_strip": "멀티탭",
+          "liquid_stain": "액체 자국",
+          "obstacle": "장애물",
+          "pet": "반려동물",
+          "cleaning_tools": "청소 도구",
+          "detected_stain": "감지된 얼룩",
+          "blocked_room": "차단된 방",
+          "easy_to_stuck_furniture": "걸리기 쉬운 가구",
+          "uncleanable_stain": "청소 불가능한 얼룩",
+          "leg": "다리",
+          "large_particles": "큰 입자",
+          "dried_stain": "마른 얼룩",
+          "food_bowl": "식기",
+          "pet_bed": "반려동물 침대",
+          "cleaned_stain": "청소된 얼룩",
+          "skipped_uncleanable_stain": "청소 불가능한 얼룩 건너뜀",
+          "cleaned_dried_stain": "청소된 마른 얼룩",
+          "cleaned_large_particles": "청소된 큰 입자",
+          "hair": "머리카락",
+          "paper": "종이",
+          "cleaned_hair": "청소된 머리카락",
+          "sundry": "잡화/기타"
+        }
+      },
+      "obstacle_reason": {
+        "name": "장애물 발생 원인",
+        "state": {
+          "blocked_by_virtual_wall": "가상 벽에 의해 차단됨",
+          "blocked_by_door": "문에 의해 차단됨",
+          "blocked_by_threshold": "문턱에 의해 차단됨",
+          "blocked_by_obstacle": "장애물에 의해 차단됨",
+          "blocked_by_carpet": "카펫에 의해 차단됨",
+          "blocked_by_detected_carpet": "감지된 카펫에 의해 차단됨",
+          "blocked_by_hidden_obstacle": "숨겨진 장애물에 의해 차단됨",
+          "blocked_by_dynamic_obstacle": "동적인 장애물에 의해 차단됨",
+          "passage_too_low": "통로가 너무 낮음",
+          "step_too_low": "턱이 너무 낮음",
+          "failed_to_cross_threshold": "문턱 넘기 실패"
+        }
+      },
+      "remaining_battery": {
+        "name": "남은 배터리"
+      },
+      "multiple_cleaning_time": {
+        "name": "다중 청소"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "firmware_version": {
+        "name": "펌웨어 버전"
+      },
+      "ip_address": {
+        "name": "IP 주소"
+      },
+      "mac_address": {
+        "name": "MAC 주소"
+      },
+      "model": {
+        "name": "모델"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "serial_number": {
+        "name": "일련번호"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "timezone": {
+        "name": "시간대"
+      },
+      "voice_packet_id": {
+        "name": "보이스 팩"
+      },
+      "deodorizer_left": {
+        "name": "탈취제"
+      },
+      "detergent_left": {
+        "name": "세제"
+      },
+      "dirty_water_channel_left": {
+        "name": "오수 채널"
+      },
+      "filter_left": {
+        "name": "필터"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "브러시 롤러 청소"
+      },
+      "main_brush_left": {
+        "name": "메인 브러시"
+      },
+      "mop_pad_left": {
+        "name": "걸레 패드"
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "내부 오수 탱크"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "롤러 걸레 필터 청소"
+      },
+      "scale_inhibitor_left": {
+        "name": "물때 방지제"
+      },
+      "sensor_dirty_left": {
+        "name": "센서 청소"
+      },
+      "side_brush_left": {
+        "name": "사이드 브러시"
+      },
+      "silver_ion_left": {
+        "name": "은이온"
+      },
+      "squeegee_left": {
+        "name": "스퀴지"
+      },
+      "tank_filter_left": {
+        "name": "탱크 필터"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "배수 필터 청소"
+      },
+      "wheel_dirty_left": {
+        "name": "바퀴 청소"
+      }
+    },
+    "toggle": {
+      "customized_cleaning": {
+        "name": "맞춤 청소"
+      },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "정밀 청소"
+      },
+      "auto_dust_collecting": {
+        "name": "자동 먼지 비움"
+      },
+      "hair_compression": {
+        "name": "머리카락 압축"
+      },
+      "self_clean": {
+        "name": "자가 청소"
+      },
+      "deep_mop_washing": {
+        "name": "정밀 걸레 세척"
+      },
+      "hot_washing": {
+        "name": "온수 세척"
+      },
+      "auto_drying": {
+        "name": "자동 건조"
+      },
+      "silent_drying": {
+        "name": "저소음 건조"
+      },
+      "uv_sterilization": {
+        "name": "UV 살균"
+      },
+      "customized_carpet_cleaning": {
+        "name": "맞춤 청소"
+      },
+      "carpet_avoidance": {
+        "name": "카펫 회피"
+      },
+      "carpet_preferences": {
+        "name": "카펫 맞춤 설정"
+      },
+      "auto_change_mop": {
+        "name": "자동 걸레 교체"
+      },
+      "multi_floor_map": {
+        "name": "복층 지도"
+      },
+      "intelligent_recognition": {
+        "name": "지능형 인식"
+      },
+      "map_saving": {
+        "name": "지도 저장"
+      },
+      "child_lock": {
+        "name": "차일드 락"
+      },
+      "resume_cleaning": {
+        "name": "청소 재개"
+      },
+      "obstacle_avoidance": {
+        "name": "장애물 회피"
+      },
+      "carpet_boost": {
+        "name": "카펫 가속"
+      },
+      "carpet_recognition": {
+        "name": "카펫 인식"
+      },
+      "clean_carpets_first": {
+        "name": "카펫 우선 청소"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "카펫 위에서 롤러 커버 닫기"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "카펫 집중 청소"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "카펫 위 사이드 브러시 회전"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "카펫 위 섀시 들어올리기"
+      },
+      "auto_mount_mop": {
+        "name": "자동 걸레 장착"
+      },
+      "mopping_with_detergent": {
+        "name": "세제 걸레질"
+      },
+      "mop_washing_with_detergent": {
+        "name": "세제 걸레 세척"
+      },
+      "auto_add_detergent": {
+        "name": "세제 자동 추가"
+      },
+      "smart_mop_washing": {
+        "name": "스마트 걸레 세척"
+      },
+      "wider_corner_coverage": {
+        "name": "코너 청소 범위 확대"
+      },
+      "pressurized_cleaning": {
+        "name": "가압 청소"
+      },
+      "gap_cleaning_extension": {
+        "name": "틈새 청소 연장"
+      },
+      "mopping_under_furnitures": {
+        "name": "가구 아래 걸레질"
+      },
+      "floor_direction_cleaning": {
+        "name": "바닥 방향 청소"
+      },
+      "ring_light_always_on": {
+        "name": "링 라이트 항상 켜기"
+      },
+      "collision_avoidance": {
+        "name": "충돌 회피"
+      },
+      "fill_light": {
+        "name": "카메라 조명"
+      },
+      "ai_obstacle_detection": {
+        "name": "AI 장애물 감지"
+      },
+      "ai_pet_detection": {
+        "name": "반려동물 감지"
+      },
+      "pet_focused_detection": {
+        "name": "반려동물 집중 감지"
+      },
+      "pet_focused_cleaning": {
+        "name": "반려동물 집중 청소"
+      },
+      "ai_obstacle_picture": {
+        "name": "장애물 사진"
+      },
+      "obstacle_crossing": {
+        "name": "장애물 넘기 동기화"
+      },
+      "active_suspension_crossing": {
+        "name": "액티브 서스펜션 장애물 넘기"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "동적 장애물 청소"
+      },
+      "large_particles_boost": {
+        "name": "큰 입자 가속"
+      },
+      "streaming_voice_prompt": {
+        "name": "스트리밍 음성 안내"
+      },
+      "voice_assistant": {
+        "name": "음성 비서"
+      },
+      "off_peak_charging": {
+        "name": "심야 충전"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "청소 재개 비활성화"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "자동 비움 비활성화"
+      },
+      "dnd_reduce_volume": {
+        "name": "볼륨 조절"
+      },
+      "dnd": {
+        "name": "방해 금지 모드"
+      }
+    },
+    "number": {
+      "wetness_level": {
+        "name": "수분량"
+      },
+      "auto_empty_area": {
+        "name": "자동 비움 구역"
+      },
+      "drying_time": {
+        "name": "건조 시간"
+      },
+      "self_clean_time": {
+        "name": "자가 청소 시간"
+      },
+      "self_clean_area": {
+        "name": "자가 청소 구역"
+      },
+      "volume": {
+        "name": "볼륨"
+      }
+    },
+    "time": {
+      "dnd_start": {
+        "name": "DND 시작 시간"
+      },
+      "dnd_end": {
+        "name": "DND 종료 시간"
+      },
+      "off_peak_charging_start": {
+        "name": "심야 충전 시작 시간"
+      },
+      "off_peak_charging_end": {
+        "name": "심야 충전 종료 시간"
+      },
+      "schedule_time": {
+        "name": "시작 시간"
+      }
+    },
+    "input": {
+      "schedule_repeats": {
+        "name": "반복"
+      },
+      "dnd_repeats": {
+        "name": "반복"
+      },
+      "map_custom_name": {
+        "name": "지도 이름"
+      },
+      "segment_custom_name": {
+        "name": "방 이름"
+      },
+      "shortcut_name": {
+        "name": "바로가기 이름"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "추가",
+        "add_map": "지도 생성",
+        "auto_empty_unavailable": "자동 비움 불가",
+        "auto_emptying": "자동 비움 중",
+        "backup": "백업",
+        "bag_drying_unavailable": "비움 봉투 건조 불가",
+        "cancel": "취소",
+        "cancel_ignore": "무시 취소",
+        "carpet": "카펫",
+        "change": "변경",
+        "charge": "충전",
+        "clean": "청소",
+        "clean_again": "다시 청소",
+        "cleaning_settings": "청소 설정",
+        "cleanings": "청소 횟수",
+        "close": "닫기",
+        "confirm": "확인",
+        "delete": "삭제",
+        "delete_carpet": "카펫 삭제",
+        "deleted_carpet": "삭제된 카펫",
+        "disable": "비활성화",
+        "discard": "삭제",
+        "dismiss": "닫기",
+        "dock": "도크",
+        "dock_settings": "스테이션 설정",
+        "download": "다운로드",
+        "dry": "건조",
+        "dry_bag": "봉투 건조",
+        "drying_unavailable": "건조 불가",
+        "dynamically_ignored": "동적 무시됨",
+        "edit_carpet": "카펫 편집",
+        "empty": "비우기",
+        "enable": "활성화",
+        "fast_mapping": "빠른 매핑",
+        "get_dreame_vacuum_card": "Dreame Vacuum 카드 받기",
+        "ignore": "무시",
+        "ignore_obstacle": "장애물 무시",
+        "impassable_threshold": "통과 불가 문턱",
+        "job_details": "작업 상세",
+        "keep_disabled": "비활성 유지",
+        "map_display": "지도 표시",
+        "map_management": "지도 관리",
+        "new_dnd": "새 DND",
+        "new_schedule": "예약 추가",
+        "new_shortcut": "새 단축어 작업",
+        "next_job": "다음 작업",
+        "no_go": "진입 금지",
+        "no_mop": "물걸레 금지",
+        "objects": "개체",
+        "override": "강제 적용",
+        "passable_threshold": "통과 가능 문턱",
+        "pause": "일시 중지",
+        "pause_washing": "세척 일시 중지",
+        "previous_job": "이전 작업",
+        "ramp": "경사로",
+        "reload": "새로고침",
+        "rename": "이름 변경",
+        "repeats": "횟수",
+        "replace": "교체",
+        "reset": "초기화",
+        "restore": "복구",
+        "restore_map": "지도 복구",
+        "resume": "재개",
+        "resume_washing": "세척 재개",
+        "rooms": "방",
+        "rotate_left": "왼쪽 회전",
+        "rotate_right": "오른쪽 회전",
+        "round_carpet": "원형 카펫",
+        "save": "저장",
+        "select_map": "지도 선택",
+        "shortcuts": "단축어",
+        "square_carpet": "사각 카펫",
+        "start": "시작",
+        "start_auto_empty": "자동 비움 시작",
+        "start_bag_drying": "봉투 건조 시작",
+        "start_drying": "건조 시작",
+        "start_task": "작업 시작",
+        "start_washing": "세척 시작",
+        "stop": "중지",
+        "stop_bag_drying": "봉투 건조 중지",
+        "stop_drying": "건조 중지",
+        "understood": "확인",
+        "virtual_threshold": "가상 문턱",
+        "virtual_wall": "가상벽",
+        "wash": "세척",
+        "washing_unavailable": "세척 불가",
+        "wifi_map": "신호 지도"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "배경 이미지",
+        "card_object_action_buttons": "작업 버튼",
+        "card_object_animations": "애니메이션",
+        "card_object_cleanup_notification": "청소 알림",
+        "card_object_controls": "제어 장치",
+        "card_object_cruising_history": "이동 기록",
+        "card_object_fault_notification": "오류 알림",
+        "card_object_information_notification": "정보 알림",
+        "card_object_low_water_notification": "물부족 알림",
+        "card_object_map_change_confirmation": "지도 변경 확인",
+        "card_object_menu": "메뉴",
+        "card_object_progress_bar": "진행률 표시줄",
+        "card_object_saved_notification": "저장 알림",
+        "card_object_shortcuts": "단축어",
+        "card_object_state": "상태",
+        "card_object_status": "상태",
+        "card_object_task_type": "작업 유형",
+        "card_object_title": "제목",
+        "card_object_warning_notification": "경고 알림",
+        "color_scheme": "색상 구성",
+        "color_scheme_dreame_auto": "Dreame 자동",
+        "color_scheme_dreame_dark": "Dreame 다크",
+        "color_scheme_dreame_light": "Dreame 라이트",
+        "color_scheme_grayscale": "그레이스케일",
+        "color_scheme_mijia_auto": "Mijia 자동",
+        "color_scheme_mijia_dark": "Mijia 다크",
+        "color_scheme_mijia_light": "Mijia 라이트",
+        "copied": "복사됨",
+        "copy": "복사",
+        "copy_all": "전체 복사",
+        "disable_haptic": "진동 피드백 비활성화",
+        "editable_objects": "편집 가능 개체",
+        "font_size": "글자 크기",
+        "full_height": "전체 높이",
+        "grid_size": "그리드 크기",
+        "height": "높이",
+        "hidden_card_objects": "숨겨진 카드 개체",
+        "hidden_objects": "숨겨진 개체",
+        "hide_map_info": "지도 정보 숨기기",
+        "icon_set": "아이콘 세트",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "Dreame 구형",
+        "icon_set_material": "머티리얼",
+        "icon_set_mijia": "Mijia",
+        "left": "왼쪽",
+        "left_handed": "왼손잡이 모드",
+        "limit_height": "화면 높이 제한",
+        "locked": "잠금",
+        "locked_always": "항상",
+        "locked_auto": "자동",
+        "locked_never": "사용 안 함",
+        "locked_only_touch": "터치시에만",
+        "map": "지도 %name%",
+        "map_1": "첫 번째 지도",
+        "map_2": "두 번째 지도",
+        "map_3": "세 번째 지도",
+        "map_4": "네 번째 지도",
+        "map_5": "다섯 번째 지도",
+        "map_color_active_area": "활성 영역",
+        "map_color_active_area_outline": "활성 영역 윤곽선",
+        "map_color_active_point": "활성 포인트",
+        "map_color_active_point_outline": "활성 포인트 윤곽선",
+        "map_color_auto_low_lying_area": "자동 저지대 영역",
+        "map_color_carpet_color": "카펫 색상",
+        "map_color_curtain": "커튼",
+        "map_color_detected_carpet_color": "감지된 카펫 색상",
+        "map_color_floor": "바닥",
+        "map_color_floor_material": "바닥 재질",
+        "map_color_icon_background": "아이콘 배경",
+        "map_color_impassable_threshold": "통과 불가 문턱",
+        "map_color_manual_low_lying_area": "수동 저지대 영역",
+        "map_color_mop_path": "물걸레 경로",
+        "map_color_new_segment": "새 방",
+        "map_color_no_go": "진입 금지",
+        "map_color_no_go_outline": "진입 금지 윤곽선",
+        "map_color_no_mop": "물걸레 금지",
+        "map_color_no_mop_outline": "물걸레 금지 윤곽선",
+        "map_color_obstacle_background": "장애물 배경",
+        "map_color_order": "순서",
+        "map_color_outside": "외부",
+        "map_color_passable_threshold": "통과 가능 문턱",
+        "map_color_passive_segment": "비활성 방",
+        "map_color_path": "경로",
+        "map_color_ramp": "경사로",
+        "map_color_segment": "방",
+        "map_color_settings_background": "설정 배경",
+        "map_color_text": "텍스트",
+        "map_color_text_stroke": "텍스트 윤곽선",
+        "map_color_virtual_threshold": "가상 문턱",
+        "map_color_virtual_wall": "가상벽",
+        "map_color_wall": "벽",
+        "map_config": "지도 설정",
+        "map_display": "지도 표시",
+        "map_display_floor_plan": "평면도",
+        "map_display_floor_plan_only": "평면도만",
+        "map_display_floor_plan_without_texture": "텍스처 없는 평면도",
+        "map_display_standard": "표준",
+        "map_object_active_area": "활성 영역",
+        "map_object_active_cruise_point": "활성 크루즈 포인트",
+        "map_object_active_point": "활성 포인트",
+        "map_object_animations": "애니메이션",
+        "map_object_blocked_segment": "차단된 방",
+        "map_object_blocked_segments": "차단된 방",
+        "map_object_carpet": "카펫",
+        "map_object_charger": "충전기",
+        "map_object_cleaning_sequence": "청소 순서",
+        "map_object_cruise_point": "크루즈 포인트",
+        "map_object_curtain": "커튼",
+        "map_object_customized_cleaning": "사용자 지정 청소",
+        "map_object_deleted_carpet": "삭제된 카펫",
+        "map_object_detected_carpet": "감지된 카펫",
+        "map_object_door": "문",
+        "map_object_floor": "바닥",
+        "map_object_floor_material": "바닥 재질",
+        "map_object_furniture": "가구",
+        "map_object_furniture_image": "가구 이미지",
+        "map_object_hidden_segments": "숨겨진 방",
+        "map_object_icon": "아이콘",
+        "map_object_ignored_obstacles": "무시된 장애물",
+        "map_object_impassable_threshold": "통과 불가 문턱",
+        "map_object_lock_indicator": "잠금 표시기",
+        "map_object_low_lying_area": "저지대 영역",
+        "map_object_material": "바닥 재질",
+        "map_object_mop_path": "물걸레 경로",
+        "map_object_mop_type": "물걸레 유형",
+        "map_object_name": "이름",
+        "map_object_name_background": "이름 배경",
+        "map_object_no_go": "진입 금지",
+        "map_object_no_mop": "물걸레 금지",
+        "map_object_object_option": "개체 옵션",
+        "map_object_obstacle": "장애물",
+        "map_object_obstacle_background": "장애물 배경",
+        "map_object_obstacle_color": "장애물 색상",
+        "map_object_order": "순서",
+        "map_object_passable_threshold": "통과 가능 문턱",
+        "map_object_path": "경로",
+        "map_object_pet": "반려동물",
+        "map_object_predefined_point": "미리 정의된 포인트",
+        "map_object_ramp": "경사로",
+        "map_object_router": "라우터",
+        "map_object_segment": "방",
+        "map_object_segment_type": "방 유형",
+        "map_object_selected_segments": "선택된 방",
+        "map_object_split_line": "분할선",
+        "map_object_stain": "얼룩",
+        "map_object_station_status": "스테이션 상태",
+        "map_object_vacuum": "로봇청소기",
+        "map_object_vacuum_status": "상태",
+        "map_object_virtual_threshold": "가상 문턱",
+        "map_object_virtual_wall": "가상벽",
+        "map_object_walls": "벽",
+        "map_object_zoom_point": "확대 포인트",
+        "object_opacity": "개체 투명도",
+        "object_scale": "개체 크기",
+        "opacity": "투명도",
+        "override_colors": "지도 색상 재정의",
+        "overlay_image": "오버레이 이미지",
+        "rotation": "회전",
+        "scale": "크기",
+        "scripts": "스크립트",
+        "selectable_objects": "선택 가능 개체",
+        "selected_map_config": "%name% 설정",
+        "show_map_info": "지도 정보 표시",
+        "top": "상단",
+        "url": "URL",
+        "viewport": "뷰포트",
+        "width": "너비",
+        "zoom": "확대/축소"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "진행 중인 작업이 있습니다!",
+        "apply_changes_or_reload": "편집 중 지도가 변경되었습니다!\n덮어쓰시겠습니까, 아니면 새로 불러올까요?",
+        "auto_mount_mop_will_enabled": "자동 물걸레 장착이 활성화됩니다!",
+        "backup_map": "지도를 백업하시겠습니까?",
+        "backup_map_will_overwritten": "현재 백업된 지도가 덮어씌워집니다!",
+        "bag_drying_will_stopped": "먼지 봉투 건조가 중단됩니다!",
+        "carpet_recognition_will_enabled": "사용자 지정 카펫 청소를 위해 카펫 감지 기능이 켜져야 합니다",
+        "carpet_will_deleted": "카펫이 삭제됩니다!",
+        "cleangenius_will_disabled": "CleanGenius 기능이 꺼집니다!",
+        "cleaning_failure": "청소 실패 원인",
+        "create_map": "새 지도를 만드시겠습니까?",
+        "custom_carpet_settings_will_enabled": "사용자 지정 카펫 청소가 활성화됩니다!",
+        "custom_carpet_settings_will_enabled_detail": "선택한 카펫 유형에 맞는 설정이 적용됩니다",
+        "customized_cleaning_disabled": "사용자 지정 청소가 비활성화되었습니다!",
+        "delete_carpet": "카펫을 삭제하시겠습니까?",
+        "delete_dnd": "DND 작업을 삭제하시겠습니까?",
+        "delete_map": "지도를 삭제하시겠습니까?",
+        "delete_schedule": "예약된 작업을 삭제하시겠습니까?",
+        "delete_shortcut": "단축어를 삭제하시겠습니까?",
+        "deleted": "삭제 성공",
+        "device_unavailable": "장치를 사용할 수 없음",
+        "disable_cleangenius": "CleanGenius를 비활성화하시겠습니까?",
+        "dnd_confliction": "DND 작업 충돌!",
+        "dnd_confliction_detail": "예약된 작업이 방해 금지 시간과 겹칩니다.",
+        "dnd_will_deleted": "%start% ~ %end% DND 작업이 삭제됩니다!",
+        "dock_in_restricted_area": "충전기가 제한 구역에 있습니다!",
+        "dock_in_restricted_area_detail": "충전기가 제한 구역에 위치해 있습니다. 저장하면 충전이 어려울 수 있습니다.",
+        "drying_will_stopped": "걸레 건조가 중단됩니다!",
+        "dust_collection_not_performed": "먼지 수집 (자동 비움) 작업이 수행되지 않았습니다\n로봇은 DND 기간 동안 자동 비움 작업을 수행하지 않습니다.",
+        "enable_auto_mount_mop": "자동 물걸레 장착을 활성화하시겠습니까?",
+        "enable_carpet_recognition": "카펫 감지 기능이 활성화됩니다!",
+        "enable_customized_cleaning": "사용자 지정 청소를 활성화하시겠습니까?",
+        "enable_mop_change": "자동 물걸레 교체를 활성화하시겠습니까?",
+        "enable_task": "작업을 활성화하시겠습니까?",
+        "entity_is_required": "엔티티가 필요합니다",
+        "entity_not_available": "엔티티를 사용할 수 없음",
+        "failed_to_load_card": "카드를 로드하지 못했습니다",
+        "ignore_obstacle": "장애물을 무시하시겠습니까?",
+        "invalid_entity": "잘못된 엔티티",
+        "map_backup": "지도를 백업 중입니다",
+        "map_backup_failed": "지도 백업에 실패했습니다!",
+        "map_backup_success": "지도 백업이 완료되었습니다",
+        "map_recovery": "지도를 복구 중입니다",
+        "map_recovery_failed": "지도 복구에 실패했습니다!",
+        "map_recovery_success": "지도 복구가 완료되었습니다",
+        "map_will_deleted": "%name% 지도가 삭제됩니다!",
+        "map_will_replaced": "현재 선택된 지도가 새 지도로 교체됩니다!",
+        "map_will_restored": "지도가 %date% 상태로 복구됩니다",
+        "mapping_started": "맵핑 시작됨...",
+        "mop_change_disabled": "자동 물걸레 교체가 비활성화되었습니다!",
+        "mop_wash_frequency_low": "물걸레 세척 빈도가 너무 낮습니다!",
+        "mop_wash_frequency_will_increased": "습도 유지를 위해 세척 빈도가 자동으로 상향됩니다",
+        "not_available": "지금은 사용할 수 없습니다...",
+        "not_fully_supported": "아직 완전히 지원되지 않습니다!",
+        "not_supported": "지원되지 않는 기능입니다!",
+        "obstacle_will_ignored": "장애물이 무시됩니다!",
+        "override_changes": "변경 사항을 무시하시겠습니까?",
+        "preview": "Dreame Vacuum 카드의 미리보기입니다.",
+        "recommended_areas": "추천 영역",
+        "relocating": "자가 포지셔닝 중. 잠시만 기다려 주세요.",
+        "relocating_completed": "자가 포지셔닝 성공. 로봇이 작업을 계속 진행합니다.",
+        "relocating_failed": "자가 포지셔닝 실패!",
+        "replace_map": "지도를 교체하시겠습니까?",
+        "reset_usage": "사용량을 초기화하시겠습니까?",
+        "reset_walls": "벽 초기화하시겠습니까?",
+        "restore_map": "%name% 지도를 복구하시겠습니까?",
+        "resume_cleaning": "로봇이 배터리를 80%까지 충전한 후 완료되지 않은 청소 작업을 자동으로 재개합니다.",
+        "resume_cleaning_not_performed": "로봇은 방해 금지 기간이 끝나면 청소를 재개합니다.",
+        "resume_cleaning_time": "%time% 청소가 시작됩니다",
+        "save_changes": "변경 사항을 저장하시겠습니까?",
+        "saved": "저장 성공",
+        "schedule_will_deleted": "%time% 예약 작업이 삭제됩니다!",
+        "select_map": "%name%' 지도를 선택하시겠습니까?",
+        "select_mapping_type": "매핑 유형 선택",
+        "select_room": "청소 순서를 설정할 방을 선택하세요",
+        "selected_map_will_changed": "지도가 %name%(으)로 변경됩니다!",
+        "service_call_failed": "서비스 호출 실패",
+        "settings_will_applied": "다음 작업부터 설정이 적용됩니다.",
+        "shortcut_will_deleted": "%name% 단축어가 삭제됩니다!",
+        "stop_bag_drying": "먼지 봉투 건조를 중단하시겠습니까?",
+        "stop_drying": "건조를 중단하시겠습니까?",
+        "stop_task": "현재 작업을 중지하시겠습니까?",
+        "task_disabled": "작업이 비활성화되었습니다!",
+        "task_will_stopped": "현재 작업이 중단됩니다!",
+        "unsaved_changes_present": "저장되지 않은 변경 사항이 사라집니다!",
+        "unsupported_browser": "지원되지 않는 브라우저입니다!",
+        "usage_will_reset": "%name% 사용량이 초기화됩니다!",
+        "walls_will_be_reset": "벽이 초기에 매핑된 위치로 복구됩니다!"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "소모품 사용량",
+        "add_furniture": "가구 추가",
+        "audio_settings": "오디오 설정",
+        "battery_management": "배터리 관리",
+        "carpet_settings": "카펫 설정",
+        "clean_water_tank": "정수 탱크",
+        "cleaning_details": "청소 상세",
+        "cleaning_history": "청소 히스토리",
+        "cleaning_sequence": "청소 순서",
+        "created_carpet": "수동 생성 카펫",
+        "cruising": "크루징",
+        "cruising_details": "크루징 상세",
+        "cruising_history": "크루징 히스토리",
+        "customized_cleaning": "사용자 지정 청소",
+        "description": "%name% 통합 구성요소 프론트엔드",
+        "detected_carpet": "자동 감지 카펫",
+        "detergent": "세정제",
+        "device_information": "장치 정보",
+        "device_settings": "장치 설정",
+        "dnd": "방해 금지 모드",
+        "dnd_task": "DND 작업",
+        "dust_bag": "먼지 봉투",
+        "global_carpet_settings": "전체 카펫 설정",
+        "invalid": "유효하지 않음",
+        "locate": "위치 찾기",
+        "map": "지도",
+        "map_edit": "지도 편집",
+        "map_management": "지도 관리",
+        "map_name_placeholder": "지도 %index%",
+        "mop_type": "물걸레 유형",
+        "mopping_settings": "물걸레 설정",
+        "more_functions": "추가 기능",
+        "name": "%name% 카드",
+        "new_map": "새 지도",
+        "obstacle": "장애물",
+        "obstacle_settings": "카메라 및 장애물 설정",
+        "recovery_map_list": "지도 복구",
+        "remote_control": "리모컨",
+        "saved_map": "저장된 지도",
+        "schedule_list": "예약 청소",
+        "scheduled_room": "예약된 방 청소",
+        "scheduled_spot": "예약된 지점 청소",
+        "scheduled_task": "예약 작업",
+        "scheduled_zone": "예약된 구역 청소",
+        "segment_name_placeholder": "방 %index%",
+        "shortcut": "단축어",
+        "shortcut_list": "단축어 목록",
+        "shortcut_map": "단축어 지도",
+        "shortcut_name_placeholder": "단축어 %index%",
+        "shortcut_task": "단축어 작업",
+        "task": "작업 %index%",
+        "task_placeholder": "작업 %index%",
+        "time_left": "%time% 남음",
+        "unavailable": "사용 불가",
+        "used_water_tank": "오수 탱크",
+        "wall": "벽",
+        "wifi_map": "신호 지도"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "구역 청소 시작",
+      "description": "선택한 방의 청소를 시작합니다.",
+      "fields": {
+        "segments": {
+          "name": "클리닝 구역(방)",
+          "description": "청소할 구역(방) 목록입니다. 각 방의 ID를 입력하거나, 방별 상세 설정(반복 횟수, 흡입력 등) 데이터를 입력할 수 있습니다."
+        },
+        "repeats": {
+          "name": "청소 반복 횟수",
+          "description": "선택한 각 구역(방)을 몇 번 청소할지 결정합니다 (방별 설정이 따로 있다면 그 설정이 우선됩니다)."
+        },
+        "suction_level": {
+          "name": "흡입력 단계",
+          "description": "선택한 각 구역의 흡입력(팬 속도)을 설정합니다 (방별 설정이 따로 있다면 그 설정이 우선됩니다)."
+        },
+        "water_volume": {
+          "name": "물 조절 레벨",
+          "description": "선택한 각 구역의 출수량(물 레벨)을 설정합니다 (방별 설정이 따로 있다면 그 설정이 우선됩니다)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "영역 청소 시작",
+      "description": "지도에서 선택한 영역의 청소를 시작합니다.",
+      "fields": {
+        "zone": {
+          "name": "영역 좌표",
+          "description": "청소를 수행할 영역의 좌표값입니다."
+        },
+        "repeats": {
+          "name": "영역 청소 반복 횟수",
+          "description": "각 영역을 몇 번 청소할지 결정합니다."
+        },
+        "suction_level": {
+          "name": "흡입력 단계",
+          "description": "선택한 영역의 흡입력(팬 속도)을 설정합니다."
+        },
+        "water_volume": {
+          "name": "물 조절 레벨",
+          "description": "선택한 영역의 출수량(물 레벨)을 설정합니다."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "특정 지점 청소 시작",
+      "description": "지도에서 선택한 지점들을 중심으로 청소를 시작합니다.",
+      "fields": {
+        "points": {
+          "name": "청소 지점 목록",
+          "description": "청소할 지점들의 좌표 리스트입니다."
+        },
+        "repeats": {
+          "name": "반복 횟수",
+          "description": "선택한 각 지점에 대한 청소 반복 횟수를 결정합니다."
+        },
+        "suction_level": {
+          "name": "흡입력 단계",
+          "description": "선택한 지점의 흡입력(팬 속도)을 설정합니다."
+        },
+        "water_volume": {
+          "name": "물 조절 레벨",
+          "description": "선택한 지점의 출수량(물 레벨)을 설정합니다."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "특정 좌표로 이동",
+      "description": "지도의 특정 좌표로 이동한 후 정지합니다.",
+      "fields": {
+        "x": {
+          "name": "X 좌표",
+          "description": "이동할 지점의 X 좌표값입니다."
+        },
+        "y": {
+          "name": "Y 좌표",
+          "description": "이동할 지점의 Y 좌표값입니다."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "경로 따라가기",
+      "description": "지정된 경로의 좌표들을 따라 이동한 후 베이스로 복귀합니다. (카메라 탑재 기기 전용)",
+      "fields": {
+        "points": {
+          "name": "경로 좌표 목록",
+          "description": "이동할 경로를 구성하는 좌표 리스트입니다."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "단축 명령 시작",
+      "description": "저장된 단축 명령 작업을 수행합니다. (지원 기기 전용)",
+      "fields": {
+        "shortcut_id": {
+          "name": "단축 명령 ID",
+          "description": "수행하려는 단축 명령의 ID입니다."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "리모컨 한 걸음 이동",
+      "description": "로봇을 원격으로 한 단계씩 수동 조작합니다.",
+      "fields": {
+        "rotation": {
+          "name": "회전",
+          "description": "-128에서 128 사이의 값으로 회전 각도를 나타냅니다."
+        },
+        "velocity": {
+          "name": "속도",
+          "description": "이동 속도입니다. 100(전진)에서 -300(후진) 사이의 값을 사용합니다."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "음성팩 설치",
+      "description": "공식 또는 사용자 정의 음성팩을 설치합니다.",
+      "fields": {
+        "lang_id": {
+          "name": "언어 ID",
+          "description": "설치할 음성팩의 고유 언어 ID입니다."
+        },
+        "url": {
+          "name": "URL",
+          "description": "음성팩 파일의 URL 주소입니다. 로봇청소기가 접근 가능해야 합니다."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "음성팩 파일의 MD5 체크섬 값입니다."
+        },
+        "size": {
+          "name": "파일 크기",
+          "description": "음성팩 파일의 크기(바이트 단위)입니다."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "지도 데이터 요청",
+      "description": "현재 지도의 실시간 데이터를 요청합니다."
+    },
+    "vacuum_select_map": {
+      "name": "지도 선택",
+      "description": "여러 개의 지도가 저장되어 있을 때 사용할 지도를 선택합니다.",
+      "fields": {
+        "map_id": {
+          "name": "지도 ID",
+          "description": "선택할 지도의 ID입니다."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "지도 삭제",
+      "description": "저장된 지도를 삭제합니다.",
+      "fields": {
+        "map_id": {
+          "name": "지도 ID",
+          "description": "삭제할 지도의 ID입니다."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "임시 지도 저장",
+      "description": "현재 구성 중인 임시 지도를 저장합니다."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "임시 지도 삭제",
+      "description": "현재 구성 중인 임시 지도를 폐기합니다."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "임시 지도 교체",
+      "description": "기존 저장된 지도를 현재의 임시 지도로 교체합니다.",
+      "fields": {
+        "map_id": {
+          "name": "기존 지도 ID",
+          "description": "교체 대상이 될 기존 지도의 ID입니다."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "지도 이름 변경",
+      "description": "지정된 지도의 이름을 변경합니다.",
+      "fields": {
+        "map_id": {
+          "name": "지도 ID",
+          "description": "이름을 바꿀 지도의 ID입니다."
+        },
+        "map_name": {
+          "name": "지도 새 이름",
+          "description": "지도에 부여할 새로운 이름입니다."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "지도 복구",
+      "description": "저장된 백업 지도를 복구합니다.",
+      "fields": {
+        "map_id": {
+          "name": "지도 ID",
+          "description": "복구할 지도의 ID입니다."
+        },
+        "recovery_map_index": {
+          "name": "복구 인덱스",
+          "description": "복원할 저장된 복구 지도의 인덱스 번호입니다."
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "파일로부터 지도 복구",
+      "description": "로컬이나 외부 파일로부터 지도를 복원합니다.",
+      "fields": {
+        "map_id": {
+          "name": "지도 ID",
+          "description": "지도를 복원할 대상의 ID입니다."
+        },
+        "file_url": {
+          "name": "파일 경로(URL)",
+          "description": "저장된 tbz2.gz 또는 tar.gz 파일의 주소(URL)입니다."
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "지도 백업",
+      "description": "현재 지도를 클라우드에 백업합니다.",
+      "fields": {
+        "map_id": {
+          "name": "지도 ID",
+          "description": "백업할 지도의 ID입니다."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "구역 병합",
+      "description": "선택한 방(구역)들을 하나로 합칩니다.",
+      "fields": {
+        "map_id": {
+          "name": "지도 ID",
+          "description": "해당 구역이 포함된 지도의 ID입니다."
+        },
+        "segments": {
+          "name": "병합할 구역 목록",
+          "description": "하나로 합칠 방들의 ID 리스트입니다."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "구역 분할",
+      "description": "하나의 구역을 두 개로 나눕니다.",
+      "fields": {
+        "map_id": {
+          "name": "지도 ID",
+          "description": "해당 구역이 포함된 지도의 ID입니다."
+        },
+        "segment": {
+          "name": "분할할 구역 ID",
+          "description": "나누고자 하는 방의 ID입니다."
+        },
+        "line": {
+          "name": "분할선 좌표",
+          "description": "구역을 수동으로 나눌 분할선의 좌표값입니다."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "구역 이름 변경",
+      "description": "방의 이름을 새로 지정합니다.",
+      "fields": {
+        "segment_id": {
+          "name": "구역 ID",
+          "description": "이름을 변경할 방의 ID입니다."
+        },
+        "segment_name": {
+          "name": "청소 구역 이름",
+          "description": "방에 새로 부여할 이름입니다."
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "청소 순서 설정",
+      "description": "청소를 수행할 방의 순서를 정합니다. (지원 기기 전용)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "청소 순서 리스트",
+          "description": "청소할 순서대로 나열된 구역(방) ID 목록입니다."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "사용자 정의 청소 설정",
+      "description": "각 방별로 청소 매개변수(흡입력, 출수량 등)를 다르게 설정합니다.",
+      "fields": {
+        "segment_id": {
+          "name": "구역 ID",
+          "description": "설정을 적용할 방의 ID입니다."
+        },
+        "suction_level": {
+          "name": "흡입력 단계",
+          "description": "해당 방에서 사용할 흡입력 단계입니다."
+        },
+        "water_volume": {
+          "name": "물 조절 레벨",
+          "description": "해당 방에서 사용할 출수량(물 조절) 단계입니다."
+        },
+        "wetness_level": {
+          "name": "물걸레 가습 레벨",
+          "description": "해당 방의 물걸레 적심 정도를 설정합니다. (지원 기기 전용)"
+        },
+        "cleaning_mode": {
+          "name": "청소 모드",
+          "description": "해당 방의 청소 모드입니다. (물걸레 리프팅 지원 기기 전용)"
+        },
+        "repeats": {
+          "name": "반복 청소 횟수",
+          "description": "해당 방을 몇 번 청소할지 설정합니다."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "사용자 정의 카펫 청소 설정",
+      "description": "카펫 구역에 대한 맞춤형 청소 설정을 지정합니다. (지원 기기 전용)",
+      "fields": {
+        "id": {
+          "name": "카펫 ID",
+          "description": "카펫의 고유 ID입니다."
+        },
+        "type": {
+          "name": "개체 유형",
+          "description": "해당 ID의 개체 유형입니다 (0=자동 감지된 카펫, 1=수동 생성 카펫, 2=방 카펫)."
+        },
+        "carpet_cleaning": {
+          "name": "카펫 청소 모드",
+          "description": "해당 카펫에 적용할 구체적인 청소 모드입니다."
+        },
+        "carpet_preferences": {
+          "name": "카펫 청소 기본 설정",
+          "description": "활성화된 카펫 관련 설정들의 옵션 리스트입니다."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "제한 구역 설정",
+      "description": "가상벽, 진공 청소 금지 구역 및 물걸레 금지 구역을 설정합니다.",
+      "fields": {
+        "walls": {
+          "name": "가상벽",
+          "description": "접근을 막는 가상벽 좌표입니다."
+        },
+        "zones": {
+          "name": "금지 구역",
+          "description": "진입을 막는 청소 금지 구역 좌표입니다."
+        },
+        "no_mops": {
+          "name": "물걸레 금지 구역",
+          "description": "물걸레 청소만 제한하는 구역의 좌표입니다."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "소모품 수명 초기화",
+      "description": "소모품을 교체한 후 수명 상태를 초기화합니다.",
+      "fields": {
+        "consumable": {
+          "name": "소모품 종류",
+          "description": "초기화할 소모품의 유형입니다."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "단축 명령 이름 변경",
+      "description": "저장된 단축 명령의 이름을 바꿉니다. (지원 기기 전용)",
+      "fields": {
+        "shortcut_id": {
+          "name": "단축 명령 ID",
+          "description": "이름을 변경할 단축 명령의 ID입니다."
+        },
+        "shortcut_name": {
+          "name": "단축 명령 새 이름",
+          "description": "부여할 새로운 이름입니다."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "단축 명령 삭제",
+      "description": "저장된 단축 명령을 삭제합니다. (지원 기기 전용)",
+      "fields": {
+        "shortcut_id": {
+          "name": "단축 명령 ID",
+          "description": "삭제할 단축 명령의 ID입니다."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "카펫 구역 설정",
+      "description": "카펫 영역과 무시할 카펫 영역을 지정합니다. (지원 기기 전용)",
+      "fields": {
+        "carpets": {
+          "name": "카펫 영역",
+          "description": "지도상에 카펫으로 지정할 영역들입니다."
+        },
+        "deleted_carpets": {
+          "name": "삭제된 카펫 영역",
+          "description": "자동 감지된 카펫 중 무시하고 제거할 영역 목록입니다."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "가상 턱/문턱 설정",
+      "description": "넘어갈 수 있는 경계인 가상 문턱을 설정합니다.",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "가상 문턱 좌표",
+          "description": "가상 문턱 선의 좌표 리스트입니다."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "사전 정의 지점 설정",
+      "description": "현재 지도에 자주 사용하는 즐겨찾기 좌표를 저장합니다. (카메라 기기 전용)",
+      "fields": {
+        "points": {
+          "name": "저장 지점 목록",
+          "description": "저장할 좌표값 리스트입니다."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "장애물 무시 설정",
+      "description": "특정 장애물을 무시하고 청소할지 여부를 설정합니다. (AI 장애물 감지 전용)",
+      "fields": {
+        "x": {
+          "name": "장애물 X 좌표",
+          "description": "무시할 장애물이 위치한 X 좌표입니다."
+        },
+        "y": {
+          "name": "장애물 Y 좌표",
+          "description": "무시할 장애물이 위치한 Y 좌표입니다."
+        },
+        "obstacle_ignored": {
+          "name": "무시 여부",
+          "description": "해당 장애물을 무시할지 설정합니다."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "공유기 위치 설정",
+      "description": "현재 지도의 공유기 위치를 지정합니다 (WiFi 지도 지원 기기 전용)",
+      "fields": {
+        "x": {
+          "name": "공유기 X 좌표",
+          "description": "공유기가 위치한 X 좌표입니다."
+        },
+        "y": {
+          "name": "공유기 Y 좌표",
+          "description": "공유기가 위치한 Y 좌표입니다."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "이전 항목 선택",
+      "description": "선택 엔티티의 이전 옵션을 선택합니다.",
+      "fields": {
+        "cycle": {
+          "name": "반복(순환)",
+          "description": "첫 번째 항목에서 이전으로 이동할 때 마지막 항목으로 순환할지 여부입니다."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "첫 번째 항목 선택",
+      "description": "선택 엔티티의 최상단 첫 번째 옵션을 선택합니다."
+    },
+    "select_select_last": {
+      "name": "마지막 항목 선택",
+      "description": "선택 엔티티의 최하단 마지막 옵션을 선택합니다."
+    },
+    "select_select_next": {
+      "name": "다음 항목 선택",
+      "description": "선택 엔티티의 다음 옵션을 선택합니다.",
+      "fields": {
+        "cycle": {
+          "name": "반복(순환)",
+          "description": "마지막 항목에서 다음으로 이동할 때 첫 번째 항목으로 순환할지 여부입니다."
+        }
+      }
+    }
+  }
+}

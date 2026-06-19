@@ -1,0 +1,2438 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Ierīce jau ir konfigurēta",
+      "cannot_connect": "Neizdevās izveidot savienojumu.",
+      "reauth_successful": "Atkārtota autentifikācija bija veiksmīga"
+    },
+    "error": {
+      "cannot_connect": "Neizdevās izveidot savienojumu.",
+      "unsupported": "Ierīce netiek atbalstīta",
+      "wrong_token": "Kontrolsummas kļūda, nepareizs marķieris",
+      "2fa_failed": "Verifikācija neizdevās.",
+      "wrong_captcha": "Nepareizs captcha.",
+      "credentials_incomplete": "Nepilnīgi akreditācijas dati, lūdzu, aizpildiet lietotājvārdu, paroli un valsti.",
+      "login_error": "Neizdevās pieteikties, pārbaudiet akreditācijas datus.",
+      "no_devices": "Atlasītajā valstī šajā kontā netika atrasta neviena atbalstīta ierīce.{devices}",
+      "2fa_send_failed": "Neizdevās nosûtît verifikâcijas kodu. Lûdzu, mçìiniet vçlreiz.",
+      "2fa_limit_reached": "Ir sasniegts dienas limits verifikācijas kodu sūtīšanai. Lūdzu, mēģiniet vēlreiz rīt.",
+      "2fa_cooldown_active": "Pārāk daudz secīgu pieprasījumu. Lūdzu, uzgaidiet dažas minūtes pirms mēģināt vēlreiz."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Konfigurācijas veids"
+        },
+        "description": "Kartes funkcijai ir nepieciešams mākoņa savienojums un tā nodrošina automātisku konfigurāciju. Ja nevēlaties izmantot kartes funkciju, varat izvēlēties manuālo konfigurāciju."
+      },
+      "local": {
+        "data": {
+          "host": "Hosta adrese",
+          "token": "Žetons (Token)"
+        },
+        "description": "Jums būs nepieciešams 32 rakstzīmju API žetons."
+      },
+      "mi": {
+        "data": {
+          "username": "Lietotājvārds",
+          "password": "Parole",
+          "country": "Servera valsts",
+          "prefer_cloud": "Dot priekšroku mākoņa savienojumam"
+        },
+        "description": "Piesakieties Xiaomi Miio mākonī."
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "Divu faktoru verifikācijas kods"
+        },
+        "description": "## Nepieciešama drošības pārbaude\nVerifikācijas kods ir nosūtīts uz {dest}. Lūdzu, ievadiet kodu zemāk."
+      },
+      "captcha": {
+        "data": {
+          "code": "Kods"
+        },
+        "description": "## Nepieciešama Captcha pārbaude.\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "Lietotājvārds",
+          "password": "Parole",
+          "country": "Servera valsts"
+        },
+        "description": "Piesakieties Dreamehome mākonī."
+      },
+      "mova": {
+        "data": {
+          "username": "Lietotājvārds",
+          "password": "Parole",
+          "country": "Servera valsts"
+        },
+        "description": "Piesakieties Movahome mākonī."
+      },
+      "trouver": {
+        "data": {
+          "username": "Lietotājvārds",
+          "password": "Parole",
+          "country": "Servera valsts"
+        },
+        "description": "Piesakieties Trouver mākonī."
+      },
+      "devices": {
+        "data": {
+          "devices": "Atbalstītās ierīces"
+        },
+        "description": "Lūdzu, atlasiet Dreame Vacuum ierīci, kuru vēlaties iestatīt."
+      },
+      "donation": {
+        "data": {
+          "donated": "Ziedots"
+        },
+        "description": "## Neaizmirstiet atbalstīt projektu.{text}"
+      },
+      "options": {
+        "data": {
+          "name": "Nosaukums",
+          "color_scheme": "Kartes krāsu shēma",
+          "icon_set": "Kartes ikonu kopa",
+          "notify": "Paziņojums",
+          "hidden_map_objects": "Slēptie kartes objekti",
+          "low_resolution": "Zemas izšķirtspējas karte",
+          "square": "Kvadrātveida karte"
+        }
+      },
+      "reauth_confirm": {
+        "description": "Dreame Vacuum integrācijai ir atkārtoti jāautentificē jūsu konts, lai atjauninātu marķierus vai pievienotu trūkstošos mākoņa akreditācijas datus.",
+        "title": "Atkārtoti autentificēt integrāciju"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Kartes krāsu shēma",
+          "icon_set": "Kartes ikonu kopa",
+          "notify": "Paziņojums",
+          "hidden_map_objects": "Slēptie kartes objekti",
+          "low_resolution": "Zemas izšķirtspējas karte",
+          "square": "Kvadrātveida karte",
+          "configuration_type": "Konfigurācijas veids",
+          "prefer_cloud": "Dot priekšroku mākoņa savienojumam",
+          "donated": "Ziedots"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Mākoņa akreditācijas dati ir nepilnīgi, lūdzu, aizpildiet lietotājvārdu, paroli un valsti"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "name": "Sūkšanas līmenis",
+        "state": {
+          "quiet": "Kluss",
+          "standard": "Standarta",
+          "strong": "Spēcīgs",
+          "turbo": "Turbo",
+          "full_power": "Pilna jauda"
+        }
+      },
+      "water_volume": {
+        "name": "Ūdens padeve",
+        "state": {
+          "low": "Zema",
+          "medium": "Vidēja",
+          "high": "Augsta"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "Mopa paliktņa mitrums",
+        "state": {
+          "slightly_dry": "Nedaudz sauss",
+          "moist": "Mitrs",
+          "wet": "Slapjš"
+        }
+      },
+      "cleaning_mode": {
+        "name": "Tīrīšanas režīms",
+        "state": {
+          "sweeping": "Slaucīšana",
+          "mopping": "Mazgāšana",
+          "sweeping_and_mopping": "Slaucīšana un mazgāšana",
+          "mopping_after_sweeping": "Mazgāšana pēc slaucīšanas"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "Paklāja jutība",
+        "state": {
+          "low": "Zema",
+          "medium": "Vidēja",
+          "high": "Augsta"
+        }
+      },
+      "carpet_cleaning": {
+        "name": "Paklāju tīrīšana",
+        "state": {
+          "avoidance": "Izvairīšanās",
+          "adaptation": "Adaptācija",
+          "remove_mop": "Noņemt mopu",
+          "adaptation_without_route": "Adaptācija bez maršruta",
+          "vacuum_and_mop": "Sūkšana un mazgāšana",
+          "ignore": "Ignorēt",
+          "cross": "Šķērsām"
+        }
+      },
+      "mop_wash_level": {
+        "name": "Mopa mazgāšanas režīms",
+        "state": {
+          "water_saving": "Ūdens taupīšana",
+          "daily": "Ikdienas",
+          "deep": "Dziļā",
+          "ultra_clean_mode": "Ultra tīrs"
+        }
+      },
+      "mopping_type": {
+        "name": "Mazgāšanas veids",
+        "state": {
+          "accurate": "Precīzs",
+          "daily": "Ikdienas",
+          "deep": "Dziļais"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "Plašāks stūru pārklājums",
+        "state": {
+          "off": "Izslēgts",
+          "high_frequency": "Augsta frekvence",
+          "low_frequency": "Zema frekvence"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "Mopa paliktņa šūpošanās",
+        "state": {
+          "off": "Izslēgts",
+          "auto": "Auto",
+          "daily": "Ikdienas",
+          "weekly": "Iknedēļas"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "Mopa izbīdīšanas biežums",
+        "state": {
+          "standard": "Standarta",
+          "intelligent": "Inteliģents",
+          "high": "Augsts"
+        }
+      },
+      "floor_material": {
+        "name": "Grīdas materiāls",
+        "state": {
+          "none": "Nav",
+          "tile": "Grīdas flīzes",
+          "wood": "Koka grīda",
+          "low_pile_carpet": "Īsspalvu paklājs",
+          "medium_pile_carpet": "Vidēji garu spalvu paklājs",
+          "carpet": "Paklājs"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "Balss asistenta valoda",
+        "state": {
+          "default": "Noklusējuma",
+          "english": "Angļu",
+          "german": "Vācu",
+          "chinese": "Ķīniešu",
+          "russian": "Krievu",
+          "italian": "Itāļu",
+          "french": "Franču",
+          "korean": "Korejiešu"
+        }
+      },
+      "mop_pressure": {
+        "name": "Mopa spiediens",
+        "state": {
+          "light": "Viegls",
+          "normal": "Normāls"
+        }
+      },
+      "mop_temperature": {
+        "name": "Mopa temperatūra",
+        "state": {
+          "normal": "Normāla",
+          "warm": "Silta"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "Zemu vietu tīrīšanas biežums",
+        "state": {
+          "weekly": "Iknedēļas",
+          "daily": "Ikdienas"
+        }
+      },
+      "scraper_frequency": {
+        "name": "Skrāpja biežums",
+        "state": {
+          "off": "Izslēgts",
+          "weekly": "Iknedēļas",
+          "daily": "Ikdienas"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "Auto LDS pārklājums",
+        "state": {
+          "off": "Izslēgts",
+          "security": "Drošība",
+          "extreme": "Ekstremāls"
+        }
+      },
+      "order": {
+        "name": "Secība",
+        "state": {
+          "not_set": "Nav iestatīta"
+        }
+      },
+      "self_clean_frequency": {
+        "name": "Pašattīrīšanās biežums",
+        "state": {
+          "by_area": "Pēc platības",
+          "by_time": "Pēc laika",
+          "by_room": "Pēc ratiem",
+          "intelligent": "Inteliģents"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "Mopa tīrīšanas biežums",
+        "state": {
+          "by_room": "Pēc telpas",
+          "5sqm": "Pieci kvadrātmetri",
+          "8sqm": "Astoņi kvadrātmetri",
+          "10sqm": "Desmit kvadrātmetri",
+          "15sqm": "Piecpadsmit kvadrātmetri",
+          "20sqm": "Divdesmit kvadrātmetri",
+          "25sqm": "Divdesmit pieci kvadrātmetri",
+          "86sqf": "Astoņdesmit sešas kvadrātpēdas",
+          "108sqf": "Simts astoņas kvadrātpēdas",
+          "54sqf": "Piecdesmit četras kvadrātpēdas",
+          "162sqf": "Simts sešdesmit divas kvadrātpēdas",
+          "216sqf": "Divi simti sešpadsmit kvadrātpēdas",
+          "270sqf": "Divi simti septiņdesmit kvadrātpēdas"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "Automātiskās iztukšošanas režīms",
+        "state": {
+          "off": "Izslēgts",
+          "standard": "Standarta",
+          "high_frequency": "Augsta frekvence",
+          "low_frequency": "Zema frekvence",
+          "custom_frequency": "Pielāgota frekvence",
+          "intelligent": "Inteliģents"
+        }
+      },
+      "floor_material_direction": {
+        "name": "Grīdas virziens",
+        "state": {
+          "vertical": "Vertikāls",
+          "horizontal": "Horizontāls"
+        }
+      },
+      "visibility": {
+        "name": "Redzamība",
+        "state": {
+          "visible": "Redzams",
+          "hidden": "Slēpts"
+        }
+      },
+      "cleangenius": {
+        "name": "Cleangenius",
+        "state": {
+          "off": "Izslēgts",
+          "routine_cleaning": "Rutīnas tīrīšana",
+          "deep_cleaning": "Dziļā tīrīšana"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "Cleangenius režīms",
+        "state": {
+          "vacuum_and_mop": "Sūkšana un mazgāšana",
+          "mop_after_vacuum": "Mazgāšana pēc sūkšanas"
+        }
+      },
+      "washing_mode": {
+        "name": "Mopa mazgāšanas režīms",
+        "state": {
+          "smart": "Viedais",
+          "light": "Viegls",
+          "standard": "Standarta",
+          "deep": "Dziļais",
+          "ultra_washing": "Ultra mazgāšana"
+        }
+      },
+      "water_temperature": {
+        "name": "Ūdens temperatūra",
+        "state": {
+          "normal": "Normāla",
+          "mild": "Remdens",
+          "warm": "Silts",
+          "hot": "Karsts",
+          "max": "Maksimums"
+        }
+      },
+      "auto_recleaning": {
+        "name": "Automātiskā atkārtotā tīrīšana",
+        "state": {
+          "off": "Izslēgts",
+          "in_deep_mode": "Dziļajā režīmā",
+          "in_all_modes": "Visos režīmos"
+        }
+      },
+      "auto_rewashing": {
+        "name": "Automātiskā atkārtotā mazgāšana",
+        "state": {
+          "off": "Izslēgts",
+          "in_deep_mode": "Dziļajā režīmā",
+          "in_all_modes": "Visos režīmos"
+        }
+      },
+      "cleaning_route": {
+        "name": "Maršruts",
+        "state": {
+          "quick": "Ātrs",
+          "standard": "Standarta",
+          "intensive": "Intensīvs",
+          "deep": "Dziļais"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "Pielāgots mazgāšanas maršruts",
+        "state": {
+          "off": "Izslēgts",
+          "standard": "Standarta",
+          "intensive": "Intensīvs",
+          "deep": "Dziļais"
+        }
+      },
+      "task_type": {
+        "name": "Uzdevuma veids",
+        "state": {
+          "go_to": "Doties uz punktu",
+          "segment": "Telpu tīrīšana",
+          "all": "Vispārējā tīrīšana",
+          "zone": "Zonu tīrīšana",
+          "spot": "Vietas tīrīšana"
+        }
+      },
+      "cleaning_times": {
+        "name": "Tīrīšanas reizes",
+        "state": {
+          "x1": "Vienu reizi",
+          "x2": "Divas reizes",
+          "x3": "Trīs reizes"
+        }
+      },
+      "auto_empty_frequency": {
+        "name": "Automātiskās iztukšošanas biežums",
+        "state": {
+          "x1": "Pēc katra uzdevuma",
+          "x2": "Pēc divām tīrīšanām",
+          "x3": "Pēc trim tīrīšanām"
+        }
+      },
+      "drying_time": {
+        "name": "Žāvēšanas laiks",
+        "state": {
+          "silent": "Klusais"
+        }
+      },
+      "battery_charge_level": {
+        "name": "Akumulatora uzlādes līmenis"
+      },
+      "object_type": {
+        "name": "Objekta veids",
+        "state": {
+          "predefined_point": "Iepriekš noteikts punkts",
+          "low_lying_area": "Zema vieta",
+          "curtain": "Aizkars",
+          "threshold": "Slieksnis",
+          "furniture": "Mēbeles",
+          "carpet": "Paklājs",
+          "restricted": "Ierobežotā zona"
+        }
+      },
+      "edit_type": {
+        "name": "Rediģēšanas veids",
+        "state": {
+          "door": "Rediģēt durvis",
+          "split": "Sadalīt telpas",
+          "merge": "Apvienot telpas",
+          "visibility": "Telpas redzamība",
+          "material": "Grīdas materiāls",
+          "type": "Telpas nosaukums",
+          "wall": "Rediģēt sienas"
+        }
+      },
+      "map_type": {
+        "name": "Kartes veids",
+        "state": {
+          "cleaning": "Tīrīšanas karte",
+          "history": "Tīrīšanas informācija",
+          "wifi": "Wi-Fi karte"
+        }
+      },
+      "carpet_type": {
+        "name": "Paklāja veids",
+        "state": {
+          "medium_pile": "Vidēji garu spalvu",
+          "low_pile": "Īsspalvu",
+          "floor_mat": "Grīdas paklājiņš",
+          "other": "Cits"
+        }
+      },
+      "mop_type": {
+        "name": "Mopa veids",
+        "state": {
+          "a": "Mops A",
+          "b": "Mops B",
+          "c": "Mops C"
+        }
+      },
+      "carpet_shape": {
+        "name": "Forma",
+        "state": {
+          "square": "Kvadrāts",
+          "round": "Apaļš"
+        }
+      },
+      "mopping_pattern": {
+        "name": "Mazgāšanas modelis",
+        "state": {
+          "daily": "Ikdienas mazgāšana",
+          "deep": "Dziļā mazgāšana"
+        }
+      },
+      "wetness_level": {
+        "name": "Mitrums",
+        "state": {
+          "slightly_dry": "Nedaudz sauss",
+          "moist": "Mitrs",
+          "wet": "Slapjš"
+        }
+      },
+      "task_repeats": {
+        "name": "Uzdevuma atkārtošana",
+        "state": {
+          "once": "Vienreiz",
+          "daily": "Ikdienas",
+          "workdays": "Darba dienās",
+          "weekends": "Brīvdienās"
+        }
+      },
+      "segment_name": {
+        "name": "Telpas nosaukums",
+        "state": {
+          "room": "Telpa",
+          "living_room": "Dzīvojamā istaba",
+          "primary_bedroom": "Galvenā guļamistaba",
+          "study": "Kabinets",
+          "kitchen": "Virtuve",
+          "dining_hall": "Ēdamzāle",
+          "bathroom": "Vannas istaba",
+          "balcony": "Balkons",
+          "corridor": "Gaitenis",
+          "utility_room": "Saimniecības telpa",
+          "closet": "Garderobe",
+          "meeting_room": "Sapulču telpa",
+          "office": "Birojs",
+          "fitness_area": "Fitnesa zona",
+          "recreation_area": "Atpūtas zona",
+          "secondary_bedroom": "Otrā guļamistaba"
+        }
+      },
+      "furniture_type": {
+        "name": "Mēbeļu veids",
+        "state": {
+          "single_bed": "Vienvietīga gulta",
+          "double_bed": "Divvietīga gulta",
+          "arm_chair": "Atpūtas krēsls",
+          "two_seat_sofa": "Divvietīgs dīvāns",
+          "three_seat_sofa": "Trīsvietīgs dīvāns",
+          "dining_table": "Ēdamgalds",
+          "nightstant": "Naktsskapītis",
+          "coffee_table": "Kafijas galdiņš",
+          "toilet": "Tualete",
+          "litter_box": "Kaķu kaste",
+          "pet_bed": "Mājdzīvnieku gulta",
+          "food_bowl": "Barības bļoda",
+          "pet_toilet": "Mājdzīvnieku tualete",
+          "refrigerator": "Ledusskapis",
+          "washing_machine": "Veļas mašīna",
+          "enclosed_litter_box": "Slēgta kaķu kaste",
+          "air_conditioner": "Gaisa kondicionieris",
+          "tv_cabinet": "TV skapītis",
+          "bookshelf": "Grāmatu plaukts",
+          "shoe_cabinet": "Apavu skapis",
+          "wardrobe": "Garderobes skapis",
+          "greenery": "Augi",
+          "floor_mirror": "Grīdas spogulis",
+          "l_shaped_sofa": "L veida dīvāns",
+          "round_coffee_table": "Apaļš kafijas galdiņš",
+          "table": "Galds",
+          "arm_chair_narrow": "Šaurs atpūtas krēsls",
+          "three_seat_sofa_narrow": "Šaurs trīsvietīgs dīvāns",
+          "l_shaped_sofa_right": "L veida dīvāns (labais)"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "name": "Stāvoklis",
+        "state": {
+          "unknown": "Nezināms",
+          "sweeping": "Slauka",
+          "charging": "Uzlādējas",
+          "error": "Kļūda",
+          "idle": "Dīkstāvē",
+          "paused": "Pauzēts",
+          "returning": "Atgriežas bāzē",
+          "mopping": "Mazgā",
+          "drying": "Žāvē",
+          "washing": "Mazgā mopu",
+          "returning_to_wash": "Atgriežas mazgāt mopu",
+          "building": "Veido karti",
+          "sweeping_and_mopping": "Slauka un mazgā",
+          "charging_completed": "Uzlāde pabeigta",
+          "upgrading": "Atjaunina programmatūru",
+          "clean_summon": "Izsaukts tīrīt",
+          "station_reset": "Stacijas atiestatīšana",
+          "returning_install_mop": "Atgriežas uzstādīt mopu",
+          "returning_remove_mop": "Atgriežas noņemt mopu",
+          "water_check": "Ūdens pārbaude",
+          "clean_add_water": "Tīra un papildina ūdeni",
+          "washing_paused": "Mopa mazgāšana pauzēta",
+          "auto_emptying": "Automātiskā iztukšošana",
+          "remote_control": "Tālvadība",
+          "smart_charging": "Viedā uzlāde",
+          "second_cleaning": "Otrā tīrīšanas reize",
+          "human_following": "Seko cilvēkam",
+          "spot_cleaning": "Vietas tīrīšana",
+          "returning_auto_empty": "Atgriežas uz automātisko iztukšošanu",
+          "waiting_for_task": "Gaida uzdevumu",
+          "station_cleaning": "Stacijas tīrīšana",
+          "returning_to_drain": "Atgriežas iztukšot ūdeni",
+          "draining": "Iztukšo ūdeni",
+          "auto_water_draining": "Automātiskā ūdens iztukšošana",
+          "emptying": "Iztukšo",
+          "dust_bag_drying": "Putekļu maisa žāvēšana",
+          "dust_bag_drying_paused": "Putekļu maisa žāvēšana pauzēta",
+          "heading_to_extra_cleaning": "Dodas uz papildu tīrīšanu",
+          "extra_cleaning": "Papildu tīrīšana",
+          "finding_pet_paused": "Mājdzīvnieka meklēšana pauzēta",
+          "finding_pet": "Meklē mājdzīvnieku",
+          "shortcut": "Saīsne",
+          "monitoring": "Uzraudzība",
+          "monitoring_paused": "Uzraudzība pauzēta",
+          "initial_deep_cleaning": "Sākotnējā dziļā tīrīšana",
+          "initial_deep_cleaning_paused": "Sākotnējā dziļā tīrīšana pauzēta",
+          "sanitizing": "Dezinficē",
+          "sanitizing_with_dry": "Dezinficē un žāvē",
+          "changing_mop": "Mopa maiņa",
+          "changing_mop_paused": "Mopa maiņa pauzēta",
+          "floor_maintaining": "Grīdas apkope",
+          "floor_maintaining_paused": "Grīdas apkope pauzēta",
+          "remote_pickup": "Attālā paņemšana",
+          "arranging_items": "Preču kārtošana",
+          "pet_guarding": "Mājdzīvnieku apsardze",
+          "pet_guarding_paused": "Mājdzīvnieku apsardze apturēta",
+          "installing_mop": "Mopa uzstādīšana",
+          "uninstalling_mop": "Mopa noņemšana",
+          "intelligent_recharging": "Inteliģentā uzlāde",
+          "assisted_cleaning": "Asistētā tīrīšana",
+          "entering_dock": "Ieeja dokstacijā",
+          "leaving_dock": "Iziešana no dokstacijas",
+          "navigating_to_climber": "Navigācija uz kāpēju",
+          "docking_to_climber": "Pievienošanās kāpējam",
+          "climber_docked": "Kāpējs pievienots",
+          "climber_navigating": "Kāpējs navigē",
+          "climbing_stairs": "Kāpšana pa kāpnēm",
+          "climbing_stairs_completed": "Kāpšana pa kāpnēm pabeigta",
+          "climber_at_dock": "Kāpējs dokstacijā",
+          "climber_leaving_dock": "Kāpējs atstāj dokstaciju"
+        }
+      },
+      "status": {
+        "name": "Statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "idle": "Dīkstāvē",
+          "paused": "Pauzēts",
+          "cleaning": "Tīra",
+          "returning": "Atgriežas bāzē",
+          "spot_cleaning": "Vietas tīrīšana",
+          "follow_wall_cleaning": "Tīrīšana gar sienu",
+          "charging": "Uzlādējas",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "Wi-Fi iestatīts",
+          "power_off": "Izslēgts",
+          "factory": "Rūpnīcas iestatījumi",
+          "error": "Kļūda",
+          "remote_control": "Tālvadība",
+          "sleeping": "Guļ",
+          "self_test": "Pašpārbaude",
+          "factory_test": "Rūpnīcas pārbaude",
+          "standby": "Gaidstāve",
+          "room_cleaning": "Telpas tīrīšana",
+          "zone_cleaning": "Zonas tīrīšana",
+          "fast_mapping": "Ātrā kartēšana",
+          "cruising_path": "Pārvietojas pa maršrutu",
+          "cruising_point": "Pārvietojas uz punktu",
+          "summon_clean": "Izsaukts tīrīt",
+          "shortcut": "Saīsne",
+          "person_follow": "Seko personai",
+          "water_check": "Ūdens pārbaude",
+          "pet_guarding": "Mājdzīvnieku apsardze",
+          "auto_arrangement": "Automātiskā kārtošana",
+          "smart_arrangement": "Viedā kārtošana",
+          "zoned_arrangement": "Zonētā kārtošana"
+        }
+      },
+      "task_status": {
+        "name": "Uzdevuma statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "completed": "Pabeigts",
+          "cleaning": "Tīra",
+          "zone_cleaning": "Zonas tīrīšana",
+          "room_cleaning": "Telpas tīrīšana",
+          "spot_cleaning": "Vietas tīrīšana",
+          "fast_mapping": "Ātrā kartēšana",
+          "cleaning_paused": "Tīrīšana pauzēta",
+          "room_cleaning_paused": "Telpas tīrīšana pauzēta",
+          "zone_cleaning_paused": "Zonas tīrīšana pauzēta",
+          "spot_cleaning_paused": "Vietas tīrīšana pauzēta",
+          "map_cleaning_paused": "Kartes tīrīšana pauzēta",
+          "docking_paused": "Pievienošanās stacijai pauzēta",
+          "mopping_paused": "Mazgāšana pauzēta",
+          "zone_mopping_paused": "Zonas mazgāšana pauzēta",
+          "room_mopping_paused": "Telpas mazgāšana pauzēta",
+          "zone_docking_paused": "Zonas pievienošanās bāzei pauzēta",
+          "room_docking_paused": "Telpas pievienošanās bāzei pauzēta",
+          "cruising_path": "Pārvietojas pa maršrutu",
+          "cruising_path_paused": "Pārvietošanās pa maršrutu pauzēta",
+          "cruising_point": "Pārvietojas uz punktu",
+          "cruising_point_paused": "Pārvietošanās uz punktu pauzēta",
+          "summon_clean_paused": "Izsaukšanas tīrīšana pauzēta",
+          "returning_to_install_mop": "Atgriežas uzstādīt mopu",
+          "returning_to_remove_mop": "Atgriežas noņemt mopu",
+          "station_cleaning": "Stacijas tīrīšana",
+          "pet_finding": "Mājdzīvnieka meklēšana",
+          "auto_cleaning_washing_paused": "Automātiskā tīrīšanas mazgāšana pauzēta",
+          "area_cleaning_washing_paused": "Zonas tīrīšanas mazgāšana pauzēta",
+          "custom_cleaning_washing_paused": "Pielāgotā tīrīšanas mazgāšana pauzēta",
+          "picking_up_item": "Priekšmeta paņemšana",
+          "picking_up_item_paused": "Priekšmeta paņemšana apturēta",
+          "picking_up_item_success": "Priekšmets veiksmīgi paņemts",
+          "remote_pickup_initializing": "Attālās paņemšanas inicializācija",
+          "remote_pickup_identifing": "Attālās paņemšanas identifikācija",
+          "manual_remote_pickup": "Manuālā attālā paņemšana",
+          "automatic_remote_pickup": "Automātiskā attālā paņemšana",
+          "remote_pickup_in_progress": "Notiek attālā paņemšana",
+          "remote_pickup_paused": "Attālā paņemšana apturēta",
+          "placing_item": "Priekšmeta novietošana",
+          "placing_item_paused": "Priekšmeta novietošana apturēta"
+        }
+      },
+      "water_tank": {
+        "name": "Ūdens tvertne",
+        "state": {
+          "unknown": "Nezināms",
+          "installed": "Uzstādīta",
+          "not_installed": "Nav uzstādīta",
+          "mop_installed": "Mops uzstādīts",
+          "in_station": "Stacijā"
+        }
+      },
+      "mop_pad": {
+        "name": "Mopa paliktnis",
+        "state": {
+          "unknown": "Nezināms",
+          "installed": "Uzstādīts",
+          "not_installed": "Nav uzstādīts",
+          "mop_installed": "Mops uzstādīts",
+          "in_station": "Stacijā"
+        }
+      },
+      "dust_collection": {
+        "name": "Putekļu savākšana",
+        "state": {
+          "unknown": "Nezināms",
+          "not_available": "Nav pieejama",
+          "available": "Pieejama",
+          "over_use": "Pārmērīga lietošana",
+          "never": "Nekad"
+        }
+      },
+      "auto_empty_status": {
+        "name": "Automātiskās iztukšošanas statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "idle": "Dīkstāvē",
+          "active": "Aktīvs",
+          "not_performed": "Nav veikta"
+        }
+      },
+      "error": {
+        "name": "Kļūda",
+        "state": {
+          "unknown": "Nezināms kļūdas kods",
+          "no_error": "Nav kļūdu",
+          "drop": "Riteņi ir pacelti",
+          "cliff": "Kraujas sensora kļūda",
+          "bumper": "Sadursmes sensors ir iestrēdzis",
+          "gesture": "Robots ir sasvērts",
+          "bumper_repeat": "Sadursmes sensors ir iestrēdzis",
+          "drop_repeat": "Riteņi ir pacelti",
+          "optical_flow": "Optiskās plūsmas sensora kļūda",
+          "no_box": "Putekļu tvertne nav uzstādīta",
+          "no_tank_box": "Ūdens tvertne nav uzstādīta",
+          "water_box_empty": "Ūdens tvertne ir tukša",
+          "box_full": "Filtrs nav sauss vai ir aizsērējis",
+          "brush": "Galvenā birste ir ierauta",
+          "side_brush": "Sānu birste ir ierauta",
+          "fan": "Filtrs nav sauss vai ir aizsērējis",
+          "left_wheel_motor": "Robots ir iestrēdzis, vai tā kreiso riteni var bloķēt svešķermeņi",
+          "right_wheel_motor": "Robots ir iestrēdzis, vai tā labo riteni var bloķēt svešķermeņi",
+          "turn_suffocate": "Robots ir iestrēdzis vai nevar pagriezties",
+          "forward_suffocate": "Robots ir iestrēdzis vai nevar virzīties uz priekšu",
+          "charger_get": "Nevar atrast bāzi",
+          "battery_low": "Zems akumulatora līmenis",
+          "charge_fault": "Uzlādes kļūda",
+          "battery_percentage": "Akumulatora līmeņa kļūda",
+          "heart": "Iekšējā kļūda",
+          "camera_occlusion": "Vizuālās pozicionēšanas sensora kļūda",
+          "move": "Kustības sensora kļūda",
+          "flow_shielding": "Optiskā sensora kļūda",
+          "infrared_shielding": "Infrasarkanā ekrāna kļūda",
+          "charge_no_electric": "Uzlādes stacijai nav pieslēgta strāva",
+          "battery_fault": "Akumulatora kļūda",
+          "fan_speed_error": "Ventilatora ātruma sensora kļūda",
+          "left_wheell_speed": "Kreiso riteni var bloķēt svešķermeņi",
+          "right_wheell_speed": "Labo riteni var bloķēt svešķermeņi",
+          "bmi055_acce": "Akselerometra kļūda",
+          "bmi055_gyro": "Žiroskopa kļūda",
+          "xv7001": "Žiroskopa kļūda",
+          "left_magnet": "Kreisā magnēta sensora kļūda",
+          "right_magnet": "Labā magnēta sensora kļūda",
+          "flow_error": "Plūsmas sensora kļūda",
+          "infrared_fault": "Infrasarkanā sensora kļūda",
+          "camera_fault": "Kameras kļūda",
+          "strong_magnet": "Konstatēts spēcīgs magnētiskais lauks",
+          "water_pump": "Ūdens sūkņa kļūda",
+          "rtc": "RTC kļūda",
+          "auto_key_trig": "Iekšējā kļūda",
+          "p3v3": "Iekšējā kļūda",
+          "camera_idle": "Iekšējā kļūda",
+          "blocked": "Tīrīšanas maršruts ir bloķēts, atgriežas bāzē.",
+          "lds_error": "Lāzera attāluma sensora kļūda",
+          "lds_bumper": "Lāzera attāluma sensora bampera kļūda",
+          "filter_blocked": "Filtrs nav sauss vai ir aizsērējis",
+          "edge": "Sānu sensora kļūda",
+          "carpet": "Lūdzu, iedarbiniet robotu vietā, kur nav paklāja.",
+          "laser": "3D šķēršļu izvairīšanās sensora darbības traucējumi.",
+          "ultrasonic": "Ultraskaņas sensora darbības traucējumi.",
+          "no_go_zone": "Konstatēta ierobežotā zona vai virtuālā siena.",
+          "route": "Tīrīšanas maršruts ir bloķēts.",
+          "restricted": "Konstatēts, ka robots atrodas ierobežotā zonā.",
+          "remove_mop": "Mazgāšana pabeigta. Lūdzu, savlaicīgi noņemiet un notīriet mopu.",
+          "mop_removed": "Tīrīšanas laikā nokrita mopa paliktnis.",
+          "mop_pad_stop_rotate": "Mopa paliktnis ir pārstājis griezties.",
+          "bin_full": "Putekļu savākšanas maiss ir pilns vai gaisa vads ir bloķēts.",
+          "bin_open": "Automātiskās iztukšošanas bāzes augšējais vāks nav aizvērts vai putekļu savākšanas maiss nav uzstādīts.",
+          "water_tank": "Tīrā ūdens tvertne nav uzstādīta.",
+          "dirty_water_tank": "Netīrā ūdens tvertne ir pilna vai nav uzstādīta.",
+          "water_tank_dry": "Zems ūdens līmenis tīrā ūdens tvertnē, lūdzu, savlaicīgi papildiniet.",
+          "dirty_water_tank_blocked": "Netīrā ūdens tvertne ir bloķēta.",
+          "dirty_water_tank_pump": "Netīrā ūdens tvertnes sūkņa kļūda.",
+          "mop_pad": "Mazgāšanas dēlis nav pareizi uzstādīts.",
+          "wet_mop_pad": "Mazgāšanas dēļa ūdens līmenis ir neparasts, lūdzu, savlaicīgi notīriet mazgāšanas dēli.",
+          "clean_mop_pad": "Tīrīšanas uzdevums ir pabeigts, lūdzu, notīriet mopa paliktņa mazgāšanas dēli.",
+          "clean_tank_level": "Pārbaudiet un piepildiet tīrā ūdens tvertni.",
+          "station_disconnected": "Bāzes stacijai nav strāvas padeves",
+          "dirty_tank_level": "Ūdens līmenis izmantotā ūdens tvertnē ir pārāk augsts.",
+          "washboard_level": "Ūdens līmenis mazgāšanas dēlim ir pārāk augsts.",
+          "no_mop_in_station": "Mopa paliktnis nav stacijā.",
+          "dust_bag_full": "Putekļu maiss ir pilns vai ventilācijas atveres ir bloķētas.",
+          "self_test_failed": "Neparasta ūdens izplūde no augšējā un apakšējā ūdens moduļa tīrā ūdens tvertnes.",
+          "mop_install_failed": "Mopa paliktņa uzstādīšana neizdevās.",
+          "low_battery_turn_off": "Zems akumulatora līmenis. Robots drīz izslēgsies.",
+          "dirty_tank_not_installed": "Robota izmantotā ūdens tvertne nav uzstādīta.",
+          "robot_in_hidden_room": "Slēptā zona. Lūdzu, pārvietojiet robotu uz atbilstošu zonu un mēģiniet vēlreiz.",
+          "washboard_not_working": "Mazgāšanas dēlis pārstāj darboties.",
+          "return_to_charge_failed": "Neizdevās atgriezties uz uzlādi.",
+          "lds_failed_to_lift": "Neizdevās pacelt LDS moduli.",
+          "robot_stuck": "Šeit nevar pacelt LDS pozicionēšanai.",
+          "robot_stuck_repeat": "Pārvietojiet robotu uz atklātu vietu un atsāciet uzdevumu.",
+          "slippery_floor": "Slidena grīda. Lūdzu, mēģiniet vēlreiz vēlāk.",
+          "check_mop_install": "Lūdzu, pārbaudiet, vai mops ir pareizi uzstādīts.",
+          "dirty_water_tank_full": "Neparasts ūdens līmenis robota izmantotā ūdens tvertnē.",
+          "retractable_leg_stuck": "Lūdzu, pārbaudiet, vai izvelkamās kājas nav sapinušās.",
+          "internal_error": "Darbības traucējumi iekšējas kļūdas dēļ. Mēģiniet restartēt robotu.",
+          "robot_stuck_on_tables": "Robots iestrēdzis starp galdiem un krēsliem.",
+          "robot_stuck_on_passage": "Robots iestrēdzis šaurā ejā.",
+          "robot_stuck_on_threshold": "Robots iestrēdzis uz sliekšņa.",
+          "robot_stuck_on_low_lying_area": "Robots iestrēdzis zemā vietā.",
+          "robot_stuck_on_ramp": "Robots maršrutā ir pamanījis bīstamas rampas.",
+          "robot_stuck_on_obstacle": "Robots maršrutā ir pamanījis šķēršļus.",
+          "robot_stuck_on_pet": "Robots maršrutā ir pamanījis cilvēkus vai mājdzīvniekus.",
+          "robot_stuck_on_slippery_surface": "Robots ir iestrēdzis slīdēšanas dēļ.",
+          "robot_stuck_on_carpet": "Robots slīd uz paklāja",
+          "drainage_failed": "Neparasta ūdens novadīšana no izmantotā ūdens tvertnes",
+          "mop_not_detected": "Mops nav atrasts.",
+          "mop_holder_error": "Mopa turētāja daudzuma/izvietojuma kļūda dokstacijā.",
+          "dock_error": "Dokstacijas kļūda.",
+          "wash_failed": "Neizdevās izmazgāt netīro mopu.",
+          "robot_stuck_on_curtain": "Robots slīd aizkaru zonā",
+          "edge_mop_stop_rotate": "Mala mops pārstāja griezties.",
+          "edge_mop_detached": "Mala mops atdalījās.",
+          "chassis_lift_malfunction": "Šasijas pacelšanas darbības traucējumi.",
+          "mop_cover_error": "Pārbaudiet, vai pie ruļļa mopa un mopa vāka nav gružu.",
+          "roller_mop_error": "Pārbaudiet, vai pie ruļļa mopa un mopa vāka nav gružu.",
+          "onboard_water_tank_empty": "Zems ūdens līmenis robota tīrā ūdens tvertne.",
+          "onboard_dirty_water_tank_full": "Robota izmantotā ūdens tvertne ir pilna.",
+          "mop_not_installed": "Mops nav uzstādīts.",
+          "fluffing_roller_error": "Pūkošanās veltņa kļūda.",
+          "blocked_by_obstacle": "Robots bloķēts ar šķērsli.",
+          "robotic_arm_stopped": "Robotizētā roka apstājusies.",
+          "drainage_outlet_filter": "Robota notekūdeņu izplūdes filtrs ir aizsērējis.",
+          "main_wheels_error": "Galveno riteņu kļūda."
+        }
+      },
+      "charging_status": {
+        "name": "Uzlādes statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "charging": "Uzlādējas",
+          "not_charging": "Nelādējas",
+          "return_to_charge": "Atgriežas uz uzlādi",
+          "charging_completed": "Uzlāde pabeigta"
+        }
+      },
+      "relocation_status": {
+        "name": "Pārvietošanas statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "located": "Atrasts",
+          "locating": "Meklē atrašanās vietu",
+          "failed": "Neizdevās",
+          "success": "Veiksmīgi"
+        }
+      },
+      "self_wash_base_status": {
+        "name": "Pašattīrīšanās bāzes statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "idle": "Dīkstāvē",
+          "washing": "Mazgā",
+          "drying": "Žāvē",
+          "paused": "Pauzēts",
+          "returning": "Atgriežas mazgāt mopu",
+          "clean_add_water": "Tīra un papildina ūdeni",
+          "adding_water": "Papildina ūdeni"
+        }
+      },
+      "low_water_warning": {
+        "name": "Brīdinājums par zemu ūdens līmeni",
+        "state": {
+          "no_warning": "Nav brīdinājuma",
+          "no_water_left": "Ūdens tīrā ūdens tvertnē drīz beigsies. Savlaicīgi pārbaudiet un piepildiet tīrā ūdens tvertni.",
+          "no_water_left_after_clean": "Kartes paliktņi ir iztīrīti. Konstatēts, ka ūdens līmenis tīrā ūdens tvertnē ir nepietiekams, lūdzu, piepildiet tīrā ūdens tvertni un iztukšojiet izmantotā ūdens tvertni.",
+          "no_water_for_clean": "Zems ūdens līmenis tīrā ūdens tvertnē. Robots ir pārslēdzies uz sūkšanas režīmu.",
+          "low_water": "Drīz beigsies ūdens. Lūdzu, piepildiet tīrā ūdens tvertni.",
+          "tank_not_installed": "Tīrā ūdens tvertne nav uzstādīta."
+        }
+      },
+      "stream_status": {
+        "name": "Straumēšanas statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "idle": "Dīkstāvē",
+          "video": "Video",
+          "audio": "Audio",
+          "recording": "Ieraksta"
+        }
+      },
+      "drainage_status": {
+        "name": "Novadīšanas statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "idle": "Dīkstāvē",
+          "draining": "Novada",
+          "draining_successful": "Novadīšana veiksmīga",
+          "draining_failed": "Novadīšana neizdevās"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "Tīrā ūdens tvertnes statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "not_available": "Nav pieejams",
+          "not_installed": "Nav uzstādīta",
+          "low_water": "Zems ūdens līmenis",
+          "installed": "Uzstādīta"
+        }
+      },
+      "dirty_water_tank_status": {
+        "name": "Netīrā ūdens tvertnes statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "installed": "Uzstādīta",
+          "not_installed_or_full": "Nav uzstādīta vai pilna"
+        }
+      },
+      "dust_bag_status": {
+        "name": "Putekļu maisa statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "installed": "Uzstādīts",
+          "not_installed": "Nav uzstādīts",
+          "check": "Pārbaudīt"
+        }
+      },
+      "detergent_status": {
+        "name": "Mazgāšanas līdzekļa statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "installed": "Uzstādīts",
+          "disabled": "Atspējots",
+          "low_detergent": "Mazgāšanas līdzekļa līmenis zems"
+        }
+      },
+      "hot_water_status": {
+        "name": "Karstā ūdens statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "disabled": "Atspējots",
+          "enabled": "Iespējots"
+        }
+      },
+      "station_drainage_status": {
+        "name": "Stacijas novadīšanas statuss",
+        "state": {
+          "unknown": "Nezināms",
+          "idle": "Dīkstāvē",
+          "draining": "Novada"
+        }
+      },
+      "task_type": {
+        "name": "Uzdevuma veids",
+        "state": {
+          "standard": "Standarta tīrīšana",
+          "standard_paused": "Standarta tīrīšana pauzēta",
+          "custom": "Pielāgota tīrīšana",
+          "custom_paused": "Pielāgota tīrīšana pauzēta",
+          "shortcut": "Saīsnes tīrīšana",
+          "shortcut_paused": "Saīsnes tīrīšana pauzēta",
+          "scheduled": "Plānotā tīrīšana",
+          "scheduled_paused": "Plānotā tīrīšana pauzēta",
+          "smart": "Viedā tīrīšana",
+          "smart_paused": "Viedā tīrīšana pauzēta",
+          "partial": "Daļēja tīrīšana",
+          "partial_paused": "Daļēja tīrīšana pauzēta",
+          "summon": "Izsaukšanas tīrīšana",
+          "summon_paused": "Izsaukšanas tīrīšana pauzēta",
+          "water_stain": "Ūdens traipu tīrīšana",
+          "water_stain_paused": "Ūdens traipu tīrīšana pauzēta",
+          "boosted_edge_cleaning": "Pastiprināta malu tīrīšana",
+          "hair_compressing": "Matu saspiešana",
+          "large_particle_cleaning": "Lielo daļiņu tīrīšana",
+          "intensive_stain_cleaning": "Intensīvā traipu tīrīšana",
+          "stain_cleaning": "Traipu tīrīšana",
+          "initial_deep_cleaning": "Sākotnējā dziļā tīrīšana",
+          "initial_deep_cleaning_paused": "Sākotnējā dziļā tīrīšana pauzēta",
+          "mop_pad_heating": "Mopa paliktņa sildīšana",
+          "cleaning_after_mapping": "Tīrīšana pēc kartēšanas",
+          "small_particle_cleaning": "Sīko daļiņu tīrīšana",
+          "changing_mop": "Mopa maiņa",
+          "changing_mop_paused": "Mopa maiņa pauzēta",
+          "floor_maintaining": "Grīdas apkope",
+          "floor_maintaining_paused": "Grīdas apkope pauzēta",
+          "arranging_items": "Preču kārtošana",
+          "arranging_items_paused": "Preču kārtošana apturēta",
+          "intensive_hair_cleaning": "Intensīva matu tīrīšana",
+          "accessory_handling": "Piederumu apstrāde",
+          "increased_drum_speed_cleaning": "Tīrīšana ar palielinātu tvertnes ātrumu",
+          "pressurized_cleaning": "Spiediena tīrīšana",
+          "steam_cleaning": "Tvaika tīrīšana",
+          "steam_cleaning_paused": "Tvaika tīrīšana apturēta"
+        }
+      },
+      "dust_bag_drying_status": {
+        "name": "Putekļu maisa žāvēšanas statuss",
+        "state": {
+          "idle": "Dīkstāvē",
+          "drying": "Žāvē",
+          "paused": "Pauzēts"
+        }
+      },
+      "nation_matched": {
+        "name": "Reģiona bloķēšana",
+        "state": {
+          "unknown": "Atspējota",
+          "matched": "Atbloķēta",
+          "unmatched": "Bloķēta",
+          "na": "Nav pieejams"
+        }
+      },
+      "startup_method": {
+        "name": "Iedarbināja",
+        "state": {
+          "button": "Poga",
+          "app": "Lietotne",
+          "scheduled": "Plānots",
+          "voice": "Balss",
+          "second_cleaning": "Otrā tīrīšana",
+          "unknown": "Nezināms"
+        }
+      },
+      "cleaning_status": {
+        "name": "Tīrīšana",
+        "state": {
+          "interrupted": "Pārtraukta",
+          "completed": "Pabeigta",
+          "manually_ended": "Manuāli pabeigta",
+          "failed": "Neizdevās",
+          "unknown": "Nezināms"
+        }
+      },
+      "cleanup_method": {
+        "name": "Tīrīšanas metode",
+        "state": {
+          "other": "Cita",
+          "default": "Noklusējuma",
+          "customized": "Pielāgota",
+          "cleangenius": "CleanGenius",
+          "water_stain": "Ūdens traipi",
+          "unknown": "Nezināms"
+        }
+      },
+      "task_end_type": {
+        "name": "Pabeidza",
+        "state": {
+          "other": "Cits",
+          "manual_docking": "Manuāla pievienošanās bāzei",
+          "docking": "Pievienošanās bāzei",
+          "failed_docking": "Neizdevās pievienoties bāzei",
+          "stop": "Apturēšana",
+          "unknown": "Nezināms"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "Pārtraukuma iemesls",
+        "state": {
+          "abnormal_docking": "Neparasta pievienošanās bāzei",
+          "base_station_powered_off": "Bāzes stacija izslēgta",
+          "brush_entangled_by_carpet": "Birste sapinusies paklājā",
+          "brush_entangled_by_object": "Birste sapinusies priekšmetā",
+          "brush_entangled_by_obstacle": "Birste sapinusies šķērslī",
+          "cannot_find_base_station": "Nevar atrast bāzes staciju",
+          "cliff_sensor_error": "Kraujas sensora kļūda",
+          "laser_distance_sensor_error": "Lāzera attāluma sensora kļūda",
+          "mop_pad_abnormally_removed": "Mopa paliktnis neparasti noņemts",
+          "mop_pad_fallen_off": "Mopa paliktnis nokritis",
+          "mop_pad_fallen_off_by_obstacle": "Mopa paliktnis nokritis šķēršļa dēļ",
+          "mop_pad_fallen_off_by_table": "Mopa paliktnis nokritis galda dēļ",
+          "mop_pad_fallen_off_crossing_obstacle": "Mopa paliktnis nokritis, šķērsojot šķērsli",
+          "mop_pad_removed": "Mopa paliktnis noņemts",
+          "mop_pad_stuck": "Mopa paliktnis iestrēdzis",
+          "robot_fallen": "Robots nokritis",
+          "robot_is_stuck_on_obstacle": "Robots iestrēdzis uz šķēršļa",
+          "robot_is_stuck_on_step": "Robots iestrēdzis uz pakāpiena",
+          "robot_lifted": "Robots pacelts",
+          "task_completed": "Uzdevums pabeigts",
+          "unknown": "Nezināms"
+        }
+      },
+      "recovery_map_type": {
+        "name": "Kartes veids",
+        "state": {
+          "original": "Oriģinālā karte",
+          "edited": "Rediģētā karte",
+          "backup": "Rezerves karte"
+        }
+      },
+      "obstacle_type": {
+        "name": "Šķēršļa veids",
+        "state": {
+          "unknown": "Nezināms",
+          "base": "Bāze",
+          "scale": "Svari",
+          "thread": "Diegs",
+          "wire": "Vads",
+          "toy": "Rotaļlieta",
+          "shoes": "Kurpes",
+          "sock": "Zeķe",
+          "fece": "Izkārnījumi",
+          "trash_can": "Atkritumu tvertne",
+          "fabric": "Audums",
+          "power_strip": "Pagarinātājs",
+          "liquid_stain": "Šķidruma traips",
+          "obstacle": "Šķērslis",
+          "pet": "Mājdzīvnieks",
+          "cleaning_tools": "Tīrīšanas rīki",
+          "detected_stain": "Konstatēts traips",
+          "blocked_room": "Bloķēta telpa",
+          "easy_to_stuck_furniture": "Mēbeles, kurās viegli iestrēgt",
+          "uncleanable_stain": "Neiztīrāms traips",
+          "leg": "Kāja",
+          "large_particles": "Lielas daļiņas",
+          "dried_stain": "Sausi traipi",
+          "food_bowl": "Barības bļoda",
+          "pet_bed": "Mājdzīvnieku gulta",
+          "cleaned_stain": "Iztīrīts traips",
+          "skipped_uncleanable_stain": "Izlaists neiztīrāms traips",
+          "cleaned_dried_stain": "Iztīrīts sauss traips",
+          "cleaned_large_particles": "Iztīrītas lielas daļiņas",
+          "hair": "Mati",
+          "paper": "Papīrs",
+          "cleaned_hair": "Notīrīti mati",
+          "sundry": "Dažādi"
+        }
+      },
+      "obstacle_reason": {
+        "name": "Šķēršļa iemesls",
+        "state": {
+          "blocked_by_virtual_wall": "Bloķēts ar virtuālo sienu",
+          "blocked_by_door": "Bloķēts ar durvīm",
+          "blocked_by_threshold": "Bloķēts ar slieksni",
+          "blocked_by_obstacle": "Bloķēts ar šķērsli",
+          "blocked_by_carpet": "Bloķēts ar paklāju",
+          "blocked_by_detected_carpet": "Bloķēts ar konstatēto paklāju",
+          "blocked_by_hidden_obstacle": "Bloķēts ar slēptu šķērsli",
+          "blocked_by_dynamic_obstacle": "Bloķēts ar dinamisku šķērsli",
+          "passage_too_low": "Eja pārāk zema",
+          "step_too_low": "Pakāpiens pārāk zems",
+          "failed_to_cross_threshold": "Neizdevās šķērsot slieksni"
+        }
+      },
+      "remaining_battery": {
+        "name": "Atlikušais akumulators"
+      },
+      "multiple_cleaning_time": {
+        "name": "Vairākkārtēja tīrīšana"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "firmware_version": {
+        "name": "Programmaparatūras versija"
+      },
+      "ip_address": {
+        "name": "IP adrese"
+      },
+      "mac_address": {
+        "name": "MAC adrese"
+      },
+      "model": {
+        "name": "Modelis"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "serial_number": {
+        "name": "Sērijas numurs"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "timezone": {
+        "name": "Laika josla"
+      },
+      "voice_packet_id": {
+        "name": "Balss pakotne"
+      },
+      "deodorizer_left": {
+        "name": "Dezodorants"
+      },
+      "detergent_left": {
+        "name": "Mazgāšanas līdzeklis"
+      },
+      "dirty_water_channel_left": {
+        "name": "Netīrā ūdens kanāls"
+      },
+      "filter_left": {
+        "name": "Filtrs"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "Pūkošanās veltņa tīrīšana"
+      },
+      "main_brush_left": {
+        "name": "Galvenā birste"
+      },
+      "mop_pad_left": {
+        "name": "Mopa paliktnis"
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "Iebūvētā netīrā ūdens tvertne"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "Veltņa mopa filtra tīrīšana"
+      },
+      "scale_inhibitor_left": {
+        "name": "Kalkakmens inhibitors"
+      },
+      "sensor_dirty_left": {
+        "name": "Sensoru tīrīšana"
+      },
+      "side_brush_left": {
+        "name": "Sānu birste"
+      },
+      "silver_ion_left": {
+        "name": "Sudraba joni"
+      },
+      "squeegee_left": {
+        "name": "Skrāpis"
+      },
+      "tank_filter_left": {
+        "name": "Tvertnes filtrs"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "Ūdens izplūdes filtra tīrīšana"
+      },
+      "wheel_dirty_left": {
+        "name": "Riteņu tīrīšana"
+      }
+    },
+    "toggle": {
+      "customized_cleaning": {
+        "name": "Pielāgota tīrīšana"
+      },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "Dziļā tīrīšana"
+      },
+      "auto_dust_collecting": {
+        "name": "Automātiska iztukšošana"
+      },
+      "hair_compression": {
+        "name": "Matu saspiešana"
+      },
+      "self_clean": {
+        "name": "Pašattīrīšanās"
+      },
+      "deep_mop_washing": {
+        "name": "Dziļā mopa mazgāšana"
+      },
+      "hot_washing": {
+        "name": "Mazgāšana ar karstu ūdeni"
+      },
+      "auto_drying": {
+        "name": "Automātiska žāvēšana"
+      },
+      "silent_drying": {
+        "name": "Klusā žāvēšana"
+      },
+      "uv_sterilization": {
+        "name": "UV sterilizācija"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Pielāgota tīrīšana"
+      },
+      "carpet_avoidance": {
+        "name": "Izvairīšanās no paklājiem"
+      },
+      "carpet_preferences": {
+        "name": "Pielāgotas izvēles"
+      },
+      "auto_change_mop": {
+        "name": "Automātiska mopa maiņa"
+      },
+      "multi_floor_map": {
+        "name": "Vairāku stāvu karte"
+      },
+      "intelligent_recognition": {
+        "name": "Inteliģentā atpazīšana"
+      },
+      "map_saving": {
+        "name": "Kartes saglabāšana"
+      },
+      "child_lock": {
+        "name": "Bērnu aizsardzība"
+      },
+      "resume_cleaning": {
+        "name": "Atsākt tīrīšanu"
+      },
+      "obstacle_avoidance": {
+        "name": "Izvairīšanās no šķēršļiem"
+      },
+      "carpet_boost": {
+        "name": "Paklāju pastiprināšana"
+      },
+      "carpet_recognition": {
+        "name": "Paklāju atpazīšana"
+      },
+      "clean_carpets_first": {
+        "name": "Tīrīt paklājus pirmajā vietā"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "Aizvērt rullīšu vāku uz paklāja"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "Intensīvā paklāju tīrīšana"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "Sānu birstes griešanās uz paklāja"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "Pacelt šasiju uz paklāja"
+      },
+      "auto_mount_mop": {
+        "name": "Automātiska mopa uzstādīšana"
+      },
+      "mopping_with_detergent": {
+        "name": "Mazgāšana ar mazgāšanas līdzekli"
+      },
+      "mop_washing_with_detergent": {
+        "name": "Mopa mazgāšana ar mazgāšanas līdzekli"
+      },
+      "auto_add_detergent": {
+        "name": "Automātiska mazgāšanas līdzekļa pievienošana"
+      },
+      "smart_mop_washing": {
+        "name": "Viedā mopa mazgāšana"
+      },
+      "wider_corner_coverage": {
+        "name": "Plašāks stūru pārklājums"
+      },
+      "pressurized_cleaning": {
+        "name": "Tīrīšana ar spiedienu"
+      },
+      "gap_cleaning_extension": {
+        "name": "Spraugu tīrīšanas paplašinājums"
+      },
+      "mopping_under_furnitures": {
+        "name": "Mazgāšana zem mēbelēm"
+      },
+      "floor_direction_cleaning": {
+        "name": "Tīrīšana grīdas virzienā"
+      },
+      "ring_light_always_on": {
+        "name": "Gredzena gaisma vienmēr ieslēgta"
+      },
+      "collision_avoidance": {
+        "name": "Izvairīšanās no sadursmēm"
+      },
+      "fill_light": {
+        "name": "Kameras gaisma"
+      },
+      "ai_obstacle_detection": {
+        "name": "AI šķēršļu atpazīšana"
+      },
+      "ai_pet_detection": {
+        "name": "Mājdzīvnieku atpazīšana"
+      },
+      "pet_focused_detection": {
+        "name": "Uz mājdzīvniekiem vērsta atpazīšana"
+      },
+      "pet_focused_cleaning": {
+        "name": "Uz mājdzīvniekiem vērsta tīrīšana"
+      },
+      "ai_obstacle_picture": {
+        "name": "Šķēršļu attēli"
+      },
+      "obstacle_crossing": {
+        "name": "Sinhronizēta šķēršļu pārvarēšana"
+      },
+      "active_suspension_crossing": {
+        "name": "Aktīvās balstiekārtas šķērsošana"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "Dinamiska šķēršļu tīrīšana"
+      },
+      "large_particles_boost": {
+        "name": "Lielo daļiņu pastiprināšana"
+      },
+      "streaming_voice_prompt": {
+        "name": "Straumēšanas balss uzvedne"
+      },
+      "voice_assistant": {
+        "name": "Balss asistents"
+      },
+      "off_peak_charging": {
+        "name": "Uzlāde ārpus sastrēgumstundām"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "Atspējot tīrīšanas atsākšanu"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "Atspējot automātisko iztukšošanu"
+      },
+      "dnd_reduce_volume": {
+        "name": "Samazināt skaļumu"
+      },
+      "dnd": {
+        "name": "DnD"
+      }
+    },
+    "number": {
+      "wetness_level": {
+        "name": "Mitrums"
+      },
+      "auto_empty_area": {
+        "name": "Automātiskās iztukšošanas zona"
+      },
+      "drying_time": {
+        "name": "Žāvēšanas laiks"
+      },
+      "self_clean_time": {
+        "name": "Pašattīrīšanās laiks"
+      },
+      "self_clean_area": {
+        "name": "Pašattīrīšanās zona"
+      },
+      "volume": {
+        "name": "Skaļums"
+      }
+    },
+    "time": {
+      "dnd_start": {
+        "name": "DnD sākuma laiks"
+      },
+      "dnd_end": {
+        "name": "DnD beigu laiks"
+      },
+      "off_peak_charging_start": {
+        "name": "Ārpus sastrēgumstundu sākuma laiks"
+      },
+      "off_peak_charging_end": {
+        "name": "Ārpus sastrēgumstundu beigu laiks"
+      },
+      "schedule_time": {
+        "name": "Sākuma laiks"
+      }
+    },
+    "input": {
+      "schedule_repeats": {
+        "name": "Atkārtojumi"
+      },
+      "dnd_repeats": {
+        "name": "Atkārtojumi"
+      },
+      "map_custom_name": {
+        "name": "Kartes nosaukums"
+      },
+      "segment_custom_name": {
+        "name": "Telpas nosaukums"
+      },
+      "shortcut_name": {
+        "name": "Saīsnes nosaukums"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "Pievienot",
+        "add_map": "Izveidot karti",
+        "auto_empty_unavailable": "Automātiska iztukšošana nav pieejama",
+        "auto_emptying": "Automātiska iztukšošana",
+        "backup": "Rezerves kopija",
+        "bag_drying_unavailable": "Maisa žāvēšana nav pieejama",
+        "cancel": "Atcelt",
+        "cancel_ignore": "Atcelt ignorēšanu",
+        "carpet": "Paklājs",
+        "change": "Mainīt",
+        "charge": "Uzlādēt",
+        "clean": "Tīrīt",
+        "clean_again": "Tīrīt vēlreiz",
+        "cleaning_settings": "Tīrīšanas iestatījumi",
+        "cleanings": "Tīrīšanas",
+        "close": "Aizvērt",
+        "confirm": "Apstiprināt",
+        "delete": "Dzēst",
+        "delete_carpet": "Dzēst paklāju",
+        "deleted_carpet": "Izdzēsts paklājs",
+        "disable": "Atspējot",
+        "discard": "Atmest",
+        "dismiss": "Noraidīt",
+        "dock": "Bāze",
+        "dock_settings": "Bāzes iestatījumi",
+        "download": "Lejupielādēt",
+        "dry": "Žāvēt",
+        "dry_bag": "Žāvēt maisu",
+        "drying_unavailable": "Žāvēšana nav pieejama",
+        "dynamically_ignored": "Dinamiski ignorēts",
+        "edit_carpet": "Rediģēt paklāju",
+        "empty": "Iztukšot",
+        "enable": "Iespējot",
+        "fast_mapping": "Ātrā kartēšana",
+        "get_dreame_vacuum_card": "Iegūt Dreame Vacuum karti",
+        "ignore": "Ignorēt",
+        "ignore_obstacle": "Ignorēt šķērsli",
+        "impassable_threshold": "Nepārvarams slieksnis",
+        "job_details": "Uzdevuma informācija",
+        "keep_disabled": "Atstāt atspējotu",
+        "map_display": "Kartes attēlojums",
+        "map_management": "Karšu pārvaldība",
+        "new_dnd": "Jauns DnD uzdevums",
+        "new_schedule": "Jauns plānotais uzdevums",
+        "new_shortcut": "Jauns īsceļa uzdevums",
+        "next_job": "Nākamais uzdevums",
+        "no_go": "Ierobežotā zona",
+        "no_mop": "Bez mazgāšanas",
+        "objects": "Objekti",
+        "override": "Ignorēt ierobežojumu",
+        "passable_threshold": "Pārvarams slieksnis",
+        "pause": "Pauze",
+        "pause_washing": "Pauzēt mazgāšanu",
+        "previous_job": "Iepriekšējais uzdevums",
+        "ramp": "Rampa",
+        "reload": "Pārlādēt",
+        "rename": "Pārdēvēt",
+        "repeats": "Atkārtojumi",
+        "replace": "Aizstāt",
+        "reset": "Atiestatīt",
+        "restore": "Atjaunot",
+        "restore_map": "Atjaunot karti",
+        "resume": "Atsākt",
+        "resume_washing": "Atsākt mazgāšanu",
+        "rooms": "Telpas",
+        "rotate_left": "Pagriezt pa kreisi",
+        "rotate_right": "Pagriezt pa labi",
+        "round_carpet": "Apaļš paklājs",
+        "save": "Saglabāt",
+        "select_map": "Izvēlēties karti",
+        "shortcuts": "Saīsnes",
+        "square_carpet": "Kvadrātveida paklājs",
+        "start": "Sākt",
+        "start_auto_empty": "Sākt automātisko iztukšošanu",
+        "start_bag_drying": "Sākt maisa žāvēšanu",
+        "start_drying": "Sākt žāvēšanu",
+        "start_task": "Sākt uzdevumu",
+        "start_washing": "Sākt mazgāšanu",
+        "stop": "Apturēt",
+        "stop_bag_drying": "Apturēt maisa žāvēšanu",
+        "stop_drying": "Apturēt žāvēšanu",
+        "understood": "Sapratu",
+        "virtual_threshold": "Virtuālais slieksnis",
+        "virtual_wall": "Siena",
+        "wash": "Mazgāt",
+        "washing_unavailable": "Mazgāšana nav pieejama",
+        "wifi_map": "Wi-Fi karte"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "Fona attēls",
+        "card_object_action_buttons": "Darbību pogas",
+        "card_object_animations": "Animācijas",
+        "card_object_cleanup_notification": "Paziņojums par tīrīšanu",
+        "card_object_controls": "Vadības elementi",
+        "card_object_cruising_history": "Pārvietošanās vēsture",
+        "card_object_fault_notification": "Paziņojums par kļūdu",
+        "card_object_information_notification": "Informācijas paziņojums",
+        "card_object_low_water_notification": "Paziņojums par zemu ūdens līmeni",
+        "card_object_map_change_confirmation": "Kartes maiņas apstiprinājums",
+        "card_object_menu": "Izvēlne",
+        "card_object_progress_bar": "Progresa josla",
+        "card_object_saved_notification": "Saglabāšanas paziņojums",
+        "card_object_shortcuts": "Saīsnes",
+        "card_object_state": "Sastāvdaļas stāvoklis",
+        "card_object_status": "Sastāvdaļas statuss",
+        "card_object_task_type": "Uzdevuma veids",
+        "card_object_title": "Sastāvdaļas virsraksts",
+        "card_object_warning_notification": "Brīdinājuma paziņojums",
+        "color_scheme": "Krāsu shēma",
+        "color_scheme_dreame_auto": "Dreame automātiskā",
+        "color_scheme_dreame_dark": "Dreame tumšā",
+        "color_scheme_dreame_light": "Dreame gaišā",
+        "color_scheme_grayscale": "Pelēktoņu",
+        "color_scheme_mijia_auto": "Mijia automātiskā",
+        "color_scheme_mijia_dark": "Mijia tumšā",
+        "color_scheme_mijia_light": "Mijia gaišā",
+        "copied": "Nokopēts",
+        "copy": "Kopēt",
+        "copy_all": "Kopēt visu",
+        "disable_haptic": "Atspējot haptisko atgriezenisko saiti",
+        "editable_objects": "Rediģējami objekti",
+        "font_size": "Fonta izmērs",
+        "full_height": "Pilns augstums",
+        "grid_size": "Režģa izmērs",
+        "height": "Augstums",
+        "hidden_card_objects": "Slēptie kartes objekti",
+        "hidden_objects": "Slēptie objekti",
+        "hide_map_info": "Slēpt kartes informāciju",
+        "icon_set": "Ikonu komplekts",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "Dreame vecais",
+        "icon_set_material": "Material",
+        "icon_set_mijia": "Mijia",
+        "left": "Kreisā",
+        "left_handed": "Kreisās rokas režīms",
+        "limit_height": "Ierobežot augstumu līdz ekrānam",
+        "locked": "Bloķēts",
+        "locked_always": "Vienmēr",
+        "locked_auto": "Automātiski",
+        "locked_never": "Nekad",
+        "locked_only_touch": "Tikai pieskāriens",
+        "map": "Karte %name%",
+        "map_1": "Pirmā karte",
+        "map_2": "Otrā karte",
+        "map_3": "Trešā karte",
+        "map_4": "Ceturtā karte",
+        "map_5": "Piektā karte",
+        "map_color_active_area": "Aktīvā zona",
+        "map_color_active_area_outline": "Aktīvās zonas kontūra",
+        "map_color_active_point": "Aktīvais punkts",
+        "map_color_active_point_outline": "Aktīvā punkta kontūra",
+        "map_color_auto_low_lying_area": "Automātiska zemā zona",
+        "map_color_carpet_color": "Paklāja krāsa",
+        "map_color_curtain": "Aizkars",
+        "map_color_detected_carpet_color": "Konstatētā paklāja krāsa",
+        "map_color_floor": "Grīda",
+        "map_color_floor_material": "Grīdas materiāls",
+        "map_color_icon_background": "Ikonas fons",
+        "map_color_impassable_threshold": "Nepārvarams slieksnis",
+        "map_color_manual_low_lying_area": "Manuāla zemā zona",
+        "map_color_mop_path": "Mazgāšanas maršruts",
+        "map_color_new_segment": "Jauna telpa",
+        "map_color_no_go": "Ierobežota zona",
+        "map_color_no_go_outline": "Ierobežotās zonas kontūra",
+        "map_color_no_mop": "Bez mazgāšanas",
+        "map_color_no_mop_outline": "Bez mazgāšanas kontūra",
+        "map_color_obstacle_background": "Šķēršļu fons",
+        "map_color_order": "Secība",
+        "map_color_outside": "Ārpuse",
+        "map_color_passable_threshold": "Pārvarams slieksnis",
+        "map_color_passive_segment": "Pasīvā telpa",
+        "map_color_path": "Maršruts",
+        "map_color_ramp": "Rampa",
+        "map_color_segment": "Telpa",
+        "map_color_settings_background": "Iestatījumu fons",
+        "map_color_text": "Teksts",
+        "map_color_text_stroke": "Teksta kontūra",
+        "map_color_virtual_threshold": "Virtuālais slieksnis",
+        "map_color_virtual_wall": "Virtuālā siena",
+        "map_color_wall": "Siena",
+        "map_config": "Kartes konfigurācija",
+        "map_display": "Kartes attēlojums",
+        "map_display_floor_plan": "Stāva plāns",
+        "map_display_floor_plan_only": "Tikai stāva plāns",
+        "map_display_floor_plan_without_texture": "Stāva plāns bez tekstūras",
+        "map_display_standard": "Standarta",
+        "map_object_active_area": "Aktīvā zona",
+        "map_object_active_cruise_point": "Aktīvais kruīza punkts",
+        "map_object_active_point": "Aktīvais punkts",
+        "map_object_animations": "Animācijas",
+        "map_object_blocked_segment": "Bloķētas telpas",
+        "map_object_blocked_segments": "Bloķētas telpas",
+        "map_object_carpet": "Paklājs",
+        "map_object_charger": "Lādētājs",
+        "map_object_cleaning_sequence": "Tīrīšanas secība",
+        "map_object_cruise_point": "Kruīza punkts",
+        "map_object_curtain": "Aizkars",
+        "map_object_customized_cleaning": "Pielāgota tīrīšana",
+        "map_object_deleted_carpet": "Izdzēstais paklājs",
+        "map_object_detected_carpet": "Konstatētais paklājs",
+        "map_object_door": "Durvis",
+        "map_object_floor": "Grīda",
+        "map_object_floor_material": "Grīdas materiāls",
+        "map_object_furniture": "Mēbeles",
+        "map_object_furniture_image": "Mēbeļu attēli",
+        "map_object_hidden_segments": "Slēptās telpas",
+        "map_object_icon": "Ikona",
+        "map_object_ignored_obstacles": "Ignorētie šķēršļi",
+        "map_object_impassable_threshold": "Nepārvarami sliekšņi",
+        "map_object_lock_indicator": "Slēdzenes indikators",
+        "map_object_low_lying_area": "Zemās zonas",
+        "map_object_material": "Grīdas materiāls",
+        "map_object_mop_path": "Mazgāšanas maršruts",
+        "map_object_mop_type": "Mopa veids",
+        "map_object_name": "Nosaukums",
+        "map_object_name_background": "Nosaukuma fons",
+        "map_object_no_go": "Ierobežota zona",
+        "map_object_no_mop": "Bez mazgāšanas",
+        "map_object_object_option": "Objekta opcija",
+        "map_object_obstacle": "Šķērslis",
+        "map_object_obstacle_background": "Šķēršļa fons",
+        "map_object_obstacle_color": "Šķēršļa krāsa",
+        "map_object_order": "Secība",
+        "map_object_passable_threshold": "Pārvarami sliekšņi",
+        "map_object_path": "Maršruts",
+        "map_object_pet": "Mājdzīvnieks",
+        "map_object_predefined_point": "Iepriekš noteikti punkti",
+        "map_object_ramp": "Rampa",
+        "map_object_router": "Maršrutētājs",
+        "map_object_segment": "Telpa",
+        "map_object_segment_type": "Telpas veids",
+        "map_object_selected_segments": "Izvēlētās telpas",
+        "map_object_split_line": "Sadalījuma līnija",
+        "map_object_stain": "Traips",
+        "map_object_station_status": "Stacijas statuss",
+        "map_object_vacuum": "Putekļsūcējs",
+        "map_object_vacuum_status": "Putekļsūcēja statuss",
+        "map_object_virtual_threshold": "Virtuālie sliekšņi",
+        "map_object_virtual_wall": "Virtuālās sienas",
+        "map_object_walls": "Sienas",
+        "map_object_zoom_point": "Tālummaiņas punkts",
+        "object_opacity": "Objekta necaurredzamība",
+        "object_scale": "Objekta mērogs",
+        "opacity": "Necaurredzamība",
+        "override_colors": "Ignorēt kartes krāsas",
+        "overlay_image": "Pārklājuma attēls",
+        "rotation": "Rotācija",
+        "scale": "Mērogs",
+        "scripts": "Skripti",
+        "selectable_objects": "Izvēlami objekti",
+        "selected_map_config": "%name% konfigurācija",
+        "show_map_info": "Rādīt kartes informāciju",
+        "top": "Augšpuse",
+        "url": "Url",
+        "viewport": "Skata logs",
+        "width": "Platums",
+        "zoom": "Tālummaiņa"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "Putekļsūcējam ir aktīvs uzdevums!",
+        "apply_changes_or_reload": "Karte tika mainīta rediģēšanas laikā!\nVai vēlaties ignorēt vai ielādēt jaunās izmaiņas?",
+        "auto_mount_mop_will_enabled": "Automātiska mopa uzstādīšana tiks iespējota!",
+        "backup_map": "Izveidot kartes rezerves kopiju?",
+        "backup_map_will_overwritten": "Pašreizējā rezerves kopija tiks pārrakstīta!",
+        "bag_drying_will_stopped": "Putekļu maisa žāvēšana tiks pārtraukta!",
+        "carpet_recognition_will_enabled": "Lai varētu iestatīt pielāgotu paklāju tīrīšanu, jābūt iespējotai paklāju atpazīšanai",
+        "carpet_will_deleted": "Paklājs tiks izdzēsts!",
+        "cleangenius_will_disabled": "Cleangenius tiks atspējots!",
+        "cleaning_failure": "Tīrīšanas kļūmes iemesli",
+        "create_map": "Izveidot jaunu karti?",
+        "custom_carpet_settings_will_enabled": "Pielāgota paklāju tīrīšana tiks iespējota!",
+        "custom_carpet_settings_will_enabled_detail": "Pielāgotie paklāju tīrīšanas iestatījumi tiks iestatīti atbilstoši izvēlētajam paklāja veidam",
+        "customized_cleaning_disabled": "Pielāgota tīrīšana ir atspējota!",
+        "delete_carpet": "Dzēst paklāju?",
+        "delete_dnd": "Dzēst DnD uzdevumu?",
+        "delete_map": "Dzēst karti?",
+        "delete_schedule": "Dzēst plānoto uzdevumu?",
+        "delete_shortcut": "Dzēst saīsni?",
+        "deleted": "Veiksmīgi izdzēsts",
+        "device_unavailable": "Ierīce nav pieejama",
+        "disable_cleangenius": "Atspējot Cleangenius?",
+        "dnd_confliction": "DnD uzdevumu konflikts!",
+        "dnd_confliction_detail": "Plānotais uzdevums ir iestatīts DnD periodā.",
+        "dnd_will_deleted": "DnD uzdevums no %start% līdz %end% tiks izdzēsts!",
+        "dock_in_restricted_area": "Bāze atrodas ierobežotā zonā!",
+        "dock_in_restricted_area_detail": "Uzlādes bāze atrodas ierobežotā zonā. Ja turpināsiet kartes saglabāšanu, robots, iespējams, nevarēs uzlādēties.",
+        "drying_will_stopped": "Mopa paliktņa žāvēšana tiks pārtraukta!",
+        "dust_collection_not_performed": "Putekļu savākšanas (automātiskās iztukšošanas) uzdevums netika veikts\nRobots neveiks automātiskās iztukšošanas uzdevumus DnD periodā.",
+        "enable_auto_mount_mop": "Iespējot automātisku mopa uzstādīšanu?",
+        "enable_carpet_recognition": "Paklāju atpazīšana tiks iespējota!",
+        "enable_customized_cleaning": "Vai vēlaties iespējot pielāgotu tīrīšanu?",
+        "enable_mop_change": "Vai vēlaties iespējot automātisku mopa maiņu?",
+        "enable_task": "Vai vēlaties iespējot uzdevumu?",
+        "entity_is_required": "Entītija ir obligāta",
+        "entity_not_available": "Entītija nav pieejama",
+        "failed_to_load_card": "Neizdevās ielādēt karti",
+        "ignore_obstacle": "Ignorēt šķērsli?",
+        "invalid_entity": "Nederīga entītija",
+        "map_backup": "Notiek kartes dublēšana",
+        "map_backup_failed": "Kartes dublēšana neizdevās!",
+        "map_backup_success": "Kartes dublēšana pabeigta",
+        "map_recovery": "Notiek kartes atkopšana",
+        "map_recovery_failed": "Kartes atkopšana neizdevās!",
+        "map_recovery_success": "Kartes atkopšana pabeigta",
+        "map_will_deleted": "%name% tiks izdzēsts!",
+        "map_will_replaced": "Pašlaik izvēlētā karte tiks aizstāta ar jauno karti!",
+        "map_will_restored": "Saglabātā karte tiks atjaunota stāvoklī, kādā tā bija %date%",
+        "mapping_started": "Kartēšana sākta...",
+        "mop_change_disabled": "Automātiska mopa maiņa ir atspējota!",
+        "mop_wash_frequency_low": "Mopa mazgāšanas biežums ir pārāk zems!",
+        "mop_wash_frequency_will_increased": "Lai nodrošinātu, ka mops ir pietiekami mitrs, mopa mazgāšanas biežums tiks palielināts automātiski",
+        "not_available": "Pašlaik nav pieejams...",
+        "not_fully_supported": "Vēl nav pilnībā atbalstīts!",
+        "not_supported": "Vēl netiek atbalstīts!",
+        "obstacle_will_ignored": "Šķērslis tiks ignorēts!",
+        "override_changes": "Ignorēt izmaiņas?",
+        "preview": "Šis ir Dreame Vacuum kartes priekšskatījums",
+        "recommended_areas": "Ieteicamās zonas",
+        "relocating": "Pašpozicionēšanās. Lūdzu, uzgaidiet.",
+        "relocating_completed": "Pašpozicionēšanās izdevās. Robots turpina uzdevumu.",
+        "relocating_failed": "Pašpozicionēšanās neizdevās!",
+        "replace_map": "Aizstāt ar jauno karti?",
+        "reset_usage": "Atiestatīt patēriņu?",
+        "reset_walls": "Atiestatīt sienas?",
+        "restore_map": "Atjaunot %name%?",
+        "resume_cleaning": "Robots automātiski atsāks nepabeigtos tīrīšanas uzdevumus pēc akumulatora uzlādes līdz 80%.",
+        "resume_cleaning_not_performed": "Robots atsāks tīrīšanu pēc DnD perioda beigām.",
+        "resume_cleaning_time": "Tīrīšana sāksies %time%",
+        "save_changes": "Saglabāt izmaiņas?",
+        "saved": "Veiksmīgi saglabāts",
+        "schedule_will_deleted": "Plānotais uzdevums plkst. %time% tiks izdzēsts!",
+        "select_map": "Izvēlēties %name%?",
+        "select_mapping_type": "Izvēlēties kartēšanas veidu",
+        "select_room": "Izvēlieties telpu, lai iestatītu tīrīšanas secību",
+        "selected_map_will_changed": "Izvēlētā karte tiks mainīta uz %name%!",
+        "service_call_failed": "Pakalpojuma izsaukums neizdevās",
+        "settings_will_applied": "Jūsu iestatījumi tiks lietoti nākamajā uzdevumā.",
+        "shortcut_will_deleted": "%name% tiks izdzēsts!",
+        "stop_bag_drying": "Pārtraukt putekļu maisa žāvēšanu?",
+        "stop_drying": "Pārtraukt žāvēšanu?",
+        "stop_task": "Apturēt pašreizējo uzdevumu?",
+        "task_disabled": "Uzdevums ir atspējots!",
+        "task_will_stopped": "Pašreizējais uzdevums tiks apturēts!",
+        "unsaved_changes_present": "Jums ir nesaglabātas izmaiņas, kas tiks zaudētas!",
+        "unsupported_browser": "Neatbalstīta pārlūkprogramma!",
+        "usage_will_reset": "%name% patēriņš tiks atiestatīts!",
+        "walls_will_be_reset": "Sienas tiks atjaunotas uz to sākotnēji kartēto atrašanās vietu!"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "Piederumu patēriņš",
+        "add_furniture": "Pievienot mēbeles",
+        "audio_settings": "Audio iestatījumi",
+        "battery_management": "Akumulatora pārvaldība",
+        "carpet_settings": "Paklāju iestatījumi",
+        "clean_water_tank": "Tīrā ūdens tvertne",
+        "cleaning_details": "Tīrīšanas informācija",
+        "cleaning_history": "Tīrīšanas vēsture",
+        "cleaning_sequence": "Tīrīšanas secība",
+        "created_carpet": "Manuāli izveidots paklājs",
+        "cruising": "Pārvietošanās",
+        "cruising_details": "Pārvietošanās informācija",
+        "cruising_history": "Pārvietošanās vēsture",
+        "customized_cleaning": "Pielāgota tīrīšana",
+        "description": "%name% pielāgotās integrācijas saskarne",
+        "detected_carpet": "Automātiski konstatēts paklājs",
+        "detergent": "Mazgāšanas līdzeklis",
+        "device_information": "Ierīces informācija",
+        "device_settings": "Ierīces iestatījumi",
+        "dnd": "Netraucēt (DnD)",
+        "dnd_task": "DnD uzdevums",
+        "dust_bag": "Putekļu maiss",
+        "global_carpet_settings": "Globālie paklāju iestatījumi",
+        "invalid": "nederīgs",
+        "locate": "Atrast",
+        "map": "Karte",
+        "map_edit": "Rediģēt karti",
+        "map_management": "Karšu pārvaldība",
+        "map_name_placeholder": "Karte %index%",
+        "mop_type": "Mopa veids",
+        "mopping_settings": "Mazgāšanas iestatījumi",
+        "more_functions": "Vairāk funkciju",
+        "name": "%name% karte",
+        "new_map": "Jauna karte",
+        "obstacle": "Šķērslis",
+        "obstacle_settings": "Kameras un šķēršļu iestatījumi",
+        "recovery_map_list": "Kartes atjaunošana",
+        "remote_control": "Tālvadības pults",
+        "saved_map": "Saglabātā karte",
+        "schedule_list": "Plānotā tīrīšana",
+        "scheduled_room": "Plānotā telpu tīrīšana",
+        "scheduled_spot": "Plānotā punktveida tīrīšana",
+        "scheduled_task": "Plānotais uzdevums",
+        "scheduled_zone": "Plānotā zonu tīrīšana",
+        "segment_name_placeholder": "Telpa %index%",
+        "shortcut": "Saīsne",
+        "shortcut_list": "Saīsnes",
+        "shortcut_map": "Saīsnes karte",
+        "shortcut_name_placeholder": "Saīsne %index%",
+        "shortcut_task": "Saīsnes uzdevums",
+        "task": "Uzdevums %index%",
+        "task_placeholder": "Uzdevums %index%",
+        "time_left": "atlikuši %time%",
+        "unavailable": "Nav pieejams",
+        "used_water_tank": "Izmantotā ūdens tvertne",
+        "wall": "Sienos",
+        "wifi_map": "WiFi karte"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "Tīrīt telpu",
+      "description": "Sākt tīrīšanu izvēlētajās telpās.",
+      "fields": {
+        "segments": {
+          "name": "Telpas",
+          "description": "Tīrāmo telpu saraksts."
+        },
+        "repeats": {
+          "name": "Atkārtojumi",
+          "description": "Tīrīšanas reižu skaits katrai izvēlētajai telpai."
+        },
+        "suction_level": {
+          "name": "Sūkšanas līmenis",
+          "description": "Ventilatora ātrums katrai izvēlētajai telpai."
+        },
+        "water_volume": {
+          "name": "Ūdens padeve",
+          "description": "Ūdens līmenis katrai izvēlētajai telpai."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "Tīrīt zonu",
+      "description": "Sākt tīrīšanu izvēlētajā zonā.",
+      "fields": {
+        "zone": {
+          "name": "Zona",
+          "description": "Koordinātas."
+        },
+        "repeats": {
+          "name": "Atkārtojumi",
+          "description": "Tīrīšanas reižu skaits katrai izvēlētajai zonai."
+        },
+        "suction_level": {
+          "name": "Sūkšanas līmenis",
+          "description": "Ventilatora ātrums katrai izvēlētajai zonai."
+        },
+        "water_volume": {
+          "name": "Ūdens padeve",
+          "description": "Ūdens līmenis katrai izvēlētajai zonai."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "Tīrīt punktu",
+      "description": "Sākt tīrīšanu izvēlētajos punktos kartē.",
+      "fields": {
+        "points": {
+          "name": "Punkti",
+          "description": "Tīrāmo koordinātu saraksts."
+        },
+        "repeats": {
+          "name": "Atkārtojumi",
+          "description": "Tīrīšanas reižu skaits katrai izvēlētajai zonai."
+        },
+        "suction_level": {
+          "name": "Sūkšanas līmenis",
+          "description": "Ventilatora ātrums katrai izvēlētajai zonai."
+        },
+        "water_volume": {
+          "name": "Ūdens padeve",
+          "description": "Ūdens līmenis katrai izvēlētajai zonai."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "Doties uz",
+      "description": "Doties uz kartes koordinātu un apstāties.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Punkta X koordināta."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Punkta Y koordināta."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Sekot maršrutam",
+      "description": "Sekot koordinātu sarakstam kartē un atgriezties bāzē. (Tikai putekļsūcējiem ar kameru)",
+      "fields": {
+        "points": {
+          "name": "Punkti",
+          "description": "Maršruta koordinātu saraksts."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "Palaist saīsni",
+      "description": "Sākt saīsnes uzdevumu. (Tikai atbalstītajās ierīcēs)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Saīsnes ID",
+          "description": "Saīsnes ID."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "Tālvadības pults solis",
+      "description": "Attālināti vadīt robotu par vienu soli.",
+      "fields": {
+        "rotation": {
+          "name": "Rotācija",
+          "description": "Pagrieziens bināros grādos no -128 līdz 128."
+        },
+        "velocity": {
+          "name": "Ātrums",
+          "description": "Kustības ātrums no 100 (uz priekšu) līdz -300 (atpakaļ)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "Instalēt balss pakotni",
+      "description": "Instalēt oficiālu vai pielāgotu balss pakotni.",
+      "fields": {
+        "lang_id": {
+          "name": "Valodas ID",
+          "description": "Šīs pakotnes valodas ID."
+        },
+        "url": {
+          "name": "URL",
+          "description": "Pakotnes URL adrese (putekļsūcējam jābūt piekļuvei šai adresei)."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "Valodas pakotnes MD5 kontrolsumma."
+        },
+        "size": {
+          "name": "Izmērs",
+          "description": "Valodas pakotnes izmērs baitos."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "Pieprasīt karti",
+      "description": "Pieprasīt kartes datus"
+    },
+    "vacuum_select_map": {
+      "name": "Izvēlēties karti",
+      "description": "Izvēlēties pašreizējo karti. Izmanto, ja ir vairākas kartes/stāvi.",
+      "fields": {
+        "map_id": {
+          "name": "Kartes ID",
+          "description": "Izvēlamās kartes ID."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "Dzēst karti",
+      "description": "Dzēst karti.",
+      "fields": {
+        "map_id": {
+          "name": "Kartes ID",
+          "description": "Dzēšamās kartes ID."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "Saglabāt pagaidu karti",
+      "description": "Saglabāt esošo pagaidu karti."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "Atmest pagaidu karti",
+      "description": "Atmest esošo pagaidu karti."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "Aizstāt pagaidu karti",
+      "description": "Aizstāt pagaidu karti ar citu saglabātu karti.",
+      "fields": {
+        "map_id": {
+          "name": "Kartes ID",
+          "description": "Kartes ID, ar kuru aizstāt."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "Pārdēvēt karti",
+      "description": "Pārdēvēt karti.",
+      "fields": {
+        "map_id": {
+          "name": "Kartes ID",
+          "description": "Kartes ID."
+        },
+        "map_name": {
+          "name": "Kartes nosaukums",
+          "description": "Jaunais kartes nosaukums."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "Atjaunot karti",
+      "description": "Atjaunot karti.",
+      "fields": {
+        "map_id": {
+          "name": "Kartes ID",
+          "description": "Atjaunojamās kartes ID."
+        },
+        "recovery_map_index": {
+          "name": "Atjaunošanas kopijas indekss",
+          "description": "Saglabātās atjaunošanas kopijas indekss"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Atjaunot karti no faila",
+      "description": "Atjaunot karti no faila.",
+      "fields": {
+        "map_id": {
+          "name": "Kartes ID",
+          "description": "Atjaunojamās kartes ID."
+        },
+        "file_url": {
+          "name": "Faila URL",
+          "description": "Saglabātā tbz2.gz vai tar.gz faila URL"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Izveidot kartes rezerves kopiju",
+      "description": "Izveidot kartes rezerves kopiju mākonī.",
+      "fields": {
+        "map_id": {
+          "name": "Kartes ID",
+          "description": "Atjaunojamās kartes ID."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Apvienot telpas",
+      "description": "Apvienot telpas.",
+      "fields": {
+        "map_id": {
+          "name": "Kartes ID",
+          "description": "Kartes ID."
+        },
+        "segments": {
+          "name": "Telpas",
+          "description": "Telpu ID."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Sadalīt telpas",
+      "description": "Sadalīt telpas.",
+      "fields": {
+        "map_id": {
+          "name": "Kartes ID",
+          "description": "Kartes ID."
+        },
+        "segment": {
+          "name": "Telpa",
+          "description": "Telpas ID."
+        },
+        "line": {
+          "name": "Līnija",
+          "description": "Sadalījuma līnijas koordinātas."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "Pārdēvēt telpu",
+      "description": "Pārdēvēt telpu.",
+      "fields": {
+        "segment_id": {
+          "name": "Telpas ID",
+          "description": "Telpas ID"
+        },
+        "segment_name": {
+          "name": "Telpas nosaukums",
+          "description": "Jaunais telpas nosaukums"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "Iestatīt tīrīšanas secību",
+      "description": "Iestatīt telpu tīrīšanas secību. (Tikai atbalstītajās ierīcēs)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "Tīrīšanas secība",
+          "description": "Telpu ID saraksts tīrīšanas secībai."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "Iestatīt pielāgotu tīrīšanu",
+      "description": "Iestatīt pielāgotus tīrīšanas parametrus. (Tikai atbalstītajās ierīcēs)",
+      "fields": {
+        "segment_id": {
+          "name": "Telpas ID",
+          "description": "Telpu ID."
+        },
+        "suction_level": {
+          "name": "Sūkšanas līmenis",
+          "description": "Sūkšanas līmenis katrai telpai."
+        },
+        "water_volume": {
+          "name": "Ūdens padeve",
+          "description": "Ūdens padeve katrai telpai."
+        },
+        "wetness_level": {
+          "name": "Mitruma līmenis",
+          "description": "Mitruma līmenis katrai telpai (atbalstītajās ierīcēs)."
+        },
+        "cleaning_mode": {
+          "name": "Tīrīšanas režīms",
+          "description": "Tīrīšanas režīms katrai telpai (tikai putekļsūcējiem ar mopa pacelšanas funkciju)."
+        },
+        "repeats": {
+          "name": "Atkārtojumi",
+          "description": "Tīrīšanas reižu skaits katrai telpai."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Iestatīt pielāgotu paklāju tīrīšanu",
+      "description": "Iestatīt pielāgotu tīrīšanas iestatījumu paklājiem. (Tikai atbalstītajās ierīcēs)",
+      "fields": {
+        "id": {
+          "name": "Paklāja ID",
+          "description": "Paklāju ID."
+        },
+        "type": {
+          "name": "Objekta veids",
+          "description": "Objekta veids ar ID. (0 = Automātiski konstatēts paklājs, 1 = Manuāli izveidots paklājs, 2 = Telpas paklājs (ja tiek atbalstīts))"
+        },
+        "carpet_cleaning": {
+          "name": "Paklāju tīrīšana",
+          "description": "Pielāgots paklāju tīrīšanas iestatījums katram paklājam."
+        },
+        "carpet_preferences": {
+          "name": "Paklāju iestatījumi",
+          "description": "Pielāgoti paklāju iestatījumi katram paklājam."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Iestatīt ierobežoto zonu",
+      "description": "Definēt virtuālās sienas, ierobežotās zonas un/vai bezmazgāšanas zonas.",
+      "fields": {
+        "walls": {
+          "name": "Sienas",
+          "description": "Virtuālās sienas."
+        },
+        "zones": {
+          "name": "Zonas",
+          "description": "Ierobežotās zonas."
+        },
+        "no_mops": {
+          "name": "Bez mazgāšanas",
+          "description": "Bezmazgāšanas zonas."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "Atiestatīt piederumu",
+      "description": "Atiestatīt piederuma patēriņa skaitītāju.",
+      "fields": {
+        "consumable": {
+          "name": "Piederums",
+          "description": "Piederuma veids."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Pārdēvēt saīsni",
+      "description": "Pārdēvēt saīsni. (Tikai atbalstītajās ierīcēs)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Saīsnes ID",
+          "description": "Saīsnes ID."
+        },
+        "shortcut_name": {
+          "name": "Saīsnes nosaukums",
+          "description": "Jaunais saīsnes nosaukums."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Dzēst saīsni",
+      "description": "Dzēst saīsni. (Tikai atbalstītajās ierīcēs)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Saīsnes ID",
+          "description": "Saīsnes ID."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Iestatīt paklāja zonu",
+      "description": "Definēt paklājus un ignorētos paklājus. (Tikai atbalstītajās ierīcēs)",
+      "fields": {
+        "carpets": {
+          "name": "Paklāji",
+          "description": "Paklāju zonas."
+        },
+        "deleted_carpets": {
+          "name": "Ignorētie paklāji",
+          "description": "Ignorētās paklāju zonas, lai dzēstu automātiski konstatētos paklājus."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "Iestatīt virtuālo slieksni",
+      "description": "Definēt virtuālos sliekšņus.",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "Virtuālie sliekšņi",
+          "description": "Virtuālā sliekšņa līnijas koordinātas."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Iestatīt iepriekš noteiktus punktus",
+      "description": "Definēt iepriekš noteiktas koordinātas pašreizējā kartē. (Tikai putekļsūcējiem ar kameru)",
+      "fields": {
+        "points": {
+          "name": "Punkti",
+          "description": "Saglabājamo koordinātu saraksts."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Iestatīt šķēršļa ignorēšanu",
+      "description": "Iestatīt šķēršļa ignorēšanas statusu. (Tikai putekļsūcējiem ar AI šķēršļu atpazīšanas funkciju)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Šķēršļa X koordināta."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Šķēršļa Y koordināta."
+        },
+        "obstacle_ignored": {
+          "name": "Šķērslis ignorēts",
+          "description": "Vai šķērslis tiek ignorēts."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Iestatīt maršrutētāja pozīciju",
+      "description": "Iestatīt maršrutētāja atrašanās vietu pašreizējā kartē. (Tikai putekļsūcējiem ar WiFi kartes funkciju)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Maršrutētāja X koordināta."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Maršrutētāja Y koordināta."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "Izvēlēties iepriekšējo",
+      "description": "Izvēlēties iepriekšējo opciju entītijai.",
+      "fields": {
+        "cycle": {
+          "name": "Cikls",
+          "description": "Vai opcijām jāciklojas no pirmās uz pēdējo."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "Izvēlēties pirmo",
+      "description": "Izvēlēties pirmo opciju entītijai."
+    },
+    "select_select_last": {
+      "name": "Izvēlēties pēdējo",
+      "description": "Izvēlēties pēdējo opciju entītijai."
+    },
+    "select_select_next": {
+      "name": "Izvēlēties nākamo",
+      "description": "Izvēlēties nākamo opciju entītijai.",
+      "fields": {
+        "cycle": {
+          "name": "Cikls",
+          "description": "Vai opcijām jāciklojas no pirmās uz pēdējo."
+        }
+      }
+    }
+  }
+}

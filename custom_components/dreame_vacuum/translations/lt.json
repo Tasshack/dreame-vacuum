@@ -1,0 +1,2438 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Įrenginys jau sukonfigūruotas",
+      "cannot_connect": "Nepavyko prisijungti.",
+      "reauth_successful": "Pakartotinis atpažinimas sėkmingas"
+    },
+    "error": {
+      "cannot_connect": "Nepavyko prisijungti.",
+      "unsupported": "Įrenginys nepalaikomas",
+      "wrong_token": "Kontrolinės sumos klaida, neteisingas prieigos raktas",
+      "2fa_failed": "Patvirtinimas nepavyko.",
+      "wrong_captcha": "Neteisingas vaizdo kodas.",
+      "credentials_incomplete": "Kredencialai neišsamūs, prašome įvesti naudotojo vardą, slaptažodį ir šalį.",
+      "login_error": "Nepavyko prisijungti, patikrinkite kredencialus.",
+      "no_devices": "Šioje paskyroje pasirinktoje šalyje nerasta palaikomų įrenginių.{devices}",
+      "2fa_send_failed": "Nepavyko išsiûsti patvirtinimo kodo. Bandykite dar kartą.",
+      "2fa_limit_reached": "Viršytas dienos patvirtinimo kodų siuntimo limitas. Bandykite dar kartą rytoj.",
+      "2fa_cooldown_active": "Per daug iš eilės einančių užklausų. Prieš bandydami dar kartą, palaukite kelias minutes."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Konfigūracijos tipas"
+        },
+        "description": "Žemėlapio funkcijai reikalingas debesies ryšys ir ji suteikia automatinę konfigūraciją. Jei nenorite naudoti žemėlapio funkcijos, galite pasirinkti rankinę konfigūraciją."
+      },
+      "local": {
+        "data": {
+          "host": "Pagrindinis kompiuteris",
+          "token": "Prieigos raktas"
+        },
+        "description": "Jums reikės 32 simbolių API prieigos rakto."
+      },
+      "mi": {
+        "data": {
+          "username": "Naudotojo vardas",
+          "password": "Slaptažodis",
+          "country": "Serverio šalis",
+          "prefer_cloud": "Mėgti debesies ryšį"
+        },
+        "description": "Prisijunkite prie „Xiaomi Miio“ debesies."
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "Dviejų veiksmų patvirtinimo kodas"
+        },
+        "description": "## Reikalingas saugos patvirtinimas\nPatvirtinimo kodas išsiųstas adresu / numeriu {dest}. Įveskite kodą žemiau."
+      },
+      "captcha": {
+        "data": {
+          "code": "Kodas"
+        },
+        "description": "## Būtinas vaizdo kodo patvirtinimas.\n![vaizdokodas](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "Naudotojo vardas",
+          "password": "Slaptažodis",
+          "country": "Serverio šalis"
+        },
+        "description": "Prisijunkite prie „Dreamehome“ debesies."
+      },
+      "mova": {
+        "data": {
+          "username": "Naudotojo vardas",
+          "password": "Slaptažodis",
+          "country": "Serverio šalis"
+        },
+        "description": "Prisijunkite prie „Movahome“ debesies."
+      },
+      "trouver": {
+        "data": {
+          "username": "Naudotojo vardas",
+          "password": "Slaptažodis",
+          "country": "Serverio šalis"
+        },
+        "description": "Prisijunkite prie „Trouver“ debesies."
+      },
+      "devices": {
+        "data": {
+          "devices": "Palaikomi įrenginiai"
+        },
+        "description": "Pasirinkite „Dreame Vacuum“ įrenginį, kurį norite nustatyti."
+      },
+      "donation": {
+        "data": {
+          "donated": "Paaukota"
+        },
+        "description": "## Nepamirškite paremti projekto.{text}"
+      },
+      "options": {
+        "data": {
+          "name": "Pavadinimas",
+          "color_scheme": "Žemėlapio spalvų schema",
+          "icon_set": "Žemėlapio piktogramų rinkinys",
+          "notify": "Pranešimas",
+          "hidden_map_objects": "Paslėpti žemėlapio objektai",
+          "low_resolution": "Mažos raiškos žemėlapis",
+          "square": "Kvadratinis žemėlapis"
+        }
+      },
+      "reauth_confirm": {
+        "description": "„Dreame Vacuum“ integracijai reikia iš naujo autentifikuoti jūsų paskyrą, kad būtų atnaujinti prieigos raktai arba pridėti trūkstami debesies kredencialai.",
+        "title": "Pakartotinai autentifikuoti integraciją"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Žemėlapio spalvų schema",
+          "icon_set": "Žemėlapio piktogramų rinkinys",
+          "notify": "Pranešimas",
+          "hidden_map_objects": "Paslėpti žemėlapio objektai",
+          "low_resolution": "Mažos raiškos žemėlapis",
+          "square": "Kvadratinis žemėlapis",
+          "configuration_type": "Konfigūracijos tipas",
+          "prefer_cloud": "Mėgti debesies ryšį",
+          "donated": "Paaukota"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Debesies kredencialai neišsamūs, prašome įvesti naudotojo vardą, slaptažodį ir šalį"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "name": "Siurbimo lygis",
+        "state": {
+          "quiet": "Tylus",
+          "standard": "Standartinis",
+          "strong": "Stiprus",
+          "turbo": "Turbo",
+          "full_power": "Pilna galia"
+        }
+      },
+      "water_volume": {
+        "name": "Vandens tūris",
+        "state": {
+          "low": "Žemas",
+          "medium": "Vidutinis",
+          "high": "Aukštas"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "Šluostės drėgnumas",
+        "state": {
+          "slightly_dry": "Šiek tiek sausa",
+          "moist": "Drėgna",
+          "wet": "Šlapia"
+        }
+      },
+      "cleaning_mode": {
+        "name": "Valymo režimas",
+        "state": {
+          "sweeping": "Šlavimas",
+          "mopping": "Plovimas",
+          "sweeping_and_mopping": "Šlavimas ir plovimas",
+          "mopping_after_sweeping": "Plovimas po šlavimo"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "Kilimų jautrumas",
+        "state": {
+          "low": "Žemas",
+          "medium": "Vidutinis",
+          "high": "Aukštas"
+        }
+      },
+      "carpet_cleaning": {
+        "name": "Kilimų valymas",
+        "state": {
+          "avoidance": "Vengimas",
+          "adaptation": "Prisitaikymas",
+          "remove_mop": "Nuimti šluostę",
+          "adaptation_without_route": "Prisitaikymas be maršruto",
+          "vacuum_and_mop": "Siurbti ir plauti",
+          "ignore": "Ignoruoti",
+          "cross": "Kirsti"
+        }
+      },
+      "mop_wash_level": {
+        "name": "Šluostės plovimo režimas",
+        "state": {
+          "water_saving": "Vandens taupymas",
+          "daily": "Kasdieninis",
+          "deep": "Gilus",
+          "ultra_clean_mode": "Itin švarus"
+        }
+      },
+      "mopping_type": {
+        "name": "Plovimo tipas",
+        "state": {
+          "accurate": "Tikslus",
+          "daily": "Kasdieninis",
+          "deep": "Gilus"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "Platesnis kampų padengimas",
+        "state": {
+          "off": "Išjungta",
+          "high_frequency": "Aukštas dažnis",
+          "low_frequency": "Žemas dažnis"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "Šluostės siūbavimas",
+        "state": {
+          "off": "Išjungta",
+          "auto": "Automatinis",
+          "daily": "Kasdieninis",
+          "weekly": "Kas savaitę"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "Šluostės prailginimo dažnis",
+        "state": {
+          "standard": "Standartinis",
+          "intelligent": "Išmanusis",
+          "high": "Aukštas"
+        }
+      },
+      "floor_material": {
+        "name": "Grindų danga",
+        "state": {
+          "none": "Nėra",
+          "tile": "Grindų plytelės",
+          "wood": "Medinės grindys",
+          "low_pile_carpet": "Trumpo plauko kilimas",
+          "medium_pile_carpet": "Ilgo ir vidutinio plauko kilimas",
+          "carpet": "Kilimas"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "Balso asistento kalba",
+        "state": {
+          "default": "Numatytoji",
+          "english": "Anglų",
+          "german": "Vokiečių",
+          "chinese": "Kinų",
+          "russian": "Rusų",
+          "italian": "Italų",
+          "french": "Prancūzų",
+          "korean": "Korėjiečių"
+        }
+      },
+      "mop_pressure": {
+        "name": "Šluostės spaudimas",
+        "state": {
+          "light": "Lengvas",
+          "normal": "Normalus"
+        }
+      },
+      "mop_temperature": {
+        "name": "Šluostės temperatūra",
+        "state": {
+          "normal": "Normalus",
+          "warm": "Šiltas"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "Žemumų dažnis",
+        "state": {
+          "weekly": "Kas savaitę",
+          "daily": "Kasdieninis"
+        }
+      },
+      "scraper_frequency": {
+        "name": "Grandiklio dažnis",
+        "state": {
+          "off": "Išjungta",
+          "weekly": "Kas savaitę",
+          "daily": "Kasdieninis"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "Automatinis Lds padengimas",
+        "state": {
+          "off": "Išjungta",
+          "security": "Saugumas",
+          "extreme": "Ekstremalus"
+        }
+      },
+      "order": {
+        "name": "Tvarka",
+        "state": {
+          "not_set": "Nenustatyta"
+        }
+      },
+      "self_clean_frequency": {
+        "name": "Savaiminio išsivalymo dažnis",
+        "state": {
+          "by_area": "Pagal plotą",
+          "by_time": "Pagal laiką",
+          "by_room": "Pagal kambarį",
+          "intelligent": "Išmanusis"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "Šluostės valymo dažnis",
+        "state": {
+          "by_room": "Pagal kambarį",
+          "5sqm": "Penki kvadratiniai metrai",
+          "8sqm": "Aštuoni kvadratiniai metrai",
+          "10sqm": "Dešimt kvadratinių metrų",
+          "15sqm": "Penkiolika kvadratinių metrų",
+          "20sqm": "Dvidešimt kvadratinių metrų",
+          "25sqm": "Dvidešimt penki kvadratiniai metrai",
+          "86sqf": "Aštuoniasdešimt šeši kvadratiniai pėdos",
+          "108sqf": "Šimtas aštuoni kvadratiniai pėdos",
+          "54sqf": "Penkiasdešimt keturi kvadratiniai pėdos",
+          "162sqf": "Šimtas šešiasdešimt du kvadratiniai pėdos",
+          "216sqf": "Du šimtai šešiolika kvadratinių pėdų",
+          "270sqf": "Du šimtai septyniasdešimt kvadratinių pėdų"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "Automatinio ištuštinimo režimas",
+        "state": {
+          "off": "Išjungta",
+          "standard": "Standartinis",
+          "high_frequency": "Aukštas dažnis",
+          "low_frequency": "Žemas dažnis",
+          "custom_frequency": "Pasirinktinis dažnis",
+          "intelligent": "Išmanusis"
+        }
+      },
+      "floor_material_direction": {
+        "name": "Grindų kryptis",
+        "state": {
+          "vertical": "Vertikaliai",
+          "horizontal": "Horizontaliai"
+        }
+      },
+      "visibility": {
+        "name": "Matomumas",
+        "state": {
+          "visible": "Matomas",
+          "hidden": "Paslėptas"
+        }
+      },
+      "cleangenius": {
+        "name": "Cleangenius",
+        "state": {
+          "off": "Išjungta",
+          "routine_cleaning": "Įprastas valymas",
+          "deep_cleaning": "Gilus valymas"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "Cleangenius režimas",
+        "state": {
+          "vacuum_and_mop": "Siurbti ir plauti",
+          "mop_after_vacuum": "Plauti po siurbimo"
+        }
+      },
+      "washing_mode": {
+        "name": "Šluostės plovimo režimas",
+        "state": {
+          "smart": "Išmanus",
+          "light": "Lengvas",
+          "standard": "Standartinis",
+          "deep": "Gilus",
+          "ultra_washing": "Itin stiprus plovimas"
+        }
+      },
+      "water_temperature": {
+        "name": "Vandens temperatūra",
+        "state": {
+          "normal": "Normalus",
+          "mild": "Švelnus",
+          "warm": "Šiltas",
+          "hot": "Karštas",
+          "max": "Maksimalus"
+        }
+      },
+      "auto_recleaning": {
+        "name": "Automatinis pakartotinis valymas",
+        "state": {
+          "off": "Išjungta",
+          "in_deep_mode": "Giliame režime",
+          "in_all_modes": "Visuose režimuose"
+        }
+      },
+      "auto_rewashing": {
+        "name": "Automatinis pakartotinis plovimas",
+        "state": {
+          "off": "Išjungta",
+          "in_deep_mode": "Giliame režime",
+          "in_all_modes": "Visuose režimuose"
+        }
+      },
+      "cleaning_route": {
+        "name": "Maršrutas",
+        "state": {
+          "quick": "Greitas",
+          "standard": "Standartinis",
+          "intensive": "Intensyvus",
+          "deep": "Gilus"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "Pasirenkamas plovimo maršrutas",
+        "state": {
+          "off": "Išjungta",
+          "standard": "Standartinis",
+          "intensive": "Intensyvus",
+          "deep": "Gilus"
+        }
+      },
+      "task_type": {
+        "name": "Užduoties tipas",
+        "state": {
+          "go_to": "Eiti į tašką",
+          "segment": "Kambarių valymas",
+          "all": "Visuotinis valymas",
+          "zone": "Zonų valymas",
+          "spot": "Taškinis valymas"
+        }
+      },
+      "cleaning_times": {
+        "name": "Valymo kartai",
+        "state": {
+          "x1": "Vieną kartą",
+          "x2": "Du kartus",
+          "x3": "Tris kartus"
+        }
+      },
+      "auto_empty_frequency": {
+        "name": "Automatinio ištuštinimo dažnis",
+        "state": {
+          "x1": "Po kiekvienos užduoties",
+          "x2": "Po dviejų valymų",
+          "x3": "Po trijų valymų"
+        }
+      },
+      "drying_time": {
+        "name": "Džiovinimo laikas",
+        "state": {
+          "silent": "Tylus"
+        }
+      },
+      "battery_charge_level": {
+        "name": "Baterijos įkrovos lygis"
+      },
+      "object_type": {
+        "name": "Objekto tipas",
+        "state": {
+          "predefined_point": "Iš anksto nustatytas taškas",
+          "low_lying_area": "Žemuma",
+          "curtain": "Užuolaida",
+          "threshold": "Slenkstis",
+          "furniture": "Baldai",
+          "carpet": "Kilimas",
+          "restricted": "Draudžiama zona"
+        }
+      },
+      "edit_type": {
+        "name": "Redagavimo tipas",
+        "state": {
+          "door": "Redaguoti duris",
+          "split": "Padalinti kambarius",
+          "merge": "Sujungti kambarius",
+          "visibility": "Kambario matomumas",
+          "material": "Grindų danga",
+          "type": "Kambario pavadinimas",
+          "wall": "Redaguoti sienas"
+        }
+      },
+      "map_type": {
+        "name": "Žemėlapio tipas",
+        "state": {
+          "cleaning": "Valymo žemėlapis",
+          "history": "Valymo informacija",
+          "wifi": "„Wi-Fi“ žemėlapis"
+        }
+      },
+      "carpet_type": {
+        "name": "Kilimo tipas",
+        "state": {
+          "medium_pile": "Ilgo ir vidutinio plauko kilimas",
+          "low_pile": "Trumpo plauko",
+          "floor_mat": "Grindų kilimėlis",
+          "other": "Kitas"
+        }
+      },
+      "mop_type": {
+        "name": "Šluostės tipas",
+        "state": {
+          "a": "Šluostė A",
+          "b": "Šluostė B",
+          "c": "Šluostė C"
+        }
+      },
+      "carpet_shape": {
+        "name": "Forma",
+        "state": {
+          "square": "Kvadratinė",
+          "round": "Apvali"
+        }
+      },
+      "mopping_pattern": {
+        "name": "Plovimo schema",
+        "state": {
+          "daily": "Kasdieninis plovimas",
+          "deep": "Gilus plovimas"
+        }
+      },
+      "wetness_level": {
+        "name": "Drėgnumas",
+        "state": {
+          "slightly_dry": "Šiek tiek sausa",
+          "moist": "Drėgna",
+          "wet": "Šlapia"
+        }
+      },
+      "task_repeats": {
+        "name": "Užduoties pakartojimai",
+        "state": {
+          "once": "Vieną kartą",
+          "daily": "Kasdieninis",
+          "workdays": "Darbo dienomis",
+          "weekends": "Savaitgaliais"
+        }
+      },
+      "segment_name": {
+        "name": "Kambario pavadinimas",
+        "state": {
+          "room": "Kambarys",
+          "living_room": "Svetainė",
+          "primary_bedroom": "Pagrindinis miegamasis",
+          "study": "Darbo kambarys",
+          "kitchen": "Virtuvė",
+          "dining_hall": "Valgomasis",
+          "bathroom": "Vonia",
+          "balcony": "Balkonas",
+          "corridor": "Koridorius",
+          "utility_room": "Pagalbinė patalpa",
+          "closet": "Drabužinė",
+          "meeting_room": "Posėdžių salė",
+          "office": "Biuras",
+          "fitness_area": "Sporto zona",
+          "recreation_area": "Poilsio zona",
+          "secondary_bedroom": "Antrasis miegamasis"
+        }
+      },
+      "furniture_type": {
+        "name": "Baldų tipas",
+        "state": {
+          "single_bed": "Vienvietė lova",
+          "double_bed": "Dvivietė lova",
+          "arm_chair": "Fotelis",
+          "two_seat_sofa": "Dvivietė sofa",
+          "three_seat_sofa": "Trivietė sofa",
+          "dining_table": "Valgomojo stalas",
+          "nightstant": "Naktinis staliukas",
+          "coffee_table": "Kavos staliukas",
+          "toilet": "Tualetas",
+          "litter_box": "Smėlio dėžė",
+          "pet_bed": "Gyvūno lova",
+          "food_bowl": "Dubenėlis",
+          "pet_toilet": "Gyvūno tualetas",
+          "refrigerator": "Šaldytuvas",
+          "washing_machine": "Skalbiklis",
+          "enclosed_litter_box": "Uždara smėlio dėžė",
+          "air_conditioner": "Oro kondicionierius",
+          "tv_cabinet": "TV spintelė",
+          "bookshelf": "Knygų lentyna",
+          "shoe_cabinet": "Batų spintelė",
+          "wardrobe": "Spinta",
+          "greenery": "Augalija",
+          "floor_mirror": "Grindų veidrodis",
+          "l_shaped_sofa": "L formos sofa",
+          "round_coffee_table": "Apvalus kavos staliukas",
+          "table": "Stalas",
+          "arm_chair_narrow": "Siauras fotelis",
+          "three_seat_sofa_narrow": "Siaura trivietė sofa",
+          "l_shaped_sofa_right": "L formos sofa dešinėje"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "name": "Būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "sweeping": "Šluojama",
+          "charging": "Kraunama",
+          "error": "Klaida",
+          "idle": "Laukia",
+          "paused": "Pristabdyta",
+          "returning": "Grįžta į stotelę",
+          "mopping": "Plaunama",
+          "drying": "Džiovinama",
+          "washing": "Plaunama šluostė",
+          "returning_to_wash": "Grįžta plauti šluostės",
+          "building": "Kuria",
+          "sweeping_and_mopping": "Šluoja ir plauna",
+          "charging_completed": "Įkrovimas baigtas",
+          "upgrading": "Atnaujinama",
+          "clean_summon": "Kviečiamas valyti",
+          "station_reset": "Stoties atstatymas",
+          "returning_install_mop": "Grįžta uždėti šluostės",
+          "returning_remove_mop": "Grįžta nuimti šluostės",
+          "water_check": "Vandens tikrinimas",
+          "clean_add_water": "Valo ir prideda vandens",
+          "washing_paused": "Plovimas pristabdytas",
+          "auto_emptying": "Automatinis tuštinimas",
+          "remote_control": "Nuotolinis valdymas",
+          "smart_charging": "Išmanusis krovimas",
+          "second_cleaning": "Antras valymas",
+          "human_following": "Žmogaus sekimas",
+          "spot_cleaning": "Taškinis valymas",
+          "returning_auto_empty": "Grįžta automatiniam tuštinimui",
+          "waiting_for_task": "Laukia užduoties",
+          "station_cleaning": "Stoties valymas",
+          "returning_to_drain": "Grįžta ištuštinti",
+          "draining": "Ištuštinama",
+          "auto_water_draining": "Automatinis vandens išleidimas",
+          "emptying": "Tuštinama",
+          "dust_bag_drying": "Dulkių maišelio džiovinimas",
+          "dust_bag_drying_paused": "Dulkių maišelio džiovinimas pristabdytas",
+          "heading_to_extra_cleaning": "Vyksta papildomam valymui",
+          "extra_cleaning": "Papildomas valymas",
+          "finding_pet_paused": "Gyvūno ieškojimas pristabdytas",
+          "finding_pet": "Gyvūno ieškojimas",
+          "shortcut": "Nuoroda",
+          "monitoring": "Stebėjimas",
+          "monitoring_paused": "Stebėjimas pristabdytas",
+          "initial_deep_cleaning": "Pradinis gilus valymas",
+          "initial_deep_cleaning_paused": "Pradinis gilus valymas pristabdytas",
+          "sanitizing": "Dezinfekuojama",
+          "sanitizing_with_dry": "Dezinfekuojama su džiovinimu",
+          "changing_mop": "Keičiama šluostė",
+          "changing_mop_paused": "Šluostės keitimas pristabdytas",
+          "floor_maintaining": "Grindų priežiūra",
+          "floor_maintaining_paused": "Grindų priežiūra pristabdyta",
+          "remote_pickup": "Nuotolinis paėmimas",
+          "arranging_items": "Daiktų tvarkymas",
+          "pet_guarding": "Naminių gyvūnų apsauga",
+          "pet_guarding_paused": "Naminių gyvūnų apsauga sustabdyta",
+          "installing_mop": "Mopo montavimas",
+          "uninstalling_mop": "Mopo nuėmimas",
+          "intelligent_recharging": "Išmanusis įkrovimas",
+          "assisted_cleaning": "Asistuotas valymas",
+          "entering_dock": "Įvažiavimas į stotelę",
+          "leaving_dock": "Išvažiavimas iš stotelės",
+          "navigating_to_climber": "Navigacija į kopečias",
+          "docking_to_climber": "Jungimasis prie kopečių",
+          "climber_docked": "Kopečios prijungtos",
+          "climber_navigating": "Kopečios naviguoja",
+          "climbing_stairs": "Lipimas laiptais",
+          "climbing_stairs_completed": "Lipimas laiptais baigtas",
+          "climber_at_dock": "Kopečios stotelėje",
+          "climber_leaving_dock": "Kopečios išvažiuoja iš stotelės"
+        }
+      },
+      "status": {
+        "name": "Būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "idle": "Laukia",
+          "paused": "Pristabdyta",
+          "cleaning": "Valoma",
+          "returning": "Grįžta į stotelę",
+          "spot_cleaning": "Taškinis valymas",
+          "follow_wall_cleaning": "Valymas pagal sieną",
+          "charging": "Kraunama",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "„Wi-Fi“ nustatyta",
+          "power_off": "Išjungta",
+          "factory": "Gamyklinis",
+          "error": "Klaida",
+          "remote_control": "Nuotolinis valdymas",
+          "sleeping": "Miega",
+          "self_test": "Savikontrolė",
+          "factory_test": "Gamyklos testas",
+          "standby": "Budėjimo režimas",
+          "room_cleaning": "Kambario valymas",
+          "zone_cleaning": "Zoninis valymas",
+          "fast_mapping": "Greitas kartografavimas",
+          "cruising_path": "Kelionė maršrutu",
+          "cruising_point": "Kelionė į tašką",
+          "summon_clean": "Iškviesti išvalyti",
+          "shortcut": "Nuoroda",
+          "person_follow": "Asmens sekimas",
+          "water_check": "Vandens tikrinimas",
+          "pet_guarding": "Naminių gyvūnų apsauga",
+          "auto_arrangement": "Automatinis tvarkymas",
+          "smart_arrangement": "Išmanusis tvarkymas",
+          "zoned_arrangement": "Zoninis tvarkymas"
+        }
+      },
+      "task_status": {
+        "name": "Užduoties būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "completed": "Baigta",
+          "cleaning": "Valoma",
+          "zone_cleaning": "Zonos valymas",
+          "room_cleaning": "Kambarių valymas",
+          "spot_cleaning": "Taškinis valymas",
+          "fast_mapping": "Greitas žemėlapio sudarymas",
+          "cleaning_paused": "Valymas pristabdytas",
+          "room_cleaning_paused": "Kambarių valymas pristabdytas",
+          "zone_cleaning_paused": "Zonų valymas pristabdytas",
+          "spot_cleaning_paused": "Taškinis valymas pristabdytas",
+          "map_cleaning_paused": "Žemėlapio valymas pristabdytas",
+          "docking_paused": "Grįžimas pristabdytas",
+          "mopping_paused": "Plovimas pristabdytas",
+          "zone_mopping_paused": "Zoninis plovimas pristabdytas",
+          "room_mopping_paused": "Kambario plovimas pristabdytas",
+          "zone_docking_paused": "Grįžimas į zoną pristabdytas",
+          "room_docking_paused": "Grįžimas į kambarį pristabdytas",
+          "cruising_path": "Kelionė maršrutu",
+          "cruising_path_paused": "Kelionė maršrutu pristabdyta",
+          "cruising_point": "Kelionė į tašką",
+          "cruising_point_paused": "Kelionė į tašką pristabdyta",
+          "summon_clean_paused": "Iškvietimas valyti pristabdytas",
+          "returning_to_install_mop": "Grįžta uždėti šluostės",
+          "returning_to_remove_mop": "Grįžta nuimti šluostės",
+          "station_cleaning": "Stoties valymas",
+          "pet_finding": "Gyvūno radimas",
+          "auto_cleaning_washing_paused": "Automatinio valymo plovimas pristabdytas",
+          "area_cleaning_washing_paused": "Zoninio valymo plovimas pristabdytas",
+          "custom_cleaning_washing_paused": "Pasirinktinio valymo plovimas pristabdytas",
+          "picking_up_item": "Daikto paėmimas",
+          "picking_up_item_paused": "Daikto paėmimas sustabdytas",
+          "picking_up_item_success": "Daiktas sėkmingai paimtas",
+          "remote_pickup_initializing": "Nuotolinio paėmimo inicializacija",
+          "remote_pickup_identifing": "Nuotolinio paėmimo identifikavimas",
+          "manual_remote_pickup": "Rankinis nuotolinis paėmimas",
+          "automatic_remote_pickup": "Automatinis nuotolinis paėmimas",
+          "remote_pickup_in_progress": "Vyksta nuotolinis paėmimas",
+          "remote_pickup_paused": "Nuotolinis paėmimas sustabdytas",
+          "placing_item": "Daikto padėjimas",
+          "placing_item_paused": "Daikto padėjimas sustabdytas"
+        }
+      },
+      "water_tank": {
+        "name": "Vandens bakas",
+        "state": {
+          "unknown": "Nežinoma",
+          "installed": "Įrengtas",
+          "not_installed": "Neįrengtas",
+          "mop_installed": "Šluostė uždėta",
+          "in_station": "Stotyje"
+        }
+      },
+      "mop_pad": {
+        "name": "Šluostė",
+        "state": {
+          "unknown": "Nežinoma",
+          "installed": "Uždėta",
+          "not_installed": "Neuždėta",
+          "mop_installed": "Šluostė uždėta",
+          "in_station": "Stotyje"
+        }
+      },
+      "dust_collection": {
+        "name": "Dulkių surinkimas",
+        "state": {
+          "unknown": "Nežinoma",
+          "not_available": "Nepasiekiama",
+          "available": "Pasiekiamas",
+          "over_use": "Per didelis naudojimas",
+          "never": "Niekada"
+        }
+      },
+      "auto_empty_status": {
+        "name": "Automatinio ištuštinimo būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "idle": "Laukia",
+          "active": "Aktyvi",
+          "not_performed": "Neįvykdyta"
+        }
+      },
+      "error": {
+        "name": "Klaida",
+        "state": {
+          "unknown": "Nežinomas klaidos kodas",
+          "no_error": "Nėra klaidos",
+          "drop": "Ratai pakabinti",
+          "cliff": "Skardžio jutiklio klaida",
+          "bumper": "Susidūrimo jutiklis užstrigęs",
+          "gesture": "Robotas pasviręs",
+          "bumper_repeat": "Susidūrimo jutiklis užstrigęs",
+          "drop_repeat": "Ratai pakabinti",
+          "optical_flow": "Optinio srauto jutiklio klaida",
+          "no_box": "Dulkių dėžė neįdėta",
+          "no_tank_box": "Vandens bakas neįdėtas",
+          "water_box_empty": "Vandens bakas tuščias",
+          "box_full": "Filtras nesausas arba užblokuotas",
+          "brush": "Pagrindinis šepetys apsivėlęs",
+          "side_brush": "Šoninis šepetys apsivėlęs",
+          "fan": "Filtras nesausas arba užblokuotas",
+          "left_wheel_motor": "Robotas užstrigęs arba jo kairįjį ratą gali blokuoti svetimkūniai",
+          "right_wheel_motor": "Robotas užstrigęs arba jo dešinįjį ratą gali blokuoti svetimkūniai",
+          "turn_suffocate": "Robotas užstrigęs arba negali pasisukti",
+          "forward_suffocate": "Robotas užstrigęs arba negali važiuoti į priekį",
+          "charger_get": "Nepavyksta rasti bazės",
+          "battery_low": "Išsikrovusi baterija",
+          "charge_fault": "Įkrovimo klaida",
+          "battery_percentage": "Baterijos lygio klaida",
+          "heart": "Vidinė klaida",
+          "camera_occlusion": "Vizualinio nustatymo jutiklio klaida",
+          "move": "Judesio jutiklio klaida",
+          "flow_shielding": "Optinio jutiklio klaida",
+          "infrared_shielding": "Infraraudonųjų spindulių ekranavimo klaida",
+          "charge_no_electric": "Įkrovimo stotelė neįjungta",
+          "battery_fault": "Baterijos klaida",
+          "fan_speed_error": "Ventiliatoriaus greičio jutiklio klaida",
+          "left_wheell_speed": "Kairįjį ratą gali blokuoti svetimkūniai",
+          "right_wheell_speed": "Dešinįjį ratą gali blokuoti svetimkūniai",
+          "bmi055_acce": "Akselerometro klaida",
+          "bmi055_gyro": "Giroskopo klaida",
+          "xv7001": "Giroskopo klaida",
+          "left_magnet": "Kairiojo magneto jutiklio klaida",
+          "right_magnet": "Dešiniojo magneto jutiklio klaida",
+          "flow_error": "Srauto jutiklio klaida",
+          "infrared_fault": "Infraraudonųjų spindulių klaida",
+          "camera_fault": "Kameros klaida",
+          "strong_magnet": "Aptiktas stiprus magnetinis laukas",
+          "water_pump": "Vandens siurblio klaida",
+          "rtc": "RTC klaida",
+          "auto_key_trig": "Vidinė klaida",
+          "p3v3": "Vidinė klaida",
+          "camera_idle": "Vidinė klaida",
+          "blocked": "Valymo maršrutas užblokuotas, grįžtama į stotelę.",
+          "lds_error": "Lazerinio atstumo jutiklio klaida",
+          "lds_bumper": "Lazerinio atstumo jutiklio buferio klaida",
+          "filter_blocked": "Filtras nesausas arba užblokuotas",
+          "edge": "Krašto jutiklio klaida",
+          "carpet": "Prašome paleisti robotą ne ant kiliminės dangos.",
+          "laser": "Sugedo 3D kliūčių vengimo jutiklis.",
+          "ultrasonic": "Sugedo ultragarso jutiklis.",
+          "no_go_zone": "Aptikta draudžiama zona arba virtuali siena.",
+          "route": "Valymo maršrutas užblokuotas.",
+          "restricted": "Aptikta, kad dulkių siurblys yra draudžiamoje zonoje.",
+          "remove_mop": "Plovimas baigtas. Laiku nuimkite ir išvalykite šluostę.",
+          "mop_removed": "Šluostė nukrito valymo metu.",
+          "mop_pad_stop_rotate": "Šluostė nustojo suktis.",
+          "bin_full": "Dulkių surinkimo maišelis pilnas arba oro kanalas užblokuotas.",
+          "bin_open": "Automatinio ištuštinimo bazės viršutinis dangtis neuždarytas arba dulkių surinkimo maišelis neįdėtas.",
+          "water_tank": "Švaraus vandens bakas neįdėtas.",
+          "dirty_water_tank": "Nešvarių vandens bakas pilnas arba neįdėtas.",
+          "water_tank_dry": "Žemas vandens lygis švaraus vandens bake, prašome laiku pripilti vandens.",
+          "dirty_water_tank_blocked": "Nešvaraus vandens bakas užblokuotas.",
+          "dirty_water_tank_pump": "Nešvaraus vandens bako siurblio klaida.",
+          "mop_pad": "Plovimo lenta įdėta netinkamai.",
+          "wet_mop_pad": "Neįprastas vandens lygis plovimo lentoje, laiku išvalykite plovimo lentą.",
+          "clean_mop_pad": "Valymo užduotis baigta, išvalykite šluostės plovimo lentą.",
+          "clean_tank_level": "Patikrinkite ir pripildykite švaraus vandens baką.",
+          "station_disconnected": "Bazės stotis neįjungta",
+          "dirty_tank_level": "Vandens lygis panaudoto vandens bake yra per aukštas.",
+          "washboard_level": "Vandens lygis plovimo lentoje yra per aukštas.",
+          "no_mop_in_station": "Šluostės stotyje nėra.",
+          "dust_bag_full": "Dulkių maišelis pilnas arba ventiliacijos angos užblokuotos.",
+          "self_test_failed": "Neįprastas vandens išleidimas iš viršutinio ir apatinio vandens modulių švaraus vandens bako.",
+          "mop_install_failed": "Šluostės uždėjimas nepavyko.",
+          "low_battery_turn_off": "Išsikrovusi baterija. Robotas greitai išsijungs.",
+          "dirty_tank_not_installed": "Roboto panaudoto vandens bakas neįdėtas.",
+          "robot_in_hidden_room": "Paslėpta zona. Perkelkite robotą į atitinkamą zoną ir bandykite dar kartą.",
+          "washboard_not_working": "Plovimo lenta neveikia.",
+          "return_to_charge_failed": "Nepavyko grįžti krauti.",
+          "lds_failed_to_lift": "Nepavyko pakelti LDS modulio.",
+          "robot_stuck": "LDS čia negali būti pakeltas pozicionavimui.",
+          "robot_stuck_repeat": "Perkelkite robotą į atvirą vietą ir tęskite užduotį.",
+          "slippery_floor": "Slidžios grindys. Prašome pabandyti dar kartą vėliau.",
+          "check_mop_install": "Patikrinkite, ar šluostė tinkamai uždėta.",
+          "dirty_water_tank_full": "Neįprastas vandens lygis roboto panaudoto vandens bake.",
+          "retractable_leg_stuck": "Patikrinkite, ar įtraukiamos kojos nėra susipainiojusios.",
+          "internal_error": "Gedimas dėl vidinės klaidos. Pabandykite iš naujo paleisti robotą.",
+          "robot_stuck_on_tables": "Robotas užstrigo tarp stalų ir kėdžių.",
+          "robot_stuck_on_passage": "Robotas užstrigo siaurame praėjime.",
+          "robot_stuck_on_threshold": "Robotas užstrigo ant laiptelio/slenksčio.",
+          "robot_stuck_on_low_lying_area": "Robotas užstrigo žemo prošvaisos reikalaujančioje zonoje.",
+          "robot_stuck_on_ramp": "Robotas maršrute aptiko lengvai nukrentamas rampas.",
+          "robot_stuck_on_obstacle": "Robotas maršrute aptiko kliūčių.",
+          "robot_stuck_on_pet": "Robotas maršrute aptiko žmonių ar gyvūnų.",
+          "robot_stuck_on_slippery_surface": "Robotas užstrigo dėl slydimo.",
+          "robot_stuck_on_carpet": "Robotas slysta ant kilimo",
+          "drainage_failed": "Neįprastas vandens išleidimas iš panaudoto vandens bako",
+          "mop_not_detected": "Šluostė neaptikta.",
+          "mop_holder_error": "Šluostės laikiklio kiekio/uždėjimo klaida stotelėje.",
+          "dock_error": "Stotelės klaida.",
+          "wash_failed": "Nepavyko išplauti nešvarios šluostės.",
+          "robot_stuck_on_curtain": "Robotas slysta užuolaidų zonoje",
+          "edge_mop_stop_rotate": "Krašto šluostė nustojo suktis.",
+          "edge_mop_detached": "Krašto šluostė nukrito.",
+          "chassis_lift_malfunction": "Važiuoklės pakėlimo gedimas.",
+          "mop_cover_error": "Patikrinkite, ar prie ritininės šluostės ir šluostės dangčio nėra šiukšlių.",
+          "roller_mop_error": "Patikrinkite, ar prie ritininės šluostės ir šluostės dangčio nėra šiukšlių.",
+          "onboard_water_tank_empty": "Žemas vandens lygis roboto švaraus vandens dėžėje.",
+          "onboard_dirty_water_tank_full": "Roboto panaudoto vandens dėžė pilna.",
+          "mop_not_installed": "Šluostė neįdėta.",
+          "fluffing_roller_error": "Pūkų ritinėlio klaida.",
+          "blocked_by_obstacle": "Robotas užblokuotas kliūties.",
+          "robotic_arm_stopped": "Robotizuota ranka sustojo.",
+          "drainage_outlet_filter": "Roboto nuotekų išleidimo filtras užsikimšęs.",
+          "main_wheels_error": "Pagrindinių ratų klaida."
+        }
+      },
+      "charging_status": {
+        "name": "Įkrovimo būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "charging": "Kraunama",
+          "not_charging": "Nekraunama",
+          "return_to_charge": "Grįžti krauti",
+          "charging_completed": "Įkrovimas baigtas"
+        }
+      },
+      "relocation_status": {
+        "name": "Perkėlimo būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "located": "Rasta",
+          "locating": "Ieškoma",
+          "failed": "Nepavyko",
+          "success": "Sėkmingai"
+        }
+      },
+      "self_wash_base_status": {
+        "name": "Savaiminio plovimo bazės būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "idle": "Laukia",
+          "washing": "Plaunama",
+          "drying": "Džiovinama",
+          "paused": "Pristabdyta",
+          "returning": "Grįžtama plauti",
+          "clean_add_water": "Valoma ir pilamas vanduo",
+          "adding_water": "Pilamas vanduo"
+        }
+      },
+      "low_water_warning": {
+        "name": "Įspėjimas dėl mažo vandens kiekio",
+        "state": {
+          "no_warning": "Nėra įspėjimo",
+          "no_water_left": "Vanduo švaraus vandens bake netrukus baigsis. Patikrinkite ir nedelsdami pripildykite švaraus vandens baką.",
+          "no_water_left_after_clean": "Šluostė išplauta. Aptikta, kad švaraus vandens bake nepakanka vandens, pripildykite švaraus vandens baką ir ištuštinkite panaudoto vandens baką.",
+          "no_water_for_clean": "Žemas vandens lygis švaraus vandens bake. Robotas persijungė į siurbimo režimą.",
+          "low_water": "Netrukus baigsis vanduo. Pripildykite švaraus vandens baką.",
+          "tank_not_installed": "Švaraus vandens bakas neįdėtas."
+        }
+      },
+      "stream_status": {
+        "name": "Transliacijos būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "idle": "Laukia",
+          "video": "Vaizdas",
+          "audio": "Garsas",
+          "recording": "Įrašymas"
+        }
+      },
+      "drainage_status": {
+        "name": "Išleidimo būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "idle": "Laukia",
+          "draining": "Išleidžiama",
+          "draining_successful": "Išleista sėkmingai",
+          "draining_failed": "Nepavyko išleisti"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "Švaraus vandens bako būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "not_available": "Nepasiekiama",
+          "not_installed": "Neįdėta",
+          "low_water": "Mažai vandens",
+          "installed": "Įdėta"
+        }
+      },
+      "dirty_water_tank_status": {
+        "name": "Nešvaraus vandens bako būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "installed": "Įdėta",
+          "not_installed_or_full": "Neįdėta arba pilna"
+        }
+      },
+      "dust_bag_status": {
+        "name": "Dulkių maišelio būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "installed": "Įdėtas",
+          "not_installed": "Neįdėtas",
+          "check": "Patikrinti"
+        }
+      },
+      "detergent_status": {
+        "name": "Valiklio būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "installed": "Įdėtas",
+          "disabled": "Išjungtas",
+          "low_detergent": "Mažai valiklio"
+        }
+      },
+      "hot_water_status": {
+        "name": "Karšto vandens būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "disabled": "Išjungta",
+          "enabled": "Įjungta"
+        }
+      },
+      "station_drainage_status": {
+        "name": "Stoties vandens išleidimo būsena",
+        "state": {
+          "unknown": "Nežinoma",
+          "idle": "Laukia",
+          "draining": "Išleidžiama"
+        }
+      },
+      "task_type": {
+        "name": "Užduoties tipas",
+        "state": {
+          "standard": "Standartinis valymas",
+          "standard_paused": "Standartinis valymas pristabdytas",
+          "custom": "Pasirinktinis valymas",
+          "custom_paused": "Pasirinktinis valymas pristabdytas",
+          "shortcut": "Nuorodos valymas",
+          "shortcut_paused": "Nuorodos valymas pristabdytas",
+          "scheduled": "Suplanuotas valymas",
+          "scheduled_paused": "Suplanuotas valymas pristabdytas",
+          "smart": "Išmanusis valymas",
+          "smart_paused": "Išmanusis valymas pristabdytas",
+          "partial": "Dalinis valymas",
+          "partial_paused": "Dalinis valymas pristabdytas",
+          "summon": "Iškviestas valymas",
+          "summon_paused": "Iškviestas valymas pristabdytas",
+          "water_stain": "Vandens dėmių valymas",
+          "water_stain_paused": "Vandens dėmių valymas pristabdytas",
+          "boosted_edge_cleaning": "Sustiprintas kraštų valymas",
+          "hair_compressing": "Plaukų suspaudimas",
+          "large_particle_cleaning": "Didelių dalelių valymas",
+          "intensive_stain_cleaning": "Intensyvus dėmių valymas",
+          "stain_cleaning": "Dėmių valymas",
+          "initial_deep_cleaning": "Pradinis gilus valymas",
+          "initial_deep_cleaning_paused": "Pradinis gilus valymas pristabdytas",
+          "mop_pad_heating": "Šluostės šildymas",
+          "cleaning_after_mapping": "Valymas po žemėlapio sudarymo",
+          "small_particle_cleaning": "Smulkių dalelių valymas",
+          "changing_mop": "Keičiama šluostė",
+          "changing_mop_paused": "Šluostės keitimas pristabdytas",
+          "floor_maintaining": "Grindų priežiūra",
+          "floor_maintaining_paused": "Grindų priežiūra pristabdyta",
+          "arranging_items": "Daiktų tvarkymas",
+          "arranging_items_paused": "Daiktų tvarkymas sustabdytas",
+          "intensive_hair_cleaning": "Intensyvus plaukų valymas",
+          "accessory_handling": "Priedų tvarkymas",
+          "increased_drum_speed_cleaning": "Valymas padidintu būgno greičiu",
+          "pressurized_cleaning": "Slėginis valymas",
+          "steam_cleaning": "Garų valymas",
+          "steam_cleaning_paused": "Garų valymas sustabdytas"
+        }
+      },
+      "dust_bag_drying_status": {
+        "name": "Dulkių maišelio džiovinimo būsena",
+        "state": {
+          "idle": "Laukia",
+          "drying": "Džiovinama",
+          "paused": "Pristabdyta"
+        }
+      },
+      "nation_matched": {
+        "name": "Regiono užraktas",
+        "state": {
+          "unknown": "Išjungtas",
+          "matched": "Atrakinta",
+          "unmatched": "Užrakinta",
+          "na": "Nepasiekiamas"
+        }
+      },
+      "startup_method": {
+        "name": "Paleido",
+        "state": {
+          "button": "Mygtukas",
+          "app": "Programėlė",
+          "scheduled": "Suplanuota",
+          "voice": "Balsas",
+          "second_cleaning": "Antras valymas",
+          "unknown": "Nežinoma"
+        }
+      },
+      "cleaning_status": {
+        "name": "Valymas",
+        "state": {
+          "interrupted": "Pertrauktas",
+          "completed": "Baigtas",
+          "manually_ended": "Baigtas rankiniu būdu",
+          "failed": "Nepavyko",
+          "unknown": "Nežinoma"
+        }
+      },
+      "cleanup_method": {
+        "name": "Valymo būdas",
+        "state": {
+          "other": "Kitas",
+          "default": "Numatytasis",
+          "customized": "Pasirinktinis",
+          "cleangenius": "CleanGenius",
+          "water_stain": "Vandens dėmė",
+          "unknown": "Nežinoma"
+        }
+      },
+      "task_end_type": {
+        "name": "Baigė",
+        "state": {
+          "other": "Kita",
+          "manual_docking": "Rankinis grįžimas",
+          "docking": "Grįžimas prsišvartuoti",
+          "failed_docking": "Nepavyko grįžti",
+          "stop": "Sustabdyta",
+          "unknown": "Nežinoma"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "Pertraukimo priežastis",
+        "state": {
+          "abnormal_docking": "Neįprastas grįžimas",
+          "base_station_powered_off": "Bazės stotelė išjungta",
+          "brush_entangled_by_carpet": "Šepetys įsivėlė į kilimą",
+          "brush_entangled_by_object": "Šepetys įsivėlė į daiktą",
+          "brush_entangled_by_obstacle": "Šepetys įsivėlė į kliūtį",
+          "cannot_find_base_station": "Nepavyksta rasti bazės stotelės",
+          "cliff_sensor_error": "Skardžio jutiklio klaida",
+          "laser_distance_sensor_error": "Lazerinio atstumo jutiklio klaida",
+          "mop_pad_abnormally_removed": "Šluostė nenormaliai nuimta",
+          "mop_pad_fallen_off": "Šluostė nukrito",
+          "mop_pad_fallen_off_by_obstacle": "Šluostė nukrito dėl kliūties",
+          "mop_pad_fallen_off_by_table": "Šluostė nukrito dėl stalo",
+          "mop_pad_fallen_off_crossing_obstacle": "Šluostė nukrito pervažiuojant kliūtį",
+          "mop_pad_removed": "Šluostė nuimta",
+          "mop_pad_stuck": "Šluostė užstrigo",
+          "robot_fallen": "Robotas nukrito",
+          "robot_is_stuck_on_obstacle": "Robotas užstrigo ant kliūties",
+          "robot_is_stuck_on_step": "Robotas užstrigo ant laiptelio",
+          "robot_lifted": "Robotas pakeltas",
+          "task_completed": "Užduotis baigta",
+          "unknown": "Nežinoma"
+        }
+      },
+      "recovery_map_type": {
+        "name": "Žemėlapio tipas",
+        "state": {
+          "original": "Pradinis žemėlapis",
+          "edited": "Redaguotas žemėlapis",
+          "backup": "Atsarginis žemėlapis"
+        }
+      },
+      "obstacle_type": {
+        "name": "Kliūties tipas",
+        "state": {
+          "unknown": "Nežinoma",
+          "base": "Bazė",
+          "scale": "Svarstyklės",
+          "thread": "Siūlas",
+          "wire": "Laidas",
+          "toy": "Žaislas",
+          "shoes": "Batai",
+          "sock": "Kojinė",
+          "fece": "Išmatos",
+          "trash_can": "Šiukšliadėžė",
+          "fabric": "Audinys",
+          "power_strip": "Ilgintuvas",
+          "liquid_stain": "Skysčio dėmė",
+          "obstacle": "Kliūtis",
+          "pet": "Gyvūnas",
+          "cleaning_tools": "Valymo įrankiai",
+          "detected_stain": "Aptikta dėmė",
+          "blocked_room": "Užblokuotas kambarys",
+          "easy_to_stuck_furniture": "Lengvai užstringantys baldai",
+          "uncleanable_stain": "Nevaloma dėmė",
+          "leg": "Koja",
+          "large_particles": "Didelės dalelės",
+          "dried_stain": "Išdžiūvusi dėmė",
+          "food_bowl": "Dubenėlis maistui",
+          "pet_bed": "Gyvūno guolis",
+          "cleaned_stain": "Išvalyta dėmė",
+          "skipped_uncleanable_stain": "Praleista nevaloma dėmė",
+          "cleaned_dried_stain": "Išvalyta išdžiūvusi dėmė",
+          "cleaned_large_particles": "Išvalytos didelės dalelės",
+          "hair": "Plaukai",
+          "paper": "Popierius",
+          "cleaned_hair": "Išvalyti plaukai",
+          "sundry": "Įvairūs"
+        }
+      },
+      "obstacle_reason": {
+        "name": "Kliūties priežastis",
+        "state": {
+          "blocked_by_virtual_wall": "Užblokuota virtualios sienos",
+          "blocked_by_door": "Užblokuota durų",
+          "blocked_by_threshold": "Užblokuota slenksčio",
+          "blocked_by_obstacle": "Užblokuota kliūties",
+          "blocked_by_carpet": "Užblokuota kilimo",
+          "blocked_by_detected_carpet": "Užblokuota aptikto kilimo",
+          "blocked_by_hidden_obstacle": "Užblokuota paslėptos kliūties",
+          "blocked_by_dynamic_obstacle": "Užblokuota judančios kliūties",
+          "passage_too_low": "Per žemas praėjimas",
+          "step_too_low": "Per žemas laiptelis",
+          "failed_to_cross_threshold": "Nepavyko kirsti slenksčio"
+        }
+      },
+      "remaining_battery": {
+        "name": "Liko akumuliatoriaus"
+      },
+      "multiple_cleaning_time": {
+        "name": "Kelių valymas"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "firmware_version": {
+        "name": "Programinės įrangos versija"
+      },
+      "ip_address": {
+        "name": "IP adresas"
+      },
+      "mac_address": {
+        "name": "MAC adresas"
+      },
+      "model": {
+        "name": "Modelis"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "serial_number": {
+        "name": "Serijinis numeris"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "timezone": {
+        "name": "Laiko zona"
+      },
+      "voice_packet_id": {
+        "name": "Balso paketas"
+      },
+      "deodorizer_left": {
+        "name": "Dezodorantas"
+      },
+      "detergent_left": {
+        "name": "Valiklis"
+      },
+      "dirty_water_channel_left": {
+        "name": "Nešvaraus vandens kanalas"
+      },
+      "filter_left": {
+        "name": "Filtras"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "Pūkų ritinėlių valymas"
+      },
+      "main_brush_left": {
+        "name": "Pagrindinis šepetys"
+      },
+      "mop_pad_left": {
+        "name": "Šluostė"
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "Roboto nešvaraus vandens bakas"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "Ritininės šluostės filtro valymas"
+      },
+      "scale_inhibitor_left": {
+        "name": "Kalkių inhibitorius"
+      },
+      "sensor_dirty_left": {
+        "name": "Jutiklių valymas"
+      },
+      "side_brush_left": {
+        "name": "Šoninis šepetys"
+      },
+      "silver_ion_left": {
+        "name": "Sidabro jonai"
+      },
+      "squeegee_left": {
+        "name": "Valytuvas"
+      },
+      "tank_filter_left": {
+        "name": "Bako filtras"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "Vandens išleidimo filtro valymas"
+      },
+      "wheel_dirty_left": {
+        "name": "Ratų valymas"
+      }
+    },
+    "toggle": {
+      "customized_cleaning": {
+        "name": "Pasirinktinis valymas"
+      },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "Gilus valymas"
+      },
+      "auto_dust_collecting": {
+        "name": "Automatinis dulkių surinkimas"
+      },
+      "hair_compression": {
+        "name": "Plaukų suspaudimas"
+      },
+      "self_clean": {
+        "name": "Savaiminis išsivalymas"
+      },
+      "deep_mop_washing": {
+        "name": "Gilus šluostės plovimas"
+      },
+      "hot_washing": {
+        "name": "Plovimas karštu vandeniu"
+      },
+      "auto_drying": {
+        "name": "Automatinis džiovinimas"
+      },
+      "silent_drying": {
+        "name": "Tylusis džiovinimas"
+      },
+      "uv_sterilization": {
+        "name": "UV sterilizacija"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Pasirinktinis kilimų valymas"
+      },
+      "carpet_avoidance": {
+        "name": "Kilimų vengimas"
+      },
+      "carpet_preferences": {
+        "name": "Pasirinktiniai nustatymai"
+      },
+      "auto_change_mop": {
+        "name": "Automatinis šluostės keitimas"
+      },
+      "multi_floor_map": {
+        "name": "Daugiapakopis žemėlapis"
+      },
+      "intelligent_recognition": {
+        "name": "Išmanusis atpažinimas"
+      },
+      "map_saving": {
+        "name": "Žemėlapio išsaugojimas"
+      },
+      "child_lock": {
+        "name": "Apsauga nuo vaikų"
+      },
+      "resume_cleaning": {
+        "name": "Tęsti valymą"
+      },
+      "obstacle_avoidance": {
+        "name": "Kliūčių išvengimas"
+      },
+      "carpet_boost": {
+        "name": "Kilimų galios padidinimas"
+      },
+      "carpet_recognition": {
+        "name": "Kilimų atpažinimas"
+      },
+      "clean_carpets_first": {
+        "name": "Pirmiausia valyti kilimus"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "Uždaryti ritininės dalies dangtį ant kilimo"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "Intensyvus kilimų valymas"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "Šoninis šepetys sukasi ant kilimo"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "Pakelti važiuoklę ant kilimo"
+      },
+      "auto_mount_mop": {
+        "name": "Automatinis šluostės uždėjimas"
+      },
+      "mopping_with_detergent": {
+        "name": "Plovimas su valikliu"
+      },
+      "mop_washing_with_detergent": {
+        "name": "Šluostės plovimas su valikliu"
+      },
+      "auto_add_detergent": {
+        "name": "Automatiškai pridėti valiklio"
+      },
+      "smart_mop_washing": {
+        "name": "Išmanusis šluostės plovimas"
+      },
+      "wider_corner_coverage": {
+        "name": "Platesnė kampų aprėptis"
+      },
+      "pressurized_cleaning": {
+        "name": "Valymas su slėgiu"
+      },
+      "gap_cleaning_extension": {
+        "name": "Tarpų valymas su išplėtimu"
+      },
+      "mopping_under_furnitures": {
+        "name": "Plovimas po baldais"
+      },
+      "floor_direction_cleaning": {
+        "name": "Valymas grindų kryptimi"
+      },
+      "ring_light_always_on": {
+        "name": "Apvalus apšvietimas visada įjungtas"
+      },
+      "collision_avoidance": {
+        "name": "Apsauga nuo susidūrimų"
+      },
+      "fill_light": {
+        "name": "Kameros šviesa"
+      },
+      "ai_obstacle_detection": {
+        "name": "Dirbtinio intlekto kliūčių aptikimas"
+      },
+      "ai_pet_detection": {
+        "name": "Gyvūnų aptikimas"
+      },
+      "pet_focused_detection": {
+        "name": "Gyvūnams skirtas aptikimas"
+      },
+      "pet_focused_cleaning": {
+        "name": "Gyvūnams skirtas valymas"
+      },
+      "ai_obstacle_picture": {
+        "name": "Kliūčių nuotraukos"
+      },
+      "obstacle_crossing": {
+        "name": "Sinchronizuotas kliūčių kirtimas"
+      },
+      "active_suspension_crossing": {
+        "name": "Aktyvios pakabos kliūčių kirtimas"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "Judančių kliūčių valymas"
+      },
+      "large_particles_boost": {
+        "name": "Didelių dalelių valymo galios padidinimas"
+      },
+      "streaming_voice_prompt": {
+        "name": "Perduodamas balso nurodymas"
+      },
+      "voice_assistant": {
+        "name": "Balso asistentas"
+      },
+      "off_peak_charging": {
+        "name": "Įkrovimas ne piko metu"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "Išjungti valymo tęsimą"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "Išjungti automatinį ištuštinimą"
+      },
+      "dnd_reduce_volume": {
+        "name": "Sumažinti garsumą"
+      },
+      "dnd": {
+        "name": "Netrukdymo režimas (DnD)"
+      }
+    },
+    "number": {
+      "wetness_level": {
+        "name": "Drėgnumas"
+      },
+      "auto_empty_area": {
+        "name": "Automatinio ištuštinimo plotas"
+      },
+      "drying_time": {
+        "name": "Džiovinimo laikas"
+      },
+      "self_clean_time": {
+        "name": "Savaiminio išvalymo laikas"
+      },
+      "self_clean_area": {
+        "name": "Savaiminio išvalymo plotas"
+      },
+      "volume": {
+        "name": "Garsumas"
+      }
+    },
+    "time": {
+      "dnd_start": {
+        "name": "DnD Pradžios laikas"
+      },
+      "dnd_end": {
+        "name": "DnD Pabaigos laikas"
+      },
+      "off_peak_charging_start": {
+        "name": "Ne piko pradžios laikas"
+      },
+      "off_peak_charging_end": {
+        "name": "Ne piko pabaigos laikas"
+      },
+      "schedule_time": {
+        "name": "Pradžios laikas"
+      }
+    },
+    "input": {
+      "schedule_repeats": {
+        "name": "Pasikartojimai"
+      },
+      "dnd_repeats": {
+        "name": "Pasikartojimai"
+      },
+      "map_custom_name": {
+        "name": "Žemėlapio pavadinimas"
+      },
+      "segment_custom_name": {
+        "name": "Kambario pavadinimas"
+      },
+      "shortcut_name": {
+        "name": "Nuorodos pavadinimas"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "Pridėti",
+        "add_map": "Kurti žemėlapį",
+        "auto_empty_unavailable": "Automatinis ištuštinimas nepasiekiamas",
+        "auto_emptying": "Automatinis ištuštinimas",
+        "backup": "Atsarginė kopija",
+        "bag_drying_unavailable": "Maišelio džiovinimas nepasiekiamas",
+        "cancel": "Atšaukti",
+        "cancel_ignore": "Atšaukti nepaisymą",
+        "carpet": "Kilimas",
+        "change": "Keisti",
+        "charge": "Krauti",
+        "clean": "Valyti",
+        "clean_again": "Valyti vėl",
+        "cleaning_settings": "Valymo nustatymai",
+        "cleanings": "Valymai",
+        "close": "Uždaryti",
+        "confirm": "Patvirtinti",
+        "delete": "Ištrinti",
+        "delete_carpet": "Ištrinti kilimą",
+        "deleted_carpet": "Ištrintas kilimas",
+        "disable": "Išjungti",
+        "discard": "Atmesti",
+        "dismiss": "Atmesti",
+        "dock": "Stotelė",
+        "dock_settings": "Stotelės nustatymai",
+        "download": "Atsisiųsti",
+        "dry": "Džiovinti",
+        "dry_bag": "Džiovinti maišelį",
+        "drying_unavailable": "Džiovinimas nepasiekiamas",
+        "dynamically_ignored": "Dinamiškai ignoruojama",
+        "edit_carpet": "Redaguoti kilimą",
+        "empty": "Ištuštinti",
+        "enable": "Įjungti",
+        "fast_mapping": "Greitas žemėlapio sudarymas",
+        "get_dreame_vacuum_card": "Gauti „Dreame Vacuum“ kortelę",
+        "ignore": "Ignoruoti",
+        "ignore_obstacle": "Ignoruoti kliūtį",
+        "impassable_threshold": "Nepervažiuojamas slenkstis",
+        "job_details": "Užduoties informacija",
+        "keep_disabled": "Palikti išjungtą",
+        "map_display": "Žemėlapio rodymas",
+        "map_management": "Žemėlapių valdymas",
+        "new_dnd": "Nauja DnD užduotis",
+        "new_schedule": "Nauja suplanuota užduotis",
+        "new_shortcut": "Nauja nuorodos užduotis",
+        "next_job": "Kitas darbas",
+        "no_go": "Draudžiama eiti",
+        "no_mop": "Draudžiama plauti",
+        "objects": "Objektai",
+        "override": "Perrašyti",
+        "passable_threshold": "Pervažiuojamas slenkstis",
+        "pause": "Pristabdyti",
+        "pause_washing": "Pristabdyti plovimą",
+        "previous_job": "Ankstesnis darbas",
+        "ramp": "Rampa",
+        "reload": "Įkelti iš naujo",
+        "rename": "Pervadinti",
+        "repeats": "Pasikartojimai",
+        "replace": "Pakeisti",
+        "reset": "Atstatyti",
+        "restore": "Atkurti",
+        "restore_map": "Atkurti žemėlapį",
+        "resume": "Tęsti",
+        "resume_washing": "Tęsti plovimą",
+        "rooms": "Kambariai",
+        "rotate_left": "Pasukti kairėn",
+        "rotate_right": "Pasukti dešinėn",
+        "round_carpet": "Apvalus kilimas",
+        "save": "Išsaugoti",
+        "select_map": "Pasirinkti žemėlapį",
+        "shortcuts": "Nuorodos",
+        "square_carpet": "Kvadratinis kilimas",
+        "start": "Pradėti",
+        "start_auto_empty": "Pradėti automatinį ištuštinimą",
+        "start_bag_drying": "Pradėti maišelio džiovinimą",
+        "start_drying": "Pradėti džiovinimą",
+        "start_task": "Pradėti užduotį",
+        "start_washing": "Pradėti plovimą",
+        "stop": "Sustabdyti",
+        "stop_bag_drying": "Sustabdyti maišelio džiovinimą",
+        "stop_drying": "Sustabdyti džiovinimą",
+        "understood": "Supratau",
+        "virtual_threshold": "Virtualus slenkstis",
+        "virtual_wall": "Siena",
+        "wash": "Plauti",
+        "washing_unavailable": "Plovimas nepasiekiamas",
+        "wifi_map": "WiFi žemėlapis"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "Fono paveikslėlis",
+        "card_object_action_buttons": "Veiksmų mygtukai",
+        "card_object_animations": "Animacijos",
+        "card_object_cleanup_notification": "Valymo pranešimas",
+        "card_object_controls": "Valdikliai",
+        "card_object_cruising_history": "Kelionių istorija",
+        "card_object_fault_notification": "Klaidų pranešimai",
+        "card_object_information_notification": "Informaciniai pranešimai",
+        "card_object_low_water_notification": "Pranešimas apie mažą vandens kiekį",
+        "card_object_map_change_confirmation": "Žemėlapio keitimo patvirtinimas",
+        "card_object_menu": "Meniu",
+        "card_object_progress_bar": "Eigos juosta",
+        "card_object_saved_notification": "Išsaugojimo pranešimai",
+        "card_object_shortcuts": "Nuorodos",
+        "card_object_state": "Būsena",
+        "card_object_status": "Statusas",
+        "card_object_task_type": "Užduoties tipas",
+        "card_object_title": "Pavadinimas",
+        "card_object_warning_notification": "Įspėjamieji pranešimai",
+        "color_scheme": "Spalvų schema",
+        "color_scheme_dreame_auto": "Dreame automatinė",
+        "color_scheme_dreame_dark": "Dreame tamsi",
+        "color_scheme_dreame_light": "Dreame šviesi",
+        "color_scheme_grayscale": "Nespalvota",
+        "color_scheme_mijia_auto": "Mijia automatinė",
+        "color_scheme_mijia_dark": "Mijia tamsi",
+        "color_scheme_mijia_light": "Mijia šviesi",
+        "copied": "Nukopijuota",
+        "copy": "Kopijuoti",
+        "copy_all": "Kopijuoti viską",
+        "disable_haptic": "Išjungti haptinį atsaką",
+        "editable_objects": "Redaguojami objektai",
+        "font_size": "Šrifto dydis",
+        "full_height": "Visas aukštis",
+        "grid_size": "Tinklelio dydis",
+        "height": "Aukštis",
+        "hidden_card_objects": "Paslėpti kortelių objektai",
+        "hidden_objects": "Paslėpti objektai",
+        "hide_map_info": "Paslėpti žemėlapio informaciją",
+        "icon_set": "Piktogramų rinkinys",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "Dreame sena",
+        "icon_set_material": "Material",
+        "icon_set_mijia": "Mijia",
+        "left": "Kairė",
+        "left_handed": "Kairiarankių režimas",
+        "limit_height": "Apriboti aukštį pagal ekraną",
+        "locked": "Užrakinta",
+        "locked_always": "Visada",
+        "locked_auto": "Automatinis",
+        "locked_never": "Niekada",
+        "locked_only_touch": "Tik palietus",
+        "map": "Žemėlapis %name%",
+        "map_1": "Pirmas žemėlapis",
+        "map_2": "Antras žemėlapis",
+        "map_3": "Trečias žemėlapis",
+        "map_4": "Ketvirtas žemėlapis",
+        "map_5": "Penktas žemėlapis",
+        "map_color_active_area": "Aktyvi sritis",
+        "map_color_active_area_outline": "Aktyvios srities kontūras",
+        "map_color_active_point": "Aktyvus taškas",
+        "map_color_active_point_outline": "Aktyvaus taško kontūras",
+        "map_color_auto_low_lying_area": "Automatinė žemuma",
+        "map_color_carpet_color": "Kilimo spalva",
+        "map_color_curtain": "Užuolaida",
+        "map_color_detected_carpet_color": "Aptikto kilimo spalva",
+        "map_color_floor": "Grindys",
+        "map_color_floor_material": "Grindų medžiaga",
+        "map_color_icon_background": "Piktogramos fonas",
+        "map_color_impassable_threshold": "Nepervažiuojamas slenkstis",
+        "map_color_manual_low_lying_area": "Rankinė žemuma",
+        "map_color_mop_path": "Šluostės kelias",
+        "map_color_new_segment": "Naujas kambarys",
+        "map_color_no_go": "Draudžiama eiti",
+        "map_color_no_go_outline": "Draudžiama kontūras",
+        "map_color_no_mop": "Draudžiama plauti",
+        "map_color_no_mop_outline": "Draudžiama plauti kontūras",
+        "map_color_obstacle_background": "Kliūties fonas",
+        "map_color_order": "Eilės tvarka",
+        "map_color_outside": "Išorė",
+        "map_color_passable_threshold": "Pervažiuojamas slenkstis",
+        "map_color_passive_segment": "Pasyvus kambarys",
+        "map_color_path": "Kelias",
+        "map_color_ramp": "Rampa",
+        "map_color_segment": "Kambarys",
+        "map_color_settings_background": "Nustatymų fonas",
+        "map_color_text": "Tekstas",
+        "map_color_text_stroke": "Teksto potėpis",
+        "map_color_virtual_threshold": "Virtualus slenkstis",
+        "map_color_virtual_wall": "Virtuali siena",
+        "map_color_wall": "Siena",
+        "map_config": "Žemėlapio konfigūracija",
+        "map_display": "Žemėlapio rodymas",
+        "map_display_floor_plan": "Aukšto planas",
+        "map_display_floor_plan_only": "Tik aukšto planas",
+        "map_display_floor_plan_without_texture": "Aukšto planas be tekstūros",
+        "map_display_standard": "Standartinis",
+        "map_object_active_area": "Aktyvi sritis",
+        "map_object_active_cruise_point": "Aktyvus kelionės taškas",
+        "map_object_active_point": "Aktyvus taškas",
+        "map_object_animations": "Animacijos",
+        "map_object_blocked_segment": "Užblokuoti kambariai",
+        "map_object_blocked_segments": "Užblokuoti kambariai",
+        "map_object_carpet": "Kilimas",
+        "map_object_charger": "Įkroviklis",
+        "map_object_cleaning_sequence": "Valymo seka",
+        "map_object_cruise_point": "Kelionės taškas",
+        "map_object_curtain": "Užuolaida",
+        "map_object_customized_cleaning": "Pasirinktinis valymas",
+        "map_object_deleted_carpet": "Ištrintas kilimas",
+        "map_object_detected_carpet": "Aptiktas kilimas",
+        "map_object_door": "Durys",
+        "map_object_floor": "Grindys",
+        "map_object_floor_material": "Grindų medžiaga",
+        "map_object_furniture": "Baldai",
+        "map_object_furniture_image": "Baldų atvaizdai",
+        "map_object_hidden_segments": "Paslėpti kambariai",
+        "map_object_icon": "Piktograma",
+        "map_object_ignored_obstacles": "Ignoruojamos kliūtys",
+        "map_object_impassable_threshold": "Nepervažiuojamas slenkstis",
+        "map_object_lock_indicator": "Užrakto indikatorius",
+        "map_object_low_lying_area": "Žemumos",
+        "map_object_material": "Grindų medžiaga",
+        "map_object_mop_path": "Šluostės kelias",
+        "map_object_mop_type": "Šluostės tipas",
+        "map_object_name": "Pavadinimas",
+        "map_object_name_background": "Pavadinimo fonas",
+        "map_object_no_go": "Draudžiama eiti",
+        "map_object_no_mop": "Draudžiama plauti",
+        "map_object_object_option": "Objekto parinktis",
+        "map_object_obstacle": "Kliūtis",
+        "map_object_obstacle_background": "Kliūties fonas",
+        "map_object_obstacle_color": "Kliūties spalva",
+        "map_object_order": "Eilės tvarka",
+        "map_object_passable_threshold": "Pervažiuojami slenksčiai",
+        "map_object_path": "Kelias",
+        "map_object_pet": "Gyvūnas",
+        "map_object_predefined_point": "Iš anksto nustatyti taškai",
+        "map_object_ramp": "Rampa",
+        "map_object_router": "Maršrutizatorius",
+        "map_object_segment": "Kambarys",
+        "map_object_segment_type": "Kambario tipas",
+        "map_object_selected_segments": "Pasirinkti kambariai",
+        "map_object_split_line": "Padalijimo linija",
+        "map_object_stain": "Dėmė",
+        "map_object_station_status": "Stoties būsena",
+        "map_object_vacuum": "Dulkių siurblys",
+        "map_object_vacuum_status": "Dulkių siurblio būsena",
+        "map_object_virtual_threshold": "Virtualūs slenksčiai",
+        "map_object_virtual_wall": "Virtualios sienos",
+        "map_object_walls": "Sienos",
+        "map_object_zoom_point": "Priartinimo taškas",
+        "object_opacity": "Objekto nepermatomumas",
+        "object_scale": "Objekto mastelis",
+        "opacity": "Nepermatomumas",
+        "override_colors": "Perrašyti žemėlapio spalvas",
+        "overlay_image": "Perdangos vaizdas",
+        "rotation": "Pasukimas",
+        "scale": "Mastelis",
+        "scripts": "Skriptai",
+        "selectable_objects": "Pasirenkami objektai",
+        "selected_map_config": "%name% konfigūracija",
+        "show_map_info": "Rodyti žemėlapio informaciją",
+        "top": "Viršus",
+        "url": "URL",
+        "viewport": "Matymo sritis",
+        "width": "Plotis",
+        "zoom": "Priartinimas"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "Robotas turi aktyvią užduotį!",
+        "apply_changes_or_reload": "Žemėlapis pasikeitė jums redaguojant!\nAr norite perrašyti ar įkelti naujus pakeitimus?",
+        "auto_mount_mop_will_enabled": "Automatinis šluostės uždėjimas bus įjungtas!",
+        "backup_map": "Kurti atsarginę žemėlapio kopiją?",
+        "backup_map_will_overwritten": "Dabartinė atsarginė žemėlapio kopija bus perrašyta!",
+        "bag_drying_will_stopped": "Dulkių maišelio džiovinimas bus sustabdytas!",
+        "carpet_recognition_will_enabled": "Kilimų atpažinimas turi būti įjungtas, kad būtų galima nustatyti pasirinktinį kilimų valymą",
+        "carpet_will_deleted": "Kilimas bus ištrintas!",
+        "cleangenius_will_disabled": "Cleangenius bus išjungtas!",
+        "cleaning_failure": "Valymo gedimo priežastys",
+        "create_map": "Sukurti naują žemėlapį?",
+        "custom_carpet_settings_will_enabled": "Pasirinktinis kilimų valymas bus įjungtas!",
+        "custom_carpet_settings_will_enabled_detail": "Pasirinktiniai kilimų valymo nustatymai bus pritaikyti pagal pasirinktą kilimo tipą",
+        "customized_cleaning_disabled": "Pasirinktinis valymas yra išjungtas!",
+        "delete_carpet": "Ištrinti kilimą?",
+        "delete_dnd": "Ištrinti DnD užduotį?",
+        "delete_map": "Ištrinti žemėlapį?",
+        "delete_schedule": "Ištrinti suplanuotą užduotį?",
+        "delete_shortcut": "Ištrinti nuorodą?",
+        "deleted": "Sėkmingai ištrinta",
+        "device_unavailable": "Įrenginys nepasiekiamas",
+        "disable_cleangenius": "Išjungti Cleangenius?",
+        "dnd_confliction": "DnD užduoties konfliktas!",
+        "dnd_confliction_detail": "Suplanuota užduotis nustatyta netrukdymo periodu.",
+        "dnd_will_deleted": "DnD užduotis nuo %start% iki %end% bus ištrinta!",
+        "dock_in_restricted_area": "Stotelė yra draudžiamoje zonoje!",
+        "dock_in_restricted_area_detail": "Įkrovimo stotelė yra draudžiamoje zonoje. Jei toliau išsaugosite žemėlapį, robotas gali nepajėgti įsikrauti.",
+        "drying_will_stopped": "Šluostės džiovinimas bus sustabdytas!",
+        "dust_collection_not_performed": "Dulkių rinkimo (automatinio ištuštinimo) užduotis neatlikta\nRobotas netrukdymo periodu neatliks automatinio ištuštinimo užduočių.",
+        "enable_auto_mount_mop": "Įjungti automatinį šluostės uždėjimą?",
+        "enable_carpet_recognition": "Kilimų atpažinimas bus įjungtas!",
+        "enable_customized_cleaning": "Ar norite įjungti pasirinktinį valymą?",
+        "enable_mop_change": "Ar norite įjungti automatinį šluostės keitimą?",
+        "enable_task": "Ar norite įjungti užduotį?",
+        "entity_is_required": "Būtinas subjektas",
+        "entity_not_available": "Subjektas nepasiekiamas",
+        "failed_to_load_card": "Nepavyko įkelti kortelės",
+        "ignore_obstacle": "Ignoruoti kliūtį?",
+        "invalid_entity": "Neteisingas subjektas",
+        "map_backup": "Vyksta žemėlapio atsarginė kopija",
+        "map_backup_failed": "Žemėlapio atsarginė kopija nepavyko!",
+        "map_backup_success": "Žemėlapio atsarginė kopija baigta",
+        "map_recovery": "Vyksta žemėlapio atkūrimas",
+        "map_recovery_failed": "Žemėlapio atkūrimas nepavyko!",
+        "map_recovery_success": "Žemėlapio atkūrimas baigtas",
+        "map_will_deleted": "%name% bus ištrintas!",
+        "map_will_replaced": "Šiuo metu pasirinktas žemėlapis bus pakeistas nauju žemėlapiu!",
+        "map_will_restored": "Išsaugotas žemėlapis bus atkurtas į būseną %date%",
+        "mapping_started": "Žemėlapio sudarymas pradėtas...",
+        "mop_change_disabled": "Automatinis šluostės keitimas išjungtas!",
+        "mop_wash_frequency_low": "Šluostės plovimo dažnis per mažas!",
+        "mop_wash_frequency_will_increased": "Siekiant užtikrinti, kad šluostė būtų pakankamai drėgna, plovimo dažnis bus automatiškai padidintas",
+        "not_available": "Šiuo metu neprieinama...",
+        "not_fully_supported": "Dar nėra visiškai palaikoma!",
+        "not_supported": "Dar nepalaikoma!",
+        "obstacle_will_ignored": "Kliūtis bus ignoruojama!",
+        "override_changes": "Perrašyti pakeitimus?",
+        "preview": "Tai yra „Dreame Vacuum“ kortelės peržiūra",
+        "recommended_areas": "Rekomenduojamos zonos",
+        "relocating": "Pozicionuojasi. Prašome palaukti.",
+        "relocating_completed": "Pozicionavimas sėkmingas. Robotas tęsia darbą.",
+        "relocating_failed": "Nepavyko nustatyti pozicijos!",
+        "replace_map": "Pakeisti naują žemėlapį?",
+        "reset_usage": "Atstatyti naudojimą?",
+        "reset_walls": "Atstatyti sienas?",
+        "restore_map": "Atkurti %name%?",
+        "resume_cleaning": "Robotas automatiškai tęs nebaigtas valymo užduotis įkrovęs bateriją iki 80%.",
+        "resume_cleaning_not_performed": "Robotas pratęs valymą pasibaigus netrukdymo rėžimui.",
+        "resume_cleaning_time": "Valymas prasidės %time%",
+        "save_changes": "Išsaugoti pakeitimus?",
+        "saved": "Sėkmingai išsaugota",
+        "schedule_will_deleted": "Suplanuota užduotis iš %time% bus ištrinta!",
+        "select_map": "Pasirinkti %name%?",
+        "select_mapping_type": "Pasirinkite kartografavimo tipą",
+        "select_room": "Pasirinkite kambarį norėdami nustatyti valymo seką",
+        "selected_map_will_changed": "Pasirinktas žemėlapis bus pakeistas į %name%!",
+        "service_call_failed": "Paslaugos iškvietimas nepavyko",
+        "settings_will_applied": "Jūsų nustatymai bus pritaikyti kitai užduočiai.",
+        "shortcut_will_deleted": "%name% bus ištrinta!",
+        "stop_bag_drying": "Sustabdyti dulkių maišelio džiovinimą?",
+        "stop_drying": "Sustabdyti džiovinimą?",
+        "stop_task": "Sustabdyti dabartinę užduotį?",
+        "task_disabled": "Užduotis išjungta!",
+        "task_will_stopped": "Dabartinė užduotis bus sustabdyta!",
+        "unsaved_changes_present": "Turite neišsaugotų pakeitimų, kurie bus prarasti!",
+        "unsupported_browser": "Nepalaikoma naršyklė!",
+        "usage_will_reset": "%name% naudojimas bus atstatytas!",
+        "walls_will_be_reset": "Sienos bus atkurtos į pradinę sumapintą vietą!"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "Priedų naudojimas",
+        "add_furniture": "Pridėti baldą",
+        "audio_settings": "Garso nustatymai",
+        "battery_management": "Baterijos valdymas",
+        "carpet_settings": "Kilimų nustatymai",
+        "clean_water_tank": "Švaraus vandens bakas",
+        "cleaning_details": "Valymo informacija",
+        "cleaning_history": "Valymo istorija",
+        "cleaning_sequence": "Valymo seka",
+        "created_carpet": "Rankiniu būdu sukurtas kilimas",
+        "cruising": "Kelionė",
+        "cruising_details": "Kelionės informacija",
+        "cruising_history": "Kelionių istorija",
+        "customized_cleaning": "Pasirinktinis valymas",
+        "description": "„%name%“ priskirtos integracijos naudotojo sąsaja",
+        "detected_carpet": "Automatiškai aptiktas kilimas",
+        "detergent": "Valiklis",
+        "device_information": "Įrenginio informacija",
+        "device_settings": "Įrenginio nustatymai",
+        "dnd": "Netrukdyti",
+        "dnd_task": "DnD užduotis",
+        "dust_bag": "Dulkių maišelis",
+        "global_carpet_settings": "Bendrieji kilimų nustatymai",
+        "invalid": "neteisingas",
+        "locate": "Rasti",
+        "map": "Žemėlapis",
+        "map_edit": "Redaguoti žemėlapį",
+        "map_management": "Žemėlapių valdymas",
+        "map_name_placeholder": "Žemėlapis %index%",
+        "mop_type": "Šluostės tipas",
+        "mopping_settings": "Plovimo nustatymai",
+        "more_functions": "Daugiau funkcijų",
+        "name": "%name% Kortelė",
+        "new_map": "Naujas žemėlapis",
+        "obstacle": "Kliūtis",
+        "obstacle_settings": "Kameros ir kliūčių nustatymai",
+        "recovery_map_list": "Žemėlapio atkūrimas",
+        "remote_control": "Nuotolinis valdymas",
+        "saved_map": "Išsaugotas žemėlapis",
+        "schedule_list": "Suplanuotas valymas",
+        "scheduled_room": "Suplanuotas kambarių valymas",
+        "scheduled_spot": "Suplanuotas vietų valymas",
+        "scheduled_task": "Suplanuota užduotis",
+        "scheduled_zone": "Suplanuotas zonų valymas",
+        "segment_name_placeholder": "Kambarys %index%",
+        "shortcut": "Nuoroda",
+        "shortcut_list": "Nuorodos",
+        "shortcut_map": "Nuorodų žemėlapis",
+        "shortcut_name_placeholder": "Nuoroda %index%",
+        "shortcut_task": "Nuorodos užduotis",
+        "task": "Užduotis %index%",
+        "task_placeholder": "Užduotis %index%",
+        "time_left": "Liko %time%",
+        "unavailable": "Nepasiekiamas",
+        "used_water_tank": "Panaudoto vandens bakas",
+        "wall": "Sienos",
+        "wifi_map": "WiFi Žemėlapis"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "Valyti segmentą",
+      "description": "Pradėti valymą pasirinktuose kambariuose.",
+      "fields": {
+        "segments": {
+          "name": "Segmentai",
+          "description": "Kambarių, kuriuos reikia valyti, sąrašas. Tik kambario simbolis arba kambario simbolių masyvas, valymo kartai, ventiliatoriaus greitis ir šluostės režimas, kad būtų galima pakeisti numatytąsias vertes kiekviename kambaryje."
+        },
+        "repeats": {
+          "name": "Pasikartojimai",
+          "description": "Valymo ciklų skaičius kiekvienam pasirinktam kambariui (nebent tai pakeičia pasirinktinio valymo parametras)."
+        },
+        "suction_level": {
+          "name": "Siurbimo lygis",
+          "description": "Ventiliatoriaus greitis kiekvienam pasirinktam kambariui (nebent tai pakeičia pasirinktinio valymo parametras)."
+        },
+        "water_volume": {
+          "name": "Vandens kiekis",
+          "description": "Vandens lygis kiekvienam pasirinktam kambariui (nebent tai pakeičia pasirinktinio valymo parametras)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "Valyti zoną",
+      "description": "Pradėti valymą pasirinktoje srityje.",
+      "fields": {
+        "zone": {
+          "name": "Zona",
+          "description": "Koordinatės."
+        },
+        "repeats": {
+          "name": "Pasikartojimai",
+          "description": "Valymo ciklų skaičius kiekvienai pasirinktai zonai."
+        },
+        "suction_level": {
+          "name": "Siurbimo lygis",
+          "description": "Ventiliatoriaus greitis kiekvienai pasirinktai zonai."
+        },
+        "water_volume": {
+          "name": "Vandens kiekis",
+          "description": "Vandens lygis kiekvienai pasirinktai zonai."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "Valyti vietą",
+      "description": "Pradėti valymą pasirinktuose taškuose žemėlapyje.",
+      "fields": {
+        "points": {
+          "name": "Taškai",
+          "description": "Valytinų koordinačių sąrašas."
+        },
+        "repeats": {
+          "name": "Pasikartojimai",
+          "description": "Valymo ciklų skaičius kiekvienai pasirinktai zonai."
+        },
+        "suction_level": {
+          "name": "Siurbimo lygis",
+          "description": "Ventiliatoriaus greitis kiekvienai pasirinktai zonai."
+        },
+        "water_volume": {
+          "name": "Vandens kiekis",
+          "description": "Vandens lygis kiekvienai pasirinktai zonai."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "Eiti į",
+      "description": "Eiti į žemėlapio koordinatę ir sustoti.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Taško X koordinatė."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Taško Y koordinatė."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Sektis keliu",
+      "description": "Sekti žemėlapio koordinačių sąrašą ir grįžti į bazę. (Palaikoma tik siurbliuose su kamera)",
+      "fields": {
+        "points": {
+          "name": "Taškai",
+          "description": "Kelio koordinačių sąrašas."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "Pradėti nuorodą",
+      "description": "Pradėti nuorodos užduotį. (Tik palaikomuose įrenginiuose)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Nuorodos ID",
+          "description": "Nuorodos ID."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "Nuotolinio valdymo judėjimo žingsnis",
+      "description": "Nuotoliniu būdu valdyti robotą per vieną žingsnį.",
+      "fields": {
+        "rotation": {
+          "name": "Pasukimas",
+          "description": "Pasukimas dvejetainiais laipsniais nuo -128 iki 128."
+        },
+        "velocity": {
+          "name": "Greitis",
+          "description": "Judėjimo greitis, nuo 100 (pirmyn) iki -300 (atgal)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "Įdiegti balso paketą",
+      "description": "Įdiegti oficialų arba pasirinktinį balso paketą.",
+      "fields": {
+        "lang_id": {
+          "name": "Kalbos ID",
+          "description": "Šio paketo kalbos ID."
+        },
+        "url": {
+          "name": "URL",
+          "description": "Šio paketo URL adresas, kurį robotas turi pasiekti."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "Balso paketo MD5 kontrolinė suma."
+        },
+        "size": {
+          "name": "Dydis",
+          "description": "Balso paketo dydis baitais."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "Užklausti žemėlapį",
+      "description": "Užklausti žemėlapio duomenis"
+    },
+    "vacuum_select_map": {
+      "name": "Pasirinkti žemėlapį",
+      "description": "Pasirinkti dabartinį žemėlapį. Naudojama turint kelis žemėlapius/aukštus.",
+      "fields": {
+        "map_id": {
+          "name": "Žemėlapio ID",
+          "description": "Pasirinktino žemėlapio ID."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "Ištrinti žemėlapį",
+      "description": "Ištrinti žemėlapį.",
+      "fields": {
+        "map_id": {
+          "name": "Žemėlapio ID",
+          "description": "Ištrintino žemėlapio ID."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "Išsaugoti laikinąjį žemėlapį",
+      "description": "Išsaugoti laikinąjį žemėlapį."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "Atmesti laikinąjį žemėlapį",
+      "description": "Atmesti laikinąjį žemėlapį."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "Pakeisti laikinąjį žemėlapį",
+      "description": "Pakeisti laikinąjį žemėlapį kitu išsaugotu žemėlapiu.",
+      "fields": {
+        "map_id": {
+          "name": "Žemėlapio ID",
+          "description": "Žemėlapio, kuriuo bus pakeista, ID."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "Pervadinti žemėlapį",
+      "description": "Pervadinti žemėlapį.",
+      "fields": {
+        "map_id": {
+          "name": "Žemėlapio ID",
+          "description": "Žemėlapio ID."
+        },
+        "map_name": {
+          "name": "Žemėlapio pavadinimas",
+          "description": "Naujas žemėlapio pavadinimas."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "Atkurti žemėlapį",
+      "description": "Atkurti žemėlapį.",
+      "fields": {
+        "map_id": {
+          "name": "Žemėlapio ID",
+          "description": "Atkurtino žemėlapio ID."
+        },
+        "recovery_map_index": {
+          "name": "Atkūrimo žemėlapio indeksas",
+          "description": "Išsaugoto atkūrimo žemėlapio indeksas"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Atkurti žemėlapį iš failo",
+      "description": "Atkurti žemėlapį iš failo.",
+      "fields": {
+        "map_id": {
+          "name": "Žemėlapio ID",
+          "description": "Atkurtino žemėlapio ID."
+        },
+        "file_url": {
+          "name": "Failo URL",
+          "description": "Išsaugoto tbz2.gz arba tar.gz failo URL"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Kurti atsarginę žemėlapio kopiją",
+      "description": "Kurti atsarginę žemėlapio kopiją debesyje.",
+      "fields": {
+        "map_id": {
+          "name": "Žemėlapio ID",
+          "description": "Atkurtino žemėlapio ID."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Sujungti segmentus",
+      "description": "Sujungti kambarius.",
+      "fields": {
+        "map_id": {
+          "name": "Žemėlapio ID",
+          "description": "Žemėlapio ID."
+        },
+        "segments": {
+          "name": "Segmentai",
+          "description": "Kambarių ID."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Padalinti segmentus",
+      "description": "Padalinti kambarius.",
+      "fields": {
+        "map_id": {
+          "name": "Žemėlapio ID",
+          "description": "Žemėlapio ID."
+        },
+        "segment": {
+          "name": "Segmentas",
+          "description": "Kambario ID."
+        },
+        "line": {
+          "name": "Linija",
+          "description": "Padalijimo linijos koordinatės."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "Pervadinti segmentą",
+      "description": "Pervadinti segmentą.",
+      "fields": {
+        "segment_id": {
+          "name": "Segmento ID",
+          "description": "Segmento ID"
+        },
+        "segment_name": {
+          "name": "Segmento pavadinimas",
+          "description": "Naujas segmento pavadinimas"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "Nustatyti valymo seką",
+      "description": "Nustatyti kambarių valymo seką. (Tik palaikomuose įrenginiuose)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "Valymo seka",
+          "description": "Valymo sekos segmentų ID sąrašas."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "Nustatyti pasirinktinį valymą",
+      "description": "Nustatyti pasirinktinius valymo parametrus. (Tik palaikomuose įrenginiuose)",
+      "fields": {
+        "segment_id": {
+          "name": "Segmento ID",
+          "description": "Kambarių ID."
+        },
+        "suction_level": {
+          "name": "Siurbimo lygis",
+          "description": "Kiekvieno kambario siurbimo lygis."
+        },
+        "water_volume": {
+          "name": "Vandens kiekis",
+          "description": "Kiekvieno kambario vandens kiekis."
+        },
+        "wetness_level": {
+          "name": "Drėgmės lygis",
+          "description": "Kiekvieno kambario drėgmės lygis (palaikomuose įrenginiuose)."
+        },
+        "cleaning_mode": {
+          "name": "Valymo režimas",
+          "description": "Valymas kiekvienam kambariui (palaikoma tik siurbliuose su šluostės pakėlimo funkcija)."
+        },
+        "repeats": {
+          "name": "Pasikartojimai",
+          "description": "Valymo kartai kiekvienam kambariui."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Nustatyti pasirinktinį kilimų valymą",
+      "description": "Nustatyti pasirinktinius kilimų valymo nustatymus. (Tik palaikomuose įrenginiuose)",
+      "fields": {
+        "id": {
+          "name": "Kilimo ID",
+          "description": "Kilimų ID."
+        },
+        "type": {
+          "name": "Objekto tipas",
+          "description": "Objekto su nurodytu ID tipas. (0 = automatiškai aptiktas kilimas, 1 = rankiniu būdu sukurtas kilimas, 2 = kambario kilimas (jei palaikoma))"
+        },
+        "carpet_cleaning": {
+          "name": "Kilimų valymas",
+          "description": "Pasirinktinis kilimų valymo nustatymas kiekvienam kilimui."
+        },
+        "carpet_preferences": {
+          "name": "Kilimų nustatymai",
+          "description": "Pasirinktiniai kilimų nustatymai kiekvienam kilimui su įjungtų nustatymų masyvu."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Nustatyti apribotą zoną",
+      "description": "Apibrėžti virtualias sienas, apribotas zonas ir (arba) zonas, kuriose neplaunama.",
+      "fields": {
+        "walls": {
+          "name": "Sienos",
+          "description": "Virtualios sienos."
+        },
+        "zones": {
+          "name": "Zonos",
+          "description": "Draudžiamos zonos."
+        },
+        "no_mops": {
+          "name": "Be plovimo",
+          "description": "Zonos, kuriose neplaunama."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "Atstatyti sunaudojamą elementą",
+      "description": "Atstatyti sunaudojamą elementą.",
+      "fields": {
+        "consumable": {
+          "name": "Sunaudojamas elementas",
+          "description": "Sunaudojamo elemento tipas."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Pervadinti nuorodą",
+      "description": "Pervadinti nuorodą. (Tik palaikomuose įrenginiuose)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Nuorodos ID",
+          "description": "Nuorodos ID."
+        },
+        "shortcut_name": {
+          "name": "Nuorodos pavadinimas",
+          "description": "Naujas nuorodos pavadinimas."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Ištrinti nuorodą",
+      "description": "Ištrinti nuorodą. (Tik palaikomuose įrenginiuose)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Nuorodos ID",
+          "description": "Nuorodos ID."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Nustatyti kilimo sritį",
+      "description": "Apibrėžti kilimus ir ignoruojamus kilimus. (Tik palaikomuose įrenginiuose)",
+      "fields": {
+        "carpets": {
+          "name": "Kilimai",
+          "description": "Kilimų sritys."
+        },
+        "deleted_carpets": {
+          "name": "Ignoruojami kilimai",
+          "description": "Ignoruojamos kilimų sritys, skirtos ištrinti automatiškai aptiktus kilimus."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "Nustatyti virtualų slenkstį",
+      "description": "Apibrėžti virtualius slenksčius.",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "Virtualūs slenksčiai",
+          "description": "Virtualaus slenksčio linijos koordinatės."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Nustatyti iš anksto apibrėžtus taškus",
+      "description": "Apibrėžti iš anksto nustatytas koordinates dabartiniame žemėlapyje. (Palaikoma tik siurbliuose su kamera)",
+      "fields": {
+        "points": {
+          "name": "Taškai",
+          "description": "Saugomų koordinačių sąrašas."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Nustatyti kliūties ignoravimą",
+      "description": "Nustatyti kliūties ignoravimo būseną. (Palaikoma tik siurbliuose su AI kliūčių aptikimo funkcija)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Kliūties X koordinatė."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Kliūties Y koordinatė."
+        },
+        "obstacle_ignored": {
+          "name": "Kliūtis ignoruojama",
+          "description": "Kliūtis ignoruojama ar ne."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Nustatyti maršrutizatoriaus padėtį",
+      "description": "Nustatyti maršrutizatoriaus padėtį dabartiniame žemėlapyje. (Palaikoma tik siurbliuose su WiFi žemėlapio funkcija)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Maršrutizatoriaus X koordinatė."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Maršrutizatoriaus Y koordinatė."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "Pasirinkti ankstesnį",
+      "description": "Pasirinkti ankstesnes parinkto subjekto parinktis.",
+      "fields": {
+        "cycle": {
+          "name": "Ciklas",
+          "description": "Jei parinktis turėtų cikliškai keistis nuo pirmos iki paskutinės."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "Pasirinkti pirmą",
+      "description": "Pasirinkti pirmą parinkto subjekto parinktį."
+    },
+    "select_select_last": {
+      "name": "Pasirinkti paskutinį",
+      "description": "Pasirinkti paskutinę parinkto subjekto parinktį."
+    },
+    "select_select_next": {
+      "name": "Pasirinkti kitą",
+      "description": "Pasirinkti kitas parinkto subjekto parinktis.",
+      "fields": {
+        "cycle": {
+          "name": "Ciklas",
+          "description": "Jei parinktis turėtų cikliškai keistis nuo pirmos iki paskutinės."
+        }
+      }
+    }
+  }
+}

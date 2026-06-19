@@ -1,11 +1,13 @@
 """The Dreame Vacuum component."""
+
 from __future__ import annotations
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
-from .const import DOMAIN
-from .coordinator import DreameVacuumDataUpdateCoordinator
+from homeassistant.components.frontend import DATA_EXTRA_MODULE_URL
 import warnings
+from pathlib import Path
+from .const import DOMAIN
 
 # Suppress python-miio FutureWarning on Python 3.13
 warnings.filterwarnings(
@@ -17,6 +19,8 @@ warnings.filterwarnings(
 # Suppress RuntimeWarning overflow encountered in scalar add
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
+from .coordinator import DreameVacuumDataUpdateCoordinator
+
 PLATFORMS = (
     Platform.VACUUM,
     Platform.SENSOR,
@@ -26,6 +30,7 @@ PLATFORMS = (
     Platform.NUMBER,
     Platform.SELECT,
     Platform.CAMERA,
+    Platform.TIME,
 )
 
 
@@ -36,10 +41,22 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
 
-    entry.async_on_unload(entry.add_update_listener(update_listener))
+    # Register frontend
+    # frontend_js = f"/{DOMAIN}/frontend.js"
+    # if DATA_EXTRA_MODULE_URL not in hass.data:
+    #    hass.data[DATA_EXTRA_MODULE_URL] = set()
+    # if frontend_js not in (
+    #    hass.data[DATA_EXTRA_MODULE_URL].urls
+    #    if hasattr(hass.data[DATA_EXTRA_MODULE_URL], "urls")
+    #    else hass.data[DATA_EXTRA_MODULE_URL]
+    # ):
+    #    hass.data[DATA_EXTRA_MODULE_URL].add(frontend_js)
+    #    hass.http.register_static_path(frontend_js, str(Path(Path(__file__).parent / "frontend.js")), True)
 
     # Set up all platforms for this device/entry.
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+
+    entry.async_on_unload(entry.add_update_listener(update_listener))
     return True
 
 
@@ -50,11 +67,11 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         if coordinator._unsub_dispatcher:
             coordinator._unsub_dispatcher()
             coordinator._unsub_dispatcher = None
-        coordinator.device.listen(None)
-        coordinator.device.listen_error(None)
-        coordinator.device.disconnect()
-        del coordinator.device
-        coordinator.device = None
+        coordinator._device.listen(None)
+        coordinator._device.listen_error(None)
+        coordinator._device.disconnect()
+        del coordinator._device
+        coordinator._device = None
         del hass.data[DOMAIN][entry.entry_id]
 
     return unload_ok

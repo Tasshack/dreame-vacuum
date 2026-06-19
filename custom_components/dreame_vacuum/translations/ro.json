@@ -1,0 +1,2438 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Dispozitivul este deja configurat",
+      "cannot_connect": "Conectare nereușită.",
+      "reauth_successful": "Reautentificarea a fost realizată cu success"
+    },
+    "error": {
+      "cannot_connect": "Conectare nereușită.",
+      "unsupported": "Dispozitivul nu este suportat",
+      "wrong_token": "Eroare de checksum, token greșit",
+      "2fa_failed": "Verificare eșuată.",
+      "wrong_captcha": "Captcha incorect.",
+      "credentials_incomplete": "Credențiale incomplete, vă rugăm să completați numele de utilizator, parola și țara",
+      "login_error": "Nu s-a putut realiza autentificarea, verificați credențialele.",
+      "no_devices": "Nu au fost găsite dispozitive suportate în acest cont pentru țara selectată.{devices}",
+      "2fa_send_failed": "Eroare la trimiterea codului de verificare. Vă rugăm să încercați din nou.",
+      "2fa_limit_reached": "Limita zilnică pentru trimiterea codurilor de verificare a fost atinsă. Vă rugăm să încercați din nou mâine.",
+      "2fa_cooldown_active": "Prea multe solicitări consecutive. Vă rugăm să așteptați câteva minute înainte de a încerca din nou."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Tip de Configurare"
+        },
+        "description": "Funcția de hartă necesită conexiune cloud și oferă configurare automată. Dacă nu doriți să utilizați funcția de hartă, puteți selecta configurarea manuală."
+      },
+      "local": {
+        "data": {
+          "host": "Gazdă",
+          "token": "Token"
+        },
+        "description": "Veți avea nevoie de tokenul API de 32 de caractere."
+      },
+      "mi": {
+        "data": {
+          "username": "Nume de utilizator",
+          "password": "Parolă",
+          "country": "Țara serverului",
+          "prefer_cloud": "Preferă conexiunea cloud"
+        },
+        "description": "Autentificați-vă în cloud-ul Xiaomi Miio."
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "Cod de verificare în doi pași"
+        },
+        "description": "## Este necesară verificarea de securitate\nUn cod de verificare a fost trimis la {dest}. Vă rugăm să introduceți codul mai jos."
+      },
+      "captcha": {
+        "data": {
+          "code": "Cod"
+        },
+        "description": "## Verificarea captcha este necesară.\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "Nume de utilizator",
+          "password": "Parolă",
+          "country": "Țara serverului"
+        },
+        "description": "Autentificați-vă în cloud-ul Dreamehome."
+      },
+      "mova": {
+        "data": {
+          "username": "Nume de utilizator",
+          "password": "Parolă",
+          "country": "Țara serverului"
+        },
+        "description": "Autentificați-vă în cloud-ul Movahome."
+      },
+      "trouver": {
+        "data": {
+          "username": "Nume de utilizator",
+          "password": "Parolă",
+          "country": "Țara serverului"
+        },
+        "description": "Autentificați-vă în cloud-ul Trouver."
+      },
+      "devices": {
+        "data": {
+          "devices": "Dispozitive Suportate"
+        },
+        "description": "Vă rugăm să selectați dispozitivul Dreame Vacuum pe care doriți să-l configurați."
+      },
+      "donation": {
+        "data": {
+          "donated": "Am făcut o donație"
+        },
+        "description": "## Nu uitați să susțineți proiectul.{text}"
+      },
+      "options": {
+        "data": {
+          "name": "Nume",
+          "color_scheme": "Schema de culori a hărții",
+          "icon_set": "Set de pictograme al hărții",
+          "notify": "Notificare",
+          "hidden_map_objects": "Obiecte de hartă ascunse",
+          "low_resolution": "Hartă cu rezoluție scăzută",
+          "square": "Hartă pătrată"
+        }
+      },
+      "reauth_confirm": {
+        "description": "Integrarea Dreame Vacuum trebuie să vă re-autentifice contul pentru a actualiza tokenurile sau pentru a adăuga credențiale cloud lipsă.",
+        "title": "Reautentificare Integrare"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Schema de culori a hărții",
+          "icon_set": "Set de pictograme al hărții",
+          "notify": "Notificare",
+          "hidden_map_objects": "Obiecte de hartă ascunse",
+          "low_resolution": "Hartă cu rezoluție scăzută",
+          "square": "Hartă pătrată",
+          "configuration_type": "Tip de configurare",
+          "prefer_cloud": "Preferă conexiunea cloud",
+          "donated": "Am făcut o donație"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Credențiale cloud incomplete, vă rugăm să completați numele de utilizator, parola și țara"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "name": "Nivel de aspirație",
+        "state": {
+          "quiet": "Silențios",
+          "standard": "Standard",
+          "strong": "Puternic",
+          "turbo": "Turbo",
+          "full_power": "Putere maximă"
+        }
+      },
+      "water_volume": {
+        "name": "Volum de apă",
+        "state": {
+          "low": "Scăzut",
+          "medium": "Mediu",
+          "high": "Ridicat"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "Umiditate mop",
+        "state": {
+          "slightly_dry": "Ușor uscat",
+          "moist": "Umed",
+          "wet": "Ud"
+        }
+      },
+      "cleaning_mode": {
+        "name": "Mod de curățare",
+        "state": {
+          "sweeping": "Măturare",
+          "mopping": "Ștergere",
+          "sweeping_and_mopping": "Măturare și Ștergere",
+          "mopping_after_sweeping": "Ștergere după Măturare"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "Sensibilitate covor",
+        "state": {
+          "low": "Scăzut",
+          "medium": "Mediu",
+          "high": "Ridicat"
+        }
+      },
+      "carpet_cleaning": {
+        "name": "Curățare covor",
+        "state": {
+          "avoidance": "Evitare",
+          "adaptation": "Adaptare",
+          "remove_mop": "Scoateți mopul",
+          "adaptation_without_route": "Adaptare fără Rută",
+          "vacuum_and_mop": "Aspirare și Ștergere",
+          "ignore": "Ignoră",
+          "cross": "Traversare"
+        }
+      },
+      "mop_wash_level": {
+        "name": "Mod de spălare a mopului",
+        "state": {
+          "water_saving": "Economisire apă",
+          "daily": "Zilnic",
+          "deep": "Intens",
+          "ultra_clean_mode": "Ultra curat"
+        }
+      },
+      "mopping_type": {
+        "name": "Tip mop",
+        "state": {
+          "accurate": "Precis",
+          "daily": "Zilnic",
+          "deep": "Intens"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "Acoperire mai largă a colțurilor",
+        "state": {
+          "off": "Oprit",
+          "high_frequency": "Frecvență înaltă",
+          "low_frequency": "Frecvență joasă"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "Oscilare mop",
+        "state": {
+          "off": "Oprit",
+          "auto": "Automat",
+          "daily": "Zilnic",
+          "weekly": "Săptămânal"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "Frecvență extindere mop",
+        "state": {
+          "standard": "Standard",
+          "intelligent": "Inteligent",
+          "high": "Ridicat"
+        }
+      },
+      "floor_material": {
+        "name": "Material pardoseală",
+        "state": {
+          "none": "Nimic",
+          "tile": "Gresie",
+          "wood": "Parchet",
+          "low_pile_carpet": "Covor cu Peri-Scurți",
+          "medium_pile_carpet": "Covor cu Peri Medii spre Lungi",
+          "carpet": "Covor"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "Limba asistentului vocal",
+        "state": {
+          "default": "Implicit",
+          "english": "Engleză",
+          "german": "Germană",
+          "chinese": "Chineză",
+          "russian": "Rusă",
+          "italian": "Italiană",
+          "french": "Franceză",
+          "korean": "Coreeană"
+        }
+      },
+      "mop_pressure": {
+        "name": "Presiune mop",
+        "state": {
+          "light": "Ușoară",
+          "normal": "Normală"
+        }
+      },
+      "mop_temperature": {
+        "name": "Temperatură mop",
+        "state": {
+          "normal": "Normală",
+          "warm": "Caldă"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "Frecvență zonă joasă",
+        "state": {
+          "weekly": "Săptămânal",
+          "daily": "Zilnic"
+        }
+      },
+      "scraper_frequency": {
+        "name": "Frecvență racletă",
+        "state": {
+          "off": "Oprit",
+          "weekly": "Săptămânal",
+          "daily": "Zilnic"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "Acoperire LDS automată",
+        "state": {
+          "off": "Oprit",
+          "security": "Securitate",
+          "extreme": "Extrem"
+        }
+      },
+      "order": {
+        "name": "Ordine",
+        "state": {
+          "not_set": "Nesetat"
+        }
+      },
+      "self_clean_frequency": {
+        "name": "Frecvență autocurățare",
+        "state": {
+          "by_area": "După Arie",
+          "by_time": "După Timp",
+          "by_room": "După Cameră",
+          "intelligent": "Inteligent"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "Frecvență curățare mop",
+        "state": {
+          "by_room": "După Cameră",
+          "5sqm": "Cinci metri pătrați",
+          "8sqm": "Opt metri pătrați",
+          "10sqm": "Zece metri pătrați",
+          "15sqm": "Cincisprezece metri pătrați",
+          "20sqm": "Douăzeci de metri pătrați",
+          "25sqm": "Douăzeci și cinci de metri pătrați",
+          "86sqf": "Optzeci și șase de picioare pătrate",
+          "108sqf": "O sută opt picioare pătrate",
+          "54sqf": "Cincizeci și patru de picioare pătrate",
+          "162sqf": "O sută șaizeci și două de picioare pătrate",
+          "216sqf": "Două sute șaisprezece picioare pătrate",
+          "270sqf": "Două sute șaptezeci de picioare pătrate"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "Mod de golire automată",
+        "state": {
+          "off": "Oprit",
+          "standard": "Standard",
+          "high_frequency": "Frecvență înaltă",
+          "low_frequency": "Frecvență joasă",
+          "custom_frequency": "Frecvență personalizată",
+          "intelligent": "Inteligent"
+        }
+      },
+      "floor_material_direction": {
+        "name": "Direcție pardoseală",
+        "state": {
+          "vertical": "Vertical",
+          "horizontal": "Orizontal"
+        }
+      },
+      "visibility": {
+        "name": "Visibilitate",
+        "state": {
+          "visible": "Vizibil",
+          "hidden": "Ascuns"
+        }
+      },
+      "cleangenius": {
+        "name": "Cleangenius",
+        "state": {
+          "off": "Oprit",
+          "routine_cleaning": "Curățare de rutină",
+          "deep_cleaning": "Curățare profundă"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "Mod Cleangenius",
+        "state": {
+          "vacuum_and_mop": "Aspirare și Ștergere",
+          "mop_after_vacuum": "Ștergere după Aspirare"
+        }
+      },
+      "washing_mode": {
+        "name": "Mod de spălare",
+        "state": {
+          "smart": "Inteligent",
+          "light": "Ușor",
+          "standard": "Standard",
+          "deep": "Intens",
+          "ultra_washing": "Spălare Ultra"
+        }
+      },
+      "water_temperature": {
+        "name": "Temperatură apă",
+        "state": {
+          "normal": "Normal",
+          "mild": "Delicat",
+          "warm": "Călduț",
+          "hot": "Fierbinte",
+          "max": "Maxim"
+        }
+      },
+      "auto_recleaning": {
+        "name": "Recurățare automată",
+        "state": {
+          "off": "Oprit",
+          "in_deep_mode": "În Mod Intens",
+          "in_all_modes": "În Toate Modurile"
+        }
+      },
+      "auto_rewashing": {
+        "name": "Respălare automată",
+        "state": {
+          "off": "Oprit",
+          "in_deep_mode": "În Mod Intens",
+          "in_all_modes": "În Toate Modurile"
+        }
+      },
+      "cleaning_route": {
+        "name": "Traseu",
+        "state": {
+          "quick": "Rapid",
+          "standard": "Standard",
+          "intensive": "Intensiv",
+          "deep": "Profund"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "Traseu mop personalizat",
+        "state": {
+          "off": "Oprit",
+          "standard": "Standard",
+          "intensive": "Intensiv",
+          "deep": "Profund"
+        }
+      },
+      "task_type": {
+        "name": "Tip sarcină",
+        "state": {
+          "go_to": "Mergi la Punct",
+          "segment": "Curățare cameră",
+          "all": "Curățare globală",
+          "zone": "Curățare zonă",
+          "spot": "Curățare punctuală"
+        }
+      },
+      "cleaning_times": {
+        "name": "Număr curățări",
+        "state": {
+          "x1": "O dată",
+          "x2": "De două ori",
+          "x3": "De trei ori"
+        }
+      },
+      "auto_empty_frequency": {
+        "name": "Frecvență golire automată",
+        "state": {
+          "x1": "După fiecare sarcină",
+          "x2": "După două curățări",
+          "x3": "După trei curățări"
+        }
+      },
+      "drying_time": {
+        "name": "Timp uscare",
+        "state": {
+          "silent": "Silențios"
+        }
+      },
+      "battery_charge_level": {
+        "name": "Nivel încărcare baterie"
+      },
+      "object_type": {
+        "name": "Tip obiect",
+        "state": {
+          "predefined_point": "Punct predefinit",
+          "low_lying_area": "Zonă joasă",
+          "curtain": "Perdea",
+          "threshold": "Prag",
+          "furniture": "Mobilier",
+          "carpet": "Covor",
+          "restricted": "Zonă restricționată"
+        }
+      },
+      "edit_type": {
+        "name": "Tip editare",
+        "state": {
+          "door": "Editați ușile",
+          "split": "Divizare camere",
+          "merge": "Combinare camere",
+          "visibility": "Vizibilitate cameră",
+          "material": "Material podea",
+          "type": "Nume cameră",
+          "wall": "Editați pereții"
+        }
+      },
+      "map_type": {
+        "name": "Tip hartă",
+        "state": {
+          "cleaning": "Hartă curățare",
+          "history": "Detalii curățare",
+          "wifi": "Hartă Wi-Fi"
+        }
+      },
+      "carpet_type": {
+        "name": "Tip covor",
+        "state": {
+          "medium_pile": "Păr mediu spre lung",
+          "low_pile": "Păr scurt",
+          "floor_mat": "Covoraș",
+          "other": "Altele"
+        }
+      },
+      "mop_type": {
+        "name": "Tip mop",
+        "state": {
+          "a": "Mop A",
+          "b": "Mop B",
+          "c": "Mop C"
+        }
+      },
+      "carpet_shape": {
+        "name": "Formă",
+        "state": {
+          "square": "Pătrat",
+          "round": "Rotund"
+        }
+      },
+      "mopping_pattern": {
+        "name": "Model mopare",
+        "state": {
+          "daily": "Mopare zilnică",
+          "deep": "Mopare profundă"
+        }
+      },
+      "wetness_level": {
+        "name": "Umiditate",
+        "state": {
+          "slightly_dry": "Ușor uscat",
+          "moist": "Umed",
+          "wet": "Ud"
+        }
+      },
+      "task_repeats": {
+        "name": "Repetare sarcină",
+        "state": {
+          "once": "O dată",
+          "daily": "Zilnic",
+          "workdays": "Zile lucrătoare",
+          "weekends": "Weekend"
+        }
+      },
+      "segment_name": {
+        "name": "Nume cameră",
+        "state": {
+          "room": "Cameră",
+          "living_room": "Sufragerie",
+          "primary_bedroom": "Dormitor principal",
+          "study": "Birou",
+          "kitchen": "Bucătărie",
+          "dining_hall": "Dining",
+          "bathroom": "Baie",
+          "balcony": "Balcon",
+          "corridor": "Coridor",
+          "utility_room": "Cămară",
+          "closet": "Dressing",
+          "meeting_room": "Sală de ședințe",
+          "office": "Birou",
+          "fitness_area": "Zonă fitness",
+          "recreation_area": "Zonă recreere",
+          "secondary_bedroom": "Dormitor secundar"
+        }
+      },
+      "furniture_type": {
+        "name": "Tip mobilier",
+        "state": {
+          "single_bed": "Pat de o persoană",
+          "double_bed": "Pat dublu",
+          "arm_chair": "Fotoliu",
+          "two_seat_sofa": "Canapea 2-Locuri",
+          "three_seat_sofa": "Canapea 3-Locuri",
+          "dining_table": "Masă dining",
+          "nightstant": "Noptieră",
+          "coffee_table": "Măsuță de cafea",
+          "toilet": "Toaletă",
+          "litter_box": "Litieră",
+          "pet_bed": "Pat animal de companie",
+          "food_bowl": "Bol mâncare",
+          "pet_toilet": "Toaletă animale",
+          "refrigerator": "Frigider",
+          "washing_machine": "Mașină de spălat",
+          "enclosed_litter_box": "Litieră închisă",
+          "air_conditioner": "Aer condiționat",
+          "tv_cabinet": "Comodă TV",
+          "bookshelf": "Bibliotecă",
+          "shoe_cabinet": "Pantofar",
+          "wardrobe": "Șifonier",
+          "greenery": "Plante",
+          "floor_mirror": "Oglindă de podea",
+          "l_shaped_sofa": "Canapea în-L",
+          "round_coffee_table": "Masă cafea rotundă",
+          "table": "Masă",
+          "arm_chair_narrow": "Fotoliu îngust",
+          "three_seat_sofa_narrow": "Canapea 3-Locuri îngustă",
+          "l_shaped_sofa_right": "Canapea în-L dreapta"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "name": "Stare",
+        "state": {
+          "unknown": "Necunoscut",
+          "sweeping": "Măturare",
+          "charging": "Încărcare",
+          "error": "Eroare",
+          "idle": "Inactiv",
+          "paused": "Pauză",
+          "returning": "Întoarcere la doc",
+          "mopping": "Ștergere",
+          "drying": "Uscare",
+          "washing": "Spălare",
+          "returning_to_wash": "Întoarcere la spălare",
+          "building": "Construire",
+          "sweeping_and_mopping": "Măturare și ștergere",
+          "charging_completed": "Încărcare finalizată",
+          "upgrading": "Actualizare",
+          "clean_summon": "Invocare pentru curățare",
+          "station_reset": "Resetare stație",
+          "returning_install_mop": "Întoarcere pentru a instala mopul",
+          "returning_remove_mop": "Întoarcere pentru a scoate mopul",
+          "water_check": "Verificare apă",
+          "clean_add_water": "Curățare și adăugare apă",
+          "washing_paused": "Spălare în pauză",
+          "auto_emptying": "Golire automată",
+          "remote_control": "Control de la distanță",
+          "smart_charging": "Încărcare inteligentă",
+          "second_cleaning": "A doua curățare",
+          "human_following": "Urmărire umană",
+          "spot_cleaning": "Curățare locală",
+          "returning_auto_empty": "Întoarcere la Golire Automată",
+          "waiting_for_task": "Așteptare sarcină",
+          "station_cleaning": "Curățare stație",
+          "returning_to_drain": "Întoarcere la scurgere",
+          "draining": "Scurgere",
+          "auto_water_draining": "Scurgere automată a apei",
+          "emptying": "Golire",
+          "dust_bag_drying": "Uscarea sacului de praf",
+          "dust_bag_drying_paused": "Uscarea sacului de praf întreruptă",
+          "heading_to_extra_cleaning": "Merg către curățare suplimentară",
+          "extra_cleaning": "Curățare suplimentară",
+          "finding_pet_paused": "Găsire animal în pauză",
+          "finding_pet": "Găsire animal",
+          "shortcut": "Scurtătură",
+          "monitoring": "Monitorizare",
+          "monitoring_paused": "Monitorizare în pauză",
+          "initial_deep_cleaning": "Curățare profundă inițială",
+          "initial_deep_cleaning_paused": "Curățare profundă inițială întreruptă",
+          "sanitizing": "Sanitizare",
+          "sanitizing_with_dry": "Sanitizare cu uscare",
+          "changing_mop": "Schimbare mop",
+          "changing_mop_paused": "Schimbare mop întreruptă",
+          "floor_maintaining": "Întreținere podea",
+          "floor_maintaining_paused": "Întreținere podea întreruptă",
+          "remote_pickup": "Ridicare la distanță",
+          "arranging_items": "Aranjarea obiectelor",
+          "pet_guarding": "Guarda animalelor",
+          "pet_guarding_paused": "Guarda animalelor în pauză",
+          "installing_mop": "Instalarea mopului",
+          "uninstalling_mop": "Dezinstalarea mopului",
+          "intelligent_recharging": "Reîncărcare inteligentă",
+          "assisted_cleaning": "Curățare asistată",
+          "entering_dock": "Intrarea în doc",
+          "leaving_dock": "Ieșirea din doc",
+          "navigating_to_climber": "Navigarea către cățărător",
+          "docking_to_climber": "Andocarea la cățărător",
+          "climber_docked": "Cățărător andocat",
+          "climber_navigating": "Cățărătorul navighează",
+          "climbing_stairs": "Urcarea scărilor",
+          "climbing_stairs_completed": "Urcarea scărilor finalizată",
+          "climber_at_dock": "Cățărător la doc",
+          "climber_leaving_dock": "Cățărătorul părăsește docul"
+        }
+      },
+      "status": {
+        "name": "Status",
+        "state": {
+          "unknown": "Necunoscut",
+          "idle": "Inactiv",
+          "paused": "Pauză",
+          "cleaning": "Curățare",
+          "returning": "Întoarcere la doc",
+          "spot_cleaning": "Curățare locală",
+          "follow_wall_cleaning": "Curățare de-a lungul peretelui",
+          "charging": "Încărcare",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "Setare WiFi",
+          "power_off": "Oprire",
+          "factory": "Fabrică",
+          "error": "Eroare",
+          "remote_control": "Control de la distanță",
+          "sleeping": "Dormire",
+          "self_test": "Autotestare",
+          "factory_test": "Testare din fabrică",
+          "standby": "În așteptare",
+          "room_cleaning": "Curățare cameră",
+          "zone_cleaning": "Curățare zonă",
+          "fast_mapping": "Cartografiere rapidă",
+          "cruising_path": "Deplasare pe traseu",
+          "cruising_point": "Deplasare către un punct",
+          "summon_clean": "Invocare pentru curățare",
+          "shortcut": "Scurtătură",
+          "person_follow": "Urmărire persoană",
+          "water_check": "Verificare apă",
+          "pet_guarding": "Protecția animalelor de companie",
+          "auto_arrangement": "Aranjare automată",
+          "smart_arrangement": "Aranjare inteligentă",
+          "zoned_arrangement": "Aranjare pe zone"
+        }
+      },
+      "task_status": {
+        "name": "Status sarcină",
+        "state": {
+          "unknown": "Necunoscut",
+          "completed": "Finalizat",
+          "cleaning": "Curățare",
+          "zone_cleaning": "Curățare zonă",
+          "room_cleaning": "Curățare cameră",
+          "spot_cleaning": "Curățare locală",
+          "fast_mapping": "Cartografiere rapidă",
+          "cleaning_paused": "Curățare în pauză",
+          "room_cleaning_paused": "Curățare cameră în pauză",
+          "zone_cleaning_paused": "Curățare zonă în pauză",
+          "spot_cleaning_paused": "Curățare locală în pauză",
+          "map_cleaning_paused": "Curățare hartă în pauză",
+          "docking_paused": "Andocare în pauză",
+          "mopping_paused": "Ștergere în pauză",
+          "zone_mopping_paused": "Ștergere zonă în pauză",
+          "room_mopping_paused": "Ștergere cameră în pauză",
+          "zone_docking_paused": "Andocare zonă în pauză",
+          "room_docking_paused": "Andocare cameră în pauză",
+          "cruising_path": "Deplasare pe traseu",
+          "cruising_path_paused": "Deplasare pe traseu în pauză",
+          "cruising_point": "Deplasare către un punct",
+          "cruising_point_paused": "Deplasare către un punct în pauză",
+          "summon_clean_paused": "Invocare pentru curățare în pauză",
+          "returning_to_install_mop": "Întoarcere pentru a instala mopul",
+          "returning_to_remove_mop": "Întoarcere pentru a scoate mopul",
+          "station_cleaning": "Curățare stație",
+          "pet_finding": "Găsire animal de companie",
+          "auto_cleaning_washing_paused": "Curățare automată cu spălare în pauză",
+          "area_cleaning_washing_paused": "Curățare zonă cu spălare în pauză",
+          "custom_cleaning_washing_paused": "Curățare personalizată cu spălare în pauză",
+          "picking_up_item": "Ridicarea obiectului",
+          "picking_up_item_paused": "Ridicarea obiectului întreruptă",
+          "picking_up_item_success": "Obiect ridicat cu succes",
+          "remote_pickup_initializing": "Inițializare ridicare la distanță",
+          "remote_pickup_identifing": "Identificare ridicare la distanță",
+          "manual_remote_pickup": "Ridicare la distanță manuală",
+          "automatic_remote_pickup": "Ridicare la distanță automată",
+          "remote_pickup_in_progress": "Ridicare la distanță în curs",
+          "remote_pickup_paused": "Ridicare la distanță întreruptă",
+          "placing_item": "Plasarea obiectului",
+          "placing_item_paused": "Plasarea obiectului întreruptă"
+        }
+      },
+      "water_tank": {
+        "name": "Rezervor apă",
+        "state": {
+          "unknown": "Necunoscut",
+          "installed": "Instalat",
+          "not_installed": "Neinstalat",
+          "mop_installed": "Mop instalat",
+          "in_station": "În stație"
+        }
+      },
+      "mop_pad": {
+        "name": "Mop",
+        "state": {
+          "unknown": "Necunoscut",
+          "installed": "Instalat",
+          "not_installed": "Neinstalat",
+          "mop_installed": "Mop instalat",
+          "in_station": "În stație"
+        }
+      },
+      "dust_collection": {
+        "name": "Colectare praf",
+        "state": {
+          "unknown": "Necunoscut",
+          "not_available": "Indisponibil",
+          "available": "Disponibil",
+          "over_use": "Utilizare excesivă",
+          "never": "Niciodată"
+        }
+      },
+      "auto_empty_status": {
+        "name": "Status golire automată",
+        "state": {
+          "unknown": "Necunoscut",
+          "idle": "Inactiv",
+          "active": "Activ",
+          "not_performed": "Nefectuat"
+        }
+      },
+      "error": {
+        "name": "Eroare",
+        "state": {
+          "unknown": "Cod de eroare necunoscut",
+          "no_error": "Nicio eroare",
+          "drop": "Roțile sunt suspendate",
+          "cliff": "Eroare senzor de pantă",
+          "bumper": "Senzorul de coliziune este blocat",
+          "gesture": "Robotul este înclinat",
+          "bumper_repeat": "Senzorul de coliziune este blocat",
+          "drop_repeat": "Roțile sunt suspendate",
+          "optical_flow": "Eroare senzor de flux optic",
+          "no_box": "Recipientul de praf nu este instalat",
+          "no_tank_box": "Rezervorul de apă nu este instalat",
+          "water_box_empty": "Rezervorul de apă este gol",
+          "box_full": "Filtrul nu este uscat sau este blocat",
+          "brush": "Peria principală este înfășurată",
+          "side_brush": "Peria laterală este înfășurată",
+          "fan": "Filtrul nu este uscat sau este blocat",
+          "left_wheel_motor": "Robotul este blocat sau roata stângă poate fi blocată de obiecte străine",
+          "right_wheel_motor": "Robotul este blocat sau roata dreaptă poate fi blocată de obiecte străine",
+          "turn_suffocate": "Robotul este blocat sau nu se poate întoarce",
+          "forward_suffocate": "Robotul este blocat sau nu poate avansa",
+          "charger_get": "Nu găsește baza",
+          "battery_low": "Baterie descărcată",
+          "charge_fault": "Eroare de încărcare",
+          "battery_percentage": "Eroare nivel baterie",
+          "heart": "Eroare internă",
+          "camera_occlusion": "Eroare senzor de poziționare vizuală",
+          "move": "Eroare senzor de mișcare",
+          "flow_shielding": "Eroare senzor optic",
+          "infrared_shielding": "Eroare ecranare infraroșu",
+          "charge_no_electric": "Stația de încărcare nu este alimentată",
+          "battery_fault": "Eroare baterie",
+          "fan_speed_error": "Eroare senzor viteză ventilator",
+          "left_wheell_speed": "Roata stângă poate fi blocată de obiecte străine",
+          "right_wheell_speed": "Roata dreaptă poate fi blocată de obiecte străine",
+          "bmi055_acce": "Eroare accelerometru",
+          "bmi055_gyro": "Eroare giroscop",
+          "xv7001": "Eroare giroscop",
+          "left_magnet": "Eroare senzor magnet stânga",
+          "right_magnet": "Eroare senzor magnet dreapta",
+          "flow_error": "Eroare senzor de flux",
+          "infrared_fault": "Eroare infraroșu",
+          "camera_fault": "Eroare cameră",
+          "strong_magnet": "Câmp magnetic puternic detectat",
+          "water_pump": "Eroare pompă de apă",
+          "rtc": "Eroare RTC",
+          "auto_key_trig": "Eroare internă",
+          "p3v3": "Eroare internă",
+          "camera_idle": "Eroare internă",
+          "blocked": "Traseul de curățare este blocat, întoarcere la doc.",
+          "lds_error": "Eroare senzor distanță laser",
+          "lds_bumper": "Eroare senzor distanță laser bumper",
+          "filter_blocked": "Filtrul nu este uscat sau este blocat",
+          "edge": "Eroare senzor de margine",
+          "carpet": "Vă rugăm să porniți robotul într-o zonă fără covoare.",
+          "laser": "Senzorul de evitare a obstacolelor 3D funcționează defectuos.",
+          "ultrasonic": "Senzorul cu ultrasunete funcționează defectuos.",
+          "no_go_zone": "Zonă interzisă sau perete virtual detectat.",
+          "route": "Traseul de curățare este blocat.",
+          "restricted": "S-a detectat că aspiratorul-mopul se află într-o zonă restricționată.",
+          "remove_mop": "Ștergere finalizată. Vă rugăm să scoateți și să curățați mopul la timp.",
+          "mop_removed": "Mopul cade în timpul sarcinii de curățare.",
+          "mop_pad_stop_rotate": "Mopul s-a oprit din rotire.",
+          "bin_full": "Sacul de colectare a prafului este plin sau conducta de aer este blocată.",
+          "bin_open": "Capacul superior al bazei de golire automată nu este închis sau sacul de colectare a prafului nu este instalat.",
+          "water_tank": "Rezervorul de apă curată nu este instalat.",
+          "dirty_water_tank": "Rezervorul de apă murdară este plin sau nu este instalat.",
+          "water_tank_dry": "Nivel scăzut al apei în rezervorul de apă curată, vă rugăm să umpleți cu apă la timp.",
+          "dirty_water_tank_blocked": "Rezervorul de apă murdară este blocat.",
+          "dirty_water_tank_pump": "Eroare pompă rezervor apă murdară.",
+          "mop_pad": "Suportul de spălare nu este instalat corect.",
+          "wet_mop_pad": "Nivelul apei al suportului de spălare este anormal, vă rugăm să curățați suportul de spălare la timp.",
+          "clean_mop_pad": "Sarcina de curățare este completă, vă rugăm să curățați suportul de spălare a mopului.",
+          "clean_tank_level": "Verificați și umpleți rezervorul de apă curată.",
+          "station_disconnected": "Stația de bază nu este alimentată",
+          "dirty_tank_level": "Nivelul apei din rezervorul de apă uzată este prea ridicat.",
+          "washboard_level": "Nivelul apei din suportul de spălare este prea ridicat.",
+          "no_mop_in_station": "Mopul nu este în stație.",
+          "dust_bag_full": "Sacul de praf este plin sau orificiile de aerisire sunt blocate.",
+          "self_test_failed": "Scurgere anormală de apă din rezervorul de apă curată al modulelor de apă superior și inferior.",
+          "mop_install_failed": "Instalarea mopului a eșuat.",
+          "low_battery_turn_off": "Baterie descărcată. Robotul se va opri în curând.",
+          "dirty_tank_not_installed": "Rezervorul de apă uzată al robotului nu este instalat.",
+          "robot_in_hidden_room": "Zonă ascunsă. Vă rugăm să mutați robotul în zona corespunzătoare și să reîncercați.",
+          "washboard_not_working": "Suportul de spălare nu funcționează.",
+          "return_to_charge_failed": "Întoarcerea la încărcare a eșuat.",
+          "lds_failed_to_lift": "Nu s-a putut ridica modulul LDS.",
+          "robot_stuck": "LDS nu poate fi ridicat aici pentru poziționare.",
+          "robot_stuck_repeat": "Mutați robotul într-o zonă deschisă și reluați sarcina.",
+          "slippery_floor": "Podea alunecoasă. Vă rugăm să încercați din nou mai târziu.",
+          "check_mop_install": "Vă rugăm să verificați dacă mopul este instalat corect.",
+          "dirty_water_tank_full": "Nivel anormal al apei în rezervorul de apă murdară.",
+          "retractable_leg_stuck": "Vă rugăm să verificați dacă picioarele retractabile sunt blocate.",
+          "internal_error": "Defecțiune din cauza unei erori interne. Încercați să reporniți robotul.",
+          "robot_stuck_on_tables": "Robotul s-a blocat între mese și scaune.",
+          "robot_stuck_on_passage": "Robotul s-a blocat în pasaj îngust.",
+          "robot_stuck_on_threshold": "Robotul s-a blocat la prag/treaptă.",
+          "robot_stuck_on_low_lying_area": "Robotul s-a blocat într-o zonă joasă.",
+          "robot_stuck_on_ramp": "Robotul a detectat rampe periculoase pe traseu.",
+          "robot_stuck_on_obstacle": "Robotul a detectat obstacole pe traseu.",
+          "robot_stuck_on_pet": "Robotul a detectat oameni sau animale pe traseu.",
+          "robot_stuck_on_slippery_surface": "Robotul este blocat din cauza alunecării.",
+          "robot_stuck_on_carpet": "Robotul alunecă pe covor",
+          "drainage_failed": "Drenaj anormal din rezervorul de apă murdară",
+          "mop_not_detected": "Mop nedetectat.",
+          "mop_holder_error": "Eroare cantitate/plasare suport mop în stație.",
+          "dock_error": "Eroare stație.",
+          "wash_failed": "Spălarea mopului murdar a eșuat.",
+          "robot_stuck_on_curtain": "Robotul alunecă în zona perdelei",
+          "edge_mop_stop_rotate": "Mopul de margine s-a oprit din rotație.",
+          "edge_mop_detached": "Mopul de margine s-a desprins.",
+          "chassis_lift_malfunction": "Defecțiune ridicare șasiu.",
+          "mop_cover_error": "Verificați dacă există resturi lângă rola mopului și capac.",
+          "roller_mop_error": "Verificați dacă există resturi lângă rola mopului și capac.",
+          "onboard_water_tank_empty": "Nivel scăzut în rezervorul de apă curată al robotului.",
+          "onboard_dirty_water_tank_full": "Rezervorul de apă murdară al robotului este plin.",
+          "mop_not_installed": "Mop neinstalat.",
+          "fluffing_roller_error": "Eroare rolă pufoasă.",
+          "blocked_by_obstacle": "Robot blocat de obstacol.",
+          "robotic_arm_stopped": "Brațul robotului s-a oprit.",
+          "drainage_outlet_filter": "Filtrul de evacuare al robotului este înfundat.",
+          "main_wheels_error": "Eroare la roțile principale."
+        }
+      },
+      "charging_status": {
+        "name": "Status încărcare",
+        "state": {
+          "unknown": "Necunoscut",
+          "charging": "Încărcare",
+          "not_charging": "Nu se încarcă",
+          "return_to_charge": "Întoarcere la încărcare",
+          "charging_completed": "Încărcare finalizată"
+        }
+      },
+      "relocation_status": {
+        "name": "Status relocare",
+        "state": {
+          "unknown": "Necunoscut",
+          "located": "Localizat",
+          "locating": "Localizare",
+          "failed": "Eșuat",
+          "success": "Succes"
+        }
+      },
+      "self_wash_base_status": {
+        "name": "Status bază autospălare",
+        "state": {
+          "unknown": "Necunoscut",
+          "idle": "Inactiv",
+          "washing": "Spălare",
+          "drying": "Uscare",
+          "paused": "Pauză",
+          "returning": "Întoarcere la spălare",
+          "clean_add_water": "Curățare și adăugare apă",
+          "adding_water": "Adăugare apă"
+        }
+      },
+      "low_water_warning": {
+        "name": "Avertizare nivel scăzut apă",
+        "state": {
+          "no_warning": "Nicio avertizare",
+          "no_water_left": "Apa din rezervorul de apă curată este pe cale să se termine. Verificați și umpleți rezervorul de apă curată prompt.",
+          "no_water_left_after_clean": "Mopul a fost curățat. S-a detectat că apa din rezervorul de apă curată este insuficientă, vă rugăm să umpleți rezervorul de apă curată și să goliți rezervorul de apă uzată.",
+          "no_water_for_clean": "Nivel scăzut al apei în rezervorul de apă curată. Robotul a trecut la Modul de Aspirare.",
+          "low_water": "Pe cale de a rămâne fără apă. Vă rugăm să umpleți rezervorul de apă curată.",
+          "tank_not_installed": "Rezervorul de apă curată nu este instalat."
+        }
+      },
+      "stream_status": {
+        "name": "Status flux",
+        "state": {
+          "unknown": "Necunoscut",
+          "idle": "Inactiv",
+          "video": "Înregistrare video",
+          "audio": "Înregistrare audio",
+          "recording": "Înregistrare"
+        }
+      },
+      "drainage_status": {
+        "name": "Status drenaj",
+        "state": {
+          "unknown": "Necunoscut",
+          "idle": "Inactiv",
+          "draining": "Scurgere",
+          "draining_successful": "Scurgere reușită",
+          "draining_failed": "Scurgere eșuată"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "Status rezervor apă curată",
+        "state": {
+          "unknown": "Necunoscut",
+          "not_available": "Indisponibil",
+          "not_installed": "Neinstalat",
+          "low_water": "Nivel scăzut al apei",
+          "installed": "Instalat"
+        }
+      },
+      "dirty_water_tank_status": {
+        "name": "Status rezervor apă murdară",
+        "state": {
+          "unknown": "Necunoscut",
+          "installed": "Instalat",
+          "not_installed_or_full": "Neinstalat sau plin"
+        }
+      },
+      "dust_bag_status": {
+        "name": "Status sac praf",
+        "state": {
+          "unknown": "Necunoscut",
+          "installed": "Instalat",
+          "not_installed": "Neinstalat",
+          "check": "Verificare"
+        }
+      },
+      "detergent_status": {
+        "name": "Status detergent",
+        "state": {
+          "unknown": "Necunoscut",
+          "installed": "Instalat",
+          "disabled": "Dezactivat",
+          "low_detergent": "Detergent scăzut"
+        }
+      },
+      "hot_water_status": {
+        "name": "Status apă fierbinte",
+        "state": {
+          "unknown": "Necunoscut",
+          "disabled": "Dezactivat",
+          "enabled": "Activat"
+        }
+      },
+      "station_drainage_status": {
+        "name": "Status drenaj stație",
+        "state": {
+          "unknown": "Necunoscut",
+          "idle": "Inactiv",
+          "draining": "Scurgere"
+        }
+      },
+      "task_type": {
+        "name": "Tip sarcină",
+        "state": {
+          "standard": "Curățare standard",
+          "standard_paused": "Curățare standard în pauză",
+          "custom": "Curățare personalizată",
+          "custom_paused": "Curățare personalizată în pauză",
+          "shortcut": "Curățare rapidă",
+          "shortcut_paused": "Curățare rapidă în pauză",
+          "scheduled": "Curățare programată",
+          "scheduled_paused": "Curățare programată în pauză",
+          "smart": "Curățare inteligentă",
+          "smart_paused": "Curățare inteligentă în pauză",
+          "partial": "Curățare parțială",
+          "partial_paused": "Curățare parțială în pauză",
+          "summon": "Invocare curățare",
+          "summon_paused": "Invocare curățare în pauză",
+          "water_stain": "Curățare pete de apă",
+          "water_stain_paused": "Curățare pete de apă în pauză",
+          "boosted_edge_cleaning": "Curățare intensificată a marginilor",
+          "hair_compressing": "Compresie păr",
+          "large_particle_cleaning": "Curățare particule mari",
+          "intensive_stain_cleaning": "Curățare intensă a petelor",
+          "stain_cleaning": "Curățare pete",
+          "initial_deep_cleaning": "Curățare profundă inițială",
+          "initial_deep_cleaning_paused": "Curățare profundă inițială întreruptă",
+          "mop_pad_heating": "Încălzirea lavetei mop",
+          "cleaning_after_mapping": "Curățare după cartografiere",
+          "small_particle_cleaning": "Curățare particule mici",
+          "changing_mop": "Schimbare mop",
+          "changing_mop_paused": "Schimbare mop întreruptă",
+          "floor_maintaining": "Întreținere podea",
+          "floor_maintaining_paused": "Întreținere podea întreruptă",
+          "arranging_items": "Aranjarea obiectelor",
+          "arranging_items_paused": "Aranjarea obiectelor întreruptă",
+          "intensive_hair_cleaning": "Curățare intensivă a părului",
+          "accessory_handling": "Manipularea accesoriilor",
+          "increased_drum_speed_cleaning": "Curățare cu viteză crescută a tamburului",
+          "pressurized_cleaning": "Curățare sub presiune",
+          "steam_cleaning": "Curățare cu abur",
+          "steam_cleaning_paused": "Curățare cu abur întreruptă"
+        }
+      },
+      "dust_bag_drying_status": {
+        "name": "Status uscare sac praf",
+        "state": {
+          "idle": "Inactiv",
+          "drying": "Uscare",
+          "paused": "Pauză"
+        }
+      },
+      "nation_matched": {
+        "name": "Blocare regiune",
+        "state": {
+          "unknown": "Dezactivat",
+          "matched": "Deblocat",
+          "unmatched": "Blocat",
+          "na": "Indisponibil"
+        }
+      },
+      "startup_method": {
+        "name": "Pornit de",
+        "state": {
+          "button": "Buton",
+          "app": "Aplicație",
+          "scheduled": "Programat",
+          "voice": "Voce",
+          "second_cleaning": "A doua curățare",
+          "unknown": "Necunoscut"
+        }
+      },
+      "cleaning_status": {
+        "name": "Curățare",
+        "state": {
+          "interrupted": "Întreruptă",
+          "completed": "Finalizată",
+          "manually_ended": "Terminată manual",
+          "failed": "Eșuată",
+          "unknown": "Necunoscut"
+        }
+      },
+      "cleanup_method": {
+        "name": "Metodă curățare",
+        "state": {
+          "other": "Alta",
+          "default": "Implicită",
+          "customized": "Personalizată",
+          "cleangenius": "CleanGenius",
+          "water_stain": "Pată de apă",
+          "unknown": "Necunoscut"
+        }
+      },
+      "task_end_type": {
+        "name": "Finalizat de",
+        "state": {
+          "other": "Alta",
+          "manual_docking": "Andocare manuală",
+          "docking": "Andocare",
+          "failed_docking": "Andocare eșuată",
+          "stop": "Oprire",
+          "unknown": "Necunoscut"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "Motiv întrerupere",
+        "state": {
+          "abnormal_docking": "Andocare anormală",
+          "base_station_powered_off": "Stație de bază oprită",
+          "brush_entangled_by_carpet": "Perie încurcată în covor",
+          "brush_entangled_by_object": "Perie încurcată într-un obiect",
+          "brush_entangled_by_obstacle": "Perie încurcată într-un obstacol",
+          "cannot_find_base_station": "Baza nu a fost găsită",
+          "cliff_sensor_error": "Eroare senzor de gol",
+          "laser_distance_sensor_error": "Eroare senzor laser",
+          "mop_pad_abnormally_removed": "Mop îndepărtat anormal",
+          "mop_pad_fallen_off": "Mopul a căzut",
+          "mop_pad_fallen_off_by_obstacle": "Mopul a căzut pe obstacol",
+          "mop_pad_fallen_off_by_table": "Mopul a căzut pe masă",
+          "mop_pad_fallen_off_crossing_obstacle": "Mopul a căzut la trecere",
+          "mop_pad_removed": "Mop îndepărtat",
+          "mop_pad_stuck": "Mop blocat",
+          "robot_fallen": "Robot căzut",
+          "robot_is_stuck_on_obstacle": "Robot blocat pe obstacol",
+          "robot_is_stuck_on_step": "Robot blocat pe treaptă",
+          "robot_lifted": "Robot ridicat",
+          "task_completed": "Sarcină finalizată",
+          "unknown": "Necunoscut"
+        }
+      },
+      "recovery_map_type": {
+        "name": "Tip hartă",
+        "state": {
+          "original": "Hartă originală",
+          "edited": "Hartă editată",
+          "backup": "Hartă de rezervă"
+        }
+      },
+      "obstacle_type": {
+        "name": "Tip obstacol",
+        "state": {
+          "unknown": "Necunoscut",
+          "base": "Bază",
+          "scale": "Cântar",
+          "thread": "Fir",
+          "wire": "Cablu",
+          "toy": "Jucărie",
+          "shoes": "Pantofi",
+          "sock": "Șosetă",
+          "fece": "Excrement",
+          "trash_can": "Coș de gunoi",
+          "fabric": "Material",
+          "power_strip": "Prelungitor",
+          "liquid_stain": "Pată lichidă",
+          "obstacle": "Obstacol",
+          "pet": "Animal",
+          "cleaning_tools": "Unelte de curățare",
+          "detected_stain": "Pată detectată",
+          "blocked_room": "Cameră blocată",
+          "easy_to_stuck_furniture": "Mobilă riscantă",
+          "uncleanable_stain": "Pată imposibil de curățat",
+          "leg": "Picior",
+          "large_particles": "Particule mari",
+          "dried_stain": "Pată uscată",
+          "food_bowl": "Bol mâncare",
+          "pet_bed": "Pat animal",
+          "cleaned_stain": "Pată curățată",
+          "skipped_uncleanable_stain": "Pată ignorată",
+          "cleaned_dried_stain": "Pată uscată curățată",
+          "cleaned_large_particles": "Particule mari curățate",
+          "hair": "Păr",
+          "paper": "Hârtie",
+          "cleaned_hair": "Păr curățat",
+          "sundry": "Diverse"
+        }
+      },
+      "obstacle_reason": {
+        "name": "Motiv obstacol",
+        "state": {
+          "blocked_by_virtual_wall": "Blocat de perete virtual",
+          "blocked_by_door": "Blocat de ușă",
+          "blocked_by_threshold": "Blocat de prag",
+          "blocked_by_obstacle": "Blocat de obstacol",
+          "blocked_by_carpet": "Blocat de covor",
+          "blocked_by_detected_carpet": "Blocat de covor detectat",
+          "blocked_by_hidden_obstacle": "Blocat de obstacol ascuns",
+          "blocked_by_dynamic_obstacle": "Blocat de obstacol dinamic",
+          "passage_too_low": "Pasaj prea mic",
+          "step_too_low": "Treaptă prea mică",
+          "failed_to_cross_threshold": "Eșec trecere prag"
+        }
+      },
+      "remaining_battery": {
+        "name": "Baterie rămasă"
+      },
+      "multiple_cleaning_time": {
+        "name": "Curățare multiplă"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "firmware_version": {
+        "name": "Versiune firmware"
+      },
+      "ip_address": {
+        "name": "Adresă IP"
+      },
+      "mac_address": {
+        "name": "Adresă MAC"
+      },
+      "model": {
+        "name": "Model"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "serial_number": {
+        "name": "Număr de serie"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "timezone": {
+        "name": "Fus orar"
+      },
+      "voice_packet_id": {
+        "name": "Pachet voce"
+      },
+      "deodorizer_left": {
+        "name": "Deodorizant"
+      },
+      "detergent_left": {
+        "name": "Soluție de curățare"
+      },
+      "dirty_water_channel_left": {
+        "name": "Canal apă murdară"
+      },
+      "filter_left": {
+        "name": "Filtru"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "Curățare rolă"
+      },
+      "main_brush_left": {
+        "name": "Perie principală"
+      },
+      "mop_pad_left": {
+        "name": "Mop"
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "Rezervor intern apă murdară"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "Curățare filtru rolă"
+      },
+      "scale_inhibitor_left": {
+        "name": "Inhibitor de calcar"
+      },
+      "sensor_dirty_left": {
+        "name": "Curățare senzori"
+      },
+      "side_brush_left": {
+        "name": "Perie laterală"
+      },
+      "silver_ion_left": {
+        "name": "Ioni de argint"
+      },
+      "squeegee_left": {
+        "name": "Răzuitoare"
+      },
+      "tank_filter_left": {
+        "name": "Filtru rezervor"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "Curățare filtru evacuare"
+      },
+      "wheel_dirty_left": {
+        "name": "Curățare roți"
+      }
+    },
+    "toggle": {
+      "customized_cleaning": {
+        "name": "Curățare personalizată"
+      },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Curățare profundă"
+      },
+      "auto_dust_collecting": {
+        "name": "Golire automată"
+      },
+      "hair_compression": {
+        "name": "Compresia părului"
+      },
+      "self_clean": {
+        "name": "Autocurățare"
+      },
+      "deep_mop_washing": {
+        "name": "Spălare profundă mop"
+      },
+      "hot_washing": {
+        "name": "Spălare cu apă fierbinte"
+      },
+      "auto_drying": {
+        "name": "Uscare automată"
+      },
+      "silent_drying": {
+        "name": "Uscare silențioasă"
+      },
+      "uv_sterilization": {
+        "name": "Sterilizare UV"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Curățare personalizată"
+      },
+      "carpet_avoidance": {
+        "name": "Evitare covoare"
+      },
+      "carpet_preferences": {
+        "name": "Preferințe personalizate"
+      },
+      "auto_change_mop": {
+        "name": "Schimbare automată mop"
+      },
+      "multi_floor_map": {
+        "name": "Hartă multietaj"
+      },
+      "intelligent_recognition": {
+        "name": "Recunoaștere inteligentă"
+      },
+      "map_saving": {
+        "name": "Salvare hartă"
+      },
+      "child_lock": {
+        "name": "Blocare copii"
+      },
+      "resume_cleaning": {
+        "name": "Reluare curățare"
+      },
+      "obstacle_avoidance": {
+        "name": "Evitarea obstacolelor"
+      },
+      "carpet_boost": {
+        "name": "Boost pentru covoare"
+      },
+      "carpet_recognition": {
+        "name": "Recunoaștere covoare"
+      },
+      "clean_carpets_first": {
+        "name": "Curățare covoare întâi"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "Închidere capac rolă pe covor"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "Curățare intensivă covoare"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "Rotație perie laterală pe covor"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "Ridicare șasiu pe covor"
+      },
+      "auto_mount_mop": {
+        "name": "Montare automată mop"
+      },
+      "mopping_with_detergent": {
+        "name": "Spălare cu detergent"
+      },
+      "mop_washing_with_detergent": {
+        "name": "Spălare mop cu detergent"
+      },
+      "auto_add_detergent": {
+        "name": "Adăugare automată detergent"
+      },
+      "smart_mop_washing": {
+        "name": "Spălare inteligentă mop"
+      },
+      "wider_corner_coverage": {
+        "name": "Acoperire mai mare a colțurilor"
+      },
+      "pressurized_cleaning": {
+        "name": "Curățare presurizată"
+      },
+      "gap_cleaning_extension": {
+        "name": "Extensie curățare spații înguste"
+      },
+      "mopping_under_furnitures": {
+        "name": "Spălare sub mobilă"
+      },
+      "floor_direction_cleaning": {
+        "name": "Curățare în direcția podelei"
+      },
+      "ring_light_always_on": {
+        "name": "Lumină inelară permanentă"
+      },
+      "collision_avoidance": {
+        "name": "Prevenirea coliziunilor"
+      },
+      "fill_light": {
+        "name": "Lumină cameră"
+      },
+      "ai_obstacle_detection": {
+        "name": "Detectare obstacole AI"
+      },
+      "ai_pet_detection": {
+        "name": "Detectare animale"
+      },
+      "pet_focused_detection": {
+        "name": "Detectare focalizată pe animale"
+      },
+      "pet_focused_cleaning": {
+        "name": "Curățare focalizată pe animale"
+      },
+      "ai_obstacle_picture": {
+        "name": "Poze obstacole"
+      },
+      "obstacle_crossing": {
+        "name": "Trecere obstacole sincronizată"
+      },
+      "active_suspension_crossing": {
+        "name": "Trecere cu suspensie activă"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "Curățare dinamică obstacole"
+      },
+      "large_particles_boost": {
+        "name": "Boost pentru particule mari"
+      },
+      "streaming_voice_prompt": {
+        "name": "Mesaj vocal streaming"
+      },
+      "voice_assistant": {
+        "name": "Asistent vocal"
+      },
+      "off_peak_charging": {
+        "name": "Încărcare în afara vârfului"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "Dezactivare reluare curățare"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "Dezactivare golire automată"
+      },
+      "dnd_reduce_volume": {
+        "name": "Reducere volum"
+      },
+      "dnd": {
+        "name": "DnD"
+      }
+    },
+    "number": {
+      "wetness_level": {
+        "name": "Umiditate"
+      },
+      "auto_empty_area": {
+        "name": "Zonă golire automată"
+      },
+      "drying_time": {
+        "name": "Timp uscare"
+      },
+      "self_clean_time": {
+        "name": "Timp autocurățare"
+      },
+      "self_clean_area": {
+        "name": "Zonă autocurățare"
+      },
+      "volume": {
+        "name": "Volum"
+      }
+    },
+    "time": {
+      "dnd_start": {
+        "name": "Oră început DnD"
+      },
+      "dnd_end": {
+        "name": "Oră sfârșit DnD"
+      },
+      "off_peak_charging_start": {
+        "name": "Oră început înafara vârfului"
+      },
+      "off_peak_charging_end": {
+        "name": "Oră sfârșit înafara vârfului"
+      },
+      "schedule_time": {
+        "name": "Oră pornire"
+      }
+    },
+    "input": {
+      "schedule_repeats": {
+        "name": "Repetări"
+      },
+      "dnd_repeats": {
+        "name": "Repetări"
+      },
+      "map_custom_name": {
+        "name": "Nume hartă"
+      },
+      "segment_custom_name": {
+        "name": "Nume cameră"
+      },
+      "shortcut_name": {
+        "name": "Nume scurtătură"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "Adaugă",
+        "add_map": "Crează hartă",
+        "auto_empty_unavailable": "Golire auto indisponibilă",
+        "auto_emptying": "Golire automată",
+        "backup": "Backup",
+        "bag_drying_unavailable": "Uscare sac indisponibilă",
+        "cancel": "Anulează",
+        "cancel_ignore": "Anulează ignorarea",
+        "carpet": "Covor",
+        "change": "Modifică",
+        "charge": "Încărcare",
+        "clean": "Curăță",
+        "clean_again": "Curăță din nou",
+        "cleaning_settings": "Setări curățare",
+        "cleanings": "Curățări",
+        "close": "Închide",
+        "confirm": "Confirmă",
+        "delete": "Șterge",
+        "delete_carpet": "Șterge covor",
+        "deleted_carpet": "Covor șters",
+        "disable": "Dezactivează",
+        "discard": "Renunță",
+        "dismiss": "Ascunde",
+        "dock": "Bază",
+        "dock_settings": "Setări bază",
+        "download": "Descarcă",
+        "dry": "Usucă",
+        "dry_bag": "Usucă sac",
+        "drying_unavailable": "Uscare indisponibilă",
+        "dynamically_ignored": "Ignorat dinamic",
+        "edit_carpet": "Editează covor",
+        "empty": "Golește",
+        "enable": "Activează",
+        "fast_mapping": "Cartografiere rapidă",
+        "get_dreame_vacuum_card": "Obțineți cardul Dreame Vacuum",
+        "ignore": "Ignoră",
+        "ignore_obstacle": "Ignoră obstacol",
+        "impassable_threshold": "Prag de netrecut",
+        "job_details": "Detalii sarcină",
+        "keep_disabled": "Menține dezactivat",
+        "map_display": "Afișare hartă",
+        "map_management": "Gestionare hărți",
+        "new_dnd": "Sarcina noua Nu Deranjați",
+        "new_schedule": "Crează program",
+        "new_shortcut": "Sarcină nouă de comandă rapidă",
+        "next_job": "Sarcina următoare",
+        "no_go": "Zonă interzisă",
+        "no_mop": "Fără spălare",
+        "objects": "Obiecte",
+        "override": "Suprascrie",
+        "passable_threshold": "Prag de trecut",
+        "pause": "Pauză",
+        "pause_washing": "Pauză spălare",
+        "previous_job": "Sarcina anterioară",
+        "ramp": "Rampă",
+        "reload": "Reîncarcă",
+        "rename": "Redenumește",
+        "repeats": "Repet.",
+        "replace": "Înlocuiește",
+        "reset": "Resetează",
+        "restore": "Restabilește",
+        "restore_map": "Restabilește harta",
+        "resume": "Reia",
+        "resume_washing": "Reia spălarea",
+        "rooms": "Camere",
+        "rotate_left": "Rotește stânga",
+        "rotate_right": "Rotește dreapta",
+        "round_carpet": "Covor rotund",
+        "save": "Salvează",
+        "select_map": "Alege harta",
+        "shortcuts": "Scurtături",
+        "square_carpet": "Covor pătrat",
+        "start": "Pornire",
+        "start_auto_empty": "Pornire golire",
+        "start_bag_drying": "Usucă sac",
+        "start_drying": "Pornire uscare",
+        "start_task": "Pornire sarcină",
+        "start_washing": "Pornire spălare",
+        "stop": "Oprire",
+        "stop_bag_drying": "Oprire uscare sac",
+        "stop_drying": "Oprire uscare",
+        "understood": "Am înțeles",
+        "virtual_threshold": "Prag virtual",
+        "virtual_wall": "Perete",
+        "wash": "Spală",
+        "washing_unavailable": "Spălare indisponibilă",
+        "wifi_map": "Hartă Wi-Fi"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "Imagine fundal",
+        "card_object_action_buttons": "Butoane acțiune",
+        "card_object_animations": "Animații",
+        "card_object_cleanup_notification": "Notif. curățare",
+        "card_object_controls": "Control",
+        "card_object_cruising_history": "Istoric traseu",
+        "card_object_fault_notification": "Notif. erori",
+        "card_object_information_notification": "Notif. info",
+        "card_object_low_water_notification": "Notif. nivel apă scăzut",
+        "card_object_map_change_confirmation": "Confirmare schimbare hartă",
+        "card_object_menu": "Meniu",
+        "card_object_progress_bar": "Bară de progres",
+        "card_object_saved_notification": "Notif. salvare",
+        "card_object_shortcuts": "Scurtături",
+        "card_object_state": "Stare",
+        "card_object_status": "Status",
+        "card_object_task_type": "Tip sarcină",
+        "card_object_title": "Titlu",
+        "card_object_warning_notification": "Notif. avertisment",
+        "color_scheme": "Schemă culori",
+        "color_scheme_dreame_auto": "Dreame automat",
+        "color_scheme_dreame_dark": "Dreame întunecat",
+        "color_scheme_dreame_light": "Dreame luminos",
+        "color_scheme_grayscale": "Scara de gri",
+        "color_scheme_mijia_auto": "Mijia automat",
+        "color_scheme_mijia_dark": "Mijia întunecat",
+        "color_scheme_mijia_light": "Mijia luminos",
+        "copied": "Copiat",
+        "copy": "Copiază",
+        "copy_all": "Copiază tot",
+        "disable_haptic": "Dezact. feedback haptic",
+        "editable_objects": "Obiecte editabile",
+        "font_size": "Mărime font",
+        "full_height": "Înălțime completă",
+        "grid_size": "Mărime grilă",
+        "height": "Înălțime",
+        "hidden_card_objects": "Obiecte card ascunse",
+        "hidden_objects": "Obiecte ascunse",
+        "hide_map_info": "Ascunde info hartă",
+        "icon_set": "Set pictograme",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "Dreame vechi",
+        "icon_set_material": "Material Design",
+        "icon_set_mijia": "Mijia",
+        "left": "Stânga",
+        "left_handed": "Mod stângaci",
+        "limit_height": "Ajustează la ecran",
+        "locked": "Blocat",
+        "locked_always": "Întotdeauna",
+        "locked_auto": "Automat",
+        "locked_never": "Niciodată",
+        "locked_only_touch": "Doar atingere",
+        "map": "Hartă %name%",
+        "map_1": "1-a hartă",
+        "map_2": "a 2-a hartă",
+        "map_3": "a 3-a hartă",
+        "map_4": "a 4-a hartă",
+        "map_5": "a 5-a hartă",
+        "map_color_active_area": "Zonă activă",
+        "map_color_active_area_outline": "Contur zonă activă",
+        "map_color_active_point": "Punct activ",
+        "map_color_active_point_outline": "Contur punct activ",
+        "map_color_auto_low_lying_area": "Adâncitură automată",
+        "map_color_carpet_color": "Culoare covor",
+        "map_color_curtain": "Perdea",
+        "map_color_detected_carpet_color": "Culoare covor detec.",
+        "map_color_floor": "Podea",
+        "map_color_floor_material": "Material podea",
+        "map_color_icon_background": "Fundal pictogramă",
+        "map_color_impassable_threshold": "Prag de netrecut",
+        "map_color_manual_low_lying_area": "Adâncitură manuală",
+        "map_color_mop_path": "Traseu spălare",
+        "map_color_new_segment": "Cameră nouă",
+        "map_color_no_go": "Zonă interzisă",
+        "map_color_no_go_outline": "Contur zonă interzisă",
+        "map_color_no_mop": "Zonă fără spălare",
+        "map_color_no_mop_outline": "Contur fără spălare",
+        "map_color_obstacle_background": "Fundal obstacol",
+        "map_color_order": "Ordine",
+        "map_color_outside": "Exterior",
+        "map_color_passable_threshold": "Prag de trecut",
+        "map_color_passive_segment": "Cameră pasivă",
+        "map_color_path": "Traseu",
+        "map_color_ramp": "Rampă",
+        "map_color_segment": "Cameră",
+        "map_color_settings_background": "Fundal setări",
+        "map_color_text": "Text",
+        "map_color_text_stroke": "Bordură text",
+        "map_color_virtual_threshold": "Prag virtual",
+        "map_color_virtual_wall": "Perete virtual",
+        "map_color_wall": "Perete",
+        "map_config": "Config. Hartă",
+        "map_display": "Afișare hartă",
+        "map_display_floor_plan": "Planul etajului",
+        "map_display_floor_plan_only": "Doar planul etajului",
+        "map_display_floor_plan_without_texture": "Planul etajului fără textură",
+        "map_display_standard": "Standard",
+        "map_object_active_area": "Zonă activă",
+        "map_object_active_cruise_point": "Punct traseu activ",
+        "map_object_active_point": "Punct activ",
+        "map_object_animations": "Animații",
+        "map_object_blocked_segment": "Camere blocate",
+        "map_object_blocked_segments": "Camere blocate",
+        "map_object_carpet": "Covor",
+        "map_object_charger": "Încărcător",
+        "map_object_cleaning_sequence": "Ordine curățare",
+        "map_object_cruise_point": "Punct traseu",
+        "map_object_curtain": "Perdea",
+        "map_object_customized_cleaning": "Curățare perso.",
+        "map_object_deleted_carpet": "Covor șters",
+        "map_object_detected_carpet": "Covor detectat",
+        "map_object_door": "Ușă",
+        "map_object_floor": "Podea",
+        "map_object_floor_material": "Material podea",
+        "map_object_furniture": "Mobilă",
+        "map_object_furniture_image": "Imagini mobilă",
+        "map_object_hidden_segments": "Camere ascunse",
+        "map_object_icon": "Pictogramă",
+        "map_object_ignored_obstacles": "Obstacole ignorate",
+        "map_object_impassable_threshold": "Praguri netrecut",
+        "map_object_lock_indicator": "Indicator blocare",
+        "map_object_low_lying_area": "Zone joase",
+        "map_object_material": "Material podea",
+        "map_object_mop_path": "Traseu spălare",
+        "map_object_mop_type": "Tip spălare",
+        "map_object_name": "Nume",
+        "map_object_name_background": "Fundal nume",
+        "map_object_no_go": "Zonă interzisă",
+        "map_object_no_mop": "Fără spălare",
+        "map_object_object_option": "Opțiune obiect",
+        "map_object_obstacle": "Obstacol",
+        "map_object_obstacle_background": "Fundal obstacol",
+        "map_object_obstacle_color": "Culoare obstacol",
+        "map_object_order": "Ordine",
+        "map_object_passable_threshold": "Praguri de trecut",
+        "map_object_path": "Traseu",
+        "map_object_pet": "Animal comp.",
+        "map_object_predefined_point": "Puncte predef.",
+        "map_object_ramp": "Rampă",
+        "map_object_router": "Router",
+        "map_object_segment": "Cameră",
+        "map_object_segment_type": "Tip cameră",
+        "map_object_selected_segments": "Camere selectate",
+        "map_object_split_line": "Linie divizare",
+        "map_object_stain": "Pată",
+        "map_object_station_status": "Stare bază",
+        "map_object_vacuum": "Aspirator",
+        "map_object_vacuum_status": "Stare aspirator",
+        "map_object_virtual_threshold": "Praguri virtuale",
+        "map_object_virtual_wall": "Pereți virtuali",
+        "map_object_walls": "Pereți",
+        "map_object_zoom_point": "Punct zoom",
+        "object_opacity": "Opacitate obiecte",
+        "object_scale": "Scară obiecte",
+        "opacity": "Opacitate",
+        "override_colors": "Suprascriere culori hartă",
+        "overlay_image": "Imagine suprapusă",
+        "rotation": "Rotație",
+        "scale": "Scară",
+        "scripts": "Scripturi",
+        "selectable_objects": "Obiecte selectabile",
+        "selected_map_config": "Setări %name%",
+        "show_map_info": "Info hartă",
+        "top": "Sus",
+        "url": "Url",
+        "viewport": "Viewport",
+        "width": "Lățime",
+        "zoom": "Zoom"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "Aspiratorul este ocupat!",
+        "apply_changes_or_reload": "Harta s-a schimbat!\nSuprascrieți sau încărcați harta nouă?",
+        "auto_mount_mop_will_enabled": "Montare mop auto va fi activată!",
+        "backup_map": "Backup harta?",
+        "backup_map_will_overwritten": "Backup curent va fi suprascris!",
+        "bag_drying_will_stopped": "Uscare sac va fi oprită!",
+        "carpet_recognition_will_enabled": "Activare detecție covor pentry setări perso.",
+        "carpet_will_deleted": "Covorul va fi șters!",
+        "cleangenius_will_disabled": "CleanGenius va fi dezactivat!",
+        "cleaning_failure": "Cauzele eșecului",
+        "create_map": "Creați o hartă nouă?",
+        "custom_carpet_settings_will_enabled": "Curățare covoare perso. activată!",
+        "custom_carpet_settings_will_enabled_detail": "Setări adaptate la tipul covorului",
+        "customized_cleaning_disabled": "Curățare perso. dezactivată!",
+        "delete_carpet": "Ștergeți covorul?",
+        "delete_dnd": "Ștergeți Nu Deranjați?",
+        "delete_map": "Ștergeți harta?",
+        "delete_schedule": "Ștergeți programarea?",
+        "delete_shortcut": "Ștergeți scurtătura?",
+        "deleted": "Șters cu succes",
+        "device_unavailable": "Dispozitiv indisponibil",
+        "disable_cleangenius": "Dezactivați CleanGenius?",
+        "dnd_confliction": "Conflict Nu Deranjați!",
+        "dnd_confliction_detail": "Sarcina programată în perioada Nu Deranjați.",
+        "dnd_will_deleted": "Nu Deranjați de la %start% la %end% va fi șters!",
+        "dock_in_restricted_area": "Baza în zonă interzisă!",
+        "dock_in_restricted_area_detail": "Baza este în zonă cu restricții. Robotul s-ar putea să nu se încarce.",
+        "drying_will_stopped": "Uscare mop oprită!",
+        "dust_collection_not_performed": "Sarcina de colectare a prafului (Golire automată) nu a fost efectuată\nRobotul nu va efectua golirea automată în perioada Nu Deranjați.",
+        "enable_auto_mount_mop": "Activați montarea mopului auto?",
+        "enable_carpet_recognition": "Detecția covoarelor va fi activată!",
+        "enable_customized_cleaning": "Activați curățarea personalizată?",
+        "enable_mop_change": "Activați schimbarea mopului auto?",
+        "enable_task": "Activați sarcina?",
+        "entity_is_required": "Entitate obligatorie",
+        "entity_not_available": "Entitate indisponibilă",
+        "failed_to_load_card": "Eșec la încărcarea cardului",
+        "ignore_obstacle": "Ignorați obstacolul?",
+        "invalid_entity": "Entitate invalidă",
+        "map_backup": "Copie de rezervă a hărții în curs",
+        "map_backup_failed": "Copia de rezervă a hărții a eșuat!",
+        "map_backup_success": "Copie de rezervă a hărții finalizată",
+        "map_recovery": "Recuperarea hărții în curs",
+        "map_recovery_failed": "Recuperarea hărții a eșuat!",
+        "map_recovery_success": "Recuperarea hărții finalizată",
+        "map_will_deleted": "%name% va fi șters!",
+        "map_will_replaced": "Harta curentă va fi înlocuită de cea nouă!",
+        "map_will_restored": "Se restabilește la starea din %date%",
+        "mapping_started": "Cartografiere începută...",
+        "mop_change_disabled": "Schimbare mop auto dezactivată!",
+        "mop_wash_frequency_low": "Frecvență spălare prea joasă!",
+        "mop_wash_frequency_will_increased": "Va fi mărită auto. pentru menținerea umidității",
+        "not_available": "Nu este disponibil momentan...",
+        "not_fully_supported": "Încă nu este suportat complet!",
+        "not_supported": "Nu este suportat!",
+        "obstacle_will_ignored": "Obstacolul va fi ignorat!",
+        "override_changes": "Suprascrieți modificările?",
+        "preview": "Aceasta este previzualizarea cardului Dreame Vacuum",
+        "recommended_areas": "Zone recomandate",
+        "relocating": "Autopoziționare. Vă rugăm așteptați.",
+        "relocating_completed": "Autopoziționare reușită. Robotul continuă sarcina.",
+        "relocating_failed": "Autopoziționare eșuată!",
+        "replace_map": "Înlocuiți harta nouă?",
+        "reset_usage": "Resetați statisticile?",
+        "reset_walls": "Resetați pereții?",
+        "restore_map": "Restabiliți %name%?",
+        "resume_cleaning": "Robotul va relua automat sarcinile de curățare nefinalizate după încărcarea bateriei la 80%.",
+        "resume_cleaning_not_performed": "Robotul va relua curățarea după ce perioada Nu Deranjați se încheie.",
+        "resume_cleaning_time": "Curățarea va începe %time%",
+        "save_changes": "Salvați modificările?",
+        "saved": "Salvat cu succes",
+        "schedule_will_deleted": "Planul de la %time% va fi șters!",
+        "select_map": "Alegeți %name%?",
+        "select_mapping_type": "Tip cartografiere",
+        "select_room": "Alegeți camera pentru ordine",
+        "selected_map_will_changed": "Harta se va schimba în %name%!",
+        "service_call_failed": "Apel serviciu eșuat",
+        "settings_will_applied": "Setări aplicate la următoarea sarcină.",
+        "shortcut_will_deleted": "%name% va fi șters!",
+        "stop_bag_drying": "Opriți uscarea sacului?",
+        "stop_drying": "Opriți uscarea?",
+        "stop_task": "Opriți sarcina curentă?",
+        "task_disabled": "Sarcină dezactivată!",
+        "task_will_stopped": "Sarcina curentă va fi oprită!",
+        "unsaved_changes_present": "Modificările nesalvate se vor pierde!",
+        "unsupported_browser": "Browser nesuportat!",
+        "usage_will_reset": "Stats pentru %name% se vor reseta.",
+        "walls_will_be_reset": "Pereții vor fi restaurați la locația lor inițial cartografiată!"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "Uzură accesorii",
+        "add_furniture": "Adaugă mobilă",
+        "audio_settings": "Setări audio",
+        "battery_management": "Setări baterie",
+        "carpet_settings": "Setări covor",
+        "clean_water_tank": "Rezervor apă curată",
+        "cleaning_details": "Detalii curățare",
+        "cleaning_history": "Istoric curățare",
+        "cleaning_sequence": "Ordine curățare",
+        "created_carpet": "Covor manual",
+        "cruising": "Traseu",
+        "cruising_details": "Detalii traseu",
+        "cruising_history": "Istoric traseu",
+        "customized_cleaning": "Curățare perso.",
+        "description": "Interfață pentru integ. %name%",
+        "detected_carpet": "Covor detectat auto.",
+        "detergent": "Soluție de curățare",
+        "device_information": "Info dispozitiv",
+        "device_settings": "Setări dispozitiv",
+        "dnd": "Nu Deranjați",
+        "dnd_task": "Sarcină Nu Deranjați",
+        "dust_bag": "Sac praf",
+        "global_carpet_settings": "Setări glob. covoare",
+        "invalid": "invalid",
+        "locate": "Localizează",
+        "map": "Hartă",
+        "map_edit": "Editează harta",
+        "map_management": "Gestionare hărți",
+        "map_name_placeholder": "Hartă %index%",
+        "mop_type": "Tip spălare",
+        "mopping_settings": "Setări spălare",
+        "more_functions": "Mai multe funcții",
+        "name": "Card %name%",
+        "new_map": "Hartă nouă",
+        "obstacle": "Obstacol",
+        "obstacle_settings": "Cameră și obstacole",
+        "recovery_map_list": "Restaurare hartă",
+        "remote_control": "Telecomandă",
+        "saved_map": "Hartă salvată",
+        "schedule_list": "Programări",
+        "scheduled_room": "Curățare camere prog.",
+        "scheduled_spot": "Curățare punct prog.",
+        "scheduled_task": "Sarcină programată",
+        "scheduled_zone": "Curățare zone prog.",
+        "segment_name_placeholder": "Cameră %index%",
+        "shortcut": "Scurtătură",
+        "shortcut_list": "Scurtături",
+        "shortcut_map": "Hartă scurtături",
+        "shortcut_name_placeholder": "Scurtătură %index%",
+        "shortcut_task": "Sarcină scurtătură",
+        "task": "Sarcină %index%",
+        "task_placeholder": "Sarcină %index%",
+        "time_left": "%time% rămas",
+        "unavailable": "Indisponibil",
+        "used_water_tank": "Rezervor apă uzată",
+        "wall": "Pereți",
+        "wifi_map": "Hartă Wi-Fi"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "Curăță Segment",
+      "description": "Începe operațiunea de curățare în camerele selectate.",
+      "fields": {
+        "segments": {
+          "name": "Segmente",
+          "description": "Lista camerelor de curățat. Doar caracterul camerei sau o matrice de caracterul camerei, timpii de curățare, viteza ventilatorului și modul mop pentru a suprascrie valorile implicite per cameră."
+        },
+        "repeats": {
+          "name": "Repetări",
+          "description": "Numărul de treceri de curățare pentru fiecare cameră selectată (cu excepția cazului în care este suprascris de parametrul de curățare personalizat)."
+        },
+        "suction_level": {
+          "name": "Nivel de Aspirație",
+          "description": "Viteza ventilatorului pentru fiecare cameră selectată (cu excepția cazului în care este suprascris de parametrul de curățare personalizat)."
+        },
+        "water_volume": {
+          "name": "Volum de Apă",
+          "description": "Nivelul apei pentru fiecare cameră selectată (cu excepția cazului în care este suprascris de parametrul de curățare personalizat)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "Curăță Zona",
+      "description": "Începe operațiunea de curățare în zona selectată.",
+      "fields": {
+        "zone": {
+          "name": "Zonă",
+          "description": "Coordonate."
+        },
+        "repeats": {
+          "name": "Repetări",
+          "description": "Numărul de treceri de curățare pentru fiecare zonă selectată."
+        },
+        "suction_level": {
+          "name": "Nivel de Aspirație",
+          "description": "Viteza ventilatorului pentru fiecare zonă selectată."
+        },
+        "water_volume": {
+          "name": "Volum de Apă",
+          "description": "Nivelul apei pentru fiecare zonă selectată."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "Curăță Local",
+      "description": "Începe operațiunea de curățare în punctele selectate de pe hartă.",
+      "fields": {
+        "points": {
+          "name": "Puncte",
+          "description": "Lista de coordonate de curățat."
+        },
+        "repeats": {
+          "name": "Repetări",
+          "description": "Numărul de treceri de curățare pentru fiecare zonă selectată."
+        },
+        "suction_level": {
+          "name": "Nivel de Aspirație",
+          "description": "Viteza ventilatorului pentru fiecare zonă selectată."
+        },
+        "water_volume": {
+          "name": "Volum de Apă",
+          "description": "Nivelul apei pentru fiecare zonă selectată."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "Du-te La",
+      "description": "Mergi la coordonatele de pe hartă și oprește-te.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Coordonata X a punctului."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Coordonata Y a punctului."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Urmează Traseul",
+      "description": "Urmați lista de coordonate de pe hartă și întoarceți-vă la bază. (Suportat doar pe aspiratoarele cu cameră)",
+      "fields": {
+        "points": {
+          "name": "Puncte",
+          "description": "Lista de coordonate ale traseului."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "Pornește scurtătura",
+      "description": "Pornește o sarcină de scurtătură. (Doar pe dispozitive suportate)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID scurtătură",
+          "description": "ID-ul scurtăturii."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "Pas de Deplasare Control de la Distanță",
+      "description": "Deplasează robotul cu un pas prin control de la distanță.",
+      "fields": {
+        "rotation": {
+          "name": "Rotație",
+          "description": "Rotește în grade binare între -128 și 128."
+        },
+        "velocity": {
+          "name": "Viteză",
+          "description": "Viteza de deplasare, de la 100 (înainte) la -300 (înapoi)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "Instalează Pachet Voce",
+      "description": "Instalează pachetul vocal oficial sau personalizat.",
+      "fields": {
+        "lang_id": {
+          "name": "ID Limbă",
+          "description": "ID-ul limbii acestui pachet."
+        },
+        "url": {
+          "name": "URL",
+          "description": "Adresa URL a acestui pachet ar trebui să fie accesibilă de robotul aspirator."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "Suma de control MD5 a pachetului lingvistic."
+        },
+        "size": {
+          "name": "Mărime",
+          "description": "Dimensiunea pachetului lingvistic în bytes."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "Solicită Hartă",
+      "description": "Solicită datele hărții"
+    },
+    "vacuum_select_map": {
+      "name": "Selectează Harta",
+      "description": "Selectează harta curentă. Folosit atunci când aveți mai multe hărți/etaje.",
+      "fields": {
+        "map_id": {
+          "name": "ID Hartă",
+          "description": "ID-ul hărții care urmează să fie selectată."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "Șterge hartă",
+      "description": "Șterge o hartă.",
+      "fields": {
+        "map_id": {
+          "name": "ID Hartă",
+          "description": "ID-ul hărții care urmează să fie ștearsă."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "Salvează Harta Temporară",
+      "description": "Salvează harta temporară."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "Renunță la Harta Temporară",
+      "description": "Renunță la harta temporară."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "Înlocuiește Harta Temporară",
+      "description": "Înlocuiește harta temporară cu o altă hartă salvată.",
+      "fields": {
+        "map_id": {
+          "name": "ID Hartă",
+          "description": "ID-ul hărții cu care urmează să fie înlocuită."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "Redenumește harta",
+      "description": "Redenumește o hartă.",
+      "fields": {
+        "map_id": {
+          "name": "ID Hartă",
+          "description": "ID-ul hărții."
+        },
+        "map_name": {
+          "name": "Nume Hartă",
+          "description": "Noul nume al hărții."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "Restabilește Harta",
+      "description": "Restabilește o hartă.",
+      "fields": {
+        "map_id": {
+          "name": "ID Hartă",
+          "description": "ID-ul hărții care urmează să fie restaurată."
+        },
+        "recovery_map_index": {
+          "name": "Index Hartă Recuperare",
+          "description": "Indexul hărții de recuperare salvate"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Restabilește Harta Din Fișier",
+      "description": "Restabilește o hartă dintr-un fișier.",
+      "fields": {
+        "map_id": {
+          "name": "ID Hartă",
+          "description": "ID-ul hărții care urmează să fie restaurată."
+        },
+        "file_url": {
+          "name": "URL Fișier",
+          "description": "Adresa URL a fișierului salvat tbz2.gz sau tar.gz"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Copie de Rezervă a Hărții",
+      "description": "Faceți o copie de rezervă a unei hărți în cloud.",
+      "fields": {
+        "map_id": {
+          "name": "ID Hartă",
+          "description": "ID-ul hărții care urmează să fie restaurată."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Îmbină Segmente",
+      "description": "Îmbină camere.",
+      "fields": {
+        "map_id": {
+          "name": "ID Hartă",
+          "description": "ID-ul hărții."
+        },
+        "segments": {
+          "name": "Segmente",
+          "description": "ID-urile camerelor."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Împarte Segmente",
+      "description": "Împarte camere.",
+      "fields": {
+        "map_id": {
+          "name": "ID Hartă",
+          "description": "ID-ul hărții."
+        },
+        "segment": {
+          "name": "Cameră",
+          "description": "ID-ul camerei."
+        },
+        "line": {
+          "name": "Linie",
+          "description": "Coordonatele liniei de divizare."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "Redenumește Segment",
+      "description": "Redenumește un segment.",
+      "fields": {
+        "segment_id": {
+          "name": "ID Segment",
+          "description": "ID-ul segmentului"
+        },
+        "segment_name": {
+          "name": "Nume Segment",
+          "description": "Noul nume al segmentului"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "Setează Secvența de Curățare",
+      "description": "Setează secvența de curățare a camerei. (Numai pe dispozitivele acceptate)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "Secvența de curățare",
+          "description": "Lista ID-urilor segmentelor din secvența de curățare."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "Setează Curățarea Personalizată",
+      "description": "Setează parametrii de curățare personalizați. (Numai pe dispozitivele acceptate)",
+      "fields": {
+        "segment_id": {
+          "name": "ID Segment",
+          "description": "ID-urile camerelor."
+        },
+        "suction_level": {
+          "name": "Nivel de Aspirație",
+          "description": "Nivelul de aspirație pentru fiecare cameră."
+        },
+        "water_volume": {
+          "name": "Volum de Apă",
+          "description": "Volumul apei pentru fiecare cameră."
+        },
+        "wetness_level": {
+          "name": "Nivel de umiditate",
+          "description": "Nivelul de umiditate pentru fiecare cameră (pe dispozitivele acceptate)."
+        },
+        "cleaning_mode": {
+          "name": "Mod Curățare",
+          "description": "Curățarea pentru fiecare cameră (suportat doar pe aspiratoarele cu funcția de ridicare a mopului)."
+        },
+        "repeats": {
+          "name": "Repetări",
+          "description": "Numărul de curățări pentru fiecare cameră."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Setează curățarea personalizată a covorului",
+      "description": "Setează configurarea personalizată de curățare pentru covoare. (Doar pe dispozitive suportate)",
+      "fields": {
+        "id": {
+          "name": "ID covor",
+          "description": "ID-urile covoarelor."
+        },
+        "type": {
+          "name": "Tipul obiectului",
+          "description": "Tipul obiectului cu ID-ul respectiv. (0 = Covor detectat automat, 1 = Covor creat manual, 2 = Covor de cameră (dacă este suportat))"
+        },
+        "carpet_cleaning": {
+          "name": "Curățare covor",
+          "description": "Configurare personalizată de curățare pentru fiecare covor."
+        },
+        "carpet_preferences": {
+          "name": "Setări covor",
+          "description": "Setări personalizate pentru fiecare covor cu o listă de setări activate."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Setează Zona Restricționată",
+      "description": "Definește pereți virtuali, zone restricționate și/sau zone fără mop.",
+      "fields": {
+        "walls": {
+          "name": "Pereți",
+          "description": "Pereți virtuali."
+        },
+        "zones": {
+          "name": "Zone",
+          "description": "Zone interzise."
+        },
+        "no_mops": {
+          "name": "Fără Mopuri",
+          "description": "Zone fără mop."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "Resetează Consumabil",
+      "description": "Resetează un consumabil.",
+      "fields": {
+        "consumable": {
+          "name": "Consumabil",
+          "description": "Tipul consumabilului."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Redenumește Scurtătură",
+      "description": "Redenumește o comandă rapidă. (Numai pe dispozitivele acceptate)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID Scurtătură",
+          "description": "ID-ul comenzii rapide."
+        },
+        "shortcut_name": {
+          "name": "Nume Scurtătură",
+          "description": "Noul nume al comenzii rapide."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Șterge scurtătura",
+      "description": "Șterge o scurtătură. (Doar pe dispozitivele acceptate)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID scurtătură",
+          "description": "ID-ul scurtăturii."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Setează Zona Covoarelor",
+      "description": "Definește covoare și covoare ignorate. (Numai pe dispozitivele acceptate)",
+      "fields": {
+        "carpets": {
+          "name": "Covoare",
+          "description": "Zone cu covoare."
+        },
+        "deleted_carpets": {
+          "name": "Covoare Ignorate",
+          "description": "Zone cu covoare ignorate pentru ștergerea covoarelor detectate automat."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "Setează Prag Virtual",
+      "description": "Definește praguri virtuale.",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "Praguri Virtuale",
+          "description": "Coordonatele liniei pragului virtual."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Setează Puncte Predefinite",
+      "description": "Definește coordonate predefinite pe harta curentă. (Suportat doar pe aspiratoarele cu cameră)",
+      "fields": {
+        "points": {
+          "name": "Puncte",
+          "description": "Lista de coordonate care urmează să fie salvate."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Setează Ignorarea Obstacolelor",
+      "description": "Setează starea de ignorare a unui obstacol. (Suportat doar pe aspiratoarele cu funcția de detectare a obstacolelor AI)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Coordonata X a obstacolului."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Coordonata Y a obstacolului."
+        },
+        "obstacle_ignored": {
+          "name": "Obstacol Ignorat",
+          "description": "Obstacolul este ignorat sau nu."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Setează poziția routerului",
+      "description": "Setează poziția routerului pe harta curentă. (Suportat doar pe aspiratoarele cu funcția de hartă WiFi)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Coordonata X a routerului."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Coordonata Y a routerului."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "Selectează Anteriorul",
+      "description": "Selectează opțiunile anterioare ale unei entități select.",
+      "fields": {
+        "cycle": {
+          "name": "Ciclu",
+          "description": "Dacă opțiunea ar trebui să parcurgă de la prima la ultima."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "Selectează Primul",
+      "description": "Selectează prima opțiune a unei entități select."
+    },
+    "select_select_last": {
+      "name": "Selectează Ultimul",
+      "description": "Selectează ultima opțiune a unei entități select."
+    },
+    "select_select_next": {
+      "name": "Selectează Următorul",
+      "description": "Selectează următoarele opțiuni ale unei entități select.",
+      "fields": {
+        "cycle": {
+          "name": "Ciclu",
+          "description": "Dacă opțiunea ar trebui să parcurgă de la prima la ultima."
+        }
+      }
+    }
+  }
+}

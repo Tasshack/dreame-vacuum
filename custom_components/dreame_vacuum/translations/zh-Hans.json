@@ -1,0 +1,2438 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "设备已经设置过",
+      "cannot_connect": "连接失败",
+      "reauth_successful": "重新验证成功"
+    },
+    "error": {
+      "cannot_connect": "连接失败",
+      "unsupported": "此设备尚未支持",
+      "wrong_token": "校验失败，Token有误",
+      "2fa_failed": "验证失败。",
+      "wrong_captcha": "验证码错误。",
+      "credentials_incomplete": "凭证信息不完整，请完整输入用户名称、密码及国家",
+      "login_error": "无法登入，请确认凭证信息",
+      "no_devices": "在此账号选择的国家内未发现有支持的设备{devices}",
+      "2fa_send_failed": "验证码发送失败。请重试。",
+      "2fa_limit_reached": "已达到每日验证码发送限制。请明天再试。",
+      "2fa_cooldown_active": "连续请求过多。请等待几分钟后再试。"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "设置类型"
+        },
+        "description": "地图功能需要勾选云端联机及自动设置，如您不想使用地图功能，可以选择手动设置"
+      },
+      "local": {
+        "data": {
+          "host": "设备IP",
+          "token": "Token"
+        },
+        "description": "您需要32位数字元的API Token"
+      },
+      "mi": {
+        "data": {
+          "username": "使用者名称",
+          "password": "密码",
+          "country": "服务器所在国家",
+          "prefer_cloud": "使用云端联机"
+        },
+        "description": "登入小米云端账号请至"
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "双因素验证码"
+        },
+        "description": "## 此登录需要安全验证\n验证码已发送至 {dest}。请在下方输入验证码。"
+      },
+      "captcha": {
+        "data": {
+          "code": "代码"
+        },
+        "description": "## 需要进行验证码验证。\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "使用者名称",
+          "password": "密码",
+          "country": "服务器所在国家"
+        },
+        "description": "登入追觅账号"
+      },
+      "mova": {
+        "data": {
+          "username": "使用者名称",
+          "password": "密码",
+          "country": "登入您的 Mova 帳戶"
+        },
+        "description": "登入追觅账号"
+      },
+      "trouver": {
+        "data": {
+          "username": "使用者名称",
+          "password": "密码",
+          "country": "登入您的 Trouver 帳戶"
+        },
+        "description": "登入追觅账号"
+      },
+      "devices": {
+        "data": {
+          "devices": "可支持的设备"
+        },
+        "description": "请选择想设置的追觅扫地机设备"
+      },
+      "donation": {
+        "data": {
+          "donated": "我已捐款"
+        },
+        "description": "## 不要忘记支持该项目。{text}"
+      },
+      "options": {
+        "data": {
+          "name": "名称",
+          "color_scheme": "地图颜色方案",
+          "icon_set": "地图图示风格",
+          "notify": "通知",
+          "hidden_map_objects": "隐藏的地图对象",
+          "low_resolution": "低分辨率地图",
+          "square": "方形地图"
+        }
+      },
+      "reauth_confirm": {
+        "description": "追觅扫地机整合需要重新验证您的账号，以更新Token或新增缺少的云端凭证",
+        "title": "重新验证整合"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "地图颜色方案",
+          "icon_set": "地图图示风格",
+          "notify": "通知",
+          "hidden_map_objects": "隐藏的地图对象",
+          "low_resolution": "低分辨率地图",
+          "square": "方形地图",
+          "configuration_type": "设置类型",
+          "prefer_cloud": "使用云端联机",
+          "donated": "我已捐款"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "云端凭证信息不完整，请完整输入用户名称、密码及国家"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "name": "吸力力度",
+        "state": {
+          "quiet": "安静",
+          "standard": "标准",
+          "strong": "强力",
+          "turbo": "超强",
+          "full_power": "全功率"
+        }
+      },
+      "water_volume": {
+        "name": "出水速度",
+        "state": {
+          "low": "低",
+          "medium": "中",
+          "high": "高"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "拖布湿度",
+        "state": {
+          "slightly_dry": "稍干",
+          "moist": "湿润",
+          "wet": "潮湿"
+        }
+      },
+      "cleaning_mode": {
+        "name": "清洁模式",
+        "state": {
+          "sweeping": "扫地",
+          "mopping": "拖地",
+          "sweeping_and_mopping": "同时扫拖",
+          "mopping_after_sweeping": "先扫后拖"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "地毯识别灵敏度",
+        "state": {
+          "low": "低",
+          "medium": "中",
+          "high": "高"
+        }
+      },
+      "carpet_cleaning": {
+        "name": "地毯清洁策略",
+        "state": {
+          "avoidance": "避开地毯",
+          "adaptation": "自动适应",
+          "remove_mop": "移除拖布",
+          "adaptation_without_route": "自动适应无路径",
+          "vacuum_and_mop": "清扫与拖",
+          "ignore": "忽略地毯",
+          "cross": "穿越"
+        }
+      },
+      "mop_wash_level": {
+        "name": "拖布清洗模式",
+        "state": {
+          "water_saving": "节省用水",
+          "daily": "日常清洗",
+          "deep": "深度清洁",
+          "ultra_clean_mode": "超级洁净"
+        }
+      },
+      "mopping_type": {
+        "name": "拖地类型",
+        "state": {
+          "accurate": "精准",
+          "daily": "日常",
+          "deep": "深度"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "边角覆盖增强",
+        "state": {
+          "off": "关闭",
+          "high_frequency": "高频率",
+          "low_frequency": "低频率"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "扭扭擦",
+        "state": {
+          "off": "关闭",
+          "auto": "自动",
+          "daily": "每日",
+          "weekly": "每周"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "仿生外扩频率",
+        "state": {
+          "standard": "标准",
+          "intelligent": "聪明的",
+          "high": "高的"
+        }
+      },
+      "floor_material": {
+        "name": "地面材质",
+        "state": {
+          "none": "无",
+          "tile": "地砖",
+          "wood": "木地板",
+          "low_pile_carpet": "短毛地毯",
+          "medium_pile_carpet": "中长毛地毯",
+          "carpet": "地毯"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "语音助手语言",
+        "state": {
+          "default": "默认",
+          "english": "英语",
+          "german": "德语",
+          "chinese": "中文",
+          "russian": "俄语",
+          "italian": "意大利语",
+          "french": "法语",
+          "korean": "韩语"
+        }
+      },
+      "mop_pressure": {
+        "name": "拖地压力",
+        "state": {
+          "light": "轻柔",
+          "normal": "标准"
+        }
+      },
+      "mop_temperature": {
+        "name": "拖布温度",
+        "state": {
+          "normal": "常温",
+          "warm": "温热"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "低矮区域频率",
+        "state": {
+          "weekly": "每周",
+          "daily": "每天"
+        }
+      },
+      "scraper_frequency": {
+        "name": "刮条频率",
+        "state": {
+          "off": "关闭",
+          "weekly": "每周",
+          "daily": "每天"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "LDS 自动覆盖",
+        "state": {
+          "off": "关闭",
+          "security": "安全",
+          "extreme": "极致"
+        }
+      },
+      "order": {
+        "name": "排序",
+        "state": {
+          "not_set": "不设置"
+        }
+      },
+      "self_clean_frequency": {
+        "name": "自动洗布频率",
+        "state": {
+          "by_area": "根据面积",
+          "by_time": "根据时间",
+          "by_room": "根据房间",
+          "intelligent": "智能"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "洗布频率",
+        "state": {
+          "by_room": "根据房间",
+          "5sqm": "五平方米",
+          "8sqm": "八平方米",
+          "10sqm": "十平方米",
+          "15sqm": "十五平方米",
+          "20sqm": "二十平方米",
+          "25sqm": "二十五平方米",
+          "86sqf": "八十六平方英尺",
+          "108sqf": "一百零八平方英尺",
+          "54sqf": "五十四平方英尺",
+          "162sqf": "一百六十二平方英尺",
+          "216sqf": "二百一十六平方英尺",
+          "270sqf": "二百七十平方英尺"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "自动集尘模式",
+        "state": {
+          "off": "关闭",
+          "standard": "标准",
+          "high_frequency": "高频率",
+          "low_frequency": "低频率",
+          "custom_frequency": "自定义频率",
+          "intelligent": "智能"
+        }
+      },
+      "floor_material_direction": {
+        "name": "地板方向",
+        "state": {
+          "vertical": "垂直的",
+          "horizontal": "水平的"
+        }
+      },
+      "visibility": {
+        "name": "显示状态",
+        "state": {
+          "visible": "显示",
+          "hidden": "隐藏"
+        }
+      },
+      "cleangenius": {
+        "name": "CleanGenius",
+        "state": {
+          "off": "关闭",
+          "routine_cleaning": "日常清洁",
+          "deep_cleaning": "深度清洁"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "CleanGenius 模式",
+        "state": {
+          "vacuum_and_mop": "真空和拖把",
+          "mop_after_vacuum": "真空后的拖把"
+        }
+      },
+      "washing_mode": {
+        "name": "清洗模式",
+        "state": {
+          "smart": "智能",
+          "light": "光",
+          "standard": "标准",
+          "deep": "深的",
+          "ultra_washing": "超清洗"
+        }
+      },
+      "water_temperature": {
+        "name": "清洗水温",
+        "state": {
+          "normal": "普通的",
+          "mild": "温和的",
+          "warm": "温暖的",
+          "hot": "热的",
+          "max": "最高"
+        }
+      },
+      "auto_recleaning": {
+        "name": "自动二次清扫",
+        "state": {
+          "off": "关闭",
+          "in_deep_mode": "在深度模式",
+          "in_all_modes": "在所有模式"
+        }
+      },
+      "auto_rewashing": {
+        "name": "自动二次洗布",
+        "state": {
+          "off": "关闭",
+          "in_deep_mode": "在深度模式",
+          "in_all_modes": "在所有模式"
+        }
+      },
+      "cleaning_route": {
+        "name": "清扫路径",
+        "state": {
+          "quick": "快速",
+          "standard": "标准",
+          "intensive": "密集",
+          "deep": "深度"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "定制拖地路径",
+        "state": {
+          "off": "关闭",
+          "standard": "标准",
+          "intensive": "密集",
+          "deep": "深度"
+        }
+      },
+      "task_type": {
+        "name": "任务类型",
+        "state": {
+          "go_to": "指哪到哪",
+          "segment": "房间清扫",
+          "all": "全屋清扫",
+          "zone": "划区清扫",
+          "spot": "定点清扫"
+        }
+      },
+      "cleaning_times": {
+        "name": "清扫次数",
+        "state": {
+          "x1": "1次",
+          "x2": "2次",
+          "x3": "3次"
+        }
+      },
+      "auto_empty_frequency": {
+        "name": "自动集尘频率",
+        "state": {
+          "x1": "任务完成后",
+          "x2": "清扫2次后",
+          "x3": "清扫3次后"
+        }
+      },
+      "drying_time": {
+        "name": "烘干时间",
+        "state": {
+          "silent": "静音"
+        }
+      },
+      "battery_charge_level": {
+        "name": "电池电量"
+      },
+      "object_type": {
+        "name": "对象类型",
+        "state": {
+          "predefined_point": "预设点",
+          "low_lying_area": "低矮区域",
+          "curtain": "窗帘",
+          "threshold": "门槛",
+          "furniture": "家具",
+          "carpet": "地毯",
+          "restricted": "禁区"
+        }
+      },
+      "edit_type": {
+        "name": "编辑类型",
+        "state": {
+          "door": "编辑门",
+          "split": "分割房间",
+          "merge": "合并房间",
+          "visibility": "房间可见性",
+          "material": "地面材质",
+          "type": "房间名称",
+          "wall": "编辑墙壁"
+        }
+      },
+      "map_type": {
+        "name": "地图类型",
+        "state": {
+          "cleaning": "清扫地图",
+          "history": "清扫详情",
+          "wifi": "Wi-Fi地图"
+        }
+      },
+      "carpet_type": {
+        "name": "地毯类型",
+        "state": {
+          "medium_pile": "中长毛地毯",
+          "low_pile": "短毛地毯",
+          "floor_mat": "地垫",
+          "other": "其他"
+        }
+      },
+      "mop_type": {
+        "name": "拖布类型",
+        "state": {
+          "a": "拖布 A",
+          "b": "拖布 B",
+          "c": "拖布 C"
+        }
+      },
+      "carpet_shape": {
+        "name": "形状",
+        "state": {
+          "square": "方形",
+          "round": "圆形"
+        }
+      },
+      "mopping_pattern": {
+        "name": "拖地模式",
+        "state": {
+          "daily": "日常拖地",
+          "deep": "深度拖地"
+        }
+      },
+      "wetness_level": {
+        "name": "湿度",
+        "state": {
+          "slightly_dry": "微干",
+          "moist": "湿润",
+          "wet": "潮湿"
+        }
+      },
+      "task_repeats": {
+        "name": "任务重复",
+        "state": {
+          "once": "一次",
+          "daily": "每天",
+          "workdays": "工作日",
+          "weekends": "周末"
+        }
+      },
+      "segment_name": {
+        "name": "房间名称",
+        "state": {
+          "room": "房间",
+          "living_room": "客厅",
+          "primary_bedroom": "主卧",
+          "study": "书房",
+          "kitchen": "厨房",
+          "dining_hall": "餐厅",
+          "bathroom": "卫生间",
+          "balcony": "阳台",
+          "corridor": "走廊",
+          "utility_room": "杂物间",
+          "closet": "衣帽间",
+          "meeting_room": "会议室",
+          "office": "办公室",
+          "fitness_area": "健身区",
+          "recreation_area": "休闲区",
+          "secondary_bedroom": "次卧"
+        }
+      },
+      "furniture_type": {
+        "name": "家具类型",
+        "state": {
+          "single_bed": "单人床",
+          "double_bed": "双人床",
+          "arm_chair": "扶手椅",
+          "two_seat_sofa": "双人沙发",
+          "three_seat_sofa": "三人沙发",
+          "dining_table": "餐桌",
+          "nightstant": "床头柜",
+          "coffee_table": "茶几",
+          "toilet": "马桶",
+          "litter_box": "猫砂盆",
+          "pet_bed": "宠物窝",
+          "food_bowl": "食盆",
+          "pet_toilet": "宠物厕所",
+          "refrigerator": "冰箱",
+          "washing_machine": "洗衣机",
+          "enclosed_litter_box": "封闭式猫砂盆",
+          "air_conditioner": "空调",
+          "tv_cabinet": "电视柜",
+          "bookshelf": "书架",
+          "shoe_cabinet": "鞋柜",
+          "wardrobe": "衣柜",
+          "greenery": "绿植",
+          "floor_mirror": "穿衣镜",
+          "l_shaped_sofa": "L型沙发",
+          "round_coffee_table": "圆茶几",
+          "table": "桌子",
+          "arm_chair_narrow": "窄扶手椅",
+          "three_seat_sofa_narrow": "窄三人沙发",
+          "l_shaped_sofa_right": "右侧L型沙发"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "name": "当前状态",
+        "state": {
+          "unknown": "未知",
+          "sweeping": "扫地中",
+          "charging": "充电中",
+          "error": "错误",
+          "idle": "待机中",
+          "paused": "暂停",
+          "returning": "返回充电中",
+          "mopping": "拖地中",
+          "drying": "烘干中",
+          "washing": "清洗中",
+          "returning_to_wash": "返回清洗中",
+          "building": "建立中",
+          "sweeping_and_mopping": "同时扫拖中",
+          "charging_completed": "充电完成",
+          "upgrading": "升级中",
+          "clean_summon": "召唤清洁",
+          "station_reset": "基站重设",
+          "returning_install_mop": "返回安装拖布中",
+          "returning_remove_mop": "返回卸下拖布中",
+          "water_check": "水量检查",
+          "clean_add_water": "清洁及加水",
+          "washing_paused": "清洗中暂停",
+          "auto_emptying": "自动集尘中",
+          "remote_control": "远程遥控",
+          "smart_charging": "智慧充电中",
+          "second_cleaning": "二次清洁中",
+          "human_following": "跟随人类中",
+          "spot_cleaning": "定点清洁中",
+          "returning_auto_empty": "返回自动集尘中",
+          "waiting_for_task": "等待任务",
+          "station_cleaning": "基站清洁中",
+          "returning_to_drain": "返回排水中",
+          "draining": "排水中",
+          "auto_water_draining": "自动排水中",
+          "emptying": "正在清空",
+          "dust_bag_drying": "灰尘袋干燥",
+          "dust_bag_drying_paused": "灰尘袋干燥已暂停",
+          "heading_to_extra_cleaning": "正在前往额外清洁",
+          "extra_cleaning": "额外清洁",
+          "finding_pet_paused": "正在寻找宠物已暂停",
+          "finding_pet": "正在寻找宠物",
+          "shortcut": "快捷方式",
+          "monitoring": "监控中",
+          "monitoring_paused": "监控暂停",
+          "initial_deep_cleaning": "初始深度清洁",
+          "initial_deep_cleaning_paused": "初始深度清洁已暂停",
+          "sanitizing": "正在消毒",
+          "sanitizing_with_dry": "消毒并干燥",
+          "changing_mop": "正在更换拖布",
+          "changing_mop_paused": "更换拖布已暂停",
+          "floor_maintaining": "地板养护中",
+          "floor_maintaining_paused": "地板养护已暂停",
+          "remote_pickup": "远程拾物",
+          "arranging_items": "整理物品中",
+          "pet_guarding": "宠物管家",
+          "pet_guarding_paused": "宠物管家暂停",
+          "installing_mop": "安装拖布中",
+          "uninstalling_mop": "卸下拖布中",
+          "intelligent_recharging": "智能回充中",
+          "assisted_cleaning": "辅助清洁中",
+          "entering_dock": "进入基站中",
+          "leaving_dock": "离开基站中",
+          "navigating_to_climber": "前往爬坡器",
+          "docking_to_climber": "进入爬坡器",
+          "climber_docked": "已进入爬坡器",
+          "climber_navigating": "爬坡器移动中",
+          "climbing_stairs": "爬楼梯中",
+          "climbing_stairs_completed": "爬楼梯完成",
+          "climber_at_dock": "爬坡器在基站",
+          "climber_leaving_dock": "爬坡器离开基站"
+        }
+      },
+      "status": {
+        "name": "运行状态",
+        "state": {
+          "unknown": "未知",
+          "idle": "待机中",
+          "paused": "暂停",
+          "cleaning": "清洁中",
+          "returning": "返回充电中",
+          "spot_cleaning": "定点清洁中",
+          "follow_wall_cleaning": "沿墙清洁中",
+          "charging": "充电中",
+          "ota": "OTA更新",
+          "fct": "FCT测试",
+          "wifi_set": "WiFi设置",
+          "power_off": "电源关闭",
+          "factory": "出厂设置",
+          "error": "错误",
+          "remote_control": "远程遥控",
+          "sleeping": "休眠中",
+          "self_test": "自我检测",
+          "factory_test": "工程测试",
+          "standby": "待机中",
+          "room_cleaning": "房间清洁中",
+          "zone_cleaning": "区域清洁中",
+          "fast_mapping": "快速建立地图",
+          "cruising_path": "路径巡航",
+          "cruising_point": "定点巡航",
+          "summon_clean": "召唤清洁",
+          "shortcut": "快捷方式",
+          "person_follow": "人员跟随",
+          "water_check": "水量检查",
+          "pet_guarding": "宠物管家",
+          "auto_arrangement": "自动整理",
+          "smart_arrangement": "智能整理",
+          "zoned_arrangement": "划区整理"
+        }
+      },
+      "task_status": {
+        "name": "任务状态",
+        "state": {
+          "unknown": "未知",
+          "completed": "完成",
+          "cleaning": "清扫中",
+          "zone_cleaning": "区域清洁中",
+          "room_cleaning": "房间清洁中",
+          "spot_cleaning": "定点清洁中",
+          "fast_mapping": "快速建立地图",
+          "cleaning_paused": "清洁暂停",
+          "room_cleaning_paused": "房间清洁暂停",
+          "zone_cleaning_paused": "区域清洁暂停",
+          "spot_cleaning_paused": "定点清洁暂停",
+          "map_cleaning_paused": "地图清洁暂停",
+          "docking_paused": "回充暂停",
+          "mopping_paused": "拖地暂停",
+          "zone_mopping_paused": "区域拖地暂停",
+          "room_mopping_paused": "房间拖地暂停",
+          "zone_docking_paused": "区域回充暂停",
+          "room_docking_paused": "房间回充暂停",
+          "cruising_path": "路径巡航",
+          "cruising_path_paused": "路径巡航暂停",
+          "cruising_point": "定点巡航",
+          "cruising_point_paused": "定点巡航暂停",
+          "summon_clean_paused": "召唤清洁暂停",
+          "returning_to_install_mop": "返回安装拖布",
+          "returning_to_remove_mop": "返回卸下拖布",
+          "station_cleaning": "车站清洁",
+          "pet_finding": "宠物发现",
+          "auto_cleaning_washing_paused": "自动清洁洗涤暂停",
+          "area_cleaning_washing_paused": "区域清洗暂停",
+          "custom_cleaning_washing_paused": "定制清洗暂停",
+          "picking_up_item": "拾取物品中",
+          "picking_up_item_paused": "拾取物品暂停",
+          "picking_up_item_success": "拾取物品成功",
+          "remote_pickup_initializing": "远程拾物初始化",
+          "remote_pickup_identifing": "远程拾物识别中",
+          "manual_remote_pickup": "手动远程拾物",
+          "automatic_remote_pickup": "自动远程拾物",
+          "remote_pickup_in_progress": "远程拾物进行中",
+          "remote_pickup_paused": "远程拾物暂停",
+          "placing_item": "放置物品中",
+          "placing_item_paused": "放置物品暂停"
+        }
+      },
+      "water_tank": {
+        "name": "水箱",
+        "state": {
+          "unknown": "未知",
+          "installed": "已安装",
+          "not_installed": "未安装",
+          "mop_installed": "拖布已安装",
+          "in_station": "在基站"
+        }
+      },
+      "mop_pad": {
+        "name": "拖布",
+        "state": {
+          "unknown": "未知",
+          "installed": "已安装",
+          "not_installed": "未安装",
+          "mop_installed": "拖布已安装",
+          "in_station": "在基站"
+        }
+      },
+      "dust_collection": {
+        "name": "集尘状态",
+        "state": {
+          "unknown": "未知",
+          "not_available": "不可用",
+          "available": "可用",
+          "over_use": "过度使用",
+          "never": "从不"
+        }
+      },
+      "auto_empty_status": {
+        "name": "自动集尘状态",
+        "state": {
+          "unknown": "未知",
+          "idle": "待机中",
+          "active": "运作中",
+          "not_performed": "未执行"
+        }
+      },
+      "error": {
+        "name": "故障",
+        "state": {
+          "unknown": "未知错误代码",
+          "no_error": "无错误",
+          "drop": "轮子悬空",
+          "cliff": "悬崖传感器错误",
+          "bumper": "防撞传感器卡住",
+          "gesture": "扫地机倾倒",
+          "bumper_repeat": "防撞传感器卡住",
+          "drop_repeat": "轮子悬空",
+          "optical_flow": "光流传感器错误",
+          "no_box": "未安装集尘盒",
+          "no_tank_box": "未安装水箱",
+          "water_box_empty": "水箱空了",
+          "box_full": "集尘盒已满",
+          "brush": "主刷缠绕",
+          "side_brush": "侧刷缠绕",
+          "fan": "滤芯潮湿或堵塞",
+          "left_wheel_motor": "扫地机卡住或左轮被异物卡住",
+          "right_wheel_motor": "扫地机卡住或右轮被异物卡住",
+          "turn_suffocate": "扫地机卡住或无法转弯",
+          "forward_suffocate": "扫地机卡住或无法前进",
+          "charger_get": "找不到基站",
+          "battery_low": "电量偏低",
+          "charge_fault": "充电错误",
+          "battery_percentage": "电池电量错误",
+          "heart": "内部错误",
+          "camera_occlusion": "视觉定位传感器错误",
+          "move": "移动传感器错误",
+          "flow_shielding": "光学传感器错误",
+          "infrared_shielding": "红外线遮蔽错误",
+          "charge_no_electric": "充电基站未通电",
+          "battery_fault": "电池错误",
+          "fan_speed_error": "风速传感器错误",
+          "left_wheell_speed": "左轮可能被异物卡住",
+          "right_wheell_speed": "右轮可能被异物卡住",
+          "bmi055_acce": "加速度计错误",
+          "bmi055_gyro": "陀螺仪错误",
+          "xv7001": "陀螺仪错误",
+          "left_magnet": "左磁力传感器错误",
+          "right_magnet": "右磁力传感器错误",
+          "flow_error": "流量传感器错误",
+          "infrared_fault": "红外线错误",
+          "camera_fault": "相机错误",
+          "strong_magnet": "侦测到强力磁场",
+          "water_pump": "水泵错误",
+          "rtc": "RTC错误",
+          "auto_key_trig": "内部错误",
+          "p3v3": "内部错误",
+          "camera_idle": "相机闲置",
+          "blocked": "扫路径被阻挡，返回基站",
+          "lds_error": "雷射距离传感器错误",
+          "lds_bumper": "雷射距离传感器撞击错误",
+          "filter_blocked": "滤网潮湿或堵塞",
+          "edge": "边缘传感器错误",
+          "carpet": "请将扫地机放在非地毯区域再启动",
+          "laser": "3D避障传感器故障",
+          "ultrasonic": "超音波传感器故障",
+          "no_go_zone": "侦测到禁区或虚拟墙",
+          "route": "清扫路径被阻挡",
+          "restricted": "侦测到扫拖机器人位于限制区域",
+          "remove_mop": "拖地完成，请及时卸下并清洗抹布",
+          "mop_removed": "拖地过程中拖布脱落",
+          "mop_pad_stop_rotate": "拖布停止旋转",
+          "bin_full": "集尘袋满了或风道堵塞",
+          "bin_open": "自动集尘基座的上盖未关闭或集尘袋未安装",
+          "water_tank": "未安装清水箱",
+          "dirty_water_tank": "污水箱满了或未安装",
+          "water_tank_dry": "清水箱水位低，请及时加水",
+          "dirty_water_tank_blocked": "污水箱堵塞",
+          "dirty_water_tank_pump": "污水箱水泵异常",
+          "mop_pad": "拖布支架安装异常",
+          "wet_mop_pad": "拖布水量异常，请及时清理",
+          "clean_mop_pad": "清洁完成，请清洗拖布支架",
+          "clean_tank_level": "请检查并补充清水",
+          "station_disconnected": "基站未通电",
+          "dirty_tank_level": "污水箱水位过高",
+          "washboard_level": "洗涤板水位过高",
+          "no_mop_in_station": "拖布不在基站内",
+          "dust_bag_full": "集尘袋满了或排气孔堵塞",
+          "self_test_failed": "上下水模块清水箱异常排水",
+          "mop_install_failed": "拖布安装失败",
+          "low_battery_turn_off": "电池电量低，扫地机即将关机",
+          "dirty_tank_not_installed": "未安装扫地机的污水箱",
+          "robot_in_hidden_room": "隐藏区域，请将扫地机移至适当区域并重试",
+          "washboard_not_working": "洗涤板停止工作",
+          "return_to_charge_failed": "返回充电失败",
+          "lds_failed_to_lift": "LDS模块升降失败。",
+          "robot_stuck": "此处无法升起LDS进行定位。",
+          "robot_stuck_repeat": "请将机器人移至开阔区域并恢复任务。",
+          "slippery_floor": "地面湿滑，请稍后重试。",
+          "check_mop_install": "请检查拖布是否安装正确。",
+          "dirty_water_tank_full": "污水箱水位异常。",
+          "retractable_leg_stuck": "请检查伸缩腿是否被缠绕。",
+          "internal_error": "内部错误导致故障，请尝试重启机器人。",
+          "robot_stuck_on_tables": "机器人卡在桌椅之间。",
+          "robot_stuck_on_passage": "机器人卡在狭窄通道中。",
+          "robot_stuck_on_threshold": "机器人卡在台阶/门槛上。",
+          "robot_stuck_on_low_lying_area": "机器人卡在低矮区域。",
+          "robot_stuck_on_ramp": "机器人检测到路径上有危险坡道。",
+          "robot_stuck_on_obstacle": "机器人检测到路径上有障碍物。",
+          "robot_stuck_on_pet": "机器人检测到路径上有人或宠物。",
+          "robot_stuck_on_slippery_surface": "机器人因打滑被困。",
+          "robot_stuck_on_carpet": "机器人在地毯上打滑",
+          "drainage_failed": "污水箱排水异常",
+          "mop_not_detected": "未检测到拖布。",
+          "mop_holder_error": "基站内拖布支架数量/位置错误。",
+          "dock_error": "基站错误。",
+          "wash_failed": "清洗脏拖布失败。",
+          "robot_stuck_on_curtain": "机器人在窗帘区域打滑",
+          "edge_mop_stop_rotate": "边拖停止旋转。",
+          "edge_mop_detached": "边拖脱落。",
+          "chassis_lift_malfunction": "底盘升降故障。",
+          "mop_cover_error": "请检查滚筒拖布和盖板附近是否有杂物。",
+          "roller_mop_error": "请检查滚筒拖布和盖板附近是否有杂物。",
+          "onboard_water_tank_empty": "主机清水箱水位低。",
+          "onboard_dirty_water_tank_full": "主机污水箱已满。",
+          "mop_not_installed": "拖布未安装。",
+          "fluffing_roller_error": "绒毛滚筒错误。",
+          "blocked_by_obstacle": "机器人被障碍物阻挡。",
+          "robotic_arm_stopped": "机械臂停止。",
+          "drainage_outlet_filter": "机器人排水口过滤器堵塞。",
+          "main_wheels_error": "主轮错误。"
+        }
+      },
+      "charging_status": {
+        "name": "充电状态",
+        "state": {
+          "unknown": "未知",
+          "charging": "充电中",
+          "not_charging": "未充电",
+          "return_to_charge": "返回充电",
+          "charging_completed": "充电完成"
+        }
+      },
+      "relocation_status": {
+        "name": "重定位状态",
+        "state": {
+          "unknown": "未知",
+          "located": "已定位",
+          "locating": "定位中",
+          "failed": "失败",
+          "success": "成功"
+        }
+      },
+      "self_wash_base_status": {
+        "name": "基站清洗状态",
+        "state": {
+          "unknown": "未知",
+          "idle": "待机中",
+          "washing": "清洗中",
+          "drying": "烘干中",
+          "paused": "暂停",
+          "returning": "返回清洗中",
+          "clean_add_water": "清扫加水",
+          "adding_water": "加水中"
+        }
+      },
+      "low_water_warning": {
+        "name": "缺水提醒",
+        "state": {
+          "no_warning": "无警告",
+          "no_water_left": "清水箱水量即将用完，请立即检查并加满清水箱",
+          "no_water_left_after_clean": "拖布已清洗，侦测到清水箱水量不足，请加满清水箱并清空脏水箱",
+          "no_water_for_clean": "清水箱水位低，扫地机已切换至吸尘模式",
+          "low_water": "即将缺水，请加满清水箱",
+          "tank_not_installed": "未安装清水箱"
+        }
+      },
+      "stream_status": {
+        "name": "实时串流状态",
+        "state": {
+          "unknown": "未知",
+          "idle": "待机中",
+          "video": "影片",
+          "audio": "音讯",
+          "recording": "录制中"
+        }
+      },
+      "drainage_status": {
+        "name": "排空状态",
+        "state": {
+          "unknown": "未知",
+          "idle": "待机中",
+          "draining": "排水中",
+          "draining_successful": "排水成功",
+          "draining_failed": "排水失败"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "清水箱状态",
+        "state": {
+          "unknown": "未知",
+          "not_available": "无法使用",
+          "not_installed": "未安装",
+          "low_water": "枯水",
+          "installed": "安装"
+        }
+      },
+      "dirty_water_tank_status": {
+        "name": "污水箱状态",
+        "state": {
+          "unknown": "未知",
+          "installed": "安装",
+          "not_installed_or_full": "未安装或完整"
+        }
+      },
+      "dust_bag_status": {
+        "name": "尘袋状态",
+        "state": {
+          "unknown": "未知",
+          "installed": "安装",
+          "not_installed": "未安装",
+          "check": "查看"
+        }
+      },
+      "detergent_status": {
+        "name": "清洁液状态",
+        "state": {
+          "unknown": "未知",
+          "installed": "安装",
+          "disabled": "禁用",
+          "low_detergent": "低洗涤剂"
+        }
+      },
+      "hot_water_status": {
+        "name": "热水洗布状态",
+        "state": {
+          "unknown": "未知",
+          "disabled": "禁用",
+          "enabled": "启用"
+        }
+      },
+      "station_drainage_status": {
+        "name": "基站排空状态",
+        "state": {
+          "unknown": "未知",
+          "idle": "闲置的",
+          "draining": "排水"
+        }
+      },
+      "task_type": {
+        "name": "任务类型",
+        "state": {
+          "standard": "标准清洁",
+          "standard_paused": "标准清洁暂停",
+          "custom": "自定义清洁",
+          "custom_paused": "自定义清洁暂停",
+          "shortcut": "快捷键清洁",
+          "shortcut_paused": "快捷键清洁暂停",
+          "scheduled": "预约清洁",
+          "scheduled_paused": "预约清洁暂停",
+          "smart": "智慧清洁",
+          "smart_paused": "智慧清洁暂停",
+          "partial": "局部清洁",
+          "partial_paused": "局部清洁暂停",
+          "summon": "召唤清洁",
+          "summon_paused": "召唤清洁暂停",
+          "water_stain": "水渍清洁",
+          "water_stain_paused": "水渍清洁暂停",
+          "boosted_edge_cleaning": "增强边缘清洁",
+          "hair_compressing": "头发压缩",
+          "large_particle_cleaning": "大颗粒清洁",
+          "intensive_stain_cleaning": "强力污渍清洁",
+          "stain_cleaning": "污渍清洁",
+          "initial_deep_cleaning": "初始深度清洁",
+          "initial_deep_cleaning_paused": "初始深度清洁已暂停",
+          "mop_pad_heating": "拖把垫加热",
+          "cleaning_after_mapping": "地图后清洁",
+          "small_particle_cleaning": "小颗粒清洁",
+          "changing_mop": "正在更换拖布",
+          "changing_mop_paused": "更换拖布已暂停",
+          "floor_maintaining": "地板养护中",
+          "floor_maintaining_paused": "地板养护已暂停",
+          "arranging_items": "整理物品中",
+          "arranging_items_paused": "整理物品暂停",
+          "intensive_hair_cleaning": "强力毛发清洁",
+          "accessory_handling": "配件操作",
+          "increased_drum_speed_cleaning": "增加滚筒速度清洁",
+          "pressurized_cleaning": "加压清洁",
+          "steam_cleaning": "蒸汽清洁",
+          "steam_cleaning_paused": "蒸汽清洁暂停"
+        }
+      },
+      "dust_bag_drying_status": {
+        "name": "尘袋烘干状态",
+        "state": {
+          "idle": "空闲",
+          "drying": "烘干中",
+          "paused": "已暂停"
+        }
+      },
+      "nation_matched": {
+        "name": "区域锁定",
+        "state": {
+          "unknown": "已禁用",
+          "matched": "已解锁",
+          "unmatched": "已锁定",
+          "na": "不可用"
+        }
+      },
+      "startup_method": {
+        "name": "启动方式",
+        "state": {
+          "button": "按键",
+          "app": "应用",
+          "scheduled": "定时",
+          "voice": "语音",
+          "second_cleaning": "二次清扫",
+          "unknown": "未知"
+        }
+      },
+      "cleaning_status": {
+        "name": "完成状态",
+        "state": {
+          "interrupted": "已中断",
+          "completed": "已完成",
+          "manually_ended": "手动结束",
+          "failed": "失败",
+          "unknown": "未知"
+        }
+      },
+      "cleanup_method": {
+        "name": "清扫模式",
+        "state": {
+          "other": "其他",
+          "default": "默认",
+          "customized": "定制",
+          "cleangenius": "CleanGenius",
+          "water_stain": "水渍",
+          "unknown": "未知"
+        }
+      },
+      "task_end_type": {
+        "name": "结束方式",
+        "state": {
+          "other": "其他",
+          "manual_docking": "手动回冲",
+          "docking": "自动回冲",
+          "failed_docking": "回冲失败",
+          "stop": "停止",
+          "unknown": "未知"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "中断原因",
+        "state": {
+          "abnormal_docking": "回冲异常",
+          "base_station_powered_off": "基站断电",
+          "brush_entangled_by_carpet": "毛刷卡在地毯",
+          "brush_entangled_by_object": "毛刷缠绕物体",
+          "brush_entangled_by_obstacle": "毛刷卡在障碍物",
+          "cannot_find_base_station": "找不到基站",
+          "cliff_sensor_error": "悬崖传感器错误",
+          "laser_distance_sensor_error": "激光传感器错误",
+          "mop_pad_abnormally_removed": "拖布异常移除",
+          "mop_pad_fallen_off": "拖布脱落",
+          "mop_pad_fallen_off_by_obstacle": "因障碍物拖布脱落",
+          "mop_pad_fallen_off_by_table": "因桌子拖布脱落",
+          "mop_pad_fallen_off_crossing_obstacle": "越障时拖布脱落",
+          "mop_pad_removed": "拖布已移除",
+          "mop_pad_stuck": "拖布卡住",
+          "robot_fallen": "机器跌落",
+          "robot_is_stuck_on_obstacle": "机器卡在障碍物",
+          "robot_is_stuck_on_step": "机器卡在台阶",
+          "robot_lifted": "机器被拿起",
+          "task_completed": "任务已完成",
+          "unknown": "未知"
+        }
+      },
+      "recovery_map_type": {
+        "name": "地图类型",
+        "state": {
+          "original": "原始地图",
+          "edited": "编辑地图",
+          "backup": "备份地图"
+        }
+      },
+      "obstacle_type": {
+        "name": "障碍物类型",
+        "state": {
+          "unknown": "未知",
+          "base": "基座",
+          "scale": "体重秤",
+          "thread": "线头",
+          "wire": "电线",
+          "toy": "玩具",
+          "shoes": "鞋子",
+          "sock": "袜子",
+          "fece": "宠物便便",
+          "trash_can": "垃圾桶",
+          "fabric": "织物",
+          "power_strip": "插线板",
+          "liquid_stain": "水渍",
+          "obstacle": "障碍物",
+          "pet": "宠物",
+          "cleaning_tools": "清洁工具",
+          "detected_stain": "检测到污渍",
+          "blocked_room": "阻塞房间",
+          "easy_to_stuck_furniture": "易卡家具",
+          "uncleanable_stain": "无法清洁污渍",
+          "leg": "家具脚",
+          "large_particles": "大颗粒",
+          "dried_stain": "陈旧污渍",
+          "food_bowl": "食盆",
+          "pet_bed": "宠物窝",
+          "cleaned_stain": "污渍已清洁",
+          "skipped_uncleanable_stain": "跳过无法清洁污渍",
+          "cleaned_dried_stain": "陈旧污渍已清洁",
+          "cleaned_large_particles": "大颗粒已清洁",
+          "hair": "毛发",
+          "paper": "纸屑",
+          "cleaned_hair": "已清理毛发",
+          "sundry": "杂物"
+        }
+      },
+      "obstacle_reason": {
+        "name": "避障原因",
+        "state": {
+          "blocked_by_virtual_wall": "虚拟墙阻挡",
+          "blocked_by_door": "房门阻挡",
+          "blocked_by_threshold": "门槛阻挡",
+          "blocked_by_obstacle": "障碍物阻挡",
+          "blocked_by_carpet": "地毯阻挡",
+          "blocked_by_detected_carpet": "地毯区阻挡",
+          "blocked_by_hidden_obstacle": "隐藏障碍物阻挡",
+          "blocked_by_dynamic_obstacle": "动态障碍物阻挡",
+          "passage_too_low": "通道过低",
+          "step_too_low": "台阶过低",
+          "failed_to_cross_threshold": "越障失败"
+        }
+      },
+      "remaining_battery": {
+        "name": "剩余电量"
+      },
+      "multiple_cleaning_time": {
+        "name": "多次清扫"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "firmware_version": {
+        "name": "固件版本"
+      },
+      "ip_address": {
+        "name": "IP地址"
+      },
+      "mac_address": {
+        "name": "MAC地址"
+      },
+      "model": {
+        "name": "产品型号"
+      },
+      "rssi": {
+        "name": "信号强度"
+      },
+      "serial_number": {
+        "name": "序列号"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "timezone": {
+        "name": "时区"
+      },
+      "voice_packet_id": {
+        "name": "语音包"
+      },
+      "deodorizer_left": {
+        "name": "除臭剂"
+      },
+      "detergent_left": {
+        "name": "清洁液"
+      },
+      "dirty_water_channel_left": {
+        "name": "污水通道"
+      },
+      "filter_left": {
+        "name": "滤网"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "刷辊清洁"
+      },
+      "main_brush_left": {
+        "name": "主刷"
+      },
+      "mop_pad_left": {
+        "name": "拖布"
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "机载污水箱"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "滚刷滤网清洁"
+      },
+      "scale_inhibitor_left": {
+        "name": "缓蚀型除垢剂"
+      },
+      "sensor_dirty_left": {
+        "name": "传感器清洁"
+      },
+      "side_brush_left": {
+        "name": "边刷"
+      },
+      "silver_ion_left": {
+        "name": "银离子"
+      },
+      "squeegee_left": {
+        "name": "刮条"
+      },
+      "tank_filter_left": {
+        "name": "水箱滤网"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "出水口滤网清洁"
+      },
+      "wheel_dirty_left": {
+        "name": "轮子清洁"
+      }
+    },
+    "toggle": {
+      "customized_cleaning": {
+        "name": "定制清洁"
+      },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "精细清洁"
+      },
+      "auto_dust_collecting": {
+        "name": "自动集尘"
+      },
+      "hair_compression": {
+        "name": "头发压缩"
+      },
+      "self_clean": {
+        "name": "自清洁"
+      },
+      "deep_mop_washing": {
+        "name": "精细洗抹布"
+      },
+      "hot_washing": {
+        "name": "热水洗"
+      },
+      "auto_drying": {
+        "name": "自动烘干"
+      },
+      "silent_drying": {
+        "name": "静音烘干"
+      },
+      "uv_sterilization": {
+        "name": "UV 杀菌"
+      },
+      "customized_carpet_cleaning": {
+        "name": "定制清洁"
+      },
+      "carpet_avoidance": {
+        "name": "规避地毯"
+      },
+      "carpet_preferences": {
+        "name": "个性化偏好"
+      },
+      "auto_change_mop": {
+        "name": "自动换抹布"
+      },
+      "multi_floor_map": {
+        "name": "多层地图"
+      },
+      "intelligent_recognition": {
+        "name": "智能识别"
+      },
+      "map_saving": {
+        "name": "地图保存"
+      },
+      "child_lock": {
+        "name": "童锁"
+      },
+      "resume_cleaning": {
+        "name": "断点续扫"
+      },
+      "obstacle_avoidance": {
+        "name": "避障"
+      },
+      "carpet_boost": {
+        "name": "地毯增压"
+      },
+      "carpet_recognition": {
+        "name": "地毯识别"
+      },
+      "clean_carpets_first": {
+        "name": "先清扫地毯"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "地毯上关闭滚刷盖"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "地毯深度清洁"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "地毯边刷转动"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "地毯抬升底盘"
+      },
+      "auto_mount_mop": {
+        "name": "自动安装抹布"
+      },
+      "mopping_with_detergent": {
+        "name": "清洁剂扫拖"
+      },
+      "mop_washing_with_detergent": {
+        "name": "清洁剂洗抹布"
+      },
+      "auto_add_detergent": {
+        "name": "自动添加清洁剂"
+      },
+      "smart_mop_washing": {
+        "name": "智能洗抹布"
+      },
+      "wider_corner_coverage": {
+        "name": "边角覆盖增强"
+      },
+      "pressurized_cleaning": {
+        "name": "加压清洁"
+      },
+      "gap_cleaning_extension": {
+        "name": "缝隙清洁伸出"
+      },
+      "mopping_under_furnitures": {
+        "name": "家具底扫拖"
+      },
+      "floor_direction_cleaning": {
+        "name": "顺地板方向清洁"
+      },
+      "ring_light_always_on": {
+        "name": "灯环常亮"
+      },
+      "collision_avoidance": {
+        "name": "防碰撞"
+      },
+      "fill_light": {
+        "name": "补光"
+      },
+      "ai_obstacle_detection": {
+        "name": "AI 避障"
+      },
+      "ai_pet_detection": {
+        "name": "宠物识别"
+      },
+      "pet_focused_detection": {
+        "name": "宠物重点防护"
+      },
+      "pet_focused_cleaning": {
+        "name": "宠物重点清洁"
+      },
+      "ai_obstacle_picture": {
+        "name": "障碍物图片"
+      },
+      "obstacle_crossing": {
+        "name": "越障同步"
+      },
+      "active_suspension_crossing": {
+        "name": "主动悬挂越障"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "动态越障清洁"
+      },
+      "large_particles_boost": {
+        "name": "大颗粒增压"
+      },
+      "streaming_voice_prompt": {
+        "name": "语音流播"
+      },
+      "voice_assistant": {
+        "name": "语音助手"
+      },
+      "off_peak_charging": {
+        "name": "谷电充电"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "禁续扫"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "禁集尘"
+      },
+      "dnd_reduce_volume": {
+        "name": "降音量"
+      },
+      "dnd": {
+        "name": "勿扰"
+      }
+    },
+    "number": {
+      "wetness_level": {
+        "name": "湿度"
+      },
+      "auto_empty_area": {
+        "name": "自动集尘面积"
+      },
+      "drying_time": {
+        "name": "烘干时间"
+      },
+      "self_clean_time": {
+        "name": "自清洁时间"
+      },
+      "self_clean_area": {
+        "name": "自清洁面积"
+      },
+      "volume": {
+        "name": "音量"
+      }
+    },
+    "time": {
+      "dnd_start": {
+        "name": "勿扰开始时间"
+      },
+      "dnd_end": {
+        "name": "勿扰结束时间"
+      },
+      "off_peak_charging_start": {
+        "name": "谷电充电开始时间"
+      },
+      "off_peak_charging_end": {
+        "name": "谷电充电结束时间"
+      },
+      "schedule_time": {
+        "name": "开始时间"
+      }
+    },
+    "input": {
+      "schedule_repeats": {
+        "name": "重复"
+      },
+      "dnd_repeats": {
+        "name": "重复"
+      },
+      "map_custom_name": {
+        "name": "地图名称"
+      },
+      "segment_custom_name": {
+        "name": "房间名称"
+      },
+      "shortcut_name": {
+        "name": "快捷指令名称"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "添加",
+        "add_map": "创建地图",
+        "auto_empty_unavailable": "自动集尘不可用",
+        "auto_emptying": "正在集尘",
+        "backup": "备份",
+        "bag_drying_unavailable": "尘袋烘干不可用",
+        "cancel": "取消",
+        "cancel_ignore": "取消忽略",
+        "carpet": "地毯",
+        "change": "更改",
+        "charge": "回充",
+        "clean": "清扫",
+        "clean_again": "再次清扫",
+        "cleaning_settings": "清扫设置",
+        "cleanings": "清扫次数",
+        "close": "关闭",
+        "confirm": "确认",
+        "delete": "删除",
+        "delete_carpet": "删除地毯",
+        "deleted_carpet": "已删除地毯",
+        "disable": "禁用",
+        "discard": "放弃",
+        "dismiss": "忽略",
+        "dock": "基站",
+        "dock_settings": "基站设置",
+        "download": "下载",
+        "dry": "烘干",
+        "dry_bag": "烘干尘袋",
+        "drying_unavailable": "烘干不可用",
+        "dynamically_ignored": "动态忽略",
+        "edit_carpet": "编辑地毯",
+        "empty": "集尘",
+        "enable": "启用",
+        "fast_mapping": "快速建图",
+        "get_dreame_vacuum_card": "获取 Dreame Vacuum 卡片",
+        "ignore": "忽略",
+        "ignore_obstacle": "忽略障碍物",
+        "impassable_threshold": "不可越门槛",
+        "job_details": "任务详情",
+        "keep_disabled": "保持禁用",
+        "map_display": "地图显示",
+        "map_management": "地图管理",
+        "new_dnd": "新勿扰",
+        "new_schedule": "新预约清扫",
+        "new_shortcut": "新快捷任务",
+        "next_job": "下一任务",
+        "no_go": "禁区",
+        "no_mop": "禁拖区",
+        "objects": "物品",
+        "override": "覆盖",
+        "passable_threshold": "可越门槛",
+        "pause": "暂停",
+        "pause_washing": "暂停清洗",
+        "previous_job": "前一任务",
+        "ramp": "坡道",
+        "reload": "刷新",
+        "rename": "重命名",
+        "repeats": "次数",
+        "replace": "更换",
+        "reset": "重置",
+        "restore": "恢复",
+        "restore_map": "恢复地图",
+        "resume": "继续",
+        "resume_washing": "继续清洗",
+        "rooms": "房间",
+        "rotate_left": "向左旋转",
+        "rotate_right": "向右旋转",
+        "round_carpet": "圆形地毯",
+        "save": "保存",
+        "select_map": "选择地图",
+        "shortcuts": "快捷指令",
+        "square_carpet": "方形地毯",
+        "start": "开始",
+        "start_auto_empty": "开始集尘",
+        "start_bag_drying": "开始尘袋烘干",
+        "start_drying": "开始烘干",
+        "start_task": "开始任务",
+        "start_washing": "开始清洗",
+        "stop": "停止",
+        "stop_bag_drying": "停止尘袋烘干",
+        "stop_drying": "停止烘干",
+        "understood": "知晓",
+        "virtual_threshold": "虚拟门槛",
+        "virtual_wall": "虚拟墙",
+        "wash": "清洗",
+        "washing_unavailable": "清洗不可用",
+        "wifi_map": "WiFi热力图"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "背景图片",
+        "card_object_action_buttons": "操作按钮",
+        "card_object_animations": "动画效果",
+        "card_object_cleanup_notification": "清扫通知",
+        "card_object_controls": "控制按钮",
+        "card_object_cruising_history": "巡航记录",
+        "card_object_fault_notification": "错误通知",
+        "card_object_information_notification": "信息通知",
+        "card_object_low_water_notification": "缺水通知",
+        "card_object_map_change_confirmation": "地图更改确认",
+        "card_object_menu": "菜单",
+        "card_object_progress_bar": "进度条",
+        "card_object_saved_notification": "已保存通知",
+        "card_object_shortcuts": "快捷指令",
+        "card_object_state": "状态",
+        "card_object_status": "状态",
+        "card_object_task_type": "任务类型",
+        "card_object_title": "标题",
+        "card_object_warning_notification": "警告通知",
+        "color_scheme": "色彩方案",
+        "color_scheme_dreame_auto": "追觅自动",
+        "color_scheme_dreame_dark": "Dreame 深色",
+        "color_scheme_dreame_light": "Dreame 浅色",
+        "color_scheme_grayscale": "灰度模式",
+        "color_scheme_mijia_auto": "米家自动",
+        "color_scheme_mijia_dark": "米家深色",
+        "color_scheme_mijia_light": "米家浅色",
+        "copied": "已复制",
+        "copy": "复制",
+        "copy_all": "复制全部",
+        "disable_haptic": "禁用触感反馈",
+        "editable_objects": "可编辑对象",
+        "font_size": "字体大小",
+        "full_height": "全高",
+        "grid_size": "网格大小",
+        "height": "高度",
+        "hidden_card_objects": "隐藏卡片对象",
+        "hidden_objects": "隐藏对象",
+        "hide_map_info": "隐藏地图信息",
+        "icon_set": "图标库",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "旧版 Dreame",
+        "icon_set_material": "Material",
+        "icon_set_mijia": "米家",
+        "left": "左侧",
+        "left_handed": "左手模式",
+        "limit_height": "自适应高度",
+        "locked": "已锁定",
+        "locked_always": "始终",
+        "locked_auto": "自动",
+        "locked_never": "从不",
+        "locked_only_touch": "仅触摸",
+        "map": "地图 %name%",
+        "map_1": "第一张图",
+        "map_2": "第二张图",
+        "map_3": "第三张图",
+        "map_4": "第四张图",
+        "map_5": "第五张图",
+        "map_color_active_area": "活动区域",
+        "map_color_active_area_outline": "活动区域轮廓",
+        "map_color_active_point": "活动点",
+        "map_color_active_point_outline": "活动点轮廓",
+        "map_color_auto_low_lying_area": "自动低洼区",
+        "map_color_carpet_color": "地毯颜色",
+        "map_color_curtain": "窗帘",
+        "map_color_detected_carpet_color": "识别地毯颜色",
+        "map_color_floor": "地板",
+        "map_color_floor_material": "地板材质",
+        "map_color_icon_background": "图标背景",
+        "map_color_impassable_threshold": "不可越门槛",
+        "map_color_manual_low_lying_area": "手动低洼区",
+        "map_color_mop_path": "拖地路径",
+        "map_color_new_segment": "新房间",
+        "map_color_no_go": "禁区",
+        "map_color_no_go_outline": "禁区轮廓",
+        "map_color_no_mop": "禁拖区",
+        "map_color_no_mop_outline": "禁拖区轮廓",
+        "map_color_obstacle_background": "障碍物背景",
+        "map_color_order": "顺序",
+        "map_color_outside": "外部",
+        "map_color_passable_threshold": "可越门槛",
+        "map_color_passive_segment": "静止房间",
+        "map_color_path": "路径",
+        "map_color_ramp": "坡道",
+        "map_color_segment": "房间",
+        "map_color_settings_background": "设置背景",
+        "map_color_text": "文本",
+        "map_color_text_stroke": "文本描边",
+        "map_color_virtual_threshold": "虚拟门槛",
+        "map_color_virtual_wall": "虚拟墙",
+        "map_color_wall": "墙壁",
+        "map_config": "地图配置",
+        "map_display": "地图显示",
+        "map_display_floor_plan": "楼层平面图",
+        "map_display_floor_plan_only": "仅楼层平面图",
+        "map_display_floor_plan_without_texture": "无纹理楼层平面图",
+        "map_display_standard": "标准",
+        "map_object_active_area": "活动区域",
+        "map_object_active_cruise_point": "活跃巡航点",
+        "map_object_active_point": "活动点",
+        "map_object_animations": "动画效果",
+        "map_object_blocked_segment": "屏蔽房间",
+        "map_object_blocked_segments": "屏蔽房间",
+        "map_object_carpet": "地毯",
+        "map_object_charger": "基座",
+        "map_object_cleaning_sequence": "清扫顺序",
+        "map_object_cruise_point": "巡航点",
+        "map_object_curtain": "窗帘",
+        "map_object_customized_cleaning": "定制清扫",
+        "map_object_deleted_carpet": "已删除地毯",
+        "map_object_detected_carpet": "识别地毯",
+        "map_object_door": "门",
+        "map_object_floor": "地板",
+        "map_object_floor_material": "地板材质",
+        "map_object_furniture": "家具",
+        "map_object_furniture_image": "家具图片",
+        "map_object_hidden_segments": "隐藏房间",
+        "map_object_icon": "图标",
+        "map_object_ignored_obstacles": "已忽略障碍",
+        "map_object_impassable_threshold": "不可越门槛",
+        "map_object_lock_indicator": "锁定指示器",
+        "map_object_low_lying_area": "低洼区域",
+        "map_object_material": "地板材质",
+        "map_object_mop_path": "拖地路径",
+        "map_object_mop_type": "拖布类型",
+        "map_object_name": "名称",
+        "map_object_name_background": "名称背景",
+        "map_object_no_go": "禁区",
+        "map_object_no_mop": "禁拖区",
+        "map_object_object_option": "对象选项",
+        "map_object_obstacle": "障碍物",
+        "map_object_obstacle_background": "障碍背景",
+        "map_object_obstacle_color": "障碍物颜色",
+        "map_object_order": "顺序",
+        "map_object_passable_threshold": "可越门槛",
+        "map_object_path": "路径",
+        "map_object_pet": "宠物",
+        "map_object_predefined_point": "预设点",
+        "map_object_ramp": "坡道",
+        "map_object_router": "路由器",
+        "map_object_segment": "房间",
+        "map_object_segment_type": "房间类型",
+        "map_object_selected_segments": "已选房间",
+        "map_object_split_line": "分割线",
+        "map_object_stain": "污垢",
+        "map_object_station_status": "基站状态",
+        "map_object_vacuum": "主机",
+        "map_object_vacuum_status": "主机状态",
+        "map_object_virtual_threshold": "虚拟门槛",
+        "map_object_virtual_wall": "虚拟墙",
+        "map_object_walls": "墙壁",
+        "map_object_zoom_point": "缩放点",
+        "object_opacity": "对象透明度",
+        "object_scale": "对象比例",
+        "opacity": "透明度",
+        "override_colors": "覆盖地图颜色",
+        "overlay_image": "叠加图片",
+        "rotation": "旋转",
+        "scale": "比例",
+        "scripts": "脚本",
+        "selectable_objects": "可选对象",
+        "selected_map_config": "%name% 配置",
+        "show_map_info": "显示地图信息",
+        "top": "顶部",
+        "url": "链接",
+        "viewport": "视口",
+        "width": "宽度",
+        "zoom": "缩放"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "主机正在任务中！",
+        "apply_changes_or_reload": "地图在编辑期间已更改！\n是否强制覆盖或加载新地图？",
+        "auto_mount_mop_will_enabled": "自动挂载拖布将启用！",
+        "backup_map": "备份地图？",
+        "backup_map_will_overwritten": "现有的备份地图将被覆盖！",
+        "bag_drying_will_stopped": "尘袋烘干将停止！",
+        "carpet_recognition_will_enabled": "启用定制地毯清扫前必须先开启地毯识别",
+        "carpet_will_deleted": "地毯将被删除！",
+        "cleangenius_will_disabled": "CleanGenius 将被禁用！",
+        "cleaning_failure": "清扫失败原因",
+        "create_map": "创建新地图？",
+        "custom_carpet_settings_will_enabled": "地毯定制清扫将开启！",
+        "custom_carpet_settings_will_enabled_detail": "清扫设置将根据所选地毯类型进行调整",
+        "customized_cleaning_disabled": "定制清扫已禁用！",
+        "delete_carpet": "确认删除地毯？",
+        "delete_dnd": "确认删除勿扰任务？",
+        "delete_map": "确认删除地图？",
+        "delete_schedule": "确认删除预约清扫？",
+        "delete_shortcut": "确认删除快捷指令？",
+        "deleted": "删除成功",
+        "device_unavailable": "设备不可用",
+        "disable_cleangenius": "禁用 CleanGenius？",
+        "dnd_confliction": "勿扰任务冲突！",
+        "dnd_confliction_detail": "预约清扫时间在勿扰时间段内。",
+        "dnd_will_deleted": "自 %start% 至 %end% 的勿扰任务将被删除！",
+        "dock_in_restricted_area": "基座位于禁区内！",
+        "dock_in_restricted_area_detail": "充电基座位于禁区。如果保存地图，主机可能无法正常回充。",
+        "drying_will_stopped": "拖布烘干将停止！",
+        "dust_collection_not_performed": "集尘（自动集尘）任务未执行\n主机在勿扰期间不会执行自动集尘任务。",
+        "enable_auto_mount_mop": "是否启用自动挂载拖布？",
+        "enable_carpet_recognition": "确认开启地毯识别？",
+        "enable_customized_cleaning": "是否启用定制清扫？",
+        "enable_mop_change": "是否启用自动更换拖布？",
+        "enable_task": "是否启用该任务？",
+        "entity_is_required": "实体是必需的",
+        "entity_not_available": "实体不可用",
+        "failed_to_load_card": "无法加载卡片",
+        "ignore_obstacle": "忽略该障碍物？",
+        "invalid_entity": "无效实体",
+        "map_backup": "地图备份中",
+        "map_backup_failed": "地图备份失败！",
+        "map_backup_success": "地图备份已完成",
+        "map_recovery": "地图恢复中",
+        "map_recovery_failed": "地图恢复失败！",
+        "map_recovery_success": "地图恢复已完成",
+        "map_will_deleted": "将删除 %name%！",
+        "map_will_replaced": "当前所选地图将被新地图替换！",
+        "map_will_restored": "地图将恢复到 %date% 的状态",
+        "mapping_started": "地图构建开始...",
+        "mop_change_disabled": "自动更换拖布已禁用！",
+        "mop_wash_frequency_low": "回洗频率过低！",
+        "mop_wash_frequency_will_increased": "为确保拖布湿度，回洗频率将自动增加",
+        "not_available": "目前不可用...",
+        "not_fully_supported": "尚未完善支持！",
+        "not_supported": "暂不支持！",
+        "obstacle_will_ignored": "障碍物将被忽略！",
+        "override_changes": "覆盖更改？",
+        "preview": "这是 Dreame Vacuum 卡片的预览",
+        "recommended_areas": "推荐区域",
+        "relocating": "定位中，请稍候。",
+        "relocating_completed": "定位成功，主机继续执行原任务。",
+        "relocating_failed": "定位失败！",
+        "replace_map": "替换新地图？",
+        "reset_usage": "确认重置使用详情？",
+        "reset_walls": "重置墙壁？",
+        "restore_map": "确认恢复 %name%？",
+        "resume_cleaning": "主机会在电量充至80%后自动继续执行未完成的清扫任务。",
+        "resume_cleaning_not_performed": "主机将在勿扰结束后恢复清扫。",
+        "resume_cleaning_time": "将在 %time% 开始清扫",
+        "save_changes": "确认保存更改？",
+        "saved": "保存成功",
+        "schedule_will_deleted": "在 %time% 的清扫预约将被删除！",
+        "select_map": "确认选择 %name%？",
+        "select_mapping_type": "选择建图方式",
+        "select_room": "选择房间以设置清扫顺序",
+        "selected_map_will_changed": "所选地图将更改为 %name%！",
+        "service_call_failed": "服务调用失败",
+        "settings_will_applied": "您的设置将在下次任务开始时生效。",
+        "shortcut_will_deleted": "将删除 %name%！",
+        "stop_bag_drying": "停止尘袋烘干？",
+        "stop_drying": "停止烘干？",
+        "stop_task": "停止当前任务？",
+        "task_disabled": "任务已禁用！",
+        "task_will_stopped": "当前任务将停止！",
+        "unsaved_changes_present": "您有未保存的更改，继续将丢失！",
+        "unsupported_browser": "不支持该浏览器！",
+        "usage_will_reset": "%name% 的使用统计将被重置！",
+        "walls_will_be_reset": "墙壁将恢复到最初映射的位置！"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "耗材使用",
+        "add_furniture": "添加家具",
+        "audio_settings": "声音设置",
+        "battery_management": "电池管理",
+        "carpet_settings": "地毯设置",
+        "clean_water_tank": "清水箱",
+        "cleaning_details": "清扫详情",
+        "cleaning_history": "清扫记录",
+        "cleaning_sequence": "清扫顺序",
+        "created_carpet": "手动创建地毯",
+        "cruising": "巡航",
+        "cruising_details": "巡航详情",
+        "cruising_history": "巡航记录",
+        "customized_cleaning": "定制清扫",
+        "description": "%name% 自定义集成的插件前端",
+        "detected_carpet": "识别地毯",
+        "detergent": "清洁液",
+        "device_information": "设备信息",
+        "device_settings": "设备设置",
+        "dnd": "勿扰模式",
+        "dnd_task": "勿扰任务",
+        "dust_bag": "尘袋",
+        "global_carpet_settings": "全局地毯设置",
+        "invalid": "无效",
+        "locate": "定位主机",
+        "map": "地图",
+        "map_edit": "地图编辑",
+        "map_management": "地图管理",
+        "map_name_placeholder": "地图 %index%",
+        "mop_type": "拖布类型",
+        "mopping_settings": "拖地设置",
+        "more_functions": "更多功能",
+        "name": "%name% 卡片",
+        "new_map": "新地图",
+        "obstacle": "障碍物",
+        "obstacle_settings": "避障与摄像头设置",
+        "recovery_map_list": "地图恢复",
+        "remote_control": "遥控模式",
+        "saved_map": "已保存地图",
+        "schedule_list": "预约清扫",
+        "scheduled_room": "预约选区清扫",
+        "scheduled_spot": "预约指点清扫",
+        "scheduled_task": "预约任务",
+        "scheduled_zone": "预约划区清扫",
+        "segment_name_placeholder": "房间 %index%",
+        "shortcut": "快捷指令",
+        "shortcut_list": "快捷指令列表",
+        "shortcut_map": "地图快捷指令",
+        "shortcut_name_placeholder": "快捷指令 %index%",
+        "shortcut_task": "快捷指令任务",
+        "task": "任务 %index%",
+        "task_placeholder": "任务 %index%",
+        "time_left": "剩余 %time%",
+        "unavailable": "不可用",
+        "used_water_tank": "污水箱",
+        "wall": "墙壁",
+        "wifi_map": "WiFi热力图"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "区域清洁",
+      "description": "在指定的房间内开始清洁作业。",
+      "fields": {
+        "segments": {
+          "name": "区域",
+          "description": "要清洁的房间列表。仅限用房间代码或房间代码、清洁时间、风扇速度和拖地模式的数组，以覆盖每个房间的默认值。"
+        },
+        "repeats": {
+          "name": "重复次数",
+          "description": "每个选定房间的清洁次数(除非被自定义清洁参数覆盖)。"
+        },
+        "suction_level": {
+          "name": "吸力强度",
+          "description": "每个选定房间的吸力强度(除非被自定义清洁参数覆盖)。"
+        },
+        "water_volume": {
+          "name": "水量",
+          "description": "每个选定房间的用水量(除非被自定义清洁参数覆盖)。"
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "区域清洁",
+      "description": "在选定的区域开始清洁作业。",
+      "fields": {
+        "zone": {
+          "name": "区域",
+          "description": "坐标"
+        },
+        "repeats": {
+          "name": "重复次数",
+          "description": "每个选定区域的清洁次数。"
+        },
+        "suction_level": {
+          "name": "吸力强度",
+          "description": "每个选定区域的吸力强度"
+        },
+        "water_volume": {
+          "name": "水量",
+          "description": "每个选定区域的用水量"
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "定点清洁",
+      "description": "在地图上的选定点开始清洁作业。",
+      "fields": {
+        "points": {
+          "name": "坐标点",
+          "description": "要清洁的坐标列表。"
+        },
+        "repeats": {
+          "name": "重复次数",
+          "description": "每个选定区域的清洁次数。"
+        },
+        "suction_level": {
+          "name": "吸力强度",
+          "description": "每个选定区域的吸力强度。"
+        },
+        "water_volume": {
+          "name": "水量",
+          "description": "每个选定区域的用水量。"
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "前往",
+      "description": "前往地图上的坐标并停止。",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "该点的 X 坐标。"
+        },
+        "y": {
+          "name": "Y",
+          "description": "该点的 Y 坐标。"
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "跟随路径",
+      "description": "按照地图上的坐标列表移动并返回基站。(仅支持具有相机的扫地机)",
+      "fields": {
+        "points": {
+          "name": "坐标点",
+          "description": "路径的坐标列表。"
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "启动快捷方式",
+      "description": "启动快捷方式任务。（仅支持的设备）",
+      "fields": {
+        "shortcut_id": {
+          "name": "快捷方式ID",
+          "description": "快捷方式的ID。"
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "远程控制移动步数",
+      "description": "远程控制机器人移动一步。",
+      "fields": {
+        "rotation": {
+          "name": "旋转",
+          "description": "以二进制度数在 -128 到 128 之间旋转。"
+        },
+        "velocity": {
+          "name": "速度",
+          "description": "移动速度，从 100(前进)到 -300(后退)。"
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "安装语音包",
+      "description": "安装官方或自定义语音包。",
+      "fields": {
+        "lang_id": {
+          "name": "语言 ID",
+          "description": "此语音包的语言 ID。"
+        },
+        "url": {
+          "name": "网址URL",
+          "description": "此语音包的 URL，扫地机应该能够访问的网址。"
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "语言包的 MD5 校验和。"
+        },
+        "size": {
+          "name": "大小",
+          "description": "语言包的大小，以bytes为单位。"
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "请求地图",
+      "description": "请求地图数据。"
+    },
+    "vacuum_select_map": {
+      "name": "选择地图",
+      "description": "选择当前地图。在有多张地图/楼层时使用。",
+      "fields": {
+        "map_id": {
+          "name": "地图 ID",
+          "description": "要选择的地图 ID。"
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "删除地图",
+      "description": "删除地图。",
+      "fields": {
+        "map_id": {
+          "name": "地图 ID",
+          "description": "要删除的地图 ID。"
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "储存临时地图",
+      "description": "储存临时地图。"
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "舍弃临时地图",
+      "description": "舍弃临时地图。"
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "替换临时地图",
+      "description": "用另一张储存的地图替换临时地图。",
+      "fields": {
+        "map_id": {
+          "name": "地图 ID",
+          "description": "要替换的地图 ID。"
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "重新命名地图",
+      "description": "重新命名地图。",
+      "fields": {
+        "map_id": {
+          "name": "地图 ID",
+          "description": "地图 ID"
+        },
+        "map_name": {
+          "name": "地图名称",
+          "description": "地图的新名称。"
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "恢复地图",
+      "description": "恢复地图。",
+      "fields": {
+        "map_id": {
+          "name": "地图 ID",
+          "description": "要恢复的地图 ID。"
+        },
+        "recovery_map_index": {
+          "name": "恢复地图索引",
+          "description": "已储存恢复地图的索引"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "从档案恢复地图",
+      "description": "从档案恢复地图。",
+      "fields": {
+        "map_id": {
+          "name": "地图 ID",
+          "description": "要恢复的地图 ID。"
+        },
+        "file_url": {
+          "name": "档案网址",
+          "description": "储存的 tbz2.gz 或 tar.gz 档案的网址 URL。"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "备份地图",
+      "description": "将地图备份到云端。",
+      "fields": {
+        "map_id": {
+          "name": "地图 ID",
+          "description": "要备份的地图 ID。"
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "合并区域",
+      "description": "合并房间。",
+      "fields": {
+        "map_id": {
+          "name": "地图 ID",
+          "description": "地图 ID。"
+        },
+        "segments": {
+          "name": "区域",
+          "description": "房间 ID。"
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "分割区域",
+      "description": "分割房间。",
+      "fields": {
+        "map_id": {
+          "name": "地图 ID",
+          "description": "地图 ID。"
+        },
+        "segment": {
+          "name": "区域",
+          "description": "房间 ID。"
+        },
+        "line": {
+          "name": "线条",
+          "description": "分割线的坐标。"
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "重新命名区域",
+      "description": "重新命名区域。",
+      "fields": {
+        "segment_id": {
+          "name": "区域 ID",
+          "description": "区域 ID。"
+        },
+        "segment_name": {
+          "name": "区域名称",
+          "description": "区域的新名称。"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "设置清洁顺序",
+      "description": "设置房间清洁顺序。(仅支持特定设备)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "清洁顺序",
+          "description": "清洁顺序的区域 ID 列表。"
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "设置自定义清洁",
+      "description": "设置自定义清洁参数。(仅支持特定设备)",
+      "fields": {
+        "segment_id": {
+          "name": "区域 ID",
+          "description": "房间 ID。"
+        },
+        "suction_level": {
+          "name": "吸力强度",
+          "description": "每个房间的吸力强度。"
+        },
+        "water_volume": {
+          "name": "水量",
+          "description": "每个房间的用水量。"
+        },
+        "wetness_level": {
+          "name": "湿度等级",
+          "description": "每个房间的湿度等级（仅支持部分机型）。"
+        },
+        "cleaning_mode": {
+          "name": "清洁模式",
+          "description": "每个房间的清洁模式(仅支持有拖布升降功能的扫地机)。"
+        },
+        "repeats": {
+          "name": "重复次数",
+          "description": "每个房间的清洁次数。"
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "设置自定义地毯清洁",
+      "description": "为地毯设置自定义清洁设置。（仅支持的设备）",
+      "fields": {
+        "id": {
+          "name": "地毯ID",
+          "description": "地毯ID列表。"
+        },
+        "type": {
+          "name": "对象类型",
+          "description": "带ID对象的类型。（0 = 自动检测地毯，1 = 手动创建地毯，2 = 房间地毯（如果支持））"
+        },
+        "carpet_cleaning": {
+          "name": "地毯清洁",
+          "description": "每个地毯的自定义清洁设置。"
+        },
+        "carpet_preferences": {
+          "name": "地毯设置",
+          "description": "每个地毯的自定义设置，包含启用设置的数组。"
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "设置限制区域",
+      "description": " 定义虚拟墙、限制区域和/或禁拖区域。",
+      "fields": {
+        "walls": {
+          "name": "墙壁",
+          "description": "虚拟墙。"
+        },
+        "zones": {
+          "name": "区域",
+          "description": "禁止进入区域。"
+        },
+        "no_mops": {
+          "name": "禁拖区域",
+          "description": "禁拖区域。"
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "重设耗材",
+      "description": "重设耗材。",
+      "fields": {
+        "consumable": {
+          "name": "耗材",
+          "description": "耗材类型。"
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "重新命名快捷方式",
+      "description": "重新命名快捷方式。(仅支持特定设备)",
+      "fields": {
+        "shortcut_id": {
+          "name": "快捷方式 ID",
+          "description": "快捷方式 ID。"
+        },
+        "shortcut_name": {
+          "name": "快捷方式名称",
+          "description": "快捷方式的新名称。"
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "删除捷径",
+      "description": "删除捷径。（仅限支持的设备）",
+      "fields": {
+        "shortcut_id": {
+          "name": "捷径 ID",
+          "description": "捷径的 ID。"
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "设置地毯区域",
+      "description": "定义地毯和忽略的地毯。(仅支持特定设备)",
+      "fields": {
+        "carpets": {
+          "name": "地毯",
+          "description": "地毯区域。"
+        },
+        "deleted_carpets": {
+          "name": "忽略的地毯",
+          "description": "忽略的地毯区域，用于删除自动侦测到的地毯。"
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "设置虚拟门坎",
+      "description": "定义虚拟门坎。",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "虚拟门坎",
+          "description": "虚拟门坎线的坐标。"
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "设置预设点",
+      "description": "在当前地图上定义预设坐标。(仅支持具有相机的扫地机)",
+      "fields": {
+        "points": {
+          "name": "坐标点",
+          "description": "要储存的坐标列表。"
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "设置障碍物忽略",
+      "description": "设置障碍物的忽略状态。(仅支持具有 AI 障碍物侦测功能的扫地机)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "障碍物的 X 坐标。"
+        },
+        "y": {
+          "name": "Y",
+          "description": "障碍物的 Y 坐标。"
+        },
+        "obstacle_ignored": {
+          "name": "忽略障碍物",
+          "description": "是否要忽略障碍物。"
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "设置路径点",
+      "description": "在当前地图上设置路径点。(仅支持有WiFi地图功能的扫地机)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "路径的 X 坐标。"
+        },
+        "y": {
+          "name": "Y",
+          "description": "路径的 Y 坐标。"
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "选择前一个",
+      "description": "选择选项实体的前一个选项。",
+      "fields": {
+        "cycle": {
+          "name": "循环",
+          "description": "选项是否应该从第一个循环到最后一个。"
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "选择第一个",
+      "description": "选择选项实体的第一个选项。"
+    },
+    "select_select_last": {
+      "name": "选择最后一个",
+      "description": "选择选项实体的最后一个选项。"
+    },
+    "select_select_next": {
+      "name": "选择下一个",
+      "description": "选择选项实体的下一个选项。",
+      "fields": {
+        "cycle": {
+          "name": "循环",
+          "description": "选项是否应该从第一个循环到最后一个。"
+        }
+      }
+    }
+  }
+}

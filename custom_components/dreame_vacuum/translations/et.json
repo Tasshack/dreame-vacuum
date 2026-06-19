@@ -1,0 +1,2438 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Seade on juba seadistatud",
+      "cannot_connect": "Ühenduse loomine ebaõnnestus.",
+      "reauth_successful": "Taastuvastamine õnnestus"
+    },
+    "error": {
+      "cannot_connect": "Ühenduse loomine ebaõnnestus.",
+      "unsupported": "Seadet ei toetata",
+      "wrong_token": "Kontrollsumm viga, vale token",
+      "2fa_failed": "Kinnitamine ebaõnnestus.",
+      "wrong_captcha": "Vale captcha.",
+      "credentials_incomplete": "Volitused puudulikud, palun sisesta kasutajanimi, parool ja riik.",
+      "login_error": "Sisselogimine ebaõnnestus, kontrolli volitusi.",
+      "no_devices": "Sellel kontol pole valitud riigis toetatud seadmeid leitud.{devices}",
+      "2fa_send_failed": "Kinnituskoodi saatmine ebaõnnestus. Palun proovi uuesti.",
+      "2fa_limit_reached": "Kinnituskoodide saatmise päevalimiit on täis. Palun proovi homme uuesti.",
+      "2fa_cooldown_active": "Liiga palju järjestikuseid päringuid. Palun oota enne uuesti proovimist mõni minut."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Seadistuse tüüp"
+        },
+        "description": "Kaardifunktsioon nõuab pilveühendust ja pakub automaatset seadistamist. Kui sa ei soovi kaardifunktsiooni kasutada, võid valida käsitsi seadistamise."
+      },
+      "local": {
+        "data": {
+          "host": "Server",
+          "token": "Token"
+        },
+        "description": "Vajad 32-kohalist API Tokenit."
+      },
+      "mi": {
+        "data": {
+          "username": "Kasutajanimi",
+          "password": "Parool",
+          "country": "Serveri riik",
+          "prefer_cloud": "Eelista pilveühendust"
+        },
+        "description": "Logi sisse Xiaomi Miio pilve."
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "Kaheastmelise kinnitamise kood"
+        },
+        "description": "## Turvakontroll on vajalik\nKinnituskood on saadetud aadressile/numbrile {dest}. Palun sisesta kood allpool."
+      },
+      "captcha": {
+        "data": {
+          "code": "Kood"
+        },
+        "description": "## Captcha kinnitamine on vajalik.\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "Kasutajanimi",
+          "password": "Parool",
+          "country": "Serveri riik"
+        },
+        "description": "Logi sisse Dreamehome pilve."
+      },
+      "mova": {
+        "data": {
+          "username": "Kasutajanimi",
+          "password": "Parool",
+          "country": "Serveri riik"
+        },
+        "description": "Logi sisse Movahome pilve."
+      },
+      "trouver": {
+        "data": {
+          "username": "Kasutajanimi",
+          "password": "Parool",
+          "country": "Serveri riik"
+        },
+        "description": "Logi sisse Trouver pilve."
+      },
+      "devices": {
+        "data": {
+          "devices": "Toetatud seadmed"
+        },
+        "description": "Palun vali Dreame Vacuum seade, mida soovid seadistada."
+      },
+      "donation": {
+        "data": {
+          "donated": "Annetatud"
+        },
+        "description": "## Ära unusta projekti toetada.{text}"
+      },
+      "options": {
+        "data": {
+          "name": "Nimi",
+          "color_scheme": "Kaardi värviskeem",
+          "icon_set": "Kaardi ikoonikogu",
+          "notify": "Teavitused",
+          "hidden_map_objects": "Peidetud kaardiobjektid",
+          "low_resolution": "Madala resolutsiooniga kaart",
+          "square": "Ruuduline kaart"
+        }
+      },
+      "reauth_confirm": {
+        "description": "Dreame Vacuum integratsioon vajab sinu konto taastuvastamist, et värskendada tokeneid või lisada puuduvad pilve volitused.",
+        "title": "Kinnita integratsioon uuesti"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Kaardi värviskeem",
+          "icon_set": "Kaardi ikoonikogu",
+          "notify": "Teavitused",
+          "hidden_map_objects": "Peidetud kaardiobjektid",
+          "low_resolution": "Madala resolutsiooniga kaart",
+          "square": "Ruuduline kaart",
+          "configuration_type": "Seadistuse tüüp",
+          "prefer_cloud": "Eelista pilveühendust",
+          "donated": "Annetatud"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Pilve volitused puudulikud, palun sisesta kasutajanimi, parool ja riik"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "name": "Imemisvõimsus",
+        "state": {
+          "quiet": "Vaikne",
+          "standard": "Tavaline",
+          "strong": "Tugev",
+          "turbo": "Turbo",
+          "full_power": "Täisvõimsus"
+        }
+      },
+      "water_volume": {
+        "name": "Veekogus",
+        "state": {
+          "low": "Madal",
+          "medium": "Keskmine",
+          "high": "Kõrge"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "Mopi niiskus",
+        "state": {
+          "slightly_dry": "Kergelt kuiv",
+          "moist": "Niiske",
+          "wet": "Märg"
+        }
+      },
+      "cleaning_mode": {
+        "name": "Puhastusrežiim",
+        "state": {
+          "sweeping": "Pühkimine",
+          "mopping": "Mopes puhastamine",
+          "sweeping_and_mopping": "Pühkimine ja Mopes puhastamine",
+          "mopping_after_sweeping": "Mopes puhastamine pärast Pühkimist"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "Vaiba tundlikkus",
+        "state": {
+          "low": "Madal",
+          "medium": "Keskmine",
+          "high": "Kõrge"
+        }
+      },
+      "carpet_cleaning": {
+        "name": "Vaiba puhastamine",
+        "state": {
+          "avoidance": "Vältimine",
+          "adaptation": "Kohandumine",
+          "remove_mop": "Eemalda mopp",
+          "adaptation_without_route": "Kohandumine ilma Marsruudita",
+          "vacuum_and_mop": "Tolmuimeja ja Mopp",
+          "ignore": "Eira",
+          "cross": "Ületa"
+        }
+      },
+      "mop_wash_level": {
+        "name": "Mopi pesemise režiim",
+        "state": {
+          "water_saving": "Veesäästurežiim",
+          "daily": "Igapäevane",
+          "deep": "Sügav",
+          "ultra_clean_mode": "Eriti puhas"
+        }
+      },
+      "mopping_type": {
+        "name": "Mopiga puhastamise tüüp",
+        "state": {
+          "accurate": "Täpne",
+          "daily": "Igapäevane",
+          "deep": "Sügav"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "Laiem nurkade katvus",
+        "state": {
+          "off": "Väljas",
+          "high_frequency": "Kõrge sagedus",
+          "low_frequency": "Madal sagedus"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "Mopi kõikumine",
+        "state": {
+          "off": "Väljas",
+          "auto": "Automaatne",
+          "daily": "Igapäevane",
+          "weekly": "Iganädalane"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "Mopi laiendamise sagedus",
+        "state": {
+          "standard": "Standard",
+          "intelligent": "Nutikas",
+          "high": "Kõrge sagedus"
+        }
+      },
+      "floor_material": {
+        "name": "Põrandamaterjal",
+        "state": {
+          "none": "Puudub",
+          "tile": "Põrandaplaat",
+          "wood": "Puitpõrand",
+          "low_pile_carpet": "Madala Karvaga vaip",
+          "medium_pile_carpet": "Keskmise kuni Kõrge Karvaga vaip",
+          "carpet": "Vaip"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "Häälassistendi keel",
+        "state": {
+          "default": "Vaikimisi",
+          "english": "Inglise",
+          "german": "Saksa",
+          "chinese": "Hiina",
+          "russian": "Vene",
+          "italian": "Itaalia",
+          "french": "Prantsuse",
+          "korean": "Korea"
+        }
+      },
+      "mop_pressure": {
+        "name": "Mopi surve",
+        "state": {
+          "light": "Kerge",
+          "normal": "Normaalne"
+        }
+      },
+      "mop_temperature": {
+        "name": "Mopi temperatuur",
+        "state": {
+          "normal": "Normaalne",
+          "warm": "Soe"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "Madalate alade sagedus",
+        "state": {
+          "weekly": "Iga nädal",
+          "daily": "Iga päev"
+        }
+      },
+      "scraper_frequency": {
+        "name": "Kaabitsa sagedus",
+        "state": {
+          "off": "Väljas",
+          "weekly": "Iga nädal",
+          "daily": "Iga päev"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "Automaatne LDS leviala",
+        "state": {
+          "off": "Väljas",
+          "security": "Turvalisus",
+          "extreme": "Ekstreemne"
+        }
+      },
+      "order": {
+        "name": "Järjekord",
+        "state": {
+          "not_set": "Pole määratud"
+        }
+      },
+      "self_clean_frequency": {
+        "name": "Isepuhastumise sagedus",
+        "state": {
+          "by_area": "Ala järgi",
+          "by_time": "Aja järgi",
+          "by_room": "Ruumi järgi",
+          "intelligent": "Nutikas"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "Mopi puhastamise sagedus",
+        "state": {
+          "by_room": "Ruumi järgi",
+          "5sqm": "Viis ruutmeetrit",
+          "8sqm": "Kaheksa ruutmeetrit",
+          "10sqm": "Kümme ruutmeetrit",
+          "15sqm": "Viisteist ruutmeetrit",
+          "20sqm": "Kakskümmend ruutmeetrit",
+          "25sqm": "Kakskümmend viis ruutmeetrit",
+          "86sqf": "Kaheksakümmend kuus ruutjalga",
+          "108sqf": "Ükssada kaheksa ruutjalga",
+          "54sqf": "Viiskümmend neli ruutjalga",
+          "162sqf": "Ükssada kuuskümmend kaks ruutjalga",
+          "216sqf": "Kakssada kuusteist ruutjalga",
+          "270sqf": "Kakssada seitsekümmend ruutjalga"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "Automaatse tühjendamise režiim",
+        "state": {
+          "off": "Väljas",
+          "standard": "Standard",
+          "high_frequency": "Kõrge sagedus",
+          "low_frequency": "Madal sagedus",
+          "custom_frequency": "Kohandatud sagedus",
+          "intelligent": "Nutikas"
+        }
+      },
+      "floor_material_direction": {
+        "name": "Põranda suund",
+        "state": {
+          "vertical": "Vertikaalne",
+          "horizontal": "Horisontaalne"
+        }
+      },
+      "visibility": {
+        "name": "Nähtavus",
+        "state": {
+          "visible": "Nähtav",
+          "hidden": "Peidetud"
+        }
+      },
+      "cleangenius": {
+        "name": "CleanGenius",
+        "state": {
+          "off": "Väljas",
+          "routine_cleaning": "Igapäevane puhastus",
+          "deep_cleaning": "Süvapuhastus"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "CleanGenius Režiim",
+        "state": {
+          "vacuum_and_mop": "Tolmuimeja ja Mopp",
+          "mop_after_vacuum": "Mopes puhastamine pärast Pühkimist"
+        }
+      },
+      "washing_mode": {
+        "name": "Mopi pesemise režiim",
+        "state": {
+          "smart": "Nutikas",
+          "light": "Kerge",
+          "standard": "Standard",
+          "deep": "Sügav",
+          "ultra_washing": "Ultra pesu"
+        }
+      },
+      "water_temperature": {
+        "name": "Vee temperatuur",
+        "state": {
+          "normal": "Normaalne",
+          "mild": "Mahe",
+          "warm": "Soe",
+          "hot": "Kuum",
+          "max": "Maks"
+        }
+      },
+      "auto_recleaning": {
+        "name": "Automaatne kordus-puhastus",
+        "state": {
+          "off": "Väljas",
+          "in_deep_mode": "Sügavrežiimis",
+          "in_all_modes": "Kõikides režiimides"
+        }
+      },
+      "auto_rewashing": {
+        "name": "Automaatne kordus-pesu",
+        "state": {
+          "off": "Väljas",
+          "in_deep_mode": "Sügavrežiimis",
+          "in_all_modes": "Kõikides režiimides"
+        }
+      },
+      "cleaning_route": {
+        "name": "Marsruut",
+        "state": {
+          "quick": "Kiire",
+          "standard": "Standard",
+          "intensive": "Intensiivne",
+          "deep": "Sügav"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "Kohandatud Puhastusmarsruut (Mopp)",
+        "state": {
+          "off": "Väljas",
+          "standard": "Standard",
+          "intensive": "Intensiivne",
+          "deep": "Sügav"
+        }
+      },
+      "task_type": {
+        "name": "Ülesande tüüp",
+        "state": {
+          "go_to": "Mine punkti",
+          "segment": "Ruumi puhastamine",
+          "all": "Üldpuhastus",
+          "zone": "Tsooni puhastamine",
+          "spot": "Kohapuhastus"
+        }
+      },
+      "cleaning_times": {
+        "name": "Puhastuskordade arv",
+        "state": {
+          "x1": "Üks kord",
+          "x2": "Kaks korda",
+          "x3": "Kolm korda"
+        }
+      },
+      "auto_empty_frequency": {
+        "name": "Automaatne tühjendus (Sagedus)",
+        "state": {
+          "x1": "Pärast iga ülesannet",
+          "x2": "Pärast teist puhastust",
+          "x3": "Pärast kolmandat puhastust"
+        }
+      },
+      "drying_time": {
+        "name": "Kuivatusaeg",
+        "state": {
+          "silent": "Vaikne"
+        }
+      },
+      "battery_charge_level": {
+        "name": "Aku laetuse tase"
+      },
+      "object_type": {
+        "name": "Objekti tüüp",
+        "state": {
+          "predefined_point": "Eelmääratud punkt",
+          "low_lying_area": "Madalal asetsev ala",
+          "curtain": "Kardin",
+          "threshold": "Lävi",
+          "furniture": "Mööbel",
+          "carpet": "Vaip",
+          "restricted": "Piiratud tsoon"
+        }
+      },
+      "edit_type": {
+        "name": "Muutmise tüüp",
+        "state": {
+          "door": "Muuda uksi",
+          "split": "Ruumide poolitamine",
+          "merge": "Ruumide ühendamine",
+          "visibility": "Ruumide nähtavus",
+          "material": "Põranda materjal",
+          "type": "Ruumi nimi",
+          "wall": "Muuda seinu"
+        }
+      },
+      "map_type": {
+        "name": "Kaardi tüüp",
+        "state": {
+          "cleaning": "Puhastuskaart",
+          "history": "Puhastuse üksikasjad",
+          "wifi": "Wi-Fi kaart"
+        }
+      },
+      "carpet_type": {
+        "name": "Vaiba tüüp",
+        "state": {
+          "medium_pile": "Keskmine ja kõrge karv",
+          "low_pile": "Madal karv",
+          "floor_mat": "Põrandamatt",
+          "other": "Muu"
+        }
+      },
+      "mop_type": {
+        "name": "Mopi tüüp",
+        "state": {
+          "a": "Mopp A",
+          "b": "Mopp B",
+          "c": "Mopp C"
+        }
+      },
+      "carpet_shape": {
+        "name": "Kuju",
+        "state": {
+          "square": "Ruut",
+          "round": "Ring"
+        }
+      },
+      "mopping_pattern": {
+        "name": "Mopi muster",
+        "state": {
+          "daily": "Igapäevane pesu",
+          "deep": "Sügav pesu"
+        }
+      },
+      "wetness_level": {
+        "name": "Niiskustase",
+        "state": {
+          "slightly_dry": "Kergelt kuiv",
+          "moist": "Niiske",
+          "wet": "Märg"
+        }
+      },
+      "task_repeats": {
+        "name": "Ülesande kordus",
+        "state": {
+          "once": "Kord",
+          "daily": "Igapäevaselt",
+          "workdays": "Tööpäeviti",
+          "weekends": "Nädalavahetuseti"
+        }
+      },
+      "segment_name": {
+        "name": "Ruumi nimi",
+        "state": {
+          "room": "Tuba",
+          "living_room": "Elutuba",
+          "primary_bedroom": "Peamine magamistuba",
+          "study": "Kabinet",
+          "kitchen": "Köök",
+          "dining_hall": "Söögituba",
+          "bathroom": "Vannituba",
+          "balcony": "Rõdu",
+          "corridor": "Koridor",
+          "utility_room": "Majapidamisruum",
+          "closet": "Kapp",
+          "meeting_room": "Koosolekuruum",
+          "office": "Kontor",
+          "fitness_area": "Spordiala",
+          "recreation_area": "Puhkeala",
+          "secondary_bedroom": "Teine magamistuba"
+        }
+      },
+      "furniture_type": {
+        "name": "Mööbli tüüp",
+        "state": {
+          "single_bed": "Väike voodi",
+          "double_bed": "Lai voodi",
+          "arm_chair": "Tugitool",
+          "two_seat_sofa": "Kahekohaline diivan",
+          "three_seat_sofa": "Kolmekohaline diivan",
+          "dining_table": "Söögilaud",
+          "nightstant": "Öökapp",
+          "coffee_table": "Kohvilaud",
+          "toilet": "WC-Pott",
+          "litter_box": "Liivakast",
+          "pet_bed": "Lemmiklooma pesa",
+          "food_bowl": "Toidukauss",
+          "pet_toilet": "Lemmiklooma tualett",
+          "refrigerator": "Külmkapp",
+          "washing_machine": "Pesumasin",
+          "enclosed_litter_box": "Kinnine liivakast",
+          "air_conditioner": "Kliimaseade",
+          "tv_cabinet": "TV-Alus",
+          "bookshelf": "Raamaturiiul",
+          "shoe_cabinet": "Jalatsiriiul",
+          "wardrobe": "Riidekapp",
+          "greenery": "Taim",
+          "floor_mirror": "Põrandapeegel",
+          "l_shaped_sofa": "L-kujuline diivan",
+          "round_coffee_table": "Ümmargune kohvilaud",
+          "table": "Laud",
+          "arm_chair_narrow": "Tugitool (Kitsas)",
+          "three_seat_sofa_narrow": "Kolmekohaline diivan (Kitsas)",
+          "l_shaped_sofa_right": "L-kujuline diivan (Parem)"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "name": "Olek",
+        "state": {
+          "unknown": "Tundmatu",
+          "sweeping": "Pühkimine",
+          "charging": "Laeb",
+          "error": "Viga",
+          "idle": "Ootel",
+          "paused": "Peatatud",
+          "returning": "Naaseb baasi",
+          "mopping": "Mopes puhastamine",
+          "drying": "Kuivatamine",
+          "washing": "Pesemine",
+          "returning_to_wash": "Naaseb pesema",
+          "building": "Ehitamine",
+          "sweeping_and_mopping": "Pühkimine ja moppimine",
+          "charging_completed": "Laadimine lõpetatud",
+          "upgrading": "Uuendamine",
+          "clean_summon": "Kutsutud puhastama",
+          "station_reset": "Baasjaama lähtestamine",
+          "returning_install_mop": "Naaseb moppi paigaldama",
+          "returning_remove_mop": "Naaseb moppi eemaldama",
+          "water_check": "Vee kontrollimine",
+          "clean_add_water": "Puhastamine ja vee lisamine",
+          "washing_paused": "Pesemine peatatud",
+          "auto_emptying": "Automaatne tühjendus",
+          "remote_control": "Kaugjuhtimine",
+          "smart_charging": "Nutikas laadimine",
+          "second_cleaning": "Teistkordne puhastus",
+          "human_following": "Inimese jälgimine",
+          "spot_cleaning": "Kohapuhastus",
+          "returning_auto_empty": "Naaseb automaatsele tühjendusele",
+          "waiting_for_task": "Ootab ülesannet",
+          "station_cleaning": "Baasjaama puhastamine",
+          "returning_to_drain": "Naaseb tühjendamisele",
+          "draining": "Tühjendamine",
+          "auto_water_draining": "Automaatne vee tühjendamine",
+          "emptying": "Tühjendamine",
+          "dust_bag_drying": "Tolmukoti kuivatamine",
+          "dust_bag_drying_paused": "Tolmukoti kuivatamine peatatud",
+          "heading_to_extra_cleaning": "Suundub lisapuhastusele",
+          "extra_cleaning": "Lisapuhastus",
+          "finding_pet_paused": "Lemmiklooma otsimine peatatud",
+          "finding_pet": "Lemmiklooma otsimine",
+          "shortcut": "Otsetee",
+          "monitoring": "Jälgimine",
+          "monitoring_paused": "Jälgimine peatatud",
+          "initial_deep_cleaning": "Esmane süvapuhastus",
+          "initial_deep_cleaning_paused": "Esmane süvapuhastus peatatud",
+          "sanitizing": "Desinfitseerimine",
+          "sanitizing_with_dry": "Desinfitseerimine kuivatusega",
+          "changing_mop": "Mopi vahetamine",
+          "changing_mop_paused": "Mopi vahetamine peatatud",
+          "floor_maintaining": "Põrandahooldus",
+          "floor_maintaining_paused": "Põranda hooldus peatatud",
+          "remote_pickup": "Kaugtuvastus",
+          "arranging_items": "Esemete järjestamine",
+          "pet_guarding": "Lemmiklooma valvamine",
+          "pet_guarding_paused": "Lemmiklooma valvamine peatatud",
+          "installing_mop": "Mopi paigaldamine",
+          "uninstalling_mop": "Mopi eemaldamine",
+          "intelligent_recharging": "Intelligentne laadimine",
+          "assisted_cleaning": "Abistatud puhastus",
+          "entering_dock": "Sisenemine dokki",
+          "leaving_dock": "Väljumine dokist",
+          "navigating_to_climber": "Navigeerimine ronija juurde",
+          "docking_to_climber": "Dokkimine ronija külge",
+          "climber_docked": "Ronija dokitud",
+          "climber_navigating": "Ronija navigeerib",
+          "climbing_stairs": "Trepist ronimine",
+          "climbing_stairs_completed": "Trepist ronimine lõpetatud",
+          "climber_at_dock": "Ronija dokis",
+          "climber_leaving_dock": "Ronija väljub dokist"
+        }
+      },
+      "status": {
+        "name": "Staatus",
+        "state": {
+          "unknown": "Tundmatu",
+          "idle": "Ootel",
+          "paused": "Peatatud",
+          "cleaning": "Puhastamine",
+          "returning": "Naaseb baasi",
+          "spot_cleaning": "Kohapuhastus",
+          "follow_wall_cleaning": "Seinaäärne puhastus",
+          "charging": "Laeb",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "WiFi seadistamine",
+          "power_off": "Väljas",
+          "factory": "Tehas",
+          "error": "Viga",
+          "remote_control": "Kaugjuhtimine",
+          "sleeping": "Unerežiim",
+          "self_test": "Enesetest",
+          "factory_test": "Tehasetest",
+          "standby": "Ooterežiim",
+          "room_cleaning": "Ruumi puhastamine",
+          "zone_cleaning": "Tsooni puhastamine",
+          "fast_mapping": "Kiirkaardistus",
+          "cruising_path": "Liikumine mööda rada",
+          "cruising_point": "Liikumine punkti",
+          "summon_clean": "Kutsutud puhastama",
+          "shortcut": "Otsetee",
+          "person_follow": "Inimese jälgimine",
+          "water_check": "Vee kontroll",
+          "pet_guarding": "Lemmiklooma valvamine",
+          "auto_arrangement": "Automaatne järjestamine",
+          "smart_arrangement": "Nutikas järjestamine",
+          "zoned_arrangement": "Tsooniline järjestamine"
+        }
+      },
+      "task_status": {
+        "name": "Ülesande staatus",
+        "state": {
+          "unknown": "Tundmatu",
+          "completed": "Lõpetatud",
+          "cleaning": "Puhastamine",
+          "zone_cleaning": "Tsooni puhastamine",
+          "room_cleaning": "Ruumi puhastamine",
+          "spot_cleaning": "Kohapuhastus",
+          "fast_mapping": "Kiire kaardistamine",
+          "cleaning_paused": "Puhastamine peatatud",
+          "room_cleaning_paused": "Ruumi puhastamine peatatud",
+          "zone_cleaning_paused": "Tsooni puhastamine peatatud",
+          "spot_cleaning_paused": "Kohapuhastus peatatud",
+          "map_cleaning_paused": "Kaardi puhastamine peatatud",
+          "docking_paused": "Dokkimine peatatud",
+          "mopping_paused": "Mopiga puhastamine peatatud",
+          "zone_mopping_paused": "Tsooni mopipuhastus peatatud",
+          "room_mopping_paused": "Ruumi mopipuhastus peatatud",
+          "zone_docking_paused": "Tsooni dokkimine peatatud",
+          "room_docking_paused": "Ruumi dokkimine peatatud",
+          "cruising_path": "Liikumine mööda rada",
+          "cruising_path_paused": "Liikumine mööda rada peatatud",
+          "cruising_point": "Liikumine punkti",
+          "cruising_point_paused": "Liikumine punkti peatatud",
+          "summon_clean_paused": "Kutsutud puhastama peatatud",
+          "returning_to_install_mop": "Naaseb moppi paigaldama",
+          "returning_to_remove_mop": "Naaseb moppi eemaldama",
+          "station_cleaning": "Baasjaama puhastamine",
+          "pet_finding": "Lemmiklooma otsimine",
+          "auto_cleaning_washing_paused": "Automaatne puhastus pesu peatatud",
+          "area_cleaning_washing_paused": "Ala puhastus pesu peatatud",
+          "custom_cleaning_washing_paused": "Kohandatud puhastuspesu peatatud",
+          "picking_up_item": "Eseme ülesvõtmine",
+          "picking_up_item_paused": "Eseme ülesvõtmine peatatud",
+          "picking_up_item_success": "Ese edukalt üles võetud",
+          "remote_pickup_initializing": "Kaugtuvastuse algatamine",
+          "remote_pickup_identifing": "Kaugtuvastuse tuvastamine",
+          "manual_remote_pickup": "Manuaalne kaugtuvastus",
+          "automatic_remote_pickup": "Automaatne kaugtuvastus",
+          "remote_pickup_in_progress": "Kaugtuvastus pooleli",
+          "remote_pickup_paused": "Kaugtuvastus peatatud",
+          "placing_item": "Eseme asetamine",
+          "placing_item_paused": "Eseme asetamine peatatud"
+        }
+      },
+      "water_tank": {
+        "name": "Veepaak",
+        "state": {
+          "unknown": "Tundmatu",
+          "installed": "Paigaldatud",
+          "not_installed": "Pole paigaldatud",
+          "mop_installed": "Mopp paigaldatud",
+          "in_station": "Baasjaamas"
+        }
+      },
+      "mop_pad": {
+        "name": "Mopipadi",
+        "state": {
+          "unknown": "Tundmatu",
+          "installed": "Paigaldatud",
+          "not_installed": "Pole paigaldatud",
+          "mop_installed": "Mopp paigaldatud",
+          "in_station": "Baasjaamas"
+        }
+      },
+      "dust_collection": {
+        "name": "Tolmu kogumine",
+        "state": {
+          "unknown": "Tundmatu",
+          "not_available": "Pole saadaval",
+          "available": "Saadaval",
+          "over_use": "Liigkasutus",
+          "never": "Mitte kunagi"
+        }
+      },
+      "auto_empty_status": {
+        "name": "Automaatse tühjenduse olek",
+        "state": {
+          "unknown": "Tundmatu",
+          "idle": "Ootel",
+          "active": "Aktiivne",
+          "not_performed": "Teostamata"
+        }
+      },
+      "error": {
+        "name": "Viga",
+        "state": {
+          "unknown": "Tundmatu veakood",
+          "no_error": "Vigu pole",
+          "drop": "Rattad on õhus",
+          "cliff": "Kukkumisanduri viga",
+          "bumper": "Põrkeandur on kinni kiilunud",
+          "gesture": "Robot on kaldus",
+          "bumper_repeat": "Põrkeandur on kinni kiilunud",
+          "drop_repeat": "Rattad on õhus",
+          "optical_flow": "Optilise voolu anduri viga",
+          "no_box": "Tolmukast pole paigaldatud",
+          "no_tank_box": "Veepaak pole paigaldatud",
+          "water_box_empty": "Veepaak on tühi",
+          "box_full": "Filter pole kuiv või on blokeeritud",
+          "brush": "Põhihari on takerdunud",
+          "side_brush": "Külghari on takerdunud",
+          "fan": "Filter pole kuiv või on blokeeritud",
+          "left_wheel_motor": "Robot on kinni kiilunud või selle vasak ratas võib olla takistatud",
+          "right_wheel_motor": "Robot on kinni kiilunud või selle parem ratas võib olla takistatud",
+          "turn_suffocate": "Robot on kinni kiilunud või ei saa pöörata",
+          "forward_suffocate": "Robot on kinni kiilunud või ei saa edasi liikuda",
+          "charger_get": "Ei leia baasi",
+          "battery_low": "Aku on tühi",
+          "charge_fault": "Laadimise viga",
+          "battery_percentage": "Aku taseme viga",
+          "heart": "Sisemine viga",
+          "camera_occlusion": "Visuaalse positsioneerimise anduri viga",
+          "move": "Liikumisanduri viga",
+          "flow_shielding": "Optilise anduri viga",
+          "infrared_shielding": "Infrapuna varjestuse viga",
+          "charge_no_electric": "Laadimisjaam pole sisse lülitatud",
+          "battery_fault": "Aku viga",
+          "fan_speed_error": "Ventilaatori kiiruse anduri viga",
+          "left_wheell_speed": "Vasak ratas võib olla võõrkehade poolt blokeeritud",
+          "right_wheell_speed": "Parem ratas võib olla võõrkehade poolt blokeeritud",
+          "bmi055_acce": "Kiirendusanduri viga",
+          "bmi055_gyro": "Güroskoobi viga",
+          "xv7001": "Güroskoobi viga",
+          "left_magnet": "Vasaku magnetanduri viga",
+          "right_magnet": "Parema magnetanduri viga",
+          "flow_error": "Vooluanduri viga",
+          "infrared_fault": "Infrapuna viga",
+          "camera_fault": "Kaamera viga",
+          "strong_magnet": "Tuvastati tugev magnetväli",
+          "water_pump": "Veepumba viga",
+          "rtc": "RTC viga",
+          "auto_key_trig": "Sisemine viga",
+          "p3v3": "Sisemine viga",
+          "camera_idle": "Sisemine viga",
+          "blocked": "Puhastusmarsruut on blokeeritud, naaseb dokki.",
+          "lds_error": "Laserkaugusmõõtja viga",
+          "lds_bumper": "Laserkaugusmõõtja põrkeraua viga",
+          "filter_blocked": "Filter pole kuiv või on blokeeritud",
+          "edge": "Ääreanduri viga",
+          "carpet": "Palun käivita robot ilma vaibata alal.",
+          "laser": "3D takistuste vältimise anduril on rike.",
+          "ultrasonic": "Ultrahelianduril on rike.",
+          "no_go_zone": "Tuvastati keeluala või virtuaalne sein.",
+          "route": "Puhastusmarsruut on blokeeritud.",
+          "restricted": "Tuvastati, et pesurobot asub piiratud alal.",
+          "remove_mop": "Mopping on lõpetatud. Palun eemalda ja puhasta mopp õigeaegselt.",
+          "mop_removed": "Mopipadi tuleb puhastamise ajal lahti.",
+          "mop_pad_stop_rotate": "Mopipadi on lõpetanud pöörlemise.",
+          "bin_full": "Tolmukogumiskott on täis või õhukanal on blokeeritud.",
+          "bin_open": "Automaatse tühjendusjaama ülemine kaas ei ole suletud või tolmukott ei ole paigaldatud.",
+          "water_tank": "Puhastaveepaak pole paigaldatud.",
+          "dirty_water_tank": "Mustaveepaak on täis või paigaldamata.",
+          "water_tank_dry": "Puhta vee tase paagis on madal, palun lisa vett õigeaegselt.",
+          "dirty_water_tank_blocked": "Mustaveepaak blokeeritud.",
+          "dirty_water_tank_pump": "Mustaveepaagi pumba viga.",
+          "mop_pad": "Pesulaud pole õigesti paigaldatud.",
+          "wet_mop_pad": "Veetase pesulaual on ebanormaalne, palun puhasta pesulaud õigeaegselt.",
+          "clean_mop_pad": "Puhastamine on lõpetatud, palun puhasta mopi pesulaud.",
+          "clean_tank_level": "Kontrolli ja täida puhastaveepaak.",
+          "station_disconnected": "Baasjaam pole sisse lülitatud",
+          "dirty_tank_level": "Veetase mustaveepaagis on liiga kõrge.",
+          "washboard_level": "Veetase pesulaual on liiga kõrge.",
+          "no_mop_in_station": "Mopipadi pole jaamas.",
+          "dust_bag_full": "Tolmukott on täis või tuulutusavad on blokeeritud.",
+          "self_test_failed": "Ebanormaalne vee väljavool alumise ja ülemise veemooduli puhastaveepaagist.",
+          "mop_install_failed": "Mopipadja paigaldamine ebaõnnestus.",
+          "low_battery_turn_off": "Aku on tühi. Robot lülitub varsti välja.",
+          "dirty_tank_not_installed": "Roboti mustaveepaak pole paigaldatud.",
+          "robot_in_hidden_room": "Peidetud ala. Palun liiguta robot sobivale alale ja proovi uuesti.",
+          "washboard_not_working": "Pesulaud lakkas töötamast.",
+          "return_to_charge_failed": "Laadimisele naasmine ebaõnnestus.",
+          "lds_failed_to_lift": "LDS-mooduli tõstmine ebaõnnestus.",
+          "robot_stuck": "LDS-i ei saa asukoha määramiseks siin tõsta.",
+          "robot_stuck_repeat": "Liiguta robot avatud alale ja jätka ülesannet.",
+          "slippery_floor": "Liblik põrand. Palun proovi hiljem uuesti.",
+          "check_mop_install": "Palun kontrolli, kas mopp on õigesti paigaldatud.",
+          "dirty_water_tank_full": "Ebanormaalne veetase roboti mustaveepaagis.",
+          "retractable_leg_stuck": "Palun kontrolli tagasitõmbavaid jalgu takerduse suhtes.",
+          "internal_error": "Sisemise vea tõttu tekkinud rike. Proovi robot taaskäivitada.",
+          "robot_stuck_on_tables": "Robot on laudade ja toolide vahel kinni.",
+          "robot_stuck_on_passage": "Robot on kitsas käigus kinni.",
+          "robot_stuck_on_threshold": "Robot on trepiastmel/lävel kinni.",
+          "robot_stuck_on_low_lying_area": "Robot on madalal alal kinni.",
+          "robot_stuck_on_ramp": "Robot tuvastas rajal kukkumisohtlikke kaldteid.",
+          "robot_stuck_on_obstacle": "Robot tuvastas rajal takistusi.",
+          "robot_stuck_on_pet": "Robot tuvastas rajal inimesi või lemmikloomi.",
+          "robot_stuck_on_slippery_surface": "Robot on libisemise tõttu takerdunud.",
+          "robot_stuck_on_carpet": "Robot libiseb vaibal",
+          "drainage_failed": "Ebanormaalne vee äravool mustaveepaagist",
+          "mop_not_detected": "Moppi ei tuvastatud.",
+          "mop_holder_error": "Mopihoidiku koguse/paigutuse viga dokis.",
+          "dock_error": "Doki viga.",
+          "wash_failed": "Musta mopi pesemine ebaõnnestus.",
+          "robot_stuck_on_curtain": "Robot libiseb kardinapiirkonnas",
+          "edge_mop_stop_rotate": "Servamopp on pöörlemise lõpetanud.",
+          "edge_mop_detached": "Servamopp tuli lahti.",
+          "chassis_lift_malfunction": "Šassii tõstmise rike.",
+          "mop_cover_error": "Kontrolli mopi rulli ja katte lähedust võimaliku prahi suhtes.",
+          "roller_mop_error": "Kontrolli mopi rulli ja katte lähedust võimaliku prahi suhtes.",
+          "onboard_water_tank_empty": "Madal veetase roboti puhtaveepaagis.",
+          "onboard_dirty_water_tank_full": "Roboti mustaveepaak on täis.",
+          "mop_not_installed": "Mopp on paigaldamata.",
+          "fluffing_roller_error": "Kohevusrulli viga.",
+          "blocked_by_obstacle": "Takistuse poolt blokeeritud",
+          "robotic_arm_stopped": "Robotkäsi seiskus.",
+          "drainage_outlet_filter": "Roboti reovee väljalaskeava filter on ummistunud.",
+          "main_wheels_error": "Pearataste viga."
+        }
+      },
+      "charging_status": {
+        "name": "Laadimise staatus",
+        "state": {
+          "unknown": "Tundmatu",
+          "charging": "Laadimine",
+          "not_charging": "Ei lae",
+          "return_to_charge": "Naaseb laadima",
+          "charging_completed": "Laadimine lõpetatud"
+        }
+      },
+      "relocation_status": {
+        "name": "Ümberpaiknemise staatus",
+        "state": {
+          "unknown": "Tundmatu",
+          "located": "Asukoht tuvastatud",
+          "locating": "Asukoha tuvastamine",
+          "failed": "Ebaõnnestunud",
+          "success": "Edukas"
+        }
+      },
+      "self_wash_base_status": {
+        "name": "Isepuhastuva baasi staatus",
+        "state": {
+          "unknown": "Tundmatu",
+          "idle": "Ootel",
+          "washing": "Pesemine",
+          "drying": "Kuivatamine",
+          "paused": "Peatatud",
+          "returning": "Naaseb pesema",
+          "clean_add_water": "Puhastamine ja vee lisamine",
+          "adding_water": "Vee lisamine"
+        }
+      },
+      "low_water_warning": {
+        "name": "Madala veetaseme hoiatus",
+        "state": {
+          "no_warning": "Hoiatust pole",
+          "no_water_left": "Vesi puhtaveepaagis on otsakorral. Palun kontrolli ja täida puhtaveepaak kohe.",
+          "no_water_left_after_clean": "Mopipadi on pestud. Tuvastatud on vähene vesi puhtaveepaagis, palun täida puhtaveepaak ja tühjenda mustaveepaak.",
+          "no_water_for_clean": "Madal veetase puhtaveepaagis. Robot on lülitunud tolmuimejarežiimile.",
+          "low_water": "Vesi hakkab otsa saama. Palun täida puhtaveepaak.",
+          "tank_not_installed": "Puhastaveepaak pole paigaldatud."
+        }
+      },
+      "stream_status": {
+        "name": "Ülekande staatus",
+        "state": {
+          "unknown": "Tundmatu",
+          "idle": "Ootel",
+          "video": "Videosalvestis",
+          "audio": "Helisalvestis",
+          "recording": "Salvestamine"
+        }
+      },
+      "drainage_status": {
+        "name": "Tühjendamise staatus",
+        "state": {
+          "unknown": "Tundmatu",
+          "idle": "Ootel",
+          "draining": "Tühjendamine",
+          "draining_successful": "Tühjendus edukas",
+          "draining_failed": "Tühjendus ebaõnnestus"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "Puhtaveepaagi staatus",
+        "state": {
+          "unknown": "Tundmatu",
+          "not_available": "Pole saadaval",
+          "not_installed": "Pole paigaldatud",
+          "low_water": "Madal veetase",
+          "installed": "Paigaldatud"
+        }
+      },
+      "dirty_water_tank_status": {
+        "name": "Mustaveepaagi staatus",
+        "state": {
+          "unknown": "Tundmatu",
+          "installed": "Paigaldatud",
+          "not_installed_or_full": "Poole paigaldatud või täis"
+        }
+      },
+      "dust_bag_status": {
+        "name": "Tolmukoti staatus",
+        "state": {
+          "unknown": "Tundmatu",
+          "installed": "Paigaldatud",
+          "not_installed": "Pole paigaldatud",
+          "check": "Kontrolli"
+        }
+      },
+      "detergent_status": {
+        "name": "Puhastusvahendi staatus",
+        "state": {
+          "unknown": "Tundmatu",
+          "installed": "Paigaldatud",
+          "disabled": "Keelatud",
+          "low_detergent": "Peaaegu tühi"
+        }
+      },
+      "hot_water_status": {
+        "name": "Kuuma vee staatus",
+        "state": {
+          "unknown": "Tundmatu",
+          "disabled": "Keelatud",
+          "enabled": "Lubatud"
+        }
+      },
+      "station_drainage_status": {
+        "name": "Doki tühjendamise staatus",
+        "state": {
+          "unknown": "Tundmatu",
+          "idle": "Ootel",
+          "draining": "Tühjendamine"
+        }
+      },
+      "task_type": {
+        "name": "Ülesande tüüp",
+        "state": {
+          "standard": "Standardne puhastus",
+          "standard_paused": "Standardne puhastus peatatud",
+          "custom": "Kohandatud puhastus",
+          "custom_paused": "Kohandatud puhastus peatatud",
+          "shortcut": "Otsetee puhastus",
+          "shortcut_paused": "Otsetee puhastus peatatud",
+          "scheduled": "Planeeritud puhastus",
+          "scheduled_paused": "Planeeritud puhastus peatatud",
+          "smart": "Nutikas puhastus",
+          "smart_paused": "Nutikas puhastus peatatud",
+          "partial": "Osaline puhastus",
+          "partial_paused": "Osaline puhastus peatatud",
+          "summon": "Esilekutsutud puhastus",
+          "summon_paused": "Esilekutsutud puhastus peatatud",
+          "water_stain": "Veeplekke puhastamine",
+          "water_stain_paused": "Veeplekke puhastamine peatatud",
+          "boosted_edge_cleaning": "Intensiivne äärepuhastus",
+          "hair_compressing": "Juuste pressimine",
+          "large_particle_cleaning": "Suurte osakeste puhastus",
+          "intensive_stain_cleaning": "Intensiivne plekipesu",
+          "stain_cleaning": "Plekipuhastus",
+          "initial_deep_cleaning": "Esmane süvapuhastus",
+          "initial_deep_cleaning_paused": "Esmane süvapuhastus peatatud",
+          "mop_pad_heating": "Mopi soojendamine",
+          "cleaning_after_mapping": "Puhastus pärast kaardistamist",
+          "small_particle_cleaning": "Väikeste osakeste puhastamine",
+          "changing_mop": "Mopi vahetamine",
+          "changing_mop_paused": "Mopi vahetamine peatatud",
+          "floor_maintaining": "Põranda hooldus",
+          "floor_maintaining_paused": "Põranda hooldus peatatud",
+          "arranging_items": "Esemete järjestamine",
+          "arranging_items_paused": "Esemete järjestamine peatatud",
+          "intensive_hair_cleaning": "Intensiivne karvade puhastamine",
+          "accessory_handling": "Lisatarvikute käsitsemine",
+          "increased_drum_speed_cleaning": "Puhastamine suurendatud trumli kiirusega",
+          "pressurized_cleaning": "Survepuhastus",
+          "steam_cleaning": "Aurupuhastus",
+          "steam_cleaning_paused": "Aurupuhastus peatatud"
+        }
+      },
+      "dust_bag_drying_status": {
+        "name": "Tolmukoti kuivatusstaatus",
+        "state": {
+          "idle": "Ootel",
+          "drying": "Kuivatamine",
+          "paused": "Peatatud"
+        }
+      },
+      "nation_matched": {
+        "name": "Regioonilukk",
+        "state": {
+          "unknown": "Teatud pole",
+          "matched": "Lukust lahti",
+          "unmatched": "Lukus",
+          "na": "Ei ole saadaval"
+        }
+      },
+      "startup_method": {
+        "name": "Käivitatud (millest)",
+        "state": {
+          "button": "Nupp",
+          "app": "Äpp",
+          "scheduled": "Planeeritud",
+          "voice": "Hääl",
+          "second_cleaning": "Teine puhastus",
+          "unknown": "Tundmatu"
+        }
+      },
+      "cleaning_status": {
+        "name": "Puhastamine",
+        "state": {
+          "interrupted": "Katkestatud",
+          "completed": "Lõpetatud",
+          "manually_ended": "Käsitsi lõpetatud",
+          "failed": "Ebaõnnestunud",
+          "unknown": "Tundmatu"
+        }
+      },
+      "cleanup_method": {
+        "name": "Puhastusmeetod",
+        "state": {
+          "other": "Muu",
+          "default": "Vaikimisi",
+          "customized": "Kohandatud",
+          "cleangenius": "CleanGenius",
+          "water_stain": "Veeplekk",
+          "unknown": "Tundmatu"
+        }
+      },
+      "task_end_type": {
+        "name": "Lõpetanud (Kes)",
+        "state": {
+          "other": "Muu",
+          "manual_docking": "Käsitsi dokkimine",
+          "docking": "Dokkimine",
+          "failed_docking": "Dokkimine ebaõnnestus",
+          "stop": "Peata",
+          "unknown": "Tundmatu"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "Katkemise põhjus",
+        "state": {
+          "abnormal_docking": "Ebanormaalne dokkimine",
+          "base_station_powered_off": "Baasjaam on välja lülitatud",
+          "brush_entangled_by_carpet": "Hari on vaipa mässitud",
+          "brush_entangled_by_object": "Hari on objektisse mässitud",
+          "brush_entangled_by_obstacle": "Hari on takistusse mässitud",
+          "cannot_find_base_station": "Baasi ei leia",
+          "cliff_sensor_error": "Kukkumisanduri viga",
+          "laser_distance_sensor_error": "Laser-distantsanduri viga",
+          "mop_pad_abnormally_removed": "Mopihari eemaldati ebanormaalselt",
+          "mop_pad_fallen_off": "Mopihari kukkus maha",
+          "mop_pad_fallen_off_by_obstacle": "Mopihari kukkus takistuse tõttu",
+          "mop_pad_fallen_off_by_table": "Mopihari kukkus lauale",
+          "mop_pad_fallen_off_crossing_obstacle": "Mopihari kukkus risti üle takistuse",
+          "mop_pad_removed": "Mopihari eemaldatud",
+          "mop_pad_stuck": "Mopihari takerdus",
+          "robot_fallen": "Robot on kukkunud",
+          "robot_is_stuck_on_obstacle": "Robot on takistuse taha kinni jäänud",
+          "robot_is_stuck_on_step": "Robot on astmele kinni jäänud",
+          "robot_lifted": "Robot on üles tõstetud",
+          "task_completed": "Ülesanne lõpetatud",
+          "unknown": "Teadmata"
+        }
+      },
+      "recovery_map_type": {
+        "name": "Kaardi tüüp",
+        "state": {
+          "original": "Algne kaart",
+          "edited": "Muudetud kaart",
+          "backup": "Varukoopia"
+        }
+      },
+      "obstacle_type": {
+        "name": "Takistuse tüüp",
+        "state": {
+          "unknown": "Tundmatu",
+          "base": "Baas",
+          "scale": "Kaal",
+          "thread": "Lõim",
+          "wire": "Juhe",
+          "toy": "Mänguasi",
+          "shoes": "Jalatsid",
+          "sock": "Sokk",
+          "fece": "Väljaheide",
+          "trash_can": "Prügikast",
+          "fabric": "Rätt",
+          "power_strip": "Pikendusjuhe",
+          "liquid_stain": "Vedelik plekk",
+          "obstacle": "Takistus",
+          "pet": "Lemmikloom",
+          "cleaning_tools": "Puhastuvahendid",
+          "detected_stain": "Tuvastatud plekk",
+          "blocked_room": "Blokeeritud tuba",
+          "easy_to_stuck_furniture": "Kergelt takelduv mööbel",
+          "uncleanable_stain": "Puhastamatu plekk",
+          "leg": "Jalg",
+          "large_particles": "Suured osakesed",
+          "dried_stain": "Kuivanud plekk",
+          "food_bowl": "Toidukauss",
+          "pet_bed": "Lemmiklooma pesa",
+          "cleaned_stain": "Puhastatud plekk",
+          "skipped_uncleanable_stain": "Vahele jäetud puhastamatu plekk",
+          "cleaned_dried_stain": "Puhastatud kuivanud plekk",
+          "cleaned_large_particles": "Puhastatud suured osakesed",
+          "hair": "Karvad",
+          "paper": "Paber",
+          "cleaned_hair": "Puhastatud karvad",
+          "sundry": "Muu"
+        }
+      },
+      "obstacle_reason": {
+        "name": "Takistuse põhjus",
+        "state": {
+          "blocked_by_virtual_wall": "Blokeeritud videoseinaga",
+          "blocked_by_door": "Blokeeritud uksega",
+          "blocked_by_threshold": "Blokeeritud lävega",
+          "blocked_by_obstacle": "Blokeeritud takistusega",
+          "blocked_by_carpet": "Blokeeritud vaibaga",
+          "blocked_by_detected_carpet": "Blokeeritud tuvastatud vaibaga",
+          "blocked_by_hidden_obstacle": "Blokeeritud peidetud takistusega",
+          "blocked_by_dynamic_obstacle": "Blokeeritud dünaamilise takistusega",
+          "passage_too_low": "Läbikäik on liiga madal",
+          "step_too_low": "Trepiaste on liiga madal",
+          "failed_to_cross_threshold": "Läved ületamine ebaõnnestus"
+        }
+      },
+      "remaining_battery": {
+        "name": "Aku jääk"
+      },
+      "multiple_cleaning_time": {
+        "name": "Mitmekordne puhastus"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "firmware_version": {
+        "name": "Püsivara versioon"
+      },
+      "ip_address": {
+        "name": "IP Aaderss"
+      },
+      "mac_address": {
+        "name": "MAC Aadress"
+      },
+      "model": {
+        "name": "Mudel"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "serial_number": {
+        "name": "Seerianumber"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "timezone": {
+        "name": "Ajavöönd"
+      },
+      "voice_packet_id": {
+        "name": "Hällepakk"
+      },
+      "deodorizer_left": {
+        "name": "Deodorisaator"
+      },
+      "detergent_left": {
+        "name": "Puhastusvahend"
+      },
+      "dirty_water_channel_left": {
+        "name": "Mustavee kanal"
+      },
+      "filter_left": {
+        "name": "Filter"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "Kohevusrulli puhastamine"
+      },
+      "main_brush_left": {
+        "name": "Põhihari"
+      },
+      "mop_pad_left": {
+        "name": "Mopipadi"
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "Roboti mustaveepaak"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "Rullmopp Filtre puhastamine"
+      },
+      "scale_inhibitor_left": {
+        "name": "Katlakivieemaldaja"
+      },
+      "sensor_dirty_left": {
+        "name": "Anduri puhastamine"
+      },
+      "side_brush_left": {
+        "name": "Külghari"
+      },
+      "silver_ion_left": {
+        "name": "Hõbeioon"
+      },
+      "squeegee_left": {
+        "name": "Kummikaabits"
+      },
+      "tank_filter_left": {
+        "name": "Paagi filter"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "Vee väljalaskefiltri puhastus"
+      },
+      "wheel_dirty_left": {
+        "name": "Ratta puhastamine"
+      }
+    },
+    "toggle": {
+      "customized_cleaning": {
+        "name": "Kohandatud puhastus"
+      },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Süvapuhastus"
+      },
+      "auto_dust_collecting": {
+        "name": "Automaatne tühjendus"
+      },
+      "hair_compression": {
+        "name": "Juuste kokkupressimine"
+      },
+      "self_clean": {
+        "name": "Isepuhastus"
+      },
+      "deep_mop_washing": {
+        "name": "Sügav mopi pesemine"
+      },
+      "hot_washing": {
+        "name": "Kuum pesu"
+      },
+      "auto_drying": {
+        "name": "Automaatne kuivatamine"
+      },
+      "silent_drying": {
+        "name": "Vaikne kuivatamine"
+      },
+      "uv_sterilization": {
+        "name": "UV-idandite hävitamine"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Kohandatud puhastus"
+      },
+      "carpet_avoidance": {
+        "name": "Vaiba vältimine"
+      },
+      "carpet_preferences": {
+        "name": "Kohandatud eelistused"
+      },
+      "auto_change_mop": {
+        "name": "Automaatne mopi vahetus"
+      },
+      "multi_floor_map": {
+        "name": "Mitmenda korruse kaart"
+      },
+      "intelligent_recognition": {
+        "name": "Nutikas tuvastamine"
+      },
+      "map_saving": {
+        "name": "Kaardi salvestamine"
+      },
+      "child_lock": {
+        "name": "Lapselukk"
+      },
+      "resume_cleaning": {
+        "name": "Puhastamise jätkamine"
+      },
+      "obstacle_avoidance": {
+        "name": "Takistuste vältimine"
+      },
+      "carpet_boost": {
+        "name": "Vaiba võimenduse režiim"
+      },
+      "carpet_recognition": {
+        "name": "Vaiba tuvastamine"
+      },
+      "clean_carpets_first": {
+        "name": "Puhasta vaibad esimesena"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "Sulgege rulliku kate vaibal"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "Intensiivne vaipade puhastus"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "Külghari pöörlemine vaibal"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "Tõsta šassii vaibal"
+      },
+      "auto_mount_mop": {
+        "name": "Automaatne mopi kinnitamine"
+      },
+      "mopping_with_detergent": {
+        "name": "Puhastamine pesuvahendiga"
+      },
+      "mop_washing_with_detergent": {
+        "name": "Mopi pesemine puhastusvahendiga"
+      },
+      "auto_add_detergent": {
+        "name": "Pesuvahendi automaatne lisamine"
+      },
+      "smart_mop_washing": {
+        "name": "Nutikas mopopesu"
+      },
+      "wider_corner_coverage": {
+        "name": "Laiem nurkade katvus"
+      },
+      "pressurized_cleaning": {
+        "name": "Survepesu"
+      },
+      "gap_cleaning_extension": {
+        "name": "Laiendatud pilude puhastus"
+      },
+      "mopping_under_furnitures": {
+        "name": "Mööbli aluse pesemine"
+      },
+      "floor_direction_cleaning": {
+        "name": "Põranda suunas puhastus"
+      },
+      "ring_light_always_on": {
+        "name": "Rõngasvalgusti alati sees"
+      },
+      "collision_avoidance": {
+        "name": "Kokkupõrke vältimine"
+      },
+      "fill_light": {
+        "name": "Kaamera valgus"
+      },
+      "ai_obstacle_detection": {
+        "name": "Tehisintellekti takistuste tuvastamine"
+      },
+      "ai_pet_detection": {
+        "name": "Tehisintellekti abil lemmiklooma tuvastamine"
+      },
+      "pet_focused_detection": {
+        "name": "Lemmiklooma fookusega tuvastamine"
+      },
+      "pet_focused_cleaning": {
+        "name": "Lemmiklooma fookusega puhastus"
+      },
+      "ai_obstacle_picture": {
+        "name": "Takistuste pildid"
+      },
+      "obstacle_crossing": {
+        "name": "Sünkroonitud takistuste ületamine"
+      },
+      "active_suspension_crossing": {
+        "name": "Aktiivne vedrustus takistuste ületamiseks"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "Dünaamiline takistuse puhastamine"
+      },
+      "large_particles_boost": {
+        "name": "Suurte osakeste võimendus"
+      },
+      "streaming_voice_prompt": {
+        "name": "Streaming häljaviisang"
+      },
+      "voice_assistant": {
+        "name": "Häälassistent"
+      },
+      "off_peak_charging": {
+        "name": "Laadimine tipptunnivälisel ajal"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "Keela puhastuse jätkamine"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "Keela automaatne tühjendus"
+      },
+      "dnd_reduce_volume": {
+        "name": "Vähenda helitugevust"
+      },
+      "dnd": {
+        "name": "Mitte segada"
+      }
+    },
+    "number": {
+      "wetness_level": {
+        "name": "Märgus"
+      },
+      "auto_empty_area": {
+        "name": "Automaatse tühjenduse ala"
+      },
+      "drying_time": {
+        "name": "Kuivatamisaeg"
+      },
+      "self_clean_time": {
+        "name": "Isepuhastumise aeg"
+      },
+      "self_clean_area": {
+        "name": "Isepuhastumise ala"
+      },
+      "volume": {
+        "name": "Helitugevus"
+      }
+    },
+    "time": {
+      "dnd_start": {
+        "name": "Mitte_segada algusaeg"
+      },
+      "dnd_end": {
+        "name": "Mitte_segada lõpuaeg"
+      },
+      "off_peak_charging_start": {
+        "name": "Tipptunnivälise laadimise algusaeg"
+      },
+      "off_peak_charging_end": {
+        "name": "Tipptunnivälise laadimise lõpuaeg"
+      },
+      "schedule_time": {
+        "name": "Algusaeg"
+      }
+    },
+    "input": {
+      "schedule_repeats": {
+        "name": "Kordused"
+      },
+      "dnd_repeats": {
+        "name": "Kordused"
+      },
+      "map_custom_name": {
+        "name": "Kaardi nimi"
+      },
+      "segment_custom_name": {
+        "name": "Ruumi nimi"
+      },
+      "shortcut_name": {
+        "name": "Otsetee nimi"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "Lisa",
+        "add_map": "Loo kaart",
+        "auto_empty_unavailable": "Automaatne tühjendus pole saadaval",
+        "auto_emptying": "Automaatne tühjendamine",
+        "backup": "Varundamine",
+        "bag_drying_unavailable": "Koti kuivatamine pole saadaval",
+        "cancel": "Tühista",
+        "cancel_ignore": "Tühista eiramine",
+        "carpet": "Vaip",
+        "change": "Muuda",
+        "charge": "Laadimine",
+        "clean": "Puhastamine",
+        "clean_again": "Puhasta uuesti",
+        "cleaning_settings": "Puhastusseaded",
+        "cleanings": "Puhastuskorrad",
+        "close": "Sule",
+        "confirm": "Kinnita",
+        "delete": "Kustuta",
+        "delete_carpet": "Kustuta vaip",
+        "deleted_carpet": "Kustutatud vaip",
+        "disable": "Keela",
+        "discard": "Loobu",
+        "dismiss": "Lükka tagasi",
+        "dock": "Dokkimine",
+        "dock_settings": "Doki seaded",
+        "download": "Alla laadimine",
+        "dry": "Kuivata",
+        "dry_bag": "Kuivata kott",
+        "drying_unavailable": "Kuivatamine pole saadaval",
+        "dynamically_ignored": "Dünaamiliselt eiratud",
+        "edit_carpet": "Muuda vaipa",
+        "empty": "Tühjenda",
+        "enable": "Käivita",
+        "fast_mapping": "Kiire kaardistamine",
+        "get_dreame_vacuum_card": "Hangi Dreame Vacuum kaart",
+        "ignore": "Eira",
+        "ignore_obstacle": "Eira takistust",
+        "impassable_threshold": "Läbimatu lävi",
+        "job_details": "Töö üksikasjad",
+        "keep_disabled": "Hoia keelatuna",
+        "map_display": "Kaardi kuvamine",
+        "map_management": "Kaardi haldus",
+        "new_dnd": "Uus Mitte Segada ülesanne",
+        "new_schedule": "Uus planeeritud ülesanne",
+        "new_shortcut": "Uus otsetee",
+        "next_job": "Järgmine töö",
+        "no_go": "Keeluala",
+        "no_mop": "Mopipesu keelatud",
+        "objects": "Objektid",
+        "override": "Alista",
+        "passable_threshold": "Läbitav lävi",
+        "pause": "Peata",
+        "pause_washing": "Pese peatatud",
+        "previous_job": "Eelmine töö",
+        "ramp": "Kaldtee",
+        "reload": "Lae uuesti",
+        "rename": "Muuda nime",
+        "repeats": "Kordused",
+        "replace": "Asenda",
+        "reset": "Lähtesta",
+        "restore": "Taasta",
+        "restore_map": "Taasta Kaart",
+        "resume": "Jätka",
+        "resume_washing": "Jätka pesemist",
+        "rooms": "Toad",
+        "rotate_left": "Pööra vasakule",
+        "rotate_right": "Pööra paremale",
+        "round_carpet": "Ümar vaip",
+        "save": "Salvesta",
+        "select_map": "Vali kaart",
+        "shortcuts": "Otseteed",
+        "square_carpet": "Nelinurkne vaip",
+        "start": "Alustama",
+        "start_auto_empty": "Alusta automaatset tühjendust",
+        "start_bag_drying": "Alusta koti kuivatamist",
+        "start_drying": "Alusta kuivatamist",
+        "start_task": "Alusta ülesannet",
+        "start_washing": "Alusta pesemist",
+        "stop": "Lõpeta",
+        "stop_bag_drying": "Peata koti kuivatamine",
+        "stop_drying": "Lõpeta kuivatamine",
+        "understood": "Arusaadav",
+        "virtual_threshold": "Virtuaalne lävim",
+        "virtual_wall": "Sein",
+        "wash": "Pesu",
+        "washing_unavailable": "Pesemine pole saadaval",
+        "wifi_map": "WiFi kaart"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "Taustapilt",
+        "card_object_action_buttons": "Tegevusnupud",
+        "card_object_animations": "Animatsioonid",
+        "card_object_cleanup_notification": "Puhastamise teade",
+        "card_object_controls": "Kontrollid",
+        "card_object_cruising_history": "Liikumiste ajalugu",
+        "card_object_fault_notification": "Vea teavitus",
+        "card_object_information_notification": "Informatsiooni teavitus",
+        "card_object_low_water_notification": "Madala veetaseme teavitus",
+        "card_object_map_change_confirmation": "Kaardi muutmise kinnitus",
+        "card_object_menu": "Menüü",
+        "card_object_progress_bar": "Edenemisriba",
+        "card_object_saved_notification": "Salvestatud teavitus",
+        "card_object_shortcuts": "Otseteed",
+        "card_object_state": "Olek",
+        "card_object_status": "Staatus",
+        "card_object_task_type": "Ülesande tüüp",
+        "card_object_title": "Pealkiri",
+        "card_object_warning_notification": "Hoiatusteavitus",
+        "color_scheme": "Värviskeem",
+        "color_scheme_dreame_auto": "Dreame automaatne",
+        "color_scheme_dreame_dark": "Dreame tume",
+        "color_scheme_dreame_light": "Dreame hele",
+        "color_scheme_grayscale": "Halltoon",
+        "color_scheme_mijia_auto": "Mijia automaatne",
+        "color_scheme_mijia_dark": "Mijia tume",
+        "color_scheme_mijia_light": "Mijia hele",
+        "copied": "Kopeeritud",
+        "copy": "Kopeeri",
+        "copy_all": "Kopeeri kõik",
+        "disable_haptic": "Lihasmälu tagasiside keelamine",
+        "editable_objects": "Muudetavad objektid",
+        "font_size": "Fondi suurus",
+        "full_height": "Täiskõrgus",
+        "grid_size": "Ruudustiku suurus",
+        "height": "Kõrgus",
+        "hidden_card_objects": "Peidetud kaardi objektid",
+        "hidden_objects": "Peidetud objektid",
+        "hide_map_info": "Peida kaardi info",
+        "icon_set": "Ikoonikomplekt",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "Vana Dreame",
+        "icon_set_material": "Materjal",
+        "icon_set_mijia": "Mijia",
+        "left": "Vasak",
+        "left_handed": "Vasakukäeliste režiim",
+        "limit_height": "Piira kõrgust ekraanini",
+        "locked": "Lukus",
+        "locked_always": "Alati",
+        "locked_auto": "Automaatne",
+        "locked_never": "Mitte kunagi",
+        "locked_only_touch": "Ainult puudutus",
+        "map": "Kaart %name%",
+        "map_1": "Esimene kaart",
+        "map_2": "Teine kaart",
+        "map_3": "Kolmas kaart",
+        "map_4": "Neljas kaart",
+        "map_5": "Viies kaart",
+        "map_color_active_area": "Aktiivne ala",
+        "map_color_active_area_outline": "Aktiivse ala piirjoon",
+        "map_color_active_point": "Aktiivne punkt",
+        "map_color_active_point_outline": "Aktiivse punkti piirjoon",
+        "map_color_auto_low_lying_area": "Automaatne madal ala",
+        "map_color_carpet_color": "Vaiba värv",
+        "map_color_curtain": "Kardin",
+        "map_color_detected_carpet_color": "Tuvastatud vaiba värv",
+        "map_color_floor": "Põrand",
+        "map_color_floor_material": "Põranda materjal",
+        "map_color_icon_background": "Ikooni taust",
+        "map_color_impassable_threshold": "Läbimatu künnis",
+        "map_color_manual_low_lying_area": "Käsitsi madal ala",
+        "map_color_mop_path": "Mopi tee",
+        "map_color_new_segment": "Uus ruum",
+        "map_color_no_go": "Keelatud ala",
+        "map_color_no_go_outline": "Keelatud ala kontuur",
+        "map_color_no_mop": "Mopping keelatud",
+        "map_color_no_mop_outline": "Mopping keelatud kontuur",
+        "map_color_obstacle_background": "Takistuse taust",
+        "map_color_order": "Järjekord",
+        "map_color_outside": "Väljaspool",
+        "map_color_passable_threshold": "Läbitav künnis",
+        "map_color_passive_segment": "Passiivne ruum",
+        "map_color_path": "Rada",
+        "map_color_ramp": "Kaldtee",
+        "map_color_segment": "Ruum",
+        "map_color_settings_background": "Seadete taust",
+        "map_color_text": "Tekst",
+        "map_color_text_stroke": "Teksti kontuur",
+        "map_color_virtual_threshold": "Virtuaalne künnis",
+        "map_color_virtual_wall": "Virtuaalne sein",
+        "map_color_wall": "Sein",
+        "map_config": "Kaardi seadistus",
+        "map_display": "Kaardi kuvamine",
+        "map_display_floor_plan": "Põhiplaan",
+        "map_display_floor_plan_only": "Ainult põhiplaan",
+        "map_display_floor_plan_without_texture": "Põhiplaan ilma tekstuurita",
+        "map_display_standard": "Standardne",
+        "map_object_active_area": "Aktiivne piirkond",
+        "map_object_active_cruise_point": "Aktiivne liikumispunkt",
+        "map_object_active_point": "Aktiivne punkt",
+        "map_object_animations": "Animatsioonid",
+        "map_object_blocked_segment": "Blokeeritud ruumid",
+        "map_object_blocked_segments": "Blokeeritud rymoid",
+        "map_object_carpet": "Vaip",
+        "map_object_charger": "Laadija",
+        "map_object_cleaning_sequence": "Puhastusjärjekord",
+        "map_object_cruise_point": "Liikumispunkt",
+        "map_object_curtain": "Kardin",
+        "map_object_customized_cleaning": "Kohandatud puhastus",
+        "map_object_deleted_carpet": "Kustutatud vaip",
+        "map_object_detected_carpet": "Tuvastatud vaip",
+        "map_object_door": "Uks",
+        "map_object_floor": "Põrand",
+        "map_object_floor_material": "Põranda materjal",
+        "map_object_furniture": "Mööbel",
+        "map_object_furniture_image": "Mööbli pildid",
+        "map_object_hidden_segments": "Peidetud ruumid",
+        "map_object_icon": "Ikoon",
+        "map_object_ignored_obstacles": "Eiratud takistused",
+        "map_object_impassable_threshold": "Läbimatud künnised",
+        "map_object_lock_indicator": "Luku indikaator",
+        "map_object_low_lying_area": "Madalad alad",
+        "map_object_material": "Põranda materjal",
+        "map_object_mop_path": "Mopi tee",
+        "map_object_mop_type": "Mopi tüüp",
+        "map_object_name": "Nimi",
+        "map_object_name_background": "Nime taust",
+        "map_object_no_go": "Keeluala",
+        "map_object_no_mop": "Pesemine keelatud",
+        "map_object_object_option": "Objekti valik",
+        "map_object_obstacle": "Takistus",
+        "map_object_obstacle_background": "Takistuse taust",
+        "map_object_obstacle_color": "Takistuse värv",
+        "map_object_order": "Järjekord",
+        "map_object_passable_threshold": "Läbitavad künnised",
+        "map_object_path": "Marsruut",
+        "map_object_pet": "Lemmikloom",
+        "map_object_predefined_point": "Eelhäälestatud punktid",
+        "map_object_ramp": "Kaldtee",
+        "map_object_router": "Ruuter",
+        "map_object_segment": "Tuba",
+        "map_object_segment_type": "Kambri tüüp",
+        "map_object_selected_segments": "Valitud ruumid",
+        "map_object_split_line": "Eraldusjoon",
+        "map_object_stain": "Plekk",
+        "map_object_station_status": "Doki staatus",
+        "map_object_vacuum": "Robottolmuimeja",
+        "map_object_vacuum_status": "Tolmuimeja olek",
+        "map_object_virtual_threshold": "Virtuaalsed künnised",
+        "map_object_virtual_wall": "Virtuaalsed seinad",
+        "map_object_walls": "Seinad",
+        "map_object_zoom_point": "Suumi punkt",
+        "object_opacity": "Objekti läbipaistmatus",
+        "object_scale": "Objekti skaala",
+        "opacity": "Läbipaistmatus",
+        "override_colors": "Alista kaardivärvid",
+        "overlay_image": "Ülekate Pilt",
+        "rotation": "Pööramine",
+        "scale": "Skaala",
+        "scripts": "Skriptid",
+        "selectable_objects": "Valitavad objektid",
+        "selected_map_config": "%name% konfiguratsioon",
+        "show_map_info": "Näita kaardi infot",
+        "top": "Ülal",
+        "url": "URL",
+        "viewport": "Vaade",
+        "width": "Laius",
+        "zoom": "Suum"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "Robotil on aktiivne ülesanne!",
+        "apply_changes_or_reload": "Kaarti muudeti sinu redigeerimise ajal!\nKas soovid üle kirjutada või uued muudatused laadida?",
+        "auto_mount_mop_will_enabled": "Mopi automaatne paigaldamine lubatakse!",
+        "backup_map": "Varunda kaart?",
+        "backup_map_will_overwritten": "Praegune varundatud kaart kirjutatakse üle!",
+        "bag_drying_will_stopped": "Tolmukoti kuivatamine peatatakse!",
+        "carpet_recognition_will_enabled": "Vaiba tuvastamine peab olema lubatud, et saaks seadistada kohandatud vaiba puhastust",
+        "carpet_will_deleted": "Vaip kustutatakse!",
+        "cleangenius_will_disabled": "CleanGenius lülitatakse välja!",
+        "cleaning_failure": "Puhastamise ebaõnnestumise põhjused",
+        "create_map": "Luua uus kaart?",
+        "custom_carpet_settings_will_enabled": "Kohandatud vaipade puhastus lülitatakse sisse!",
+        "custom_carpet_settings_will_enabled_detail": "Kohandatud vaipade puhastuse seaded seadistatakse vastavalt valitud vaiba tüübile",
+        "customized_cleaning_disabled": "Kohandatud puhastamine on keelatud!",
+        "delete_carpet": "Kustuta Vaip?",
+        "delete_dnd": "Kustuta Mitte_segada ülesanne?",
+        "delete_map": "Kustuta kaart?",
+        "delete_schedule": "Kustuta planeeritud ülesanne?",
+        "delete_shortcut": "Kustuta otsetee?",
+        "deleted": "Edukalt kustutatud",
+        "device_unavailable": "Seade pole saadaval",
+        "disable_cleangenius": "Keela CleanGenius?",
+        "dnd_confliction": "Mitte segada ülesande konflikt!",
+        "dnd_confliction_detail": "Planeeritud ülesanne on määratud 'Mitte segada' (DND) ajale.",
+        "dnd_will_deleted": "Mitte segada (DnD) ülesanne alates %start% kuni %end% kustutatakse!",
+        "dock_in_restricted_area": "Baasjaam asub piiratud alal!",
+        "dock_in_restricted_area_detail": "Laadimisjaam on paigutatud piiratud alale. Kui saätkad kaardi salvestamist, ei pruugi robot suuta ennast laadida.",
+        "drying_will_stopped": "Mopi kuivatamine peatatakse!",
+        "dust_collection_not_performed": "Tolmu kogumise (Auto-empty) ülesannet pole teostatud\nRobot ei tee automaatset tühjendamise ülesannet 'Mitte segada' (DND) perioodil.",
+        "enable_auto_mount_mop": "Lubada mopi automaatne paigaldamine?",
+        "enable_carpet_recognition": "Vaiba tuvastamine lülitatakse sisse!",
+        "enable_customized_cleaning": "Kas soovid lubada kohandatud puhastamise?",
+        "enable_mop_change": "Kas soovid lülitada sisse mopi automaatse vahetamise?",
+        "enable_task": "Kas soovid ülesande aktiveerida?",
+        "entity_is_required": "Olem peab olema valitud",
+        "entity_not_available": "Olem pole kättesaadav",
+        "failed_to_load_card": "Kaardi laadimine ebaõnnestus",
+        "ignore_obstacle": "Kuva takistust?",
+        "invalid_entity": "Vale olem",
+        "map_backup": "Kaardi varundamine on pooleli",
+        "map_backup_failed": "Kaardi varundamine ebaõnnestus!",
+        "map_backup_success": "Kaardi varundamine on lõpetatud",
+        "map_recovery": "Kaardi taastamine on pooleli",
+        "map_recovery_failed": "Kaardi taastamine ebaõnnestus!",
+        "map_recovery_success": "Kaardi taastamine on lõpetatud",
+        "map_will_deleted": "%name% kustutatakse!",
+        "map_will_replaced": "Valitud kaart asendatakse uue kaardiga!",
+        "map_will_restored": "Salvestatud kaart taastatakse olekule seisuga %date%",
+        "mapping_started": "Kaardistamine algas...",
+        "mop_change_disabled": "Automaatne mopi vahetus on väljas!",
+        "mop_wash_frequency_low": "Mopi pesemise sagedus on liiga madal!",
+        "mop_wash_frequency_will_increased": "Et tagada mopi piisav niiskus, suurendatakse automaatselt mopi puhastamissagedust",
+        "not_available": "Hetkel pole saadaval...",
+        "not_fully_supported": "Pole veel täielikult toetatud!",
+        "not_supported": "Ei toetata veel!",
+        "obstacle_will_ignored": "Takistust eiratakse!",
+        "override_changes": "Alista muudatused?",
+        "preview": "See on Dreame Vacuum kaardi eelvaade",
+        "recommended_areas": "Sovitav piirkond",
+        "relocating": "Ise positsioneerimine. Palun oota.",
+        "relocating_completed": "Ise positsioneerimine õnnestus. Robot jätkab tööd.",
+        "relocating_failed": "Isepositsioneerimine ebaõnnestus!",
+        "replace_map": "Asenda uue kaardiga?",
+        "reset_usage": "Lähtesta kasutus?",
+        "reset_walls": "Lähtesta seinad?",
+        "restore_map": "Taasta %name%?",
+        "resume_cleaning": "Robot jätkab automaatselt poolelioleva puhastamise pärast aku laadimist 80% peale.",
+        "resume_cleaning_not_performed": "Robot jätkab puhastamist pärast DND perioodi lõppu.",
+        "resume_cleaning_time": "Puhastamine algab %time%",
+        "save_changes": "Salvesta muudatused?",
+        "saved": "Edukalt salvestatud",
+        "schedule_will_deleted": "Planeeritud ülesanne ajal %time% kustutatakse!",
+        "select_map": "Vali %name%?",
+        "select_mapping_type": "Vali kaardistamise tüüp",
+        "select_room": "Vali ruum, kuhu puhastamise järjekord määrata",
+        "selected_map_will_changed": "Valitud kaart muudetakse kaardiks %name%!",
+        "service_call_failed": "Teenuse kutsumine ebaõnnestus",
+        "settings_will_applied": "Sinu seaded rakenduvad järgmisel ülesandel.",
+        "shortcut_will_deleted": "%name% kustutatakse!",
+        "stop_bag_drying": "Lõpeta tolmukoti kuivatamine?",
+        "stop_drying": "Lõpeta kuivatamine?",
+        "stop_task": "Peata praegune ülesanne?",
+        "task_disabled": "Ülesanne on keelatud!",
+        "task_will_stopped": "Praegune ülesanne peatatakse!",
+        "unsaved_changes_present": "Sul on salvestamata muudatusi mis lähevad kaduma!",
+        "unsupported_browser": "Toetamata brauser!",
+        "usage_will_reset": "%name% kasutus lähtestatakse!",
+        "walls_will_be_reset": "Seinad taastatakse nende algselt kaardistatud asukohta!"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "Lisatarvikute kasutus",
+        "add_furniture": "Lisa mööblit",
+        "audio_settings": "Heliseaded",
+        "battery_management": "Aku haldamine",
+        "carpet_settings": "Vaipade seaded",
+        "clean_water_tank": "Puhta vee paak",
+        "cleaning_details": "Puhastamise andmed",
+        "cleaning_history": "Puhastusajalugu",
+        "cleaning_sequence": "Puhastusjärjekord",
+        "created_carpet": "Käsitsi loodud vaip",
+        "cruising": "Liikumine",
+        "cruising_details": "Liikumise üksikasjad",
+        "cruising_history": "Liikumise ajalugu",
+        "customized_cleaning": "Kohandatud puhastus",
+        "description": "%name% esiosa (frontend) kohandatud integratsioon",
+        "detected_carpet": "Automaatselt tuvastatud vaip",
+        "detergent": "Pesuaine",
+        "device_information": "Seadme teave",
+        "device_settings": "Seadme seaded",
+        "dnd": "Mitte segada (DnD)",
+        "dnd_task": "Mitte_segada ülesanne",
+        "dust_bag": "Tolmukott",
+        "global_carpet_settings": "Globaalsed Vaiba Seaded",
+        "invalid": "kehtetu",
+        "locate": "Asukoht",
+        "map": "Kaart",
+        "map_edit": "Muuda Kaarti",
+        "map_management": "Kaardi Haldus",
+        "map_name_placeholder": "Kaart %index%",
+        "mop_type": "Mopi tüüp",
+        "mopping_settings": "Mopipesu seaded",
+        "more_functions": "Rohkem funktsioone",
+        "name": "%name% Kaart",
+        "new_map": "Uus Kaart",
+        "obstacle": "Takistus",
+        "obstacle_settings": "Kaamera ja takistuste seaded",
+        "recovery_map_list": "Kaardi taastamine",
+        "remote_control": "Kaugjuhtimine",
+        "saved_map": "Salvestatud kaart",
+        "schedule_list": "Planeeritud puhastus",
+        "scheduled_room": "Planeeritud ruumide puhastamine",
+        "scheduled_spot": "Planeeritud koha puhastamine",
+        "scheduled_task": "Planeeritud ülesanne",
+        "scheduled_zone": "Planeeritud tsoonide puhastamine",
+        "segment_name_placeholder": "Ruum %index%",
+        "shortcut": "Lühivalik",
+        "shortcut_list": "Otseteed",
+        "shortcut_map": "Otsetee kaart",
+        "shortcut_name_placeholder": "Otsetee %index%",
+        "shortcut_task": "Otsetee ülesanne",
+        "task": "Ülesanne %index%",
+        "task_placeholder": "Ülesanne %index%",
+        "time_left": "jäänud %time%",
+        "unavailable": "Ei ole saadaval",
+        "used_water_tank": "Kasutatud vee paak",
+        "wall": "Seinad",
+        "wifi_map": "WiFi kaart"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "Puhasta tuba",
+      "description": "Alusta puhastamist valitud tubades.",
+      "fields": {
+        "segments": {
+          "name": "Toad",
+          "description": "Nimekiri puhastatavatest tubadest. Ainult ruumi tunnus või ruumi tunnuste massiiv, puhastuskordade arv, ventilaatori kiirus ja mopi režiim, et tühistada iga toa vaikeseaded."
+        },
+        "repeats": {
+          "name": "Kordused",
+          "description": "Iga valitud ruumi puhastuskordade arv (kui seda ei alistata kohandatud puhastuse parameetriga)."
+        },
+        "suction_level": {
+          "name": "Imemisvõimsus",
+          "description": "Ventilaatori kiirus iga valitud ruumi jaoks (kui seda ei alistata kohandatud puhastuse parameetri poolt)."
+        },
+        "water_volume": {
+          "name": "Veekogus",
+          "description": "Veetase igas valitud ruumis (kui seda ei alistata kohandatud puhastusparameetriga)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "Puhasta ala",
+      "description": "Alusta puhastamist valitud alal.",
+      "fields": {
+        "zone": {
+          "name": "Tsoon",
+          "description": "Koordinaadid."
+        },
+        "repeats": {
+          "name": "Kordused",
+          "description": "Iga valitud ala puhastuskordade arv."
+        },
+        "suction_level": {
+          "name": "Imemisvõimsus",
+          "description": "Ventilaatori kiirus iga valitud ala jaoks."
+        },
+        "water_volume": {
+          "name": "Veekogus",
+          "description": "Veetase igas valitud alas."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "Puhasta kohapealt",
+      "description": "Alustab puhastamist kaardil valitud punktides.",
+      "fields": {
+        "points": {
+          "name": "Punktid",
+          "description": "Puhastatavate koordinaatide nimekiri."
+        },
+        "repeats": {
+          "name": "Kordused",
+          "description": "Puhastamiste arv iga valitud tsooni jaoks."
+        },
+        "suction_level": {
+          "name": "Imemisvõimsus",
+          "description": "Ventilaatori kiirus iga valitud piirkonna puhul."
+        },
+        "water_volume": {
+          "name": "Veekogus",
+          "description": "Veetase igal valitud piirkonnal."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "Mine",
+      "description": "Liigu kaardil valitud koordinaatidesse ja peatu.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Punkti X-koordinaat."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Punkti Y koordinaat."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Järgi rada",
+      "description": "Järgige kaardil toodud koordinaatide loendit ja naaske baasi. (Toetatud ainult kaameraga tolmuimejatel)",
+      "fields": {
+        "points": {
+          "name": "Punktid",
+          "description": "Märgitud raja koordinaatide nimekiri."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "Käivita otsetee",
+      "description": "Käivitage otsetee ülesanne. (Ainult toetatud seadmetel)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Otsetee ID",
+          "description": "Otsetee ID."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "Kaugjuhtimispuldi samm",
+      "description": "Juhtige roboti liikumist ühe sammu võrra eemalt.",
+      "fields": {
+        "rotation": {
+          "name": "Pööramine",
+          "description": "Pööra kahendkraadides -128-st 128-ni."
+        },
+        "velocity": {
+          "name": "Kiirus",
+          "description": "Liikumiskiirus, 100-st (edasi) kuni -300-ni (tagasi)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "Paigalda Häälepakk",
+      "description": "Paigalda ametlik või kohandatud häälepakk.",
+      "fields": {
+        "lang_id": {
+          "name": "Keele ID",
+          "description": "Selle paketi keele identifikaator (ID)."
+        },
+        "url": {
+          "name": "URL",
+          "description": "Selle paki url peab olema robottolmuimejale kättesaadav."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "Keelepaketi MD5 kontrollsumma."
+        },
+        "size": {
+          "name": "Suurus",
+          "description": "Keelepaketi suurus baitides."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "Nimi andmed",
+      "description": "Küsi kaardi andmeid"
+    },
+    "vacuum_select_map": {
+      "name": "Vali kaart",
+      "description": "Vali praegune kaart. Kasutatakse mitme kaardi/korruse puhul.",
+      "fields": {
+        "map_id": {
+          "name": "Kaardi ID",
+          "description": "Valitava kaardi ID."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "Kustuta kaart",
+      "description": "Kustuta kaart.",
+      "fields": {
+        "map_id": {
+          "name": "Kaardi ID",
+          "description": "Kustutatava kaardi ID."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "Salvesta ajutine kaart",
+      "description": "Ajutise kaardi salvestamine."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "Keeldu ajutisest kaardist",
+      "description": "Tühista ajutine kaart."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "Asenda ajutine kaart",
+      "description": "Asenda ajutine kaart teise salvestatud kaardiga.",
+      "fields": {
+        "map_id": {
+          "name": "Kaardi ID",
+          "description": "Kaardi ID, mille vastu see asendatakse."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "Nimeta kaart ümber",
+      "description": "Nimeta kaart ümber.",
+      "fields": {
+        "map_id": {
+          "name": "Kaardi ID",
+          "description": "Kaardi ID."
+        },
+        "map_name": {
+          "name": "Kaardi nimi",
+          "description": "Kaardi uus nimi."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "Taasta kaart",
+      "description": "Kaardi taastamine.",
+      "fields": {
+        "map_id": {
+          "name": "Kaardi ID",
+          "description": "Kaardi ID, mida soovitakse taastada."
+        },
+        "recovery_map_index": {
+          "name": "Taastuskaardi indeks",
+          "description": "Salvestatud taastamiskaardi indeks"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Taasta kaart failist",
+      "description": "Kaardi taastamine failist.",
+      "fields": {
+        "map_id": {
+          "name": "Kaardi ID",
+          "description": "Kaardi ID, mida soovitakse taastada."
+        },
+        "file_url": {
+          "name": "Faili Url",
+          "description": "Salvestatud tbz2.gz või tar.gz faili URL"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Varunda kaart",
+      "description": "Kaardi varundamine pilve.",
+      "fields": {
+        "map_id": {
+          "name": "Kaardi ID",
+          "description": "Kaardi ID, mida soovitakse taastada."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Ühenda toad",
+      "description": "Tubade ühendamine.",
+      "fields": {
+        "map_id": {
+          "name": "Kaardi ID",
+          "description": "Kaardi ID."
+        },
+        "segments": {
+          "name": "Toad",
+          "description": "Ruumi ID-d."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Eralda toad",
+      "description": "Lõhesta ruumid.",
+      "fields": {
+        "map_id": {
+          "name": "Kaardi ID",
+          "description": "Kaardi ID."
+        },
+        "segment": {
+          "name": "Ruum",
+          "description": "Ruumi ID."
+        },
+        "line": {
+          "name": "Liin",
+          "description": "Jaota joone koordinaadid."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "Muuda ruumi nime",
+      "description": "Muuda toa nime.",
+      "fields": {
+        "segment_id": {
+          "name": "Toa ID",
+          "description": "Selle toa ID"
+        },
+        "segment_name": {
+          "name": "Toa nimi",
+          "description": "Toa uus nimi"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "Määra puhastuse järjekord",
+      "description": "Määra ruumi puhastamise järjekord. (Ainult toetatud seadmetel)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "Puhastusjärjekord",
+          "description": "Ruumi ID-de nimekiri puhastamise järjekorra jaoks."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "Isikupärastatud puhastuse seadistamine",
+      "description": "Isikupärastatud puhastuse parameetrite määramine. (Ainult toetatud seadmetel)",
+      "fields": {
+        "segment_id": {
+          "name": "Toa ID",
+          "description": "Ruumi ID-d."
+        },
+        "suction_level": {
+          "name": "Imemisvõimsus",
+          "description": "Imemistase igas ruumis."
+        },
+        "water_volume": {
+          "name": "Veekogus",
+          "description": "Vee maht iga ruumi jaoks."
+        },
+        "wetness_level": {
+          "name": "Märgsuse tase",
+          "description": "Märguse tase iga ruumi jaoks (Toetatud seadmetel)."
+        },
+        "cleaning_mode": {
+          "name": "Puhastusrežiim",
+          "description": "Puhastamine igas ruumis (toetatud vaid mopipadja tõstmise võimalusega robottolmuimejatel)."
+        },
+        "repeats": {
+          "name": "Kordused",
+          "description": "Puhastuskordade arv iga ruumi jaoks."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Seadista kohandatud vaipade pesu",
+      "description": "Määrake vaipade jaoks kohandatud puhastusseaded. (Ainult toetatud seadmetel)",
+      "fields": {
+        "id": {
+          "name": "Vaiba ID",
+          "description": "Vaipade ID-d."
+        },
+        "type": {
+          "name": "Objekti tüüp",
+          "description": "Objekti tüüp koos vastava ID-ga. (0 = Automaatselt Tuvastatud Vaip, 1 = Manuaalselt Loodud Vaip, 2 = Toavaip (Kui toetatud))"
+        },
+        "carpet_cleaning": {
+          "name": "Vaipade puhastamine",
+          "description": "Kohandatud vaipade puhastusastmete valik iga vaiba jaoks."
+        },
+        "carpet_preferences": {
+          "name": "Vaiba eelistused",
+          "description": "Iga vaiba kohandatud seadetes olevate lubatud seadete valikute nimekiri."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Määra keelatud ala",
+      "description": "Määratlege virtuaalseinad, piiratud alad ja/või alad, kus pole lubatud pühkida.",
+      "fields": {
+        "walls": {
+          "name": "Seinad",
+          "description": "Virtuaalsed seinad."
+        },
+        "zones": {
+          "name": "Tsoonid",
+          "description": "Keelualad."
+        },
+        "no_mops": {
+          "name": "Keelatud mopialad",
+          "description": "Keelatud mopialad."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "Lähtesta tarvik",
+      "description": "Lähtesta tarvik.",
+      "fields": {
+        "consumable": {
+          "name": "Tarvik",
+          "description": "Tarviku tüp."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Muuda otsetee nime",
+      "description": "Muuda otsetee nime. (Ainult toetatud seadmetel)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Otsetee ID",
+          "description": "Otsetee ID."
+        },
+        "shortcut_name": {
+          "name": "Otsetee nimi",
+          "description": "Otsetee uus nimi."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Kustuta otsetee",
+      "description": "Kustutage otsetee. (Ainult toetatud seadmetel)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Otsetee isikukood",
+          "description": "Otsetee ID."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Määra vaiba ala",
+      "description": "Määratle vaibad ja eiratavad vaibad. (Ainult toetatud seadetel)",
+      "fields": {
+        "carpets": {
+          "name": "Vaibad",
+          "description": "Vaipade alad."
+        },
+        "deleted_carpets": {
+          "name": "Ignoreeritud vaibad",
+          "description": "Eiratud vaiba alad, mis kustutatakse automaatselt leitud vaipade seast."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "Määra virtuaalne lävi",
+      "description": "Määra virtuaalsed läved.",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "Virtuaalsed läved",
+          "description": "Virtuaalsete lävede koordinaadid."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Eelhäälestatud punktide määramine",
+      "description": "Määra olemasoleval kaardil eelhäälestatud koordinaadid. (Toetatud ainult kaameraga tolmuimejate puhul)",
+      "fields": {
+        "points": {
+          "name": "Punktid",
+          "description": "Salvestatavate koordinaatide nimekiri."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Määra takistuse eiramine",
+      "description": "Sea takistuse ignoreerimise olek. (Toetatud ainult robottolmuimejatel, mis on varustatud AI takistuste tuvastamise funktsiooniga)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Takistuse X koordinaat."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Takistuse Y koordinaat."
+        },
+        "obstacle_ignored": {
+          "name": "Eiratud takistused",
+          "description": "Takistust eiratakse või mitte."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Määra ruuteri asukoht",
+      "description": "Määra ruuteri asukoht praegusel kaardil. (Toetatud ainult WiFi kaardi funktsiooni toetavatel robottolmuimejatel)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Ruuteri X-koordinaat."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Ruuteri Y-koordinaat."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "Vali eelmine",
+      "description": "Valige valiku olemuse eelmised valikud.",
+      "fields": {
+        "cycle": {
+          "name": "Tsükkel",
+          "description": "Kui valik peab kordama algusest lõpuni."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "Valige esimene",
+      "description": "Valige valiku esimeseks valikuk."
+    },
+    "select_select_last": {
+      "name": "Vali viimane",
+      "description": "Valige valiku viimaseks valikuks."
+    },
+    "select_select_next": {
+      "name": "Vali järgmine",
+      "description": "Valige valikolemuse järgmised valikud.",
+      "fields": {
+        "cycle": {
+          "name": "Tsükkel",
+          "description": "Kui valik peab kordama algusest lõpuni."
+        }
+      }
+    }
+  }
+}

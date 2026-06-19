@@ -1,0 +1,2438 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Perangkat sudah dikonfigurasi",
+      "cannot_connect": "Gagal terhubung.",
+      "reauth_successful": "Otentikasi ulang berhasil"
+    },
+    "error": {
+      "cannot_connect": "Gagal terhubung.",
+      "unsupported": "Perangkat tidak didukung",
+      "wrong_token": "Kesalahan checksum, token salah",
+      "2fa_failed": "Verifikasi gagal.",
+      "wrong_captcha": "Captcha salah.",
+      "credentials_incomplete": "Kredensial tidak lengkap, silakan isi nama pengguna, kata sandi, dan negara.",
+      "login_error": "Tidak dapat masuk, periksa kredensial.",
+      "no_devices": "Tidak ada perangkat yang didukung ditemukan pada akun ini di negara yang dipilih.{devices}",
+      "2fa_send_failed": "Gagal mengirim kode verifikasi. Silakan coba lagi.",
+      "2fa_limit_reached": "Batas harian untuk mengirim kode verifikasi telah tercapai. Silakan coba lagi besok.",
+      "2fa_cooldown_active": "Terlalu banyak permintaan berturut-turut. Silakan tunggu beberapa menit sebelum mencoba lagi."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Tipe Konfigurasi"
+        },
+        "description": "Fitur peta memerlukan koneksi cloud dan menyediakan konfigurasi otomatis. Jika Anda tidak ingin menggunakan fitur peta, Anda dapat memilih konfigurasi manual."
+      },
+      "local": {
+        "data": {
+          "host": "Host",
+          "token": "Token"
+        },
+        "description": "Anda akan memerlukan Token API 32 karakter."
+      },
+      "mi": {
+        "data": {
+          "username": "Nama pengguna",
+          "password": "Kata sandi",
+          "country": "Negara server",
+          "prefer_cloud": "Pilih koneksi cloud"
+        },
+        "description": "Masuk ke cloud Xiaomi Miio."
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "Kode verifikasi dua langkah"
+        },
+        "description": "## Verifikasi keamanan diperlukan\nKode verifikasi telah dikirim ke {dest}. Silakan masukkan kode di bawah ini."
+      },
+      "captcha": {
+        "data": {
+          "code": "Kode"
+        },
+        "description": "## Verifikasi Captcha diperlukan.\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "Nama pengguna",
+          "password": "Kata sandi",
+          "country": "Negara server"
+        },
+        "description": "Masuk ke cloud Dreamehome."
+      },
+      "mova": {
+        "data": {
+          "username": "Nama pengguna",
+          "password": "Kata sandi",
+          "country": "Negara server"
+        },
+        "description": "Masuk ke cloud Movahome."
+      },
+      "trouver": {
+        "data": {
+          "username": "Nama pengguna",
+          "password": "Kata sandi",
+          "country": "Negara server"
+        },
+        "description": "Masuk ke cloud Trouver."
+      },
+      "devices": {
+        "data": {
+          "devices": "Perangkat yang Didukung"
+        },
+        "description": "Silakan pilih perangkat Dreame Vacuum yang ingin Anda siapkan."
+      },
+      "donation": {
+        "data": {
+          "donated": "Disumbangkan"
+        },
+        "description": "## Jangan lupa untuk mendukung proyek ini.{text}"
+      },
+      "options": {
+        "data": {
+          "name": "Nama",
+          "color_scheme": "Skema warna peta",
+          "icon_set": "Kumpulan ikon peta",
+          "notify": "Pemberitahuan",
+          "hidden_map_objects": "Objek Peta tersembunyi",
+          "low_resolution": "Peta resolusi rendah",
+          "square": "Peta kota"
+        }
+      },
+      "reauth_confirm": {
+        "description": "Integrasi Dreame Vacuum perlu mengotentikasi ulang akun Anda untuk memperbarui token atau menambahkan kredensial cloud yang hilang.",
+        "title": "Otentikasi Ulang Integrasi"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Skema warna peta",
+          "icon_set": "Kumpulan ikon peta",
+          "notify": "Pemberitahuan",
+          "hidden_map_objects": "Objek Peta tersembunyi",
+          "low_resolution": "Peta resolusi rendah",
+          "square": "Peta kotak",
+          "configuration_type": "Tipe konfigurasi",
+          "prefer_cloud": "Pilih koneksi cloud",
+          "donated": "Disumbangkan"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Kredensial cloud tidak lengkap, silakan isi nama pengguna, kata sandi, dan negara"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "name": "Tingkat Hisap",
+        "state": {
+          "quiet": "Senyap",
+          "standard": "Standar",
+          "strong": "Kuat",
+          "turbo": "Turbo",
+          "full_power": "Daya penuh"
+        }
+      },
+      "water_volume": {
+        "name": "Volume Air",
+        "state": {
+          "low": "Rendah",
+          "medium": "Sedang",
+          "high": "Tinggi"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "Kelembaban Bantalan Pel",
+        "state": {
+          "slightly_dry": "Agak kering",
+          "moist": "Lembab",
+          "wet": "Basah"
+        }
+      },
+      "cleaning_mode": {
+        "name": "Mode Pembersihan",
+        "state": {
+          "sweeping": "Menyapu",
+          "mopping": "Mengepel",
+          "sweeping_and_mopping": "Menyapu dan Mengepel",
+          "mopping_after_sweeping": "Mengepel setelah Menyapu"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "Sensitivitas Karpet",
+        "state": {
+          "low": "Rendah",
+          "medium": "Sedang",
+          "high": "Tinggi"
+        }
+      },
+      "carpet_cleaning": {
+        "name": "Pembersihan Karpet",
+        "state": {
+          "avoidance": "Penghindaran",
+          "adaptation": "Adaptasi",
+          "remove_mop": "Lepas pel",
+          "adaptation_without_route": "Adaptasi tanpa Rute",
+          "vacuum_and_mop": "Vakum dan Pel",
+          "ignore": "Abaikan",
+          "cross": "Seberangi"
+        }
+      },
+      "mop_wash_level": {
+        "name": "Tingkat Pencucian Pel",
+        "state": {
+          "water_saving": "Hemat air",
+          "daily": "Harian",
+          "deep": "Biasa",
+          "ultra_clean_mode": "Sangat bersih"
+        }
+      },
+      "mopping_type": {
+        "name": "Tipe Mengepel",
+        "state": {
+          "accurate": "Akurat",
+          "daily": "Harian",
+          "deep": "Biasa"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "Cakupan Sudut Lebih Lebar",
+        "state": {
+          "off": "Mati",
+          "high_frequency": "Frekuensi tinggi",
+          "low_frequency": "Frekuensi rendah"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "Ayun Bantalan Pel",
+        "state": {
+          "off": "Mati",
+          "auto": "Otomatis",
+          "daily": "Harian",
+          "weekly": "Mingguan"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "Frekuensi Perluasan Pel",
+        "state": {
+          "standard": "Standar",
+          "intelligent": "Cerdas",
+          "high": "Tinggi"
+        }
+      },
+      "floor_material": {
+        "name": "Material Lantai",
+        "state": {
+          "none": "Tidak ada",
+          "tile": "Ubin lantai",
+          "wood": "Lantai kayu",
+          "low_pile_carpet": "Karpet Berbulu Pendek",
+          "medium_pile_carpet": "Karpet Berbulu Sedang hingga Panjang",
+          "carpet": "Karpet"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "Bahasa Asisten Suara",
+        "state": {
+          "default": "Bawaan",
+          "english": "Inggris",
+          "german": "Jerman",
+          "chinese": "Cina",
+          "russian": "Rusia",
+          "italian": "Italia",
+          "french": "Prancis",
+          "korean": "Korea"
+        }
+      },
+      "mop_pressure": {
+        "name": "Tekanan Pel",
+        "state": {
+          "light": "Ringan",
+          "normal": "Sedang"
+        }
+      },
+      "mop_temperature": {
+        "name": "Suhu Pel",
+        "state": {
+          "normal": "Sedang",
+          "warm": "Hangat"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "Frekuensi Area Rendah",
+        "state": {
+          "weekly": "Mingguan",
+          "daily": "Harian"
+        }
+      },
+      "scraper_frequency": {
+        "name": "Frekuensi Pengikis",
+        "state": {
+          "off": "Mati",
+          "weekly": "Mingguan",
+          "daily": "Harian"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "Cakupan LDS Otomatis",
+        "state": {
+          "off": "Mati",
+          "security": "Keamanan",
+          "extreme": "Ekstrem"
+        }
+      },
+      "order": {
+        "name": "Pesanan",
+        "state": {
+          "not_set": "Belum diatur"
+        }
+      },
+      "self_clean_frequency": {
+        "name": "Frekuensi Pembersihan Mandiri",
+        "state": {
+          "by_area": "Berdasarkan area",
+          "by_time": "Berdasarkan waktu",
+          "by_room": "Berdasarkan ruangan",
+          "intelligent": "Cerdas"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "Frekuensi Pembersihan Pel",
+        "state": {
+          "by_room": "Berdasarkan ruangan",
+          "5sqm": "Lima meter persegi",
+          "8sqm": "Delapan meter persegi",
+          "10sqm": "Sepuluh meter persegi",
+          "15sqm": "Lima belas meter persegi",
+          "20sqm": "Dua puluh meter persegi",
+          "25sqm": "Dua puluh lima meter persegi",
+          "86sqf": "Delapan puluh enam kaki persegi",
+          "108sqf": "Seratus delapan kaki persegi",
+          "54sqf": "Lima puluh empat kaki persegi",
+          "162sqf": "Seratus enam puluh dua kaki persegi",
+          "216sqf": "Dua ratus enam belas kaki persegi",
+          "270sqf": "Dua ratus tujuh puluh kaki persegi"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "Mode Kosong Otomatis",
+        "state": {
+          "off": "Mati",
+          "standard": "Standar",
+          "high_frequency": "Frekuensi tinggi",
+          "low_frequency": "Frekuensi rendah",
+          "custom_frequency": "Frekuensi kustom",
+          "intelligent": "Cerdas"
+        }
+      },
+      "floor_material_direction": {
+        "name": "Arah Lantai",
+        "state": {
+          "vertical": "Vertikal",
+          "horizontal": "Horizontal"
+        }
+      },
+      "visibility": {
+        "name": "Visibilitas",
+        "state": {
+          "visible": "Terlihat",
+          "hidden": "Tersembunyi"
+        }
+      },
+      "cleangenius": {
+        "name": "Cleangenius",
+        "state": {
+          "off": "Mati",
+          "routine_cleaning": "Pembersihan rutin",
+          "deep_cleaning": "Pembersihan mendalam"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "Mode Cleangenius",
+        "state": {
+          "vacuum_and_mop": "Vakum dan Pel",
+          "mop_after_vacuum": "Pel setelah Vakum"
+        }
+      },
+      "washing_mode": {
+        "name": "Mode Pencucian Pel",
+        "state": {
+          "smart": "Cerdas",
+          "light": "Ringan",
+          "standard": "Standar",
+          "deep": "Mendalam",
+          "ultra_washing": "Pencucian ultra"
+        }
+      },
+      "water_temperature": {
+        "name": "Suhu Air",
+        "state": {
+          "normal": "Sedang",
+          "mild": "Ringan",
+          "warm": "Hangat",
+          "hot": "Panas",
+          "max": "Maks"
+        }
+      },
+      "auto_recleaning": {
+        "name": "Pembersihan Ulang Otomatis",
+        "state": {
+          "off": "Mati",
+          "in_deep_mode": "Dalam mode mendalam",
+          "in_all_modes": "Dalam semua mode"
+        }
+      },
+      "auto_rewashing": {
+        "name": "Pencucian Ulang Otomatis",
+        "state": {
+          "off": "Mati",
+          "in_deep_mode": "Dalam mode mendalam",
+          "in_all_modes": "Dalam semua mode"
+        }
+      },
+      "cleaning_route": {
+        "name": "Rute Pembersihan",
+        "state": {
+          "quick": "Cepat",
+          "standard": "Standar",
+          "intensive": "Intensif",
+          "deep": "Mendalam"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "Rute Mengepel Kustom",
+        "state": {
+          "off": "Mati",
+          "standard": "Standar",
+          "intensive": "Intensif",
+          "deep": "Mendalam"
+        }
+      },
+      "task_type": {
+        "name": "Tipe Tugas",
+        "state": {
+          "go_to": "Pergi ke Titik",
+          "segment": "Pembersihan ruangan",
+          "all": "Pembersihan global",
+          "zone": "Pembersihan zona",
+          "spot": "Pembersihan spot"
+        }
+      },
+      "cleaning_times": {
+        "name": "Waktu Pembersihan",
+        "state": {
+          "x1": "Satu kali",
+          "x2": "Dua kali",
+          "x3": "Tiga kali"
+        }
+      },
+      "auto_empty_frequency": {
+        "name": "Frekuensi Kosong Otomatis",
+        "state": {
+          "x1": "Setelah setiap tugas",
+          "x2": "Setelah dua pembersihan",
+          "x3": "Setelah tiga pembersihan"
+        }
+      },
+      "drying_time": {
+        "name": "Waktu Pengeringan",
+        "state": {
+          "silent": "Senyap"
+        }
+      },
+      "battery_charge_level": {
+        "name": "Tingkat Pengisian Daya Baterai"
+      },
+      "object_type": {
+        "name": "Tipe Objek",
+        "state": {
+          "predefined_point": "Titik yang telah ditentukan",
+          "low_lying_area": "Area Rendah",
+          "curtain": "Tirai",
+          "threshold": "Ambang batas",
+          "furniture": "Mebel",
+          "carpet": "Karpet",
+          "restricted": "Zona terlarang"
+        }
+      },
+      "edit_type": {
+        "name": "Tipe Edit",
+        "state": {
+          "door": "Edit pintu",
+          "split": "Pisahkan ruangan",
+          "merge": "Gabungkan ruangan",
+          "visibility": "Visibilitas ruangan",
+          "material": "Material lantai",
+          "type": "Nama ruangan",
+          "wall": "Edit dinding"
+        }
+      },
+      "map_type": {
+        "name": "Tipe Peta",
+        "state": {
+          "cleaning": "Peta pembersihan",
+          "history": "Detail pembersihan",
+          "wifi": "Peta Wi-Fi"
+        }
+      },
+      "carpet_type": {
+        "name": "Tipe Karpet",
+        "state": {
+          "medium_pile": "Bulu Sedang hingga Panjang",
+          "low_pile": "Bulu Pendek",
+          "floor_mat": "Keset lantai",
+          "other": "Lainnya"
+        }
+      },
+      "mop_type": {
+        "name": "Tipe Pel",
+        "state": {
+          "a": "Pel A",
+          "b": "Pel B",
+          "c": "Pel C"
+        }
+      },
+      "carpet_shape": {
+        "name": "Bentuk",
+        "state": {
+          "square": "Persegi",
+          "round": "Bulat"
+        }
+      },
+      "mopping_pattern": {
+        "name": "Pola Mengepel",
+        "state": {
+          "daily": "Mengepel harian",
+          "deep": "Mengepel mendalam"
+        }
+      },
+      "wetness_level": {
+        "name": "Tingkat Kebasahan",
+        "state": {
+          "slightly_dry": "Agak kering",
+          "moist": "Lembab",
+          "wet": "Basah"
+        }
+      },
+      "task_repeats": {
+        "name": "Pengulangan Tugas",
+        "state": {
+          "once": "Sekali",
+          "daily": "Harian",
+          "workdays": "Hari kerja",
+          "weekends": "Akhir pekan"
+        }
+      },
+      "segment_name": {
+        "name": "Nama Ruangan",
+        "state": {
+          "room": "Ruangan",
+          "living_room": "Ruang tamu",
+          "primary_bedroom": "Kamar utama",
+          "study": "Ruang belajar",
+          "kitchen": "Dapur",
+          "dining_hall": "Ruang makan",
+          "bathroom": "Kamar mandi",
+          "balcony": "Balkon",
+          "corridor": "Koridor",
+          "utility_room": "Ruang utilitas",
+          "closet": "Lemari",
+          "meeting_room": "Ruang rapat",
+          "office": "Kantor",
+          "fitness_area": "Area fitness",
+          "recreation_area": "Area rekreasi",
+          "secondary_bedroom": "Kamar tamu"
+        }
+      },
+      "furniture_type": {
+        "name": "Tipe furnitur",
+        "state": {
+          "single_bed": "Kasur tunggal",
+          "double_bed": "Kasur ganda",
+          "arm_chair": "Kursi santai",
+          "two_seat_sofa": "Sofa dua dudukan",
+          "three_seat_sofa": "Sofa tiga dudukan",
+          "dining_table": "Meja makan",
+          "nightstant": "Meja nakas",
+          "coffee_table": "Meja kopi",
+          "toilet": "Toilet",
+          "litter_box": "Kotak pasir",
+          "pet_bed": "Tempat tidur hewan",
+          "food_bowl": "Mangkuk makanan",
+          "pet_toilet": "Toilet hewan",
+          "refrigerator": "Kulkas",
+          "washing_machine": "Mesin cuci",
+          "enclosed_litter_box": "Kotak pasir tertutup",
+          "air_conditioner": "AC",
+          "tv_cabinet": "Lemari TV",
+          "bookshelf": "Rak buku",
+          "shoe_cabinet": "Lemari sepatu",
+          "wardrobe": "Lemari pakaian",
+          "greenery": "Tanaman",
+          "floor_mirror": "Cermin lantai",
+          "l_shaped_sofa": "Sofa bentuk L",
+          "round_coffee_table": "Meja kopi bundar",
+          "table": "Meja",
+          "arm_chair_narrow": "Kursi santai sempit",
+          "three_seat_sofa_narrow": "Sofa tiga dudukan sempit",
+          "l_shaped_sofa_right": "Sofa bentuk L kanan"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "name": "Status",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "sweeping": "Menyapu",
+          "charging": "Mengisi daya",
+          "error": "Kesalahan",
+          "idle": "Diam",
+          "paused": "Jeda",
+          "returning": "Kembali ke dok",
+          "mopping": "Mengepel",
+          "drying": "Mengeringkan",
+          "washing": "Mencuci",
+          "returning_to_wash": "Kembali untuk mencuci",
+          "building": "Membangun bangun",
+          "sweeping_and_mopping": "Menyapu dan mengepel",
+          "charging_completed": "Pengisian daya selesai",
+          "upgrading": "Mengupgrade",
+          "clean_summon": "Panggil untuk membersihkan",
+          "station_reset": "Reset stasiun",
+          "returning_install_mop": "Kembali untuk memasang pel",
+          "returning_remove_mop": "Kembali untuk melepas pel",
+          "water_check": "Memeriksa air",
+          "clean_add_water": "Membersihkan dan menambahkan air",
+          "washing_paused": "Pencucian dijeda",
+          "auto_emptying": "Pengosongan Otomatis",
+          "remote_control": "Pengendali jarak jauh",
+          "smart_charging": "Pengisian daya cerdas",
+          "second_cleaning": "Pembersihan kedua kali",
+          "human_following": "Mengikuti manusia",
+          "spot_cleaning": "Pembersihan spot",
+          "returning_auto_empty": "Kembali ke Pengosongan Otomatis",
+          "waiting_for_task": "Menunggu tugas",
+          "station_cleaning": "Pembersihan stasiun",
+          "returning_to_drain": "Kembali ke saluran air",
+          "draining": "Menguras",
+          "auto_water_draining": "Pengurasan air otomatis",
+          "emptying": "Mengosongkan",
+          "dust_bag_drying": "Mengeringkan kantong debu",
+          "dust_bag_drying_paused": "Pengeringan kantong debu dijeda",
+          "heading_to_extra_cleaning": "Menuju pembersihan ekstra",
+          "extra_cleaning": "Pembersihan ekstra",
+          "finding_pet_paused": "Pencarian hewan peliharaan dijeda",
+          "finding_pet": "Mencari hewan peliharaan",
+          "shortcut": "Pintasan",
+          "monitoring": "Memantau",
+          "monitoring_paused": "Pemantauan dijeda",
+          "initial_deep_cleaning": "Pembersihan mendalam awal",
+          "initial_deep_cleaning_paused": "Pembersihan mendalam awal dijeda",
+          "sanitizing": "Mensterilkan",
+          "sanitizing_with_dry": "Mensterilkan dengan kering",
+          "changing_mop": "Mengganti pel",
+          "changing_mop_paused": "Penggantian pel dijeda",
+          "floor_maintaining": "Memelihara lantai",
+          "floor_maintaining_paused": "Pemeliharaan lantai dijeda",
+          "remote_pickup": "Penjemputan jarak jauh",
+          "arranging_items": "Menata barang",
+          "pet_guarding": "Penjaga hewan peliharaan",
+          "pet_guarding_paused": "Penjaga hewan peliharaan dijeda",
+          "installing_mop": "Memasang pel",
+          "uninstalling_mop": "Melepas pel",
+          "intelligent_recharging": "Pengisian daya cerdas",
+          "assisted_cleaning": "Pembersihan berbantuan",
+          "entering_dock": "Memasuki dok",
+          "leaving_dock": "Meninggalkan dok",
+          "navigating_to_climber": "Navigasi ke pemanjat",
+          "docking_to_climber": "Berlabuh ke pemanjat",
+          "climber_docked": "Pemanjat berlabuh",
+          "climber_navigating": "Pemanjat menavigasi",
+          "climbing_stairs": "Menaiki tangga",
+          "climbing_stairs_completed": "Selesai menaiki tangga",
+          "climber_at_dock": "Pemanjat di dok",
+          "climber_leaving_dock": "Pemanjat meninggalkan dok"
+        }
+      },
+      "status": {
+        "name": "Status",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "idle": "Diam",
+          "paused": "Jeda",
+          "cleaning": "Membersihkan",
+          "returning": "Kembali ke dok",
+          "spot_cleaning": "Pembersihan spot",
+          "follow_wall_cleaning": "Pembersihan ikuti dinding",
+          "charging": "Mengisi daya",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "Pengaturan WiFi",
+          "power_off": "Matikan",
+          "factory": "Pabrik",
+          "error": "Kesalahan",
+          "remote_control": "Pengendali jarak jauh",
+          "sleeping": "Tidur",
+          "self_test": "Tes mandiri",
+          "factory_test": "Tes pabrik",
+          "standby": "Siaga",
+          "room_cleaning": "Pembersihan ruangan",
+          "zone_cleaning": "Pembersihan zona",
+          "fast_mapping": "Pemetaan cepat",
+          "cruising_path": "Menjelajah di jalur",
+          "cruising_point": "Menjelajah ke titik",
+          "summon_clean": "Panggil untuk membersihkan",
+          "shortcut": "Pintasan",
+          "person_follow": "Mengikuti orang",
+          "water_check": "Periksa air",
+          "pet_guarding": "Penjaga hewan peliharaan",
+          "auto_arrangement": "Penataan otomatis",
+          "smart_arrangement": "Penataan cerdas",
+          "zoned_arrangement": "Penataan zona"
+        }
+      },
+      "task_status": {
+        "name": "Status Tugas",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "completed": "Selesai",
+          "cleaning": "Membersihkan",
+          "zone_cleaning": "Pembersihan zona",
+          "room_cleaning": "Pembersihan ruangan",
+          "spot_cleaning": "Pembersihan area",
+          "fast_mapping": "Pemetaan cepat",
+          "cleaning_paused": "Pembersihan dijeda",
+          "room_cleaning_paused": "Pembersihan ruangan dijeda",
+          "zone_cleaning_paused": "Pembersihan zona dijeda",
+          "spot_cleaning_paused": "Pembersihan spot dijeda",
+          "map_cleaning_paused": "Pembersihan peta dijeda",
+          "docking_paused": "Berlabuh dijeda",
+          "mopping_paused": "Mengepel dijeda",
+          "zone_mopping_paused": "Mengepel zona dijeda",
+          "room_mopping_paused": "Mengepel kamar dijeda",
+          "zone_docking_paused": "Zona docking dijeda",
+          "room_docking_paused": "Kamar docking dijeda",
+          "cruising_path": "Menjelajah jalur",
+          "cruising_path_paused": "Menjalankan jalur dijeda",
+          "cruising_point": "Berlayar ke titik",
+          "cruising_point_paused": "Berlayar ke titik dijeda",
+          "summon_clean_paused": "Panggil untuk membersihkan dijeda",
+          "returning_to_install_mop": "Kembali untuk memasang pel",
+          "returning_to_remove_mop": "Kembali untuk melepas pel",
+          "station_cleaning": "Stasiun pembersihan",
+          "pet_finding": "Menemukan hewan peliharaan",
+          "auto_cleaning_washing_paused": "Pencucian otomatis dijeda",
+          "area_cleaning_washing_paused": "Pencucian area dijeda",
+          "custom_cleaning_washing_paused": "Pencucian pembersihan kustom dijeda",
+          "picking_up_item": "Mengambil barang",
+          "picking_up_item_paused": "Mengambil barang dijeda",
+          "picking_up_item_success": "Berhasil mengambil barang",
+          "remote_pickup_initializing": "Inisialisasi penjemputan jarak jauh",
+          "remote_pickup_identifing": "Identifikasi penjemputan jarak jauh",
+          "manual_remote_pickup": "Penjemputan jarak jauh manual",
+          "automatic_remote_pickup": "Penjemputan jarak jauh otomatis",
+          "remote_pickup_in_progress": "Penjemputan jarak jauh sedang berlangsung",
+          "remote_pickup_paused": "Penjemputan jarak jauh dijeda",
+          "placing_item": "Menempatkan barang",
+          "placing_item_paused": "Menempatkan barang dijeda"
+        }
+      },
+      "water_tank": {
+        "name": "Tangki Air",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "installed": "Terinstal",
+          "not_installed": "Tidak terpasang",
+          "mop_installed": "Pel terpasang",
+          "in_station": "Di stasiun"
+        }
+      },
+      "mop_pad": {
+        "name": "Bantalan Pel",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "installed": "Terinstal",
+          "not_installed": "Tidak terpasang",
+          "mop_installed": "Pel terpasang",
+          "in_station": "Di stasiun"
+        }
+      },
+      "dust_collection": {
+        "name": "Pengumpulan Debu",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "not_available": "Tidak tersedia",
+          "available": "Tersedia",
+          "over_use": "Penggunaan berlebihan",
+          "never": "Tidak pernah"
+        }
+      },
+      "auto_empty_status": {
+        "name": "Status Kosong Otomatis",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "idle": "Diam",
+          "active": "Aktif",
+          "not_performed": "Tidak dilakukan"
+        }
+      },
+      "error": {
+        "name": "Kesalahan",
+        "state": {
+          "unknown": "Kode kesalahan tidak diketahui",
+          "no_error": "Tidak ada kesalahan",
+          "drop": "Roda tertunda",
+          "cliff": "Kesalahan sensor tebing",
+          "bumper": "Sensor tabrakan macet",
+          "gesture": "Robot miring",
+          "bumper_repeat": "Sensor tabrakan macet",
+          "drop_repeat": "Roda tertunda",
+          "optical_flow": "Kesalahan sensor aliran optik",
+          "no_box": "Tempat debu tidak dipasang",
+          "no_tank_box": "Tangki air tidak dipasang",
+          "water_box_empty": "Tangki air kosong",
+          "box_full": "Filter tidak kering atau tersumbat",
+          "brush": "Sikat utama terbungkus",
+          "side_brush": "Sikat samping terbungkus",
+          "fan": "Filter tidak kering atau tersumbat",
+          "left_wheel_motor": "Robot macet, atau roda kirinya mungkin terhalang oleh benda asing",
+          "right_wheel_motor": "Robot macet, atau roda kanannya mungkin terhalang oleh benda asing",
+          "turn_suffocate": "Robot terjebak, atau tidak dapat berputar",
+          "forward_suffocate": "Robot terjebak, atau tidak bisa maju",
+          "charger_get": "Tidak dapat menemukan basis",
+          "battery_low": "Baterai hampir habis",
+          "charge_fault": "Kesalahan pengisian",
+          "battery_percentage": "Kesalahan tingkat baterai",
+          "heart": "Kesalahan internal",
+          "camera_occlusion": "Kesalahan sensor penempatan visual",
+          "move": "Kesalahan memindahkan sensor",
+          "flow_shielding": "Kesalahan sensor optik",
+          "infrared_shielding": "Kesalahan pelindung inframerah",
+          "charge_no_electric": "Dok pengisian tidak dihidupkan",
+          "battery_fault": "Baterai kesalahan",
+          "fan_speed_error": "Kesalahan sensor kecepatan kipas",
+          "left_wheell_speed": "Roda kiri mungkin terhalang oleh benda asing",
+          "right_wheell_speed": "Roda kanan mungkin diblokir oleh benda asing",
+          "bmi055_acce": "Kesalahan akselerometer",
+          "bmi055_gyro": "Masalah gyro",
+          "xv7001": "Masalah gyro",
+          "left_magnet": "Kesalahan sensor magnet kiri",
+          "right_magnet": "Kesalahan sensor magnet kanan",
+          "flow_error": "Aliran sensor kesalahan",
+          "infrared_fault": "Kesalahan infra merah",
+          "camera_fault": "Kesalahan kamera",
+          "strong_magnet": "Medan magnet yang kuat terdeteksi",
+          "water_pump": "Kesalahan pompa air",
+          "rtc": "Kesalahan RTC",
+          "auto_key_trig": "Kesalahan internal",
+          "p3v3": "Kesalahan internal",
+          "camera_idle": "Kesalahan internal",
+          "blocked": "Rute pembersihan diblokir, kembali ke dermaga.",
+          "lds_error": "Kesalahan sensor jarak laser",
+          "lds_bumper": "Kesalahan pada bumper sensor jarak laser",
+          "filter_blocked": "Filter basah atau tersumbat",
+          "edge": "Kesalahan sensor tepi",
+          "carpet": "Silakan mulai robot di area non-karpet.",
+          "laser": "Sensor penghindar rintangan 3D gagal berfungsi.",
+          "ultrasonic": "Malfungsi sensor ultrasonik.",
+          "no_go_zone": "Zona Dilarang Masuk atau dinding virtual terdeteksi.",
+          "route": "Rute pembersihan terblokir.",
+          "restricted": "Vakum-pel berada di area terbatas.",
+          "remove_mop": "Pembersihan selesai. Harap lepas dan bersihkan bantalan pel.",
+          "mop_removed": "Bantalan pel terlepas saat pembersihan.",
+          "mop_pad_stop_rotate": "Perputaran bantalan pel terhenti.",
+          "bin_full": "Kantong debu penuh atau saluran udara tersumbat.",
+          "bin_open": "Penutup bawah stasiun mungkin belum tertutup, atau kantong debu tidak terpasang.",
+          "water_tank": "Tangki air bersih tidak terpasang.",
+          "dirty_water_tank": "Tangki air kotor penuh atau tidak terpasang.",
+          "water_tank_dry": "Air di tangki bersih habis, harap segera isi ulang.",
+          "dirty_water_tank_blocked": "Saluran tangki air kotor tersumbat.",
+          "dirty_water_tank_pump": "Kesalahan pada pompa tangki air kotor.",
+          "mop_pad": "Washboard tidak terpasang dengan benar.",
+          "wet_mop_pad": "Tingkat air washboard tidak normal, silakan bersihkan washboard.",
+          "clean_mop_pad": "Pembersihan hampir selesai, silakan bersihkan washboard.",
+          "clean_tank_level": "Periksa dan isi tangki air bersih.",
+          "station_disconnected": "Stasiun pangkalan tidak terhubung",
+          "dirty_tank_level": "Tingkat air tangki air kotor sangat tinggi.",
+          "washboard_level": "Tingkat air washboard sangat tinggi.",
+          "no_mop_in_station": "Bantalan pel tidak ada di stasiun.",
+          "dust_bag_full": "Kantong debu penuh atau saluran udara tersumbat.",
+          "self_test_failed": "Penurunan volume air tidak normal dari tangki air bersih.",
+          "mop_install_failed": "Pemasangan bantalan pel gagal.",
+          "low_battery_turn_off": "Baterai sangat rendah. Robot akan segera mati.",
+          "dirty_tank_not_installed": "Tangki air kotor tidak terpasang.",
+          "robot_in_hidden_room": "Area tersembunyi. Tolong bergerak robot pada tempat yang sesuai dan coba kembali.",
+          "washboard_not_working": "Papan cucian terhenti membersihkan.",
+          "return_to_charge_failed": "Tidak dapat kembali untuk mengisi daya.",
+          "lds_failed_to_lift": "Modul LDS gagal terangkat.",
+          "robot_stuck": "LDS tidak dapat terangkat di posisi ini.",
+          "robot_stuck_repeat": "Pindahkan robot ke area terbuka dan lanjutkan tugas.",
+          "slippery_floor": "Lantai licin. Silakan coba lagi nanti.",
+          "check_mop_install": "Pastikan bantalan pel terpasang dengan benar.",
+          "dirty_water_tank_full": "Tangki air kotor penuh.",
+          "retractable_leg_stuck": "Periksa unit kaki robot.",
+          "internal_error": "Terjadi kesalahan internal. Silakan coba mulai ulang robot.",
+          "robot_stuck_on_tables": "Robot terjebak di dekat meja atau kursi.",
+          "robot_stuck_on_passage": "Robot terjebak di lorong sempit.",
+          "robot_stuck_on_threshold": "Robot terjebak di ambang batas/tangga.",
+          "robot_stuck_on_low_lying_area": "Robot terjebak di area rendah.",
+          "robot_stuck_on_ramp": "Robot terjebak di tanjakan.",
+          "robot_stuck_on_obstacle": "Robot terjebak pada rintangan.",
+          "robot_stuck_on_pet": "Robot terjebak oleh orang atau hewan peliharaan.",
+          "robot_stuck_on_slippery_surface": "Robot terjebak karena permukaan licin.",
+          "robot_stuck_on_carpet": "Robot terjebak di atas karpet.",
+          "drainage_failed": "Aliran air tidak normal ke saluran pembuangan.",
+          "mop_not_detected": "Bantalan pel tidak terdeteksi.",
+          "mop_holder_error": "Kesalahan pada dudukan bantalan pel.",
+          "dock_error": "Terjadi kesalahan pada stasiun pengisian.",
+          "wash_failed": "Kesalahan saat mencuci bantalan pel.",
+          "robot_stuck_on_curtain": "Robot terjebak di tirai.",
+          "edge_mop_stop_rotate": "Pembersihan tepi terhenti berputar.",
+          "edge_mop_detached": "Pengepel tepi terlepas.",
+          "chassis_lift_malfunction": "Malfungsi pada pengangkatan sasis.",
+          "mop_cover_error": "Periksa apakah ada kotoran di dekat rol dan penutup pel.",
+          "roller_mop_error": "Periksa apakah ada kotoran di dekat rol dan penutup pel.",
+          "onboard_water_tank_empty": "Tangki air internal robot kosong.",
+          "onboard_dirty_water_tank_full": "Tangki air kotor internal robot penuh.",
+          "mop_not_installed": "Bantalan pel tidak terpasang.",
+          "fluffing_roller_error": "Kesalahan pada rol pembersih.",
+          "blocked_by_obstacle": "Terhalang oleh rintangan",
+          "robotic_arm_stopped": "Lengan robot berhenti.",
+          "drainage_outlet_filter": "Filter saluran air limbah robot tersumbat.",
+          "main_wheels_error": "Kesalahan roda utama."
+        }
+      },
+      "charging_status": {
+        "name": "Status Pengisian Daya",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "charging": "Mengisi daya",
+          "not_charging": "Tidak mengisi daya",
+          "return_to_charge": "Kembali untuk mengisi daya",
+          "charging_completed": "Pengisian daya selesai"
+        }
+      },
+      "relocation_status": {
+        "name": "Status Pemindahan Lokasi",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "located": "Terletak",
+          "locating": "Mencari lokasi",
+          "failed": "Gagal",
+          "success": "Sukses"
+        }
+      },
+      "self_wash_base_status": {
+        "name": "Status Dasar Pencucian Mandiri",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "idle": "Diam",
+          "washing": "Mencuci",
+          "drying": "Mengeringkan",
+          "paused": "Jeda",
+          "returning": "Kembali untuk mencuci",
+          "clean_add_water": "Membersihkan dan menambahkan air",
+          "adding_water": "Menambahkan air"
+        }
+      },
+      "low_water_warning": {
+        "name": "Peringatan Air Rendah",
+        "state": {
+          "no_warning": "Tidak ada peringatan",
+          "no_water_left": "Air kotor di tangki sudah penuh, harap segera periksa agar dapat segera dikosongkan.",
+          "no_water_left_after_clean": "Pembersihan selesai. Tangki air kotor terdeteksi penuh, harap segera isi tangki air bersih dan kosongkan tangki air kotor.",
+          "no_water_for_clean": "Volume air di tangki air bersih rendah. Robot beralih ke mode penyedotan debu.",
+          "low_water": "Air hampir habis. Harap isi tangki air bersih.",
+          "tank_not_installed": "Tangki air bersih tidak terpasang."
+        }
+      },
+      "stream_status": {
+        "name": "Status Aliran",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "idle": "Diam",
+          "video": "Rekaman video",
+          "audio": "Rekaman suara",
+          "recording": "Merekam"
+        }
+      },
+      "drainage_status": {
+        "name": "Status Drainase",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "idle": "Diam",
+          "draining": "Menguras",
+          "draining_successful": "Pengurasan berhasil",
+          "draining_failed": "Pengurasan gagal"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "Status Tangki Air Bersih",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "not_available": "Tidak tersedia",
+          "not_installed": "Tidak terpasang",
+          "low_water": "Air rendah",
+          "installed": "Terinstal"
+        }
+      },
+      "dirty_water_tank_status": {
+        "name": "Status Tangki Air Kotor",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "installed": "Terinstal",
+          "not_installed_or_full": "Tidak terpasang atau penuh"
+        }
+      },
+      "dust_bag_status": {
+        "name": "Status Kantong Debu",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "installed": "Terinstal",
+          "not_installed": "Tidak terpasang",
+          "check": "Memeriksa"
+        }
+      },
+      "detergent_status": {
+        "name": "Status Deterjen",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "installed": "Terinstal",
+          "disabled": "Dinonaktifkan",
+          "low_detergent": "Deterjen rendah"
+        }
+      },
+      "hot_water_status": {
+        "name": "Status Air Panas",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "disabled": "Dinonaktifkan",
+          "enabled": "Diaktifkan"
+        }
+      },
+      "station_drainage_status": {
+        "name": "Status Drainase Stasiun",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "idle": "Diam",
+          "draining": "Mengeringkan"
+        }
+      },
+      "task_type": {
+        "name": "Tipe Tugas",
+        "state": {
+          "standard": "Pembersihan standar",
+          "standard_paused": "Pembersihan standar dijeda",
+          "custom": "Pembersihan kustom",
+          "custom_paused": "Pembersihan kustom dijeda",
+          "shortcut": "Pembersihan pintasan",
+          "shortcut_paused": "Pembersihan pintasan dijeda",
+          "scheduled": "Pembersihan terjadwal",
+          "scheduled_paused": "Pembersihan terjadwal dijeda",
+          "smart": "Pembersihan cerdas",
+          "smart_paused": "Pembersihan cerdas dijeda",
+          "partial": "Pembersihan sebagian",
+          "partial_paused": "Pembersihan sebagian dijeda",
+          "summon": "Panggilan pembersihan",
+          "summon_paused": "Panggilan pembersihan dijeda",
+          "water_stain": "Pembersihan noda air",
+          "water_stain_paused": "Pembersihan noda air dijeda",
+          "boosted_edge_cleaning": "Peningkatan pembersihan tepi",
+          "hair_compressing": "Kompresi rambut",
+          "large_particle_cleaning": "Pembersihan partikel besar",
+          "intensive_stain_cleaning": "Pembersihan noda intensif",
+          "stain_cleaning": "Pembersihan noda",
+          "initial_deep_cleaning": "Pembersihan mendalam awal",
+          "initial_deep_cleaning_paused": "Pembersihan mendalam awal dijeda",
+          "mop_pad_heating": "Pembersihan dengan pemanas pel",
+          "cleaning_after_mapping": "Membersihkan setelah pemetaan",
+          "small_particle_cleaning": "Pembersihan partikel kecil",
+          "changing_mop": "Mengganti pel",
+          "changing_mop_paused": "Penggantian pel dijeda",
+          "floor_maintaining": "Pemeliharaan lantai",
+          "floor_maintaining_paused": "Pemeliharaan lantai dijeda",
+          "arranging_items": "Menata barang",
+          "arranging_items_paused": "Menata barang dijeda",
+          "intensive_hair_cleaning": "Pembersihan rambut intensif",
+          "accessory_handling": "Penanganan aksesori",
+          "increased_drum_speed_cleaning": "Pembersihan dengan kecepatan drum ditingkatkan",
+          "pressurized_cleaning": "Pembersihan bertekanan",
+          "steam_cleaning": "Pembersihan uap",
+          "steam_cleaning_paused": "Pembersihan uap dijeda"
+        }
+      },
+      "dust_bag_drying_status": {
+        "name": "Status Pengeringan Kantung Debu",
+        "state": {
+          "idle": "Diam",
+          "drying": "Mengeringkan",
+          "paused": "Jeda"
+        }
+      },
+      "nation_matched": {
+        "name": "Kunci Wilayah",
+        "state": {
+          "unknown": "Nonaktifkan",
+          "matched": "Tidak terkunci",
+          "unmatched": "Terkunci",
+          "na": "Tidak Tersedia"
+        }
+      },
+      "startup_method": {
+        "name": "Dimulai oleh",
+        "state": {
+          "button": "Tombol",
+          "app": "Aplikasi",
+          "scheduled": "Terjadwal",
+          "voice": "Suara",
+          "second_cleaning": "Pembersihan kedua kali",
+          "unknown": "Tidak diketahui"
+        }
+      },
+      "cleaning_status": {
+        "name": "Membersihkan",
+        "state": {
+          "interrupted": "Terganggu",
+          "completed": "Selesai",
+          "manually_ended": "Diakhiri secara manual",
+          "failed": "Gagal",
+          "unknown": "Tidak diketahui"
+        }
+      },
+      "cleanup_method": {
+        "name": "Metode Pembersihan",
+        "state": {
+          "other": "Lainnya",
+          "default": "Bawaan",
+          "customized": "Disesuaikan",
+          "cleangenius": "CleanGenius",
+          "water_stain": "Noda air",
+          "unknown": "Tidak diketahui"
+        }
+      },
+      "task_end_type": {
+        "name": "Selesai oleh",
+        "state": {
+          "other": "Lainnya",
+          "manual_docking": "Dok manual",
+          "docking": "Dok",
+          "failed_docking": "Dok gagal",
+          "stop": "Berhenti",
+          "unknown": "Tidak diketahui"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "Alasan Gangguan",
+        "state": {
+          "abnormal_docking": "Dok tidak normal",
+          "base_station_powered_off": "Stasiun pangkalan dimatikan",
+          "brush_entangled_by_carpet": "Sikat tersangkut di karpet",
+          "brush_entangled_by_object": "Sikat tersangkut pada objek",
+          "brush_entangled_by_obstacle": "Sikat tersangkut pada rintangan",
+          "cannot_find_base_station": "Tidak dapat menemukan stasiun pangkalan",
+          "cliff_sensor_error": "Kesalahan sensor tebing",
+          "laser_distance_sensor_error": "Kesalahan sensor jarak laser",
+          "mop_pad_abnormally_removed": "Bantalan pel terlepas secara tidak normal",
+          "mop_pad_fallen_off": "Bantalan pel jatuh",
+          "mop_pad_fallen_off_by_obstacle": "Bantalan pel terjatuh karena rintangan",
+          "mop_pad_fallen_off_by_table": "Bantalan pel terjatuh karena meja",
+          "mop_pad_fallen_off_crossing_obstacle": "Bantalan pel terjatuh saat melintasi rintangan",
+          "mop_pad_removed": "Bantalan pel dilepas",
+          "mop_pad_stuck": "Bantalan pel macet",
+          "robot_fallen": "Robot terjatuh",
+          "robot_is_stuck_on_obstacle": "Robot terjebak pada rintangan",
+          "robot_is_stuck_on_step": "Robot tersangkut di tangga",
+          "robot_lifted": "Robot diangkat",
+          "task_completed": "Tugas selesai",
+          "unknown": "Tidak diketahui"
+        }
+      },
+      "recovery_map_type": {
+        "name": "Tipe Peta",
+        "state": {
+          "original": "Peta Asli",
+          "edited": "Peta yang Diedit",
+          "backup": "Peta Cadangan"
+        }
+      },
+      "obstacle_type": {
+        "name": "Tipe Rintangan",
+        "state": {
+          "unknown": "Tidak diketahui",
+          "base": "Pangkalan",
+          "scale": "Skala",
+          "thread": "Benang",
+          "wire": "Kabel",
+          "toy": "Mainan",
+          "shoes": "Sepatu",
+          "sock": "Kaos kaki",
+          "fece": "Kotoran",
+          "trash_can": "Tempat sampah",
+          "fabric": "Kain",
+          "power_strip": "Kabel listrik",
+          "liquid_stain": "Noda cair",
+          "obstacle": "Hambatan",
+          "pet": "Hewan peliharaan",
+          "cleaning_tools": "Peralatan pembersih",
+          "detected_stain": "Noda terdeteksi",
+          "blocked_room": "Kamar diblokir",
+          "easy_to_stuck_furniture": "Furnitur mudah tersangkut",
+          "uncleanable_stain": "Noda yang tidak bisa dibersihkan",
+          "leg": "Kaki",
+          "large_particles": "Partikel besar",
+          "dried_stain": "Noda kering",
+          "food_bowl": "Mangkuk makanan",
+          "pet_bed": "Tempat tidur hewan peliharaan",
+          "cleaned_stain": "Noda dibersihkan",
+          "skipped_uncleanable_stain": "Melewati noda yang tidak dapat dibersihkan",
+          "cleaned_dried_stain": "Bersihkan noda kering",
+          "cleaned_large_particles": "Partikel besar dibersihkan",
+          "hair": "Rambut",
+          "paper": "Kertas",
+          "cleaned_hair": "Rambut yang dibersihkan",
+          "sundry": "Lain-lain"
+        }
+      },
+      "obstacle_reason": {
+        "name": "Alasan rintangan",
+        "state": {
+          "blocked_by_virtual_wall": "Terhalang oleh dinding virtual",
+          "blocked_by_door": "Terhalang oleh pintu",
+          "blocked_by_threshold": "Terhalang oleh ambang batas",
+          "blocked_by_obstacle": "Terhalang oleh rintangan",
+          "blocked_by_carpet": "Terhalang oleh karpet",
+          "blocked_by_detected_carpet": "Terhalang oleh karpet yang terdeteksi",
+          "blocked_by_hidden_obstacle": "Terhalang oleh rintangan tersembunyi",
+          "blocked_by_dynamic_obstacle": "Terhalang oleh rintangan dinamis",
+          "passage_too_low": "Lorong terlalu rendah",
+          "step_too_low": "Tangga terlalu rendah",
+          "failed_to_cross_threshold": "Gagal melintasi ambang batas"
+        }
+      },
+      "remaining_battery": {
+        "name": "Baterai Tersisa"
+      },
+      "multiple_cleaning_time": {
+        "name": "Pembersihan Ganda"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "firmware_version": {
+        "name": "Versi Firmware"
+      },
+      "ip_address": {
+        "name": "Alamat IP"
+      },
+      "mac_address": {
+        "name": "Alamat MAC"
+      },
+      "model": {
+        "name": "Model"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "serial_number": {
+        "name": "Nomor Seri"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "timezone": {
+        "name": "Zona Waktu"
+      },
+      "voice_packet_id": {
+        "name": "Paket Suara"
+      },
+      "deodorizer_left": {
+        "name": "Pewangi"
+      },
+      "detergent_left": {
+        "name": "Deterjen"
+      },
+      "dirty_water_channel_left": {
+        "name": "Saluran Air Kotor"
+      },
+      "filter_left": {
+        "name": "Filter"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "Pembersihan Rol Dasar"
+      },
+      "main_brush_left": {
+        "name": "Sikat Utama"
+      },
+      "mop_pad_left": {
+        "name": "Bantalan Pel"
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "Tangki Air Kotor Internal"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "Pembersihan Filter Mop Rol"
+      },
+      "scale_inhibitor_left": {
+        "name": "Penghambat Kerak"
+      },
+      "sensor_dirty_left": {
+        "name": "Pembersihan Sensor"
+      },
+      "side_brush_left": {
+        "name": "Sikat Samping"
+      },
+      "silver_ion_left": {
+        "name": "Ion Perak"
+      },
+      "squeegee_left": {
+        "name": "Squeegee"
+      },
+      "tank_filter_left": {
+        "name": "Filter Tangki"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "Pembersihan Filter Outlet Air"
+      },
+      "wheel_dirty_left": {
+        "name": "Pembersihan Roda"
+      }
+    },
+    "toggle": {
+      "customized_cleaning": {
+        "name": "Pembersihan Disesuaikan"
+      },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "Pembersihan Mendalam"
+      },
+      "auto_dust_collecting": {
+        "name": "Kosong Otomatis"
+      },
+      "hair_compression": {
+        "name": "Kompresi Rambut"
+      },
+      "self_clean": {
+        "name": "Pembersihan Mandiri"
+      },
+      "deep_mop_washing": {
+        "name": "Pencucian Pel Mendalam"
+      },
+      "hot_washing": {
+        "name": "Pencucian Panas"
+      },
+      "auto_drying": {
+        "name": "Pengeringan Otomatis"
+      },
+      "silent_drying": {
+        "name": "Pengeringan Senyap"
+      },
+      "uv_sterilization": {
+        "name": "Sterilisasi UV"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Pembersihan Karpet Khusus"
+      },
+      "carpet_avoidance": {
+        "name": "Penghindaran Karpet"
+      },
+      "carpet_preferences": {
+        "name": "Preferensi yang Disesuaikan"
+      },
+      "auto_change_mop": {
+        "name": "Pergantian Pel Otomatis"
+      },
+      "multi_floor_map": {
+        "name": "Peta Multi-Lantai"
+      },
+      "intelligent_recognition": {
+        "name": "Pengenalan Cerdas"
+      },
+      "map_saving": {
+        "name": "Penyimpanan Peta"
+      },
+      "child_lock": {
+        "name": "Kunci Anak"
+      },
+      "resume_cleaning": {
+        "name": "Lanjutkan Pembersihan"
+      },
+      "obstacle_avoidance": {
+        "name": "Penghindaran Rintangan"
+      },
+      "carpet_boost": {
+        "name": "Peningkatan Karpet"
+      },
+      "carpet_recognition": {
+        "name": "Pengenalan Karpet"
+      },
+      "clean_carpets_first": {
+        "name": "Bersihkan Karpet Terlebih Dahulu"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "Tutup Penutup Rol di Karpet"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "Pembersihan Karpet Intensif"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "Sikat Samping Karpet Berputar"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "Angkat Sasis di Karpet"
+      },
+      "auto_mount_mop": {
+        "name": "Pemasangan Pel Otomatis"
+      },
+      "mopping_with_detergent": {
+        "name": "Mengepel Dengan Deterjen"
+      },
+      "mop_washing_with_detergent": {
+        "name": "Pencucian Pel Dengan Deterjen"
+      },
+      "auto_add_detergent": {
+        "name": "Tambahkan Deterjen Secara Otomatis"
+      },
+      "smart_mop_washing": {
+        "name": "Pencucian Pel Cerdas"
+      },
+      "wider_corner_coverage": {
+        "name": "Cakupan Sudut Lebih Lebar"
+      },
+      "pressurized_cleaning": {
+        "name": "Pembersihan Bertekanan"
+      },
+      "gap_cleaning_extension": {
+        "name": "Ekstensi Pembersihan Celah"
+      },
+      "mopping_under_furnitures": {
+        "name": "Mengepel di Bawah Furnitur"
+      },
+      "floor_direction_cleaning": {
+        "name": "Pembersihan Arah Lantai"
+      },
+      "ring_light_always_on": {
+        "name": "Lampu Cincin Selalu Menyala"
+      },
+      "collision_avoidance": {
+        "name": "Penghindaran Tabrakan"
+      },
+      "fill_light": {
+        "name": "Lampu Kamera"
+      },
+      "ai_obstacle_detection": {
+        "name": "Deteksi Hambatan AI"
+      },
+      "ai_pet_detection": {
+        "name": "Deteksi Hewan Peliharaan"
+      },
+      "pet_focused_detection": {
+        "name": "Deteksi Fokus Hewan Peliharaan"
+      },
+      "pet_focused_cleaning": {
+        "name": "Pembersihan Fokus Hewan Peliharaan"
+      },
+      "ai_obstacle_picture": {
+        "name": "Gambar Rintangan"
+      },
+      "obstacle_crossing": {
+        "name": "Melewati Rintangan"
+      },
+      "active_suspension_crossing": {
+        "name": "Melewati Suspensi Aktif"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "Pembersihan Rintangan Dinamis"
+      },
+      "large_particles_boost": {
+        "name": "Peningkatan Partikel Besar"
+      },
+      "streaming_voice_prompt": {
+        "name": "Perintah Suara Streaming"
+      },
+      "voice_assistant": {
+        "name": "Asisten Suara"
+      },
+      "off_peak_charging": {
+        "name": "Pengisian Daya Saat Sepi"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "Nonaktifkan Melanjutkan Pembersihan"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "Nonaktifkan Pengosongan Otomatis"
+      },
+      "dnd_reduce_volume": {
+        "name": "Kurangi Volume"
+      },
+      "dnd": {
+        "name": "DnD"
+      }
+    },
+    "number": {
+      "wetness_level": {
+        "name": "Tingkat Kebasahan"
+      },
+      "auto_empty_area": {
+        "name": "Area Pengosongan"
+      },
+      "drying_time": {
+        "name": "Waktu Pengeringan"
+      },
+      "self_clean_time": {
+        "name": "Waktu Pembersihan Mandiri"
+      },
+      "self_clean_area": {
+        "name": "Area Pembersihan Mandiri"
+      },
+      "volume": {
+        "name": "Volume"
+      }
+    },
+    "time": {
+      "dnd_start": {
+        "name": "Waktu Mulai DnD"
+      },
+      "dnd_end": {
+        "name": "Waktu Berakhir DnD"
+      },
+      "off_peak_charging_start": {
+        "name": "Mulai Waktu Saat Sepi"
+      },
+      "off_peak_charging_end": {
+        "name": "Selesai Waktu Saat Sepi"
+      },
+      "schedule_time": {
+        "name": "Waktu Mulai"
+      }
+    },
+    "input": {
+      "schedule_repeats": {
+        "name": "Pengulangan Tugas"
+      },
+      "dnd_repeats": {
+        "name": "Pengulangan"
+      },
+      "map_custom_name": {
+        "name": "Nama Peta"
+      },
+      "segment_custom_name": {
+        "name": "Nama Ruangan"
+      },
+      "shortcut_name": {
+        "name": "Nama Pintasan"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "Tambahkan",
+        "add_map": "Buat peta",
+        "auto_empty_unavailable": "Pengosongan Otomatis tidak tersedia",
+        "auto_emptying": "Pengosongan Otomatis",
+        "backup": "Cadangan",
+        "bag_drying_unavailable": "Pengeringan kantong debu tidak tersedia",
+        "cancel": "Membatalkan",
+        "cancel_ignore": "Batal Mengabaikan",
+        "carpet": "Karpet",
+        "change": "Berubah",
+        "charge": "Mengisi daya",
+        "clean": "Bersihkan",
+        "clean_again": "Bersihkan Lagi",
+        "cleaning_settings": "Pengaturan pembersihan",
+        "cleanings": "Pembersihan",
+        "close": "Menutup",
+        "confirm": "Konfirmasi",
+        "delete": "Hapus",
+        "delete_carpet": "Hapus karpet",
+        "deleted_carpet": "Hapus karpet",
+        "disable": "Nonaktifkan",
+        "discard": "Abaikan",
+        "dismiss": "Tutup",
+        "dock": "Dok",
+        "dock_settings": "Pengaturan Dok",
+        "download": "Unduh",
+        "dry": "Keringkan",
+        "dry_bag": "Keringkan Kantong",
+        "drying_unavailable": "Pengeringan tidak tersedia",
+        "dynamically_ignored": "Diabaikan Secara Dinamis",
+        "edit_carpet": "Edit karpet",
+        "empty": "Kosongkan",
+        "enable": "Aktifkan",
+        "fast_mapping": "Pemetaan Cepat",
+        "get_dreame_vacuum_card": "Dapatkan Kartu Dreame Vacuum",
+        "ignore": "Abaikan",
+        "ignore_obstacle": "Abaikan Rintangan",
+        "impassable_threshold": "Ambang batas tidak dapat dilewati",
+        "job_details": "Rincian tugas",
+        "keep_disabled": "Tetap Nonaktifkan",
+        "map_display": "Tampilan Peta",
+        "map_management": "Manajemen peta",
+        "new_dnd": "Jadwal DnD baru",
+        "new_schedule": "Jadwal baru",
+        "new_shortcut": "Tugas pintasan baru",
+        "next_job": "Tugas berikutnya",
+        "no_go": "Zona Dilarang-Masuk",
+        "no_mop": "Area Tanpa-Pel",
+        "objects": "Objek",
+        "override": "Timpa",
+        "passable_threshold": "Ambang batas dapat dilewati",
+        "pause": "Jeda",
+        "pause_washing": "Jeda pencucian",
+        "previous_job": "Tugas sebelumnya",
+        "ramp": "Tanjakan",
+        "reload": "Muat ulang",
+        "rename": "Ganti nama",
+        "repeats": "Pengulangan",
+        "replace": "Timpa",
+        "reset": "Atur ulang",
+        "restore": "Pulihkan",
+        "restore_map": "Pulihkan Peta",
+        "resume": "Lanjutkan",
+        "resume_washing": "Lanjutkan pencucian",
+        "rooms": "Ruangan",
+        "rotate_left": "Putar ke kiri",
+        "rotate_right": "Putar ke kanan",
+        "round_carpet": "Karpet bundar",
+        "save": "Simpan",
+        "select_map": "Pilih peta",
+        "shortcuts": "Pintasan",
+        "square_carpet": "Karpet persegi",
+        "start": "Mulai",
+        "start_auto_empty": "Mulai Pengosongan Otomatis",
+        "start_bag_drying": "Mulai Pengeringan Kantong",
+        "start_drying": "Mulai pengeringan",
+        "start_task": "Mulai Tugas",
+        "start_washing": "Mulai pencucian",
+        "stop": "Berhenti",
+        "stop_bag_drying": "Berhenti Keringkan Kantong",
+        "stop_drying": "Hentikan pengeringan",
+        "understood": "Dimengerti",
+        "virtual_threshold": "Ambang batas virtual",
+        "virtual_wall": "Dinding Virtual",
+        "wash": "Cuci",
+        "washing_unavailable": "Pencucian tidak tersedia",
+        "wifi_map": "Peta WiFi"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "Gambar Latar Belakang",
+        "card_object_action_buttons": "Tombol aksi",
+        "card_object_animations": "Animasi",
+        "card_object_cleanup_notification": "Pemberitahuan pembersihan",
+        "card_object_controls": "Kontrol",
+        "card_object_cruising_history": "Riwayat pelayaran",
+        "card_object_fault_notification": "Pemberitahuan kesalahan",
+        "card_object_information_notification": "Pemberitahuan informasi",
+        "card_object_low_water_notification": "Pemberitahuan air rendah",
+        "card_object_map_change_confirmation": "Konfirmasi perubahan peta",
+        "card_object_menu": "Menu",
+        "card_object_progress_bar": "Bilah kemajuan",
+        "card_object_saved_notification": "Pemberitahuan tersimpan",
+        "card_object_shortcuts": "Jalan pintas",
+        "card_object_state": "State",
+        "card_object_status": "Status",
+        "card_object_task_type": "Tipe tugas",
+        "card_object_title": "Judul",
+        "card_object_warning_notification": "Pemberitahuan peringatan",
+        "color_scheme": "Skema warna",
+        "color_scheme_dreame_auto": "Dreame otomatis",
+        "color_scheme_dreame_dark": "Dreame gelap",
+        "color_scheme_dreame_light": "Dreame terang",
+        "color_scheme_grayscale": "Skala abu-abu",
+        "color_scheme_mijia_auto": "Mijia otomatis",
+        "color_scheme_mijia_dark": "Mijia gelap",
+        "color_scheme_mijia_light": "Mijia terang",
+        "copied": "Tersalin",
+        "copy": "Salin",
+        "copy_all": "Salin Semua",
+        "disable_haptic": "Nonaktifkan getaran sentuhan",
+        "editable_objects": "Objek yang Dapat Diedit",
+        "font_size": "Ukuran Huruf",
+        "full_height": "Tinggi Penuh",
+        "grid_size": "Ukuran Kisi",
+        "height": "Tinggi",
+        "hidden_card_objects": "Sembunyikan objek kartu",
+        "hidden_objects": "Objek tersembunyi",
+        "hide_map_info": "Sembunyikan keterangan peta",
+        "icon_set": "Kumpulan Ikon",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "Dreame lama",
+        "icon_set_material": "Material",
+        "icon_set_mijia": "Mijia",
+        "left": "Kiri",
+        "left_handed": "Mode tangan kiri",
+        "limit_height": "Sesuaikan tinggi dengan layar",
+        "locked": "Terkunci",
+        "locked_always": "Selalu",
+        "locked_auto": "Otomatis",
+        "locked_never": "Tidak pernah",
+        "locked_only_touch": "Hanya sentuhan",
+        "map": "Peta %name%",
+        "map_1": "Peta Pertama",
+        "map_2": "Peta Kedua",
+        "map_3": "Peta Ketiga",
+        "map_4": "Peta Keempat",
+        "map_5": "Peta Kelima",
+        "map_color_active_area": "Area Aktif",
+        "map_color_active_area_outline": "Garis Area Aktif",
+        "map_color_active_point": "Titik Aktif",
+        "map_color_active_point_outline": "Garis Titik Aktif",
+        "map_color_auto_low_lying_area": "Area Rendah Otomatis",
+        "map_color_carpet_color": "Warna Karpet",
+        "map_color_curtain": "Tirai",
+        "map_color_detected_carpet_color": "Warna Karpet Terdeteksi",
+        "map_color_floor": "Lantai",
+        "map_color_floor_material": "Material Lantai",
+        "map_color_icon_background": "Latar Belakang Ikon",
+        "map_color_impassable_threshold": "Ambang Batas Tidak Dapat Dilalui",
+        "map_color_manual_low_lying_area": "Area Rendah Manual",
+        "map_color_mop_path": "Jalur Pel",
+        "map_color_new_segment": "Ruangan Baru",
+        "map_color_no_go": "Area Terlarang",
+        "map_color_no_go_outline": "Garis Area Terlarang",
+        "map_color_no_mop": "Area Tanpa Pel",
+        "map_color_no_mop_outline": "Garis Area Tanpa Pel",
+        "map_color_obstacle_background": "Latar Belakang Rintangan",
+        "map_color_order": "Urutan",
+        "map_color_outside": "Luar Ruangan",
+        "map_color_passable_threshold": "Ambang Batas Dapat Dilalui",
+        "map_color_passive_segment": "Ruangan Pasif",
+        "map_color_path": "Jalur",
+        "map_color_ramp": "Tanjakan",
+        "map_color_segment": "Ruangan",
+        "map_color_settings_background": "Latar Belakang Pengaturan",
+        "map_color_text": "Teks",
+        "map_color_text_stroke": "Garis Tepi Teks",
+        "map_color_virtual_threshold": "Ambang Batas Virtual",
+        "map_color_virtual_wall": "Dinding Virtual",
+        "map_color_wall": "Dinding",
+        "map_config": "Konfigurasi Peta",
+        "map_display": "Tampilan Peta",
+        "map_display_floor_plan": "Denah Lantai",
+        "map_display_floor_plan_only": "Hanya Denah Lantai",
+        "map_display_floor_plan_without_texture": "Denah Lantai tanpa tekstur",
+        "map_display_standard": "Standar",
+        "map_object_active_area": "Area Aktif",
+        "map_object_active_cruise_point": "Titik Jelajah Aktif",
+        "map_object_active_point": "Titik Aktif",
+        "map_object_animations": "Animasi",
+        "map_object_blocked_segment": "Ruangan Terblokir",
+        "map_object_blocked_segments": "Ruangan Terblokir",
+        "map_object_carpet": "Karpet",
+        "map_object_charger": "Pengisi Daya",
+        "map_object_cleaning_sequence": "Urutan Pembersihan",
+        "map_object_cruise_point": "Titik Jelajah",
+        "map_object_curtain": "Tirai",
+        "map_object_customized_cleaning": "Pembersihan Kustom",
+        "map_object_deleted_carpet": "Karpet Terhapus",
+        "map_object_detected_carpet": "Karpet Terdeteksi",
+        "map_object_door": "Pintu",
+        "map_object_floor": "Lantai",
+        "map_object_floor_material": "Material Lantai",
+        "map_object_furniture": "Furnitur",
+        "map_object_furniture_image": "Gambar Furnitur",
+        "map_object_hidden_segments": "Ruangan Tersembunyi",
+        "map_object_icon": "Ikon",
+        "map_object_ignored_obstacles": "Rintangan Diabaikan",
+        "map_object_impassable_threshold": "Ambang Batas Tidak Dapat Dilalui",
+        "map_object_lock_indicator": "Indikator kunci",
+        "map_object_low_lying_area": "Area Rendah",
+        "map_object_material": "Material Lantai",
+        "map_object_mop_path": "Jalur Pel",
+        "map_object_mop_type": "Tipe Pel",
+        "map_object_name": "Nama",
+        "map_object_name_background": "Latar Belakang Nama",
+        "map_object_no_go": "Area Terlarang",
+        "map_object_no_mop": "Area Tanpa Pel",
+        "map_object_object_option": "Opsi Objek",
+        "map_object_obstacle": "Rintangan",
+        "map_object_obstacle_background": "Latar Belakang Rintangan",
+        "map_object_obstacle_color": "Warna Rintangan",
+        "map_object_order": "Urutan",
+        "map_object_passable_threshold": "Ambang Batas Dapat Dilalui",
+        "map_object_path": "Jalur",
+        "map_object_pet": "Hewan Peliharaan",
+        "map_object_predefined_point": "Titik yang Ditentukan",
+        "map_object_ramp": "Tanjakan",
+        "map_object_router": "Router",
+        "map_object_segment": "Ruangan",
+        "map_object_segment_type": "Tipe Ruangan",
+        "map_object_selected_segments": "Ruangan Terpilih",
+        "map_object_split_line": "Garis Pemisah",
+        "map_object_stain": "Noda",
+        "map_object_station_status": "Status Stasiun",
+        "map_object_vacuum": "Vakum",
+        "map_object_vacuum_status": "Status Vakum",
+        "map_object_virtual_threshold": "Ambang Batas Virtual",
+        "map_object_virtual_wall": "Dinding Virtual",
+        "map_object_walls": "Dinding",
+        "map_object_zoom_point": "Titik Zoom",
+        "object_opacity": "Transparansi Objek",
+        "object_scale": "Skala Objek",
+        "opacity": "Transparansi",
+        "override_colors": "Timpa Warna Peta",
+        "overlay_image": "Gambar Hamparan",
+        "rotation": "Rotasi",
+        "scale": "Skala",
+        "scripts": "Skrip",
+        "selectable_objects": "Objek Dapat Dipilih",
+        "selected_map_config": "Konfigurasi %name% Selayar",
+        "show_map_info": "Tampilkan Informasi Peta",
+        "top": "Atas",
+        "url": "URL",
+        "viewport": "Viewport",
+        "width": "Lebar",
+        "zoom": "Perbesar"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "Robot Vacuum sedang menjalankan tugas!",
+        "apply_changes_or_reload": "Peta berubah selama penyuntingan!\nApakah Anda ingin mengabaikan atau memuat ulang perubahan baru?",
+        "auto_mount_mop_will_enabled": "Pemasangan pel otomatis akan diaktifkan!",
+        "backup_map": "Cadangkan peta?",
+        "backup_map_will_overwritten": "Cadangan saat ini akan ditimpa!",
+        "bag_drying_will_stopped": "Pengeringan kantong debu akan dihentikan!",
+        "carpet_recognition_will_enabled": "Pengenalan karpet harus diaktifkan untuk mengatur pembersihan karpet",
+        "carpet_will_deleted": "Karpet akan dihapus!",
+        "cleangenius_will_disabled": "Cleangenius akan dinonaktifkan!",
+        "cleaning_failure": "Penyebab kegagalan pembersihan",
+        "create_map": "Buat peta baru?",
+        "custom_carpet_settings_will_enabled": "Pengaturan karpet kustom akan diaktifkan!",
+        "custom_carpet_settings_will_enabled_detail": "Pengaturan pembersihan karpet kustom akan disesuaikan dengan jenis karpet yang dipilih",
+        "customized_cleaning_disabled": "Pembersihan kustom dinonaktifkan!",
+        "delete_carpet": "Hapus karpet?",
+        "delete_dnd": "Hapus tugas DnD?",
+        "delete_map": "Hapus peta?",
+        "delete_schedule": "Hapus jadwal?",
+        "delete_shortcut": "Hapus pintasan?",
+        "deleted": "Berhasil dihapus",
+        "device_unavailable": "Perangkat tidak tersedia",
+        "disable_cleangenius": "Nonaktifkan Cleangenius?",
+        "dnd_confliction": "Konflik tugas DnD!",
+        "dnd_confliction_detail": "Tugas terjadwal diatur dalam periode DnD.",
+        "dnd_will_deleted": "Tugas DnD dari %start% hingga %end% akan dihapus!",
+        "dock_in_restricted_area": "Dok berada di area terlarang!",
+        "dock_in_restricted_area_detail": "Dok pengisian daya berada di area terlarang. Jika Anda lanjut menyimpan, robot mungkin tidak dapat mengisi daya.",
+        "drying_will_stopped": "Pengeringan bantalan pel akan dihentikan!",
+        "dust_collection_not_performed": "Pengosongan otomatis tidak dilakukan\nRobot tidak akan mengosongkan debu selama periode DnD.",
+        "enable_auto_mount_mop": "Aktifkan pemasangan pel otomatis?",
+        "enable_carpet_recognition": "Pengenalan karpet akan diaktifkan!",
+        "enable_customized_cleaning": "Aktifkan pembersihan kustom?",
+        "enable_mop_change": "Aktifkan penggantian pel otomatis?",
+        "enable_task": "Aktifkan tugas?",
+        "entity_is_required": "Entitas diperlukan",
+        "entity_not_available": "Entitas tidak tersedia",
+        "failed_to_load_card": "Gagal memuat kartu",
+        "ignore_obstacle": "Abaikan rintangan?",
+        "invalid_entity": "Entitas tidak valid",
+        "map_backup": "Pencadangan peta sedang berlangsung",
+        "map_backup_failed": "Pencadangan peta gagal!",
+        "map_backup_success": "Pencadangan peta selesai",
+        "map_recovery": "Pemulihan peta sedang berlangsung",
+        "map_recovery_failed": "Pemulihan peta gagal!",
+        "map_recovery_success": "Pemulihan peta selesai",
+        "map_will_deleted": "%name% akan dihapus!",
+        "map_will_replaced": "Peta terpilih akan digantikan dengan peta baru!",
+        "map_will_restored": "Peta yang disimpan akan dipulihkan ke kondisi pada %date%",
+        "mapping_started": "Pemetaan dimulai...",
+        "mop_change_disabled": "Penggantian pel otomatis dinonaktifkan!",
+        "mop_wash_frequency_low": "Frekuensi pencucian pel terlalu rendah!",
+        "mop_wash_frequency_will_increased": "Frekuensi pencucian pel akan ditingkatkan otomatis agar pel tetap basah",
+        "not_available": "Tidak tersedia saat ini...",
+        "not_fully_supported": "Belum didukung penuh!",
+        "not_supported": "Belum didukung!",
+        "obstacle_will_ignored": "Rintangan akan diabaikan!",
+        "override_changes": "Abaikan perubahan?",
+        "preview": "Ini adalah pratinjau Kartu Dreame Vacuum",
+        "recommended_areas": "Area yang direkomendasikan",
+        "relocating": "Sedang merelokasi posisi. Harap tunggu.",
+        "relocating_completed": "Relokasi berhasil. Robot melanjutkan tugas.",
+        "relocating_failed": "Relokasi gagal!",
+        "replace_map": "Ganti dengan peta baru?",
+        "reset_usage": "Atur ulang penggunaan?",
+        "reset_walls": "Atur Ulang Dinding?",
+        "restore_map": "Pulihkan %name%?",
+        "resume_cleaning": "Robot akan melanjutkan pembersihan otomatis setelah baterai mencapai 80%.",
+        "resume_cleaning_not_performed": "Robot akan melanjutkan pembersihan setelah periode DnD berakhir.",
+        "resume_cleaning_time": "Pembersihan akan dilanjutkan pada %time%",
+        "save_changes": "Simpan perubahan?",
+        "saved": "Berhasil disimpan",
+        "schedule_will_deleted": "Jadwal pada %time% akan dihapus!",
+        "select_map": "Pilih %name%?",
+        "select_mapping_type": "Pilih jenis pemetaan",
+        "select_room": "Pilih ruangan untuk mengatur urutan pembersihan",
+        "selected_map_will_changed": "Peta terpilih akan diganti ke %name%!",
+        "service_call_failed": "Panggilan layanan gagal",
+        "settings_will_applied": "Pengaturan akan diterapkan pada tugas berikutnya.",
+        "shortcut_will_deleted": "Pintasan %name% akan dihapus!",
+        "stop_bag_drying": "Hentikan pengeringan kantong debu?",
+        "stop_drying": "Hentikan pengeringan?",
+        "stop_task": "Hentikan tugas saat ini?",
+        "task_disabled": "Tugas dinonaktifkan!",
+        "task_will_stopped": "Tugas saat ini akan dihentikan!",
+        "unsaved_changes_present": "Ada perubahan belum disimpan yang akan hilang!",
+        "unsupported_browser": "Browser tidak didukung!",
+        "usage_will_reset": "Penggunaan %name% akan diatur ulang!",
+        "walls_will_be_reset": "Dinding akan dikembalikan ke lokasi yang dipetakan pada awalnya!"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "Penggunaan Aksesori",
+        "add_furniture": "Tambahkan Furnitur",
+        "audio_settings": "Pengaturan Audio",
+        "battery_management": "Manajemen Baterai",
+        "carpet_settings": "Pengaturan Karpet",
+        "clean_water_tank": "Tangki Air Bersih",
+        "cleaning_details": "Detail Pembersihan",
+        "cleaning_history": "Riwayat Pembersihan",
+        "cleaning_sequence": "Urutan Pembersihan",
+        "created_carpet": "Karpet Dibuat Manual",
+        "cruising": "Jelajah",
+        "cruising_details": "Detail Jelajah",
+        "cruising_history": "Riwayat Jelajah",
+        "customized_cleaning": "Pembersihan Kustom",
+        "description": "Antarmuka integrasi kustom %name%",
+        "detected_carpet": "Karpet Terdeteksi Otomatis",
+        "detergent": "Deterjen",
+        "device_information": "Informasi Perangkat",
+        "device_settings": "Pengaturan Perangkat",
+        "dnd": "Jangan Ganggu (DnD)",
+        "dnd_task": "Tugas DnD",
+        "dust_bag": "Kantong Debu",
+        "global_carpet_settings": "Pengaturan Karpet Global",
+        "invalid": "Tidak Valid",
+        "locate": "Temukan",
+        "map": "Peta",
+        "map_edit": "Sunting Peta",
+        "map_management": "Manajemen Peta",
+        "map_name_placeholder": "Peta %index%",
+        "mop_type": "Tipe Pel",
+        "mopping_settings": "Pengaturan Mengepel",
+        "more_functions": "Fungsi Lainnya",
+        "name": "Peta %name%",
+        "new_map": "Peta Baru",
+        "obstacle": "Rintangan",
+        "obstacle_settings": "Pengaturan Kamera & Rintangan",
+        "recovery_map_list": "Pulihkan Peta",
+        "remote_control": "Kontrol Jarak Jauh",
+        "saved_map": "Peta Simpanan",
+        "schedule_list": "Jadwal Pembersihan",
+        "scheduled_room": "Pembersihan Kamar Terjadwal",
+        "scheduled_spot": "Pembersihan Titik Terjadwal",
+        "scheduled_task": "Tugas Terjadwal",
+        "scheduled_zone": "Pembersihan Zona Terjadwal",
+        "segment_name_placeholder": "Ruangan %index%",
+        "shortcut": "Pintasan",
+        "shortcut_list": "Pintasan",
+        "shortcut_map": "Peta Pintasan",
+        "shortcut_name_placeholder": "Pintasan %index%",
+        "shortcut_task": "Tugas Pintasan",
+        "task": "Tugas %index%",
+        "task_placeholder": "Tugas %index%",
+        "time_left": "Tersisa %time%",
+        "unavailable": "Tidak Tersedia",
+        "used_water_tank": "Tangki Air Bekas",
+        "wall": "Dinding",
+        "wifi_map": "Peta WiFi"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "Bersihkan Ruangan",
+      "description": "Mulai operasi pembersihan pada ruangan yang dipilih.",
+      "fields": {
+        "segments": {
+          "name": "Ruangan",
+          "description": "Daftar ID ruangan yang akan dibersihkan."
+        },
+        "repeats": {
+          "name": "Pengulangan",
+          "description": "Jumlah pengulangan pembersihan untuk ruangan terpilih (kecuali jika pengaturan kustom diaktifkan)."
+        },
+        "suction_level": {
+          "name": "Tingkat Hisap",
+          "description": "Tingkat hisapan untuk setiap ruangan (kecuali jika pengaturan kustom diaktifkan)."
+        },
+        "water_volume": {
+          "name": "Volume Air",
+          "description": "Volume air untuk setiap ruangan (kecuali jika pengaturan kustom diaktifkan)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "Bersihkan Zona",
+      "description": "Mulai operasi pembersihan pada zona yang dipilih.",
+      "fields": {
+        "zone": {
+          "name": "Zona",
+          "description": "Koordinat zona."
+        },
+        "repeats": {
+          "name": "Pengulangan",
+          "description": "Jumlah pengulangan pembersihan untuk setiap zona yang dipilih."
+        },
+        "suction_level": {
+          "name": "Tingkat Hisap",
+          "description": "Tingkat hisapan untuk setiap zona yang dipilih."
+        },
+        "water_volume": {
+          "name": "Volume Air",
+          "description": "Volume air untuk setiap zona yang dipilih."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "Bersihkan Titik",
+      "description": "Mulai operasi pembersihan pada titik tertentu yang dipilih di peta.",
+      "fields": {
+        "points": {
+          "name": "Titik",
+          "description": "Daftar koordinat titik yang akan dibersihkan."
+        },
+        "repeats": {
+          "name": "Pengulangan",
+          "description": "Jumlah pengulangan pembersihan untuk setiap titik yang dipilih."
+        },
+        "suction_level": {
+          "name": "Tingkat Hisap",
+          "description": "Tingkat hisapan untuk setiap titik yang dipilih."
+        },
+        "water_volume": {
+          "name": "Volume Air",
+          "description": "Volume air untuk setiap titik yang dipilih."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "Pergi ke Titik",
+      "description": "Perintahkan robot untuk pergi ke koordinat tertentu di peta.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Koordinat X."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Koordinat Y."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Ikuti Jalur",
+      "description": "Robot akan mengikuti daftar titik jalur dan kembali ke dok. (Hanya untuk robot dengan kamera depan).",
+      "fields": {
+        "points": {
+          "name": "Titik Jalur",
+          "description": "Daftar koordinat titik jalur yang akan diikuti."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "Mulai Pintasan",
+      "description": "Memulai tugas pintasan. (Hanya pada perangkat yang didukung)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID Pintasan",
+          "description": "ID dari pintasan."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "Gerakan Kontrol Jarak Jauh",
+      "description": "Gerakkan robot satu langkah menggunakan kontrol jarak jauh.",
+      "fields": {
+        "rotation": {
+          "name": "Rotasi",
+          "description": "Sudut putar antara -128 hingga 128 derajat."
+        },
+        "velocity": {
+          "name": "Kecepatan",
+          "description": "Kecepatan gerakan, dari 100 (maju) hingga -300 (mundur)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "Instal Paket Suara",
+      "description": "Instal paket suara resmi atau kustom.",
+      "fields": {
+        "lang_id": {
+          "name": "ID Bahasa",
+          "description": "ID bahasa dalam paket suara."
+        },
+        "url": {
+          "name": "URL",
+          "description": "URL paket suara harus dapat diakses oleh robot."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "Checksum MD5 per paket suara."
+        },
+        "size": {
+          "name": "Ukuran",
+          "description": "Ukuran paket suara dalam bita."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "Minta Peta",
+      "description": "Meminta data peta terbaru."
+    },
+    "vacuum_select_map": {
+      "name": "Pilih Peta",
+      "description": "Pilih peta aktif. Digunakan jika memiliki beberapa peta atau lantai.",
+      "fields": {
+        "map_id": {
+          "name": "ID Peta",
+          "description": "ID peta yang akan dipilih."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "Hapus Peta",
+      "description": "Menghapus peta yang dipilih.",
+      "fields": {
+        "map_id": {
+          "name": "ID Peta",
+          "description": "ID peta yang akan dihapus."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "Simpan Peta Sementara",
+      "description": "Simpan peta sementara yang baru dibuat."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "Buang Peta Sementara",
+      "description": "Buang peta sementara yang baru dibuat."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "Ganti Peta Sementara",
+      "description": "Ganti peta sementara dengan peta tersimpan lainnya.",
+      "fields": {
+        "map_id": {
+          "name": "ID Peta",
+          "description": "ID peta yang akan diganti."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "Ganti Nama Peta",
+      "description": "Mengganti nama peta pilihan.",
+      "fields": {
+        "map_id": {
+          "name": "ID Peta",
+          "description": "ID peta."
+        },
+        "map_name": {
+          "name": "Nama Peta",
+          "description": "Nama baru untuk peta."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "Pulihkan Peta",
+      "description": "Pulihkan peta dari cadangan.",
+      "fields": {
+        "map_id": {
+          "name": "ID Peta",
+          "description": "ID peta yang akan dipulihkan."
+        },
+        "recovery_map_index": {
+          "name": "Indeks Peta Pemulihan",
+          "description": "Indeks dari peta pemulihan yang tersimpan."
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Pulihkan Peta dari Berkas",
+      "description": "Pulihkan peta dari berkas eksternal.",
+      "fields": {
+        "map_id": {
+          "name": "ID Peta",
+          "description": "ID peta yang akan dipulihkan."
+        },
+        "file_url": {
+          "name": "URL Berkas",
+          "description": "URL berkas .tbz2.gz atau .tar.gz yang tersimpan."
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Cadangkan Peta",
+      "description": "Cadangkan peta saat ini ke cloud.",
+      "fields": {
+        "map_id": {
+          "name": "ID Peta",
+          "description": "ID peta yang akan dicadangkan."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Gabungkan Ruangan",
+      "description": "Gabungkan beberapa ruangan menjadi satu.",
+      "fields": {
+        "map_id": {
+          "name": "ID Peta",
+          "description": "ID peta."
+        },
+        "segments": {
+          "name": "Ruangan",
+          "description": "Daftar ID ruangan."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Pisahkan Ruangan",
+      "description": "Pisahkan satu ruangan menjadi dua.",
+      "fields": {
+        "map_id": {
+          "name": "ID Peta",
+          "description": "ID peta."
+        },
+        "segment": {
+          "name": "Ruangan",
+          "description": "ID ruangan yang akan dipisahkan."
+        },
+        "line": {
+          "name": "Garis",
+          "description": "Koordinat garis pemisah."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "Ganti Nama Ruangan",
+      "description": "Ganti nama ruangan yang dipilih.",
+      "fields": {
+        "segment_id": {
+          "name": "ID Ruangan",
+          "description": "ID ruangan."
+        },
+        "segment_name": {
+          "name": "Nama Ruangan",
+          "description": "Nama baru untuk ruangan."
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "Atur Urutan Pembersihan",
+      "description": "Atur urutan pembersihan ruangan. (Hanya pada perangkat yang didukung)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "Urutan Pembersihan",
+          "description": "Daftar ID ruangan sesuai urutan pembersihan."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "Atur Pembersihan Kustom",
+      "description": "Atur parameter pembersihan kustom untuk setiap ruangan. (Hanya pada perangkat yang didukung)",
+      "fields": {
+        "segment_id": {
+          "name": "ID Ruangan",
+          "description": "ID ruangan."
+        },
+        "suction_level": {
+          "name": "Tingkat Hisap",
+          "description": "Tingkat hisapan untuk ruangan tersebut."
+        },
+        "water_volume": {
+          "name": "Volume Air",
+          "description": "Volume air untuk ruangan tersebut."
+        },
+        "wetness_level": {
+          "name": "Tingkat Kebasahan",
+          "description": "Tingkat kebasahan pel untuk ruangan tersebut."
+        },
+        "cleaning_mode": {
+          "name": "Mode Pembersihan",
+          "description": "Mode pembersihan (hanya untuk robot dengan fitur pengangkat pel)."
+        },
+        "repeats": {
+          "name": "Pengulangan",
+          "description": "Jumlah pengulangan pembersihan untuk ruangan tersebut."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Atur Pembersihan Karpet Kustom",
+      "description": "Atur pengaturan khusus untuk setiap karpet. (Hanya pada perangkat yang didukung)",
+      "fields": {
+        "id": {
+          "name": "ID Karpet",
+          "description": "ID karpet."
+        },
+        "type": {
+          "name": "Tipe Objek",
+          "description": "Tipe objek karpet (0 = Otomatis, 1 = Manual, 2 = Karpet Ruangan)."
+        },
+        "carpet_cleaning": {
+          "name": "Pembersihan Karpet",
+          "description": "Pengaturan pembersihan khusus untuk karpet tersebut."
+        },
+        "carpet_preferences": {
+          "name": "Preferensi Karpet",
+          "description": "Pengaturan preferensi tambahan untuk karpet tersebut."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Atur Area Terlarang",
+      "description": "Tentukan dinding virtual, area terlarang, dan zona tanpa pel.",
+      "fields": {
+        "walls": {
+          "name": "Dinding",
+          "description": "Daftar dinding virtual."
+        },
+        "zones": {
+          "name": "Zona",
+          "description": "Daftar area terlarang (no-go zones)."
+        },
+        "no_mops": {
+          "name": "Tanpa Pel",
+          "description": "Daftar zona tanpa pel (no-mop zones)."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "Reset Aksesori",
+      "description": "Atur ulang masa pakai komponen aksesori.",
+      "fields": {
+        "consumable": {
+          "name": "Komponen",
+          "description": "Tipe komponen yang akan direset."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Ganti Nama Pintasan",
+      "description": "Ganti nama pintasan yang ada. (Hanya pada perangkat yang didukung)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID Pintasan",
+          "description": "ID dari pintasan."
+        },
+        "shortcut_name": {
+          "name": "Nama Pintasan",
+          "description": "Nama baru untuk pintasan."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Hapus Pintasan",
+      "description": "Hapus pintasan yang dipilih. (Hanya pada perangkat yang didukung)",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID Pintasan",
+          "description": "ID dari pintasan yang akan dihapus."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Atur Area Karpet",
+      "description": "Tentukan area karpet manual atau abaikan area karpet otomatis. (Hanya pada perangkat yang didukung)",
+      "fields": {
+        "carpets": {
+          "name": "Karpet",
+          "description": "Area karpet manual."
+        },
+        "deleted_carpets": {
+          "name": "Karpet Diabaikan",
+          "description": "Daftar ID karpet otomatis yang akan diabaikan."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "Atur Ambang Batas Virtual",
+      "description": "Buat garis dan ambang batas virtual di peta.",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "Ambang Batas Virtual",
+          "description": "Daftar koordinat ambang batas virtual."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Atur Titik Tujuan",
+      "description": "Tentukan daftar titik tujuan di peta. (Hanya untuk robot dengan kamera depan).",
+      "fields": {
+        "points": {
+          "name": "Titik Tujuan",
+          "description": "Daftar koordinat titik yang akan dituju."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Abaikan Rintangan",
+      "description": "Pilih rintangan yang akan diabaikan oleh deteksi AI. (Hanya pada perangkat yang didukung).",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Koordinat X rintangan."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Koordinat Y rintangan."
+        },
+        "obstacle_ignored": {
+          "name": "Abaikan Rintangan",
+          "description": "Apakah rintangan tersebut harus diabaikan."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Atur Posisi Router",
+      "description": "Tentukan lokasi router WiFi di peta. (Hanya pada perangkat yang didukung).",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Koordinat X router."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Koordinat Y router."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "Pilih Sebelumnya",
+      "description": "Pilih opsi sebelumnya dari daftar entitas.",
+      "fields": {
+        "cycle": {
+          "name": "Siklus",
+          "description": "Apakah pilihan akan berputar kembali ke akhir setelah mencapai awal."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "Pilih Pertama",
+      "description": "Pilih opsi pertama dari daftar entitas."
+    },
+    "select_select_last": {
+      "name": "Pilih Terakhir",
+      "description": "Pilih opsi terakhir dari daftar entitas."
+    },
+    "select_select_next": {
+      "name": "Pilih Berikutnya",
+      "description": "Pilih opsi berikutnya dari daftar entitas.",
+      "fields": {
+        "cycle": {
+          "name": "Siklus",
+          "description": "Apakah pilihan akan berputar kembali ke awal setelah mencapai akhir."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2438 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "กำหนดค่าอุปกรณ์แล้ว",
+      "cannot_connect": "เชื่อมต่อไม่สำเร็จ",
+      "reauth_successful": "ยืนยันตัวตนสำเร็จแล้ว"
+    },
+    "error": {
+      "cannot_connect": "เชื่อมต่อไม่สำเร็จ",
+      "unsupported": "ไม่รองรับอุปกรณ์นี้",
+      "wrong_token": "ข้อผิดพลาด Checksum โทเค็นไม่ถูกต้อง",
+      "2fa_failed": "การยืนยันล้มเหลว",
+      "wrong_captcha": "Captcha ไม่ถูกต้อง",
+      "credentials_incomplete": "ข้อมูลรับรองไม่สมบูรณ์ โปรดกรอกชื่อผู้ใช้ รหัสผ่าน และประเทศ",
+      "login_error": "ไม่สามารถเข้าสู่ระบบได้ โปรดตรวจสอบข้อมูลรับรอง",
+      "no_devices": "ไม่พบอุปกรณ์ที่รองรับในบัญชีนี้สำหรับประเทศที่เลือก {devices}",
+      "2fa_send_failed": "การส่งรหัสยืนยันล้มเหลว โปรดลองอีกครั้ง",
+      "2fa_limit_reached": "เกินขีดจำกัดรายวันในการส่งรหัสยืนยันแล้ว โปรดลองอีกครั้งในวันพรุ่งนี้",
+      "2fa_cooldown_active": "คำขอต่อเนื่องกันมากเกินไป โปรดรอสักครู่ก่อนลองอีกครั้ง"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "ประเภทการกำหนดค่า"
+        },
+        "description": "ฟังก์ชันแผนที่ต้องใช้การเชื่อมต่อคลาวด์และมีการกำหนดค่าอัตโนมัติ หากคุณไม่ต้องการใช้ฟังก์ชันแผนที่ คุณสามารถเลือกการกำหนดค่าด้วยตนเองได้"
+      },
+      "local": {
+        "data": {
+          "host": "โฮสต์ (Host)",
+          "token": "โทเค็น (Token)"
+        },
+        "description": "คุณต้องใช้ API Token จำนวน 32 ตัวอักษร"
+      },
+      "mi": {
+        "data": {
+          "username": "ชื่อผู้ใช้",
+          "password": "รหัสผ่าน",
+          "country": "ประเทศของเซิร์ฟเวอร์",
+          "prefer_cloud": "เลือกใช้การเชื่อมต่อคลาวด์"
+        },
+        "description": "เข้าสู่ระบบ Xiaomi Miio cloud"
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "รหัสยืนยันแบบสองขั้นตอน (2FA)"
+        },
+        "description": "## จำเป็นต้องยืนยันความปลอดภัย\nรหัสยืนยันได้รับการส่งไปยัง {dest} แล้ว โปรดป้อนรหัด้านล่าง"
+      },
+      "captcha": {
+        "data": {
+          "code": "รหัส"
+        },
+        "description": "## ต้องยืนยัน Captcha\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "ชื่อผู้ใช้",
+          "password": "รหัสผ่าน",
+          "country": "ประเทศของเซิร์ฟเวอร์"
+        },
+        "description": "เข้าสู่ระบบ Dreamehome cloud"
+      },
+      "mova": {
+        "data": {
+          "username": "ชื่อผู้ใช้",
+          "password": "รหัสผ่าน",
+          "country": "ประเทศของเซิร์ฟเวอร์"
+        },
+        "description": "เข้าสู่ระบบ Movahome cloud"
+      },
+      "trouver": {
+        "data": {
+          "username": "ชื่อผู้ใช้",
+          "password": "รหัสผ่าน",
+          "country": "ประเทศของเซิร์ฟเวอร์"
+        },
+        "description": "เข้าสู่ระบบ Trouver cloud"
+      },
+      "devices": {
+        "data": {
+          "devices": "อุปกรณ์ที่รองรับ"
+        },
+        "description": "โปรดเลือกหุ่นยนต์ดูดฝุ่น Dreame ที่คุณต้องการตั้งค่า"
+      },
+      "donation": {
+        "data": {
+          "donated": "บริจาคแล้ว"
+        },
+        "description": "## อย่าลืมสนับสนุนโปรเจกต์นี้{text}"
+      },
+      "options": {
+        "data": {
+          "name": "ชื่อ",
+          "color_scheme": "โทนสีแผนที่",
+          "icon_set": "ชุดไอคอนแผนที่",
+          "notify": "การแจ้งเตือน",
+          "hidden_map_objects": "วัตถุบนแผนที่ที่ซ่อนอยู่",
+          "low_resolution": "แผนที่ความละเอียดต่ำ",
+          "square": "แผนที่แบบสี่เหลี่ยม"
+        }
+      },
+      "reauth_confirm": {
+        "description": "การผสานการทำงานกับหุ่นยนต์ดูดฝุ่น Dreame จำเป็นต้องยืนยันบัญชีของคุณอีกครั้งเพื่ออัปเดตโทเค็นหรือเพิ่มข้อมูลคลาวด์ที่หายไป",
+        "title": "ยืนยันการผสานการทำงานอีกครั้ง"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "โทนสีแผนที่",
+          "icon_set": "ชุดไอคอนแผนที่",
+          "notify": "การแจ้งเตือน",
+          "hidden_map_objects": "วัตถุบนแผนที่ที่ซ่อนอยู่",
+          "low_resolution": "แผนที่ความละเอียดต่ำ",
+          "square": "แผนที่แบบสี่เหลี่ยม",
+          "configuration_type": "ประเภทการกำหนดค่า",
+          "prefer_cloud": "เลือกใช้การเชื่อมต่อคลาวด์",
+          "donated": "บริจาคแล้ว"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "ข้อมูลรับรองคลาวด์ไม่สมบูรณ์ โปรดกรอกชื่อผู้ใช้ รหัสผ่าน และประเทศ"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "name": "ระดับแรงดูด",
+        "state": {
+          "quiet": "เงียบ",
+          "standard": "มาตรฐาน",
+          "strong": "แรง",
+          "turbo": "เทอร์โบ",
+          "full_power": "กำลังสูงสุด"
+        }
+      },
+      "water_volume": {
+        "name": "ระดับน้ำ",
+        "state": {
+          "low": "ต่ำ",
+          "medium": "ปานกลาง",
+          "high": "สูง"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "ความชื้นของแผ่นถูพื้น",
+        "state": {
+          "slightly_dry": "แห้งเล็กน้อย",
+          "moist": "หมาด",
+          "wet": "เปียก"
+        }
+      },
+      "cleaning_mode": {
+        "name": "โหมดทำความสะอาด",
+        "state": {
+          "sweeping": "กวาด",
+          "mopping": "ถูพื้น",
+          "sweeping_and_mopping": "กวาดและถูพื้น",
+          "mopping_after_sweeping": "ถูพื้นหลังกวาด"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "ความไวต่อพรม",
+        "state": {
+          "low": "ต่ำ",
+          "medium": "ปานกลาง",
+          "high": "สูง"
+        }
+      },
+      "carpet_cleaning": {
+        "name": "การทำความสะอาดพรม",
+        "state": {
+          "avoidance": "หลีกเลี่ยง",
+          "adaptation": "ปรับตัว",
+          "remove_mop": "ถอดแผ่นถู",
+          "adaptation_without_route": "ปรับตัวแบบไม่มีเส้นทาง",
+          "vacuum_and_mop": "ดูดฝุ่นและถูพื้น",
+          "ignore": "ละเว้น",
+          "cross": "ข้าม"
+        }
+      },
+      "mop_wash_level": {
+        "name": "โหมดการซักแผ่นถู",
+        "state": {
+          "water_saving": "ประหยัดน้ำ",
+          "daily": "ประจำวัน",
+          "deep": "ล้ำลึก",
+          "ultra_clean_mode": "สะอาดพิเศษ"
+        }
+      },
+      "mopping_type": {
+        "name": "ประเภทการถูพื้น",
+        "state": {
+          "accurate": "แม่นยำ",
+          "daily": "ประจำวัน",
+          "deep": "ล้ำลึก"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "การครอบคลุมมุมกว้างขึ้น",
+        "state": {
+          "off": "ปิด",
+          "high_frequency": "ความถี่สูง",
+          "low_frequency": "ความถี่ต่ำ"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "การแกว่งแผ่นถูพื้น",
+        "state": {
+          "off": "ปิด",
+          "auto": "อัตโนมัติ",
+          "daily": "รายวัน",
+          "weekly": "รายสัปดาห์"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "ความถี่ในการยืดแผ่นถูพื้น",
+        "state": {
+          "standard": "มาตรฐาน",
+          "intelligent": "อัจฉริยะ",
+          "high": "สูง"
+        }
+      },
+      "floor_material": {
+        "name": "วัสดุพื้น",
+        "state": {
+          "none": "ไม่มี",
+          "tile": "กระเบื้อง",
+          "wood": "พื้นไม้",
+          "low_pile_carpet": "พรมขนสั้น",
+          "medium_pile_carpet": "พรมขนยาวถึงปานกลาง",
+          "carpet": "พรม"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "ภาษาผู้ช่วยเสียง",
+        "state": {
+          "default": "ค่าเริ่มต้น",
+          "english": "อังกฤษ",
+          "german": "เยอรมัน",
+          "chinese": "จีน",
+          "russian": "รัสเซีย",
+          "italian": "อิตาลี",
+          "french": "ฝรั่งเศส",
+          "korean": "เกาหลี"
+        }
+      },
+      "mop_pressure": {
+        "name": "แรงกดของแผ่นถูพื้น",
+        "state": {
+          "light": "เบา",
+          "normal": "ปกติ"
+        }
+      },
+      "mop_temperature": {
+        "name": "อุณหภูมิของแผ่นถูพื้น",
+        "state": {
+          "normal": "ปกติ",
+          "warm": "อุ่น"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "ความถี่พื้นที่ต่ำ",
+        "state": {
+          "weekly": "รายสัปดาห์",
+          "daily": "รายวัน"
+        }
+      },
+      "scraper_frequency": {
+        "name": "ความถี่ที่ปัดน้ำฝน",
+        "state": {
+          "off": "ปิด",
+          "weekly": "รายสัปดาห์",
+          "daily": "รายวัน"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "การครอบคลุม LDS อัตโนมัติ",
+        "state": {
+          "off": "ปิด",
+          "security": "ความปลอดภัย",
+          "extreme": "ขั้นสุด"
+        }
+      },
+      "order": {
+        "name": "ลำดับ",
+        "state": {
+          "not_set": "ไม่ได้ตั้งค่า"
+        }
+      },
+      "self_clean_frequency": {
+        "name": "ความถี่การทำความสะอาดตัวเอง",
+        "state": {
+          "by_area": "ตามพื้นที่",
+          "by_time": "ตามเวลา",
+          "by_room": "ตามห้อง",
+          "intelligent": "อัจฉริยะ"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "ความถี่การซักแผ่นถู",
+        "state": {
+          "by_room": "ตามห้อง",
+          "5sqm": "5 ตารางเมตร",
+          "8sqm": "8 ตารางเมตร",
+          "10sqm": "10 ตารางเมตร",
+          "15sqm": "15 ตารางเมตร",
+          "20sqm": "20 ตารางเมตร",
+          "25sqm": "25 ตารางเมตร",
+          "86sqf": "86 ตารางฟุต",
+          "108sqf": "108 ตารางฟุต",
+          "54sqf": "54 ตารางฟุต",
+          "162sqf": "162 ตารางฟุต",
+          "216sqf": "216 ตารางฟุต",
+          "270sqf": "270 ตารางฟุต"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "โหมดทิ้งฝุ่นอัตโนมัติ",
+        "state": {
+          "off": "ปิด",
+          "standard": "มาตรฐาน",
+          "high_frequency": "ความถี่สูง",
+          "low_frequency": "ความถี่ต่ำ",
+          "custom_frequency": "กำหนดความถี่เอง",
+          "intelligent": "อัจฉริยะ"
+        }
+      },
+      "floor_material_direction": {
+        "name": "ทิศทางตามวัสดุพื้น",
+        "state": {
+          "vertical": "แนวตั้ง",
+          "horizontal": "แนวนอน"
+        }
+      },
+      "visibility": {
+        "name": "การมองเห็น",
+        "state": {
+          "visible": "แสดง",
+          "hidden": "ซ่อน"
+        }
+      },
+      "cleangenius": {
+        "name": "Cleangenius",
+        "state": {
+          "off": "ปิด",
+          "routine_cleaning": "ทำความสะอาดตามกิจวัตร",
+          "deep_cleaning": "ทำความสะอาดล้ำลึก"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "โหมด Cleangenius",
+        "state": {
+          "vacuum_and_mop": "ดูดฝุ่นและถูพื้น",
+          "mop_after_vacuum": "ถูพื้นหลังดูดฝุ่น"
+        }
+      },
+      "washing_mode": {
+        "name": "โหมดการซักแผ่นถู",
+        "state": {
+          "smart": "สมาร์ท",
+          "light": "เบา",
+          "standard": "มาตรฐาน",
+          "deep": "ล้ำลึก",
+          "ultra_washing": "ซักแบบพิเศษ"
+        }
+      },
+      "water_temperature": {
+        "name": "อุณหภูมิน้ำ",
+        "state": {
+          "normal": "ปกติ",
+          "mild": "อุ่นอ่อนๆ",
+          "warm": "อุ่น",
+          "hot": "ร้อน",
+          "max": "สูงสุด"
+        }
+      },
+      "auto_recleaning": {
+        "name": "ทำความสะอาดซ้ำอัตโนมัติ",
+        "state": {
+          "off": "ปิด",
+          "in_deep_mode": "ในโหมดล้ำลึก",
+          "in_all_modes": "ในทุกโหมด"
+        }
+      },
+      "auto_rewashing": {
+        "name": "ซักแผ่นถูซ้ำอัตโนมัติ",
+        "state": {
+          "off": "ปิด",
+          "in_deep_mode": "ในโหมดล้ำลึก",
+          "in_all_modes": "ในทุกโหมด"
+        }
+      },
+      "cleaning_route": {
+        "name": "เส้นทาง",
+        "state": {
+          "quick": "รวดเร็ว",
+          "standard": "มาตรฐาน",
+          "intensive": "เข้มข้น",
+          "deep": "ล้ำลึก"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "กำหนดเส้นทางถูพื้นเอง",
+        "state": {
+          "off": "ปิด",
+          "standard": "มาตรฐาน",
+          "intensive": "เข้มข้น",
+          "deep": "ล้ำลึก"
+        }
+      },
+      "task_type": {
+        "name": "ประเภทงาน",
+        "state": {
+          "go_to": "ไปยังจุดหมาย",
+          "segment": "ทำความสะอาดห้อง",
+          "all": "ทำความสะอาดทั้งหมด",
+          "zone": "ทำความสะอาดแบบโซน",
+          "spot": "ทำความสะอาดเฉพาะจุด"
+        }
+      },
+      "cleaning_times": {
+        "name": "จำนวนรอบทำความสะอาด",
+        "state": {
+          "x1": "1 รอบ",
+          "x2": "2 รอบ",
+          "x3": "3 รอบ"
+        }
+      },
+      "auto_empty_frequency": {
+        "name": "ความถี่การทิ้งฝุ่นอัตโนมัติ",
+        "state": {
+          "x1": "หลังเสร็จงานทุกครั้ง",
+          "x2": "หลังจากทำความสะอาด 2 ครั้ง",
+          "x3": "หลังจากทำความสะอาด 3 ครั้ง"
+        }
+      },
+      "drying_time": {
+        "name": "เวลาอบแห้ง",
+        "state": {
+          "silent": "เงียบ"
+        }
+      },
+      "battery_charge_level": {
+        "name": "ระดับแบตเตอรี่ที่ชาร์จ"
+      },
+      "object_type": {
+        "name": "ประเภทวัตถุ",
+        "state": {
+          "predefined_point": "จุดที่กำหนดไว้ล่วงหน้า",
+          "low_lying_area": "พื้นที่ต่ำ",
+          "curtain": "ผ้าม่าน",
+          "threshold": "ธรณีประตู",
+          "furniture": "เฟอร์นิเจอร์",
+          "carpet": "พรม",
+          "restricted": "เขตหวงห้าม"
+        }
+      },
+      "edit_type": {
+        "name": "ประเภทการแก้ไข",
+        "state": {
+          "door": "แก้ไขประตู",
+          "split": "แบ่งห้อง",
+          "merge": "รวมห้อง",
+          "visibility": "การมองเห็นห้อง",
+          "material": "วัสดุพื้น",
+          "type": "ชื่อห้อง",
+          "wall": "แก้ไขผนัง"
+        }
+      },
+      "map_type": {
+        "name": "ประเภทแผนที่",
+        "state": {
+          "cleaning": "แผนที่ทำความสะอาด",
+          "history": "รายละเอียดการทำความสะอาด",
+          "wifi": "แผนที่ Wi-Fi"
+        }
+      },
+      "carpet_type": {
+        "name": "ประเภทพรม",
+        "state": {
+          "medium_pile": "พรมขนยาวถึงปานกลาง",
+          "low_pile": "พรมขนสั้น",
+          "floor_mat": "พรมเช็ดเท้า",
+          "other": "อื่นๆ"
+        }
+      },
+      "mop_type": {
+        "name": "ประเภทแผ่นถูพื้น",
+        "state": {
+          "a": "แผ่นถู A",
+          "b": "แผ่นถู B",
+          "c": "แผ่นถู C"
+        }
+      },
+      "carpet_shape": {
+        "name": "รูปทรง",
+        "state": {
+          "square": "สี่เหลี่ยม",
+          "round": "ทรงกลม"
+        }
+      },
+      "mopping_pattern": {
+        "name": "รูปแบบการถูพื้น",
+        "state": {
+          "daily": "การถูพื้นประจำวัน",
+          "deep": "การถูพื้นล้ำลึก"
+        }
+      },
+      "wetness_level": {
+        "name": "ระดับความเปียก",
+        "state": {
+          "slightly_dry": "แห้งเล็กน้อย",
+          "moist": "หมาด",
+          "wet": "เปียก"
+        }
+      },
+      "task_repeats": {
+        "name": "การทำซ้ำงาน",
+        "state": {
+          "once": "ครั้งเดียว",
+          "daily": "ทุกวัน",
+          "workdays": "วันทำงาน",
+          "weekends": "วันหยุดสุดสัปดาห์"
+        }
+      },
+      "segment_name": {
+        "name": "ชื่อห้อง",
+        "state": {
+          "room": "ห้อง",
+          "living_room": "ห้องนั่งเล่น",
+          "primary_bedroom": "ห้องนอนหลัก",
+          "study": "ห้องทำงาน",
+          "kitchen": "ห้องครัว",
+          "dining_hall": "ห้องรับประทานอาหาร",
+          "bathroom": "ห้องน้ำ",
+          "balcony": "ระเบียง",
+          "corridor": "ทางเดิน",
+          "utility_room": "ห้องอเนกประสงค์",
+          "closet": "ตู้เสื้อผ้า",
+          "meeting_room": "ห้องประชุม",
+          "office": "ออฟฟิศ",
+          "fitness_area": "พื้นที่ออกกำลังกาย",
+          "recreation_area": "พื้นที่พักผ่อน",
+          "secondary_bedroom": "ห้องนอนรอง"
+        }
+      },
+      "furniture_type": {
+        "name": "ประเภทเฟอร์นิเจอร์",
+        "state": {
+          "single_bed": "เตียงเดี่ยว",
+          "double_bed": "เตียงคู่",
+          "arm_chair": "เก้าอี้นวม",
+          "two_seat_sofa": "โซฟาสองที่นั่ง",
+          "three_seat_sofa": "โซฟาสามที่นั่ง",
+          "dining_table": "โต๊ะกินข้าว",
+          "nightstant": "โต๊ะข้างเตียง",
+          "coffee_table": "โต๊ะกาแฟ",
+          "toilet": "ชักโครก",
+          "litter_box": "กระบะทรายแมว",
+          "pet_bed": "ที่นอนสัตว์เลี้ยง",
+          "food_bowl": "ชามอาหาร",
+          "pet_toilet": "ห้องน้ำสัตว์เลี้ยง",
+          "refrigerator": "ตู้เย็น",
+          "washing_machine": "เครื่องซักผ้า",
+          "enclosed_litter_box": "กระบะทรายแมวแบบปิด",
+          "air_conditioner": "เครื่องปรับอากาศ",
+          "tv_cabinet": "ชั้นวางทีวี",
+          "bookshelf": "ชั้นหนังสือ",
+          "shoe_cabinet": "ตู้เก็บรองเท้า",
+          "wardrobe": "ตู้เสื้อผ้า",
+          "greenery": "ต้นไม้",
+          "floor_mirror": "กระจกตั้งพื้น",
+          "l_shaped_sofa": "โซฟารูปตัวแอล",
+          "round_coffee_table": "โต๊ะกาแฟทรงกลม",
+          "table": "โต๊ะ",
+          "arm_chair_narrow": "เก้าอี้นวมทรงแคบ",
+          "three_seat_sofa_narrow": "โซฟาสามที่นั่งทรงแคบ",
+          "l_shaped_sofa_right": "โซฟารูปตัวแอลฝั่งขวา"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "name": "สถานะ",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "sweeping": "กำลังกวาด",
+          "charging": "กำลังชาร์จ",
+          "error": "ข้อผิดพลาด",
+          "idle": "ว่าง",
+          "paused": "หยุดชั่วคราว",
+          "returning": "กำลังกลับแท่นชาร์จ",
+          "mopping": "กำลังถูพื้น",
+          "drying": "กำลังเป่าแห้ง",
+          "washing": "กำลังซักแผ่นถู",
+          "returning_to_wash": "กำลังกลับไปซักแผ่นถู",
+          "building": "กำลังสร้างแผนที่",
+          "sweeping_and_mopping": "กำลังกวาดและถูพื้น",
+          "charging_completed": "ชาร์จเต็มแล้ว",
+          "upgrading": "กำลังอัปเกรด",
+          "clean_summon": "เรียกให้มาทำความสะอาด",
+          "station_reset": "กำลังรีเซ็ตแท่นชาร์จ",
+          "returning_install_mop": "กำลังกลับไปติดตั้งแผ่นถู",
+          "returning_remove_mop": "กำลังกลับไปถอดแผ่นถู",
+          "water_check": "กำลังตรวจสอบน้ำ",
+          "clean_add_water": "กำลังทำความสะอาดและเติมน้ำ",
+          "washing_paused": "หยุดซักแผ่นถูชั่วคราว",
+          "auto_emptying": "กำลังทิ้งฝุ่นอัตโนมัติ",
+          "remote_control": "กำลังควบคุมระยะไกล",
+          "smart_charging": "การชาร์จอัจฉริยะ",
+          "second_cleaning": "ทำความสะอาดรอบที่สอง",
+          "human_following": "กำลังตามคน",
+          "spot_cleaning": "ทำความสะอาดเฉพาะจุด",
+          "returning_auto_empty": "กำลังกลับไปทิ้งฝุ่นอัตโนมัติ",
+          "waiting_for_task": "กำลังรองาน",
+          "station_cleaning": "แท่นชาร์จกำลังทำความสะอาด",
+          "returning_to_drain": "กำลังกลับไประบายน้ำ",
+          "draining": "กำลังระบายน้ำ",
+          "auto_water_draining": "กำลังระบายน้ำอัตโนมัติ",
+          "emptying": "กำลังถ่ายของเสีย",
+          "dust_bag_drying": "กำลังเป่าถุงเก็บฝุ่น",
+          "dust_bag_drying_paused": "หยุดเป่าถุงเก็บฝุ่นชั่วคราว",
+          "heading_to_extra_cleaning": "กำลังมุ่งหน้าไปทำความสะอาดเพิ่มเติม",
+          "extra_cleaning": "กำลังทำความสะอาดเพิ่มเติม",
+          "finding_pet_paused": "หยุดค้นหาสัตว์เลี้ยงชั่วคราว",
+          "finding_pet": "กำลังค้นหาสัตว์เลี้ยง",
+          "shortcut": "ทางลัด",
+          "monitoring": "กำลังตรวจสอบ",
+          "monitoring_paused": "หยุดตรวจสอบชั่วคราว",
+          "initial_deep_cleaning": "เริ่มการทำความสะอาดล้ำลึก",
+          "initial_deep_cleaning_paused": "หยุดการทำความสะอาดล้ำลึกชั่วคราว",
+          "sanitizing": "กำลังฆ่าเชื้อ",
+          "sanitizing_with_dry": "กำลังฆ่าเชื้อพร้อมเป่าแห้ง",
+          "changing_mop": "กำลังเปลี่ยนแผ่นถู",
+          "changing_mop_paused": "หยุดเปลี่ยนแผ่นถูชั่วคราว",
+          "floor_maintaining": "กำลังบำรุงรักษาพื้น",
+          "floor_maintaining_paused": "หยุดบำรุงรักษาพื้นชั่วคราว",
+          "remote_pickup": "เก็บของระยะไกล",
+          "arranging_items": "กำลังจัดระเบียบสิ่งของ",
+          "pet_guarding": "ผู้คุ้มครองสัตว์เลี้ยง",
+          "pet_guarding_paused": "หยุดผู้คุ้มครองสัตว์เลี้ยงชั่วคราว",
+          "installing_mop": "กำลังติดตั้งแผ่นถูพื้น",
+          "uninstalling_mop": "กำลังถอดแผ่นถูพื้น",
+          "intelligent_recharging": "กำลังชาร์จอัจฉริยะ",
+          "assisted_cleaning": "การทำความสะอาดแบบช่วยเหลือ",
+          "entering_dock": "กำลังเข้าแท่นชาร์จ",
+          "leaving_dock": "กำลังออกจากแท่นชาร์จ",
+          "navigating_to_climber": "กำลังเคลื่อนที่ไปที่อุปกรณ์ปีน",
+          "docking_to_climber": "กำลังเข้าสู่อุปกรณ์ปีน",
+          "climber_docked": "เข้าสู่อุปกรณ์ปีนแล้ว",
+          "climber_navigating": "อุปกรณ์ปีนกำลังเคลื่อนที่",
+          "climbing_stairs": "กำลังปีนบันได",
+          "climbing_stairs_completed": "ปีนบันไดเสร็จสิ้น",
+          "climber_at_dock": "อุปกรณ์ปีนอยู่ที่แท่นชาร์จ",
+          "climber_leaving_dock": "อุปกรณ์ปีนกำลังออกจากแท่นชาร์จ"
+        }
+      },
+      "status": {
+        "name": "สถานะระบบ",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "idle": "ว่าง",
+          "paused": "หยุดชั่วคราว",
+          "cleaning": "กำลังทำความสะอาด",
+          "returning": "กำลังกลับแท่นชาร์จ",
+          "spot_cleaning": "ทำความสะอาดเฉพาะจุด",
+          "follow_wall_cleaning": "ทำความสะอาดเลียบกำแพง",
+          "charging": "กำลังชาร์จ",
+          "ota": "กำลังอัปเดต OTA",
+          "fct": "FCT",
+          "wifi_set": "กำลังตั้งค่า WiFi",
+          "power_off": "ปิดเครื่อง",
+          "factory": "โรงงาน",
+          "error": "ข้อผิดพลาด",
+          "remote_control": "ควบคุมระยะไกล",
+          "sleeping": "พักหลับ",
+          "self_test": "ทดสอบตัวเอง",
+          "factory_test": "ทดสอบจากโรงงาน",
+          "standby": "สแตนด์บาย",
+          "room_cleaning": "ทำความสะอาดแบบห้อง",
+          "zone_cleaning": "ทำความสะอาดแบบโซน",
+          "fast_mapping": "สร้างแผนที่อย่างรวดเร็ว",
+          "cruising_path": "เคลื่อนที่ตามเส้นทาง",
+          "cruising_point": "เคลื่อนที่ไปยังจุดหมาย",
+          "summon_clean": "เรียกให้มาทำความสะอาด",
+          "shortcut": "ทางลัด",
+          "person_follow": "กำลังตามคน",
+          "water_check": "กำลังตรวจสอบน้ำ",
+          "pet_guarding": "ผู้คุ้มครองสัตว์เลี้ยง",
+          "auto_arrangement": "จัดระเบียบอัตโนมัติ",
+          "smart_arrangement": "จัดระเบียบอัจฉริยะ",
+          "zoned_arrangement": "จัดระเบียบตามโซน"
+        }
+      },
+      "task_status": {
+        "name": "สถานะงาน",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "completed": "เสร็จสิ้น",
+          "cleaning": "กำลังทำความสะอาด",
+          "zone_cleaning": "ทำความสะอาดแบบโซน",
+          "room_cleaning": "ทำความสะอาดแบบห้อง",
+          "spot_cleaning": "ทำความสะอาดเฉพาะจุด",
+          "fast_mapping": "สร้างแผนที่อย่างรวดเร็ว",
+          "cleaning_paused": "หยุดทำความสะอาดชั่วคราว",
+          "room_cleaning_paused": "หยุดทำความสะอาดห้องชั่วคราว",
+          "zone_cleaning_paused": "หยุดทำความสะอาดโซนชั่วคราว",
+          "spot_cleaning_paused": "หยุดทำความสะอาดเฉพาะจุดชั่วคราว",
+          "map_cleaning_paused": "หยุดทำความสะอาดแผนที่ชั่วคราว",
+          "docking_paused": "หยุดกลับแท่นชาร์จชั่วคราว",
+          "mopping_paused": "หยุดถูพื้นชั่วคราว",
+          "zone_mopping_paused": "หยุดถูพื้นโซนชั่วคราว",
+          "room_mopping_paused": "หยุดถูพื้นห้องชั่วคราว",
+          "zone_docking_paused": "หยุดกลับแท่นชาร์จจากโซนชั่วคราว",
+          "room_docking_paused": "หยุดกลับแท่นชาร์จจากห้องชั่วคราว",
+          "cruising_path": "เคลื่อนที่ตามเส้นทาง",
+          "cruising_path_paused": "หยุดเคลื่อนที่ตามเส้นทางชั่วคราว",
+          "cruising_point": "เคลื่อนที่ไปยังจุดหมาย",
+          "cruising_point_paused": "หยุดเคลื่อนที่ไปยังจุดเป้าหมายชั่วคราว",
+          "summon_clean_paused": "หยุดเรียกทำความสะอาดชั่วคราว",
+          "returning_to_install_mop": "กำลังกลับไปติดตั้งแผ่นถู",
+          "returning_to_remove_mop": "กำลังกลับไปถอดแผ่นถู",
+          "station_cleaning": "แท่นชาร์จกำลังทำความสะอาด",
+          "pet_finding": "ค้นหาสัตว์เลี้ยง",
+          "auto_cleaning_washing_paused": "หยุดซักแผ่นถูระหว่างทำความสะอาดอัตโนมัติ",
+          "area_cleaning_washing_paused": "หยุดซักแผ่นถูระหว่างทำความสะอาดพื้นที่",
+          "custom_cleaning_washing_paused": "หยุดซักแผ่นถูระหว่างทำความสะอาดที่กำหนดเอง",
+          "picking_up_item": "กำลังเก็บสิ่งของ",
+          "picking_up_item_paused": "หยุดเก็บสิ่งของชั่วคราว",
+          "picking_up_item_success": "เก็บสิ่งของสำเร็จ",
+          "remote_pickup_initializing": "กำลังเริ่มการเก็บของระยะไกล",
+          "remote_pickup_identifing": "กำลังยืนยันการเก็บของระยะไกล",
+          "manual_remote_pickup": "เก็บของระยะไกลด้วยตนเอง",
+          "automatic_remote_pickup": "เก็บของระยะไกลอัตโนมัติ",
+          "remote_pickup_in_progress": "กำลังดำเนินการเก็บของระยะไกล",
+          "remote_pickup_paused": "หยุดการเก็บของระยะไกลชั่วคราว",
+          "placing_item": "กำลังวางสิ่งของ",
+          "placing_item_paused": "หยุดวางสิ่งของชั่วคราว"
+        }
+      },
+      "water_tank": {
+        "name": "ถังน้ำ",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "installed": "ติดตั้งแล้ว",
+          "not_installed": "ไม่ได้ติดตั้ง",
+          "mop_installed": "ติดตั้งแผ่นถูแล้ว",
+          "in_station": "อยู่ในแท่นชาร์จ"
+        }
+      },
+      "mop_pad": {
+        "name": "แผ่นถูพื้น",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "installed": "ติดตั้งแล้ว",
+          "not_installed": "ไม่ได้ติดตั้ง",
+          "mop_installed": "ติดตั้งแผ่นถูแล้ว",
+          "in_station": "อยู่ในแท่นชาร์จ"
+        }
+      },
+      "dust_collection": {
+        "name": "การเก็บฝุ่น",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "not_available": "ไม่พร้อมใช้งาน",
+          "available": "พร้อมใช้งาน",
+          "over_use": "ใช้งานเกินกำหนด",
+          "never": "ไม่เคย"
+        }
+      },
+      "auto_empty_status": {
+        "name": "สถานะการทิ้งฝุ่นอัตโนมัติ",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "idle": "ว่าง",
+          "active": "กำลังทำงาน",
+          "not_performed": "ไม่ได้ดำเนินการ"
+        }
+      },
+      "error": {
+        "name": "ข้อผิดพลาด",
+        "state": {
+          "unknown": "รหัสข้อผิดพลาดที่ไม่รู้จัก",
+          "no_error": "ไม่มีข้อผิดพลาด",
+          "drop": "ล้อลอยจากพื้น",
+          "cliff": "เซ็นเซอร์กันตกทำงาน",
+          "bumper": "เซ็นเซอร์กันชนติดขัด",
+          "gesture": "หุ่นยนต์เอียง",
+          "bumper_repeat": "เซ็นเซอร์กันชนติดขัดซ้ำ",
+          "drop_repeat": "ล้อลอยจากพื้นซ้ำ",
+          "optical_flow": "เซ็นเซอร์วัดการเคลื่อนที่ผิดปกติ",
+          "no_box": "ไม่ได้ติดตั้งกล่องเก็บฝุ่น",
+          "no_tank_box": "ไม่ได้ติดตั้งถังน้ำ",
+          "water_box_empty": "ถังน้ำว่างเปล่า",
+          "box_full": "แผ่นกรองไม่แห้งหรืออุดตัน",
+          "brush": "แปรงหลักพันกัน",
+          "side_brush": "แปรงปัดข้างพันกัน",
+          "fan": "แผ่นกรองไม่แห้งหรืออุดตัน",
+          "left_wheel_motor": "หุ่นยนต์ติดขัด หรือล้อซ้ายอาจมีสิ่งแปลกปลอมขวาง",
+          "right_wheel_motor": "หุ่นยนต์ติดขัด หรือล้อขวาอาจมีสิ่งแปลกปลอมขวาง",
+          "turn_suffocate": "หุ่นยนต์ติดขัด หรือไม่สามารถหันได้",
+          "forward_suffocate": "หุ่นยนต์ติดขัด หรือไม่สามารถเดินหน้าได้",
+          "charger_get": "หาแท่นชาร์จไม่พบ",
+          "battery_low": "แบตเตอรี่ต่ำ",
+          "charge_fault": "ข้อผิดพลาดในการชาร์จ",
+          "battery_percentage": "ข้อผิดพลาดระดับแบตเตอรี่",
+          "heart": "ข้อผิดพลาดภายใน",
+          "camera_occlusion": "เซ็นเซอร์ระบุตำแหน่งด้วยภาพผิดปกติ",
+          "move": "เซ็นเซอร์จับการเคลื่อนไหวผิดปกติ",
+          "flow_shielding": "เซ็นเซอร์แสงผิดปกติ",
+          "infrared_shielding": "เซ็นเซอร์อินฟราเรดถูกบดบัง",
+          "charge_no_electric": "แท่นชาร์จไม่มีไฟเข้า",
+          "battery_fault": "แบตเตอรี่ผิดปกติ",
+          "fan_speed_error": "เซ็นเซอร์ความเร็วพัดลมผิดปกติ",
+          "left_wheell_speed": "ล้อซ้ายอาจมีสิ่งแปลกปลอมขวาง",
+          "right_wheell_speed": "ล้อขวาอาจมีสิ่งแปลกปลอมขวาง",
+          "bmi055_acce": "เซ็นเซอร์จับความเร่งผิดปกติ",
+          "bmi055_gyro": "ไจโรสโคปผิดปกติ",
+          "xv7001": "ไจโรสโคปผิดปกติ",
+          "left_magnet": "เซ็นเซอร์แม่เหล็กซ้ายผิดปกติ",
+          "right_magnet": "เซ็นเซอร์แม่เหล็กขวาผิดปกติ",
+          "flow_error": "เซ็นเซอร์การไหลผิดปกติ",
+          "infrared_fault": "อินฟราเรดผิดปกติ",
+          "camera_fault": "กล้องผิดปกติ",
+          "strong_magnet": "ตรวจพบสนามแม่เหล็กแรงสูง",
+          "water_pump": "ปั๊มน้ำผิดปกติ",
+          "rtc": "ข้อผิดพลาด RTC",
+          "auto_key_trig": "ข้อผิดพลาดภายใน",
+          "p3v3": "ข้อผิดพลาดภายใน",
+          "camera_idle": "ข้อผิดพลาดภายใน",
+          "blocked": "เส้นทางทำความสะอาดถูกบล็อก กำลังกลับไปที่แท่นชาร์จ",
+          "lds_error": "เซ็นเซอร์วัดระยะทางด้วยเลเซอร์ (LDS) ผิดปกติ",
+          "lds_bumper": "กันชนของ LDS ผิดปกติ",
+          "filter_blocked": "แผ่นกรองไม่แห้งหรืออุดตัน",
+          "edge": "เซ็นเซอร์กันชนขอบผิดปกติ",
+          "carpet": "โปรดเริ่มการทำงานของหุ่นยนต์ในพื้นที่ที่ไม่ใช่พรม",
+          "laser": "เซ็นเซอร์หลบหลีกสิ่งกีดขวาง 3D ทำงานผิดปกติ",
+          "ultrasonic": "เซ็นเซอร์อัลตราโซนิกทำงานผิดปกติ",
+          "no_go_zone": "ตรวจพบพื้นที่ห้ามเข้า หรือกำแพงเสมือน",
+          "route": "เส้นทางการทำความสะอาดถูกบล็อก",
+          "restricted": "ตรวจพบหุ่นยนต์อยู่ในเขตหวงห้าม",
+          "remove_mop": "การถูพื้นเสร็จสิ้น โปรดถอดและทำความสะอาดแผ่นถู",
+          "mop_removed": "แผ่นถูพื้นหลุดระหว่างการทำงาน",
+          "mop_pad_stop_rotate": "แผ่นถูพื้นหยุดหมุน",
+          "bin_full": "ถุงเก็บฝุ่นเต็ม หรือท่อลมถูกบล็อก",
+          "bin_open": "ฝาครอบของแท่นทิ้งฝุ่นอัตโนมัติปิดไม่สนิท หรือไม่ได้ติดตั้งถุงเก็บฝุ่น",
+          "water_tank": "ไม่ได้ติดตั้งถังน้ำสะอาด",
+          "dirty_water_tank": "ถังน้ำเสียเต็ม หรือไม่ได้ติดตั้ง",
+          "water_tank_dry": "ระดับน้ำในถังน้ำสะอาดต่ำ โปรดเติมน้ำ",
+          "dirty_water_tank_blocked": "ถังน้ำเสียอุดตัน",
+          "dirty_water_tank_pump": "ปั๊มถังน้ำเสียผิดปกติ",
+          "mop_pad": "ติดตั้งกระดานซักไม่ถูกต้อง",
+          "wet_mop_pad": "ระดับน้ำของกระดานซักผิดปกติ โปรดทำความสะอาดกระดานซัก",
+          "clean_mop_pad": "งานทำความสะอาดเสร็จสิ้น โปรดทำความสะอาดกระดานซัก",
+          "clean_tank_level": "ตรวจสอบและเติมน้ำในถังน้ำสะอาด",
+          "station_disconnected": "แท่นชาร์จไม่มีไฟเข้า",
+          "dirty_tank_level": "ระดับน้ำในถังน้ำเสียสูงเกินไป",
+          "washboard_level": "ระดับน้ำในกระดานซักสูงเกินไป",
+          "no_mop_in_station": "แผ่นถูพื้นไม่ได้อยู่ในแท่นชาร์จ",
+          "dust_bag_full": "ถุงเก็บฝุ่นเต็ม หรือช่องระบายอากาศถูกบล็อก",
+          "self_test_failed": "การปล่อยน้ำจากถังน้ำสะอาดผิดปกติ",
+          "mop_install_failed": "ติดตั้งแผ่นถูไม่สำเร็จ",
+          "low_battery_turn_off": "แบตเตอรี่ต่ำ หุ่นยนต์จะปิดเครื่องในไม่ช้า",
+          "dirty_tank_not_installed": "ไม่ได้ติดตั้งถังน้ำเสียของหุ่นยนต์",
+          "robot_in_hidden_room": "พื้นที่ถูกซ่อน โปรดย้ายหุ่นยนต์ไปยังพื้นที่ที่เหมาะสมแล้วลองใหม่",
+          "washboard_not_working": "กระดานซักหยุดทำงาน",
+          "return_to_charge_failed": "กลับไปชาร์จไม่สำเร็จ",
+          "lds_failed_to_lift": "ยกโมดูล LDS ไม่สำเร็จ",
+          "robot_stuck": "ไม่สามารถยก LDS ตรงนี้เพื่อระบุตำแหน่งได้",
+          "robot_stuck_repeat": "ย้ายหุ่นยนต์ไปยังพื้นที่โล่งและดำเนินการต่อ",
+          "slippery_floor": "พื้นลื่น โปรดลองใหม่ภายหลัง",
+          "check_mop_install": "โปรดตรวจสอบว่าติดตั้งแผ่นถูอย่างถูกต้องหรือไม่",
+          "dirty_water_tank_full": "ระดับน้ำในถังน้ำเสียของหุ่นยนต์ผิดปกติ",
+          "retractable_leg_stuck": "โปรดตรวจสอบว่าขาที่พับเก็บได้ถูกพันหรือไม่",
+          "internal_error": "ทำงานผิดปกติเนื่องจากข้อผิดพลาดภายใน ลองรีสตาร์ทหุ่นยนต์",
+          "robot_stuck_on_tables": "หุ่นยนต์ติดอยู่ระหว่างโต๊ะและเก้าอี้",
+          "robot_stuck_on_passage": "หุ่นยนต์ติดอยู่ในทางเดินแคบๆ",
+          "robot_stuck_on_threshold": "หุ่นยนต์ติดอยู่ที่ขั้นบันได/ธรณีประตู",
+          "robot_stuck_on_low_lying_area": "หุ่นยนต์ติดอยู่ในพื้นที่ต่ำ",
+          "robot_stuck_on_ramp": "หุ่นยนต์ตรวจพบทางลาดที่อาจตกลงได้ง่ายในเส้นทาง",
+          "robot_stuck_on_obstacle": "หุ่นยนต์ตรวจพบสิ่งกีดขวางบนเส้นทาง",
+          "robot_stuck_on_pet": "หุ่นยนต์ตรวจพบบุคคลหรือสัตว์เลี้ยงบนเส้นทาง",
+          "robot_stuck_on_slippery_surface": "หุ่นยนต์ติดขัดเนื่องจากการลื่น",
+          "robot_stuck_on_carpet": "หุ่นยนต์ลื่นบนพรม",
+          "drainage_failed": "การระบายน้ำจากถังน้ำเสียผิดปกติ",
+          "mop_not_detected": "ตรวจไม่พบแผ่นถู",
+          "mop_holder_error": "จำนวน/ตำแหน่งของที่ยึดแผ่นถูในแท่นชาร์จผิดพลาด",
+          "dock_error": "ข้อผิดพลาดของแท่นชาร์จ",
+          "wash_failed": "ซักแผ่นถูไม่สำเร็จ",
+          "robot_stuck_on_curtain": "หุ่นยนต์ลื่นในพื้นที่ผ้าม่าน",
+          "edge_mop_stop_rotate": "แผ่นถูขอบหยุดหมุน",
+          "edge_mop_detached": "แผ่นถูขอบหลุด",
+          "chassis_lift_malfunction": "ระบบยกแชสซีทำงานผิดปกติ",
+          "mop_cover_error": "ตรวจสอบสิ่งแปลกปลอมใกล้กับลูกกลิ้งถูและฝาครอบแผ่นถู",
+          "roller_mop_error": "ตรวจสอบสิ่งแปลกปลอมใกล้กับลูกกลิ้งถูและฝาครอบแผ่นถู",
+          "onboard_water_tank_empty": "ระดับน้ำในถังน้ำสะอาดของหุ่นยนต์ต่ำ",
+          "onboard_dirty_water_tank_full": "ถังน้ำเสียของหุ่นยนต์เต็ม",
+          "mop_not_installed": "ไม่ได้ติดตั้งแผ่นถู",
+          "fluffing_roller_error": "ข้อผิดพลาดของลูกกลิ้งปุย",
+          "blocked_by_obstacle": "หุ่นยนต์ถูกบล็อกโดยสิ่งกีดขวาง",
+          "robotic_arm_stopped": "แขนกลหยุดทำงาน",
+          "drainage_outlet_filter": "ตัวกรองทางระบายน้ำทิ้งของหุ่นยนต์อุดตัน",
+          "main_wheels_error": "ข้อผิดพลาดของล้อหลัก"
+        }
+      },
+      "charging_status": {
+        "name": "สถานะการชาร์จ",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "charging": "กำลังชาร์จ",
+          "not_charging": "ไม่ได้ชาร์จ",
+          "return_to_charge": "กลับไปชาร์จ",
+          "charging_completed": "ชาร์จเต็มแล้ว"
+        }
+      },
+      "relocation_status": {
+        "name": "สถานะการย้ายตำแหน่ง",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "located": "ระบุตำแหน่งแล้ว",
+          "locating": "กำลังระบุตำแหน่ง",
+          "failed": "ล้มเหลว",
+          "success": "สำเร็จ"
+        }
+      },
+      "self_wash_base_status": {
+        "name": "สถานะแท่นซักอัตโนมัติ",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "idle": "ว่าง",
+          "washing": "กำลังซัก",
+          "drying": "กำลังเป่าแห้ง",
+          "paused": "หยุดชั่วคราว",
+          "returning": "กำลังกลับไปซัก",
+          "clean_add_water": "ทำความสะอาดและเติมน้ำ",
+          "adding_water": "กำลังเติมน้ำ"
+        }
+      },
+      "low_water_warning": {
+        "name": "คำเตือนน้ำต่ำ",
+        "state": {
+          "no_warning": "ไม่มีคำเตือน",
+          "no_water_left": "น้ำในถังน้ำสะอาดใกล้จะหมด โปรดตรวจสอบและเติมน้ำสะอาดให้ทันที",
+          "no_water_left_after_clean": "ทำความสะอาดแผ่นถูแล้ว ตรวจพบว่าน้ำในถังน้ำสะอาดไม่เพียงพอ โปรดเติมน้ำสะอาดและเทถังน้ำเสียทิ้ง",
+          "no_water_for_clean": "ระดับน้ำในถังน้ำสะอาดต่ำ หุ่นยนต์ได้สลับไปโหมดดูดฝุ่นแล้ว",
+          "low_water": "น้ำใกล้หมด โปรดเติมถังน้ำสะอาด",
+          "tank_not_installed": "ไม่ได้ติดตั้งถังน้ำสะอาด"
+        }
+      },
+      "stream_status": {
+        "name": "สถานะสตรีม",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "idle": "ว่าง",
+          "video": "วิดีโอ",
+          "audio": "เสียง",
+          "recording": "กำลังบันทึก"
+        }
+      },
+      "drainage_status": {
+        "name": "สถานะการระบายน้ำ",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "idle": "ว่าง",
+          "draining": "กำลังระบายน้ำ",
+          "draining_successful": "ระบายน้ำสำเร็จ",
+          "draining_failed": "ระบายน้ำล้มเหลว"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "สถานะถังน้ำสะอาด",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "not_available": "ไม่พร้อมใช้งาน",
+          "not_installed": "ไม่ได้ติดตั้ง",
+          "low_water": "น้ำต่ำ",
+          "installed": "ติดตั้งแล้ว"
+        }
+      },
+      "dirty_water_tank_status": {
+        "name": "สถานะถังน้ำเสีย",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "installed": "ติดตั้งแล้ว",
+          "not_installed_or_full": "ไม่ได้ติดตั้ง หรือเต็มแล้ว"
+        }
+      },
+      "dust_bag_status": {
+        "name": "สถานะถุงเก็บฝุ่น",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "installed": "ติดตั้งแล้ว",
+          "not_installed": "ไม่ได้ติดตั้ง",
+          "check": "ตรวจสอบ"
+        }
+      },
+      "detergent_status": {
+        "name": "สถานะน้ำยาทำความสะอาด",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "installed": "ติดตั้งแล้ว",
+          "disabled": "ปิดใช้งาน",
+          "low_detergent": "น้ำยาต่ำ"
+        }
+      },
+      "hot_water_status": {
+        "name": "สถานะน้ำร้อน",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "disabled": "ปิดใช้งาน",
+          "enabled": "เปิดใช้งาน"
+        }
+      },
+      "station_drainage_status": {
+        "name": "สถานะการระบายน้ำของแท่นชาร์จ",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "idle": "ว่าง",
+          "draining": "กำลังระบายน้ำ"
+        }
+      },
+      "task_type": {
+        "name": "ประเภทงาน",
+        "state": {
+          "standard": "ทำความสะอาดมาตรฐาน",
+          "standard_paused": "ทำความสะอาดมาตรฐานหยุดชั่วคราว",
+          "custom": "ทำความสะอาดที่กำหนดเอง",
+          "custom_paused": "ทำความสะอาดที่กำหนดเองหยุดชั่วคราว",
+          "shortcut": "ทำความสะอาดทางลัด",
+          "shortcut_paused": "ทำความสะอาดทางลัดหยุดชั่วคราว",
+          "scheduled": "ทำความสะอาดตามกำหนดเวลา",
+          "scheduled_paused": "ทำความสะอาดตามกำหนดเวลาหยุดชั่วคราว",
+          "smart": "ทำความสะอาดแบบสมาร์ท",
+          "smart_paused": "ทำความสะอาดแบบสมาร์ทหยุดชั่วคราว",
+          "partial": "ทำความสะอาดบางส่วน",
+          "partial_paused": "ทำความสะอาดบางส่วนหยุดชั่วคราว",
+          "summon": "เรียกให้ทำความสะอาด",
+          "summon_paused": "เรียกให้ทำความสะอาดหยุดชั่วคราว",
+          "water_stain": "ทำความสะอาดคราบน้ำ",
+          "water_stain_paused": "ทำความสะอาดคราบน้ำหยุดชั่วคราว",
+          "boosted_edge_cleaning": "เพิ่มประสิทธิภาพการทำความสะอาดขอบ",
+          "hair_compressing": "การบีบอัดเส้นผม",
+          "large_particle_cleaning": "ทำความสะอาดอนุภาคขนาดใหญ่",
+          "intensive_stain_cleaning": "ทำความสะอาดคราบฝังลึก",
+          "stain_cleaning": "ทำความสะอาดคราบเปื้อน",
+          "initial_deep_cleaning": "เริ่มทำความสะอาดล้ำลึก",
+          "initial_deep_cleaning_paused": "เริ่มทำความสะอาดล้ำลึกหยุดชั่วคราว",
+          "mop_pad_heating": "กำลังทำความร้อนแผ่นถู",
+          "cleaning_after_mapping": "ทำความสะอาดหลังจากสร้างแผนที่",
+          "small_particle_cleaning": "ทำความสะอาดอนุภาคขนาดเล็ก",
+          "changing_mop": "กำลังเปลี่ยนแผ่นถู",
+          "changing_mop_paused": "เปลี่ยนแผ่นถูหยุดชั่วคราว",
+          "floor_maintaining": "บำรุงรักษาพื้น",
+          "floor_maintaining_paused": "บำรุงรักษาพื้นหยุดชั่วคราว",
+          "arranging_items": "กำลังจัดระเบียบสิ่งของ",
+          "arranging_items_paused": "หยุดจัดระเบียบสิ่งของชั่วคราว",
+          "intensive_hair_cleaning": "ทำความสะอาดเส้นผมอย่างเข้มข้น",
+          "accessory_handling": "การจัดการอุปกรณ์เสริม",
+          "increased_drum_speed_cleaning": "ทำความสะอาดด้วยความเร็วถังเพิ่มขึ้น",
+          "pressurized_cleaning": "ทำความสะอาดแบบใช้แรงดัน",
+          "steam_cleaning": "ทำความสะอาดด้วยไอน้ำ",
+          "steam_cleaning_paused": "หยุดทำความสะอาดด้วยไอน้ำชั่วคราว"
+        }
+      },
+      "dust_bag_drying_status": {
+        "name": "สถานะการเป่าแห้งถุงเก็บฝุ่น",
+        "state": {
+          "idle": "ว่าง",
+          "drying": "กำลังเป่าแห้ง",
+          "paused": "หยุดชั่วคราว"
+        }
+      },
+      "nation_matched": {
+        "name": "การล็อกภูมิภาค",
+        "state": {
+          "unknown": "ปิดการใช้งาน",
+          "matched": "ปลดล็อกแล้ว",
+          "unmatched": "ล็อก",
+          "na": "ไม่พร้อมใช้งาน"
+        }
+      },
+      "startup_method": {
+        "name": "เริ่มต้นโดย",
+        "state": {
+          "button": "ปุ่มกด",
+          "app": "แอปพลิเคชัน",
+          "scheduled": "ตั้งเวลาล่วงหน้า",
+          "voice": "สั่งงานด้วยเสียง",
+          "second_cleaning": "ทำความสะอาดรอบที่สอง",
+          "unknown": "ไม่ทราบ"
+        }
+      },
+      "cleaning_status": {
+        "name": "การทำความสะอาด",
+        "state": {
+          "interrupted": "ถูกขัดจังหวะ",
+          "completed": "เสร็จสิ้น",
+          "manually_ended": "สิ้นสุดด้วยตนเอง",
+          "failed": "ล้มเหลว",
+          "unknown": "ไม่ทราบ"
+        }
+      },
+      "cleanup_method": {
+        "name": "วิธีทำความสะอาด",
+        "state": {
+          "other": "อื่นๆ",
+          "default": "ค่าเริ่มต้น",
+          "customized": "กำหนดเอง",
+          "cleangenius": "CleanGenius",
+          "water_stain": "คราบน้ำ",
+          "unknown": "ไม่ทราบ"
+        }
+      },
+      "task_end_type": {
+        "name": "เสร็จสิ้นโดย",
+        "state": {
+          "other": "อื่นๆ",
+          "manual_docking": "กลับแท่นชาร์จด้วยตนเอง",
+          "docking": "กลับแท่นชาร์จ",
+          "failed_docking": "กลับแท่นชาร์จไม่สำเร็จ",
+          "stop": "หยุด",
+          "unknown": "ไม่ทราบ"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "สาเหตุการขัดจังหวะ",
+        "state": {
+          "abnormal_docking": "การเข้าแท่นชาร์จผิดปกติ",
+          "base_station_powered_off": "แท่นชาร์จปิดอยู่",
+          "brush_entangled_by_carpet": "แปรงติดพรม",
+          "brush_entangled_by_object": "แปรงติดวัตถุ",
+          "brush_entangled_by_obstacle": "แปรงติดสิ่งกีดขวาง",
+          "cannot_find_base_station": "หาแท่นชาร์จไม่พบ",
+          "cliff_sensor_error": "เซ็นเซอร์กันตกผิดปกติ",
+          "laser_distance_sensor_error": "เซ็นเซอร์วัดระยะด้วยเลเซอร์ผิดปกติ",
+          "mop_pad_abnormally_removed": "แผ่นถูถูกถอดออกอย่างผิดปกติ",
+          "mop_pad_fallen_off": "แผ่นถูหลุด",
+          "mop_pad_fallen_off_by_obstacle": "แผ่นถูหลุดเพราะสิ่งกีดขวาง",
+          "mop_pad_fallen_off_by_table": "แผ่นถูหลุดเพราะโต๊ะ",
+          "mop_pad_fallen_off_crossing_obstacle": "แผ่นถูหลุดระหว่างข้ามสิ่งกีดขวาง",
+          "mop_pad_removed": "แผ่นถูถูกถอดออก",
+          "mop_pad_stuck": "แผ่นถูติดขัด",
+          "robot_fallen": "หุ่นยนต์ตก",
+          "robot_is_stuck_on_obstacle": "หุ่นยนต์ติดสิ่งกีดขวาง",
+          "robot_is_stuck_on_step": "หุ่นยนต์ติดขั้นบันได",
+          "robot_lifted": "หุ่นยนต์ถูกยกขึ้น",
+          "task_completed": "งานเสร็จสมบูรณ์",
+          "unknown": "ไม่ทราบ"
+        }
+      },
+      "recovery_map_type": {
+        "name": "ประเภทแผนที่",
+        "state": {
+          "original": "แผนที่ดั้งเดิม",
+          "edited": "แผนที่ถูกแก้ไข",
+          "backup": "แผนที่สำรอง"
+        }
+      },
+      "obstacle_type": {
+        "name": "ประเภทสิ่งกีดขวาง",
+        "state": {
+          "unknown": "ไม่ทราบ",
+          "base": "ฐาน",
+          "scale": "เครื่องชั่งน้ำหนัก",
+          "thread": "เส้นด้าย",
+          "wire": "สายไฟ",
+          "toy": "ของเล่น",
+          "shoes": "รองเท้า",
+          "sock": "ถุงเท้า",
+          "fece": "อุจจาระ",
+          "trash_can": "ถังขยะ",
+          "fabric": "ผ้า",
+          "power_strip": "ปลั๊กพ่วง",
+          "liquid_stain": "คราบของเหลว",
+          "obstacle": "สิ่งกีดขวาง",
+          "pet": "สัตว์เลี้ยง",
+          "cleaning_tools": "อุปกรณ์ทำความสะอาด",
+          "detected_stain": "ตรวจพบคราบ",
+          "blocked_room": "ห้องถูกบล็อก",
+          "easy_to_stuck_furniture": "เฟอร์นิเจอร์ที่อาจทำให้ติดได้ง่าย",
+          "uncleanable_stain": "คราบที่ทำความสะอาดไม่ได้",
+          "leg": "ขา",
+          "large_particles": "อนุภาคขนาดใหญ่",
+          "dried_stain": "คราบแห้ง",
+          "food_bowl": "ชามอาหาร",
+          "pet_bed": "ที่นอนสัตว์เลี้ยง",
+          "cleaned_stain": "คราบที่ทำความสะอาดแล้ว",
+          "skipped_uncleanable_stain": "ข้ามคราบที่ทำความสะอาดไม่ได้",
+          "cleaned_dried_stain": "ทำความสะอาดคราบแห้งแล้ว",
+          "cleaned_large_particles": "ทำความสะอาดอนุภาคขนาดใหญ่แล้ว",
+          "hair": "เส้นผม/ขนสัตว์",
+          "paper": "เศษกระดาษ",
+          "cleaned_hair": "ทำความสะอาดเส้นผม/ขนสัตว์แล้ว",
+          "sundry": "ของจุกจิก/อื่นๆ"
+        }
+      },
+      "obstacle_reason": {
+        "name": "สาเหตุสิ่งกีดขวาง",
+        "state": {
+          "blocked_by_virtual_wall": "ถูกบล็อกโดยกำแพงเสมือน",
+          "blocked_by_door": "ถูกบล็อกโดยประตู",
+          "blocked_by_threshold": "ถูกบล็อกโดยธรณีประตู",
+          "blocked_by_obstacle": "ถูกบล็อกโดยสิ่งกีดขวาง",
+          "blocked_by_carpet": "ถูกบล็อกโดยพรม",
+          "blocked_by_detected_carpet": "ถูกบล็อกโดยพรมที่ตรวจพบ",
+          "blocked_by_hidden_obstacle": "ถูกบล็อกโดยสิ่งกีดขวางที่ซ่อนอยู่",
+          "blocked_by_dynamic_obstacle": "ถูกบล็อกโดยสิ่งกีดขวางเคลื่อนที่",
+          "passage_too_low": "ทางเดินเตี้ยเกินไป",
+          "step_too_low": "ขั้นบันไดเตี้ยเกินไป",
+          "failed_to_cross_threshold": "ไม่สามารถข้ามธรณีประตูได้"
+        }
+      },
+      "remaining_battery": {
+        "name": "แบตเตอรี่คงเหลือ"
+      },
+      "multiple_cleaning_time": {
+        "name": "ทำความสะอาดหลายครั้ง"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "firmware_version": {
+        "name": "เวอร์ชันเฟิร์มแวร์"
+      },
+      "ip_address": {
+        "name": "IP Address"
+      },
+      "mac_address": {
+        "name": "MAC Address"
+      },
+      "model": {
+        "name": "รุ่น"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "serial_number": {
+        "name": "หมายเลขซีเรียล (Serial Number)"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "timezone": {
+        "name": "โซนเวลา"
+      },
+      "voice_packet_id": {
+        "name": "แพ็กเกจเสียง"
+      },
+      "deodorizer_left": {
+        "name": "เครื่องดับกลิ่น"
+      },
+      "detergent_left": {
+        "name": "น้ำยาทำความสะอาด"
+      },
+      "dirty_water_channel_left": {
+        "name": "ช่องน้ำเสีย"
+      },
+      "filter_left": {
+        "name": "แผ่นกรอง"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "การทำความสะอาดลูกกลิ้งปุย"
+      },
+      "main_brush_left": {
+        "name": "แปรงหลัก"
+      },
+      "mop_pad_left": {
+        "name": "แผ่นถูพื้น"
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "ถังน้ำเสียในหุ่นยนต์"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "การทำความสะอาดแผ่นกรองลูกกลิ้งถู"
+      },
+      "scale_inhibitor_left": {
+        "name": "สารยับยั้งตะกรัน"
+      },
+      "sensor_dirty_left": {
+        "name": "การทำความสะอาดเซ็นเซอร์"
+      },
+      "side_brush_left": {
+        "name": "แปรงปัดข้าง"
+      },
+      "silver_ion_left": {
+        "name": "ซิลเวอร์ไอออน (Silver Ion)"
+      },
+      "squeegee_left": {
+        "name": "ยางรีดน้ำ"
+      },
+      "tank_filter_left": {
+        "name": "แผ่นกรองถังน้ำ"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "การทำความสะอาดแผ่นกรองน้ำออก"
+      },
+      "wheel_dirty_left": {
+        "name": "การทำความสะอาดล้อ"
+      }
+    },
+    "toggle": {
+      "customized_cleaning": {
+        "name": "ทำความสะอาดที่กำหนดเอง"
+      },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "ทำความสะอาดล้ำลึก"
+      },
+      "auto_dust_collecting": {
+        "name": "ทิ้งฝุ่นอัตโนมัติ"
+      },
+      "hair_compression": {
+        "name": "การบีบอัดเส้นผม"
+      },
+      "self_clean": {
+        "name": "ทำความสะอาดตัวเอง"
+      },
+      "deep_mop_washing": {
+        "name": "ซักแผ่นถูล้ำลึก"
+      },
+      "hot_washing": {
+        "name": "ซักด้วยน้ำร้อน"
+      },
+      "auto_drying": {
+        "name": "เป่าแห้งอัตโนมัติ"
+      },
+      "silent_drying": {
+        "name": "เป่าแห้งโหมดเงียบ"
+      },
+      "uv_sterilization": {
+        "name": "การฆ่าเชื้อด้วย UV"
+      },
+      "customized_carpet_cleaning": {
+        "name": "ทำความสะอาดที่กำหนดเอง"
+      },
+      "carpet_avoidance": {
+        "name": "หลีกเลี่ยงพรม"
+      },
+      "carpet_preferences": {
+        "name": "การตั้งค่าที่กำหนดเอง"
+      },
+      "auto_change_mop": {
+        "name": "เปลี่ยนแผ่นถูอัตโนมัติ"
+      },
+      "multi_floor_map": {
+        "name": "แผนที่หลายชั้น"
+      },
+      "intelligent_recognition": {
+        "name": "การตรวจจับอัจฉริยะ"
+      },
+      "map_saving": {
+        "name": "การบันทึกแผนที่"
+      },
+      "child_lock": {
+        "name": "ล็อกป้องกันเด็ก"
+      },
+      "resume_cleaning": {
+        "name": "ทำความสะอาดต่อ"
+      },
+      "obstacle_avoidance": {
+        "name": "หลบหลีกสิ่งกีดขวาง"
+      },
+      "carpet_boost": {
+        "name": "เพิ่มพลังดูดบนพรม"
+      },
+      "carpet_recognition": {
+        "name": "ตรวจจับพรม"
+      },
+      "clean_carpets_first": {
+        "name": "ทำความสะอาดพรมก่อน"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "ปิดฝาครอบลูกกลิ้งบนพรม"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "ทำความสะอาดพรมเข้มข้น"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "หมุนแปรงปัดข้างบนพรม"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "ยกแชสซีเมื่ออยู่บนพรม"
+      },
+      "auto_mount_mop": {
+        "name": "ติดตั้งแผ่นถูอัตโนมัติ"
+      },
+      "mopping_with_detergent": {
+        "name": "ถูพื้นด้วยน้ำยา"
+      },
+      "mop_washing_with_detergent": {
+        "name": "ซักแผ่นถูด้วยน้ำยา"
+      },
+      "auto_add_detergent": {
+        "name": "เพิ่มน้ำยาอัตโนมัติ"
+      },
+      "smart_mop_washing": {
+        "name": "ซักแผ่นถูสมาร์ท"
+      },
+      "wider_corner_coverage": {
+        "name": "ครอบคลุมมุมกว้างขึ้น"
+      },
+      "pressurized_cleaning": {
+        "name": "ทำความสะอาดแบบเพิ่มแรงดัน"
+      },
+      "gap_cleaning_extension": {
+        "name": "ส่วนขยายทำความสะอาดช่องว่าง"
+      },
+      "mopping_under_furnitures": {
+        "name": "ถูพื้นใต้เฟอร์นิเจอร์"
+      },
+      "floor_direction_cleaning": {
+        "name": "ทำความสะอาดตามทิศทางพื้น"
+      },
+      "ring_light_always_on": {
+        "name": "ไฟวงแหวนติดตลอดเวลา"
+      },
+      "collision_avoidance": {
+        "name": "หลบหลีกการชน"
+      },
+      "fill_light": {
+        "name": "ไฟกล้อง"
+      },
+      "ai_obstacle_detection": {
+        "name": "ตรวจจับสิ่งกีดขวาง AI"
+      },
+      "ai_pet_detection": {
+        "name": "ตรวจจับสัตว์เลี้ยง"
+      },
+      "pet_focused_detection": {
+        "name": "การตรวจจับเน้นสัตว์เลี้ยง"
+      },
+      "pet_focused_cleaning": {
+        "name": "การทำความสะอาดเน้นสัตว์เลี้ยง"
+      },
+      "ai_obstacle_picture": {
+        "name": "ภาพสิ่งกีดขวาง"
+      },
+      "obstacle_crossing": {
+        "name": "ข้ามสิ่งกีดขวางแบบซิงโครไนซ์"
+      },
+      "active_suspension_crossing": {
+        "name": "ข้ามแบบช่วงล่างแอคทีฟ"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "ทำความสะอาดสิ่งกีดขวางเคลื่อนที่"
+      },
+      "large_particles_boost": {
+        "name": "เพิ่มพลังสำหรับอนุภาคขนาดใหญ่"
+      },
+      "streaming_voice_prompt": {
+        "name": "เสียงเตือนแบบสตรีม"
+      },
+      "voice_assistant": {
+        "name": "ผู้ช่วยเสียง"
+      },
+      "off_peak_charging": {
+        "name": "การชาร์จนอกช่วงเวลาเร่งด่วน"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "ปิดใช้งานการทำความสะอาดต่อ (Resume)"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "ปิดใช้งานทิ้งฝุ่นอัตโนมัติ"
+      },
+      "dnd_reduce_volume": {
+        "name": "ลดระดับเสียง"
+      },
+      "dnd": {
+        "name": "ห้ามรบกวน (DnD)"
+      }
+    },
+    "number": {
+      "wetness_level": {
+        "name": "ความเปียก"
+      },
+      "auto_empty_area": {
+        "name": "พื้นที่ทิ้งฝุ่นอัตโนมัติ"
+      },
+      "drying_time": {
+        "name": "เวลาเป่าแห้ง"
+      },
+      "self_clean_time": {
+        "name": "เวลาทำความสะอาดตัวเอง"
+      },
+      "self_clean_area": {
+        "name": "พื้นที่ทำความสะอาดตัวเอง"
+      },
+      "volume": {
+        "name": "ระดับเสียง"
+      }
+    },
+    "time": {
+      "dnd_start": {
+        "name": "เวลาเริ่มห้ามรบกวน"
+      },
+      "dnd_end": {
+        "name": "เวลาสิ้นสุดห้ามรบกวน"
+      },
+      "off_peak_charging_start": {
+        "name": "เวลาเริ่มการชาร์จนอกช่วงเร่งด่วน"
+      },
+      "off_peak_charging_end": {
+        "name": "เวลาสิ้นสุดการชาร์จนอกช่วงเร่งด่วน"
+      },
+      "schedule_time": {
+        "name": "เวลาเริ่มต้น"
+      }
+    },
+    "input": {
+      "schedule_repeats": {
+        "name": "การทำซ้ำ"
+      },
+      "dnd_repeats": {
+        "name": "การทำซ้ำ"
+      },
+      "map_custom_name": {
+        "name": "ชื่อแผนที่"
+      },
+      "segment_custom_name": {
+        "name": "ชื่อห้อง"
+      },
+      "shortcut_name": {
+        "name": "ชื่อทางลัด"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "เพิ่ม",
+        "add_map": "สร้างแผนที่",
+        "auto_empty_unavailable": "ทิ้งฝุ่นอัตโนมัติไม่พร้อมใช้งาน",
+        "auto_emptying": "กำลังทิ้งฝุ่นอัตโนมัติ",
+        "backup": "สำรอง",
+        "bag_drying_unavailable": "เป่าแห้งถุงเก็บฝุ่นไม่พร้อมใช้งาน",
+        "cancel": "ยกเลิก",
+        "cancel_ignore": "ยกเลิกการละเว้น",
+        "carpet": "พรม",
+        "change": "เปลี่ยน",
+        "charge": "ชาร์จ",
+        "clean": "ทำความสะอาด",
+        "clean_again": "ทำความสะอาดอีกครั้ง",
+        "cleaning_settings": "การตั้งค่าทำความสะอาด",
+        "cleanings": "การทำความสะอาด",
+        "close": "ปิด",
+        "confirm": "ยืนยัน",
+        "delete": "ลบ",
+        "delete_carpet": "ลบพรม",
+        "deleted_carpet": "พรมที่ลบแล้ว",
+        "disable": "ปิดใช้งาน",
+        "discard": "ทิ้ง",
+        "dismiss": "ยกเลิก",
+        "dock": "แท่นชาร์จ",
+        "dock_settings": "ตั้งค่าแท่นชาร์จ",
+        "download": "ดาวน์โหลด",
+        "dry": "เป่าแห้ง",
+        "dry_bag": "เป่าแห้งถุง",
+        "drying_unavailable": "เป่าแห้งไม่พร้อมใช้งาน",
+        "dynamically_ignored": "ละเว้นแบบไดนามิก",
+        "edit_carpet": "แก้ไขพรม",
+        "empty": "เททิ้ง",
+        "enable": "เปิดใช้งาน",
+        "fast_mapping": "สร้างแผนที่อย่างรวดเร็ว",
+        "get_dreame_vacuum_card": "รับการ์ด Dreame Vacuum",
+        "ignore": "ละเว้น",
+        "ignore_obstacle": "ละเว้นสิ่งกีดขวาง",
+        "impassable_threshold": "ธรณีประตูที่ผ่านไม่ได้",
+        "job_details": "รายละเอียดงาน",
+        "keep_disabled": "ปิดใช้งานต่อไป",
+        "map_display": "การแสดงแผนที่",
+        "map_management": "การจัดการแผนที่",
+        "new_dnd": "งานห้ามรบกวนใหม่",
+        "new_schedule": "งานที่ตั้งเวลาใหม่",
+        "new_shortcut": "งานปุ่มลัดใหม่",
+        "next_job": "งานถัดไป",
+        "no_go": "ห้ามเข้า",
+        "no_mop": "ห้ามถู",
+        "objects": "วัตถุ",
+        "override": "เขียนทับ",
+        "passable_threshold": "ธรณีประตูที่ผ่านได้",
+        "pause": "หยุดชั่วคราว",
+        "pause_washing": "หยุดซักชั่วคราว",
+        "previous_job": "งานก่อนหน้า",
+        "ramp": "ทางลาด",
+        "reload": "โหลดใหม่",
+        "rename": "เปลี่ยนชื่อ",
+        "repeats": "ทำซ้ำ",
+        "replace": "แทนที่",
+        "reset": "รีเซ็ต",
+        "restore": "คืนค่า",
+        "restore_map": "คืนค่าแผนที่",
+        "resume": "ทำต่อ",
+        "resume_washing": "ซักต่อ",
+        "rooms": "ห้อง",
+        "rotate_left": "หมุนซ้าย",
+        "rotate_right": "หมุนขวา",
+        "round_carpet": "พรมทรงกลม",
+        "save": "บันทึก",
+        "select_map": "เลือกแผนที่",
+        "shortcuts": "ทางลัด",
+        "square_carpet": "พรมสี่เหลี่ยม",
+        "start": "เริ่ม",
+        "start_auto_empty": "เริ่มการทิ้งฝุ่นอัตโนมัติ",
+        "start_bag_drying": "เริ่มเป่าแห้งถุงเก็บฝุ่น",
+        "start_drying": "เริ่มเป่าแห้ง",
+        "start_task": "เริ่มงาน",
+        "start_washing": "เริ่มการซัก",
+        "stop": "หยุด",
+        "stop_bag_drying": "หยุดเป่าแห้งถุงเก็บฝุ่น",
+        "stop_drying": "หยุดเป่าแห้ง",
+        "understood": "เข้าใจแล้ว",
+        "virtual_threshold": "ธรณีประตูเสมือน",
+        "virtual_wall": "กำแพงเสมือน",
+        "wash": "ซัก",
+        "washing_unavailable": "การซักไม่พร้อมใช้งาน",
+        "wifi_map": "แผนที่ WiFi"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "ภาพพื้นหลัง",
+        "card_object_action_buttons": "ปุ่มการกระทำ",
+        "card_object_animations": "ภาพเคลื่อนไหว",
+        "card_object_cleanup_notification": "การแจ้งเตือนการทำความสะอาด",
+        "card_object_controls": "การควบคุม",
+        "card_object_cruising_history": "ประวัติการเคลื่อนที่",
+        "card_object_fault_notification": "การแจ้งเตือนข้อผิดพลาด",
+        "card_object_information_notification": "การแจ้งเตือนข้อมูล",
+        "card_object_low_water_notification": "การแจ้งเตือนน้ำต่ำ",
+        "card_object_map_change_confirmation": "ยืนยันการเปลี่ยนแผนที่",
+        "card_object_menu": "เมนู",
+        "card_object_progress_bar": "แถบความคืบหน้า",
+        "card_object_saved_notification": "การแจ้งเตือนเมื่อบันทึก",
+        "card_object_shortcuts": "ทางลัด",
+        "card_object_state": "สถานะ",
+        "card_object_status": "สถานะระบบ",
+        "card_object_task_type": "ประเภทงาน",
+        "card_object_title": "ชื่อ",
+        "card_object_warning_notification": "การแจ้งเตือนคำเตือน",
+        "color_scheme": "โทนสี",
+        "color_scheme_dreame_auto": "Dreame อัตโนมัติ",
+        "color_scheme_dreame_dark": "Dreame (มืด)",
+        "color_scheme_dreame_light": "Dreame (สว่าง)",
+        "color_scheme_grayscale": "ระดับสีเทา",
+        "color_scheme_mijia_auto": "Mijia อัตโนมัติ",
+        "color_scheme_mijia_dark": "Mijia (มืด)",
+        "color_scheme_mijia_light": "Mijia (สว่าง)",
+        "copied": "คัดลอกแล้ว",
+        "copy": "คัดลอก",
+        "copy_all": "คัดลอกทั้งหมด",
+        "disable_haptic": "ปิดการตอบสนองแบบสั่น",
+        "editable_objects": "วัตถุที่แก้ไขได้",
+        "font_size": "ขนาดตัวอักษร",
+        "full_height": "ความสูงเต็ม",
+        "grid_size": "ขนาดกริด",
+        "height": "ความสูง",
+        "hidden_card_objects": "ซ่อนวัตถุการ์ด",
+        "hidden_objects": "วัตถุที่ซ่อนอยู่",
+        "hide_map_info": "ซ่อนข้อมูลแผนที่",
+        "icon_set": "ชุดไอคอน",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "Dreame เดิม",
+        "icon_set_material": "Material",
+        "icon_set_mijia": "Mijia",
+        "left": "ซ้าย",
+        "left_handed": "โหมดคนถนัดซ้าย",
+        "limit_height": "จำกัดความสูงตามหน้าจอ",
+        "locked": "ถูกล็อก",
+        "locked_always": "เสมอ",
+        "locked_auto": "อัตโนมัติ",
+        "locked_never": "ไม่เคย",
+        "locked_only_touch": "สัมผัสเท่านั้น",
+        "map": "แผนที่ %name%",
+        "map_1": "แผนที่ 1",
+        "map_2": "แผนที่ 2",
+        "map_3": "แผนที่ 3",
+        "map_4": "แผนที่ 4",
+        "map_5": "แผนที่ 5",
+        "map_color_active_area": "พื้นที่ทำงาน",
+        "map_color_active_area_outline": "เส้นขอบพื้นที่ทำงาน",
+        "map_color_active_point": "จุดทำงาน",
+        "map_color_active_point_outline": "เส้นขอบจุดทำงาน",
+        "map_color_auto_low_lying_area": "พื้นที่ต่ำอัตโนมัติ",
+        "map_color_carpet_color": "สีพรม",
+        "map_color_curtain": "ผ้าม่าน",
+        "map_color_detected_carpet_color": "สีพรมที่ตรวจพบ",
+        "map_color_floor": "พื้น",
+        "map_color_floor_material": "วัสดุพื้น",
+        "map_color_icon_background": "พื้นหลังไอคอน",
+        "map_color_impassable_threshold": "ธรณีประตูที่ผ่านไม่ได้",
+        "map_color_manual_low_lying_area": "พื้นที่ต่ำแบบกำหนดเอง",
+        "map_color_mop_path": "เส้นทางถูพื้น",
+        "map_color_new_segment": "ห้องใหม่",
+        "map_color_no_go": "ห้ามเข้า",
+        "map_color_no_go_outline": "เส้นขอบห้ามเข้า",
+        "map_color_no_mop": "ห้ามถู",
+        "map_color_no_mop_outline": "เส้นขอบห้ามถู",
+        "map_color_obstacle_background": "พื้นหลังสิ่งกีดขวาง",
+        "map_color_order": "ลำดับ",
+        "map_color_outside": "ด้านนอก",
+        "map_color_passable_threshold": "ธรณีประตูที่ผ่านได้",
+        "map_color_passive_segment": "ห้องไม่ทำงาน",
+        "map_color_path": "เส้นทาง",
+        "map_color_ramp": "ทางลาด",
+        "map_color_segment": "ห้อง",
+        "map_color_settings_background": "พื้นหลังการตั้งค่า",
+        "map_color_text": "ข้อความ",
+        "map_color_text_stroke": "เส้นขอบข้อความ",
+        "map_color_virtual_threshold": "ธรณีประตูเสมือน",
+        "map_color_virtual_wall": "กำแพงเสมือน",
+        "map_color_wall": "กำแพง",
+        "map_config": "การกำหนดค่าแผนที่",
+        "map_display": "การแสดงแผนที่",
+        "map_display_floor_plan": "แผนผังชั้น",
+        "map_display_floor_plan_only": "แผนผังชั้นเท่านั้น",
+        "map_display_floor_plan_without_texture": "แผนผังชั้นไม่มีพื้นผิว",
+        "map_display_standard": "มาตรฐาน",
+        "map_object_active_area": "พื้นที่ทำงาน",
+        "map_object_active_cruise_point": "จุดเคลื่อนที่ทำงาน",
+        "map_object_active_point": "จุดทำงาน",
+        "map_object_animations": "ภาพเคลื่อนไหว",
+        "map_object_blocked_segment": "ห้องที่ถูกบล็อก",
+        "map_object_blocked_segments": "ห้องที่ถูกบล็อก",
+        "map_object_carpet": "พรม",
+        "map_object_charger": "ที่ชาร์จ",
+        "map_object_cleaning_sequence": "ลำดับการทำความสะอาด",
+        "map_object_cruise_point": "จุดเคลื่อนที่",
+        "map_object_curtain": "ผ้าม่าน",
+        "map_object_customized_cleaning": "ทำความสะอาดที่กำหนดเอง",
+        "map_object_deleted_carpet": "พรมที่ลบแล้ว",
+        "map_object_detected_carpet": "พรมที่ตรวจพบ",
+        "map_object_door": "ประตู",
+        "map_object_floor": "พื้น",
+        "map_object_floor_material": "วัสดุพื้น",
+        "map_object_furniture": "เฟอร์นิเจอร์",
+        "map_object_furniture_image": "ภาพเฟอร์นิเจอร์",
+        "map_object_hidden_segments": "ห้องที่ซ่อนอยู่",
+        "map_object_icon": "ไอคอน",
+        "map_object_ignored_obstacles": "สิ่งกีดขวางที่ละเว้น",
+        "map_object_impassable_threshold": "ธรณีประตูที่ผ่านไม่ได้",
+        "map_object_lock_indicator": "ตัวระบุการล็อก",
+        "map_object_low_lying_area": "พื้นที่ต่ำ",
+        "map_object_material": "วัสดุพื้น",
+        "map_object_mop_path": "เส้นทางถูพื้น",
+        "map_object_mop_type": "ประเภทแผ่นถู",
+        "map_object_name": "ชื่อ",
+        "map_object_name_background": "พื้นหลังชื่อ",
+        "map_object_no_go": "ห้ามเข้า",
+        "map_object_no_mop": "ห้ามถู",
+        "map_object_object_option": "ตัวเลือกวัตถุ",
+        "map_object_obstacle": "สิ่งกีดขวาง",
+        "map_object_obstacle_background": "พื้นหลังสิ่งกีดขวาง",
+        "map_object_obstacle_color": "สีสิ่งกีดขวาง",
+        "map_object_order": "ลำดับ",
+        "map_object_passable_threshold": "ธรณีประตูที่ผ่านได้",
+        "map_object_path": "เส้นทาง",
+        "map_object_pet": "สัตว์เลี้ยง",
+        "map_object_predefined_point": "จุดที่กำหนดไว้ล่วงหน้า",
+        "map_object_ramp": "ทางลาด",
+        "map_object_router": "เราเตอร์",
+        "map_object_segment": "ห้อง",
+        "map_object_segment_type": "ประเภทห้อง",
+        "map_object_selected_segments": "ห้องที่เลือก",
+        "map_object_split_line": "เส้นแบ่ง",
+        "map_object_stain": "คราบ",
+        "map_object_station_status": "สถานะแท่นชาร์จ",
+        "map_object_vacuum": "หุ่นยนต์ดูดฝุ่น",
+        "map_object_vacuum_status": "สถานะหุ่นยนต์ดูดฝุ่น",
+        "map_object_virtual_threshold": "ธรณีประตูเสมือน",
+        "map_object_virtual_wall": "กำแพงเสมือน",
+        "map_object_walls": "กำแพง",
+        "map_object_zoom_point": "จุดซูม",
+        "object_opacity": "ความทึบของวัตถุ",
+        "object_scale": "ขนาดของวัตถุ",
+        "opacity": "ความทึบ",
+        "override_colors": "เขียนทับสีแผนที่",
+        "overlay_image": "ภาพซ้อนทับ",
+        "rotation": "การหมุน",
+        "scale": "สเกล",
+        "scripts": "สคริปต์",
+        "selectable_objects": "วัตถุที่เลือกได้",
+        "selected_map_config": "การกำหนดค่า %name%",
+        "show_map_info": "แสดงข้อมูลแผนที่",
+        "top": "บน",
+        "url": "Url",
+        "viewport": "Viewport",
+        "width": "ความกว้าง",
+        "zoom": "ซูม"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "หุ่นยนต์มีงานที่กำลังทำอยู่!",
+        "apply_changes_or_reload": "แผนที่เปลี่ยนไปขณะที่คุณกำลังแก้ไข!\nคุณต้องการเขียนทับหรือโหลดการเปลี่ยนแปลงใหม่?",
+        "auto_mount_mop_will_enabled": "ระบบจะเปิดใช้งานการติดตั้งแผ่นถูอัตโนมัติ!",
+        "backup_map": "สำรองแผนที่?",
+        "backup_map_will_overwritten": "แผนที่ที่สำรองไว้ในปัจจุบันจะถูกเขียนทับ!",
+        "bag_drying_will_stopped": "จะหยุดการเป่าแห้งถุงเก็บฝุ่น!",
+        "carpet_recognition_will_enabled": "ต้องเปิดใช้งานการตรวจจับพรมเพื่อที่จะสามารถตั้งค่าการทำความสะอาดพรมที่กำหนดเองได้",
+        "carpet_will_deleted": "พรมจะถูกลบ!",
+        "cleangenius_will_disabled": "ระบบจะปิดการทำงาน Cleangenius!",
+        "cleaning_failure": "สาเหตุของการทำความสะอาดล้มเหลว",
+        "create_map": "สร้างแผนที่ใหม่หรือไม่?",
+        "custom_carpet_settings_will_enabled": "จะเปิดการใช้งานการทำความสะอาดพรมที่กำหนดเอง!",
+        "custom_carpet_settings_will_enabled_detail": "การตั้งค่าทำความสะอาดพรมแบบกำหนดเองจะถูกปรับให้เหมาะสมกับประเภทพรมที่เลือก",
+        "customized_cleaning_disabled": "ทำความสะอาดที่กำหนดเองถูกปิดใช้งานอยู่!",
+        "delete_carpet": "ลบพรม?",
+        "delete_dnd": "ลบงานห้ามรบกวน (DnD)?",
+        "delete_map": "ลบแผนที่?",
+        "delete_schedule": "ลบงานที่ตั้งเวลาไว้?",
+        "delete_shortcut": "ลบทางลัด?",
+        "deleted": "ลบสำเร็จแล้ว",
+        "device_unavailable": "อุปกรณ์ไม่พร้อมใช้งาน",
+        "disable_cleangenius": "ปิดใช้งาน Cleangenius?",
+        "dnd_confliction": "งานห้ามรบกวนขัดแย้งกัน!",
+        "dnd_confliction_detail": "ตั้งค่างานตามกำหนดเวลาในระหว่างช่วงเวลาห้ามรบกวน (Do Not Disturb)",
+        "dnd_will_deleted": "งานห้ามรบกวนเวลา %start% ถึง %end% จะถูกลบ!",
+        "dock_in_restricted_area": "แท่นชาร์จอยู่ในเขตหวงห้าม!",
+        "dock_in_restricted_area_detail": "แท่นชาร์จตั้งอยู่ในเขตหวงห้าม หากคุณยังคงบันทึกแผนที่ หุ่นยนต์อาจไม่สามารถกลับมาชาร์จได้",
+        "drying_will_stopped": "จะหยุดการเป่าแห้งแผ่นถู!",
+        "dust_collection_not_performed": "จะไม่มีการดำเนินการเก็บฝุ่น (ทิ้งฝุ่นอัตโนมัติ)\nหุ่นยนต์จะไม่ดำเนินการทิ้งฝุ่นอัตโนมัติในช่วงเวลา DND",
+        "enable_auto_mount_mop": "เปิดใช้งานติดตั้งแผ่นถูอัตโนมัติหรือไม่?",
+        "enable_carpet_recognition": "ระบบจะเปิดใช้งานการตรวจจับพรม!",
+        "enable_customized_cleaning": "คุณต้องการเปิดใช้งานการทำความสะอาดที่กำหนดเองหรือไม่?",
+        "enable_mop_change": "คุณต้องการเปิดใช้งานการเปลี่ยนแผ่นถูอัตโนมัติหรือไม่?",
+        "enable_task": "คุณต้องการเปิดใช้งานงานนี้หรือไม่?",
+        "entity_is_required": "จำเป็นต้องมีเอนทิตี (Entity)",
+        "entity_not_available": "เอนทิตีไม่พร้อมใช้งาน",
+        "failed_to_load_card": "ไม่สามารถโหลดการ์ด",
+        "ignore_obstacle": "ละเว้นสิ่งกีดขวาง?",
+        "invalid_entity": "เอนทิตีไม่ถูกต้อง",
+        "map_backup": "กำลังสำรองข้อมูลแผนที่",
+        "map_backup_failed": "สำรองแผนที่ไม่สำเร็จ!",
+        "map_backup_success": "สำรองแผนที่เสร็จสมบูรณ์",
+        "map_recovery": "กำลังกู้คืนแผนที่",
+        "map_recovery_failed": "กู้คืนแผนที่ไม่สำเร็จ!",
+        "map_recovery_success": "กู้คืนแผนที่เสร็จสมบูรณ์",
+        "map_will_deleted": "%name% จะถูกลบ!",
+        "map_will_replaced": "แผนที่ที่เลือกในปัจจุบันจะถูกแทนที่ด้วยแผนที่ใหม่!",
+        "map_will_restored": "แผนที่ที่บันทึกไว้จะถูกกู้คืนกลับไปยังสถานะเมื่อ %date%",
+        "mapping_started": "กำลังเริ่มสร้างแผนที่...",
+        "mop_change_disabled": "การเปลี่ยนแผ่นถูอัตโนมัติถูกปิดการใช้งาน!",
+        "mop_wash_frequency_low": "ความถี่ในการซักแผ่นถูต่ำเกินไป!",
+        "mop_wash_frequency_will_increased": "เพื่อให้แน่ใจว่าแผ่นถูเปียกเพียงพอ ความถี่ในการซักแผ่นถูจะเพิ่มขึ้นโดยอัตโนมัติ",
+        "not_available": "ไม่พร้อมใช้งานในขณะนี้...",
+        "not_fully_supported": "ยังไม่รองรับเต็มรูปแบบ!",
+        "not_supported": "ยังไม่รองรับ!",
+        "obstacle_will_ignored": "สิ่งกีดขวางจะถูกละเว้น!",
+        "override_changes": "เขียนทับการเปลี่ยนแปลง?",
+        "preview": "นี่คือตัวอย่างของการ์ด Dreame Vacuum",
+        "recommended_areas": "พื้นที่แนะนำ",
+        "relocating": "กำลังระบุตำแหน่งของตัวเอง โปรดรอสักครู่",
+        "relocating_completed": "ระบุตำแหน่งตัวเองสำเร็จ หุ่นยนต์จะดำเนินการต่อไป",
+        "relocating_failed": "ระบุตำแหน่งตัวเองไม่สำเร็จ!",
+        "replace_map": "แทนที่ด้วยแผนที่ใหม่?",
+        "reset_usage": "รีเซ็ตการใช้งาน?",
+        "reset_walls": "รีเซ็ตผนังหรือไม่?",
+        "restore_map": "กู้คืน %name%?",
+        "resume_cleaning": "หุ่นยนต์จะทำความสะอาดต่อโดยอัตโนมัติหลังจากชาร์จแบตเตอรี่ถึง 80%",
+        "resume_cleaning_not_performed": "หุ่นยนต์จะทำความสะอาดต่อเมื่อสิ้นสุดช่วงเวลา DND",
+        "resume_cleaning_time": "การทำความสะอาดจะเริ่มต้นเมื่อ %time%",
+        "save_changes": "บันทึกการเปลี่ยนแปลง?",
+        "saved": "บันทึกสำเร็จ",
+        "schedule_will_deleted": "งานที่ตั้งเวลาไว้ตอน %time% จะถูกลบ!",
+        "select_map": "เลือก %name%?",
+        "select_mapping_type": "เลือกประเภทการสร้างแผนที่",
+        "select_room": "เลือกห้องเพื่อกำหนดลำดับการทำความสะอาด",
+        "selected_map_will_changed": "แผนที่ที่เลือกจะเปลี่ยนเป็น %name%!",
+        "service_call_failed": "เรียกเซอร์วิสไม่สำเร็จ",
+        "settings_will_applied": "การตั้งค่าของคุณจะมีผลในงานครั้งถัดไป",
+        "shortcut_will_deleted": "%name% จะถูกลบ!",
+        "stop_bag_drying": "หยุดเป่าแห้งถุงเก็บฝุ่น?",
+        "stop_drying": "หยุดเป่าแห้ง?",
+        "stop_task": "หยุดงานปัจจุบัน?",
+        "task_disabled": "งานถูกปิดใช้งาน!",
+        "task_will_stopped": "งานปัจจุบันจะถูกหยุด!",
+        "unsaved_changes_present": "คุณมีการเปลี่ยนแปลงที่ไม่ได้บันทึกซึ่งจะสูญหายไป!",
+        "unsupported_browser": "ไม่รองรับเบราว์เซอร์นี้!",
+        "usage_will_reset": "การใช้งานของ %name% จะถูกรีเซ็ต!",
+        "walls_will_be_reset": "ผนังจะถูกกู้คืนไปยังตำแหน่งที่ทำแผนที่ไว้ในตอนแรก!"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "การใช้อุปกรณ์เสริม",
+        "add_furniture": "เพิ่มเฟอร์นิเจอร์",
+        "audio_settings": "การตั้งค่าเสียง",
+        "battery_management": "การจัดการแบตเตอรี่",
+        "carpet_settings": "การตั้งค่าพรม",
+        "clean_water_tank": "ถังน้ำสะอาด",
+        "cleaning_details": "รายละเอียดการทำความสะอาด",
+        "cleaning_history": "ประวัติการทำความสะอาด",
+        "cleaning_sequence": "ลำดับการทำความสะอาด",
+        "created_carpet": "พรมที่สร้างด้วยตนเอง",
+        "cruising": "การเคลื่อนที่",
+        "cruising_details": "รายละเอียดการเคลื่อนที่",
+        "cruising_history": "ประวัติการเคลื่อนที่",
+        "customized_cleaning": "การทำความสะอาดที่กำหนดเอง",
+        "description": "Frontend ของ integration ปรับแต่ง %name%",
+        "detected_carpet": "พรมที่ตรวจพบโดยอัตโนมัติ",
+        "detergent": "น้ำยาทำความสะอาด",
+        "device_information": "ข้อมูลอุปกรณ์",
+        "device_settings": "การตั้งค่าอุปกรณ์",
+        "dnd": "ห้ามรบกวน",
+        "dnd_task": "งานห้ามรบกวน (DnD)",
+        "dust_bag": "ถุงเก็บฝุ่น",
+        "global_carpet_settings": "การตั้งค่าพรมทั้งหมด",
+        "invalid": "ไม่ถูกต้อง",
+        "locate": "ระบุตำแหน่ง",
+        "map": "แผนที่",
+        "map_edit": "แก้ไขแผนที่",
+        "map_management": "การจัดการแผนที่",
+        "map_name_placeholder": "แผนที่ %index%",
+        "mop_type": "ประเภทแผ่นถู",
+        "mopping_settings": "การตั้งค่าการถูพื้น",
+        "more_functions": "ฟังก์ชันเพิ่มเติม",
+        "name": "การ์ด %name%",
+        "new_map": "แผนที่ใหม่",
+        "obstacle": "สิ่งกีดขวาง",
+        "obstacle_settings": "การตั้งค่ากล้องและสิ่งกีดขวาง",
+        "recovery_map_list": "การกู้คืนแผนที่",
+        "remote_control": "การควบคุมระยะไกล",
+        "saved_map": "แผนที่ที่บันทึกไว้",
+        "schedule_list": "การทำความสะอาดที่ตั้งเวลาไว้",
+        "scheduled_room": "ทำความสะอาดห้องตามเวลา",
+        "scheduled_spot": "ทำความสะอาดเฉพาะจุดตามเวลา",
+        "scheduled_task": "งานตามกำหนดเวลา",
+        "scheduled_zone": "ทำความสะอาดโซนตามเวลา",
+        "segment_name_placeholder": "ห้อง %index%",
+        "shortcut": "ทางลัด",
+        "shortcut_list": "ทางลัดต่างๆ",
+        "shortcut_map": "แผนที่ทางลัด",
+        "shortcut_name_placeholder": "ทางลัด %index%",
+        "shortcut_task": "งานทางลัด",
+        "task": "งาน %index%",
+        "task_placeholder": "งาน %index%",
+        "time_left": "เหลือเวลา %time%",
+        "unavailable": "ไม่พร้อมใช้งาน",
+        "used_water_tank": "ถังน้ำเสีย",
+        "wall": "ผนัง",
+        "wifi_map": "แผนที่ WiFi"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "ทำความสะอาดห้อง",
+      "description": "เริ่มการทำงานในห้องที่เลือก",
+      "fields": {
+        "segments": {
+          "name": "ห้อง",
+          "description": "รายชื่อห้องที่จะทำความสะอาด"
+        },
+        "repeats": {
+          "name": "จำนวนครั้ง",
+          "description": "จำนวนรอบทำความสะอาดสำหรับแต่ละห้อง"
+        },
+        "suction_level": {
+          "name": "ระดับแรงดูด",
+          "description": "ความเร็วพัดลมสำหรับแต่ละห้อง"
+        },
+        "water_volume": {
+          "name": "ระดับน้ำ",
+          "description": "ระดับน้ำสำหรับแต่ละห้อง"
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "ทำความสะอาดโซน",
+      "description": "เริ่มการทำงานในพื้นที่ที่เลือก",
+      "fields": {
+        "zone": {
+          "name": "โซน",
+          "description": "พิกัดของโซน"
+        },
+        "repeats": {
+          "name": "จำนวนครั้ง",
+          "description": "จำนวนรอบทำความสะอาดสำหรับแต่ละโซน"
+        },
+        "suction_level": {
+          "name": "ระดับแรงดูด",
+          "description": "ความเร็วพัดลมสำหรับแต่ละโซน"
+        },
+        "water_volume": {
+          "name": "ระดับน้ำ",
+          "description": "ระดับน้ำสำหรับแต่ละโซน"
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "ทำความสะอาดเฉพาะจุด",
+      "description": "เริ่มการทำงานในจุดที่เลือกบนแผนที่",
+      "fields": {
+        "points": {
+          "name": "จุด",
+          "description": "รายชื่อพิกัดที่จะทำความสะอาด"
+        },
+        "repeats": {
+          "name": "จำนวนครั้ง",
+          "description": "จำนวนรอบทำความสะอาด"
+        },
+        "suction_level": {
+          "name": "ระดับแรงดูด",
+          "description": "ความเร็วพัดลม"
+        },
+        "water_volume": {
+          "name": "ระดับน้ำ",
+          "description": "ระดับน้ำ"
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "ไปยังจุดหมาย",
+      "description": "ไปยังพิกัดบนแผนที่และหยุด",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "พิกัด X ของจุด"
+        },
+        "y": {
+          "name": "Y",
+          "description": "พิกัด Y ของจุด"
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "ตามเส้นทาง",
+      "description": "เดินตามรายชื่อพิกัดบนแผนที่และกลับสู่แท่นชาร์จ",
+      "fields": {
+        "points": {
+          "name": "จุด",
+          "description": "รายชื่อพิกัดของเส้นทาง"
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "เริ่มทางลัด",
+      "description": "เริ่มงานทางลัด",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID ทางลัด",
+          "description": "ID ของทางลัด"
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "ควบคุมระยะไกลขยับหนึ่งก้าว",
+      "description": "ควบคุมหุ่นยนต์ให้ขยับหนึ่งก้าวระยะไกล",
+      "fields": {
+        "rotation": {
+          "name": "การหมุน",
+          "description": "หมุนองศาระหว่าง -128 ถึง 128"
+        },
+        "velocity": {
+          "name": "ความเร็ว",
+          "description": "ความเร็วในการเคลื่อนที่ จาก 100 (เดินหน้า) ถึง -300 (ถอยหลัง)"
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "ติดตั้งแพ็กเกจเสียง",
+      "description": "ติดตั้งแพ็กเกจเสียงแบบเป็นทางการหรือปรับแต่งเอง",
+      "fields": {
+        "lang_id": {
+          "name": "ID ภาษา",
+          "description": "ID ภาษาของแพ็กเกจนี้"
+        },
+        "url": {
+          "name": "URL",
+          "description": "Url ของแพ็กเกจนี้"
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "MD5 checksum ของแพ็กเกจเสียง"
+        },
+        "size": {
+          "name": "ขนาด",
+          "description": "ขนาดของแพ็กเกจเสียงเป็นไบต์"
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "ร้องขอแผนที่",
+      "description": "ร้องขอข้อมูลแผนที่"
+    },
+    "vacuum_select_map": {
+      "name": "เลือกแผนที่",
+      "description": "เลือกแผนที่ปัจจุบัน ใช้เมื่อมีหลายแผนที่/ชั้น",
+      "fields": {
+        "map_id": {
+          "name": "ID แผนที่",
+          "description": "ID ของแผนที่ที่ต้องการเลือก"
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "ลบแผนที่",
+      "description": "ลบแผนที่",
+      "fields": {
+        "map_id": {
+          "name": "ID แผนที่",
+          "description": "ID ของแผนที่ที่จะลบ"
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "บันทึกแผนที่ชั่วคราว",
+      "description": "บันทึกแผนที่ชั่วคราว"
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "ละทิ้งแผนที่ชั่วคราว",
+      "description": "ละทิ้งแผนที่ชั่วคราว"
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "แทนที่แผนที่ชั่วคราว",
+      "description": "แทนที่แผนที่ชั่วคราวด้วยแผนที่ที่บันทึกไว้อื่น",
+      "fields": {
+        "map_id": {
+          "name": "ID แผนที่",
+          "description": "ID ของแผนที่ที่จะใช้แทนที่"
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "เปลี่ยนชื่อแผนที่",
+      "description": "เปลี่ยนชื่อแผนที่",
+      "fields": {
+        "map_id": {
+          "name": "ID แผนที่",
+          "description": "ID ของแผนที่"
+        },
+        "map_name": {
+          "name": "ชื่อแผนที่",
+          "description": "ชื่อใหม่ของแผนที่"
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "กู้คืนแผนที่",
+      "description": "กู้คืนแผนที่",
+      "fields": {
+        "map_id": {
+          "name": "ID แผนที่",
+          "description": "ID ของแผนที่ที่จะกู้คืน"
+        },
+        "recovery_map_index": {
+          "name": "ดัชนีแผนที่กู้คืน",
+          "description": "ดัชนีของแผนที่ที่บันทึกไว้สำหรับกู้คืน"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "กู้คืนแผนที่จากไฟล์",
+      "description": "กู้คืนแผนที่จากไฟล์",
+      "fields": {
+        "map_id": {
+          "name": "ID แผนที่",
+          "description": "ID ของแผนที่ที่จะกู้คืน"
+        },
+        "file_url": {
+          "name": "Url ไฟล์",
+          "description": "Url ของไฟล์ tbz2.gz หรือ tar.gz ที่บันทึกไว้"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "สำรองแผนที่",
+      "description": "สำรองแผนที่ไปยังคลาวด์",
+      "fields": {
+        "map_id": {
+          "name": "ID แผนที่",
+          "description": "ID ของแผนที่ที่จะสำรอง"
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "รวมห้อง",
+      "description": "รวมห้องเข้าด้วยกัน",
+      "fields": {
+        "map_id": {
+          "name": "ID แผนที่",
+          "description": "ID ของแผนที่"
+        },
+        "segments": {
+          "name": "ห้อง",
+          "description": "ID ของห้องต่างๆ"
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "แบ่งห้อง",
+      "description": "แบ่งห้อง",
+      "fields": {
+        "map_id": {
+          "name": "ID แผนที่",
+          "description": "ID ของแผนที่"
+        },
+        "segment": {
+          "name": "ห้อง",
+          "description": "ID ของห้อง"
+        },
+        "line": {
+          "name": "เส้น",
+          "description": "พิกัดของเส้นที่ใช้แบ่ง"
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "เปลี่ยนชื่อห้อง",
+      "description": "เปลี่ยนชื่อห้อง",
+      "fields": {
+        "segment_id": {
+          "name": "ID ห้อง",
+          "description": "ID ของห้อง"
+        },
+        "segment_name": {
+          "name": "ชื่อห้อง",
+          "description": "ชื่อใหม่ของห้อง"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "ตั้งค่าลำดับการทำความสะอาด",
+      "description": "กำหนดลำดับการทำความสะอาดห้อง",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "ลำดับการทำความสะอาด",
+          "description": "รายชื่อ ID ของห้องตามลำดับการทำความสะอาด"
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "ตั้งค่าการทำความสะอาดแบบกำหนดเอง",
+      "description": "กำหนดค่าทำความสะอาดที่ตั้งเอง",
+      "fields": {
+        "segment_id": {
+          "name": "ID ห้อง",
+          "description": "ID ของห้อง"
+        },
+        "suction_level": {
+          "name": "ระดับแรงดูด",
+          "description": "ระดับแรงดูดสำหรับแต่ละห้อง"
+        },
+        "water_volume": {
+          "name": "ระดับน้ำ",
+          "description": "ปริมาณน้ำสำหรับแต่ละห้อง"
+        },
+        "wetness_level": {
+          "name": "ระดับความเปียก",
+          "description": "ระดับความเปียกสำหรับแต่ละห้อง"
+        },
+        "cleaning_mode": {
+          "name": "โหมดการทำความสะอาด",
+          "description": "การทำความสะอาดสำหรับแต่ละห้อง"
+        },
+        "repeats": {
+          "name": "จำนวนรอบ",
+          "description": "จำนวนรอบทำความสะอาดสำหรับแต่ละห้อง"
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "ตั้งค่าการทำความสะอาดพรมที่กำหนดเอง",
+      "description": "ตั้งค่าการทำความสะอาดพรมเฉพาะที่",
+      "fields": {
+        "id": {
+          "name": "ID พรม",
+          "description": "ID ของพรม"
+        },
+        "type": {
+          "name": "ประเภทของวัตถุ",
+          "description": "ประเภทของวัตถุตาม ID"
+        },
+        "carpet_cleaning": {
+          "name": "การทำความสะอาดพรม",
+          "description": "การตั้งค่าทำความสะอาดพรมสำหรับแต่ละผืน"
+        },
+        "carpet_preferences": {
+          "name": "การตั้งค่าพรม",
+          "description": "การตั้งค่าพรมแบบกำหนดเองพร้อมระบบที่เปิดใช้งาน"
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "ตั้งค่าพื้นที่ห้ามเข้า",
+      "description": "กำหนดกำแพงเสมือน, เขตห้ามเข้า, และ/หรือเขตห้ามถู",
+      "fields": {
+        "walls": {
+          "name": "กำแพง",
+          "description": "กำแพงเสมือน"
+        },
+        "zones": {
+          "name": "โซน",
+          "description": "โซนห้ามเข้า"
+        },
+        "no_mops": {
+          "name": "ห้ามถู",
+          "description": "โซนห้ามถู"
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "รีเซ็ตวัสดุสิ้นเปลือง",
+      "description": "รีเซ็ตอายุการใช้งานวัสดุสิ้นเปลือง",
+      "fields": {
+        "consumable": {
+          "name": "วัสดุสิ้นเปลือง",
+          "description": "ประเภทวัสดุสิ้นเปลือง"
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "เปลี่ยนชื่อทางลัด",
+      "description": "เปลี่ยนชื่อของทางลัด",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID ทางลัด",
+          "description": "ID ของทางลัด"
+        },
+        "shortcut_name": {
+          "name": "ชื่อทางลัด",
+          "description": "ชื่อใหม่ของทางลัด"
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "ลบทางลัด",
+      "description": "ลบทางลัดที่มีอยู่",
+      "fields": {
+        "shortcut_id": {
+          "name": "ID ทางลัด",
+          "description": "ID ของทางลัดที่จะลบ"
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "กำหนดพื้นที่พรม",
+      "description": "กำหนดพื้นที่พรมและพรมที่ละเว้น",
+      "fields": {
+        "carpets": {
+          "name": "พรม",
+          "description": "พื้นที่พรม"
+        },
+        "deleted_carpets": {
+          "name": "พรมที่ละเว้น",
+          "description": "พื้นที่พรมที่ละเว้นสำหรับการลบพรมที่ตรวจพบโดยอัตโนมัติ"
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "ตั้งค่าธรณีประตูเสมือน",
+      "description": "กำหนดเส้นธรณีประตูเสมือน",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "ธรณีประตูเสมือน",
+          "description": "พิกัดของเส้นธรณีประตูเสมือน"
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "กำหนดจุดที่ตั้งไว้ล่วงหน้า",
+      "description": "ตั้งค่าพิกัดบนแผนที่ปัจจุบัน",
+      "fields": {
+        "points": {
+          "name": "จุด",
+          "description": "รายชื่อพิกัดที่จะบันทึก"
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "ตั้งค่าการละเว้นสิ่งกีดขวาง",
+      "description": "กำหนดให้ละเว้นสิ่งกีดขวางนั้นๆ",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "พิกัด X ของสิ่งกีดขวาง"
+        },
+        "y": {
+          "name": "Y",
+          "description": "พิกัด Y ของสิ่งกีดขวาง"
+        },
+        "obstacle_ignored": {
+          "name": "การละเว้นสิ่งกีดขวาง",
+          "description": "สิ่งกีดขวางถูกละเว้นหรือไม่"
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "ตั้งตำแหน่งเราเตอร์",
+      "description": "ตั้งตำแหน่งของเราเตอร์บนแผนที่",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "พิกัด X ของเราเตอร์"
+        },
+        "y": {
+          "name": "Y",
+          "description": "พิกัด Y ของเราเตอร์"
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "เลือกก่อนหน้า",
+      "description": "เลือกตัวเลือกก่อนหน้าจากตัวเลือกที่มี",
+      "fields": {
+        "cycle": {
+          "name": "วนลูป",
+          "description": "วนกลับไปตัวเลือกสุดท้ายเมื่อถึงตัวเลือกแรก"
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "เลือกอันแรก",
+      "description": "เลือกตัวเลือกแรก"
+    },
+    "select_select_last": {
+      "name": "เลือกอันสุดท้าย",
+      "description": "เลือกตัวเลือกสุดท้าย"
+    },
+    "select_select_next": {
+      "name": "เลือกอันถัดไป",
+      "description": "เลือกตัวเลือกถัดไปจากตัวเลือกที่มี",
+      "fields": {
+        "cycle": {
+          "name": "วนลูป",
+          "description": "วนกลับไปตัวเลือกแรกเมื่อถึงตัวเลือกสุดท้าย"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2438 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "Laite on jo määritetty",
+      "cannot_connect": "Yhdistäminen epäonnistui.",
+      "reauth_successful": "Uudelleentodennus onnistui"
+    },
+    "error": {
+      "cannot_connect": "Yhdistäminen epäonnistui.",
+      "unsupported": "Laitetta ei tueta",
+      "wrong_token": "Tarkistussummavirhe, väärä tunnus",
+      "2fa_failed": "Vahvistus epäonnistui.",
+      "wrong_captcha": "Väärä captcha.",
+      "credentials_incomplete": "Tunnistetiedot puutteelliset, täytä käyttäjänimi, salasana ja maa.",
+      "login_error": "Kirjautuminen epäonnistui, tarkista tunnistetiedot.",
+      "no_devices": "Tältä tililtä ei löytynyt tuettuja laitteita valitussa maassa.{devices}",
+      "2fa_send_failed": "Vahvistuskoodin lähettäminen epäonnistui. Yritä uudelleen.",
+      "2fa_limit_reached": "Vahvistuskoodien lähetyksen päivittäinen raja on saavutettu. Yritä uudelleen huomenna.",
+      "2fa_cooldown_active": "Liian monta peräkkäistä pyyntöä. Odota muutama minuutti ennen kuin yrität uudelleen."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "Määritystyyppi"
+        },
+        "description": "Karttaominaisuus vaatii pilviyhteyden ja tarjoaa automaattisen määrityksen. Jos et halua käyttää karttaominaisuutta, voit valita manuaalisen määrityksen."
+      },
+      "local": {
+        "data": {
+          "host": "Isäntä",
+          "token": "Tunnus (Token)"
+        },
+        "description": "Tarvitset 32-merkkisen API-tunnuksen."
+      },
+      "mi": {
+        "data": {
+          "username": "Käyttäjänimi",
+          "password": "Salasana",
+          "country": "Palvelimen maa",
+          "prefer_cloud": "Suosi pilviyhteyttä"
+        },
+        "description": "Kirjaudu sisään Xiaomi Miio -pilveen."
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "Kaksivaiheinen vahvistuskoodi"
+        },
+        "description": "## Turvatarkistus vaaditaan\nVahvistuskoodi on lähetetty osoitteeseen/numeroon {dest}. Kirjoita koodi alle."
+      },
+      "captcha": {
+        "data": {
+          "code": "Koodi"
+        },
+        "description": "## Captcha-vahvistus vaaditaan.\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "Käyttäjänimi",
+          "password": "Salasana",
+          "country": "Palvelimen maa"
+        },
+        "description": "Kirjaudu sisään Dreamehome-pilveen."
+      },
+      "mova": {
+        "data": {
+          "username": "Käyttäjänimi",
+          "password": "Salasana",
+          "country": "Palvelimen maa"
+        },
+        "description": "Kirjaudu sisään Movahome-pilveen."
+      },
+      "trouver": {
+        "data": {
+          "username": "Käyttäjänimi",
+          "password": "Salasana",
+          "country": "Palvelimen maa"
+        },
+        "description": "Kirjaudu sisään Trouver-pilveen."
+      },
+      "devices": {
+        "data": {
+          "devices": "Tuetut laitteet"
+        },
+        "description": "Valitse Dreame-robottipölynimuri, jonka haluat määrittää."
+      },
+      "donation": {
+        "data": {
+          "donated": "Lahjoitettu"
+        },
+        "description": "## Älä unohda tukea projektia.{text}"
+      },
+      "options": {
+        "data": {
+          "name": "Nimi",
+          "color_scheme": "Kartan värimalli",
+          "icon_set": "Kartan kuvakesarja",
+          "notify": "Ilmoitus",
+          "hidden_map_objects": "Piilotetut karttaobjektit",
+          "low_resolution": "Matalan resoluution kartta",
+          "square": "Neliömäinen kartta"
+        }
+      },
+      "reauth_confirm": {
+        "description": "Dreame-robottipölynimurin integraation on todennettava tilisi uudelleen tunnusten päivittämiseksi tai puuttuvien pilvitunnistetietojen lisäämiseksi.",
+        "title": "Integraation uudelleentodennus"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "Kartan värimalli",
+          "icon_set": "Kartan kuvakesarja",
+          "notify": "Ilmoitus",
+          "hidden_map_objects": "Piilotetut karttaobjektit",
+          "low_resolution": "Matalan resoluution kartta",
+          "square": "Neliömäinen kartta",
+          "configuration_type": "Määritystyyppi",
+          "prefer_cloud": "Suosi pilviyhteyttä",
+          "donated": "Lahjoitettu"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "Pilven tunnistetiedot puutteelliset, täytä käyttäjänimi, salasana ja maa"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "name": "Imuteho",
+        "state": {
+          "quiet": "Hiljainen",
+          "standard": "Vakio",
+          "strong": "Voimakas",
+          "turbo": "Turbo",
+          "full_power": "Täysi teho"
+        }
+      },
+      "water_volume": {
+        "name": "Veden määrä",
+        "state": {
+          "low": "Pieni",
+          "medium": "Keskitaso",
+          "high": "Suuri"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "Moppaustyynyn kosteus",
+        "state": {
+          "slightly_dry": "Hieman kuiva",
+          "moist": "Kostea",
+          "wet": "Märkä"
+        }
+      },
+      "cleaning_mode": {
+        "name": "Puhdistustila",
+        "state": {
+          "sweeping": "Lakaisu",
+          "mopping": "Moppaus",
+          "sweeping_and_mopping": "Lakaisu ja moppaus",
+          "mopping_after_sweeping": "Moppaus lakaisun jälkeen"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "Maton tunnistusherkkyys",
+        "state": {
+          "low": "Matala",
+          "medium": "Keskitaso",
+          "high": "Korkea"
+        }
+      },
+      "carpet_cleaning": {
+        "name": "Maton puhdistus",
+        "state": {
+          "avoidance": "Vältä",
+          "adaptation": "Mukauta",
+          "remove_mop": "Irrota moppi",
+          "adaptation_without_route": "Mukauta ilman reittiä",
+          "vacuum_and_mop": "Imuroi ja moppaa",
+          "ignore": "Ohita",
+          "cross": "Ylitä"
+        }
+      },
+      "mop_wash_level": {
+        "name": "Mopin pesutila",
+        "state": {
+          "water_saving": "Vettä säästävä",
+          "daily": "Päivittäinen",
+          "deep": "Perusteellinen",
+          "ultra_clean_mode": "Erittäin puhdas"
+        }
+      },
+      "mopping_type": {
+        "name": "Moppaustyyppi",
+        "state": {
+          "accurate": "Tarkka",
+          "daily": "Päivittäinen",
+          "deep": "Perusteellinen"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "Laajempi kulmien kattavuus",
+        "state": {
+          "off": "Pois päältä",
+          "high_frequency": "Korkea taajuus",
+          "low_frequency": "Matala taajuus"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "Mopin tyynyn keinu",
+        "state": {
+          "off": "Pois päältä",
+          "auto": "Automaattinen",
+          "daily": "Päivittäin",
+          "weekly": "Viikoittain"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "Mopin pidennystaajuus",
+        "state": {
+          "standard": "Vakio",
+          "intelligent": "Älykäs",
+          "high": "Korkea"
+        }
+      },
+      "floor_material": {
+        "name": "Lattian materiaali",
+        "state": {
+          "none": "Ei mitään",
+          "tile": "Laatta",
+          "wood": "Puulattia",
+          "low_pile_carpet": "Matalanukkainen matto",
+          "medium_pile_carpet": "Korkea-nukkaisesta keskinukkaiseen mattoon",
+          "carpet": "Matto"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "Ääniavustajan kieli",
+        "state": {
+          "default": "Oletus",
+          "english": "Englanti",
+          "german": "Saksa",
+          "chinese": "Kiina",
+          "russian": "Venäjä",
+          "italian": "Italia",
+          "french": "Ranska",
+          "korean": "Korea"
+        }
+      },
+      "mop_pressure": {
+        "name": "Mopin paine",
+        "state": {
+          "light": "Kevyt",
+          "normal": "Normaali"
+        }
+      },
+      "mop_temperature": {
+        "name": "Mopin lämpötila",
+        "state": {
+          "normal": "Normaali",
+          "warm": "Lämmin"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "Matalien alueiden puhdistustiheys",
+        "state": {
+          "weekly": "Viikoittain",
+          "daily": "Päivittäin"
+        }
+      },
+      "scraper_frequency": {
+        "name": "Kaapimen käyttötaajuus",
+        "state": {
+          "off": "Pois päältä",
+          "weekly": "Viikoittain",
+          "daily": "Päivittäin"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "Automaattinen LDS-kattavuus",
+        "state": {
+          "off": "Pois päältä",
+          "security": "Turvallisuus",
+          "extreme": "Äärimmäinen"
+        }
+      },
+      "order": {
+        "name": "Järjestys",
+        "state": {
+          "not_set": "Ei asetettu"
+        }
+      },
+      "self_clean_frequency": {
+        "name": "Itsepuhdistuksen tiheys",
+        "state": {
+          "by_area": "Alueen mukaan",
+          "by_time": "Ajan mukaan",
+          "by_room": "Huoneen mukaan",
+          "intelligent": "Älykäs"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "Mopin puhdistustiheys",
+        "state": {
+          "by_room": "Huoneen mukaan",
+          "5sqm": "Viisi neliömetriä",
+          "8sqm": "Kahdeksan neliömetriä",
+          "10sqm": "Kymmenen neliömetriä",
+          "15sqm": "Viisitoista neliömetriä",
+          "20sqm": "Kaksikymmentä neliömetriä",
+          "25sqm": "Kaksikymmentäviisi neliömetriä",
+          "86sqf": "Kahdeksankymmentäkuusi neliöjalkaa",
+          "108sqf": "Satakahdeksan neliöjalkaa",
+          "54sqf": "Viisikymmentäneljä neliöjalkaa",
+          "162sqf": "Sata kuusikymmentäkaksi neliöjalkaa",
+          "216sqf": "Kaksisataa kuusitoista neliöjalkaa",
+          "270sqf": "Kaksisataa seitsemänkymmentä neliöjalkaa"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "Automaattinen tyhjennystila",
+        "state": {
+          "off": "Pois päältä",
+          "standard": "Vakio",
+          "high_frequency": "Korkea taajuus",
+          "low_frequency": "Matala taajuus",
+          "custom_frequency": "Mukautettu taajuus",
+          "intelligent": "Älykäs"
+        }
+      },
+      "floor_material_direction": {
+        "name": "Lattian suunta",
+        "state": {
+          "vertical": "Pystysuora",
+          "horizontal": "Vaakasuora"
+        }
+      },
+      "visibility": {
+        "name": "Näkyvyys",
+        "state": {
+          "visible": "Näkyvissä",
+          "hidden": "Piilotettu"
+        }
+      },
+      "cleangenius": {
+        "name": "CleanGenius",
+        "state": {
+          "off": "Pois päältä",
+          "routine_cleaning": "Rutiinipuhdistus",
+          "deep_cleaning": "Perusteellinen puhdistus"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "CleanGenius-tila",
+        "state": {
+          "vacuum_and_mop": "Imuroi ja moppaa",
+          "mop_after_vacuum": "Moppaus imuroinnin jälkeen"
+        }
+      },
+      "washing_mode": {
+        "name": "Mopin pesutila",
+        "state": {
+          "smart": "Älykäs",
+          "light": "Kevyt",
+          "standard": "Vakio",
+          "deep": "Perusteellinen",
+          "ultra_washing": "Ultrapeseminen"
+        }
+      },
+      "water_temperature": {
+        "name": "Veden lämpötila",
+        "state": {
+          "normal": "Normaali",
+          "mild": "Lievä",
+          "warm": "Lämmin",
+          "hot": "Kuuma",
+          "max": "Max"
+        }
+      },
+      "auto_recleaning": {
+        "name": "Automaattinen uudelleenpuhdistus",
+        "state": {
+          "off": "Pois päältä",
+          "in_deep_mode": "Syvätilassa",
+          "in_all_modes": "Kaikissa tiloissa"
+        }
+      },
+      "auto_rewashing": {
+        "name": "Automaattinen uudelleenpesu",
+        "state": {
+          "off": "Pois päältä",
+          "in_deep_mode": "Syvätilassa",
+          "in_all_modes": "Kaikissa tiloissa"
+        }
+      },
+      "cleaning_route": {
+        "name": "Reitti",
+        "state": {
+          "quick": "Nopea",
+          "standard": "Vakio",
+          "intensive": "Intensiivinen",
+          "deep": "Perusteellinen"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "Mukautettu moppausreitti",
+        "state": {
+          "off": "Pois päältä",
+          "standard": "Vakio",
+          "intensive": "Intensiivinen",
+          "deep": "Perusteellinen"
+        }
+      },
+      "task_type": {
+        "name": "Tehtävän tyyppi",
+        "state": {
+          "go_to": "Mene pisteeseen",
+          "segment": "Huoneen puhdistus",
+          "all": "Koko alueen puhdistus",
+          "zone": "Alueen puhdistus",
+          "spot": "Paikallinen puhdistus"
+        }
+      },
+      "cleaning_times": {
+        "name": "Puhdistuksen kerrat",
+        "state": {
+          "x1": "Kerran",
+          "x2": "Kaksi kertaa",
+          "x3": "Kolme kertaa"
+        }
+      },
+      "auto_empty_frequency": {
+        "name": "Automaattisen tyhjennyksen tiheys",
+        "state": {
+          "x1": "Joka tehtävän jälkeen",
+          "x2": "Kahden puhdistuksen jälkeen",
+          "x3": "Kolmen puhdistuksen jälkeen"
+        }
+      },
+      "drying_time": {
+        "name": "Kuivumisaika",
+        "state": {
+          "silent": "Hiljainen"
+        }
+      },
+      "battery_charge_level": {
+        "name": "Akun varaustaso"
+      },
+      "object_type": {
+        "name": "Objektin tyyppi",
+        "state": {
+          "predefined_point": "Esimääritetty piste",
+          "low_lying_area": "Matalalla oleva alue",
+          "curtain": "Verho",
+          "threshold": "Kynnys",
+          "furniture": "Huonekalu",
+          "carpet": "Matto",
+          "restricted": "Rajoitettu alue"
+        }
+      },
+      "edit_type": {
+        "name": "Muokkaustyyppi",
+        "state": {
+          "door": "Muokkaa ovia",
+          "split": "Jaa huoneita",
+          "merge": "Yhdistä huoneita",
+          "visibility": "Huoneen näkyvyys",
+          "material": "Lattiamateriaali",
+          "type": "Huoneen nimi",
+          "wall": "Muokkaa seiniä"
+        }
+      },
+      "map_type": {
+        "name": "Kartan tyyppi",
+        "state": {
+          "cleaning": "Puhdistuskartta",
+          "history": "Puhdistuksen tiedot",
+          "wifi": "Wi-Fi-kartta"
+        }
+      },
+      "carpet_type": {
+        "name": "Maton tyyppi",
+        "state": {
+          "medium_pile": "Korkea-nukkaisesta keskinukkaiseen",
+          "low_pile": "Matalanukkainen",
+          "floor_mat": "Lattiamatto",
+          "other": "Muu"
+        }
+      },
+      "mop_type": {
+        "name": "Mopin tyyppi",
+        "state": {
+          "a": "Moppi A",
+          "b": "Moppi B",
+          "c": "Moppi C"
+        }
+      },
+      "carpet_shape": {
+        "name": "Muoto",
+        "state": {
+          "square": "Neliö",
+          "round": "Pyöreä"
+        }
+      },
+      "mopping_pattern": {
+        "name": "Moppauksen kuvio",
+        "state": {
+          "daily": "Päivittäinen moppaus",
+          "deep": "Perusteellinen moppaus"
+        }
+      },
+      "wetness_level": {
+        "name": "Kosteus",
+        "state": {
+          "slightly_dry": "Hieman kuiva",
+          "moist": "Kostea",
+          "wet": "Märkä"
+        }
+      },
+      "task_repeats": {
+        "name": "Tehtävän toistot",
+        "state": {
+          "once": "Kerran",
+          "daily": "Päivittäin",
+          "workdays": "Työpäivät",
+          "weekends": "Viikonloput"
+        }
+      },
+      "segment_name": {
+        "name": "Huoneen nimi",
+        "state": {
+          "room": "Huone",
+          "living_room": "Olohuone",
+          "primary_bedroom": "Päämakuuhuone",
+          "study": "Työhuone",
+          "kitchen": "Keittiö",
+          "dining_hall": "Ruokailuhuone",
+          "bathroom": "Kylpyhuone",
+          "balcony": "Parveke",
+          "corridor": "Käytävä",
+          "utility_room": "Erillinen kodinhoitohuone / Tekninen tila",
+          "closet": "Vaatehuone",
+          "meeting_room": "Kokoushuone",
+          "office": "Toimisto",
+          "fitness_area": "Kuntoilualue",
+          "recreation_area": "Virkistysalue",
+          "secondary_bedroom": "Vierashuone / Toinen makuuhuone"
+        }
+      },
+      "furniture_type": {
+        "name": "Huonekalun tyyppi",
+        "state": {
+          "single_bed": "Yhden hengen sänky",
+          "double_bed": "Kahden hengen sänky",
+          "arm_chair": "Nojatuoli",
+          "two_seat_sofa": "Kahden istuttava sohva",
+          "three_seat_sofa": "Kolmen istuttava sohva",
+          "dining_table": "Ruokapöytä",
+          "nightstant": "Yöpöytä",
+          "coffee_table": "Sohvapöytä",
+          "toilet": "WC-istuin",
+          "litter_box": "Hiekkalaatikko",
+          "pet_bed": "Lemmikin peti",
+          "food_bowl": "Ruokakuppi",
+          "pet_toilet": "Lemmikin vessa",
+          "refrigerator": "Jääkaappi",
+          "washing_machine": "Pesukone",
+          "enclosed_litter_box": "Suljettu hiekkalaatikko",
+          "air_conditioner": "Ilmastointilaite",
+          "tv_cabinet": "TV-taso",
+          "bookshelf": "Kirjahylly",
+          "shoe_cabinet": "Kenkäkaappi",
+          "wardrobe": "Vaatekaappi",
+          "greenery": "Viherkasvit",
+          "floor_mirror": "Lattiapeili",
+          "l_shaped_sofa": "L-muotoinen sohva",
+          "round_coffee_table": "Pyöreä sohvapöytä",
+          "table": "Pöytä",
+          "arm_chair_narrow": "Kapea nojatuoli",
+          "three_seat_sofa_narrow": "Kapea kolmen istuttava sohva",
+          "l_shaped_sofa_right": "Oikeakätinen L-muotoinen sohva"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "name": "Tila",
+        "state": {
+          "unknown": "Tuntematon",
+          "sweeping": "Lakaistaan",
+          "charging": "Ladataan",
+          "error": "Virhe",
+          "idle": "Tyhjäkäynti",
+          "paused": "Pysäytetty",
+          "returning": "Paluu telakkaan",
+          "mopping": "Mopataan",
+          "drying": "Kuivataan",
+          "washing": "Pestään",
+          "returning_to_wash": "Palataan pesuun",
+          "building": "Rakennetaan",
+          "sweeping_and_mopping": "Lakaistaan ja mopataan",
+          "charging_completed": "Lataus valmis",
+          "upgrading": "Päivitetään",
+          "clean_summon": "Kutsu siivoamaan",
+          "station_reset": "Aseman nollaus",
+          "returning_install_mop": "Palataan asentamaan moppi",
+          "returning_remove_mop": "Palataan irrottamaan moppi",
+          "water_check": "Veden tarkistus",
+          "clean_add_water": "Puhdistus ja veden lisäys",
+          "washing_paused": "Pesu pysäytetty",
+          "auto_emptying": "Automaattinen tyhjennys",
+          "remote_control": "Kaukosäätö",
+          "smart_charging": "Älykäs lataus",
+          "second_cleaning": "Toinen puhdistuskerta",
+          "human_following": "Seuraa ihmistä",
+          "spot_cleaning": "Paikallinen siivous",
+          "returning_auto_empty": "Palataan automaattityhjennykseen",
+          "waiting_for_task": "Odotetaan tehtävää",
+          "station_cleaning": "Aseman puhdistus",
+          "returning_to_drain": "Paluu tyhjennykseen",
+          "draining": "Tyhjennetään",
+          "auto_water_draining": "Automaattinen veden tyhjennys",
+          "emptying": "Tyhjennetään",
+          "dust_bag_drying": "Pölypussin kuivaus",
+          "dust_bag_drying_paused": "Pölypussin kuivaus keskeytetty",
+          "heading_to_extra_cleaning": "Siirrytään ylimääräiseen puhdistukseen",
+          "extra_cleaning": "Ylimääräinen puhdistus",
+          "finding_pet_paused": "Lemmikin etsiminen tauolla",
+          "finding_pet": "Lemmikin etsiminen",
+          "shortcut": "Pikakuvake",
+          "monitoring": "Valvonta",
+          "monitoring_paused": "Valvonta tauolla",
+          "initial_deep_cleaning": "Ensimmäinen perusteellinen puhdistus",
+          "initial_deep_cleaning_paused": "Ensimmäinen perusteellinen puhdistus tauolla",
+          "sanitizing": "Desinfioidaan",
+          "sanitizing_with_dry": "Desinfiointi ja kuivaus",
+          "changing_mop": "Moppia vaihdetaan",
+          "changing_mop_paused": "Mopin vaihto keskeytetty",
+          "floor_maintaining": "Lattian hoito",
+          "floor_maintaining_paused": "Lattian hoito keskeytetty",
+          "remote_pickup": "Etänouto",
+          "arranging_items": "Tavaroiden järjestäminen",
+          "pet_guarding": "Lemmikkivahti",
+          "pet_guarding_paused": "Lemmikkivahti tauolla",
+          "installing_mop": "Mopin asennus",
+          "uninstalling_mop": "Mopin irrotus",
+          "intelligent_recharging": "Älykäs lataus",
+          "assisted_cleaning": "Avustettu puhdistus",
+          "entering_dock": "Siirtyminen telakkaan",
+          "leaving_dock": "Poistuminen telakasta",
+          "navigating_to_climber": "Navigointi kiipeilijälle",
+          "docking_to_climber": "Telakoituminen kiipeilijään",
+          "climber_docked": "Kiipeilijä telakoitu",
+          "climber_navigating": "Kiipeilijä navigoi",
+          "climbing_stairs": "Kiipeää portaita",
+          "climbing_stairs_completed": "Portaiden kiipeäminen valmis",
+          "climber_at_dock": "Kiipeilijä telakassa",
+          "climber_leaving_dock": "Kiipeilijä poistuu telakasta"
+        }
+      },
+      "status": {
+        "name": "Tila (Status)",
+        "state": {
+          "unknown": "Tuntematon",
+          "idle": "Tyhjäkäynti",
+          "paused": "Pysäytetty",
+          "cleaning": "Siivotaan",
+          "returning": "Paluu telakkaan",
+          "spot_cleaning": "Paikallinen siivous",
+          "follow_wall_cleaning": "Siivous seinänvierustaa seuraten",
+          "charging": "Ladataan",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "WiFi-asetus",
+          "power_off": "Sammuta",
+          "factory": "Tehdas",
+          "error": "Virhe",
+          "remote_control": "Kaukosäätö",
+          "sleeping": "Nukkuu",
+          "self_test": "Itsetesti",
+          "factory_test": "Tehdastesti",
+          "standby": "Valmiustila",
+          "room_cleaning": "Huonekohtainen siivous",
+          "zone_cleaning": "Alueellinen siivous",
+          "fast_mapping": "Nopea kartoitus",
+          "cruising_path": "Reittiä seuraamassa",
+          "cruising_point": "Pisteeseen liikkumassa",
+          "summon_clean": "Kutsu siivoamaan",
+          "shortcut": "Pikakuvake",
+          "person_follow": "Seuraa ihmistä",
+          "water_check": "Veden tarkistus",
+          "pet_guarding": "Lemmikkivahti",
+          "auto_arrangement": "Automaattinen järjestely",
+          "smart_arrangement": "Älykäs järjestely",
+          "zoned_arrangement": "Vyöhykejärjestely"
+        }
+      },
+      "task_status": {
+        "name": "Tehtävän tila",
+        "state": {
+          "unknown": "Tuntematon",
+          "completed": "Valmis",
+          "cleaning": "Siivotaan",
+          "zone_cleaning": "Aluesiivous",
+          "room_cleaning": "Huoneen siivous",
+          "spot_cleaning": "Paikallissivous",
+          "fast_mapping": "Nopea kartoitus",
+          "cleaning_paused": "Siivous keskeytetty",
+          "room_cleaning_paused": "Huonesivous keskeytetty",
+          "zone_cleaning_paused": "Aluesiivous keskeytetty",
+          "spot_cleaning_paused": "Paikallissivous keskeytetty",
+          "map_cleaning_paused": "Kartan puhdistus keskeytetty",
+          "docking_paused": "Telakoituminen keskeytetty",
+          "mopping_paused": "Moppaus keskeytetty",
+          "zone_mopping_paused": "Aluemoppaus keskeytetty",
+          "room_mopping_paused": "Huonemoppaus keskeytetty",
+          "zone_docking_paused": "Alueelle paluu (telakointi) keskeytetty",
+          "room_docking_paused": "Huoneeseen paluu (telakointi) keskeytetty",
+          "cruising_path": "Reittiä seuraamassa",
+          "cruising_path_paused": "Reitin seuraaminen keskeytetty",
+          "cruising_point": "Pisteeseen liikkumassa",
+          "cruising_point_paused": "Pisteeseen liikkuminen keskeytetty",
+          "summon_clean_paused": "Kutsu siivoamaan keskeytetty",
+          "returning_to_install_mop": "Palataan asentamaan moppi",
+          "returning_to_remove_mop": "Palataan irrottamaan moppi",
+          "station_cleaning": "Aseman puhdistus",
+          "pet_finding": "Lemmikin etsintä",
+          "auto_cleaning_washing_paused": "Automaattinen pesupuhdistus keskeytetty",
+          "area_cleaning_washing_paused": "Aluekohtainen pesupuhdistus keskeytetty",
+          "custom_cleaning_washing_paused": "Räätälöity pesupuhdistus keskeytetty",
+          "picking_up_item": "Poimii esinettä",
+          "picking_up_item_paused": "Eseen poiminta tauolla",
+          "picking_up_item_success": "Esine poimittu onnistuneesti",
+          "remote_pickup_initializing": "Etänoudon alustus",
+          "remote_pickup_identifing": "Etänoudon tunnistus",
+          "manual_remote_pickup": "Manuaalinen etänouto",
+          "automatic_remote_pickup": "Automaattinen etänouto",
+          "remote_pickup_in_progress": "Etänouto käynnissä",
+          "remote_pickup_paused": "Etänouto tauolla",
+          "placing_item": "Asettaa esinettä",
+          "placing_item_paused": "Eseen asettaminen tauolla"
+        }
+      },
+      "water_tank": {
+        "name": "Vesisäiliö",
+        "state": {
+          "unknown": "Tuntematon",
+          "installed": "Asennettu",
+          "not_installed": "Ei asennettu",
+          "mop_installed": "Moppi asennettu",
+          "in_station": "Asemalla"
+        }
+      },
+      "mop_pad": {
+        "name": "Moppaustyyny",
+        "state": {
+          "unknown": "Tuntematon",
+          "installed": "Asennettu",
+          "not_installed": "Ei asennettu",
+          "mop_installed": "Moppi asennettu",
+          "in_station": "Asemalla"
+        }
+      },
+      "dust_collection": {
+        "name": "Pölynkeräys",
+        "state": {
+          "unknown": "Tuntematon",
+          "not_available": "Ei käytettävissä",
+          "available": "Käytettävissä",
+          "over_use": "Ylikäyttö",
+          "never": "Ei koskaan"
+        }
+      },
+      "auto_empty_status": {
+        "name": "Automaattityhjennyksen tila",
+        "state": {
+          "unknown": "Tuntematon",
+          "idle": "Tyhjäkäynti",
+          "active": "Aktiivinen",
+          "not_performed": "Ei suoritettu"
+        }
+      },
+      "error": {
+        "name": "Virhe",
+        "state": {
+          "unknown": "Tuntematon virhekoodi",
+          "no_error": "Ei virhettä",
+          "drop": "Pyörät ovat pudonneet ilmassa",
+          "cliff": "Pudotusanturin virhe",
+          "bumper": "Törmäystunnistin on jumissa",
+          "gesture": "Robotti on kallistunut",
+          "bumper_repeat": "Törmäystunnistin on jumissa",
+          "drop_repeat": "Pyörät ovat pudonneet ilmassa",
+          "optical_flow": "Optisen virtaustunnistimen virhe",
+          "no_box": "Pölysäiliötä ei ole asennettu",
+          "no_tank_box": "Vesisäiliötä ei ole asennettu",
+          "water_box_empty": "Vesisäiliö on tyhjä",
+          "box_full": "Suodatin ei ole kuiva tai se on tukossa",
+          "brush": "Pääharja on jumittunut",
+          "side_brush": "Sivuharja on kietoutunut ja jumittunut",
+          "fan": "Suodatin ei ole kuiva tai se on tukossa",
+          "left_wheel_motor": "Robotti on jumissa tai vasen pyörä voi olla tukossa vieraan esineen takia",
+          "right_wheel_motor": "Robotti on jumissa tai oikea pyörä voi olla tukossa vieraan esineen takia",
+          "turn_suffocate": "Robotti on jumissa tai se ei voi kääntyä",
+          "forward_suffocate": "Robotti on jumissa tai se ei voi liikkua eteenpäin",
+          "charger_get": "Telakkaa ei löydy",
+          "battery_low": "Akku vähissä",
+          "charge_fault": "Latausvirhe",
+          "battery_percentage": "Akun varaustason virhe",
+          "heart": "Sisäinen virhe",
+          "camera_occlusion": "Visuaalisen paikannuksen anturin virhe",
+          "move": "Liikeanturin virhe",
+          "flow_shielding": "Optisen anturin virhe",
+          "infrared_shielding": "Infrapunaestovirhe",
+          "charge_no_electric": "Lataustelakka ei saa virtaa",
+          "battery_fault": "Akun virhe",
+          "fan_speed_error": "Tuulettimen nopeusanturin virhe",
+          "left_wheell_speed": "Vasen pyörä voi olla jumissa vieraan esineen vuoksi",
+          "right_wheell_speed": "Oikea pyörä voi olla jumissa vieraan esineen vuoksi",
+          "bmi055_acce": "Kiihtyvyysanturin virhe",
+          "bmi055_gyro": "Gyroskoopin virhe",
+          "xv7001": "Gyroskoopin virhe",
+          "left_magnet": "Vasemman magneettianturin virhe",
+          "right_magnet": "Oikean magneettianturin virhe",
+          "flow_error": "Virtausanturin virhe",
+          "infrared_fault": "Infrapunavirhe",
+          "camera_fault": "Kameran virhe",
+          "strong_magnet": "Voimakas magneettikenttä havaittu",
+          "water_pump": "Vesipumpun virhe",
+          "rtc": "RTC-virhe",
+          "auto_key_trig": "Sisäinen virhe",
+          "p3v3": "Sisäinen virhe",
+          "camera_idle": "Sisäinen virhe",
+          "blocked": "Siivousreitti on estetty, palataan telakkaan.",
+          "lds_error": "Laseretäisyysanturin (LDS) virhe",
+          "lds_bumper": "Laseretäisyysanturin puskurin virhe",
+          "filter_blocked": "Suodatin ei ole kuiva tai se on tukossa",
+          "edge": "Reuna-anturin virhe",
+          "carpet": "Käynnistä robotti muualla kuin matolla.",
+          "laser": "3D-esteidenväistöanturissa on toimintahäiriö.",
+          "ultrasonic": "Ultraäänianturissa on toimintahäiriö.",
+          "no_go_zone": "Kielletty alue tai virtuaaliseinä havaittu.",
+          "route": "Siivousreitti on tukossa.",
+          "restricted": "Havaittiin, että robotti on kielletyllä alueella.",
+          "remove_mop": "Moppaus valmis. Irrota ja puhdista moppi ajoissa.",
+          "mop_removed": "Moppaustyyny irtosi siivouksen aikana.",
+          "mop_pad_stop_rotate": "Mopin laikka on lakannut pyörimästä.",
+          "bin_full": "Pölypussi on täynnä tai ilmakanava on tukossa.",
+          "bin_open": "Automaattisen tyhjennysaseman yläkantta ei ole suljettu, tai pölypussia ei ole asennettu.",
+          "water_tank": "Puhdasvesisäiliötä ei ole asennettu.",
+          "dirty_water_tank": "Likavesisäiliö on täynnä tai sitä ei ole asennettu.",
+          "water_tank_dry": "Puhdasvesisäiliön vedentaso on matala, täytä se vedellä ajoissa.",
+          "dirty_water_tank_blocked": "Likavesisäiliö tukossa.",
+          "dirty_water_tank_pump": "Likavesisäiliön pumpun virhe.",
+          "mop_pad": "Pesulautaa ei ole asennettu oikein.",
+          "wet_mop_pad": "Pesulaudan vesitaso on epänormaali, puhdista pesulauta ajoissa.",
+          "clean_mop_pad": "Puhdistustehtävä on valmis, puhdista mopin pesulauta.",
+          "clean_tank_level": "Tarkista ja täytä puhdasvesisäiliö.",
+          "station_disconnected": "Tukiasemassa ei ole virtaa",
+          "dirty_tank_level": "Likavesisäiliön vedentaso on liian korkealla.",
+          "washboard_level": "Pesulaudan vedenpinta on liian korkealla.",
+          "no_mop_in_station": "Moppaustyyny ei ole asemalla.",
+          "dust_bag_full": "Pölypussi on täynnä tai tuuletusaukot ovat tukossa.",
+          "self_test_failed": "Veden poisto puhtaan veden säiliöstä ylä- ja alamoduuleissa on epänormaalia.",
+          "mop_install_failed": "Moppaustyynyn asennus epäonnistui.",
+          "low_battery_turn_off": "Akku vähissä. Robotti sammuu pian.",
+          "dirty_tank_not_installed": "Robotin likavesisäiliötä ei ole asennettu.",
+          "robot_in_hidden_room": "Piilotettu alue. Siirrä robotti sopivalle alueelle ja yritä uudelleen.",
+          "washboard_not_working": "Pesulauta lopettaa toimintansa.",
+          "return_to_charge_failed": "Paluu lataukseen epäonnistui.",
+          "lds_failed_to_lift": "LDS-moduulin nosto epäonnistui.",
+          "robot_stuck": "LDS-anturia ei voi nostaa täällä paikantamista varten.",
+          "robot_stuck_repeat": "Siirrä robotti avoimelle alueelle ja jatka tehtävää.",
+          "slippery_floor": "Liukas lattia. Yritä myöhemmin uudelleen.",
+          "check_mop_install": "Tarkista, onko moppi asennettu oikein.",
+          "dirty_water_tank_full": "Robotin likaveden säiliön vedenpinta epänormaali.",
+          "retractable_leg_stuck": "Tarkista, ovatko sisäänvedettävät jalat sotkeutuneet.",
+          "internal_error": "Sisäisen virheen aiheuttama toimintahäiriö. Yritä käynnistää robotti uudelleen.",
+          "robot_stuck_on_tables": "Robotti jumiutui pöytien ja tuolien väliin.",
+          "robot_stuck_on_passage": "Robotti jumiutui kapealla käytävälle.",
+          "robot_stuck_on_threshold": "Robotti jumiutui portaaseen/kynnykseen.",
+          "robot_stuck_on_low_lying_area": "Robotti jumiutui matalan välyksen alueelle.",
+          "robot_stuck_on_ramp": "Robotti on havainnut reitillä helposti putoavia ramppeja.",
+          "robot_stuck_on_obstacle": "Robotti on havainnut esteitä reitillä.",
+          "robot_stuck_on_pet": "Robotti on havainnut ihmisiä tai lemmikkejä reitillä.",
+          "robot_stuck_on_slippery_surface": "Robotti on jumissa liukastumisen vuoksi.",
+          "robot_stuck_on_carpet": "Robotti liukuu matolla",
+          "drainage_failed": "Epänormaali vedenpoisto likavesisäiliöstä",
+          "mop_not_detected": "Moppia ei havaittu.",
+          "mop_holder_error": "Moppitelineen määrä/sijaintivirhe telakassa.",
+          "dock_error": "Telakkavirhe.",
+          "wash_failed": "Likaisen mopin peseminen epäonnistui.",
+          "robot_stuck_on_curtain": "Robotti luistaa verhoalueella",
+          "edge_mop_stop_rotate": "Reunamopin pyöriminen pysähtyi.",
+          "edge_mop_detached": "Reunamopin irtoaminen.",
+          "chassis_lift_malfunction": "Alustan noston toimintahäiriö.",
+          "mop_cover_error": "Tarkista roskat rullamopin ja mopinsuojuksen läheltä.",
+          "roller_mop_error": "Tarkista roskat rullamopin ja mopinsuojuksen läheltä.",
+          "onboard_water_tank_empty": "Veden määrä on vähäinen robotin puhtaan veden säiliössä.",
+          "onboard_dirty_water_tank_full": "Robotin likavesisäiliö on täynnä.",
+          "mop_not_installed": "Moppia ei ole asennettu.",
+          "fluffing_roller_error": "Nöyhtärullan virhe.",
+          "blocked_by_obstacle": "Estetty esteen takia.",
+          "robotic_arm_stopped": "Robottivarsi pysähtynyt.",
+          "drainage_outlet_filter": "Robotin poistovesiaukon suodatin on tukossa.",
+          "main_wheels_error": "Pääpyörien virhe."
+        }
+      },
+      "charging_status": {
+        "name": "Latauksen tila",
+        "state": {
+          "unknown": "Tuntematon",
+          "charging": "Ladataan",
+          "not_charging": "Ei lataudu",
+          "return_to_charge": "Paluu lataukseen",
+          "charging_completed": "Lataus valmis"
+        }
+      },
+      "relocation_status": {
+        "name": "Sijainnin tila",
+        "state": {
+          "unknown": "Tuntematon",
+          "located": "Sijainti selvitetty",
+          "locating": "Etsitään sijaintia",
+          "failed": "Epäonnistui",
+          "success": "Onnistui"
+        }
+      },
+      "self_wash_base_status": {
+        "name": "Itsepuhdistuvan aseman tila",
+        "state": {
+          "unknown": "Tuntematon",
+          "idle": "Tyhjäkäynti",
+          "washing": "Pesee",
+          "drying": "Kuivaa",
+          "paused": "Pysäytetty",
+          "returning": "Paluu pesuun",
+          "clean_add_water": "Puhdistus ja veden lisäys",
+          "adding_water": "Lisätään vettä"
+        }
+      },
+      "low_water_warning": {
+        "name": "Vähäisen veden varoitus",
+        "state": {
+          "no_warning": "Ei varoitusta",
+          "no_water_left": "Puhdasvesisäiliön vesi on loppumassa. Tarkista ja täytä puhdasvesisäiliö nopeasti.",
+          "no_water_left_after_clean": "Moppi on puhdistettu. Havaittiin, että puhdasvesisäiliön vesi on riittämätön. Täytä puhdasvesi ja tyhjennä likavesisäiliö.",
+          "no_water_for_clean": "Alhainen vedenpinta puhdasvesisäiliössä. Robotti on vaihtanut Imurointitilaan.",
+          "low_water": "Vesi on loppumaisillaan. Täytä puhdasvesisäiliö.",
+          "tank_not_installed": "Puhdasvesisäiliötä ei ole asennettu."
+        }
+      },
+      "stream_status": {
+        "name": "Striimin tila",
+        "state": {
+          "unknown": "Tuntematon",
+          "idle": "Tyhjäkäynti",
+          "video": "Video",
+          "audio": "Audio",
+          "recording": "Tallennus"
+        }
+      },
+      "drainage_status": {
+        "name": "Viemäröinnin tila",
+        "state": {
+          "unknown": "Tuntematon",
+          "idle": "Tyhjäkäynti",
+          "draining": "Tyhjentää",
+          "draining_successful": "Tyhjennys onnistui",
+          "draining_failed": "Tyhjennys epäonnistui"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "Puhdasvesisäiliön tila",
+        "state": {
+          "unknown": "Tuntematon",
+          "not_available": "Ei käytettävissä",
+          "not_installed": "Ei asennettu",
+          "low_water": "Vähän vettä",
+          "installed": "Asennettu"
+        }
+      },
+      "dirty_water_tank_status": {
+        "name": "Likavesisäiliön tila",
+        "state": {
+          "unknown": "Tuntematon",
+          "installed": "Asennettu",
+          "not_installed_or_full": "Ei asennettu tai täynnä"
+        }
+      },
+      "dust_bag_status": {
+        "name": "Pölypussin tila",
+        "state": {
+          "unknown": "Tuntematon",
+          "installed": "Asennettu",
+          "not_installed": "Ei asennettu",
+          "check": "Tarkista"
+        }
+      },
+      "detergent_status": {
+        "name": "Pesuaineen tila",
+        "state": {
+          "unknown": "Tuntematon",
+          "installed": "Asennettu",
+          "disabled": "Poistettu käytöstä",
+          "low_detergent": "Vähän pesuainetta"
+        }
+      },
+      "hot_water_status": {
+        "name": "Kuuman veden tila",
+        "state": {
+          "unknown": "Tuntematon",
+          "disabled": "Poistettu käytöstä",
+          "enabled": "Käytössä"
+        }
+      },
+      "station_drainage_status": {
+        "name": "Aseman tyhjennystila",
+        "state": {
+          "unknown": "Tuntematon",
+          "idle": "Tyhjäkäynti",
+          "draining": "Tyhjennetään"
+        }
+      },
+      "task_type": {
+        "name": "Tehtävän tyyppi",
+        "state": {
+          "standard": "Vakiosiivous",
+          "standard_paused": "Vakiosiivous pysäytetty",
+          "custom": "Mukautettu siivous",
+          "custom_paused": "Mukautettu siivous pysäytetty",
+          "shortcut": "Pikakuvakesiivous",
+          "shortcut_paused": "Pikakuvakesiivous pysäytetty",
+          "scheduled": "Ajastettu siivous",
+          "scheduled_paused": "Ajastettu siivous pysäytetty",
+          "smart": "Älykäs siivous",
+          "smart_paused": "Älykäs siivous pysäytetty",
+          "partial": "Puhdistus osittain",
+          "partial_paused": "Puhdistus osittain pysäytetty",
+          "summon": "Kutsupuhdistus",
+          "summon_paused": "Kutsu siivoamaan keskeytetty",
+          "water_stain": "Vesitahran puhdistus",
+          "water_stain_paused": "Vesitahran puhdistus pysäytetty",
+          "boosted_edge_cleaning": "Tehostettu reunapuhdistus",
+          "hair_compressing": "Hiusten pakkaus",
+          "large_particle_cleaning": "Suurten hiukkasten puhdistus",
+          "intensive_stain_cleaning": "Intensiivinen tahrojen puhdistus",
+          "stain_cleaning": "Tahrojen puhdistus",
+          "initial_deep_cleaning": "Ensimmäinen perusteellinen puhdistus",
+          "initial_deep_cleaning_paused": "Ensimmäinen perusteellinen puhdistus tauolla",
+          "mop_pad_heating": "Moppaustyynyn lämmitys",
+          "cleaning_after_mapping": "Sivous kartoituksen jälkeen",
+          "small_particle_cleaning": "Pienten hiukkasten puhdistus",
+          "changing_mop": "Moppia vaihdetaan",
+          "changing_mop_paused": "Mopin vaihto keskeytetty",
+          "floor_maintaining": "Lattian hoito",
+          "floor_maintaining_paused": "Lattian hoito keskeytetty",
+          "arranging_items": "Tavaroiden järjestäminen",
+          "arranging_items_paused": "Tavaroiden järjestäminen tauolla",
+          "intensive_hair_cleaning": "Tehostettu hiusten puhdistus",
+          "accessory_handling": "Lisävarusteiden käsittely",
+          "increased_drum_speed_cleaning": "Puhdistus suuremmalla rummun nopeudella",
+          "pressurized_cleaning": "Paineistettu puhdistus",
+          "steam_cleaning": "Höyrypuhdistus",
+          "steam_cleaning_paused": "Höyrypuhdistus tauolla"
+        }
+      },
+      "dust_bag_drying_status": {
+        "name": "Pölypussin kuivumisen tila",
+        "state": {
+          "idle": "Tyhjäkäynti",
+          "drying": "Kuivataan",
+          "paused": "Pysäytetty"
+        }
+      },
+      "nation_matched": {
+        "name": "Aluelukitus",
+        "state": {
+          "unknown": "Pois käytöstä",
+          "matched": "Lukitsematon",
+          "unmatched": "Lukittu",
+          "na": "Ei saatavilla"
+        }
+      },
+      "startup_method": {
+        "name": "Käynnistäjä",
+        "state": {
+          "button": "Painike",
+          "app": "Sovellus",
+          "scheduled": "Ajastettu",
+          "voice": "Ääni",
+          "second_cleaning": "Toinen siivous",
+          "unknown": "Tuntematon"
+        }
+      },
+      "cleaning_status": {
+        "name": "Siivous",
+        "state": {
+          "interrupted": "Keskeytetty",
+          "completed": "Valmis",
+          "manually_ended": "Manuaalisesti lopetettu",
+          "failed": "Epäonnistui",
+          "unknown": "Tuntematon"
+        }
+      },
+      "cleanup_method": {
+        "name": "Siivousmenetelmä",
+        "state": {
+          "other": "Muu",
+          "default": "Oletus",
+          "customized": "Mukautettu",
+          "cleangenius": "CleanGenius",
+          "water_stain": "Vesitahra",
+          "unknown": "Tuntematon"
+        }
+      },
+      "task_end_type": {
+        "name": "Suorittaja",
+        "state": {
+          "other": "Muu",
+          "manual_docking": "Manuaalinen telakointi",
+          "docking": "Telakoituminen",
+          "failed_docking": "Telakoituminen epäonnistui",
+          "stop": "Pysäytä",
+          "unknown": "Tuntematon"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "Keskeytyksen syy",
+        "state": {
+          "abnormal_docking": "Epänormaali telakointi",
+          "base_station_powered_off": "Tukiasemassa ei ole virtaa",
+          "brush_entangled_by_carpet": "Harja on kietoutunut mattoon",
+          "brush_entangled_by_object": "Harja on takertunut esineeseen",
+          "brush_entangled_by_obstacle": "Harja on tarttunut esteeseen",
+          "cannot_find_base_station": "Tukiasemaa ei löydy",
+          "cliff_sensor_error": "Pudotusanturin virhe",
+          "laser_distance_sensor_error": "Laseretäisyysanturin (LDS) virhe",
+          "mop_pad_abnormally_removed": "Moppaustyyny poistettu epänormaalisti",
+          "mop_pad_fallen_off": "Moppaustyyny irronnut",
+          "mop_pad_fallen_off_by_obstacle": "Moppaustyyny irronnut esteen vuoksi",
+          "mop_pad_fallen_off_by_table": "Moppaustyyny irtaantunut pöydän osuessa",
+          "mop_pad_fallen_off_crossing_obstacle": "Moppaustyyny irronnut esteen ylityksessä",
+          "mop_pad_removed": "Moppaustyyny irrotettu",
+          "mop_pad_stuck": "Moppaustyyny jumissa",
+          "robot_fallen": "Robotti on kaatunut",
+          "robot_is_stuck_on_obstacle": "Robotti on jumissa esteessä",
+          "robot_is_stuck_on_step": "Robotti on jumissa kynnyksellä",
+          "robot_lifted": "Robotti nostettu",
+          "task_completed": "Tehtävä valmis",
+          "unknown": "Tuntematon"
+        }
+      },
+      "recovery_map_type": {
+        "name": "Kartan tyyppi",
+        "state": {
+          "original": "Alkuperäinen kartta",
+          "edited": "Muokattu kartta",
+          "backup": "Varmuuskopioitu kartta"
+        }
+      },
+      "obstacle_type": {
+        "name": "Esteen tyyppi",
+        "state": {
+          "unknown": "Tuntematon",
+          "base": "Asusta",
+          "scale": "Vaaka",
+          "thread": "Lanka",
+          "wire": "Johto",
+          "toy": "Lelu",
+          "shoes": "Kengät",
+          "sock": "Sukat",
+          "fece": "Ulosteet",
+          "trash_can": "Roskakori",
+          "fabric": "Kangas",
+          "power_strip": "Jatkojohto",
+          "liquid_stain": "Nestemäinen tahra",
+          "obstacle": "Este",
+          "pet": "Lemmikki",
+          "cleaning_tools": "Siivousvälineet",
+          "detected_stain": "Havaittu tahra",
+          "blocked_room": "Tukittu huone",
+          "easy_to_stuck_furniture": "Helposti jumiutuva huonekalu",
+          "uncleanable_stain": "Puhdistamaton tahra",
+          "leg": "Jalka",
+          "large_particles": "Suuria hiukkasia",
+          "dried_stain": "Kuivunut tahra",
+          "food_bowl": "Ruokakulho",
+          "pet_bed": "Lemmikkivuode",
+          "cleaned_stain": "Puhdistettu tahra",
+          "skipped_uncleanable_stain": "Sivuutettiin puhdistamattomat tahra",
+          "cleaned_dried_stain": "Puhdistettu kuivanut tahra",
+          "cleaned_large_particles": "Puhdistettu suuria hiukkasia",
+          "hair": "Hiukset",
+          "paper": "Paperi",
+          "cleaned_hair": "Puhdistetut hiukset",
+          "sundry": "Sekalaista"
+        }
+      },
+      "obstacle_reason": {
+        "name": "Esteen syy",
+        "state": {
+          "blocked_by_virtual_wall": "Virtuaaliseinän estämä",
+          "blocked_by_door": "Oven estämänä",
+          "blocked_by_threshold": "Kivenestetty.",
+          "blocked_by_obstacle": "Esteen estämä",
+          "blocked_by_carpet": "Esim. matkamaton estämä",
+          "blocked_by_detected_carpet": "Havaitun maton estämä",
+          "blocked_by_hidden_obstacle": "Piilotetun esteen estämä",
+          "blocked_by_dynamic_obstacle": "Dynaamisen esteen estämä",
+          "passage_too_low": "Liian matala käytävä",
+          "step_too_low": "Askel liian matala",
+          "failed_to_cross_threshold": "Kynnyksen ylitys epäonnistui"
+        }
+      },
+      "remaining_battery": {
+        "name": "Jäljellä oleva akku"
+      },
+      "multiple_cleaning_time": {
+        "name": "Useita siivouksia"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "firmware_version": {
+        "name": "Laiteohjelmiston (Firmware) Versio"
+      },
+      "ip_address": {
+        "name": "IP-Osoite"
+      },
+      "mac_address": {
+        "name": "MAC-Osoite"
+      },
+      "model": {
+        "name": "Malli"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "serial_number": {
+        "name": "Sarjanumero"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "timezone": {
+        "name": "Aikavyöhyke"
+      },
+      "voice_packet_id": {
+        "name": "Äänipaketti"
+      },
+      "deodorizer_left": {
+        "name": "Hajunpoistaja"
+      },
+      "detergent_left": {
+        "name": "Pesuaine"
+      },
+      "dirty_water_channel_left": {
+        "name": "Likavesikanava"
+      },
+      "filter_left": {
+        "name": "Suodatin"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "Nöyhtärullan Puhdistus"
+      },
+      "main_brush_left": {
+        "name": "Pääharja"
+      },
+      "mop_pad_left": {
+        "name": "Moppaustyyny"
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "Sisäänrakennettu Likavesisäiliö"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "Rullamopin Suodattimen Puhdistus"
+      },
+      "scale_inhibitor_left": {
+        "name": "Kalkinestäjä"
+      },
+      "sensor_dirty_left": {
+        "name": "Anturin Puhdistus"
+      },
+      "side_brush_left": {
+        "name": "Sivuharja"
+      },
+      "silver_ion_left": {
+        "name": "Hopeaioni"
+      },
+      "squeegee_left": {
+        "name": "Vetolasta"
+      },
+      "tank_filter_left": {
+        "name": "Säiliön Suodatin"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "Vedenpoistoaukon Suodattimen Puhdistus"
+      },
+      "wheel_dirty_left": {
+        "name": "Pyörän puhdistus"
+      }
+    },
+    "toggle": {
+      "customized_cleaning": {
+        "name": "Mukautettu siivous"
+      },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Perusteellinen puhdistus"
+      },
+      "auto_dust_collecting": {
+        "name": "Automaattityhjennys"
+      },
+      "hair_compression": {
+        "name": "Hiusten pakkaus"
+      },
+      "self_clean": {
+        "name": "Itsepuhdistus"
+      },
+      "deep_mop_washing": {
+        "name": "Perusteellinen mopin pesu"
+      },
+      "hot_washing": {
+        "name": "Kuuma pesu"
+      },
+      "auto_drying": {
+        "name": "Automaattinen kuivaus"
+      },
+      "silent_drying": {
+        "name": "Hiljainen kuivaus"
+      },
+      "uv_sterilization": {
+        "name": "UV-sterilointi"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Mukautettu siivous"
+      },
+      "carpet_avoidance": {
+        "name": "Maton välttäminen"
+      },
+      "carpet_preferences": {
+        "name": "Mukautetut mieltymykset"
+      },
+      "auto_change_mop": {
+        "name": "Automaattinen mopin vaihto"
+      },
+      "multi_floor_map": {
+        "name": "Monikerroksinen kartta"
+      },
+      "intelligent_recognition": {
+        "name": "Älykäs tunnistus"
+      },
+      "map_saving": {
+        "name": "Kartan tallennus"
+      },
+      "child_lock": {
+        "name": "Lapsilukko"
+      },
+      "resume_cleaning": {
+        "name": "Jatka siivousta"
+      },
+      "obstacle_avoidance": {
+        "name": "Esteiden väistäminen"
+      },
+      "carpet_boost": {
+        "name": "Maton tehostus"
+      },
+      "carpet_recognition": {
+        "name": "Maton tunnistus"
+      },
+      "clean_carpets_first": {
+        "name": "Puhdista matot ensin"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "Sulje telaharjan suojus matolla"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "Intensiivinen maton puhdistus"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "Sivuharja pyörii matolla"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "Nosta runko matolla"
+      },
+      "auto_mount_mop": {
+        "name": "Automaattisesti asennettava moppi"
+      },
+      "mopping_with_detergent": {
+        "name": "Moppaus pesuaineella"
+      },
+      "mop_washing_with_detergent": {
+        "name": "Mopin pesu pesuaineella"
+      },
+      "auto_add_detergent": {
+        "name": "Lisää pesuainetta automaattisesti"
+      },
+      "smart_mop_washing": {
+        "name": "Älykäs mopipesu"
+      },
+      "wider_corner_coverage": {
+        "name": "Laajempi kulmien peitto"
+      },
+      "pressurized_cleaning": {
+        "name": "Paineistettu siivous"
+      },
+      "gap_cleaning_extension": {
+        "name": "Välipuhdistuksen lisäosa"
+      },
+      "mopping_under_furnitures": {
+        "name": "Moppaus huonekalujen alla"
+      },
+      "floor_direction_cleaning": {
+        "name": "Lattian suuntainen puhdistus"
+      },
+      "ring_light_always_on": {
+        "name": "Rengasvalo aina päällä"
+      },
+      "collision_avoidance": {
+        "name": "Törmäysten välttäminen"
+      },
+      "fill_light": {
+        "name": "Kameravalo"
+      },
+      "ai_obstacle_detection": {
+        "name": "AI-esteiden tunnistus"
+      },
+      "ai_pet_detection": {
+        "name": "Lemmikin tunnistus"
+      },
+      "pet_focused_detection": {
+        "name": "Lemmikkiin keskittyvä tunnistus"
+      },
+      "pet_focused_cleaning": {
+        "name": "Lemmikkiin keskittyvä siivous"
+      },
+      "ai_obstacle_picture": {
+        "name": "Kuvat esteistä"
+      },
+      "obstacle_crossing": {
+        "name": "Synkronoitu esteen ylitys"
+      },
+      "active_suspension_crossing": {
+        "name": "Aktiivinen jousitettu ylitys"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "Dynaaminen esteiden puhdistus"
+      },
+      "large_particles_boost": {
+        "name": "Suurten hiukkasten tehostus"
+      },
+      "streaming_voice_prompt": {
+        "name": "Striimauksen puhekehote"
+      },
+      "voice_assistant": {
+        "name": "Ääniavustaja"
+      },
+      "off_peak_charging": {
+        "name": "Lataus ruuhka-aikojen ulkopuolella"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "Estä siivouksen jatkaminen"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "Poista automaattinen tyhjennys käytöstä"
+      },
+      "dnd_reduce_volume": {
+        "name": "Vähennä äänenvoimakkuutta"
+      },
+      "dnd": {
+        "name": "Älä häiritse -tila (DnD)"
+      }
+    },
+    "number": {
+      "wetness_level": {
+        "name": "Kosteus"
+      },
+      "auto_empty_area": {
+        "name": "Automaattinen tyhjennysalue"
+      },
+      "drying_time": {
+        "name": "Kuivausaika"
+      },
+      "self_clean_time": {
+        "name": "Itsepuhdistusaika"
+      },
+      "self_clean_area": {
+        "name": "Itsepuhdistusalue"
+      },
+      "volume": {
+        "name": "Äänenvoimakkuus"
+      }
+    },
+    "time": {
+      "dnd_start": {
+        "name": "DnD Aloitusaika"
+      },
+      "dnd_end": {
+        "name": "DnD Lopetusaika"
+      },
+      "off_peak_charging_start": {
+        "name": "Ruuhka-ajan ulkopuolinen aloitusaika"
+      },
+      "off_peak_charging_end": {
+        "name": "Ruuhka-ajan ulkopuolinen lopetusaika"
+      },
+      "schedule_time": {
+        "name": "Aloitusaika"
+      }
+    },
+    "input": {
+      "schedule_repeats": {
+        "name": "Toistot"
+      },
+      "dnd_repeats": {
+        "name": "Toistot"
+      },
+      "map_custom_name": {
+        "name": "Kartan Nimi"
+      },
+      "segment_custom_name": {
+        "name": "Huoneen Nimi"
+      },
+      "shortcut_name": {
+        "name": "Pikakuvakkeen Nimi"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "Lisää",
+        "add_map": "Luo kartta",
+        "auto_empty_unavailable": "Automaattityhjennys ei käytössä",
+        "auto_emptying": "Automaattityhjennys",
+        "backup": "Varmuuskopio",
+        "bag_drying_unavailable": "Pölypussin kuivaus ei käytössä",
+        "cancel": "Peruuta",
+        "cancel_ignore": "Peruuta ohitus",
+        "carpet": "Matto",
+        "change": "Muuta",
+        "charge": "Lataa",
+        "clean": "Puhdista",
+        "clean_again": "Puhdista Uudelleen",
+        "cleaning_settings": "Siivousasetukset",
+        "cleanings": "Puhdistukset",
+        "close": "Sulje",
+        "confirm": "Vahvista",
+        "delete": "Poista",
+        "delete_carpet": "Poista matto",
+        "deleted_carpet": "Poistettu matto",
+        "disable": "Poista käytöstä",
+        "discard": "Hylkää",
+        "dismiss": "Hylkää",
+        "dock": "Telakka",
+        "dock_settings": "Telakan asetukset",
+        "download": "Lataa",
+        "dry": "Kuivaa",
+        "dry_bag": "Kuiva Pussi",
+        "drying_unavailable": "Kuivaus ei ole käytettävissä",
+        "dynamically_ignored": "Dynaamisesti ohitettu",
+        "edit_carpet": "Muokkaa mattoa",
+        "empty": "Tyhjennä",
+        "enable": "Ota käyttöön",
+        "fast_mapping": "Nopea kartoitus",
+        "get_dreame_vacuum_card": "Hanki Dreame Vacuum -kortti",
+        "ignore": "Ohita",
+        "ignore_obstacle": "Ohita Este",
+        "impassable_threshold": "Läpipääsemätön kynnys",
+        "job_details": "Työn tiedot",
+        "keep_disabled": "Pidä pois käytöstä",
+        "map_display": "Kartan näyttö",
+        "map_management": "Kartan hallinta",
+        "new_dnd": "Uusi DnD-tehtävä",
+        "new_schedule": "Uusi ajastettu tehtävä",
+        "new_shortcut": "Uusi pikakuvaketehtävä",
+        "next_job": "Seuraava työ",
+        "no_go": "Ei pääsyä",
+        "no_mop": "Ei moppausta",
+        "objects": "Esineet",
+        "override": "Ylitä",
+        "passable_threshold": "Läpipäästävä kynnys",
+        "pause": "Keskeytä",
+        "pause_washing": "Tauota pesu",
+        "previous_job": "Edellinen työ",
+        "ramp": "Ramppi",
+        "reload": "Lataa uudelleen",
+        "rename": "Nimeä uudelleen",
+        "repeats": "Toistot",
+        "replace": "Korvaa",
+        "reset": "Nollaa",
+        "restore": "Palauta",
+        "restore_map": "Palauta Kartta",
+        "resume": "Jatka",
+        "resume_washing": "Jatka pesua",
+        "rooms": "Huoneet",
+        "rotate_left": "Kierrä Vasemmalle",
+        "rotate_right": "Kierrä Oikealle",
+        "round_carpet": "Pyöreä matto",
+        "save": "Tallenna",
+        "select_map": "Valitse kartta",
+        "shortcuts": "Pikakuvakkeet",
+        "square_carpet": "Neliönmuotoinen matto",
+        "start": "Aloita",
+        "start_auto_empty": "Aloita Automaattityhjennys",
+        "start_bag_drying": "Aloita Pölypussin Kuivaus",
+        "start_drying": "Aloita kuivaus",
+        "start_task": "Aloita Tehtävä",
+        "start_washing": "Aloita pesu",
+        "stop": "Pysäytä",
+        "stop_bag_drying": "Pysäytä Pölypussin Kuivaus",
+        "stop_drying": "Lopeta kuivaus",
+        "understood": "Ymmärretty",
+        "virtual_threshold": "Virtuaalinen kynnys",
+        "virtual_wall": "Seinä",
+        "wash": "Pese",
+        "washing_unavailable": "Pesu ei ole saatavilla",
+        "wifi_map": "WiFi kartta"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "Taustakuva",
+        "card_object_action_buttons": "Toimintopainikkeet",
+        "card_object_animations": "Animaatiot",
+        "card_object_cleanup_notification": "Puhdistusilmoitus",
+        "card_object_controls": "Säätimet",
+        "card_object_cruising_history": "Risteilyhistoria",
+        "card_object_fault_notification": "Virheilmoitus",
+        "card_object_information_notification": "Tietoilmoitus",
+        "card_object_low_water_notification": "Alhaisen veden ilmoitus",
+        "card_object_map_change_confirmation": "Kartan vaihdos vahvistus",
+        "card_object_menu": "Valikko",
+        "card_object_progress_bar": "Edistymispalkki",
+        "card_object_saved_notification": "Tallennettu -ilmoitus",
+        "card_object_shortcuts": "Pikakuvakkeet",
+        "card_object_state": "Tila",
+        "card_object_status": "Tila (Status)",
+        "card_object_task_type": "Tehtävän tyyppi",
+        "card_object_title": "Otsikko",
+        "card_object_warning_notification": "Varoitushälytys",
+        "color_scheme": "Värimalli",
+        "color_scheme_dreame_auto": "Dreame automaattinen",
+        "color_scheme_dreame_dark": "Dreame tumma",
+        "color_scheme_dreame_light": "Dreame vaalea",
+        "color_scheme_grayscale": "Harmaaskaala",
+        "color_scheme_mijia_auto": "Mijia automaattinen",
+        "color_scheme_mijia_dark": "Mijia tumma",
+        "color_scheme_mijia_light": "Mijia vaalea",
+        "copied": "Kopioitu",
+        "copy": "Kopioi",
+        "copy_all": "Kopioi Kaikki",
+        "disable_haptic": "Poista haptinen palaute käytöstä",
+        "editable_objects": "Muokattavat objektit",
+        "font_size": "Fonttikoko",
+        "full_height": "Täysi korkeus",
+        "grid_size": "Ruudukon koko",
+        "height": "Korkeus",
+        "hidden_card_objects": "Piilotetut korttiobjektit",
+        "hidden_objects": "Piilotetut objektit",
+        "hide_map_info": "Piilota kartan tiedot",
+        "icon_set": "Kuvakesarja",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "Vanha Dreame",
+        "icon_set_material": "Materiaali",
+        "icon_set_mijia": "Mijia",
+        "left": "Vasen",
+        "left_handed": "Vasenkätinen tila",
+        "limit_height": "Rajoita korkeus näyttöön",
+        "locked": "Lukittu",
+        "locked_always": "Aina",
+        "locked_auto": "Automaattinen",
+        "locked_never": "Ei koskaan",
+        "locked_only_touch": "Vain kosketuksella",
+        "map": "Kartta %name%",
+        "map_1": "Ensimmäinen kartta",
+        "map_2": "Toinen kartta",
+        "map_3": "Kolmas kartta",
+        "map_4": "Neljäs kartta",
+        "map_5": "Viides kartta",
+        "map_color_active_area": "Aktiivinen alue",
+        "map_color_active_area_outline": "Aktiivisen alueen ääriviivat",
+        "map_color_active_point": "Aktiivinen piste",
+        "map_color_active_point_outline": "Aktiivisen pisteen ääriviiva",
+        "map_color_auto_low_lying_area": "Automaattinen matala alue",
+        "map_color_carpet_color": "Maton väri",
+        "map_color_curtain": "Verho",
+        "map_color_detected_carpet_color": "Havaitun maton väri",
+        "map_color_floor": "Lattia",
+        "map_color_floor_material": "Lattiamateriaali",
+        "map_color_icon_background": "Kuvakkeen tausta",
+        "map_color_impassable_threshold": "Läpipääsemätön kynnys",
+        "map_color_manual_low_lying_area": "Manuaalinen matala alue",
+        "map_color_mop_path": "Mopin reitti",
+        "map_color_new_segment": "Uusi huone",
+        "map_color_no_go": "Kielletty alue",
+        "map_color_no_go_outline": "Kielletyn alueen ääriviivat",
+        "map_color_no_mop": "Ei moppausta",
+        "map_color_no_mop_outline": "Ei moppausta -alueen ääriviivat",
+        "map_color_obstacle_background": "Esteen tausta",
+        "map_color_order": "Järjestys",
+        "map_color_outside": "Ulkopuoli",
+        "map_color_passable_threshold": "Ylitettävä kynnys",
+        "map_color_passive_segment": "Passiivinen huone",
+        "map_color_path": "Reitti",
+        "map_color_ramp": "Ramppi",
+        "map_color_segment": "Huone",
+        "map_color_settings_background": "Asetuksien tausta",
+        "map_color_text": "Teksti",
+        "map_color_text_stroke": "Tekstin reunus",
+        "map_color_virtual_threshold": "Virtuaalinen kynnys",
+        "map_color_virtual_wall": "Virtuaaliseinä",
+        "map_color_wall": "Seinä",
+        "map_config": "Kartan asetukset",
+        "map_display": "Kartan näyttö",
+        "map_display_floor_plan": "Pohjapiirros",
+        "map_display_floor_plan_only": "Vain pohjapiirros",
+        "map_display_floor_plan_without_texture": "Pohjapiirros ilman tekstuuria",
+        "map_display_standard": "Vakio",
+        "map_object_active_area": "Aktiivinen alue",
+        "map_object_active_cruise_point": "Aktiivinen kiertopiste (cruise point)",
+        "map_object_active_point": "Aktiivinen piste",
+        "map_object_animations": "Animaatiot",
+        "map_object_blocked_segment": "Estetyt huoneet",
+        "map_object_blocked_segments": "Estetyt huoneet",
+        "map_object_carpet": "Matto",
+        "map_object_charger": "Laturi",
+        "map_object_cleaning_sequence": "Siivousjärjestys",
+        "map_object_cruise_point": "Kiertopiste",
+        "map_object_curtain": "Verho",
+        "map_object_customized_cleaning": "Mukautettu siivous",
+        "map_object_deleted_carpet": "Poistettu matto",
+        "map_object_detected_carpet": "Havaittu matto",
+        "map_object_door": "Ovi",
+        "map_object_floor": "Lattia",
+        "map_object_floor_material": "Lattiamateriaali",
+        "map_object_furniture": "Huonekalu",
+        "map_object_furniture_image": "Huonekalujen kuvat",
+        "map_object_hidden_segments": "Piilotetut huoneet",
+        "map_object_icon": "Kuvake",
+        "map_object_ignored_obstacles": "Ohitetut esteet",
+        "map_object_impassable_threshold": "Läpipääsemättömät kynnykset",
+        "map_object_lock_indicator": "Lukituksen merkkivalo",
+        "map_object_low_lying_area": "Matalan välyksen alueet",
+        "map_object_material": "Lattiamateriaali",
+        "map_object_mop_path": "Mopin reitti",
+        "map_object_mop_type": "Mopin Tyyppi",
+        "map_object_name": "Nimi",
+        "map_object_name_background": "Nimen tausta",
+        "map_object_no_go": "Ei pääsyä",
+        "map_object_no_mop": "Ei moppausta",
+        "map_object_object_option": "Vaihtoehdot esineelle",
+        "map_object_obstacle": "Este",
+        "map_object_obstacle_background": "Esteen tausta",
+        "map_object_obstacle_color": "Esteen väri",
+        "map_object_order": "Järjestys",
+        "map_object_passable_threshold": "Ylitettävät kynnykset",
+        "map_object_path": "Reitti",
+        "map_object_pet": "Lemmikki",
+        "map_object_predefined_point": "Esimääritellyt pisteet",
+        "map_object_ramp": "Ramppi",
+        "map_object_router": "Reititin",
+        "map_object_segment": "Huone",
+        "map_object_segment_type": "Huoneen tyyppi",
+        "map_object_selected_segments": "Valitut huoneet",
+        "map_object_split_line": "Jakolinja",
+        "map_object_stain": "Tahra",
+        "map_object_station_status": "Aseman tila",
+        "map_object_vacuum": "Imuri",
+        "map_object_vacuum_status": "Imurin tila",
+        "map_object_virtual_threshold": "Virtuaaliset kynnykset",
+        "map_object_virtual_wall": "Virtuaaliseinät",
+        "map_object_walls": "Seinät",
+        "map_object_zoom_point": "Zoomauspiste",
+        "object_opacity": "Objektien peittävyys",
+        "object_scale": "Objektien mittakaava",
+        "opacity": "Peittävyys",
+        "override_colors": "Korvaa kartan värit",
+        "overlay_image": "Peittokuva",
+        "rotation": "Kierto",
+        "scale": "Skaalaa",
+        "scripts": "Skriptit",
+        "selectable_objects": "Valittavat objektit",
+        "selected_map_config": "%name% asetus",
+        "show_map_info": "Näytä karttatiedot",
+        "top": "Ylös",
+        "url": "URL-osoite",
+        "viewport": "Näkymä (Viewport)",
+        "width": "Leveys",
+        "zoom": "Zoomaus"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "Imurilla on aktiivinen tehtävä!",
+        "apply_changes_or_reload": "Kartta muuttui muokkauksen aikana!\nHaluatko tallentaa tekemäsi muutokset vai ladataan uudet tiedot?",
+        "auto_mount_mop_will_enabled": "Automaattinen mopin kiinnitys otetaan käyttöön!",
+        "backup_map": "Varmuuskopioidaanko kartta?",
+        "backup_map_will_overwritten": "Nykyinen varmuuskopioitu kartta korvataan!",
+        "bag_drying_will_stopped": "Pölytilan kuivaus lopetetaan!",
+        "carpet_recognition_will_enabled": "Matontunnistus on otettava käyttöön, jotta mukautetun matonpuhdistuksen voi ottaa asetuksita.",
+        "carpet_will_deleted": "Matto poistetaan!",
+        "cleangenius_will_disabled": "CleanGenius poistetaan käytöstä!",
+        "cleaning_failure": "Puhdistuksen epäonnistumisen syyt",
+        "create_map": "Luo uusi kartta?",
+        "custom_carpet_settings_will_enabled": "Mukautettu matonsiivous otetaan käyttöön!",
+        "custom_carpet_settings_will_enabled_detail": "Maton mukautetut siivousasetukset määritetään valittuun mattotyyppiin sopivaksi",
+        "customized_cleaning_disabled": "Mukautettu siivous on pois käytöstä!",
+        "delete_carpet": "Poista matto?",
+        "delete_dnd": "Poistetaanko DnD (Älä häiritse) -tehtävä?",
+        "delete_map": "Poista Kartta?",
+        "delete_schedule": "Poistetaanko ajastettu tehtävä?",
+        "delete_shortcut": "Poista pikakuvake?",
+        "deleted": "Poistettu onnistuneesti",
+        "device_unavailable": "Laitetta ei saatavilla",
+        "disable_cleangenius": "Poista Cleangenius käytöstä?",
+        "dnd_confliction": "DnD-tehtävän Ristiriita!",
+        "dnd_confliction_detail": "Ajastettu tehtävä on asetettu 'Älä häiritse' -aikajaksolle.",
+        "dnd_will_deleted": "DnD-tehtävä ajalla %start% – %end% tullaan poistamaan!",
+        "dock_in_restricted_area": "Telakka on kielletyllä alueella!",
+        "dock_in_restricted_area_detail": "Lataustelakka sijaitsee kielletyllä alueella. Jos jatkat kartan tallentamista, robotti ei ehkä pysty lataamaan itseään.",
+        "drying_will_stopped": "Mopin kuivaus keskeytetään!",
+        "dust_collection_not_performed": "Pölynkeräystä (Auto-empty) ei suoriteta\nRobotti ei suorita automaattisia tyhjennystehtäviä DnD-jakson (älä häiritse -tilan) aikana.",
+        "enable_auto_mount_mop": "Ota käyttöön automaattinen mopin asennus?",
+        "enable_carpet_recognition": "Matontunnistus otetaan käyttöön!",
+        "enable_customized_cleaning": "Haluatko ottaa mukautetun siivouksen käyttöön?",
+        "enable_mop_change": "Haluatko ottaa automaattisen mopin vaihdon käyttöön?",
+        "enable_task": "Haluatko ottaa tehtävän käyttöön?",
+        "entity_is_required": "Entiteetti vaaditaan",
+        "entity_not_available": "Entiteetti ei ole saatavilla",
+        "failed_to_load_card": "Kortin lataaminen epäonnistui",
+        "ignore_obstacle": "Sivuuta Este?",
+        "invalid_entity": "Virheellinen entiteetti",
+        "map_backup": "Kartan varmuuskopiointi käynnissä",
+        "map_backup_failed": "Kartan varmuuskopiointi epäonnistui!",
+        "map_backup_success": "Kartan varmuuskopiointi valmistui",
+        "map_recovery": "Kartan palautus käynnissä",
+        "map_recovery_failed": "Kartan palautus epäonnistui!",
+        "map_recovery_success": "Kartan palautus valmistui",
+        "map_will_deleted": "%name% poistetaan!",
+        "map_will_replaced": "Valittuna oleva kartta vaihdetaan uuteen karttaan!",
+        "map_will_restored": "Tallennettu kartta palautetaan sen tilaan aikana %date%",
+        "mapping_started": "Kartoitus alkoi...",
+        "mop_change_disabled": "Automaattinen mopin vaihto on poistettu käytöstä!",
+        "mop_wash_frequency_low": "Moppauspesun taajuus on liian alhainen!",
+        "mop_wash_frequency_will_increased": "Varmistaaksemme, että moppi on tarpeeksi märkä, mopin pesutaajuutta nostetaan automaattisesti",
+        "not_available": "Ei saatavilla juuri nyt...",
+        "not_fully_supported": "Ei vielä täysin tuettu!",
+        "not_supported": "Ei vielä tuettu!",
+        "obstacle_will_ignored": "Este sivuutetaan!",
+        "override_changes": "Ylitä muutokset?",
+        "preview": "Tämä on Dreame Vacuum -kortin esikatselu",
+        "recommended_areas": "Suositellut alueet",
+        "relocating": "Määrittää sijaintia. Odota.",
+        "relocating_completed": "Itsepaikannus onnistui. Robotti jatkaa työtä.",
+        "relocating_failed": "Sijainnin asettaminen epäonnistui!",
+        "replace_map": "Korvaa uusi kartta?",
+        "reset_usage": "Nollaa käyttö?",
+        "reset_walls": "Nollaa seinät?",
+        "restore_map": "Palauta %name%?",
+        "resume_cleaning": "Robotti jatkaa automaattisesti kesken jääneitä siivoustehtäviä ladattuaan akkunsa 80 %:iin.",
+        "resume_cleaning_not_performed": "Robotti jatkaa puhdistusta DnD-jakson (älä-häiritse tilan) päätyttyä.",
+        "resume_cleaning_time": "Siivous alkaa %time%",
+        "save_changes": "Tallenna muutokset?",
+        "saved": "Tallennettu onnistuneesti",
+        "schedule_will_deleted": "Ajastettu tehtävä kello %time% poistetaan!",
+        "select_map": "Valitse %name%?",
+        "select_mapping_type": "Valitse kartoituksen tyyppi",
+        "select_room": "Valitse huone asettaaksesi piivousjärjestyksen",
+        "selected_map_will_changed": "Valittu kartta muutetaan muotoon %name%!",
+        "service_call_failed": "Palvelukutsu epäonnistui",
+        "settings_will_applied": "Asetuksesi otetaan käyttöön seuraavassa tehtävässä.",
+        "shortcut_will_deleted": "%name% poistetaan!",
+        "stop_bag_drying": "Lopetetaanko Pölypussin Kuivaus?",
+        "stop_drying": "Lopeta Kuivaus?",
+        "stop_task": "Lopeta nykyinen tehtävä?",
+        "task_disabled": "Tehtävä on poistettu käytöstä!",
+        "task_will_stopped": "Nykyinen tehtävä pysäytetään!",
+        "unsaved_changes_present": "Sinulla on tallentamattomia muutoksia, jotka menetetään!",
+        "unsupported_browser": "Selainta Ei Tueta!",
+        "usage_will_reset": "%name% käyttö (tilastot) nollataan!",
+        "walls_will_be_reset": "Seinät palautetaan niiden alkuperäiselle kartoitetulle sijainnille!"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "Lisävarusteiden Käyttö",
+        "add_furniture": "Lisää Huonekalu",
+        "audio_settings": "Ääniasetukset",
+        "battery_management": "Akun Hallinta",
+        "carpet_settings": "Maton Asetukset",
+        "clean_water_tank": "Puhdasvesisäiliö",
+        "cleaning_details": "Siivouksen Yksityiskohdat",
+        "cleaning_history": "Siivoushistoria",
+        "cleaning_sequence": "Siivousjärjestys",
+        "created_carpet": "Manuaalisesti Luotu Matto",
+        "cruising": "Risteily",
+        "cruising_details": "Risteilytiedot",
+        "cruising_history": "Risteilyhistoria",
+        "customized_cleaning": "Mukautettu Puhdistus",
+        "description": "Käyttöliittymä integraatiota %name% varten",
+        "detected_carpet": "Automaattisesti Havaittu Matto",
+        "detergent": "Pesuaine",
+        "device_information": "Laitetiedot",
+        "device_settings": "Laitteen Asetukset",
+        "dnd": "Älä Häiritse -tila",
+        "dnd_task": "DND-Tehtävä",
+        "dust_bag": "Pölypussi",
+        "global_carpet_settings": "Mattojen Yleisasetukset",
+        "invalid": "virheellinen",
+        "locate": "Paikanna",
+        "map": "Kartta",
+        "map_edit": "Muokkaa Karttaa",
+        "map_management": "Kartan Hallinta",
+        "map_name_placeholder": "Kartta %index%",
+        "mop_type": "Mopin Tyyppi",
+        "mopping_settings": "Moppausasetukset",
+        "more_functions": "Lisää Toimintoja",
+        "name": "%name% Kortti",
+        "new_map": "Uusi Kartta",
+        "obstacle": "Este",
+        "obstacle_settings": "Kameran ja Esteiden Asetukset",
+        "recovery_map_list": "Kartan Palautus",
+        "remote_control": "Kaukosäädin",
+        "saved_map": "Tallennettu Kartta",
+        "schedule_list": "Ajastettu Siivous",
+        "scheduled_room": "Ajastettu huonekohtainen siivous",
+        "scheduled_spot": "Ajastettu paikallinen siivous",
+        "scheduled_task": "Ajastettu Tehtävä",
+        "scheduled_zone": "Ajastettu aluekohtainen siivous",
+        "segment_name_placeholder": "Huone %index%",
+        "shortcut": "Pikakuvake",
+        "shortcut_list": "Pikakuvakkeet",
+        "shortcut_map": "Pikakuvakekartta",
+        "shortcut_name_placeholder": "Pikakuvake %index%",
+        "shortcut_task": "Pikakuvaketehtävä",
+        "task": "Tehtävä %index%",
+        "task_placeholder": "Tehtävä %index%",
+        "time_left": "Aikaa jäljellä: %time%",
+        "unavailable": "Ei Saatavilla",
+        "used_water_tank": "Likavesisäiliö",
+        "wall": "Seinät",
+        "wifi_map": "WiFi Kartta"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "Puhdista huone",
+      "description": "Aloita puhdistustoiminto valituissa huoneissa.",
+      "fields": {
+        "segments": {
+          "name": "Huoneet",
+          "description": "Lista siivottavista huoneista. Vain huoneen tunnus tai taulukko, joka sisältää huoneen tunnuksen, siivouskerrat, tuulettimen nopeuden ja moppaustilan, joilla ohitetaan huoneen oletusasetukset."
+        },
+        "repeats": {
+          "name": "Toistot",
+          "description": "Siivouskertojen määrä kullekin valitulle huoneelle (ellei sitä ole ohitettu mukautetun siivouksen parametrilla)."
+        },
+        "suction_level": {
+          "name": "Imuteho",
+          "description": "Tuulettimen nopeus kullekin valitulle huoneelle (ellei sitä ole ohitettu mukautetun siivouksen parametrilla)."
+        },
+        "water_volume": {
+          "name": "Veden määrä",
+          "description": "Veden määrä kullekin valitulle huoneelle (ellei sitä ole ohitettu mukautetun siivouksen parametrilla)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "Puhdista alue",
+      "description": "Aloita puhdistustoiminto valitulla alueella.",
+      "fields": {
+        "zone": {
+          "name": "Alue",
+          "description": "Koordinaatit."
+        },
+        "repeats": {
+          "name": "Toistot",
+          "description": "Puhdistuskertojen määrä kullekin valitulle alueelle."
+        },
+        "suction_level": {
+          "name": "Imuteho",
+          "description": "Tuulettimen nopeus kullekin valitulle alueelle."
+        },
+        "water_volume": {
+          "name": "Veden määrä",
+          "description": "Veden määrä kullekin valitulle alueelle."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "Puhdista kohta",
+      "description": "Aloita puhdistustoiminto valituissa kartan pisteissä.",
+      "fields": {
+        "points": {
+          "name": "Pisteet",
+          "description": "Luettelo puhdistettavista koordinaateista."
+        },
+        "repeats": {
+          "name": "Toistot",
+          "description": "Puhdistuskertojen lukumäärä kullekin valitulle alueelle."
+        },
+        "suction_level": {
+          "name": "Imuteho",
+          "description": "Tuulettimen nopeus kullekin valitulle alueelle."
+        },
+        "water_volume": {
+          "name": "Veden määrä",
+          "description": "Veden määrä kullekin valitulle alueelle."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "Mene kohteeseen",
+      "description": "Mene kartan koordinaattiin ja pysähdy.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Pisteen X-koordinaatti."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Pisteen Y-koordinaatti."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "Seuraa reittiä",
+      "description": "Seuraa kartalla olevien koordinaattien luetteloa ja palaa tukikohtaan. (Tuettu vain kameroilla varustetuissa imureissa)",
+      "fields": {
+        "points": {
+          "name": "Pisteet",
+          "description": "Reitin koordinaattien luettelo."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "Käynnistä pikakuvake",
+      "description": "Aloita pikakuvaketehtävä. (Vain tuetuilla laitteilla)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Pikakuvakkeen ID",
+          "description": "Pikakuvakkeen ID."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "Kaukosäätimen Siirtoaskel",
+      "description": "Siirrä bottia yksi askel kaukosäätimellä.",
+      "fields": {
+        "rotation": {
+          "name": "Kääntyminen",
+          "description": "Käänny binääriasteina väliltä -128 - 128."
+        },
+        "velocity": {
+          "name": "Nopeus",
+          "description": "Liikkumisnopeus, 100 (eteenpäin) asteikolta -300 (taaksepäin)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "Asenna Äänipaketti",
+      "description": "Asenna virallinen tai mukautettu äänipaketti.",
+      "fields": {
+        "lang_id": {
+          "name": "Kielen ID",
+          "description": "Tämän paketin kielen ID (Language ID)."
+        },
+        "url": {
+          "name": "URL",
+          "description": "Tämän paketin URL-osoite, sen pitäisi olla imuribotin tavoitettavissa."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "Kielipaketin tarkistussumma eli MD5-tarkistus."
+        },
+        "size": {
+          "name": "Koko",
+          "description": "Kielipaketin koko tavuina."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "Pyydä Karttaa",
+      "description": "Pyydä karttatietoja"
+    },
+    "vacuum_select_map": {
+      "name": "Valitse Kartta",
+      "description": "Valitse nykyinen kartta. Käytetään, kun on useita karttoja/kerroksia.",
+      "fields": {
+        "map_id": {
+          "name": "Kartan ID",
+          "description": "Valittavan kartan ID."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "Poista kartta",
+      "description": "Poista kartta.",
+      "fields": {
+        "map_id": {
+          "name": "Kartan ID",
+          "description": "Poistettavan kartan ID."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "Tallenna väliaikainen kartta",
+      "description": "Tallenna väliaikainen kartta."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "Hylkää väliaikainen kartta",
+      "description": "Hylkää väliaikainen kartta."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "Korvaa Väliaikainen Kartta",
+      "description": "Korvaa väliaikainen kartta toisella tallennetulla kartalla.",
+      "fields": {
+        "map_id": {
+          "name": "Kartan ID",
+          "description": "Kartan ID, jolla se korvataan."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "Nimeä kartta uudelleen",
+      "description": "Nimeä kartta uudelleen.",
+      "fields": {
+        "map_id": {
+          "name": "Kartan ID",
+          "description": "Kartan ID."
+        },
+        "map_name": {
+          "name": "Kartan Nimi",
+          "description": "Kartan uusi nimi."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "Palauta Kartta",
+      "description": "Palauta kartta.",
+      "fields": {
+        "map_id": {
+          "name": "Kartan ID",
+          "description": "Palautettavan kartan ID."
+        },
+        "recovery_map_index": {
+          "name": "Palautuskartan indeksi",
+          "description": "Tallennetun palautuskartan indeksi"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "Palauta Kartta Tiedostosta",
+      "description": "Palauta kartta tiedostosta.",
+      "fields": {
+        "map_id": {
+          "name": "Kartan ID",
+          "description": "Palautettavan kartan ID."
+        },
+        "file_url": {
+          "name": "Tiedoston Url-osoite",
+          "description": "Tallennetun tbz2.gz- tai tar.gz-tiedoston URL-osoite"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "Varmuuskopioi Kartta",
+      "description": "Varmuuskopioi kartta pilveen.",
+      "fields": {
+        "map_id": {
+          "name": "Kartan ID",
+          "description": "Palautettavan kartan ID."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Yhdistä huoneet",
+      "description": "Yhdistä huoneita.",
+      "fields": {
+        "map_id": {
+          "name": "Kartan ID",
+          "description": "Kartan ID."
+        },
+        "segments": {
+          "name": "Huoneet",
+          "description": "Huoneidein ID:t (Tunnukset)."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Jaa Huoneet",
+      "description": "Jaa huoneita kokonaisuudesta.",
+      "fields": {
+        "map_id": {
+          "name": "Kartan ID",
+          "description": "Kartan ID."
+        },
+        "segment": {
+          "name": "Huone",
+          "description": "Huoneen ID."
+        },
+        "line": {
+          "name": "Linja",
+          "description": "Jaa viivan koordinaatit."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "Nimeä Huone Uudelleen",
+      "description": "Nimeä huone (segmentti) uudelleen.",
+      "fields": {
+        "segment_id": {
+          "name": "Huoneen ID",
+          "description": "Huoneen (segmentin) ID"
+        },
+        "segment_name": {
+          "name": "Huoneen (segmentin) Nimi",
+          "description": "Huoneen (segmentin) uusi nimi"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "Aseta Siivousjärjestys",
+      "description": "Aseta huoneen siivousjärjestys. (Vain tuetuilla laitteilla)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "Siivousjärjestys",
+          "description": "Siivousjärjestyksien luettelo huoneiden ID-numeroina."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "Aseta Mukautettu Puhdistus",
+      "description": "Aseta mukautetut puhdistusparametrit. (Vain tuetuilla laitteilla)",
+      "fields": {
+        "segment_id": {
+          "name": "Huoneen ID",
+          "description": "Huoneen tunnukset (ID:t)."
+        },
+        "suction_level": {
+          "name": "Imuteho",
+          "description": "Imuteho kullekin huoneelle."
+        },
+        "water_volume": {
+          "name": "Veden määrä",
+          "description": "Veden määrä jokaiselle huoneelle."
+        },
+        "wetness_level": {
+          "name": "Kosteustaso",
+          "description": "Kosteustaso kullekin huoneelle (tuetuilla laitteilla)."
+        },
+        "cleaning_mode": {
+          "name": "Siivoustila",
+          "description": "Puhdistus jokaiselle huoneelle (tuetaan vain niissä imureissa, joissa on mopityynyn nosto-ominaisuus)."
+        },
+        "repeats": {
+          "name": "Toistot",
+          "description": "Puhdistuskertojen (Määrän) määritttäminen jokaiselle huoneelle."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Aseta Mukautettu Maton Puhdistus",
+      "description": "Aseta mattojen mukautettu puhdistusasetus. (Vain tuetuilla laitteilla)",
+      "fields": {
+        "id": {
+          "name": "Maton ID",
+          "description": "Maton tunnukset (ID:t)."
+        },
+        "type": {
+          "name": "Objektin tyyppi",
+          "description": "Objektin tyyppi tunnuksineen. (0 = Automaattisesti havaittu matto, 1 = Manuaalisesti luotu matto, 2 = Huoneen matto (jos tuettu))"
+        },
+        "carpet_cleaning": {
+          "name": "Mattojen puhdistus",
+          "description": "Mukautetut matonpuhdistusasetukset jokaiselle matolle."
+        },
+        "carpet_preferences": {
+          "name": "Maton Asetukset",
+          "description": "Mukautetut mattoasetukset asetetaan kullekin matolle käytössä olevien asetusten taulukon avulla."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Aseta Rajoitettu Alue",
+      "description": "Määritä virtuaaliset seinät, kielletyt alueet ja/tai alueet, joilla ei saa mopata.",
+      "fields": {
+        "walls": {
+          "name": "Seinät",
+          "description": "Virtuaaliseinät."
+        },
+        "zones": {
+          "name": "Alueet",
+          "description": "Kielletyt alueet."
+        },
+        "no_mops": {
+          "name": "Ei Moppausta",
+          "description": "Ei moppausta -alueet."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "Nollaa Kulutusosat",
+      "description": "Nollaa kulutusosat/tarvikkeet.",
+      "fields": {
+        "consumable": {
+          "name": "Kulutustarvike",
+          "description": "Kulutusosan/Tarvikkeen tyyppi."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "Nimeä Pikakuvake Uudelleen",
+      "description": "Nimeä pikakuvake uudelleen. (Vain tuetuilla laitteilla)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Pikakuvakkeen ID",
+          "description": "Pikakuvakkeen ID."
+        },
+        "shortcut_name": {
+          "name": "Pikakuvakkeen Nimi",
+          "description": "Pikakuvakkeen uusi nimi."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "Poista Pikakuvake",
+      "description": "Poista pikakuvake. (Vain tuetuilla laitteilla)",
+      "fields": {
+        "shortcut_id": {
+          "name": "Pikakuvakkeen ID",
+          "description": "Pikakuvakkeen ID."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Aseta mattoalue",
+      "description": "Määritä matot ja ohitetut matot. (Vain tuetuilla laitteilla)",
+      "fields": {
+        "carpets": {
+          "name": "Matot",
+          "description": "Mattoalueet."
+        },
+        "deleted_carpets": {
+          "name": "Sivuutetut matot",
+          "description": "Sivuutetut (ohitetut) mattoalueet automaattisesti havaittujen mattojen poistamiseksi."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "Aseta virtuaalikynnys",
+      "description": "Määritä virtuaaliset kynnykset.",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "Virtuaaliset Kynnykset",
+          "description": "Virtuaalikynnyksen viivan koordinaatit."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Aseta ennalta määritetyt pisteet",
+      "description": "Määritä ennalta määritellyt koordinaatit nykyiselle kartalle. (Tuettu vain kameroilla varustetuissa imureissa)",
+      "fields": {
+        "points": {
+          "name": "Pisteet",
+          "description": "Luettelo tallennettavista koordinaateista."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "Määritä esteen ohittaminen (sivuuttaminen)",
+      "description": "Aseta esteen sivuutustila. (Tuettu vain imureilla, joissa on AI-esteiden tunnistusominaisuus)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Esteen X-Koordinaatti."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Esteen Y-Koordinaatti."
+        },
+        "obstacle_ignored": {
+          "name": "Este ohitettu (sivuutettu)",
+          "description": "Onko este sivuutettatu (ohitettu) vai ei."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Aseta reitittimen sijainti",
+      "description": "Aseta reitittimen sijainti nykyiselle kartalle. (Tuettu vain laitteissa, joissa on WiFi-karttaominaisuus)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "Reitittimen X-koordinaatti."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Reitittimen Y-koordinaatti."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "Valitse edellinen",
+      "description": "Valitse entiteetin edelliset vaihtoehdot.",
+      "fields": {
+        "cycle": {
+          "name": "Sykli",
+          "description": "Jos vaihtoehdon tulisi kiertää (toistaa) ensimmäisestä viimeiseen."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "Valitse ensimmäinen",
+      "description": "Valitse entiteetin ensimmäinen vaihtoehto."
+    },
+    "select_select_last": {
+      "name": "Valitse viimeinen",
+      "description": "Valitse entiteetin viimeinen vaihtoehto."
+    },
+    "select_select_next": {
+      "name": "Valitse seuraava",
+      "description": "Valitse entiteetin seuraavat vaihtoehdot.",
+      "fields": {
+        "cycle": {
+          "name": "Sykli",
+          "description": "Jos vaihtoehdon tulisi kiertää (toistaa) ensimmäisestä viimeiseen."
+        }
+      }
+    }
+  }
+}

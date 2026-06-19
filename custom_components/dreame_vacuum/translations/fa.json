@@ -1,0 +1,2438 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "دستگاه از قبل پیکربندی شده است",
+      "cannot_connect": "اتصال برقرار نشد.",
+      "reauth_successful": "احراز هویت مجدد موفقیت‌آمیز بود"
+    },
+    "error": {
+      "cannot_connect": "اتصال برقرار نشد.",
+      "unsupported": "دستگاه پشتیبانی نمی‌شود",
+      "wrong_token": "خطای چک‌سام، توکن اشتباه است",
+      "2fa_failed": "تأیید ناموفق بود.",
+      "wrong_captcha": "کپچای اشتباه.",
+      "credentials_incomplete": "اطلاعات ورود ناقص است، لطفاً نام کاربری، رمز عبور و کشور را وارد کنید.",
+      "login_error": "ورود به سیستم انجام نشد، اطلاعات را بررسی کنید.",
+      "no_devices": "هیچ دستگاه پشتیبانی‌شده‌ای در این حساب در کشور انتخاب‌شده یافت نشد.{devices}",
+      "2fa_send_failed": "ارسال کد تایید با شکست مواجه شد. لطفا دوباره تلاش کنید.",
+      "2fa_limit_reached": "حد مجاز روزانه برای ارسال کدهای تایید به پایان رسیده است. لطفاً فردا دوباره تلاش کنید.",
+      "2fa_cooldown_active": "تعداد درخواست‌های پیاپی بسیار زیاد است. لطفاً قبل از تلاش مجدد چند دقیقه صبر کنید."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "نوع پیکربندی"
+        },
+        "description": "ویژگی نقشه به اتصال ابری نیاز دارد و پیکربندی خودکار را ارائه می‌دهد. اگر نمی‌خواهید از ویژگی نقشه استفاده کنید، می‌توانید پیکربندی دستی را انتخاب کنید."
+      },
+      "local": {
+        "data": {
+          "host": "میزبان (Host)",
+          "token": "توکن"
+        },
+        "description": "شما به یک توکن API با 32 کاراکتر نیاز دارید."
+      },
+      "mi": {
+        "data": {
+          "username": "نام کاربری",
+          "password": "رمز عبور",
+          "country": "کشور سرور",
+          "prefer_cloud": "ترجیح اتصال ابری"
+        },
+        "description": "ورود به فضای ابری Xiaomi Miio."
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "کد تأیید دومرحله‌ای"
+        },
+        "description": "## تایید امنیتی لازم است\nیک کد تایید به {dest} ارسال شد. لطفا کد را در زیر وارد کنید."
+      },
+      "captcha": {
+        "data": {
+          "code": "کد"
+        },
+        "description": "## تأیید کپچا الزامی است.\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "نام کاربری",
+          "password": "رمز عبور",
+          "country": "کشور سرور"
+        },
+        "description": "ورود به فضای ابری Dreamehome."
+      },
+      "mova": {
+        "data": {
+          "username": "نام کاربری",
+          "password": "رمز عبور",
+          "country": "کشور سرور"
+        },
+        "description": "ورود به فضای ابری Movahome."
+      },
+      "trouver": {
+        "data": {
+          "username": "نام کاربری",
+          "password": "رمز عبور",
+          "country": "کشور سرور"
+        },
+        "description": "ورود به فضای ابری Trouver."
+      },
+      "devices": {
+        "data": {
+          "devices": "دستگاه‌های پشتیبانی‌شده"
+        },
+        "description": "لطفاً جاروبرقی Dreame مورد نظر برای راه‌اندازی را انتخاب کنید."
+      },
+      "donation": {
+        "data": {
+          "donated": "حمایت مالی شده"
+        },
+        "description": "## حمایت از این پروژه را فراموش نکنید.{text}"
+      },
+      "options": {
+        "data": {
+          "name": "نام",
+          "color_scheme": "طرح رنگ نقشه",
+          "icon_set": "مجموعه نمادهای نقشه",
+          "notify": "اعلان‌ها",
+          "hidden_map_objects": "اشیاء پنهان نقشه",
+          "low_resolution": "نقشه با وضوح پایین",
+          "square": "نقشه مربعی"
+        }
+      },
+      "reauth_confirm": {
+        "description": "ادغام جاروبرقی Dreame برای به‌روزرسانی توکن یا افزودن اطلاعات ابری گم‌شده نیاز به احراز هویت مجدد حساب شما دارد.",
+        "title": "احراز هویت مجدد ادغام"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "طرح رنگ نقشه",
+          "icon_set": "مجموعه نمادهای نقشه",
+          "notify": "اعلان‌ها",
+          "hidden_map_objects": "اشیاء پنهان نقشه",
+          "low_resolution": "نقشه با وضوح پایین",
+          "square": "نقشه مربعی",
+          "configuration_type": "نوع پیکربندی",
+          "prefer_cloud": "ترجیح اتصال ابری",
+          "donated": "حمایت مالی شده"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "اطلاعات ابری ناقص است، لطفاً نام کاربری، رمز عبور و کشور را وارد کنید"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "name": "سطح مکش",
+        "state": {
+          "quiet": "آرام",
+          "standard": "استاندارد",
+          "strong": "قوی",
+          "turbo": "توربو",
+          "full_power": "حداکثر قدرت"
+        }
+      },
+      "water_volume": {
+        "name": "حجم آب",
+        "state": {
+          "low": "کم",
+          "medium": "متوسط",
+          "high": "زیاد"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "رطوبت پد طی",
+        "state": {
+          "slightly_dry": "کمی خشک",
+          "moist": "مرطوب",
+          "wet": "خیس"
+        }
+      },
+      "cleaning_mode": {
+        "name": "حالت تمیز کردن",
+        "state": {
+          "sweeping": "جارو کردن",
+          "mopping": "طی کشیدن",
+          "sweeping_and_mopping": "جارو و طی کشیدن",
+          "mopping_after_sweeping": "طی کشیدن پس از جارو کردن"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "حساسیت فرش",
+        "state": {
+          "low": "کم",
+          "medium": "متوسط",
+          "high": "زیاد"
+        }
+      },
+      "carpet_cleaning": {
+        "name": "تمیز کردن فرش",
+        "state": {
+          "avoidance": "اجتناب",
+          "adaptation": "تطبیق",
+          "remove_mop": "برداشتن طی",
+          "adaptation_without_route": "تطبیق بدون مسیر",
+          "vacuum_and_mop": "جارو و طی",
+          "ignore": "نادیده گرفتن",
+          "cross": "عبور"
+        }
+      },
+      "mop_wash_level": {
+        "name": "حالت شستشوی طی",
+        "state": {
+          "water_saving": "صرفه‌جویی در آب",
+          "daily": "روزانه",
+          "deep": "عمیق",
+          "ultra_clean_mode": "بسیار تمیز"
+        }
+      },
+      "mopping_type": {
+        "name": "نوع طی کشیدن",
+        "state": {
+          "accurate": "دقیق",
+          "daily": "روزانه",
+          "deep": "عمیق"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "پوشش گسترده‌تر گوشه‌ها",
+        "state": {
+          "off": "خاموش",
+          "high_frequency": "فرکانس بالا",
+          "low_frequency": "فرکانس پایین"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "نوسان پد طی",
+        "state": {
+          "off": "خاموش",
+          "auto": "خودکار",
+          "daily": "روزانه",
+          "weekly": "هفتگی"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "دفعات گسترش طی",
+        "state": {
+          "standard": "استاندارد",
+          "intelligent": "هوشمند",
+          "high": "زیاد"
+        }
+      },
+      "floor_material": {
+        "name": "جنس کف",
+        "state": {
+          "none": "هیچ‌کدام",
+          "tile": "کاشی",
+          "wood": "چوب",
+          "low_pile_carpet": "فرش پرز کوتاه",
+          "medium_pile_carpet": "فرش پرز متوسط",
+          "carpet": "فرش"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "زبان دستیار صوتی",
+        "state": {
+          "default": "پیش‌فرض",
+          "english": "انگلیسی",
+          "german": "آلمانی",
+          "chinese": "چینی",
+          "russian": "روسی",
+          "italian": "ایتالیایی",
+          "french": "فرانسوی",
+          "korean": "کره‌ای"
+        }
+      },
+      "mop_pressure": {
+        "name": "فشار طی",
+        "state": {
+          "light": "سبک",
+          "normal": "معمولی"
+        }
+      },
+      "mop_temperature": {
+        "name": "دمای طی",
+        "state": {
+          "normal": "معمولی",
+          "warm": "گرم"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "فرکانس مناطق کم‌ارتفاع",
+        "state": {
+          "weekly": "هفتگی",
+          "daily": "روزانه"
+        }
+      },
+      "scraper_frequency": {
+        "name": "فرکانس تیغه",
+        "state": {
+          "off": "خاموش",
+          "weekly": "هفتگی",
+          "daily": "روزانه"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "پوشش خودکار LDS",
+        "state": {
+          "off": "خاموش",
+          "security": "امنیت",
+          "extreme": "شدید"
+        }
+      },
+      "order": {
+        "name": "ترتیب",
+        "state": {
+          "not_set": "تنظیم نشده"
+        }
+      },
+      "self_clean_frequency": {
+        "name": "دفعات خودتمیزکاری",
+        "state": {
+          "by_area": "بر اساس مساحت",
+          "by_time": "بر اساس زمان",
+          "by_room": "بر اساس اتاق",
+          "intelligent": "هوشمند"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "دفعات شستشوی طی",
+        "state": {
+          "by_room": "بر اساس اتاق",
+          "5sqm": "پنج متر مربع",
+          "8sqm": "هشت متر مربع",
+          "10sqm": "ده متر مربع",
+          "15sqm": "پانزده متر مربع",
+          "20sqm": "بیست متر مربع",
+          "25sqm": "بیست و پنج متر مربع",
+          "86sqf": "هشتاد و شش فوت مربع",
+          "108sqf": "صد و هشت فوت مربع",
+          "54sqf": "پنجاه و چهار فوت مربع",
+          "162sqf": "صد و شصت و دو فوت مربع",
+          "216sqf": "دویست و شانزده فوت مربع",
+          "270sqf": "دویست و هفتاد فوت مربع"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "حالت تخلیه خودکار",
+        "state": {
+          "off": "خاموش",
+          "standard": "استاندارد",
+          "high_frequency": "فرکانس بالا",
+          "low_frequency": "فرکانس پایین",
+          "custom_frequency": "فرکانس سفارشی",
+          "intelligent": "هوشمند"
+        }
+      },
+      "floor_material_direction": {
+        "name": "جهت تمیزکاری کف",
+        "state": {
+          "vertical": "عمودی",
+          "horizontal": "افقی"
+        }
+      },
+      "visibility": {
+        "name": "قابلیت مشاهده",
+        "state": {
+          "visible": "قابل مشاهده",
+          "hidden": "پنهان"
+        }
+      },
+      "cleangenius": {
+        "name": "Cleangenius",
+        "state": {
+          "off": "خاموش",
+          "routine_cleaning": "تمیزکاری روزمره",
+          "deep_cleaning": "تمیزکاری عمیق"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "حالت Cleangenius",
+        "state": {
+          "vacuum_and_mop": "جارو و طی",
+          "mop_after_vacuum": "طی پس از جارو"
+        }
+      },
+      "washing_mode": {
+        "name": "حالت شستشوی طی",
+        "state": {
+          "smart": "هوشمند",
+          "light": "سبک",
+          "standard": "استاندارد",
+          "deep": "عمیق",
+          "ultra_washing": "شستشوی اولترا"
+        }
+      },
+      "water_temperature": {
+        "name": "دمای آب",
+        "state": {
+          "normal": "معمولی",
+          "mild": "ملایم",
+          "warm": "گرم",
+          "hot": "داغ",
+          "max": "حداکثر"
+        }
+      },
+      "auto_recleaning": {
+        "name": "تمیزکاری مجدد خودکار",
+        "state": {
+          "off": "خاموش",
+          "in_deep_mode": "در حالت عمیق",
+          "in_all_modes": "در تمام حالت‌ها"
+        }
+      },
+      "auto_rewashing": {
+        "name": "شستشوی مجدد خودکار",
+        "state": {
+          "off": "خاموش",
+          "in_deep_mode": "در حالت عمیق",
+          "in_all_modes": "در تمام حالت‌ها"
+        }
+      },
+      "cleaning_route": {
+        "name": "مسیر تمیزکاری",
+        "state": {
+          "quick": "سریع",
+          "standard": "استاندارد",
+          "intensive": "فشرده",
+          "deep": "عمیق"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "مسیر سفارشی طی",
+        "state": {
+          "off": "خاموش",
+          "standard": "استاندارد",
+          "intensive": "فشرده",
+          "deep": "عمیق"
+        }
+      },
+      "task_type": {
+        "name": "نوع وظیفه",
+        "state": {
+          "go_to": "رفتن به نقطه",
+          "segment": "تمیز کردن اتاق",
+          "all": "تمیز کردن کل",
+          "zone": "تمیز کردن منطقه",
+          "spot": "تمیز کردن نقطه‌ای"
+        }
+      },
+      "cleaning_times": {
+        "name": "تعداد دفعات تمیز کردن",
+        "state": {
+          "x1": "یک بار",
+          "x2": "دو بار",
+          "x3": "سه بار"
+        }
+      },
+      "auto_empty_frequency": {
+        "name": "فرکانس تخلیه خودکار",
+        "state": {
+          "x1": "پس از هر وظیفه",
+          "x2": "پس از دو بار تمیزکاری",
+          "x3": "پس از سه بار تمیزکاری"
+        }
+      },
+      "drying_time": {
+        "name": "زمان خشک شدن",
+        "state": {
+          "silent": "بی‌صدا"
+        }
+      },
+      "battery_charge_level": {
+        "name": "سطح شارژ باتری"
+      },
+      "object_type": {
+        "name": "نوع شیء",
+        "state": {
+          "predefined_point": "نقطه از پیش تعریف شده",
+          "low_lying_area": "منطقه کم‌ارتفاع",
+          "curtain": "پرده",
+          "threshold": "آستانه در",
+          "furniture": "مبلمان",
+          "carpet": "فرش",
+          "restricted": "منطقه ممنوعه"
+        }
+      },
+      "edit_type": {
+        "name": "نوع ویرایش",
+        "state": {
+          "door": "ویرایش درها",
+          "split": "تقسیم اتاق‌ها",
+          "merge": "ادغام اتاق‌ها",
+          "visibility": "نمایش اتاق",
+          "material": "جنس کف",
+          "type": "نام اتاق",
+          "wall": "ویرایش دیوارها"
+        }
+      },
+      "map_type": {
+        "name": "نوع نقشه",
+        "state": {
+          "cleaning": "نقشه تمیزکاری",
+          "history": "جزئیات تمیزکاری",
+          "wifi": "نقشه Wi-Fi"
+        }
+      },
+      "carpet_type": {
+        "name": "نوع فرش",
+        "state": {
+          "medium_pile": "پرز متوسط تا بلند",
+          "low_pile": "پرز کوتاه",
+          "floor_mat": "پادری",
+          "other": "سایر"
+        }
+      },
+      "mop_type": {
+        "name": "نوع طی",
+        "state": {
+          "a": "طی A",
+          "b": "طی B",
+          "c": "طی C"
+        }
+      },
+      "carpet_shape": {
+        "name": "شکل",
+        "state": {
+          "square": "مربع",
+          "round": "گرد"
+        }
+      },
+      "mopping_pattern": {
+        "name": "الگوی طی کشیدن",
+        "state": {
+          "daily": "طی کشیدن روزانه",
+          "deep": "طی کشیدن عمیق"
+        }
+      },
+      "wetness_level": {
+        "name": "میزان خیسی",
+        "state": {
+          "slightly_dry": "کمی خشک",
+          "moist": "مرطوب",
+          "wet": "خیس"
+        }
+      },
+      "task_repeats": {
+        "name": "تکرار وظیفه",
+        "state": {
+          "once": "یک‌بار",
+          "daily": "روزانه",
+          "workdays": "روزهای کاری",
+          "weekends": "آخر هفته‌ها"
+        }
+      },
+      "segment_name": {
+        "name": "نام اتاق",
+        "state": {
+          "room": "اتاق",
+          "living_room": "اتاق نشیمن",
+          "primary_bedroom": "اتاق خواب اصلی",
+          "study": "اتاق مطالعه",
+          "kitchen": "آشپزخانه",
+          "dining_hall": "سالن غذاخوری",
+          "bathroom": "حمام",
+          "balcony": "بالکن",
+          "corridor": "راهرو",
+          "utility_room": "اتاق ابزار",
+          "closet": "کمد",
+          "meeting_room": "اتاق جلسات",
+          "office": "دفتر کار",
+          "fitness_area": "منطقه ورزشی",
+          "recreation_area": "منطقه تفریحی",
+          "secondary_bedroom": "اتاق خواب دوم"
+        }
+      },
+      "furniture_type": {
+        "name": "نوع مبلمان",
+        "state": {
+          "single_bed": "تخت یک‌نفره",
+          "double_bed": "تخت دونفره",
+          "arm_chair": "صندلی دسته‌دار",
+          "two_seat_sofa": "مبل دونفره",
+          "three_seat_sofa": "مبل سه‌نفره",
+          "dining_table": "میز ناهارخوری",
+          "nightstant": "میز کنار تخت",
+          "coffee_table": "میز عسلی",
+          "toilet": "توالت",
+          "litter_box": "ظرف خاک گربه",
+          "pet_bed": "جای خواب حیوان خانگی",
+          "food_bowl": "ظرف غذا",
+          "pet_toilet": "توالت حیوان خانگی",
+          "refrigerator": "یخچال",
+          "washing_machine": "ماشین لباسشویی",
+          "enclosed_litter_box": "ظرف خاک گربه سرپوشیده",
+          "air_conditioner": "کولر گازی",
+          "tv_cabinet": "میز تلویزیون",
+          "bookshelf": "قفسه کتاب",
+          "shoe_cabinet": "جاکفشی",
+          "wardrobe": "کمد لباس",
+          "greenery": "گیاهان",
+          "floor_mirror": "آینه قدی",
+          "l_shaped_sofa": "مبل ال",
+          "round_coffee_table": "میز عسلی گرد",
+          "table": "میز",
+          "arm_chair_narrow": "صندلی دسته‌دار باریک",
+          "three_seat_sofa_narrow": "مبل سه‌نفره باریک",
+          "l_shaped_sofa_right": "مبل ال راست‌چین"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "name": "وضعیت",
+        "state": {
+          "unknown": "نامشخص",
+          "sweeping": "در حال جارو کردن",
+          "charging": "در حال شارژ",
+          "error": "خطا",
+          "idle": "بی‌کار",
+          "paused": "متوقف شده",
+          "returning": "بازگشت به داک",
+          "mopping": "در حال طی کشیدن",
+          "drying": "در حال خشک کردن",
+          "washing": "در حال شستشو",
+          "returning_to_wash": "بازگشت برای شستشو",
+          "building": "در حال ساخت نقشه",
+          "sweeping_and_mopping": "جارو و طی کشیدن",
+          "charging_completed": "شارژ کامل شد",
+          "upgrading": "در حال ارتقا",
+          "clean_summon": "فراخوانی برای تمیزکاری",
+          "station_reset": "بازنشانی ایستگاه",
+          "returning_install_mop": "بازگشت برای نصب طی",
+          "returning_remove_mop": "بازگشت برای برداشتن طی",
+          "water_check": "بررسی آب",
+          "clean_add_water": "تمیزکاری و افزودن آب",
+          "washing_paused": "توقف شستشو",
+          "auto_emptying": "تخلیه خودکار",
+          "remote_control": "کنترل از راه دور",
+          "smart_charging": "شارژ هوشمند",
+          "second_cleaning": "تمیزکاری دوم",
+          "human_following": "دنبال کردن انسان",
+          "spot_cleaning": "تمیزکاری نقطه‌ای",
+          "returning_auto_empty": "بازگشت برای تخلیه خودکار",
+          "waiting_for_task": "در انتظار وظیفه",
+          "station_cleaning": "تمیزکاری ایستگاه",
+          "returning_to_drain": "بازگشت برای تخلیه آب",
+          "draining": "تخلیه آب",
+          "auto_water_draining": "تخلیه خودکار آب",
+          "emptying": "تخلیه",
+          "dust_bag_drying": "خشک کردن کیسه گرد و غبار",
+          "dust_bag_drying_paused": "توقف خشک کردن کیسه",
+          "heading_to_extra_cleaning": "پیش به سوی تمیزکاری اضافی",
+          "extra_cleaning": "تمیزکاری اضافی",
+          "finding_pet_paused": "توقف یافتن حیوان خانگی",
+          "finding_pet": "یافتن حیوان خانگی",
+          "shortcut": "میانبر",
+          "monitoring": "نظارت",
+          "monitoring_paused": "توقف نظارت",
+          "initial_deep_cleaning": "تمیزکاری عمیق اولیه",
+          "initial_deep_cleaning_paused": "توقف تمیزکاری عمیق اولیه",
+          "sanitizing": "ضدعفونی کردن",
+          "sanitizing_with_dry": "ضدعفونی با خشک کردن",
+          "changing_mop": "تعویض طی",
+          "changing_mop_paused": "توقف تعویض طی",
+          "floor_maintaining": "حفظ و نگهداری کف",
+          "floor_maintaining_paused": "توقف حفظ و نگهداری کف",
+          "remote_pickup": "برداشتن از راه دور",
+          "arranging_items": "چیدمان وسایل",
+          "pet_guarding": "مراقبت از حیوانات خانگی",
+          "pet_guarding_paused": "توقف مراقبت از حیوانات خانگی",
+          "installing_mop": "نصب طی",
+          "uninstalling_mop": "برداشتن طی",
+          "intelligent_recharging": "شارژ مجدد هوشمند",
+          "assisted_cleaning": "تمیزکاری کمکی",
+          "entering_dock": "ورود به داک",
+          "leaving_dock": "خروج از داک",
+          "navigating_to_climber": "ناوبری به سمت بالارونده",
+          "docking_to_climber": "اتصال به بالارونده",
+          "climber_docked": "بالارونده متصل شد",
+          "climber_navigating": "ناوبری بالارونده",
+          "climbing_stairs": "بالا رفتن از پله‌ها",
+          "climbing_stairs_completed": "بالا رفتن از پله‌ها کامل شد",
+          "climber_at_dock": "بالارونده در داک",
+          "climber_leaving_dock": "بالارونده در حال خروج از داک"
+        }
+      },
+      "status": {
+        "name": "وضعیت سیستم",
+        "state": {
+          "unknown": "نامشخص",
+          "idle": "بی‌کار",
+          "paused": "متوقف شده",
+          "cleaning": "در حال تمیزکاری",
+          "returning": "بازگشت به داک",
+          "spot_cleaning": "تمیزکاری نقطه‌ای",
+          "follow_wall_cleaning": "تمیزکاری لبه دیوار",
+          "charging": "در حال شارژ",
+          "ota": "بروزرسانی OTA",
+          "fct": "FCT",
+          "wifi_set": "تنظیمات WiFi",
+          "power_off": "خاموش",
+          "factory": "کارخانه",
+          "error": "خطا",
+          "remote_control": "کنترل از راه دور",
+          "sleeping": "خواب",
+          "self_test": "خودآزمایی",
+          "factory_test": "آزمایش کارخانه",
+          "standby": "آماده‌به‌کار",
+          "room_cleaning": "تمیز کردن اتاق",
+          "zone_cleaning": "تمیز کردن منطقه",
+          "fast_mapping": "نقشه‌برداری سریع",
+          "cruising_path": "حرکت در مسیر",
+          "cruising_point": "حرکت به نقطه",
+          "summon_clean": "فراخوانی برای تمیزکاری",
+          "shortcut": "میانبر",
+          "person_follow": "دنبال کردن شخص",
+          "water_check": "بررسی آب",
+          "pet_guarding": "نگهبانی از حیوان خانگی",
+          "auto_arrangement": "چیدمان خودکار",
+          "smart_arrangement": "چیدمان هوشمند",
+          "zoned_arrangement": "چیدمان منطقه‌ای"
+        }
+      },
+      "task_status": {
+        "name": "وضعیت وظیفه",
+        "state": {
+          "unknown": "نامشخص",
+          "completed": "تکمیل شده",
+          "cleaning": "در حال تمیزکاری",
+          "zone_cleaning": "تمیز کردن منطقه",
+          "room_cleaning": "تمیز کردن اتاق",
+          "spot_cleaning": "تمیزکاری نقطه‌ای",
+          "fast_mapping": "نقشه‌برداری سریع",
+          "cleaning_paused": "توقف تمیزکاری",
+          "room_cleaning_paused": "توقف تمیز کردن اتاق",
+          "zone_cleaning_paused": "توقف تمیز کردن منطقه",
+          "spot_cleaning_paused": "توقف تمیزکاری نقطه‌ای",
+          "map_cleaning_paused": "توقف تمیزکاری نقشه",
+          "docking_paused": "توقف اتصال به داک",
+          "mopping_paused": "توقف طی کشیدن",
+          "zone_mopping_paused": "توقف طی کشیدن منطقه",
+          "room_mopping_paused": "توقف طی کشیدن اتاق",
+          "zone_docking_paused": "توقف بازگشت منطقه",
+          "room_docking_paused": "توقف بازگشت اتاق",
+          "cruising_path": "حرکت در مسیر",
+          "cruising_path_paused": "توقف مسیر",
+          "cruising_point": "حرکت به نقطه",
+          "cruising_point_paused": "توقف حرکت به نقطه",
+          "summon_clean_paused": "توقف فراخوانی تمیزکاری",
+          "returning_to_install_mop": "بازگشت برای نصب طی",
+          "returning_to_remove_mop": "بازگشت برای برداشتن طی",
+          "station_cleaning": "تمیزکاری ایستگاه",
+          "pet_finding": "یافتن حیوان خانگی",
+          "auto_cleaning_washing_paused": "توقف شستشوی تمیزکاری خودکار",
+          "area_cleaning_washing_paused": "توقف شستشوی منطقه",
+          "custom_cleaning_washing_paused": "توقف شستشوی سفارشی",
+          "picking_up_item": "برداشتن مورد",
+          "picking_up_item_paused": "برداشتن مورد متوقف شد",
+          "picking_up_item_success": "مورد با موفقیت برداشته شد",
+          "remote_pickup_initializing": "آماده‌سازی برداشت از راه دور",
+          "remote_pickup_identifing": "شناسایی برداشت از راه دور",
+          "manual_remote_pickup": "برداشت از راه دور دستی",
+          "automatic_remote_pickup": "برداشت از راه دور خودکار",
+          "remote_pickup_in_progress": "برداشت از راه دور در حال انجام",
+          "remote_pickup_paused": "برداشت از راه دور متوقف شد",
+          "placing_item": "قرار دادن مورد",
+          "placing_item_paused": "قرار دادن مورد متوقف شد"
+        }
+      },
+      "water_tank": {
+        "name": "مخزن آب",
+        "state": {
+          "unknown": "نامشخص",
+          "installed": "نصب شده",
+          "not_installed": "نصب نشده",
+          "mop_installed": "طی نصب شده",
+          "in_station": "در ایستگاه"
+        }
+      },
+      "mop_pad": {
+        "name": "پد طی",
+        "state": {
+          "unknown": "نامشخص",
+          "installed": "نصب شده",
+          "not_installed": "نصب نشده",
+          "mop_installed": "طی نصب شده",
+          "in_station": "در ایستگاه"
+        }
+      },
+      "dust_collection": {
+        "name": "جمع‌آوری گرد و غبار",
+        "state": {
+          "unknown": "نامشخص",
+          "not_available": "در دسترس نیست",
+          "available": "در دسترس",
+          "over_use": "استفاده بیش از حد",
+          "never": "هرگز"
+        }
+      },
+      "auto_empty_status": {
+        "name": "وضعیت تخلیه خودکار",
+        "state": {
+          "unknown": "نامشخص",
+          "idle": "بی‌کار",
+          "active": "فعال",
+          "not_performed": "انجام نشده"
+        }
+      },
+      "error": {
+        "name": "خطا",
+        "state": {
+          "unknown": "کد خطای نامشخص",
+          "no_error": "بدون خطا",
+          "drop": "چرخ‌ها در هوا هستند",
+          "cliff": "خطای سنسور سقوط",
+          "bumper": "سنسور سپر گیر کرده است",
+          "gesture": "ربات کج شده است",
+          "bumper_repeat": "سنسور سپر مدام گیر می‌کند",
+          "drop_repeat": "چرخ‌ها مدام در هوا هستند",
+          "optical_flow": "خطای سنسور جریان نوری",
+          "no_box": "سطل زباله نصب نشده است",
+          "no_tank_box": "مخزن آب نصب نشده است",
+          "water_box_empty": "مخزن آب خالی است",
+          "box_full": "فیلتر خشک نیست یا مسدود شده است",
+          "brush": "برس اصلی گره خورده است",
+          "side_brush": "برس کناری گره خورده است",
+          "fan": "فیلتر مسدود یا خیس است",
+          "left_wheel_motor": "ربات گیر کرده یا چرخ چپ مسدود شده است",
+          "right_wheel_motor": "ربات گیر کرده یا چرخ راست مسدود شده است",
+          "turn_suffocate": "ربات گیر کرده یا نمی‌تواند بچرخد",
+          "forward_suffocate": "ربات گیر کرده یا نمی‌تواند به جلو برود",
+          "charger_get": "ایستگاه شارژ پیدا نشد",
+          "battery_low": "باتری ضعیف است",
+          "charge_fault": "خطای شارژ",
+          "battery_percentage": "خطای میزان باتری",
+          "heart": "خطای داخلی",
+          "camera_occlusion": "خطای سنسور موقعیت‌یاب تصویری",
+          "move": "خطای سنسور حرکت",
+          "flow_shielding": "خطای سنسور نوری",
+          "infrared_shielding": "خطای سنسور مادون قرمز",
+          "charge_no_electric": "داک شارژ برق ندارد",
+          "battery_fault": "خطای باتری",
+          "fan_speed_error": "خطای سرعت فن",
+          "left_wheell_speed": "چرخ چپ ممکن است توسط اشیاء خارجی مسدود شده باشد",
+          "right_wheell_speed": "چرخ راست ممکن است مسدود شده باشد",
+          "bmi055_acce": "خطای شتاب‌سنج",
+          "bmi055_gyro": "خطای ژیروسکوپ",
+          "xv7001": "خطای ژیروسکوپ",
+          "left_magnet": "خطای سنسور مغناطیسی چپ",
+          "right_magnet": "خطای سنسور مغناطیسی راست",
+          "flow_error": "خطای سنسور جریان",
+          "infrared_fault": "خطای مادون قرمز",
+          "camera_fault": "خطای دوربین",
+          "strong_magnet": "میدان مغناطیسی قوی تشخیص داده شد",
+          "water_pump": "خطای پمپ آب",
+          "rtc": "خطای RTC",
+          "auto_key_trig": "خطای داخلی",
+          "p3v3": "خطای داخلی",
+          "camera_idle": "خطای داخلی",
+          "blocked": "مسیر مسدود است، بازگشت به داک.",
+          "lds_error": "خطای سنسور لیزری (LDS)",
+          "lds_bumper": "خطای سپر سنسور لیزری",
+          "filter_blocked": "فیلتر خیس یا مسدود است",
+          "edge": "خطای سنسور لبه",
+          "carpet": "لطفاً ربات را در منطقه بدون فرش روشن کنید.",
+          "laser": "سنسور جلوگیری از برخورد 3D دچار مشکل شده است.",
+          "ultrasonic": "سنسور اولتراسونیک دچار مشکل شده است.",
+          "no_go_zone": "منطقه ممنوعه یا دیوار مجازی تشخیص داده شد.",
+          "route": "مسیر مسدود شده است.",
+          "restricted": "ربات در منطقه ممنوعه قرار دارد.",
+          "remove_mop": "طی کشیدن تمام شد. لطفاً پد طی را تمیز کنید.",
+          "mop_removed": "پد طی در حین تمیزکاری جدا شد.",
+          "mop_pad_stop_rotate": "پد طی دیگر نمی‌چرخد.",
+          "bin_full": "کیسه زباله پر شده یا مسیر هوا مسدود است.",
+          "bin_open": "درپوش داک تخلیه باز است یا کیسه زباله نصب نشده است.",
+          "water_tank": "مخزن آب تمیز نصب نشده است.",
+          "dirty_water_tank": "مخزن آب کثیف پر است یا نصب نشده است.",
+          "water_tank_dry": "آب مخزن تمیز رو به اتمام است، لطفاً آن را پر کنید.",
+          "dirty_water_tank_blocked": "مخزن آب کثیف مسدود شده است.",
+          "dirty_water_tank_pump": "خطای پمپ مخزن آب کثیف.",
+          "mop_pad": "تخته شستشو به‌درستی نصب نشده است.",
+          "wet_mop_pad": "سطح آب تخته شستشو غیرعادی است، لطفاً آن را تمیز کنید.",
+          "clean_mop_pad": "تمیزکاری تمام شد، لطفاً تخته شستشو را تمیز کنید.",
+          "clean_tank_level": "مخزن آب تمیز را بررسی و پر کنید.",
+          "station_disconnected": "ایستگاه پایه برق ندارد",
+          "dirty_tank_level": "سطح آب در مخزن کثیف بسیار بالا است.",
+          "washboard_level": "سطح آب در تخته شستشو بسیار بالا است.",
+          "no_mop_in_station": "پد طی در ایستگاه نیست.",
+          "dust_bag_full": "کیسه گرد و غبار پر است یا دریچه‌ها مسدود هستند.",
+          "self_test_failed": "تخلیه غیرعادی آب از مخزن آب تمیز.",
+          "mop_install_failed": "نصب پد طی ناموفق بود.",
+          "low_battery_turn_off": "باتری ضعیف است. ربات به‌زودی خاموش می‌شود.",
+          "dirty_tank_not_installed": "مخزن آب کثیف ربات نصب نشده است.",
+          "robot_in_hidden_room": "منطقه پنهان. لطفاً ربات را جابه‌جا کنید و دوباره امتحان کنید.",
+          "washboard_not_working": "تخته شستشو از کار افتاد.",
+          "return_to_charge_failed": "بازگشت برای شارژ ناموفق بود.",
+          "lds_failed_to_lift": "بلند کردن ماژول LDS ناموفق بود.",
+          "robot_stuck": "LDS نمی‌تواند در اینجا بالا بیاید.",
+          "robot_stuck_repeat": "ربات را به یک فضای باز ببرید و دوباره شروع کنید.",
+          "slippery_floor": "کف لغزنده است. لطفاً بعداً دوباره امتحان کنید.",
+          "check_mop_install": "بررسی کنید که طی به‌درستی نصب شده باشد.",
+          "dirty_water_tank_full": "سطح آب غیرعادی در مخزن کثیف ربات.",
+          "retractable_leg_stuck": "بررسی کنید که پایه‌های جمع‌شونده گیر نکرده باشند.",
+          "internal_error": "خطای داخلی. ربات را مجدداً راه‌اندازی کنید.",
+          "robot_stuck_on_tables": "ربات بین میز و صندلی‌ها گیر کرده است.",
+          "robot_stuck_on_passage": "ربات در یک گذرگاه باریک گیر کرده است.",
+          "robot_stuck_on_threshold": "ربات در آستانه در یا پله گیر کرده است.",
+          "robot_stuck_on_low_lying_area": "ربات در فضای با ارتفاع کم گیر کرده است.",
+          "robot_stuck_on_ramp": "ربات یک سطح شیب‌دار خطرناک را تشخیص داده است.",
+          "robot_stuck_on_obstacle": "ربات مانعی را در مسیر تشخیص داده است.",
+          "robot_stuck_on_pet": "ربات انسان یا حیوان خانگی را در مسیر تشخیص داده است.",
+          "robot_stuck_on_slippery_surface": "ربات به دلیل لغزش گیر کرده است.",
+          "robot_stuck_on_carpet": "ربات روی فرش می‌لغزد.",
+          "drainage_failed": "تخلیه غیرعادی از مخزن آب کثیف.",
+          "mop_not_detected": "طی تشخیص داده نشد.",
+          "mop_holder_error": "تعداد/محل قرارگیری نگهدارنده طی در داک اشتباه است.",
+          "dock_error": "خطای داک.",
+          "wash_failed": "شستشوی طی کثیف ناموفق بود.",
+          "robot_stuck_on_curtain": "ربات در منطقه پرده می‌لغزد.",
+          "edge_mop_stop_rotate": "طی لبه دیگر نمی‌چرخد.",
+          "edge_mop_detached": "طی لبه جدا شده است.",
+          "chassis_lift_malfunction": "نقص در سیستم بالابر شاسی.",
+          "mop_cover_error": "بررسی کنید که زباله‌ای نزدیک طی غلتکی و درپوش طی نباشد.",
+          "roller_mop_error": "زباله‌های نزدیک طی غلتکی را بررسی کنید.",
+          "onboard_water_tank_empty": "آب مخزن تمیز خود ربات کم است.",
+          "onboard_dirty_water_tank_full": "مخزن کثیف خود ربات پر است.",
+          "mop_not_installed": "طی نصب نشده است.",
+          "fluffing_roller_error": "خطای غلتک پرزگیر.",
+          "blocked_by_obstacle": "ربات توسط مانع مسدود شده است.",
+          "robotic_arm_stopped": "بازوی رباتیک متوقف شد.",
+          "drainage_outlet_filter": "فیلتر خروجی فاضلاب ربات مسدود شده است.",
+          "main_wheels_error": "خطای چرخ‌های اصلی."
+        }
+      },
+      "charging_status": {
+        "name": "وضعیت شارژ",
+        "state": {
+          "unknown": "نامشخص",
+          "charging": "در حال شارژ",
+          "not_charging": "در حال شارژ نیست",
+          "return_to_charge": "بازگشت برای شارژ",
+          "charging_completed": "شارژ کامل شد"
+        }
+      },
+      "relocation_status": {
+        "name": "وضعیت جابجایی",
+        "state": {
+          "unknown": "نامشخص",
+          "located": "مکان‌یابی شد",
+          "locating": "در حال مکان‌یابی",
+          "failed": "ناموفق",
+          "success": "موفق"
+        }
+      },
+      "self_wash_base_status": {
+        "name": "وضعیت شستشوی خودکار پایه",
+        "state": {
+          "unknown": "نامشخص",
+          "idle": "بی‌کار",
+          "washing": "در حال شستشو",
+          "drying": "در حال خشک کردن",
+          "paused": "متوقف شده",
+          "returning": "بازگشت برای شستشو",
+          "clean_add_water": "تمیزکاری و افزودن آب",
+          "adding_water": "افزودن آب"
+        }
+      },
+      "low_water_warning": {
+        "name": "هشدار کمبود آب",
+        "state": {
+          "no_warning": "بدون هشدار",
+          "no_water_left": "آب مخزن تمیز رو به اتمام است. لطفاً فوراً آن را پر کنید.",
+          "no_water_left_after_clean": "طی شسته شد. آب مخزن تمیز کافی نیست، لطفاً آن را پر و مخزن کثیف را خالی کنید.",
+          "no_water_for_clean": "سطح آب تمیز پایین است. ربات به حالت فقط جارو سوئیچ کرد.",
+          "low_water": "آب در حال اتمام است. لطفاً مخزن تمیز را پر کنید.",
+          "tank_not_installed": "مخزن آب تمیز نصب نشده است."
+        }
+      },
+      "stream_status": {
+        "name": "وضعیت استریم",
+        "state": {
+          "unknown": "نامشخص",
+          "idle": "بی‌کار",
+          "video": "ویدئو",
+          "audio": "صدا",
+          "recording": "در حال ضبط"
+        }
+      },
+      "drainage_status": {
+        "name": "وضعیت تخلیه",
+        "state": {
+          "unknown": "نامشخص",
+          "idle": "بی‌کار",
+          "draining": "در حال تخلیه",
+          "draining_successful": "تخلیه موفق",
+          "draining_failed": "تخلیه ناموفق"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "وضعیت مخزن آب تمیز",
+        "state": {
+          "unknown": "نامشخص",
+          "not_available": "در دسترس نیست",
+          "not_installed": "نصب نشده",
+          "low_water": "آب کم",
+          "installed": "نصب شده"
+        }
+      },
+      "dirty_water_tank_status": {
+        "name": "وضعیت مخزن آب کثیف",
+        "state": {
+          "unknown": "نامشخص",
+          "installed": "نصب شده",
+          "not_installed_or_full": "نصب نشده یا پر است"
+        }
+      },
+      "dust_bag_status": {
+        "name": "وضعیت کیسه زباله",
+        "state": {
+          "unknown": "نامشخص",
+          "installed": "نصب شده",
+          "not_installed": "نصب نشده",
+          "check": "بررسی کنید"
+        }
+      },
+      "detergent_status": {
+        "name": "وضعیت مواد شوینده",
+        "state": {
+          "unknown": "نامشخص",
+          "installed": "نصب شده",
+          "disabled": "غیرفعال",
+          "low_detergent": "مواد شوینده کم"
+        }
+      },
+      "hot_water_status": {
+        "name": "وضعیت آب گرم",
+        "state": {
+          "unknown": "نامشخص",
+          "disabled": "غیرفعال",
+          "enabled": "فعال"
+        }
+      },
+      "station_drainage_status": {
+        "name": "وضعیت تخلیه ایستگاه",
+        "state": {
+          "unknown": "نامشخص",
+          "idle": "بی‌کار",
+          "draining": "در حال تخلیه"
+        }
+      },
+      "task_type": {
+        "name": "نوع وظیفه",
+        "state": {
+          "standard": "تمیزکاری استاندارد",
+          "standard_paused": "توقف تمیزکاری استاندارد",
+          "custom": "تمیزکاری سفارشی",
+          "custom_paused": "توقف تمیزکاری سفارشی",
+          "shortcut": "تمیزکاری میانبر",
+          "shortcut_paused": "توقف میانبر",
+          "scheduled": "تمیزکاری زمان‌بندی‌شده",
+          "scheduled_paused": "توقف تمیزکاری زمان‌بندی‌شده",
+          "smart": "تمیزکاری هوشمند",
+          "smart_paused": "توقف تمیزکاری هوشمند",
+          "partial": "تمیزکاری جزئی",
+          "partial_paused": "توقف تمیزکاری جزئی",
+          "summon": "فراخوانی تمیزکاری",
+          "summon_paused": "توقف فراخوانی تمیزکاری",
+          "water_stain": "تمیزکاری لک آب",
+          "water_stain_paused": "توقف لک آب",
+          "boosted_edge_cleaning": "تمیزکاری لبه تقویت شده",
+          "hair_compressing": "فشرده‌سازی مو",
+          "large_particle_cleaning": "تمیزکاری ذرات بزرگ",
+          "intensive_stain_cleaning": "تمیزکاری لکه‌های سخت",
+          "stain_cleaning": "تمیزکاری لکه",
+          "initial_deep_cleaning": "شروع تمیزکاری عمیق",
+          "initial_deep_cleaning_paused": "توقف تمیزکاری عمیق",
+          "mop_pad_heating": "گرمایش پد طی",
+          "cleaning_after_mapping": "تمیزکاری پس از نقشه‌برداری",
+          "small_particle_cleaning": "تمیزکاری ذرات ریز",
+          "changing_mop": "تعویض طی",
+          "changing_mop_paused": "توقف تعویض طی",
+          "floor_maintaining": "حفظ و نگهداری کف",
+          "floor_maintaining_paused": "نگهداری کف متوقف شد",
+          "arranging_items": "چیدمان اقلام",
+          "arranging_items_paused": "چیدمان اقلام متوقف شد",
+          "intensive_hair_cleaning": "تمیزکاری متمرکز مو",
+          "accessory_handling": "جابجایی لوازم جانبی",
+          "increased_drum_speed_cleaning": "تمیزکاری با افزایش سرعت درام",
+          "pressurized_cleaning": "تمیزکاری با فشار",
+          "steam_cleaning": "تمیزکاری با بخار",
+          "steam_cleaning_paused": "تمیزکاری با بخار متوقف شد"
+        }
+      },
+      "dust_bag_drying_status": {
+        "name": "وضعیت خشک شدن کیسه زباله",
+        "state": {
+          "idle": "بی‌کار",
+          "drying": "در حال خشک شدن",
+          "paused": "متوقف شده"
+        }
+      },
+      "nation_matched": {
+        "name": "قفل منطقه‌ای",
+        "state": {
+          "unknown": "غیرفعال",
+          "matched": "آنلاک شده",
+          "unmatched": "قفل شده",
+          "na": "در دسترس نیست"
+        }
+      },
+      "startup_method": {
+        "name": "راه‌اندازی توسط",
+        "state": {
+          "button": "دکمه",
+          "app": "اپلیکیشن",
+          "scheduled": "زمان‌بندی‌شده",
+          "voice": "صوتی",
+          "second_cleaning": "تمیزکاری دوم",
+          "unknown": "نامشخص"
+        }
+      },
+      "cleaning_status": {
+        "name": "وضعیت تمیزکاری",
+        "state": {
+          "interrupted": "قطع شده",
+          "completed": "تکمیل شده",
+          "manually_ended": "توقف دستی",
+          "failed": "ناموفق",
+          "unknown": "نامشخص"
+        }
+      },
+      "cleanup_method": {
+        "name": "روش تمیزکاری",
+        "state": {
+          "other": "سایر",
+          "default": "پیش‌فرض",
+          "customized": "سفارشی",
+          "cleangenius": "CleanGenius",
+          "water_stain": "لکه آب",
+          "unknown": "نامشخص"
+        }
+      },
+      "task_end_type": {
+        "name": "تکمیل شده توسط",
+        "state": {
+          "other": "سایر",
+          "manual_docking": "اتصال دستی به داک",
+          "docking": "اتصال به داک",
+          "failed_docking": "اتصال ناموفق به داک",
+          "stop": "توقف",
+          "unknown": "نامشخص"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "دلیل قطع وظیفه",
+        "state": {
+          "abnormal_docking": "اتصال غیرعادی به داک",
+          "base_station_powered_off": "ایستگاه پایه خاموش است",
+          "brush_entangled_by_carpet": "برس در فرش گیر کرده",
+          "brush_entangled_by_object": "برس در یک شی گیر کرده",
+          "brush_entangled_by_obstacle": "برس در مانع گیر کرده",
+          "cannot_find_base_station": "ایستگاه پیدا نشد",
+          "cliff_sensor_error": "خطای سنسور سقوط",
+          "laser_distance_sensor_error": "خطای سنسور لیزری",
+          "mop_pad_abnormally_removed": "پد طی غیرعادی جدا شد",
+          "mop_pad_fallen_off": "پد طی افتاد",
+          "mop_pad_fallen_off_by_obstacle": "پد طی به دلیل مانع افتاد",
+          "mop_pad_fallen_off_by_table": "پد طی به دلیل میز افتاد",
+          "mop_pad_fallen_off_crossing_obstacle": "پد طی حین عبور از مانع افتاد",
+          "mop_pad_removed": "پد طی برداشته شد",
+          "mop_pad_stuck": "پد طی گیر کرده",
+          "robot_fallen": "ربات افتاده است",
+          "robot_is_stuck_on_obstacle": "ربات در مانع گیر کرده",
+          "robot_is_stuck_on_step": "ربات روی پله گیر کرده",
+          "robot_lifted": "ربات بلند شده است",
+          "task_completed": "وظیفه تکمیل شد",
+          "unknown": "نامشخص"
+        }
+      },
+      "recovery_map_type": {
+        "name": "نوع نقشه",
+        "state": {
+          "original": "نقشه اصلی",
+          "edited": "نقشه ویرایش شده",
+          "backup": "نقشه پشتیبان"
+        }
+      },
+      "obstacle_type": {
+        "name": "نوع مانع",
+        "state": {
+          "unknown": "نامشخص",
+          "base": "پایه",
+          "scale": "ترازو",
+          "thread": "نخ",
+          "wire": "سیم",
+          "toy": "اسباب‌بازی",
+          "shoes": "کفش",
+          "sock": "جوراب",
+          "fece": "مدفوع",
+          "trash_can": "سطل زباله",
+          "fabric": "پارچه",
+          "power_strip": "سه‌راهی برق",
+          "liquid_stain": "لکه مایع",
+          "obstacle": "مانع",
+          "pet": "حیوان خانگی",
+          "cleaning_tools": "ابزار نظافت",
+          "detected_stain": "لکه تشخیص‌داده‌شده",
+          "blocked_room": "اتاق مسدود شده",
+          "easy_to_stuck_furniture": "مبلمان با خطر گیر کردن بالا",
+          "uncleanable_stain": "لکه غیرقابل تمیزکاری",
+          "leg": "پایه میز/صندلی",
+          "large_particles": "ذرات درشت",
+          "dried_stain": "لکه خشک‌شده",
+          "food_bowl": "ظرف غذا",
+          "pet_bed": "جای خواب حیوان",
+          "cleaned_stain": "لکه تمیز شده",
+          "skipped_uncleanable_stain": "صرف‌نظر از لکه سخت",
+          "cleaned_dried_stain": "لکه خشک تمیز شد",
+          "cleaned_large_particles": "ذرات درشت تمیز شدند",
+          "hair": "مو",
+          "paper": "کاغذ",
+          "cleaned_hair": "موهای تمیز شده",
+          "sundry": "متفرقه"
+        }
+      },
+      "obstacle_reason": {
+        "name": "دلیل مانع",
+        "state": {
+          "blocked_by_virtual_wall": "توسط دیوار مجازی مسدود شد",
+          "blocked_by_door": "توسط در مسدود شد",
+          "blocked_by_threshold": "توسط آستانه در مسدود شد",
+          "blocked_by_obstacle": "توسط مانع مسدود شد",
+          "blocked_by_carpet": "توسط فرش مسدود شد",
+          "blocked_by_detected_carpet": "توسط فرش تشخیص‌داده‌شده مسدود شد",
+          "blocked_by_hidden_obstacle": "توسط مانع پنهان مسدود شد",
+          "blocked_by_dynamic_obstacle": "توسط مانع متحرک مسدود شد",
+          "passage_too_low": "گذرگاه خیلی کوتاه است",
+          "step_too_low": "پله خیلی کوتاه است",
+          "failed_to_cross_threshold": "عدم عبور از آستانه"
+        }
+      },
+      "remaining_battery": {
+        "name": "باتری باقیمانده"
+      },
+      "multiple_cleaning_time": {
+        "name": "تمیزکاری چندباره"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "firmware_version": {
+        "name": "نسخه فریمور"
+      },
+      "ip_address": {
+        "name": "آدرس IP"
+      },
+      "mac_address": {
+        "name": "آدرس MAC"
+      },
+      "model": {
+        "name": "مدل"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "serial_number": {
+        "name": "شماره سریال"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "timezone": {
+        "name": "منطقه زمانی"
+      },
+      "voice_packet_id": {
+        "name": "بسته صوتی"
+      },
+      "deodorizer_left": {
+        "name": "خوشبوکننده باقیمانده"
+      },
+      "detergent_left": {
+        "name": "مواد شوینده باقیمانده"
+      },
+      "dirty_water_channel_left": {
+        "name": "کانال آب کثیف"
+      },
+      "filter_left": {
+        "name": "فیلتر"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "تمیزی غلتک پرزگیر"
+      },
+      "main_brush_left": {
+        "name": "برس اصلی"
+      },
+      "mop_pad_left": {
+        "name": "پد طی"
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "مخزن آب کثیف داخلی ربات"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "تمیزی فیلتر طی غلتکی"
+      },
+      "scale_inhibitor_left": {
+        "name": "ضدرسوب"
+      },
+      "sensor_dirty_left": {
+        "name": "تمیزی سنسورها"
+      },
+      "side_brush_left": {
+        "name": "برس کناری"
+      },
+      "silver_ion_left": {
+        "name": "یون نقره"
+      },
+      "squeegee_left": {
+        "name": "تیغه جمع‌کننده آب"
+      },
+      "tank_filter_left": {
+        "name": "فیلتر مخزن"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "تمیزی فیلتر خروجی آب"
+      },
+      "wheel_dirty_left": {
+        "name": "تمیزی چرخ‌ها"
+      }
+    },
+    "toggle": {
+      "customized_cleaning": {
+        "name": "تمیزکاری سفارشی"
+      },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "تمیزکاری عمیق"
+      },
+      "auto_dust_collecting": {
+        "name": "تخلیه خودکار زباله"
+      },
+      "hair_compression": {
+        "name": "فشرده‌سازی مو"
+      },
+      "self_clean": {
+        "name": "خودتمیزکاری"
+      },
+      "deep_mop_washing": {
+        "name": "شستشوی عمیق طی"
+      },
+      "hot_washing": {
+        "name": "شستشو با آب داغ"
+      },
+      "auto_drying": {
+        "name": "خشک کردن خودکار"
+      },
+      "silent_drying": {
+        "name": "خشک کردن بی‌صدا"
+      },
+      "uv_sterilization": {
+        "name": "استریلیزاسیون UV"
+      },
+      "customized_carpet_cleaning": {
+        "name": "تمیزکاری سفارشی"
+      },
+      "carpet_avoidance": {
+        "name": "اجتناب از فرش"
+      },
+      "carpet_preferences": {
+        "name": "تنظیمات سفارشی"
+      },
+      "auto_change_mop": {
+        "name": "تعویض خودکار طی"
+      },
+      "multi_floor_map": {
+        "name": "نقشه چند طبقه"
+      },
+      "intelligent_recognition": {
+        "name": "تشخیص هوشمند"
+      },
+      "map_saving": {
+        "name": "ذخیره نقشه"
+      },
+      "child_lock": {
+        "name": "قفل کودک"
+      },
+      "resume_cleaning": {
+        "name": "از سرگیری تمیزکاری"
+      },
+      "obstacle_avoidance": {
+        "name": "اجتناب از موانع"
+      },
+      "carpet_boost": {
+        "name": "افزایش مکش روی فرش"
+      },
+      "carpet_recognition": {
+        "name": "تشخیص فرش"
+      },
+      "clean_carpets_first": {
+        "name": "ابتدا تمیز کردن فرش‌ها"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "بستن درپوش غلتک روی فرش"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "تمیزکاری فشرده فرش"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "چرخش برس کناری روی فرش"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "بالا بردن شاسی روی فرش"
+      },
+      "auto_mount_mop": {
+        "name": "نصب خودکار طی"
+      },
+      "mopping_with_detergent": {
+        "name": "طی کشیدن با شوینده"
+      },
+      "mop_washing_with_detergent": {
+        "name": "شستشوی طی با شوینده"
+      },
+      "auto_add_detergent": {
+        "name": "افزودن خودکار شوینده"
+      },
+      "smart_mop_washing": {
+        "name": "شستشوی هوشمند طی"
+      },
+      "wider_corner_coverage": {
+        "name": "پوشش گسترده‌تر گوشه‌ها"
+      },
+      "pressurized_cleaning": {
+        "name": "تمیزکاری تحت فشار"
+      },
+      "gap_cleaning_extension": {
+        "name": "توسعه تمیزکاری شکاف‌ها"
+      },
+      "mopping_under_furnitures": {
+        "name": "طی کشیدن زیر مبلمان"
+      },
+      "floor_direction_cleaning": {
+        "name": "تمیزکاری هم‌جهت با کفپوش"
+      },
+      "ring_light_always_on": {
+        "name": "چراغ حلقه‌ای همیشه روشن"
+      },
+      "collision_avoidance": {
+        "name": "جلوگیری از برخورد"
+      },
+      "fill_light": {
+        "name": "نور دوربین"
+      },
+      "ai_obstacle_detection": {
+        "name": "تشخیص موانع با هوش مصنوعی"
+      },
+      "ai_pet_detection": {
+        "name": "تشخیص حیوان خانگی"
+      },
+      "pet_focused_detection": {
+        "name": "تشخیص متمرکز بر حیوان خانگی"
+      },
+      "pet_focused_cleaning": {
+        "name": "تمیزکاری متمرکز بر حیوان خانگی"
+      },
+      "ai_obstacle_picture": {
+        "name": "عکس موانع"
+      },
+      "obstacle_crossing": {
+        "name": "عبور همگام از موانع"
+      },
+      "active_suspension_crossing": {
+        "name": "عبور با تعلیق فعال"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "تمیزکاری موانع متحرک"
+      },
+      "large_particles_boost": {
+        "name": "مکش قوی برای ذرات درشت"
+      },
+      "streaming_voice_prompt": {
+        "name": "اعلان صوتی پیوسته"
+      },
+      "voice_assistant": {
+        "name": "دستیار صوتی"
+      },
+      "off_peak_charging": {
+        "name": "شارژ در ساعات غیر اوج مصرف"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "غیرفعال کردن ادامه تمیزکاری (در DnD)"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "غیرفعال کردن تخلیه خودکار (در DnD)"
+      },
+      "dnd_reduce_volume": {
+        "name": "کاهش صدا (در DnD)"
+      },
+      "dnd": {
+        "name": "عدم مزاحمت (DnD)"
+      }
+    },
+    "number": {
+      "wetness_level": {
+        "name": "میزان خیسی"
+      },
+      "auto_empty_area": {
+        "name": "مساحت تخلیه خودکار"
+      },
+      "drying_time": {
+        "name": "زمان خشک شدن"
+      },
+      "self_clean_time": {
+        "name": "زمان خودتمیزکاری"
+      },
+      "self_clean_area": {
+        "name": "مساحت خودتمیزکاری"
+      },
+      "volume": {
+        "name": "میزان صدا"
+      }
+    },
+    "time": {
+      "dnd_start": {
+        "name": "زمان شروع DnD"
+      },
+      "dnd_end": {
+        "name": "زمان پایان DnD"
+      },
+      "off_peak_charging_start": {
+        "name": "شروع شارژ غیر اوج مصرف"
+      },
+      "off_peak_charging_end": {
+        "name": "پایان شارژ غیر اوج مصرف"
+      },
+      "schedule_time": {
+        "name": "زمان شروع"
+      }
+    },
+    "input": {
+      "schedule_repeats": {
+        "name": "تکرار"
+      },
+      "dnd_repeats": {
+        "name": "تکرار"
+      },
+      "map_custom_name": {
+        "name": "نام نقشه"
+      },
+      "segment_custom_name": {
+        "name": "نام اتاق"
+      },
+      "shortcut_name": {
+        "name": "نام میانبر"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "افزودن",
+        "add_map": "ایجاد نقشه",
+        "auto_empty_unavailable": "تخلیه خودکار در دسترس نیست",
+        "auto_emptying": "در حال تخلیه خودکار",
+        "backup": "پشتیبان‌گیری",
+        "bag_drying_unavailable": "خشک کردن کیسه در دسترس نیست",
+        "cancel": "لغو",
+        "cancel_ignore": "لغو نادیده‌گرفتن",
+        "carpet": "فرش",
+        "change": "تغییر",
+        "charge": "شارژ",
+        "clean": "تمیز کردن",
+        "clean_again": "تمیز کردن مجدد",
+        "cleaning_settings": "تنظیمات تمیزکاری",
+        "cleanings": "دفعات تمیزکاری",
+        "close": "بستن",
+        "confirm": "تأیید",
+        "delete": "حذف",
+        "delete_carpet": "حذف فرش",
+        "deleted_carpet": "فرش حذف شده",
+        "disable": "غیرفعال کردن",
+        "discard": "دور انداختن",
+        "dismiss": "رد کردن",
+        "dock": "داک",
+        "dock_settings": "تنظیمات داک",
+        "download": "دانلود",
+        "dry": "خشک کردن",
+        "dry_bag": "خشک کردن کیسه",
+        "drying_unavailable": "خشک کردن در دسترس نیست",
+        "dynamically_ignored": "به صورت پویا نادیده گرفته شد",
+        "edit_carpet": "ویرایش فرش",
+        "empty": "تخلیه",
+        "enable": "فعال کردن",
+        "fast_mapping": "نقشه‌برداری سریع",
+        "get_dreame_vacuum_card": "دریافت کارت Dreame Vacuum",
+        "ignore": "نادیده گرفتن",
+        "ignore_obstacle": "نادیده گرفتن مانع",
+        "impassable_threshold": "آستانه غیرقابل عبور",
+        "job_details": "جزئیات وظیفه",
+        "keep_disabled": "غیرفعال بماند",
+        "map_display": "نمایش نقشه",
+        "map_management": "مدیریت نقشه",
+        "new_dnd": "وظیفه DnD جدید",
+        "new_schedule": "وظیفه زمان‌بندی‌شده جدید",
+        "new_shortcut": "وظیفه میانبر جدید",
+        "next_job": "وظیفه بعدی",
+        "no_go": "ممنوعه",
+        "no_mop": "بدون طی",
+        "objects": "اشیاء",
+        "override": "جایگزینی",
+        "passable_threshold": "آستانه قابل عبور",
+        "pause": "توقف",
+        "pause_washing": "توقف شستشو",
+        "previous_job": "وظیفه قبلی",
+        "ramp": "سطح شیب‌دار",
+        "reload": "بارگیری مجدد",
+        "rename": "تغییر نام",
+        "repeats": "تکرار",
+        "replace": "جایگزینی",
+        "reset": "بازنشانی",
+        "restore": "بازیابی",
+        "restore_map": "بازیابی نقشه",
+        "resume": "ادامه",
+        "resume_washing": "ادامه شستشو",
+        "rooms": "اتاق‌ها",
+        "rotate_left": "چرخش به چپ",
+        "rotate_right": "چرخش به راست",
+        "round_carpet": "فرش گرد",
+        "save": "ذخیره",
+        "select_map": "انتخاب نقشه",
+        "shortcuts": "میانبرها",
+        "square_carpet": "فرش مربع",
+        "start": "شروع",
+        "start_auto_empty": "شروع تخلیه خودکار",
+        "start_bag_drying": "شروع خشک کردن کیسه",
+        "start_drying": "شروع خشک کردن",
+        "start_task": "شروع وظیفه",
+        "start_washing": "شروع شستشو",
+        "stop": "پایان",
+        "stop_bag_drying": "پایان خشک کردن کیسه",
+        "stop_drying": "پایان خشک کردن",
+        "understood": "متوجه شدم",
+        "virtual_threshold": "آستانه مجازی",
+        "virtual_wall": "دیوار مجازی",
+        "wash": "شستشو",
+        "washing_unavailable": "شستشو در دسترس نیست",
+        "wifi_map": "نقشه WiFi"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "تصویر پس‌زمینه",
+        "card_object_action_buttons": "دکمه‌های اقدام",
+        "card_object_animations": "انیمیشن‌ها",
+        "card_object_cleanup_notification": "اعلان تمیزکاری",
+        "card_object_controls": "کنترل‌ها",
+        "card_object_cruising_history": "تاریخچه حرکت",
+        "card_object_fault_notification": "اعلان خطا",
+        "card_object_information_notification": "اعلان اطلاعات",
+        "card_object_low_water_notification": "اعلان کمبود آب",
+        "card_object_map_change_confirmation": "تأیید تغییر نقشه",
+        "card_object_menu": "منو",
+        "card_object_progress_bar": "نوار پیشرفت",
+        "card_object_saved_notification": "اعلان ذخیره‌سازی",
+        "card_object_shortcuts": "میانبرها",
+        "card_object_state": "وضعیت (State)",
+        "card_object_status": "وضعیت (Status)",
+        "card_object_task_type": "نوع وظیفه",
+        "card_object_title": "عنوان",
+        "card_object_warning_notification": "اعلان هشدار",
+        "color_scheme": "طرح رنگ",
+        "color_scheme_dreame_auto": "Dreame خودکار",
+        "color_scheme_dreame_dark": "Dreame تاریک",
+        "color_scheme_dreame_light": "Dreame روشن",
+        "color_scheme_grayscale": "سیاه و سفید",
+        "color_scheme_mijia_auto": "Mijia خودکار",
+        "color_scheme_mijia_dark": "Mijia تاریک",
+        "color_scheme_mijia_light": "Mijia روشن",
+        "copied": "کپی شد",
+        "copy": "کپی",
+        "copy_all": "کپی همه",
+        "disable_haptic": "غیرفعال کردن بازخورد لمسی",
+        "editable_objects": "اشیاء قابل ویرایش",
+        "font_size": "اندازه قلم",
+        "full_height": "ارتفاع کامل",
+        "grid_size": "اندازه شبکه",
+        "height": "ارتفاع",
+        "hidden_card_objects": "اشیاء کارت پنهان",
+        "hidden_objects": "اشیاء پنهان",
+        "hide_map_info": "مخفی کردن اطلاعات نقشه",
+        "icon_set": "مجموعه نمادها",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "Dreame قدیمی",
+        "icon_set_material": "Material",
+        "icon_set_mijia": "Mijia",
+        "left": "چپ",
+        "left_handed": "حالت چپ‌دست",
+        "limit_height": "محدود کردن ارتفاع در صفحه",
+        "locked": "قفل شده",
+        "locked_always": "همیشه",
+        "locked_auto": "خودکار",
+        "locked_never": "هرگز",
+        "locked_only_touch": "فقط لمس",
+        "map": "نقشه %name%",
+        "map_1": "نقشه اول",
+        "map_2": "نقشه دوم",
+        "map_3": "نقشه سوم",
+        "map_4": "نقشه چهارم",
+        "map_5": "نقشه پنجم",
+        "map_color_active_area": "منطقه فعال",
+        "map_color_active_area_outline": "حاشیه منطقه فعال",
+        "map_color_active_point": "نقطه فعال",
+        "map_color_active_point_outline": "حاشیه نقطه فعال",
+        "map_color_auto_low_lying_area": "منطقه کم‌ارتفاع خودکار",
+        "map_color_carpet_color": "رنگ فرش",
+        "map_color_curtain": "پرده",
+        "map_color_detected_carpet_color": "رنگ فرش تشخیص داده شده",
+        "map_color_floor": "کف",
+        "map_color_floor_material": "جنس کف",
+        "map_color_icon_background": "پس‌زمینه نماد",
+        "map_color_impassable_threshold": "آستانه غیرقابل عبور",
+        "map_color_manual_low_lying_area": "منطقه کم‌ارتفاع دستی",
+        "map_color_mop_path": "مسیر طی",
+        "map_color_new_segment": "اتاق جدید",
+        "map_color_no_go": "منطقه ممنوعه",
+        "map_color_no_go_outline": "حاشیه منطقه ممنوعه",
+        "map_color_no_mop": "منطقه بدون طی",
+        "map_color_no_mop_outline": "حاشیه منطقه بدون طی",
+        "map_color_obstacle_background": "پس‌زمینه مانع",
+        "map_color_order": "ترتیب",
+        "map_color_outside": "بیرون",
+        "map_color_passable_threshold": "آستانه قابل عبور",
+        "map_color_passive_segment": "اتاق غیرفعال",
+        "map_color_path": "مسیر",
+        "map_color_ramp": "سطح شیب‌دار",
+        "map_color_segment": "اتاق",
+        "map_color_settings_background": "پس‌زمینه تنظیمات",
+        "map_color_text": "متن",
+        "map_color_text_stroke": "حاشیه متن",
+        "map_color_virtual_threshold": "آستانه مجازی",
+        "map_color_virtual_wall": "دیوار مجازی",
+        "map_color_wall": "دیوار",
+        "map_config": "پیکربندی نقشه",
+        "map_display": "نمایش نقشه",
+        "map_display_floor_plan": "پلان طبقه",
+        "map_display_floor_plan_only": "فقط پلان طبقه",
+        "map_display_floor_plan_without_texture": "پلان طبقه بدون بافت",
+        "map_display_standard": "استاندارد",
+        "map_object_active_area": "منطقه فعال",
+        "map_object_active_cruise_point": "نقطه حرکت فعال",
+        "map_object_active_point": "نقطه فعال",
+        "map_object_animations": "انیمیشن‌ها",
+        "map_object_blocked_segment": "اتاق‌های مسدود شده",
+        "map_object_blocked_segments": "اتاق‌های مسدود شده",
+        "map_object_carpet": "فرش",
+        "map_object_charger": "شارژر",
+        "map_object_cleaning_sequence": "ترتیب تمیزکاری",
+        "map_object_cruise_point": "نقطه حرکت",
+        "map_object_curtain": "پرده",
+        "map_object_customized_cleaning": "تمیزکاری سفارشی",
+        "map_object_deleted_carpet": "فرش حذف شده",
+        "map_object_detected_carpet": "فرش تشخیص داده شده",
+        "map_object_door": "در",
+        "map_object_floor": "کف",
+        "map_object_floor_material": "جنس کف",
+        "map_object_furniture": "مبلمان",
+        "map_object_furniture_image": "تصویر مبلمان",
+        "map_object_hidden_segments": "اتاق‌های پنهان",
+        "map_object_icon": "نماد",
+        "map_object_ignored_obstacles": "موانع نادیده گرفته شده",
+        "map_object_impassable_threshold": "آستانه غیرقابل عبور",
+        "map_object_lock_indicator": "نشانگر قفل",
+        "map_object_low_lying_area": "منطقه کم‌ارتفاع",
+        "map_object_material": "جنس کف",
+        "map_object_mop_path": "مسیر طی",
+        "map_object_mop_type": "نوع طی",
+        "map_object_name": "نام",
+        "map_object_name_background": "پس‌زمینه نام",
+        "map_object_no_go": "منطقه ممنوعه",
+        "map_object_no_mop": "منطقه بدون طی",
+        "map_object_object_option": "گزینه شیء",
+        "map_object_obstacle": "مانع",
+        "map_object_obstacle_background": "پس‌زمینه مانع",
+        "map_object_obstacle_color": "رنگ مانع",
+        "map_object_order": "ترتیب",
+        "map_object_passable_threshold": "آستانه قابل عبور",
+        "map_object_path": "مسیر",
+        "map_object_pet": "حیوان خانگی",
+        "map_object_predefined_point": "نقطه از پیش تعریف شده",
+        "map_object_ramp": "سطح شیب‌دار",
+        "map_object_router": "روتر",
+        "map_object_segment": "اتاق",
+        "map_object_segment_type": "نوع اتاق",
+        "map_object_selected_segments": "اتاق‌های انتخاب شده",
+        "map_object_split_line": "خط تقسیم",
+        "map_object_stain": "لکه",
+        "map_object_station_status": "وضعیت ایستگاه",
+        "map_object_vacuum": "جاروبرقی",
+        "map_object_vacuum_status": "وضعیت جاروبرقی",
+        "map_object_virtual_threshold": "آستانه مجازی",
+        "map_object_virtual_wall": "دیوار مجازی",
+        "map_object_walls": "دیوارها",
+        "map_object_zoom_point": "نقطه بزرگ‌نمایی",
+        "object_opacity": "شفافیت شیء",
+        "object_scale": "مقیاس شیء",
+        "opacity": "شفافیت",
+        "override_colors": "جایگزینی رنگ‌های نقشه",
+        "overlay_image": "تصویر همپوشانی",
+        "rotation": "چرخش",
+        "scale": "مقیاس",
+        "scripts": "اسکریپت‌ها",
+        "selectable_objects": "اشیاء قابل انتخاب",
+        "selected_map_config": "پیکربندی %name%",
+        "show_map_info": "نمایش اطلاعات نقشه",
+        "top": "بالا",
+        "url": "آدرس (URL)",
+        "viewport": "ویوپورت (Viewport)",
+        "width": "عرض",
+        "zoom": "بزرگ‌نمایی"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "جاروبرقی در حال انجام یک وظیفه است!",
+        "apply_changes_or_reload": "نقشه در حین ویرایش شما تغییر کرده است!\nآیا می‌خواهید تغییرات خود را جایگزین کنید یا نقشه جدید را بارگیری کنید؟",
+        "auto_mount_mop_will_enabled": "نصب خودکار طی فعال خواهد شد!",
+        "backup_map": "از نقشه پشتیبان‌گیری شود؟",
+        "backup_map_will_overwritten": "نقشه پشتیبان‌گیری شده فعلی رونویسی (Overwrite) خواهد شد!",
+        "bag_drying_will_stopped": "خشک کردن کیسه زباله متوقف خواهد شد!",
+        "carpet_recognition_will_enabled": "برای تنظیم تمیزکاری سفارشی فرش، تشخیص فرش باید فعال باشد.",
+        "carpet_will_deleted": "فرش حذف خواهد شد!",
+        "cleangenius_will_disabled": "Cleangenius غیرفعال خواهد شد!",
+        "cleaning_failure": "علل شکست در تمیزکاری",
+        "create_map": "یک نقشه جدید ایجاد شود؟",
+        "custom_carpet_settings_will_enabled": "تنظیمات سفارشی فرش فعال خواهد شد!",
+        "custom_carpet_settings_will_enabled_detail": "تنظیمات تمیزکاری سفارشی فرش متناسب با نوع فرش انتخابی پیکربندی خواهد شد.",
+        "customized_cleaning_disabled": "تمیزکاری سفارشی غیرفعال است!",
+        "delete_carpet": "فرش حذف شود؟",
+        "delete_dnd": "وظیفه DnD حذف شود؟",
+        "delete_map": "نقشه حذف شود؟",
+        "delete_schedule": "وظیفه زمان‌بندی‌شده حذف شود؟",
+        "delete_shortcut": "میانبر حذف شود؟",
+        "deleted": "با موفقیت حذف شد",
+        "device_unavailable": "دستگاه در دسترس نیست",
+        "disable_cleangenius": "Cleangenius غیرفعال شود؟",
+        "dnd_confliction": "تداخل در وظیفه DnD!",
+        "dnd_confliction_detail": "وظیفه زمان‌بندی‌شده در زمان 'عدم مزاحمت' (DND) تنظیم شده است.",
+        "dnd_will_deleted": "وظیفه DnD از %start% تا %end% حذف خواهد شد!",
+        "dock_in_restricted_area": "داک در منطقه ممنوعه قرار دارد!",
+        "dock_in_restricted_area_detail": "داک شارژ در منطقه ممنوعه قرار دارد. اگر نقشه را ذخیره کنید، ربات ممکن است نتواند برای شارژ برگردد.",
+        "drying_will_stopped": "خشک کردن پد طی متوقف خواهد شد!",
+        "dust_collection_not_performed": "تخلیه خودکار زباله انجام نشد\nربات در زمان DND تخلیه خودکار را انجام نخواهد داد.",
+        "enable_auto_mount_mop": "نصب خودکار طی فعال شود؟",
+        "enable_carpet_recognition": "تشخیص فرش فعال خواهد شد!",
+        "enable_customized_cleaning": "آیا می‌خواهید تمیزکاری سفارشی را فعال کنید؟",
+        "enable_mop_change": "آیا می‌خواهید تعویض خودکار طی را فعال کنید؟",
+        "enable_task": "آیا می‌خواهید وظیفه را فعال کنید؟",
+        "entity_is_required": "وجود Entity الزامی است",
+        "entity_not_available": "Entity در دسترس نیست",
+        "failed_to_load_card": "بارگیری کارت انجام نشد",
+        "ignore_obstacle": "این مانع نادیده گرفته شود؟",
+        "invalid_entity": "Entity نامعتبر",
+        "map_backup": "در حال پشتیبان‌گیری از نقشه...",
+        "map_backup_failed": "پشتیبان‌گیری از نقشه ناموفق بود!",
+        "map_backup_success": "پشتیبان‌گیری از نقشه با موفقیت انجام شد",
+        "map_recovery": "در حال بازیابی نقشه...",
+        "map_recovery_failed": "بازیابی نقشه ناموفق بود!",
+        "map_recovery_success": "بازیابی نقشه با موفقیت انجام شد",
+        "map_will_deleted": "%name% حذف خواهد شد!",
+        "map_will_replaced": "نقشه فعلی با نقشه جدید جایگزین خواهد شد!",
+        "map_will_restored": "نقشه ذخیره شده به وضعیت خود در تاریخ %date% بازگردانده خواهد شد.",
+        "mapping_started": "نقشه‌برداری آغاز شد...",
+        "mop_change_disabled": "تعویض خودکار طی غیرفعال است!",
+        "mop_wash_frequency_low": "دفعات شستشوی طی خیلی کم است!",
+        "mop_wash_frequency_will_increased": "برای اطمینان از مرطوب بودن طی، دفعات شستشو به‌طور خودکار افزایش می‌یابد.",
+        "not_available": "در حال حاضر در دسترس نیست...",
+        "not_fully_supported": "هنوز به‌طور کامل پشتیبانی نمی‌شود!",
+        "not_supported": "هنوز پشتیبانی نمی‌شود!",
+        "obstacle_will_ignored": "این مانع نادیده گرفته خواهد شد!",
+        "override_changes": "تغییرات جایگزین (Override) شوند؟",
+        "preview": "این پیش‌نمایشی از کارت Dreame Vacuum است",
+        "recommended_areas": "مناطق پیشنهادی",
+        "relocating": "در حال مکان‌یابی خود. لطفاً صبر کنید.",
+        "relocating_completed": "مکان‌یابی با موفقیت انجام شد. ربات به کار خود ادامه می‌دهد.",
+        "relocating_failed": "مکان‌یابی خودکار ناموفق بود!",
+        "replace_map": "نقشه جدید جایگزین شود؟",
+        "reset_usage": "میزان مصرف بازنشانی (Reset) شود؟",
+        "reset_walls": "بازنشانی دیوارها؟",
+        "restore_map": "%name% بازیابی شود؟",
+        "resume_cleaning": "ربات پس از شارژ تا 80%، تمیزکاری نیمه‌تمام را به‌طور خودکار ادامه خواهد داد.",
+        "resume_cleaning_not_performed": "ربات پس از پایان زمان DND، تمیزکاری را ادامه خواهد داد.",
+        "resume_cleaning_time": "تمیزکاری در ساعت %time% آغاز می‌شود",
+        "save_changes": "تغییرات ذخیره شوند؟",
+        "saved": "با موفقیت ذخیره شد",
+        "schedule_will_deleted": "وظیفه زمان‌بندی‌شده در %time% حذف خواهد شد!",
+        "select_map": "انتخاب '%name%'؟",
+        "select_mapping_type": "نوع نقشه‌برداری را انتخاب کنید",
+        "select_room": "اتاقی را برای تعیین ترتیب تمیزکاری انتخاب کنید",
+        "selected_map_will_changed": "نقشه انتخاب شده به %name% تغییر خواهد کرد!",
+        "service_call_failed": "فراخوانی سرویس ناموفق بود",
+        "settings_will_applied": "تنظیمات شما در وظیفه بعدی اعمال خواهد شد.",
+        "shortcut_will_deleted": "%name% حذف خواهد شد!",
+        "stop_bag_drying": "خشک کردن کیسه زباله متوقف شود؟",
+        "stop_drying": "خشک کردن متوقف شود؟",
+        "stop_task": "وظیفه فعلی متوقف شود؟",
+        "task_disabled": "وظیفه غیرفعال است!",
+        "task_will_stopped": "وظیفه فعلی متوقف خواهد شد!",
+        "unsaved_changes_present": "تغییرات ذخیره‌نشده‌ای دارید که از بین خواهند رفت!",
+        "unsupported_browser": "مرورگر پشتیبانی نمی‌شود!",
+        "usage_will_reset": "میزان مصرف %name% بازنشانی خواهد شد!",
+        "walls_will_be_reset": "دیوارها به محل نقشه‌برداری شده اولیه خود بازگردانده می‌شوند!"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "میزان مصرف لوازم جانبی",
+        "add_furniture": "افزودن مبلمان",
+        "audio_settings": "تنظیمات صدا",
+        "battery_management": "مدیریت باتری",
+        "carpet_settings": "تنظیمات فرش",
+        "clean_water_tank": "مخزن آب تمیز",
+        "cleaning_details": "جزئیات تمیزکاری",
+        "cleaning_history": "تاریخچه تمیزکاری",
+        "cleaning_sequence": "ترتیب تمیزکاری",
+        "created_carpet": "فرش ایجاد شده به‌صورت دستی",
+        "cruising": "حرکت (Cruising)",
+        "cruising_details": "جزئیات حرکت",
+        "cruising_history": "تاریخچه حرکت",
+        "customized_cleaning": "تمیزکاری سفارشی",
+        "description": "رابط کاربری سفارشی ادغام %name%",
+        "detected_carpet": "فرش تشخیص داده شده به‌صورت خودکار",
+        "detergent": "مواد شوینده",
+        "device_information": "اطلاعات دستگاه",
+        "device_settings": "تنظیمات دستگاه",
+        "dnd": "عدم مزاحمت (Do Not Disturb)",
+        "dnd_task": "وظیفه DnD",
+        "dust_bag": "کیسه زباله",
+        "global_carpet_settings": "تنظیمات جهانی فرش",
+        "invalid": "نامعتبر",
+        "locate": "مکان‌یابی",
+        "map": "نقشه",
+        "map_edit": "ویرایش نقشه",
+        "map_management": "مدیریت نقشه‌ها",
+        "map_name_placeholder": "نقشه %index%",
+        "mop_type": "نوع طی",
+        "mopping_settings": "تنظیمات طی کشیدن",
+        "more_functions": "عملکردهای بیشتر",
+        "name": "کارت %name%",
+        "new_map": "نقشه جدید",
+        "obstacle": "مانع",
+        "obstacle_settings": "تنظیمات دوربین و موانع",
+        "recovery_map_list": "بازیابی نقشه",
+        "remote_control": "کنترل از راه دور",
+        "saved_map": "نقشه ذخیره شده",
+        "schedule_list": "زمان‌بندی تمیزکاری",
+        "scheduled_room": "زمان‌بندی تمیز کردن اتاق",
+        "scheduled_spot": "زمان‌بندی تمیزکاری نقطه‌ای",
+        "scheduled_task": "وظیفه زمان‌بندی‌شده",
+        "scheduled_zone": "زمان‌بندی تمیز کردن منطقه",
+        "segment_name_placeholder": "اتاق %index%",
+        "shortcut": "میانبر",
+        "shortcut_list": "لیست میانبرها",
+        "shortcut_map": "نقشه میانبرها",
+        "shortcut_name_placeholder": "میانبر %index%",
+        "shortcut_task": "وظیفه میانبر",
+        "task": "وظیفه %index%",
+        "task_placeholder": "وظیفه %index%",
+        "time_left": "%time% باقیمانده",
+        "unavailable": "در دسترس نیست",
+        "used_water_tank": "مخزن آب کثیف",
+        "wall": "دیوارها",
+        "wifi_map": "نقشه WiFi"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "تمیز کردن اتاق",
+      "description": "شروع عملیات تمیزکاری در اتاق‌های انتخاب شده.",
+      "fields": {
+        "segments": {
+          "name": "اتاق‌ها",
+          "description": "شناسه اتاق‌ها برای تمیزکاری."
+        },
+        "repeats": {
+          "name": "دفعات",
+          "description": "تعداد دفعات تمیزکاری برای هر اتاق."
+        },
+        "suction_level": {
+          "name": "سطح مکش",
+          "description": "سرعت فن برای هر اتاق."
+        },
+        "water_volume": {
+          "name": "حجم آب",
+          "description": "میزان آب برای هر اتاق."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "تمیز کردن منطقه",
+      "description": "شروع عملیات تمیزکاری در منطقه انتخاب شده.",
+      "fields": {
+        "zone": {
+          "name": "منطقه",
+          "description": "مختصات منطقه."
+        },
+        "repeats": {
+          "name": "دفعات",
+          "description": "تعداد دفعات تمیزکاری منطقه."
+        },
+        "suction_level": {
+          "name": "سطح مکش",
+          "description": "سرعت فن برای منطقه."
+        },
+        "water_volume": {
+          "name": "حجم آب",
+          "description": "میزان آب برای منطقه."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "تمیزکاری نقطه‌ای",
+      "description": "شروع تمیزکاری در نقاط انتخابی روی نقشه.",
+      "fields": {
+        "points": {
+          "name": "نقاط",
+          "description": "مختصات نقاط برای تمیزکاری."
+        },
+        "repeats": {
+          "name": "دفعات",
+          "description": "تعداد دفعات تمیزکاری نقاط."
+        },
+        "suction_level": {
+          "name": "سطح مکش",
+          "description": "سرعت فن."
+        },
+        "water_volume": {
+          "name": "حجم آب",
+          "description": "میزان آب."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "رفتن به",
+      "description": "رفتن به مختصات خاصی روی نقشه و توقف.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "مختصات X."
+        },
+        "y": {
+          "name": "Y",
+          "description": "مختصات Y."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "دنبال کردن مسیر",
+      "description": "دنبال کردن لیستی از مختصات روی نقشه و بازگشت به داک.",
+      "fields": {
+        "points": {
+          "name": "نقاط",
+          "description": "مختصات مسیر."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "شروع میانبر",
+      "description": "شروع یک وظیفه میانبر.",
+      "fields": {
+        "shortcut_id": {
+          "name": "شناسه میانبر",
+          "description": "شناسه مربوط به میانبر."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "حرکت کنترل از راه دور",
+      "description": "کنترل حرکت ربات از راه دور.",
+      "fields": {
+        "rotation": {
+          "name": "چرخش",
+          "description": "زاویه چرخش بین -128 تا 128."
+        },
+        "velocity": {
+          "name": "سرعت",
+          "description": "سرعت حرکت از 100 (جلو) تا -300 (عقب)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "نصب بسته صوتی",
+      "description": "نصب بسته صوتی سفارشی یا رسمی.",
+      "fields": {
+        "lang_id": {
+          "name": "شناسه زبان",
+          "description": "شناسه زبان بسته."
+        },
+        "url": {
+          "name": "آدرس (URL)",
+          "description": "لینک دانلود بسته صوتی."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "کد هش MD5 بسته صوتی."
+        },
+        "size": {
+          "name": "اندازه",
+          "description": "اندازه بسته به بایت."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "درخواست نقشه",
+      "description": "درخواست دریافت داده‌های نقشه."
+    },
+    "vacuum_select_map": {
+      "name": "انتخاب نقشه",
+      "description": "انتخاب نقشه فعلی (کاربرد در چند طبقه).",
+      "fields": {
+        "map_id": {
+          "name": "شناسه نقشه",
+          "description": "شناسه نقشه برای انتخاب."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "حذف نقشه",
+      "description": "حذف یک نقشه.",
+      "fields": {
+        "map_id": {
+          "name": "شناسه نقشه",
+          "description": "شناسه نقشه‌ای که باید حذف شود."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "ذخیره نقشه موقت",
+      "description": "ذخیره نقشه موقت."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "حذف نقشه موقت",
+      "description": "دور انداختن نقشه موقت."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "جایگزینی نقشه موقت",
+      "description": "جایگزینی نقشه موقت با یک نقشه ذخیره‌شده دیگر.",
+      "fields": {
+        "map_id": {
+          "name": "شناسه نقشه",
+          "description": "شناسه نقشه جایگزین."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "تغییر نام نقشه",
+      "description": "تغییر نام یک نقشه.",
+      "fields": {
+        "map_id": {
+          "name": "شناسه نقشه",
+          "description": "شناسه نقشه."
+        },
+        "map_name": {
+          "name": "نام نقشه",
+          "description": "نام جدید نقشه."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "بازیابی نقشه",
+      "description": "بازیابی یک نقشه ذخیره‌شده.",
+      "fields": {
+        "map_id": {
+          "name": "شناسه نقشه",
+          "description": "شناسه نقشه برای بازیابی."
+        },
+        "recovery_map_index": {
+          "name": "ایندکس نقشه بازیابی",
+          "description": "ایندکس نقشه بازیابی ذخیره‌شده."
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "بازیابی نقشه از فایل",
+      "description": "بازیابی نقشه از یک فایل.",
+      "fields": {
+        "map_id": {
+          "name": "شناسه نقشه",
+          "description": "شناسه نقشه برای بازیابی."
+        },
+        "file_url": {
+          "name": "آدرس (URL) فایل",
+          "description": "آدرس فایل tbz2.gz یا tar.gz"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "پشتیبان‌گیری نقشه",
+      "description": "پشتیبان‌گیری از نقشه در فضای ابری.",
+      "fields": {
+        "map_id": {
+          "name": "شناسه نقشه",
+          "description": "شناسه نقشه برای پشتیبان‌گیری."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "ادغام اتاق‌ها",
+      "description": "ادغام دو یا چند اتاق.",
+      "fields": {
+        "map_id": {
+          "name": "شناسه نقشه",
+          "description": "شناسه نقشه."
+        },
+        "segments": {
+          "name": "اتاق‌ها",
+          "description": "شناسه‌های اتاق‌ها."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "تقسیم اتاق",
+      "description": "تقسیم یک اتاق به دو بخش.",
+      "fields": {
+        "map_id": {
+          "name": "شناسه نقشه",
+          "description": "شناسه نقشه."
+        },
+        "segment": {
+          "name": "اتاق",
+          "description": "شناسه اتاق."
+        },
+        "line": {
+          "name": "خط",
+          "description": "مختصات خط تقسیم‌کننده."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "تغییر نام اتاق",
+      "description": "تغییر نام یک اتاق.",
+      "fields": {
+        "segment_id": {
+          "name": "شناسه اتاق",
+          "description": "شناسه اتاق."
+        },
+        "segment_name": {
+          "name": "نام اتاق",
+          "description": "نام جدید اتاق."
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "تنظیم ترتیب تمیزکاری",
+      "description": "تعیین ترتیب تمیز کردن اتاق‌ها.",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "ترتیب تمیزکاری",
+          "description": "لیست شناسه‌های اتاق‌ها به ترتیب تمیزکاری."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "تنظیم تمیزکاری سفارشی",
+      "description": "تنظیم پارامترهای سفارشی برای تمیزکاری.",
+      "fields": {
+        "segment_id": {
+          "name": "شناسه اتاق",
+          "description": "شناسه اتاق‌ها."
+        },
+        "suction_level": {
+          "name": "سطح مکش",
+          "description": "سطح مکش برای هر اتاق."
+        },
+        "water_volume": {
+          "name": "حجم آب",
+          "description": "حجم آب برای هر اتاق."
+        },
+        "wetness_level": {
+          "name": "سطح خیسی",
+          "description": "میزان رطوبت برای هر اتاق."
+        },
+        "cleaning_mode": {
+          "name": "حالت تمیزکاری",
+          "description": "حالت تمیزکاری برای هر اتاق."
+        },
+        "repeats": {
+          "name": "دفعات تکرار",
+          "description": "دفعات تمیزکاری برای هر اتاق."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "تنظیم تمیزکاری سفارشی فرش",
+      "description": "تنظیمات سفارشی برای تمیز کردن فرش‌ها.",
+      "fields": {
+        "id": {
+          "name": "شناسه فرش",
+          "description": "شناسه فرش‌ها."
+        },
+        "type": {
+          "name": "نوع شیء",
+          "description": "نوع فرش (تشخیص خودکار، دستی و...)."
+        },
+        "carpet_cleaning": {
+          "name": "تمیزکاری فرش",
+          "description": "تنظیمات تمیزکاری سفارشی برای فرش."
+        },
+        "carpet_preferences": {
+          "name": "تنظیمات فرش",
+          "description": "تنظیمات سفارشی برای فرش با پارامترهای فعال."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "تنظیم منطقه ممنوعه",
+      "description": "تعریف دیوار مجازی، منطقه ممنوعه و منطقه بدون طی.",
+      "fields": {
+        "walls": {
+          "name": "دیوارها",
+          "description": "دیوارهای مجازی."
+        },
+        "zones": {
+          "name": "مناطق",
+          "description": "مناطق ممنوعه."
+        },
+        "no_mops": {
+          "name": "بدون طی",
+          "description": "مناطقی که نباید طی کشیده شوند."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "بازنشانی قطعه مصرفی",
+      "description": "بازنشانی (Reset) طول عمر یک قطعه مصرفی.",
+      "fields": {
+        "consumable": {
+          "name": "قطعه مصرفی",
+          "description": "نوع قطعه مصرفی."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "تغییر نام میانبر",
+      "description": "تغییر نام یک میانبر.",
+      "fields": {
+        "shortcut_id": {
+          "name": "شناسه میانبر",
+          "description": "شناسه میانبر."
+        },
+        "shortcut_name": {
+          "name": "نام میانبر",
+          "description": "نام جدید میانبر."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "حذف میانبر",
+      "description": "حذف یک میانبر.",
+      "fields": {
+        "shortcut_id": {
+          "name": "شناسه میانبر",
+          "description": "شناسه میانبر."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "تنظیم منطقه فرش",
+      "description": "تعریف منطقه فرش و فرش‌های نادیده‌گرفته شده.",
+      "fields": {
+        "carpets": {
+          "name": "فرش‌ها",
+          "description": "منطقه فرش."
+        },
+        "deleted_carpets": {
+          "name": "فرش‌های حذف‌شده",
+          "description": "مناطق فرش که به‌صورت خودکار تشخیص داده شده اما حذف شده‌اند."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "تنظیم آستانه مجازی",
+      "description": "تعریف آستانه‌های مجازی.",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "آستانه مجازی",
+          "description": "مختصات آستانه مجازی."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "تنظیم نقاط پیش‌فرض",
+      "description": "تعریف مختصات از پیش تعیین شده روی نقشه.",
+      "fields": {
+        "points": {
+          "name": "نقاط",
+          "description": "لیست مختصات ذخیره‌شده."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "تنظیم نادیده‌گرفتن مانع",
+      "description": "تنظیم وضعیت نادیده‌گرفتن یک مانع خاص.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "مختصات X مانع."
+        },
+        "y": {
+          "name": "Y",
+          "description": "مختصات Y مانع."
+        },
+        "obstacle_ignored": {
+          "name": "مانع نادیده گرفته شده",
+          "description": "مشخص می‌کند مانع نادیده گرفته شود یا خیر."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "تنظیم موقعیت روتر",
+      "description": "تنظیم موقعیت روتر روی نقشه فعلی.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "مختصات X روتر."
+        },
+        "y": {
+          "name": "Y",
+          "description": "مختصات Y روتر."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "انتخاب مورد قبلی",
+      "description": "انتخاب گزینه قبلی در لیست.",
+      "fields": {
+        "cycle": {
+          "name": "چرخه",
+          "description": "آیا لیست باید از اول به آخر دور بزند یا خیر."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "انتخاب اولین مورد",
+      "description": "انتخاب گزینه اول از یک لیست."
+    },
+    "select_select_last": {
+      "name": "انتخاب آخرین مورد",
+      "description": "انتخاب آخرین گزینه از یک لیست."
+    },
+    "select_select_next": {
+      "name": "انتخاب مورد بعدی",
+      "description": "انتخاب گزینه بعدی در لیست.",
+      "fields": {
+        "cycle": {
+          "name": "چرخه",
+          "description": "آیا لیست باید از اول به آخر دور بزند یا خیر."
+        }
+      }
+    }
+  }
+}

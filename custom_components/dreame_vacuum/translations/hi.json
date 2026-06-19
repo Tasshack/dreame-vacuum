@@ -1,0 +1,2438 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "डिवाइस पहले से कॉन्फ़िगर है",
+      "cannot_connect": "कनेक्ट करने में विफल।",
+      "reauth_successful": "पुन: प्रमाणीकरण सफल रहा"
+    },
+    "error": {
+      "cannot_connect": "कनेक्ट करने में विफल।",
+      "unsupported": "डिवाइस समर्थित नहीं है",
+      "wrong_token": "चेकसम त्रुटि, गलत टोकन",
+      "2fa_failed": "सत्यापन विफल।",
+      "wrong_captcha": "गलत कैप्चा।",
+      "credentials_incomplete": "क्रेडेंशियल अधूरे हैं, कृपया उपयोगकर्ता नाम, पासवर्ड और देश भरें।",
+      "login_error": "लॉग इन नहीं हो सका, क्रेडेंशियल जांचें।",
+      "no_devices": "चयनित देश में इस खाते में कोई समर्थित डिवाइस नहीं मिला।{devices}",
+      "2fa_send_failed": "सत्यापन कोड भेजने में विफल। कृपया पुनः प्रयास करें।",
+      "2fa_limit_reached": "सत्यापन कोड भेजने की दैनिक सीमा समाप्त हो गई है। कृपया कल पुनः प्रयास करें।",
+      "2fa_cooldown_active": "बहुत सारे लगातार अनुरोध। कृपया पुन: प्रयास करने से पहले कुछ मिनट प्रतीक्षा करें।"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "कॉन्फ़िगरेशन का प्रकार"
+        },
+        "description": "मैप सुविधा के लिए क्लाउड कनेक्शन की आवश्यकता होती है और यह स्वचालित कॉन्फ़िगरेशन प्रदान करता है। यदि आप मैप सुविधा का उपयोग नहीं करना चाहते हैं, तो आप मैन्युअल कॉन्फ़िगरेशन का चयन कर सकते हैं।"
+      },
+      "local": {
+        "data": {
+          "host": "होस्ट",
+          "token": "टोकन"
+        },
+        "description": "आपको 32 वर्णों वाले API टोकन की आवश्यकता होगी।"
+      },
+      "mi": {
+        "data": {
+          "username": "उपयोगकर्ता नाम",
+          "password": "पासवर्ड",
+          "country": "सर्वर का देश",
+          "prefer_cloud": "क्लाउड कनेक्शन को प्राथमिकता दें"
+        },
+        "description": "Xiaomi Miio क्लाउड में लॉग इन करें।"
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "टू-फैक्टर सत्यापन कोड"
+        },
+        "description": "## सुरक्षा सत्यापन आवश्यक है\nसत्यापन कोड {dest} पर भेज दिया गया है। कृपया नीचे कोड दर्ज करें।"
+      },
+      "captcha": {
+        "data": {
+          "code": "कोड"
+        },
+        "description": "## कैप्चा सत्यापन आवश्यक है।\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "उपयोगकर्ता नाम",
+          "password": "पासवर्ड",
+          "country": "सर्वर का देश"
+        },
+        "description": "Dreamehome क्लाउड में लॉग इन करें।"
+      },
+      "mova": {
+        "data": {
+          "username": "उपयोगकर्ता नाम",
+          "password": "पासवर्ड",
+          "country": "सर्वर का देश"
+        },
+        "description": "Movahome क्लाउड में लॉग इन करें।"
+      },
+      "trouver": {
+        "data": {
+          "username": "उपयोगकर्ता नाम",
+          "password": "पासवर्ड",
+          "country": "सर्वर का देश"
+        },
+        "description": "Trouver क्लाउड में लॉग इन करें।"
+      },
+      "devices": {
+        "data": {
+          "devices": "समर्थित डिवाइस"
+        },
+        "description": "कृपया वह Dreame वैक्यूम डिवाइस चुनें जिसे आप सेटअप करना चाहते हैं।"
+      },
+      "donation": {
+        "data": {
+          "donated": "दान किया"
+        },
+        "description": "## प्रोजेक्ट का समर्थन करना न भूलें।{text}"
+      },
+      "options": {
+        "data": {
+          "name": "नाम",
+          "color_scheme": "मैप रंग योजना",
+          "icon_set": "मैप आइकन सेट",
+          "notify": "अधिसूचना",
+          "hidden_map_objects": "छिपे हुए मैप ऑब्जेक्ट",
+          "low_resolution": "कम रिज़ॉल्यूशन वाला मैप",
+          "square": "चौकोर मैप"
+        }
+      },
+      "reauth_confirm": {
+        "description": "टोकन को अपडेट करने या गुम क्लाउड क्रेडेंशियल जोड़ने के लिए Dreame वैक्यूम एकीकरण को आपके खाते को फिर से प्रमाणित करने की आवश्यकता है।",
+        "title": "एकीकरण को फिर से प्रमाणित करें"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "मैप रंग योजना",
+          "icon_set": "मैप आइकन सेट",
+          "notify": "अधिसूचना",
+          "hidden_map_objects": "छिपे हुए मैप ऑब्जेक्ट",
+          "low_resolution": "कम रिज़ॉल्यूशन वाला मैप",
+          "square": "चौकोर मैप",
+          "configuration_type": "कॉन्फ़िगरेशन का प्रकार",
+          "prefer_cloud": "क्लाउड कनेक्शन को प्राथमिकता दें",
+          "donated": "दान किया"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "क्लाउड क्रेडेंशियल अधूरे हैं, कृपया उपयोगकर्ता नाम, पासवर्ड और देश भरें"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "name": "सक्शन स्तर",
+        "state": {
+          "quiet": "शांत",
+          "standard": "मानक",
+          "strong": "मज़बूत",
+          "turbo": "टर्बो",
+          "full_power": "पूरी ताकत"
+        }
+      },
+      "water_volume": {
+        "name": "पानी की मात्रा",
+        "state": {
+          "low": "कम",
+          "medium": "मध्यम",
+          "high": "ज़्यादा"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "मॉप पैड की नमी",
+        "state": {
+          "slightly_dry": "थोड़ा सूखा",
+          "moist": "नम",
+          "wet": "गीला"
+        }
+      },
+      "cleaning_mode": {
+        "name": "सफाई मोड",
+        "state": {
+          "sweeping": "झाड़ू लगाना",
+          "mopping": "पोछा लगाना",
+          "sweeping_and_mopping": "झाड़ू और पोछा लगाना",
+          "mopping_after_sweeping": "झाड़ू लगाने के बाद पोछा"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "कालीन संवेदनशीलता",
+        "state": {
+          "low": "कम",
+          "medium": "मध्यम",
+          "high": "अधिक"
+        }
+      },
+      "carpet_cleaning": {
+        "name": "कालीन की सफाई",
+        "state": {
+          "avoidance": "बचाव",
+          "adaptation": "अनुकूलन",
+          "remove_mop": "मॉप हटाएँ",
+          "adaptation_without_route": "बिना मार्ग के अनुकूलन",
+          "vacuum_and_mop": "वैक्यूम और मॉप",
+          "ignore": "अनदेखा करें",
+          "cross": "पार करें"
+        }
+      },
+      "mop_wash_level": {
+        "name": "मॉप धोने का मोड",
+        "state": {
+          "water_saving": "पानी की बचत",
+          "daily": "दैनिक",
+          "deep": "गहरा",
+          "ultra_clean_mode": "अल्ट्रा क्लीन"
+        }
+      },
+      "mopping_type": {
+        "name": "पोछा लगाने का प्रकार",
+        "state": {
+          "accurate": "सटीक",
+          "daily": "दैनिक",
+          "deep": "गहरा"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "व्यापक कोना कवरेज",
+        "state": {
+          "off": "बंद",
+          "high_frequency": "उच्च आवृत्ति",
+          "low_frequency": "कम आवृत्ति"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "मॉप पैड स्विंग",
+        "state": {
+          "off": "बंद",
+          "auto": "ऑटो",
+          "daily": "दैनिक",
+          "weekly": "साप्ताहिक"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "मॉप विस्तार की आवृत्ति",
+        "state": {
+          "standard": "मानक",
+          "intelligent": "बुद्धिमान",
+          "high": "उच्च"
+        }
+      },
+      "floor_material": {
+        "name": "फर्श सामग्री",
+        "state": {
+          "none": "कोई नहीं",
+          "tile": "फर्श की टाइल",
+          "wood": "लकड़ी का फर्श",
+          "low_pile_carpet": "छोटे रेशे वाला कालीन",
+          "medium_pile_carpet": "बड़े से मध्यम रेशे वाला कालीन",
+          "carpet": "कालीन"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "वॉयस असिस्टेंट भाषा",
+        "state": {
+          "default": "डिफ़ॉल्ट",
+          "english": "अंग्रेज़ी",
+          "german": "जर्मन",
+          "chinese": "चीनी",
+          "russian": "रूसी",
+          "italian": "इतालवी",
+          "french": "फ़्रेंच",
+          "korean": "कोरियाई"
+        }
+      },
+      "mop_pressure": {
+        "name": "मॉप का दबाव",
+        "state": {
+          "light": "हल्का",
+          "normal": "सामान्य"
+        }
+      },
+      "mop_temperature": {
+        "name": "मॉप का तापमान",
+        "state": {
+          "normal": "सामान्य",
+          "warm": "गर्म"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "निचले क्षेत्र की आवृत्ति",
+        "state": {
+          "weekly": "साप्ताहिक",
+          "daily": "दैनिक"
+        }
+      },
+      "scraper_frequency": {
+        "name": "स्क्रैपर आवृत्ति",
+        "state": {
+          "off": "बंद",
+          "weekly": "साप्ताहिक",
+          "daily": "दैनिक"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "ऑटो LDS कवरेज",
+        "state": {
+          "off": "बंद",
+          "security": "सुरक्षा",
+          "extreme": "चरम"
+        }
+      },
+      "order": {
+        "name": "क्रम",
+        "state": {
+          "not_set": "सेट नहीं है"
+        }
+      },
+      "self_clean_frequency": {
+        "name": "स्वयं-सफाई आवृत्ति",
+        "state": {
+          "by_area": "क्षेत्र के अनुसार",
+          "by_time": "समय के अनुसार",
+          "by_room": "कमरे के अनुसार",
+          "intelligent": "बुद्धिमान"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "मॉप सफाई आवृत्ति",
+        "state": {
+          "by_room": "कमरे के अनुसार",
+          "5sqm": "पांच वर्ग मीटर",
+          "8sqm": "आठ वर्ग मीटर",
+          "10sqm": "दस वर्ग मीटर",
+          "15sqm": "पंद्रह वर्ग मीटर",
+          "20sqm": "बीस वर्ग मीटर",
+          "25sqm": "पच्चीस वर्ग मीटर",
+          "86sqf": "छियासी वर्ग फुट",
+          "108sqf": "एक सौ आठ वर्ग फुट",
+          "54sqf": "चौवन वर्ग फुट",
+          "162sqf": "एक सौ बासठ वर्ग फुट",
+          "216sqf": "दो सौ सोलह वर्ग फुट",
+          "270sqf": "दो सौ सत्तर वर्ग फुट"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "ऑटो-एम्प्टी मोड",
+        "state": {
+          "off": "बंद",
+          "standard": "मानक",
+          "high_frequency": "उच्च आवृत्ति",
+          "low_frequency": "कम आवृत्ति",
+          "custom_frequency": "कस्टम आवृत्ति",
+          "intelligent": "बुद्धिमान"
+        }
+      },
+      "floor_material_direction": {
+        "name": "फर्श की दिशा",
+        "state": {
+          "vertical": "लंबवत",
+          "horizontal": "क्षैतिज"
+        }
+      },
+      "visibility": {
+        "name": "दृश्यता",
+        "state": {
+          "visible": "दिखाई देने वाला",
+          "hidden": "छिपा हुआ"
+        }
+      },
+      "cleangenius": {
+        "name": "Cleangenius",
+        "state": {
+          "off": "बंद",
+          "routine_cleaning": "नियमित सफाई",
+          "deep_cleaning": "गहरी सफाई"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "Cleangenius मोड",
+        "state": {
+          "vacuum_and_mop": "वैक्यूम और मॉप",
+          "mop_after_vacuum": "वैक्यूम के बाद मॉप"
+        }
+      },
+      "washing_mode": {
+        "name": "मॉप धोने का मोड",
+        "state": {
+          "smart": "स्मार्ट",
+          "light": "हल्का",
+          "standard": "मानक",
+          "deep": "गहरा",
+          "ultra_washing": "अल्ट्रा वाशिंग"
+        }
+      },
+      "water_temperature": {
+        "name": "पानी का तापमान",
+        "state": {
+          "normal": "सामान्य",
+          "mild": "हल्का गर्म",
+          "warm": "गर्म",
+          "hot": "बहुत गर्म",
+          "max": "अधिकतम"
+        }
+      },
+      "auto_recleaning": {
+        "name": "ऑटो री-क्लीनिंग",
+        "state": {
+          "off": "बंद",
+          "in_deep_mode": "डीप मोड में",
+          "in_all_modes": "सभी मोड में"
+        }
+      },
+      "auto_rewashing": {
+        "name": "ऑटो री-वाशिंग",
+        "state": {
+          "off": "बंद",
+          "in_deep_mode": "डीप मोड में",
+          "in_all_modes": "सभी मोड में"
+        }
+      },
+      "cleaning_route": {
+        "name": "मार्ग",
+        "state": {
+          "quick": "त्वरित",
+          "standard": "मानक",
+          "intensive": "गहन",
+          "deep": "गहरा"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "कस्टम पोछा मार्ग",
+        "state": {
+          "off": "बंद",
+          "standard": "मानक",
+          "intensive": "गहन",
+          "deep": "गहरा"
+        }
+      },
+      "task_type": {
+        "name": "कार्य का प्रकार",
+        "state": {
+          "go_to": "बिंदु पर जाएं",
+          "segment": "कमरे की सफाई",
+          "all": "वैश्विक सफाई",
+          "zone": "ज़ोन की सफाई",
+          "spot": "स्पॉट की सफाई"
+        }
+      },
+      "cleaning_times": {
+        "name": "सफाई का समय",
+        "state": {
+          "x1": "एक बार",
+          "x2": "दो बार",
+          "x3": "तीन बार"
+        }
+      },
+      "auto_empty_frequency": {
+        "name": "ऑटो-एम्प्टी आवृत्ति",
+        "state": {
+          "x1": "हर काम के बाद",
+          "x2": "दो सफाई के बाद",
+          "x3": "तीन सफाई के बाद"
+        }
+      },
+      "drying_time": {
+        "name": "सुखाने का समय",
+        "state": {
+          "silent": "शांत"
+        }
+      },
+      "battery_charge_level": {
+        "name": "बैटरी चार्ज स्तर"
+      },
+      "object_type": {
+        "name": "वस्तु का प्रकार",
+        "state": {
+          "predefined_point": "पूर्वनिर्धारित बिंदु",
+          "low_lying_area": "निचला क्षेत्र",
+          "curtain": "पर्दा",
+          "threshold": "दहलीज",
+          "furniture": "फर्नीचर",
+          "carpet": "कालीन",
+          "restricted": "प्रतिबंधित क्षेत्र"
+        }
+      },
+      "edit_type": {
+        "name": "संपादन का प्रकार",
+        "state": {
+          "door": "दरवाज़े संपादित करें",
+          "split": "कमरे विभाजित करें",
+          "merge": "कमरे मिलाएं",
+          "visibility": "कमरे की दृश्यता",
+          "material": "फर्श सामग्री",
+          "type": "कमरे का नाम",
+          "wall": "दीवारें संपादित करें"
+        }
+      },
+      "map_type": {
+        "name": "मैप का प्रकार",
+        "state": {
+          "cleaning": "सफाई मैप",
+          "history": "सफाई विवरण",
+          "wifi": "Wi-Fi मैप"
+        }
+      },
+      "carpet_type": {
+        "name": "कालीन का प्रकार",
+        "state": {
+          "medium_pile": "बड़े से मध्यम रेशा",
+          "low_pile": "छोटा रेशा",
+          "floor_mat": "फ़्लोर मैट",
+          "other": "अन्य"
+        }
+      },
+      "mop_type": {
+        "name": "मॉप का प्रकार",
+        "state": {
+          "a": "मॉप A",
+          "b": "मॉप B",
+          "c": "मॉप C"
+        }
+      },
+      "carpet_shape": {
+        "name": "आकार",
+        "state": {
+          "square": "चौकोर",
+          "round": "गोल"
+        }
+      },
+      "mopping_pattern": {
+        "name": "पोछा लगाने का पैटर्न",
+        "state": {
+          "daily": "दैनिक पोछा",
+          "deep": "गहरा पोछा"
+        }
+      },
+      "wetness_level": {
+        "name": "गीलापन",
+        "state": {
+          "slightly_dry": "थोड़ा सूखा",
+          "moist": "नम",
+          "wet": "गीला"
+        }
+      },
+      "task_repeats": {
+        "name": "कार्य दोहराएं",
+        "state": {
+          "once": "एक बार",
+          "daily": "रोजाना",
+          "workdays": "कार्यदिवस",
+          "weekends": "सप्ताहांत"
+        }
+      },
+      "segment_name": {
+        "name": "कमरे का नाम",
+        "state": {
+          "room": "कमरा",
+          "living_room": "लिविंग रूम",
+          "primary_bedroom": "मुख्य शयनकक्ष",
+          "study": "अध्ययन कक्ष",
+          "kitchen": "रसोई",
+          "dining_hall": "भोजन कक्ष",
+          "bathroom": "बाथरूम",
+          "balcony": "बालकनी",
+          "corridor": "गलियारा",
+          "utility_room": "उपयोगिता कक्ष",
+          "closet": "अलमारी",
+          "meeting_room": "बैठक कक्ष",
+          "office": "कार्यालय",
+          "fitness_area": "फिटनेस क्षेत्र",
+          "recreation_area": "मनोरंजन क्षेत्र",
+          "secondary_bedroom": "द्वितीयक शयनकक्ष"
+        }
+      },
+      "furniture_type": {
+        "name": "फर्नीचर का प्रकार",
+        "state": {
+          "single_bed": "सिंगल बेड",
+          "double_bed": "डबल बेड",
+          "arm_chair": "आर्म चेयर",
+          "two_seat_sofa": "दो सीटों वाला सोफा",
+          "three_seat_sofa": "तीन सीटों वाला सोफा",
+          "dining_table": "डाइनिंग टेबल",
+          "nightstant": "नाइटस्टैंड",
+          "coffee_table": "कॉफी टेबल",
+          "toilet": "शौचालय",
+          "litter_box": "लिटर बॉक्स",
+          "pet_bed": "पालतू जानवर का बिस्तर",
+          "food_bowl": "भोजन का कटोरा",
+          "pet_toilet": "पालतू जानवर का शौचालय",
+          "refrigerator": "रेफ्रिजरेटर",
+          "washing_machine": "वाशिंग मशीन",
+          "enclosed_litter_box": "बंद लिटर बॉक्स",
+          "air_conditioner": "एयर कंडीशनर",
+          "tv_cabinet": "टीवी कैबिनेट",
+          "bookshelf": "किताबों की अलमारी",
+          "shoe_cabinet": "जूतों की अलमारी",
+          "wardrobe": "वार्डरोब",
+          "greenery": "हरियाली",
+          "floor_mirror": "फ़्लोर मिरर",
+          "l_shaped_sofa": "L-आकार का सोफा",
+          "round_coffee_table": "गोल कॉफी टेबल",
+          "table": "मेज",
+          "arm_chair_narrow": "संकीर्ण आर्म चेयर",
+          "three_seat_sofa_narrow": "संकीर्ण तीन सीटों वाला सोफा",
+          "l_shaped_sofa_right": "L-आकार का सोफा (दायां)"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "name": "स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "sweeping": "झाड़ू लगा रहा है",
+          "charging": "चार्ज हो रहा है",
+          "error": "त्रुटि",
+          "idle": "निष्क्रिय",
+          "paused": "रोका गया",
+          "returning": "डॉक पर लौट रहा है",
+          "mopping": "पोछा लगा रहा है",
+          "drying": "सुखा रहा है",
+          "washing": "धो रहा है",
+          "returning_to_wash": "धोने के लिए लौट रहा है",
+          "building": "बना रहा है",
+          "sweeping_and_mopping": "झाड़ू और पोछा लगा रहा है",
+          "charging_completed": "चार्जिंग पूरी हुई",
+          "upgrading": "अपग्रेड हो रहा है",
+          "clean_summon": "सफाई के लिए बुलाएं",
+          "station_reset": "स्टेशन रीसेट",
+          "returning_install_mop": "मॉप स्थापित करने के लिए लौट रहा है",
+          "returning_remove_mop": "मॉप हटाने के लिए लौट रहा है",
+          "water_check": "पानी की जांच हो रही है",
+          "clean_add_water": "सफाई और पानी डालना",
+          "washing_paused": "धोना रोका गया",
+          "auto_emptying": "स्वतः खाली हो रहा है",
+          "remote_control": "रिमोट कंट्रोलिंग",
+          "smart_charging": "स्मार्ट चार्जिंग",
+          "second_cleaning": "दूसरी बार सफाई",
+          "human_following": "मनुष्य का अनुसरण",
+          "spot_cleaning": "स्पॉट सफाई",
+          "returning_auto_empty": "ऑटो-एम्प्टी के लिए लौट रहा है",
+          "waiting_for_task": "कार्य की प्रतीक्षा",
+          "station_cleaning": "स्टेशन की सफाई",
+          "returning_to_drain": "निकालने के लिए लौट रहा है",
+          "draining": "निकाल रहा है",
+          "auto_water_draining": "ऑटो पानी निकालना",
+          "emptying": "खाली कर रहा है",
+          "dust_bag_drying": "डस्ट बैग सुखाना",
+          "dust_bag_drying_paused": "डस्ट बैग सुखाना रोका गया",
+          "heading_to_extra_cleaning": "अतिरिक्त सफाई की ओर बढ़ रहा है",
+          "extra_cleaning": "अतिरिक्त सफाई",
+          "finding_pet_paused": "पालतू जानवर को खोजना रोका गया",
+          "finding_pet": "पालतू जानवर को खोज रहा है",
+          "shortcut": "शॉर्टकट",
+          "monitoring": "निगरानी",
+          "monitoring_paused": "निगरानी रोकी गई",
+          "initial_deep_cleaning": "प्रारंभिक गहरी सफाई",
+          "initial_deep_cleaning_paused": "प्रारंभिक गहरी सफाई रोकी गई",
+          "sanitizing": "सैनिटाइजिंग",
+          "sanitizing_with_dry": "सूखे के साथ सैनिटाइजिंग",
+          "changing_mop": "मॉप बदल रहा है",
+          "changing_mop_paused": "मॉप बदलना रोका गया",
+          "floor_maintaining": "फर्श का रखरखाव",
+          "floor_maintaining_paused": "फर्श का रखरखाव रोका गया",
+          "remote_pickup": "रिमोट पिकअप",
+          "arranging_items": "वस्तुओं को व्यवस्थित करना",
+          "pet_guarding": "पालतू जानवरों की सुरक्षा",
+          "pet_guarding_paused": "पालतू जानवरों की सुरक्षा रोकी गई",
+          "installing_mop": "मॉप स्थापित करना",
+          "uninstalling_mop": "मॉप हटाना",
+          "intelligent_recharging": "इंटेलिजेंट रिचार्जिंग",
+          "assisted_cleaning": "सहायता प्राप्त सफाई",
+          "entering_dock": "डॉक में प्रवेश कर रहा है",
+          "leaving_dock": "डॉक से निकल रहा है",
+          "navigating_to_climber": "क्लाइंबर पर जा रहा है",
+          "docking_to_climber": "क्लाइंबर से डॉक हो रहा है",
+          "climber_docked": "क्लाइंबर डॉक किया गया",
+          "climber_navigating": "क्लाइंबर नेविगेट कर रहा है",
+          "climbing_stairs": "सीढ़ियाँ चढ़ रहा है",
+          "climbing_stairs_completed": "सीढ़ी चढ़ना पूरा हुआ",
+          "climber_at_dock": "क्लाइंबर डॉक पर है",
+          "climber_leaving_dock": "क्लाइंबर डॉक छोड़ रहा है"
+        }
+      },
+      "status": {
+        "name": "स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "idle": "निष्क्रिय",
+          "paused": "रोका गया",
+          "cleaning": "सफाई",
+          "returning": "डॉक पर लौट रहा है",
+          "spot_cleaning": "स्पॉट सफाई",
+          "follow_wall_cleaning": "दीवार के साथ सफाई",
+          "charging": "चार्ज हो रहा है",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "WiFi सेट",
+          "power_off": "पावर ऑफ",
+          "factory": "फैक्टरी",
+          "error": "त्रुटि",
+          "remote_control": "रिमोट कंट्रोल",
+          "sleeping": "सो रहा है",
+          "self_test": "स्व-परीक्षण",
+          "factory_test": "फैक्टरी परीक्षण",
+          "standby": "स्टैंडबाय",
+          "room_cleaning": "कमरे की सफाई",
+          "zone_cleaning": "ज़ोन की सफाई",
+          "fast_mapping": "फास्ट मैपिंग",
+          "cruising_path": "रास्ते पर चल रहा है",
+          "cruising_point": "एक बिंदु पर जा रहा है",
+          "summon_clean": "सफाई के लिए बुलाएं",
+          "shortcut": "शॉर्टकट",
+          "person_follow": "व्यक्ति का अनुसरण",
+          "water_check": "पानी की जांच",
+          "pet_guarding": "पालतू जानवरों की सुरक्षा",
+          "auto_arrangement": "स्वचालित व्यवस्था",
+          "smart_arrangement": "स्मार्ट व्यवस्था",
+          "zoned_arrangement": "ज़ोन व्यवस्था"
+        }
+      },
+      "task_status": {
+        "name": "कार्य की स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "completed": "पूरा हुआ",
+          "cleaning": "सफाई",
+          "zone_cleaning": "ज़ोन की सफाई",
+          "room_cleaning": "कमरे की सफाई",
+          "spot_cleaning": "स्पॉट सफाई",
+          "fast_mapping": "फास्ट मैपिंग",
+          "cleaning_paused": "सफाई रोकी गई",
+          "room_cleaning_paused": "कमरे की सफाई रोकी गई",
+          "zone_cleaning_paused": "ज़ोन की सफाई रोकी गई",
+          "spot_cleaning_paused": "स्पॉट सफाई रोकी गई",
+          "map_cleaning_paused": "मैप सफाई रोकी गई",
+          "docking_paused": "डॉकिंग रोकी गई",
+          "mopping_paused": "पोछा लगाना रोका गया",
+          "zone_mopping_paused": "ज़ोन पोछा लगाना रोका गया",
+          "room_mopping_paused": "कमरा पोछा लगाना रोका गया",
+          "zone_docking_paused": "ज़ोन डॉकिंग रोकी गई",
+          "room_docking_paused": "कमरा डॉकिंग रोकी गई",
+          "cruising_path": "रास्ते पर चल रहा है",
+          "cruising_path_paused": "रास्ते पर चलना रोका गया",
+          "cruising_point": "एक बिंदु पर जा रहा है",
+          "cruising_point_paused": "बिंदु पर जाना रोका गया",
+          "summon_clean_paused": "सफाई के लिए बुलाना रोका गया",
+          "returning_to_install_mop": "मॉप स्थापित करने के लिए लौट रहा है",
+          "returning_to_remove_mop": "मॉप हटाने के लिए लौट रहा है",
+          "station_cleaning": "स्टेशन की सफाई",
+          "pet_finding": "पालतू जानवर की खोज",
+          "auto_cleaning_washing_paused": "ऑटो सफाई धुलाई रोकी गई",
+          "area_cleaning_washing_paused": "क्षेत्र सफाई धुलाई रोकी गई",
+          "custom_cleaning_washing_paused": "कस्टम सफाई धुलाई रोकी गई",
+          "picking_up_item": "वस्तु उठा रहा है",
+          "picking_up_item_paused": "वस्तु उठाना रोका गया",
+          "picking_up_item_success": "वस्तु सफलतापूर्वक उठाई गई",
+          "remote_pickup_initializing": "रिमोट पिकअप शुरू हो रहा है",
+          "remote_pickup_identifing": "रिमोट पिकअप की पहचान हो रही है",
+          "manual_remote_pickup": "मैनुअल रिमोट पिकअप",
+          "automatic_remote_pickup": "स्वचालित रिमोट पिकअप",
+          "remote_pickup_in_progress": "रिमोट पिकअप प्रगति पर है",
+          "remote_pickup_paused": "रिमोट पिकअप रोका गया",
+          "placing_item": "वस्तु रख रहा है",
+          "placing_item_paused": "वस्तु रखना रोका गया"
+        }
+      },
+      "water_tank": {
+        "name": "पानी का टैंक",
+        "state": {
+          "unknown": "अज्ञात",
+          "installed": "स्थापित",
+          "not_installed": "स्थापित नहीं",
+          "mop_installed": "मॉप स्थापित",
+          "in_station": "स्टेशन में"
+        }
+      },
+      "mop_pad": {
+        "name": "मॉप पैड",
+        "state": {
+          "unknown": "अज्ञात",
+          "installed": "स्थापित",
+          "not_installed": "स्थापित नहीं",
+          "mop_installed": "मॉप स्थापित",
+          "in_station": "स्टेशन में"
+        }
+      },
+      "dust_collection": {
+        "name": "धूल संग्रह",
+        "state": {
+          "unknown": "अज्ञात",
+          "not_available": "उपलब्ध नहीं",
+          "available": "उपलब्ध",
+          "over_use": "अत्यधिक उपयोग",
+          "never": "कभी नहीं"
+        }
+      },
+      "auto_empty_status": {
+        "name": "ऑटो एम्प्टी स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "idle": "निष्क्रिय",
+          "active": "सक्रिय",
+          "not_performed": "निष्पादित नहीं किया गया"
+        }
+      },
+      "error": {
+        "name": "त्रुटि",
+        "state": {
+          "unknown": "अज्ञात त्रुटि कोड",
+          "no_error": "कोई त्रुटि नहीं",
+          "drop": "पहिए हवा में हैं",
+          "cliff": "क्लिफ सेंसर त्रुटि",
+          "bumper": "टक्कर सेंसर अटका हुआ है",
+          "gesture": "रोबोट झुका हुआ है",
+          "bumper_repeat": "टक्कर सेंसर अटका हुआ है",
+          "drop_repeat": "पहिए हवा में हैं",
+          "optical_flow": "ऑप्टिकल फ्लो सेंसर त्रुटि",
+          "no_box": "डस्ट बिन स्थापित नहीं है",
+          "no_tank_box": "पानी का टैंक स्थापित नहीं है",
+          "water_box_empty": "पानी का टैंक खाली है",
+          "box_full": "फ़िल्टर सूखा नहीं है या अवरुद्ध है",
+          "brush": "मुख्य ब्रश उलझ गया है",
+          "side_brush": "साइड ब्रश उलझ गया है",
+          "fan": "फ़िल्टर सूखा नहीं है या अवरुद्ध है",
+          "left_wheel_motor": "रोबोट अटका हुआ है, या इसके बाएँ पहिए में कुछ फंसा हो सकता है",
+          "right_wheel_motor": "रोबोट अटका हुआ है, या इसके दाएँ पहिए में कुछ फंसा हो सकता है",
+          "turn_suffocate": "रोबोट अटका हुआ है, या मुड़ नहीं सकता",
+          "forward_suffocate": "रोबोट अटका हुआ है, या आगे नहीं बढ़ सकता",
+          "charger_get": "बेस नहीं मिल रहा है",
+          "battery_low": "कम बैटरी",
+          "charge_fault": "चार्जिंग त्रुटि",
+          "battery_percentage": "बैटरी स्तर त्रुटि",
+          "heart": "आंतरिक त्रुटि",
+          "camera_occlusion": "विज़ुअल पोजिशनिंग सेंसर त्रुटि",
+          "move": "मूव सेंसर त्रुटि",
+          "flow_shielding": "ऑप्टिकल सेंसर त्रुटि",
+          "infrared_shielding": "इन्फ्रारेड शील्डिंग त्रुटि",
+          "charge_no_electric": "चार्जिंग डॉक चालू नहीं है",
+          "battery_fault": "बैटरी त्रुटि",
+          "fan_speed_error": "फैन स्पीड सेंसर त्रुटि",
+          "left_wheell_speed": "बायां पहिया विदेशी वस्तुओं से अवरुद्ध हो सकता है",
+          "right_wheell_speed": "दायां पहिया विदेशी वस्तुओं से अवरुद्ध हो सकता है",
+          "bmi055_acce": "एक्सेलेरोमीटर त्रुटि",
+          "bmi055_gyro": "गायरो त्रुटि",
+          "xv7001": "गायरो त्रुटि",
+          "left_magnet": "लेफ्ट मैग्नेट सेंसर त्रुटि",
+          "right_magnet": "राइट मैग्नेट सेंसर त्रुटि",
+          "flow_error": "फ्लो सेंसर त्रुटि",
+          "infrared_fault": "इन्फ्रारेड त्रुटि",
+          "camera_fault": "कैमरा त्रुटि",
+          "strong_magnet": "मजबूत चुंबकीय क्षेत्र का पता चला",
+          "water_pump": "वाटर पंप त्रुटि",
+          "rtc": "RTC त्रुटि",
+          "auto_key_trig": "आंतरिक त्रुटि",
+          "p3v3": "आंतरिक त्रुटि",
+          "camera_idle": "आंतरिक त्रुटि",
+          "blocked": "सफाई मार्ग अवरुद्ध है, डॉक पर लौट रहा है।",
+          "lds_error": "लेजर दूरी सेंसर त्रुटि",
+          "lds_bumper": "लेजर दूरी सेंसर बम्पर त्रुटि",
+          "filter_blocked": "फ़िल्टर सूखा नहीं है या अवरुद्ध है",
+          "edge": "एज सेंसर त्रुटि",
+          "carpet": "कृपया रोबोट को गैर-कालीन क्षेत्र में शुरू करें।",
+          "laser": "3D बाधा निवारण सेंसर खराब हो रहा है।",
+          "ultrasonic": "अल्ट्रासोनिक सेंसर खराब हो रहा है।",
+          "no_go_zone": "नो-गो ज़ोन या वर्चुअल वॉल का पता चला।",
+          "route": "सफाई मार्ग अवरुद्ध है।",
+          "restricted": "पता चला है कि वैक्यूम-मॉप प्रतिबंधित क्षेत्र में है।",
+          "remove_mop": "पोछा लगाना पूरा हुआ। कृपया मॉप को समय पर हटाएँ और साफ़ करें।",
+          "mop_removed": "सफाई कार्य के दौरान मॉप पैड निकल जाता है।",
+          "mop_pad_stop_rotate": "मॉप पैड ने घूमना बंद कर दिया है।",
+          "bin_full": "धूल संग्रह बैग भरा हुआ है, या हवा की नली अवरुद्ध है।",
+          "bin_open": "ऑटो-एम्प्टी बेस का ऊपरी कवर बंद नहीं है, या धूल संग्रह बैग स्थापित नहीं है।",
+          "water_tank": "साफ पानी का टैंक स्थापित नहीं है।",
+          "dirty_water_tank": "गंदे पानी का टैंक भरा हुआ है या स्थापित नहीं है।",
+          "water_tank_dry": "साफ पानी के टैंक में पानी का स्तर कम है, कृपया समय पर पानी भरें।",
+          "dirty_water_tank_blocked": "गंदे पानी का टैंक अवरुद्ध।",
+          "dirty_water_tank_pump": "गंदे पानी का टैंक पंप त्रुटि।",
+          "mop_pad": "वॉशबोर्ड ठीक से स्थापित नहीं है।",
+          "wet_mop_pad": "वॉशबोर्ड का जल स्तर असामान्य है, कृपया समय पर वॉशबोर्ड को साफ़ करें।",
+          "clean_mop_pad": "सफाई कार्य पूरा हो गया है, कृपया मॉप पैड वॉशबोर्ड को साफ़ करें।",
+          "clean_tank_level": "साफ पानी के टैंक की जांच करें और भरें।",
+          "station_disconnected": "बेस स्टेशन चालू नहीं है",
+          "dirty_tank_level": "उपयोग किए गए पानी के टैंक में पानी का स्तर बहुत अधिक है।",
+          "washboard_level": "वॉशबोर्ड में पानी का स्तर बहुत अधिक है।",
+          "no_mop_in_station": "मॉप पैड स्टेशन में नहीं है।",
+          "dust_bag_full": "डस्ट बैग भरा हुआ है या वेंट अवरुद्ध हैं।",
+          "self_test_failed": "ऊपरी और निचले जल मॉड्यूल के स्वच्छ जल टैंक से असामान्य जल निर्वहन।",
+          "mop_install_failed": "मॉप पैड स्थापना विफल रही।",
+          "low_battery_turn_off": "कम बैटरी। रोबोट जल्द ही बंद हो जाएगा।",
+          "dirty_tank_not_installed": "रोबोट का इस्तेमाल किया गया पानी का टैंक स्थापित नहीं है।",
+          "robot_in_hidden_room": "छिपा हुआ क्षेत्र। कृपया रोबोट को उपयुक्त क्षेत्र में ले जाएँ और पुनः प्रयास करें।",
+          "washboard_not_working": "वॉशबोर्ड काम करना बंद कर देता है।",
+          "return_to_charge_failed": "चार्ज करने के लिए वापस लौटने में विफल।",
+          "lds_failed_to_lift": "LDS मॉड्यूल उठाने में विफल।",
+          "robot_stuck": "स्थिति के लिए यहाँ LDS को नहीं उठाया जा सकता।",
+          "robot_stuck_repeat": "रोबोट को खुले क्षेत्र में ले जाएँ और कार्य फिर से शुरू करें।",
+          "slippery_floor": "फिसलन भरा फर्श। कृपया बाद में पुनः प्रयास करें।",
+          "check_mop_install": "कृपया जाँचें कि क्या मॉप ठीक से स्थापित है।",
+          "dirty_water_tank_full": "रोबोट के उपयोग किए गए पानी के टैंक में असामान्य जल स्तर।",
+          "retractable_leg_stuck": "कृपया जांचें कि क्या वापस लेने योग्य पैर उलझे हुए हैं।",
+          "internal_error": "आंतरिक त्रुटि के कारण खराबी। रोबोट को पुनरारंभ करने का प्रयास करें।",
+          "robot_stuck_on_tables": "रोबोट मेज और कुर्सियों के बीच फंस गया है।",
+          "robot_stuck_on_passage": "रोबोट संकरे रास्ते में फंस गया है।",
+          "robot_stuck_on_threshold": "रोबोट सीढ़ी/दहलीज पर फंस गया है।",
+          "robot_stuck_on_low_lying_area": "रोबोट कम निकासी वाले क्षेत्र में फंस गया है।",
+          "robot_stuck_on_ramp": "रोबोट ने पथ पर आसानी से गिरने वाले रैंप का पता लगाया है।",
+          "robot_stuck_on_obstacle": "रोबोट ने पथ पर बाधाओं का पता लगाया है।",
+          "robot_stuck_on_pet": "रोबोट ने पथ पर लोगों या पालतू जानवरों का पता लगाया है।",
+          "robot_stuck_on_slippery_surface": "फिसलने के कारण रोबोट फंस गया है।",
+          "robot_stuck_on_carpet": "रोबोट कालीन पर फिसलता है",
+          "drainage_failed": "उपयोग किए गए पानी के टैंक से असामान्य जल निकासी",
+          "mop_not_detected": "मॉप का पता नहीं चला।",
+          "mop_holder_error": "डॉक में मॉप धारक मात्रा/स्थान त्रुटि।",
+          "dock_error": "डॉक त्रुटि।",
+          "wash_failed": "गंदे मॉप को धोने में विफल।",
+          "robot_stuck_on_curtain": "रोबोट पर्दे के क्षेत्र में फिसलता है",
+          "edge_mop_stop_rotate": "किनारे का मॉप घूमना बंद कर दिया है।",
+          "edge_mop_detached": "किनारे का मॉप अलग हो गया है।",
+          "chassis_lift_malfunction": "चेसिस लिफ्ट खराबी।",
+          "mop_cover_error": "रोलर मॉप और मॉप कवर के पास किसी भी मलबे की जाँच करें।",
+          "roller_mop_error": "रोलर मॉप और मॉप कवर के पास किसी भी मलबे की जाँच करें।",
+          "onboard_water_tank_empty": "रोबोट के साफ पानी के बॉक्स में पानी का स्तर कम है।",
+          "onboard_dirty_water_tank_full": "रोबोट का इस्तेमाल किया गया पानी का बॉक्स भरा हुआ है।",
+          "mop_not_installed": "मॉप स्थापित नहीं है।",
+          "fluffing_roller_error": "फ़्लफ़िंग रोलर त्रुटि।",
+          "blocked_by_obstacle": "रोबोट बाधा से अवरुद्ध है।",
+          "robotic_arm_stopped": "रोबोटिक आर्म रुक गई है।",
+          "drainage_outlet_filter": "रोबोट का ड्रेनेज आउटलेट फ़िल्टर अवरुद्ध है।",
+          "main_wheels_error": "मुख्य पहियों की त्रुटि।"
+        }
+      },
+      "charging_status": {
+        "name": "चार्जिंग स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "charging": "चार्ज हो रहा है",
+          "not_charging": "चार्ज नहीं हो रहा है",
+          "return_to_charge": "चार्ज करने लौटें",
+          "charging_completed": "चार्जिंग पूरी हुई"
+        }
+      },
+      "relocation_status": {
+        "name": "स्थानांतरण स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "located": "स्थित",
+          "locating": "खोज रहा है",
+          "failed": "विफल",
+          "success": "सफल"
+        }
+      },
+      "self_wash_base_status": {
+        "name": "स्वयं धोने का बेस स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "idle": "निष्क्रिय",
+          "washing": "धो रहा है",
+          "drying": "सुखा रहा है",
+          "paused": "रोका गया",
+          "returning": "धोने के लिए लौट रहा है",
+          "clean_add_water": "सफाई और पानी डालना",
+          "adding_water": "पानी डाल रहा है"
+        }
+      },
+      "low_water_warning": {
+        "name": "कम पानी की चेतावनी",
+        "state": {
+          "no_warning": "कोई चेतावनी नहीं",
+          "no_water_left": "साफ पानी के टैंक में पानी खत्म होने वाला है। साफ पानी के टैंक की जांच करें और उसे तुरंत भरें।",
+          "no_water_left_after_clean": "मॉप पैड साफ़ कर दिया गया है। पता चला है कि साफ पानी के टैंक में पानी अपर्याप्त है, कृपया साफ पानी का टैंक भरें और इस्तेमाल किए गए पानी का टैंक खाली करें।",
+          "no_water_for_clean": "साफ पानी के टैंक में पानी का स्तर कम है। रोबोट वैक्यूमिंग मोड पर स्विच हो गया है।",
+          "low_water": "पानी खत्म होने वाला है। कृपया साफ पानी का टैंक भरें।",
+          "tank_not_installed": "साफ पानी का टैंक स्थापित नहीं है।"
+        }
+      },
+      "stream_status": {
+        "name": "स्ट्रीम स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "idle": "निष्क्रिय",
+          "video": "वीडियो",
+          "audio": "ऑडियो",
+          "recording": "रिकॉर्डिंग"
+        }
+      },
+      "drainage_status": {
+        "name": "जल निकासी स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "idle": "निष्क्रिय",
+          "draining": "निकाल रहा है",
+          "draining_successful": "जल निकासी सफल",
+          "draining_failed": "जल निकासी विफल"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "साफ पानी का टैंक स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "not_available": "उपलब्ध नहीं",
+          "not_installed": "स्थापित नहीं",
+          "low_water": "कम पानी",
+          "installed": "स्थापित"
+        }
+      },
+      "dirty_water_tank_status": {
+        "name": "गंदा पानी का टैंक स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "installed": "स्थापित",
+          "not_installed_or_full": "स्थापित नहीं या भरा हुआ"
+        }
+      },
+      "dust_bag_status": {
+        "name": "डस्ट बैग स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "installed": "स्थापित",
+          "not_installed": "स्थापित नहीं",
+          "check": "जांचें"
+        }
+      },
+      "detergent_status": {
+        "name": "डिटर्जेंट स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "installed": "स्थापित",
+          "disabled": "अक्षम",
+          "low_detergent": "कम डिटर्जेंट"
+        }
+      },
+      "hot_water_status": {
+        "name": "गर्म पानी की स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "disabled": "अक्षम",
+          "enabled": "सक्षम"
+        }
+      },
+      "station_drainage_status": {
+        "name": "स्टेशन जल निकासी स्थिति",
+        "state": {
+          "unknown": "अज्ञात",
+          "idle": "निष्क्रिय",
+          "draining": "निकाल रहा है"
+        }
+      },
+      "task_type": {
+        "name": "कार्य का प्रकार",
+        "state": {
+          "standard": "मानक सफाई",
+          "standard_paused": "मानक सफाई रोकी गई",
+          "custom": "कस्टम सफाई",
+          "custom_paused": "कस्टम सफाई रोकी गई",
+          "shortcut": "शॉर्टकट सफाई",
+          "shortcut_paused": "शॉर्टकट सफाई रोकी गई",
+          "scheduled": "अनुसूचित सफाई",
+          "scheduled_paused": "अनुसूचित सफाई रोकी गई",
+          "smart": "स्मार्ट सफाई",
+          "smart_paused": "स्मार्ट सफाई रोकी गई",
+          "partial": "आंशिक सफाई",
+          "partial_paused": "आंशिक सफाई रोकी गई",
+          "summon": "सफाई के लिए बुलाना",
+          "summon_paused": "सफाई के लिए बुलाना रोका गया",
+          "water_stain": "पानी के दाग की सफाई",
+          "water_stain_paused": "पानी के दाग की सफाई रोकी गई",
+          "boosted_edge_cleaning": "बूस्टेड एज सफाई",
+          "hair_compressing": "बाल संपीड़ित करना",
+          "large_particle_cleaning": "बड़े कणों की सफाई",
+          "intensive_stain_cleaning": "गहन दाग की सफाई",
+          "stain_cleaning": "दाग की सफाई",
+          "initial_deep_cleaning": "प्रारंभिक गहरी सफाई",
+          "initial_deep_cleaning_paused": "प्रारंभिक गहरी सफाई रोकी गई",
+          "mop_pad_heating": "मॉप पैड हीटिंग",
+          "cleaning_after_mapping": "मैपिंग के बाद सफाई",
+          "small_particle_cleaning": "छोटे कणों की सफाई",
+          "changing_mop": "मॉप बदलना",
+          "changing_mop_paused": "मॉप बदलना रोका गया",
+          "floor_maintaining": "फर्श का रखरखाव",
+          "floor_maintaining_paused": "फर्श का रखरखाव रोका गया",
+          "arranging_items": "वस्तुओं को व्यवस्थित करना",
+          "arranging_items_paused": "वस्तुओं को व्यवस्थित करना रोका गया",
+          "intensive_hair_cleaning": "गहन बाल सफाई",
+          "accessory_handling": "सहायक उपकरण हैंडलिंग",
+          "increased_drum_speed_cleaning": "बढ़ी हुई ड्रम गति से सफाई",
+          "pressurized_cleaning": "दबाव वाली सफाई",
+          "steam_cleaning": "भाप से सफाई",
+          "steam_cleaning_paused": "भाप से सफाई रोकी गई"
+        }
+      },
+      "dust_bag_drying_status": {
+        "name": "डस्ट बैग सुखाने की स्थिति",
+        "state": {
+          "idle": "निष्क्रिय",
+          "drying": "सुखा रहा है",
+          "paused": "रोका गया"
+        }
+      },
+      "nation_matched": {
+        "name": "क्षेत्र लॉक",
+        "state": {
+          "unknown": "अक्षम",
+          "matched": "अनलॉक किया गया",
+          "unmatched": "लॉक किया गया",
+          "na": "उपलब्ध नहीं है"
+        }
+      },
+      "startup_method": {
+        "name": "इसके द्वारा शुरू किया गया",
+        "state": {
+          "button": "बटन",
+          "app": "ऐप",
+          "scheduled": "अनुसूचित",
+          "voice": "आवाज़",
+          "second_cleaning": "दूसरी सफाई",
+          "unknown": "अज्ञात"
+        }
+      },
+      "cleaning_status": {
+        "name": "सफाई",
+        "state": {
+          "interrupted": "बाधित",
+          "completed": "पूरा हुआ",
+          "manually_ended": "मैन्युअल रूप से समाप्त किया गया",
+          "failed": "विफल",
+          "unknown": "अज्ञात"
+        }
+      },
+      "cleanup_method": {
+        "name": "सफाई का तरीका",
+        "state": {
+          "other": "अन्य",
+          "default": "डिफ़ॉल्ट",
+          "customized": "अनुकूलित",
+          "cleangenius": "CleanGenius",
+          "water_stain": "पानी का दाग",
+          "unknown": "अज्ञात"
+        }
+      },
+      "task_end_type": {
+        "name": "द्वारा पूरा किया गया",
+        "state": {
+          "other": "अन्य",
+          "manual_docking": "मैन्युअल डॉकिंग",
+          "docking": "डॉकिंग",
+          "failed_docking": "विफल डॉकिंग",
+          "stop": "रोकें",
+          "unknown": "अज्ञात"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "बाधा का कारण",
+        "state": {
+          "abnormal_docking": "असामान्य डॉकिंग",
+          "base_station_powered_off": "बेस स्टेशन बंद",
+          "brush_entangled_by_carpet": "ब्रश कालीन से उलझ गया",
+          "brush_entangled_by_object": "ब्रश वस्तु से उलझ गया",
+          "brush_entangled_by_obstacle": "ब्रश बाधा से उलझ गया",
+          "cannot_find_base_station": "बेस स्टेशन नहीं मिल रहा है",
+          "cliff_sensor_error": "क्लिफ सेंसर त्रुटि",
+          "laser_distance_sensor_error": "लेजर दूरी सेंसर त्रुटि",
+          "mop_pad_abnormally_removed": "मॉप पैड असामान्य रूप से हटा दिया गया",
+          "mop_pad_fallen_off": "मॉप पैड गिर गया",
+          "mop_pad_fallen_off_by_obstacle": "बाधा के कारण मॉप पैड गिर गया",
+          "mop_pad_fallen_off_by_table": "मेज के कारण मॉप पैड गिर गया",
+          "mop_pad_fallen_off_crossing_obstacle": "बाधा पार करते समय मॉप पैड गिर गया",
+          "mop_pad_removed": "मॉप पैड हटा दिया गया",
+          "mop_pad_stuck": "मॉप पैड अटक गया",
+          "robot_fallen": "रोबोट गिर गया",
+          "robot_is_stuck_on_obstacle": "रोबोट बाधा पर अटक गया है",
+          "robot_is_stuck_on_step": "रोबोट सीढ़ी पर अटक गया है",
+          "robot_lifted": "रोबोट उठा लिया गया",
+          "task_completed": "कार्य पूरा हुआ",
+          "unknown": "अज्ञात"
+        }
+      },
+      "recovery_map_type": {
+        "name": "मैप का प्रकार",
+        "state": {
+          "original": "मूल मैप",
+          "edited": "संपादित मैप",
+          "backup": "बैकअप मैप"
+        }
+      },
+      "obstacle_type": {
+        "name": "बाधा का प्रकार",
+        "state": {
+          "unknown": "अज्ञात",
+          "base": "बेस",
+          "scale": "स्केल",
+          "thread": "धागा",
+          "wire": "तार",
+          "toy": "खिलौना",
+          "shoes": "जूते",
+          "sock": "मोज़े",
+          "fece": "मल",
+          "trash_can": "कूड़ेदान",
+          "fabric": "कपड़ा",
+          "power_strip": "पावर स्ट्रिप",
+          "liquid_stain": "तरल दाग",
+          "obstacle": "बाधा",
+          "pet": "पालतू जानवर",
+          "cleaning_tools": "सफाई उपकरण",
+          "detected_stain": "पता चला दाग",
+          "blocked_room": "अवरुद्ध कमरा",
+          "easy_to_stuck_furniture": "आसानी से फंसने वाला फर्नीचर",
+          "uncleanable_stain": "साफ न होने वाला दाग",
+          "leg": "पैर",
+          "large_particles": "बड़े कण",
+          "dried_stain": "सूखा दाग",
+          "food_bowl": "भोजन का कटोरा",
+          "pet_bed": "पालतू जानवर का बिस्तर",
+          "cleaned_stain": "साफ किया हुआ दाग",
+          "skipped_uncleanable_stain": "साफ न होने वाले दाग को छोड़ा गया",
+          "cleaned_dried_stain": "सूखा दाग साफ किया गया",
+          "cleaned_large_particles": "बड़े कण साफ किए गए",
+          "hair": "बाल",
+          "paper": "कागज",
+          "cleaned_hair": "साफ किए हुए बाल",
+          "sundry": "विविध"
+        }
+      },
+      "obstacle_reason": {
+        "name": "बाधा का कारण",
+        "state": {
+          "blocked_by_virtual_wall": "वर्चुअल वॉल द्वारा अवरुद्ध",
+          "blocked_by_door": "दरवाजे द्वारा अवरुद्ध",
+          "blocked_by_threshold": "दहलीज द्वारा अवरुद्ध",
+          "blocked_by_obstacle": "बाधा द्वारा अवरुद्ध",
+          "blocked_by_carpet": "कालीन द्वारा अवरुद्ध",
+          "blocked_by_detected_carpet": "पता चले कालीन द्वारा अवरुद्ध",
+          "blocked_by_hidden_obstacle": "छिपी बाधा द्वारा अवरुद्ध",
+          "blocked_by_dynamic_obstacle": "गतिशील बाधा द्वारा अवरुद्ध",
+          "passage_too_low": "रास्ता बहुत कम है",
+          "step_too_low": "कदम बहुत कम है",
+          "failed_to_cross_threshold": "दहलीज पार करने में विफल"
+        }
+      },
+      "remaining_battery": {
+        "name": "शेष बैटरी"
+      },
+      "multiple_cleaning_time": {
+        "name": "एकाधिक सफाई"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "firmware_version": {
+        "name": "फर्मवेयर संस्करण"
+      },
+      "ip_address": {
+        "name": "IP पता"
+      },
+      "mac_address": {
+        "name": "MAC पता"
+      },
+      "model": {
+        "name": "मॉडल"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "serial_number": {
+        "name": "सीरियल नंबर"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "timezone": {
+        "name": "समय क्षेत्र"
+      },
+      "voice_packet_id": {
+        "name": "वॉयस पैक"
+      },
+      "deodorizer_left": {
+        "name": "डिओडोराइज़र"
+      },
+      "detergent_left": {
+        "name": "डिटर्जेंट"
+      },
+      "dirty_water_channel_left": {
+        "name": "गंदा पानी चैनल"
+      },
+      "filter_left": {
+        "name": "फ़िल्टर"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "फ़्लफ़िंग रोलर सफाई"
+      },
+      "main_brush_left": {
+        "name": "मुख्य ब्रश"
+      },
+      "mop_pad_left": {
+        "name": "मॉप पैड"
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "ऑनबोर्ड गंदा पानी टैंक"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "रोलर मॉप फ़िल्टर सफाई"
+      },
+      "scale_inhibitor_left": {
+        "name": "स्केल इनहिबिटर"
+      },
+      "sensor_dirty_left": {
+        "name": "सेंसर सफाई"
+      },
+      "side_brush_left": {
+        "name": "साइड ब्रश"
+      },
+      "silver_ion_left": {
+        "name": "सिल्वर आयन"
+      },
+      "squeegee_left": {
+        "name": "स्क्वीजी"
+      },
+      "tank_filter_left": {
+        "name": "टैंक फ़िल्टर"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "वाटर आउटलेट फ़िल्टर सफाई"
+      },
+      "wheel_dirty_left": {
+        "name": "पहिया सफाई"
+      }
+    },
+    "toggle": {
+      "customized_cleaning": {
+        "name": "अनुकूलित सफाई"
+      },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "गहरी सफाई"
+      },
+      "auto_dust_collecting": {
+        "name": "ऑटो-एम्प्टी"
+      },
+      "hair_compression": {
+        "name": "बाल संपीड़न"
+      },
+      "self_clean": {
+        "name": "स्वयं-सफाई"
+      },
+      "deep_mop_washing": {
+        "name": "गहरा मॉप धुलाई"
+      },
+      "hot_washing": {
+        "name": "गर्म धुलाई"
+      },
+      "auto_drying": {
+        "name": "ऑटो सुखाने"
+      },
+      "silent_drying": {
+        "name": "शांत सुखाने"
+      },
+      "uv_sterilization": {
+        "name": "यूवी नसबंदी"
+      },
+      "customized_carpet_cleaning": {
+        "name": "अनुकूलित सफाई"
+      },
+      "carpet_avoidance": {
+        "name": "कालीन बचाव"
+      },
+      "carpet_preferences": {
+        "name": "अनुकूलित प्राथमिकताएं"
+      },
+      "auto_change_mop": {
+        "name": "ऑटो मॉप बदलना"
+      },
+      "multi_floor_map": {
+        "name": "मल्टी-फ्लोर मैप"
+      },
+      "intelligent_recognition": {
+        "name": "बुद्धिमान पहचान"
+      },
+      "map_saving": {
+        "name": "मैप सहेजना"
+      },
+      "child_lock": {
+        "name": "चाइल्ड लॉक"
+      },
+      "resume_cleaning": {
+        "name": "सफाई फिर से शुरू करें"
+      },
+      "obstacle_avoidance": {
+        "name": "बाधा निवारण"
+      },
+      "carpet_boost": {
+        "name": "कालीन बूस्ट"
+      },
+      "carpet_recognition": {
+        "name": "कालीन पहचान"
+      },
+      "clean_carpets_first": {
+        "name": "पहले कालीन साफ करें"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "कालीन पर रोलर कवर बंद करें"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "गहन कालीन सफाई"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "साइड ब्रश कालीन रोटेट"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "कालीन पर चेसिस उठाएं"
+      },
+      "auto_mount_mop": {
+        "name": "ऑटो मॉप माउंटिंग"
+      },
+      "mopping_with_detergent": {
+        "name": "डिटर्जेंट के साथ पोछा"
+      },
+      "mop_washing_with_detergent": {
+        "name": "डिटर्जेंट के साथ मॉप-वाशिंग"
+      },
+      "auto_add_detergent": {
+        "name": "ऑटो डिटर्जेंट जोड़ें"
+      },
+      "smart_mop_washing": {
+        "name": "स्मार्ट मॉप धुलाई"
+      },
+      "wider_corner_coverage": {
+        "name": "व्यापक कोना कवरेज"
+      },
+      "pressurized_cleaning": {
+        "name": "दबावयुक्त सफाई"
+      },
+      "gap_cleaning_extension": {
+        "name": "गैप सफाई विस्तार"
+      },
+      "mopping_under_furnitures": {
+        "name": "फर्नीचर के नीचे पोछा"
+      },
+      "floor_direction_cleaning": {
+        "name": "फर्श दिशा सफाई"
+      },
+      "ring_light_always_on": {
+        "name": "रिंग लाइट हमेशा चालू"
+      },
+      "collision_avoidance": {
+        "name": "टक्कर निवारण"
+      },
+      "fill_light": {
+        "name": "कैमरा लाइट"
+      },
+      "ai_obstacle_detection": {
+        "name": "AI बाधा पहचान"
+      },
+      "ai_pet_detection": {
+        "name": "पालतू जानवर की पहचान"
+      },
+      "pet_focused_detection": {
+        "name": "पालतू केंद्रित पहचान"
+      },
+      "pet_focused_cleaning": {
+        "name": "पालतू केंद्रित सफाई"
+      },
+      "ai_obstacle_picture": {
+        "name": "बाधा चित्र"
+      },
+      "obstacle_crossing": {
+        "name": "सिंक्रोनाइज्ड बाधा पार करना"
+      },
+      "active_suspension_crossing": {
+        "name": "सक्रिय सस्पेंशन पार करना"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "गतिशील बाधा सफाई"
+      },
+      "large_particles_boost": {
+        "name": "बड़े कण बूस्ट"
+      },
+      "streaming_voice_prompt": {
+        "name": "स्ट्रीमिंग वॉयस प्रॉम्प्ट"
+      },
+      "voice_assistant": {
+        "name": "वॉयस असिस्टेंट"
+      },
+      "off_peak_charging": {
+        "name": "ऑफ-पीक चार्जिंग"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "सफाई फिर से शुरू करना अक्षम करें"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "ऑटो एम्प्टी अक्षम करें"
+      },
+      "dnd_reduce_volume": {
+        "name": "वॉल्यूम कम करें"
+      },
+      "dnd": {
+        "name": "DnD"
+      }
+    },
+    "number": {
+      "wetness_level": {
+        "name": "गीलापन"
+      },
+      "auto_empty_area": {
+        "name": "ऑटो-एम्प्टी क्षेत्र"
+      },
+      "drying_time": {
+        "name": "सुखाने का समय"
+      },
+      "self_clean_time": {
+        "name": "स्वयं-सफाई का समय"
+      },
+      "self_clean_area": {
+        "name": "स्वयं-सफाई क्षेत्र"
+      },
+      "volume": {
+        "name": "वॉल्यूम"
+      }
+    },
+    "time": {
+      "dnd_start": {
+        "name": "DnD प्रारंभ समय"
+      },
+      "dnd_end": {
+        "name": "DnD समाप्ति समय"
+      },
+      "off_peak_charging_start": {
+        "name": "ऑफ-पीक प्रारंभ समय"
+      },
+      "off_peak_charging_end": {
+        "name": "ऑफ-पीक समाप्ति समय"
+      },
+      "schedule_time": {
+        "name": "प्रारंभ करने का समय"
+      }
+    },
+    "input": {
+      "schedule_repeats": {
+        "name": "दोहराता है"
+      },
+      "dnd_repeats": {
+        "name": "दोहराता है"
+      },
+      "map_custom_name": {
+        "name": "मैप का नाम"
+      },
+      "segment_custom_name": {
+        "name": "कमरे का नाम"
+      },
+      "shortcut_name": {
+        "name": "शॉर्टकट नाम"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "जोड़ें",
+        "add_map": "मैप बनाएं",
+        "auto_empty_unavailable": "ऑटो-एम्प्टी अनुपलब्ध",
+        "auto_emptying": "ऑटो-एम्प्टी हो रहा है",
+        "backup": "बैकअप",
+        "bag_drying_unavailable": "बैग सुखाना अनुपलब्ध",
+        "cancel": "रद्द करें",
+        "cancel_ignore": "अनदेखा रद्द करें",
+        "carpet": "कालीन",
+        "change": "बदलें",
+        "charge": "चार्ज करें",
+        "clean": "साफ करें",
+        "clean_again": "फिर से साफ करें",
+        "cleaning_settings": "सफाई सेटिंग्स",
+        "cleanings": "सफाई",
+        "close": "बंद करें",
+        "confirm": "पुष्टि करें",
+        "delete": "हटाएं",
+        "delete_carpet": "कालीन हटाएं",
+        "deleted_carpet": "हटाया गया कालीन",
+        "disable": "अक्षम करें",
+        "discard": "खारिज करें",
+        "dismiss": "खारिज करें",
+        "dock": "डॉक",
+        "dock_settings": "डॉक सेटिंग्स",
+        "download": "डाउनलोड",
+        "dry": "सूखा",
+        "dry_bag": "ड्राई बैग",
+        "drying_unavailable": "सुखाना अनुपलब्ध",
+        "dynamically_ignored": "गतिशील रूप से अनदेखा किया गया",
+        "edit_carpet": "कालीन संपादित करें",
+        "empty": "खाली करें",
+        "enable": "सक्षम करें",
+        "fast_mapping": "फास्ट मैपिंग",
+        "get_dreame_vacuum_card": "Dreame Vacuum कार्ड प्राप्त करें",
+        "ignore": "अनदेखा करें",
+        "ignore_obstacle": "बाधा को अनदेखा करें",
+        "impassable_threshold": "अगम्य दहलीज",
+        "job_details": "नौकरी का विवरण",
+        "keep_disabled": "अक्षम रखें",
+        "map_display": "मैप प्रदर्शन",
+        "map_management": "मैप प्रबंधन",
+        "new_dnd": "नया Dnd कार्य",
+        "new_schedule": "नया अनुसूचित कार्य",
+        "new_shortcut": "नया शॉर्टकट कार्य",
+        "next_job": "अगला काम",
+        "no_go": "नो-गो",
+        "no_mop": "नो-मॉप",
+        "objects": "ऑब्जेक्ट्स",
+        "override": "ओवरराइड",
+        "passable_threshold": "पारगम्य दहलीज",
+        "pause": "रुकें",
+        "pause_washing": "धोना रोकें",
+        "previous_job": "पिछला काम",
+        "ramp": "रैंप",
+        "reload": "पुनः लोड करें",
+        "rename": "नाम बदलें",
+        "repeats": "दोहराता है",
+        "replace": "बदलें",
+        "reset": "रीसेट",
+        "restore": "पुनर्स्थापित करें",
+        "restore_map": "मैप पुनर्स्थापित करें",
+        "resume": "फिर से शुरू करें",
+        "resume_washing": "धोना फिर से शुरू करें",
+        "rooms": "कमरे",
+        "rotate_left": "बाएं घुमाएं",
+        "rotate_right": "दाएं घुमाएं",
+        "round_carpet": "गोल कालीन",
+        "save": "सहेजें",
+        "select_map": "मैप चुनें",
+        "shortcuts": "शॉर्टकट",
+        "square_carpet": "चौकोर कालीन",
+        "start": "शुरू करें",
+        "start_auto_empty": "ऑटो-एम्प्टी शुरू करें",
+        "start_bag_drying": "बैग सुखाना शुरू करें",
+        "start_drying": "सुखाना शुरू करें",
+        "start_task": "कार्य शुरू करें",
+        "start_washing": "धोना शुरू करें",
+        "stop": "रोकें",
+        "stop_bag_drying": "बैग सुखाना रोकें",
+        "stop_drying": "सुखाना रोकें",
+        "understood": "समझ गया",
+        "virtual_threshold": "आभासी दहलीज",
+        "virtual_wall": "दीवार",
+        "wash": "धोएं",
+        "washing_unavailable": "धुलाई अनुपलब्ध",
+        "wifi_map": "WiFi मैप"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "पृष्ठभूमि छवि",
+        "card_object_action_buttons": "एक्शन बटन",
+        "card_object_animations": "एनिमेशन",
+        "card_object_cleanup_notification": "सफाई अधिसूचना",
+        "card_object_controls": "नियंत्रण",
+        "card_object_cruising_history": "क्रूजिंग इतिहास",
+        "card_object_fault_notification": "त्रुटि अधिसूचना",
+        "card_object_information_notification": "सूचना अधिसूचना",
+        "card_object_low_water_notification": "कम पानी की अधिसूचना",
+        "card_object_map_change_confirmation": "मैप परिवर्तन की पुष्टि",
+        "card_object_menu": "मेनू",
+        "card_object_progress_bar": "प्रगति बार",
+        "card_object_saved_notification": "सहेजी गई अधिसूचना",
+        "card_object_shortcuts": "शॉर्टकट",
+        "card_object_state": "स्थिति",
+        "card_object_status": "स्थिति",
+        "card_object_task_type": "कार्य का प्रकार",
+        "card_object_title": "शीर्षक",
+        "card_object_warning_notification": "चेतावनी अधिसूचना",
+        "color_scheme": "रंग योजना",
+        "color_scheme_dreame_auto": "Dreame स्वचालित",
+        "color_scheme_dreame_dark": "Dreame डार्क",
+        "color_scheme_dreame_light": "Dreame लाइट",
+        "color_scheme_grayscale": "ग्रेस्केल",
+        "color_scheme_mijia_auto": "Mijia स्वचालित",
+        "color_scheme_mijia_dark": "Mijia डार्क",
+        "color_scheme_mijia_light": "Mijia लाइट",
+        "copied": "कॉपी किया गया",
+        "copy": "कॉपी करें",
+        "copy_all": "सभी कॉपी करें",
+        "disable_haptic": "हैप्टिक फीडबैक अक्षम करें",
+        "editable_objects": "संपादन योग्य वस्तुएं",
+        "font_size": "फ़ॉन्ट आकार",
+        "full_height": "पूरी ऊंचाई",
+        "grid_size": "ग्रिड आकार",
+        "height": "ऊंचाई",
+        "hidden_card_objects": "छिपी हुई कार्ड वस्तुएं",
+        "hidden_objects": "छिपी हुई वस्तुएं",
+        "hide_map_info": "मैप जानकारी छुपाएं",
+        "icon_set": "आइकन सेट",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "Dreame पुराना",
+        "icon_set_material": "Material",
+        "icon_set_mijia": "Mijia",
+        "left": "बाएं",
+        "left_handed": "लेफ्ट हैंडेड मोड",
+        "limit_height": "स्क्रीन पर ऊंचाई सीमित करें",
+        "locked": "लॉक किया गया",
+        "locked_always": "हमेशा",
+        "locked_auto": "स्वचालित",
+        "locked_never": "कभी नहीं",
+        "locked_only_touch": "केवल स्पर्श",
+        "map": "मैप %name%",
+        "map_1": "पहला मैप",
+        "map_2": "दूसरा मैप",
+        "map_3": "तीसरा मैप",
+        "map_4": "चौथा मैप",
+        "map_5": "पांचवां मैप",
+        "map_color_active_area": "सक्रिय क्षेत्र",
+        "map_color_active_area_outline": "सक्रिय क्षेत्र की रूपरेखा",
+        "map_color_active_point": "सक्रिय बिंदु",
+        "map_color_active_point_outline": "सक्रिय बिंदु की रूपरेखा",
+        "map_color_auto_low_lying_area": "ऑटो निचला क्षेत्र",
+        "map_color_carpet_color": "कालीन का रंग",
+        "map_color_curtain": "पर्दा",
+        "map_color_detected_carpet_color": "पता चला कालीन रंग",
+        "map_color_floor": "फर्श",
+        "map_color_floor_material": "फर्श सामग्री",
+        "map_color_icon_background": "आइकन पृष्ठभूमि",
+        "map_color_impassable_threshold": "अगम्य दहलीज",
+        "map_color_manual_low_lying_area": "मैनुअल निचला क्षेत्र",
+        "map_color_mop_path": "मॉप पथ",
+        "map_color_new_segment": "नया कमरा",
+        "map_color_no_go": "नो गो",
+        "map_color_no_go_outline": "नो गो रूपरेखा",
+        "map_color_no_mop": "नो मॉप",
+        "map_color_no_mop_outline": "नो मॉप रूपरेखा",
+        "map_color_obstacle_background": "बाधा पृष्ठभूमि",
+        "map_color_order": "क्रम",
+        "map_color_outside": "बाहर",
+        "map_color_passable_threshold": "पारगम्य दहलीज",
+        "map_color_passive_segment": "निष्क्रिय कमरा",
+        "map_color_path": "पथ",
+        "map_color_ramp": "रैंप",
+        "map_color_segment": "कमरा",
+        "map_color_settings_background": "सेटिंग पृष्ठभूमि",
+        "map_color_text": "पाठ",
+        "map_color_text_stroke": "टेक्स्ट स्ट्रोक",
+        "map_color_virtual_threshold": "आभासी दहलीज",
+        "map_color_virtual_wall": "आभासी दीवार",
+        "map_color_wall": "दीवार",
+        "map_config": "मैप कॉन्फ़िग",
+        "map_display": "मैप प्रदर्शन",
+        "map_display_floor_plan": "फ़्लोर प्लान",
+        "map_display_floor_plan_only": "केवल फ़्लोर प्लान",
+        "map_display_floor_plan_without_texture": "बिना बनावट के फ़्लोर प्लान",
+        "map_display_standard": "मानक",
+        "map_object_active_area": "सक्रिय क्षेत्र",
+        "map_object_active_cruise_point": "सक्रिय क्रूज बिंदु",
+        "map_object_active_point": "सक्रिय बिंदु",
+        "map_object_animations": "एनिमेशन",
+        "map_object_blocked_segment": "अवरुद्ध कमरे",
+        "map_object_blocked_segments": "अवरुद्ध कमरे",
+        "map_object_carpet": "कालीन",
+        "map_object_charger": "चार्जर",
+        "map_object_cleaning_sequence": "सफाई अनुक्रम",
+        "map_object_cruise_point": "क्रूज बिंदु",
+        "map_object_curtain": "पर्दा",
+        "map_object_customized_cleaning": "अनुकूलित सफाई",
+        "map_object_deleted_carpet": "हटाया गया कालीन",
+        "map_object_detected_carpet": "पता चला कालीन",
+        "map_object_door": "दरवाज़ा",
+        "map_object_floor": "फर्श",
+        "map_object_floor_material": "फर्श सामग्री",
+        "map_object_furniture": "फर्नीचर",
+        "map_object_furniture_image": "फर्नीचर चित्र",
+        "map_object_hidden_segments": "छिपे हुए कमरे",
+        "map_object_icon": "आइकन",
+        "map_object_ignored_obstacles": "अनदेखी बाधाएं",
+        "map_object_impassable_threshold": "अगम्य दहलीज",
+        "map_object_lock_indicator": "लॉक संकेतक",
+        "map_object_low_lying_area": "निचले क्षेत्र",
+        "map_object_material": "फर्श सामग्री",
+        "map_object_mop_path": "मॉप पथ",
+        "map_object_mop_type": "मॉप का प्रकार",
+        "map_object_name": "नाम",
+        "map_object_name_background": "नाम पृष्ठभूमि",
+        "map_object_no_go": "नो गो",
+        "map_object_no_mop": "नो मॉप",
+        "map_object_object_option": "ऑब्जेक्ट विकल्प",
+        "map_object_obstacle": "बाधा",
+        "map_object_obstacle_background": "बाधा पृष्ठभूमि",
+        "map_object_obstacle_color": "बाधा का रंग",
+        "map_object_order": "क्रम",
+        "map_object_passable_threshold": "पारगम्य दहलीज",
+        "map_object_path": "पथ",
+        "map_object_pet": "पालतू जानवर",
+        "map_object_predefined_point": "पूर्वनिर्धारित बिंदु",
+        "map_object_ramp": "रैंप",
+        "map_object_router": "राउटर",
+        "map_object_segment": "कमरा",
+        "map_object_segment_type": "कमरे का प्रकार",
+        "map_object_selected_segments": "चयनित कमरे",
+        "map_object_split_line": "विभाजित रेखा",
+        "map_object_stain": "दाग",
+        "map_object_station_status": "स्टेशन स्थिति",
+        "map_object_vacuum": "वैक्यूम",
+        "map_object_vacuum_status": "वैक्यूम स्थिति",
+        "map_object_virtual_threshold": "आभासी दहलीज",
+        "map_object_virtual_wall": "आभासी दीवार",
+        "map_object_walls": "दीवारें",
+        "map_object_zoom_point": "ज़ूम बिंदु",
+        "object_opacity": "ऑब्जेक्ट अस्पष्टता",
+        "object_scale": "ऑब्जेक्ट स्केल",
+        "opacity": "अस्पष्टता",
+        "override_colors": "मैप रंगों को ओवरराइड करें",
+        "overlay_image": "ओवरले छवि",
+        "rotation": "रोटेशन",
+        "scale": "स्केल",
+        "scripts": "स्क्रिप्ट्स",
+        "selectable_objects": "चयन योग्य वस्तुएं",
+        "selected_map_config": "%name% कॉन्फ़िग",
+        "show_map_info": "मैप जानकारी दिखाएं",
+        "top": "ऊपर",
+        "url": "Url",
+        "viewport": "व्यूपोर्ट",
+        "width": "चौड़ाई",
+        "zoom": "ज़ूम"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "वैक्यूम में सक्रिय कार्य है!",
+        "apply_changes_or_reload": "आपके संपादन के दौरान मैप बदल गया है!\nक्या आप ओवरराइड करना चाहते हैं या नए बदलाव लोड करना चाहते हैं?",
+        "auto_mount_mop_will_enabled": "ऑटो माउंट मॉपिंग सक्षम कर दिया जाएगा!",
+        "backup_map": "बैकअप मैप?",
+        "backup_map_will_overwritten": "वर्तमान बैकअप किया गया मैप अधिलेखित कर दिया जाएगा!",
+        "bag_drying_will_stopped": "डस्ट बैग सुखाना बंद कर दिया जाएगा!",
+        "carpet_recognition_will_enabled": "अनुकूलित कालीन सफाई सेट करने में सक्षम होने के लिए कालीन पहचान सक्षम होनी चाहिए",
+        "carpet_will_deleted": "कालीन हटा दिया जाएगा!",
+        "cleangenius_will_disabled": "Cleangenius अक्षम कर दिया जाएगा!",
+        "cleaning_failure": "सफाई की विफलता के कारण",
+        "create_map": "एक नया मैप बनाएं?",
+        "custom_carpet_settings_will_enabled": "अनुकूलित कालीन सफाई सक्षम कर दी जाएगी!",
+        "custom_carpet_settings_will_enabled_detail": "कस्टम कालीन सफाई सेटिंग्स चयनित कालीन प्रकार के लिए उपयुक्त सेट की जाएंगी",
+        "customized_cleaning_disabled": "अनुकूलित सफाई अक्षम है!",
+        "delete_carpet": "कालीन हटाएं?",
+        "delete_dnd": "DnD कार्य हटाएं?",
+        "delete_map": "मैप हटाएं?",
+        "delete_schedule": "अनुसूचित कार्य हटाएं?",
+        "delete_shortcut": "शॉर्टकट हटाएं?",
+        "deleted": "सफलतापूर्वक हटाया गया",
+        "device_unavailable": "डिवाइस अनुपलब्ध है",
+        "disable_cleangenius": "Cleangenius अक्षम करें?",
+        "dnd_confliction": "DnD कार्य संघर्ष!",
+        "dnd_confliction_detail": "परेशान न करें (Do Not Disturb) अवधि के दौरान अनुसूचित कार्य सेट किया गया है।",
+        "dnd_will_deleted": "%start% से %end% तक का DnD कार्य हटा दिया जाएगा!",
+        "dock_in_restricted_area": "डॉक प्रतिबंधित क्षेत्र में है!",
+        "dock_in_restricted_area_detail": "चार्जिंग डॉक प्रतिबंधित क्षेत्र में स्थित है। यदि आप मैप सहेजना जारी रखते हैं, तो हो सकता है कि रोबोट रिचार्ज न कर पाए।",
+        "drying_will_stopped": "मॉप पैड सुखाना बंद कर दिया जाएगा!",
+        "dust_collection_not_performed": "धूल एकत्र करने वाला (ऑटो-एम्प्टी) कार्य नहीं किया गया\nरोबोट DND अवधि के दौरान ऑटो-एम्प्टी कार्य नहीं करेगा।",
+        "enable_auto_mount_mop": "ऑटो माउंट मॉपिंग सक्षम करें?",
+        "enable_carpet_recognition": "कालीन पहचान सक्षम कर दी जाएगी!",
+        "enable_customized_cleaning": "क्या आप अनुकूलित सफाई को सक्षम करना चाहते हैं?",
+        "enable_mop_change": "क्या आप स्वचालित मॉप बदलना सक्षम करना चाहते हैं?",
+        "enable_task": "क्या आप कार्य को सक्षम करना चाहते हैं?",
+        "entity_is_required": "एंटिटी आवश्यक है",
+        "entity_not_available": "एंटिटी उपलब्ध नहीं है",
+        "failed_to_load_card": "कार्ड लोड करने में विफल",
+        "ignore_obstacle": "बाधा को अनदेखा करें?",
+        "invalid_entity": "अमान्य एंटिटी",
+        "map_backup": "मैप बैकअप प्रगति पर है",
+        "map_backup_failed": "मैप बैकअप विफल रहा!",
+        "map_backup_success": "मैप बैकअप पूरा हुआ",
+        "map_recovery": "मैप रिकवरी प्रगति पर है",
+        "map_recovery_failed": "मैप रिकवरी विफल रही!",
+        "map_recovery_success": "मैप रिकवरी पूरी हुई",
+        "map_will_deleted": "%name% हटा दिया जाएगा!",
+        "map_will_replaced": "वर्तमान में चयनित मैप को नए मैप से बदल दिया जाएगा!",
+        "map_will_restored": "सहेजा गया मैप %date% की स्थिति में पुनर्स्थापित कर दिया जाएगा",
+        "mapping_started": "मैपिंग शुरू हुई...",
+        "mop_change_disabled": "स्वचालित मॉप बदलना अक्षम है!",
+        "mop_wash_frequency_low": "मॉप धोने की आवृत्ति बहुत कम है!",
+        "mop_wash_frequency_will_increased": "यह सुनिश्चित करने के लिए कि मॉप पर्याप्त गीला है, मॉप धोने की आवृत्ति स्वचालित रूप से बढ़ा दी जाएगी",
+        "not_available": "अभी उपलब्ध नहीं है...",
+        "not_fully_supported": "अभी पूरी तरह से समर्थित नहीं है!",
+        "not_supported": "अभी समर्थित नहीं है!",
+        "obstacle_will_ignored": "बाधा को अनदेखा कर दिया जाएगा!",
+        "override_changes": "परिवर्तनों को ओवरराइड करें?",
+        "preview": "यह Dreame Vacuum कार्ड का पूर्वावलोकन है",
+        "recommended_areas": "अनुशंसित क्षेत्र",
+        "relocating": "स्व-स्थिति निर्धारण। कृपया प्रतीक्षा करें।",
+        "relocating_completed": "स्व-स्थिति निर्धारण सफल रहा। रोबोट काम के लिए आगे बढ़ता है।",
+        "relocating_failed": "स्व-स्थिति निर्धारण विफल रहा!",
+        "replace_map": "नया मैप बदलें?",
+        "reset_usage": "उपयोग रीसेट करें?",
+        "reset_walls": "दीवारें रीसेट करें?",
+        "restore_map": "%name% पुनर्स्थापित करें?",
+        "resume_cleaning": "बैटरी को 80% तक चार्ज करने के बाद रोबोट स्वचालित रूप से अधूरे सफाई कार्यों को फिर से शुरू करेगा।",
+        "resume_cleaning_not_performed": "DND अवधि समाप्त होने के बाद रोबोट सफाई फिर से शुरू करेगा।",
+        "resume_cleaning_time": "सफाई %time% शुरू होगी",
+        "save_changes": "परिवर्तन सहेजें?",
+        "saved": "सफलतापूर्वक सहेजा गया",
+        "schedule_will_deleted": "%time% पर निर्धारित कार्य हटा दिया जाएगा!",
+        "select_map": "%name% चुनें?",
+        "select_mapping_type": "मैपिंग प्रकार चुनें",
+        "select_room": "सफाई अनुक्रम सेट करने के लिए एक कमरा चुनें",
+        "selected_map_will_changed": "चयनित मैप %name% में बदल दिया जाएगा!",
+        "service_call_failed": "सर्विस कॉल विफल रही",
+        "settings_will_applied": "आपकी सेटिंग्स अगले कार्य में लागू की जाएंगी।",
+        "shortcut_will_deleted": "%name% हटा दिया जाएगा!",
+        "stop_bag_drying": "डस्ट बैग सुखाना रोकें?",
+        "stop_drying": "सुखाना रोकें?",
+        "stop_task": "वर्तमान कार्य रोकें?",
+        "task_disabled": "कार्य अक्षम है!",
+        "task_will_stopped": "वर्तमान कार्य रोक दिया जाएगा!",
+        "unsaved_changes_present": "आपके पास सहेजे न गए परिवर्तन हैं जो खो जाएंगे!",
+        "unsupported_browser": "असमर्थित ब्राउज़र!",
+        "usage_will_reset": "%name% का उपयोग रीसेट कर दिया जाएगा!",
+        "walls_will_be_reset": "दीवारें उनके प्रारंभिक मैप किए गए स्थान पर बहाल की जाएंगी!"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "एक्सेसरी का उपयोग",
+        "add_furniture": "फर्नीचर जोड़ें",
+        "audio_settings": "ऑडियो सेटिंग्स",
+        "battery_management": "बैटरी प्रबंधन",
+        "carpet_settings": "कालीन सेटिंग्स",
+        "clean_water_tank": "साफ पानी का टैंक",
+        "cleaning_details": "सफाई विवरण",
+        "cleaning_history": "सफाई इतिहास",
+        "cleaning_sequence": "सफाई अनुक्रम",
+        "created_carpet": "मैन्युअल रूप से बनाया गया कालीन",
+        "cruising": "क्रूजिंग",
+        "cruising_details": "क्रूजिंग विवरण",
+        "cruising_history": "क्रूजिंग इतिहास",
+        "customized_cleaning": "अनुकूलित सफाई",
+        "description": "%name% कस्टम एकीकरण का फ्रंटएंड",
+        "detected_carpet": "स्वचालित रूप से पता चला कालीन",
+        "detergent": "डिटर्जेंट",
+        "device_information": "डिवाइस जानकारी",
+        "device_settings": "डिवाइस सेटिंग्स",
+        "dnd": "परेशान न करें",
+        "dnd_task": "DnD कार्य",
+        "dust_bag": "डस्ट बैग",
+        "global_carpet_settings": "ग्लोबल कालीन सेटिंग्स",
+        "invalid": "अमान्य",
+        "locate": "पता लगाएँ",
+        "map": "मैप",
+        "map_edit": "मैप संपादित करें",
+        "map_management": "मैप प्रबंधन",
+        "map_name_placeholder": "मैप %index%",
+        "mop_type": "मॉप का प्रकार",
+        "mopping_settings": "पोछा लगाने की सेटिंग्स",
+        "more_functions": "अधिक कार्य",
+        "name": "%name% कार्ड",
+        "new_map": "नया मैप",
+        "obstacle": "बाधा",
+        "obstacle_settings": "कैमरा और बाधा सेटिंग्स",
+        "recovery_map_list": "मैप रिकवरी",
+        "remote_control": "रिमोट कंट्रोल",
+        "saved_map": "सहेजा गया मैप",
+        "schedule_list": "अनुसूचित सफाई",
+        "scheduled_room": "अनुसूचित कमरे की सफाई",
+        "scheduled_spot": "अनुसूचित स्पॉट सफाई",
+        "scheduled_task": "अनुसूचित कार्य",
+        "scheduled_zone": "अनुसूचित ज़ोन की सफाई",
+        "segment_name_placeholder": "कमरा %index%",
+        "shortcut": "शॉर्टकट",
+        "shortcut_list": "शॉर्टकट",
+        "shortcut_map": "शॉर्टकट मैप",
+        "shortcut_name_placeholder": "शॉर्टकट %index%",
+        "shortcut_task": "शॉर्टकट कार्य",
+        "task": "कार्य %index%",
+        "task_placeholder": "कार्य %index%",
+        "time_left": "%time% शेष",
+        "unavailable": "अनुपलब्ध",
+        "used_water_tank": "इस्तेमाल किए गए पानी का टैंक",
+        "wall": "दीवारें",
+        "wifi_map": "WiFi मैप"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "कमरा साफ करें",
+      "description": "चयनित कमरों में सफाई अभियान शुरू करें।",
+      "fields": {
+        "segments": {
+          "name": "कमरे",
+          "description": "साफ किए जाने वाले कमरों की सूची। प्रति कमरे डिफ़ॉल्ट मानों को ओवरराइड करने के लिए केवल कमरे का चरित्र या कमरे के चरित्र की एक सरणी, सफाई का समय, पंखे की गति और मॉप मोड।"
+        },
+        "repeats": {
+          "name": "दोहराता है",
+          "description": "प्रत्येक चयनित कमरे के लिए सफाई पासों की संख्या (जब तक कि इसे अनुकूलित सफाई पैरामीटर द्वारा ओवरराइड न किया जाए)।"
+        },
+        "suction_level": {
+          "name": "सक्शन स्तर",
+          "description": "प्रत्येक चयनित कमरे के लिए पंखे की गति (जब तक कि इसे अनुकूलित सफाई पैरामीटर द्वारा ओवरराइड न किया जाए)।"
+        },
+        "water_volume": {
+          "name": "पानी की मात्रा",
+          "description": "प्रत्येक चयनित कमरे के लिए जल स्तर (जब तक कि इसे अनुकूलित सफाई पैरामीटर द्वारा ओवरराइड न किया जाए)।"
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "ज़ोन साफ करें",
+      "description": "चयनित क्षेत्र में सफाई अभियान शुरू करें।",
+      "fields": {
+        "zone": {
+          "name": "ज़ोन",
+          "description": "निर्देशांक (Coordinates)।"
+        },
+        "repeats": {
+          "name": "दोहराता है",
+          "description": "प्रत्येक चयनित ज़ोन के लिए सफाई पासों की संख्या।"
+        },
+        "suction_level": {
+          "name": "सक्शन स्तर",
+          "description": "प्रत्येक चयनित ज़ोन के लिए पंखे की गति।"
+        },
+        "water_volume": {
+          "name": "पानी की मात्रा",
+          "description": "प्रत्येक चयनित ज़ोन के लिए जल स्तर।"
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "स्पॉट साफ करें",
+      "description": "मैप पर चयनित बिंदुओं पर सफाई अभियान शुरू करें।",
+      "fields": {
+        "points": {
+          "name": "बिंदु",
+          "description": "साफ किए जाने वाले निर्देशांक की सूची।"
+        },
+        "repeats": {
+          "name": "दोहराता है",
+          "description": "प्रत्येक चयनित ज़ोन के लिए सफाई पासों की संख्या।"
+        },
+        "suction_level": {
+          "name": "सक्शन स्तर",
+          "description": "प्रत्येक चयनित ज़ोन के लिए पंखे की गति।"
+        },
+        "water_volume": {
+          "name": "पानी की मात्रा",
+          "description": "प्रत्येक चयनित ज़ोन के लिए जल स्तर।"
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "पर जाएं (Go To)",
+      "description": "मैप के निर्देशांक पर जाएं और रुकें।",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "बिंदु का X निर्देशांक।"
+        },
+        "y": {
+          "name": "Y",
+          "description": "बिंदु का Y निर्देशांक।"
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "पथ का अनुसरण करें",
+      "description": "मैप पर निर्देशांक की सूची का अनुसरण करें और बेस पर लौटें। (केवल कैमरे वाले वैक्यूम पर समर्थित)",
+      "fields": {
+        "points": {
+          "name": "बिंदु",
+          "description": "पथ के निर्देशांक की सूची।"
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "शॉर्टकट शुरू करें",
+      "description": "शॉर्टकट कार्य शुरू करें। (केवल समर्थित डिवाइस पर)",
+      "fields": {
+        "shortcut_id": {
+          "name": "शॉर्टकट ID",
+          "description": "शॉर्टकट की ID।"
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "रिमोट कंट्रोल मूव स्टेप",
+      "description": "रोबोट को दूरस्थ रूप से एक कदम आगे बढ़ाएं।",
+      "fields": {
+        "rotation": {
+          "name": "रोटेशन",
+          "description": "-128 और 128 के बीच बाइनरी डिग्री में मुड़ें।"
+        },
+        "velocity": {
+          "name": "वेग",
+          "description": "चलने की गति, 100 (आगे) से -300 (पीछे) तक।"
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "वॉयस पैक इंस्टॉल करें",
+      "description": "आधिकारिक या कस्टम वॉयस पैक स्थापित करें।",
+      "fields": {
+        "lang_id": {
+          "name": "भाषा ID",
+          "description": "इस पैक की भाषा ID।"
+        },
+        "url": {
+          "name": "URL",
+          "description": "इस पैक का Url, वैक्यूम रोबोट द्वारा पहुंच योग्य होना चाहिए।"
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "भाषा पैक का MD5 चेकसम।"
+        },
+        "size": {
+          "name": "आकार",
+          "description": "बाइट्स में भाषा पैक का आकार।"
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "मैप का अनुरोध करें",
+      "description": "मैप डेटा का अनुरोध करें"
+    },
+    "vacuum_select_map": {
+      "name": "मैप चुनें",
+      "description": "वर्तमान मैप चुनें। कई मैप/फ़्लोर होने पर उपयोग किया जाता है।",
+      "fields": {
+        "map_id": {
+          "name": "मैप ID",
+          "description": "चुने जाने वाले मैप की ID।"
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "मैप हटाएं",
+      "description": "एक मैप हटाएं।",
+      "fields": {
+        "map_id": {
+          "name": "मैप ID",
+          "description": "हटाए जाने वाले मैप की ID।"
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "अस्थायी मैप सहेजें",
+      "description": "अस्थायी मैप को सहेजें।"
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "अस्थायी मैप खारिज करें",
+      "description": "अस्थायी मैप को खारिज करें।"
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "अस्थायी मैप बदलें",
+      "description": "अस्थायी मैप को दूसरे सहेजे गए मैप से बदलें।",
+      "fields": {
+        "map_id": {
+          "name": "मैप ID",
+          "description": "जिस मैप से बदलना है उसकी ID।"
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "मैप का नाम बदलें",
+      "description": "एक मैप का नाम बदलें।",
+      "fields": {
+        "map_id": {
+          "name": "मैप ID",
+          "description": "मैप की ID।"
+        },
+        "map_name": {
+          "name": "मैप का नाम",
+          "description": "मैप का नया नाम।"
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "मैप पुनर्स्थापित करें",
+      "description": "एक मैप पुनर्स्थापित करें।",
+      "fields": {
+        "map_id": {
+          "name": "मैप ID",
+          "description": "पुनर्स्थापित किए जाने वाले मैप की ID।"
+        },
+        "recovery_map_index": {
+          "name": "रिकवरी मैप इंडेक्स",
+          "description": "सहेजे गए रिकवरी मैप का इंडेक्स"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "फ़ाइल से मैप पुनर्स्थापित करें",
+      "description": "फ़ाइल से मैप पुनर्स्थापित करें।",
+      "fields": {
+        "map_id": {
+          "name": "मैप ID",
+          "description": "पुनर्स्थापित किए जाने वाले मैप की ID।"
+        },
+        "file_url": {
+          "name": "फ़ाइल Url",
+          "description": "सहेजी गई tbz2.gz या tar.gz फ़ाइल का Url"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "मैप बैकअप",
+      "description": "क्लाउड पर मैप का बैकअप लें।",
+      "fields": {
+        "map_id": {
+          "name": "मैप ID",
+          "description": "पुनर्स्थापित किए जाने वाले मैप की ID।"
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "कमरे मिलाएं",
+      "description": "कमरों को मिलाएं।",
+      "fields": {
+        "map_id": {
+          "name": "मैप ID",
+          "description": "मैप की ID।"
+        },
+        "segments": {
+          "name": "कमरे",
+          "description": "कमरे की IDs।"
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "कमरे विभाजित करें",
+      "description": "कमरे विभाजित करें।",
+      "fields": {
+        "map_id": {
+          "name": "मैप ID",
+          "description": "मैप की ID।"
+        },
+        "segment": {
+          "name": "कमरा",
+          "description": "कमरे की ID।"
+        },
+        "line": {
+          "name": "रेखा",
+          "description": "विभाजित रेखा के निर्देशांक।"
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "कमरे का नाम बदलें",
+      "description": "कमरे का नाम बदलें।",
+      "fields": {
+        "segment_id": {
+          "name": "कमरा ID",
+          "description": "कमरे की ID"
+        },
+        "segment_name": {
+          "name": "कमरे का नाम",
+          "description": "कमरे का नया नाम"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "सफाई अनुक्रम सेट करें",
+      "description": "कमरे की सफाई का क्रम निर्धारित करें। (केवल समर्थित डिवाइस पर)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "सफाई अनुक्रम",
+          "description": "सफाई अनुक्रम की कमरे की ID सूची।"
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "कस्टम सफाई सेट करें",
+      "description": "कस्टम सफाई पैरामीटर सेट करें। (केवल समर्थित डिवाइस पर)",
+      "fields": {
+        "segment_id": {
+          "name": "कमरा ID",
+          "description": "कमरे की IDs।"
+        },
+        "suction_level": {
+          "name": "सक्शन स्तर",
+          "description": "प्रत्येक कमरे के लिए सक्शन स्तर।"
+        },
+        "water_volume": {
+          "name": "पानी की मात्रा",
+          "description": "प्रत्येक कमरे के लिए पानी की मात्रा।"
+        },
+        "wetness_level": {
+          "name": "गीलापन स्तर",
+          "description": "प्रत्येक कमरे के लिए गीलापन स्तर (समर्थित उपकरणों पर)।"
+        },
+        "cleaning_mode": {
+          "name": "सफाई मोड",
+          "description": "प्रत्येक कमरे के लिए सफाई (केवल मॉप पैड लिफ्टिंग सुविधा वाले वैक्यूम पर समर्थित)।"
+        },
+        "repeats": {
+          "name": "दोहराता है",
+          "description": "प्रत्येक कमरे के लिए सफाई का समय।"
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "कस्टम कालीन सफाई सेट करें",
+      "description": "कालीन के लिए कस्टम सफाई सेटिंग सेट करें। (केवल समर्थित डिवाइस पर)",
+      "fields": {
+        "id": {
+          "name": "कालीन ID",
+          "description": "कालीन IDs।"
+        },
+        "type": {
+          "name": "वस्तु का प्रकार",
+          "description": "ID के साथ वस्तु का प्रकार। (0 = स्वचालित रूप से पता चला कालीन, 1 = मैन्युअल रूप से बनाया गया कालीन, 2 = कमरे का कालीन (यदि समर्थित हो))"
+        },
+        "carpet_cleaning": {
+          "name": "कालीन सफाई",
+          "description": "प्रत्येक कालीन के लिए कस्टम कालीन सफाई सेटिंग।"
+        },
+        "carpet_preferences": {
+          "name": "कालीन सेटिंग्स",
+          "description": "सक्षम सेटिंग्स की एक सरणी के साथ प्रत्येक कालीन के लिए कस्टम कालीन सेटिंग सेट करें।"
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "प्रतिबंधित ज़ोन सेट करें",
+      "description": "आभासी दीवारें, प्रतिबंधित क्षेत्र, और/या नो मॉप ज़ोन को परिभाषित करें।",
+      "fields": {
+        "walls": {
+          "name": "दीवारें",
+          "description": "आभासी दीवारें।"
+        },
+        "zones": {
+          "name": "ज़ोन",
+          "description": "नो गो ज़ोन।"
+        },
+        "no_mops": {
+          "name": "नो मॉप्स",
+          "description": "नो मॉप ज़ोन।"
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "उपभोग्य रीसेट करें",
+      "description": "एक उपभोग्य वस्तु को रीसेट करें।",
+      "fields": {
+        "consumable": {
+          "name": "उपभोग्य",
+          "description": "उपभोग्य वस्तु का प्रकार।"
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "शॉर्टकट का नाम बदलें",
+      "description": "एक शॉर्टकट का नाम बदलें। (केवल समर्थित डिवाइस पर)",
+      "fields": {
+        "shortcut_id": {
+          "name": "शॉर्टकट ID",
+          "description": "शॉर्टकट की ID।"
+        },
+        "shortcut_name": {
+          "name": "शॉर्टकट नाम",
+          "description": "शॉर्टकट का नया नाम।"
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "शॉर्टकट हटाएं",
+      "description": "एक शॉर्टकट हटाएं। (केवल समर्थित डिवाइस पर)",
+      "fields": {
+        "shortcut_id": {
+          "name": "शॉर्टकट ID",
+          "description": "शॉर्टकट की ID।"
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "कालीन क्षेत्र सेट करें",
+      "description": "कालीन और अनदेखी कालीन को परिभाषित करें। (केवल समर्थित डिवाइस पर)",
+      "fields": {
+        "carpets": {
+          "name": "कालीन",
+          "description": "कालीन क्षेत्र।"
+        },
+        "deleted_carpets": {
+          "name": "अनदेखी कालीन",
+          "description": "स्वचालित रूप से पता लगाए गए कालीनों को हटाने के लिए अनदेखी कालीन क्षेत्र।"
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "आभासी दहलीज सेट करें",
+      "description": "आभासी दहलीज को परिभाषित करें।",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "आभासी दहलीज",
+          "description": "आभासी दहलीज रेखा के निर्देशांक।"
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "पूर्वनिर्धारित बिंदु सेट करें",
+      "description": "वर्तमान मैप पर पूर्वनिर्धारित निर्देशांक परिभाषित करें। (केवल कैमरे वाले वैक्यूम पर समर्थित)",
+      "fields": {
+        "points": {
+          "name": "बिंदु",
+          "description": "सहेजे जाने वाले निर्देशांक की सूची।"
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "बाधा अनदेखा सेट करें",
+      "description": "बाधा की अनदेखी स्थिति सेट करें। (केवल AI बाधा पहचान सुविधा वाले वैक्यूम पर समर्थित)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "बाधा का X निर्देशांक।"
+        },
+        "y": {
+          "name": "Y",
+          "description": "बाधा का Y निर्देशांक।"
+        },
+        "obstacle_ignored": {
+          "name": "बाधा को अनदेखा किया गया",
+          "description": "बाधा को अनदेखा किया गया है या नहीं।"
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "राउटर स्थिति सेट करें",
+      "description": "वर्तमान मैप पर राउटर की स्थिति सेट करें। (केवल WiFi मैप सुविधा वाले वैक्यूम पर समर्थित)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "राउटर का X निर्देशांक।"
+        },
+        "y": {
+          "name": "Y",
+          "description": "राउटर का Y निर्देशांक।"
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "पिछला चुनें",
+      "description": "सिलेक्ट एंटिटी के पिछले विकल्प का चयन करें।",
+      "fields": {
+        "cycle": {
+          "name": "चक्र (Cycle)",
+          "description": "क्या विकल्प को पहले से आखिरी तक साइकिल चलाना चाहिए।"
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "पहला चुनें",
+      "description": "सिलेक्ट एंटिटी के पहले विकल्प का चयन करें।"
+    },
+    "select_select_last": {
+      "name": "आखिरी चुनें",
+      "description": "सिलेक्ट एंटिटी के अंतिम विकल्प का चयन करें।"
+    },
+    "select_select_next": {
+      "name": "अगला चुनें",
+      "description": "सिलेक्ट एंटिटी के अगले विकल्प का चयन करें।",
+      "fields": {
+        "cycle": {
+          "name": "चक्र (Cycle)",
+          "description": "क्या विकल्प को पहले से आखिरी तक साइकिल चलाना चाहिए।"
+        }
+      }
+    }
+  }
+}

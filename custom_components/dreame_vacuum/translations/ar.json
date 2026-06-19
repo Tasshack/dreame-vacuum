@@ -1,0 +1,2438 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "الجهاز مكوّن بالفعل",
+      "cannot_connect": "فشل الاتصال.",
+      "reauth_successful": "تمت إعادة المصادقة بنجاح"
+    },
+    "error": {
+      "cannot_connect": "فشل الاتصال.",
+      "unsupported": "الجهاز غير مدعوم",
+      "wrong_token": "خطأ في المجموع الاختباري (Checksum)، الرمز (token) خاطئ",
+      "2fa_failed": "فشلت عملية التحقق.",
+      "wrong_captcha": "كود التحقق (كابتشا) خاطئ.",
+      "credentials_incomplete": "بيانات الدخول غير مكتملة، يرجى ملء اسم المستخدم وكلمة المرور والدولة.",
+      "login_error": "تعذر تسجيل الدخول، يرجى التحقق من بيانات الدخول.",
+      "no_devices": "لم يتم العثور على أجهزة مدعومة في هذا الحساب في الدولة المحددة.{devices}",
+      "2fa_send_failed": "فشل إرسال رمز التحقق. يرجى المحاولة مرة أخرى.",
+      "2fa_limit_reached": "تم الوصول إلى الحد اليومي لإرسال رموز التحقق. يرجى المحاولة مرة أخرى غداً.",
+      "2fa_cooldown_active": "طلبات متتالية كثيرة جداً. يرجى الانتظار بضع دقائق قبل المحاولة مرة أخرى."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "نوع التكوين"
+        },
+        "description": "تتطلب ميزة الخريطة اتصالاً سحابياً وتوفر تكويناً تلقائياً. إذا كنت لا ترغب في استخدام ميزة الخريطة، يمكنك تحديد التكوين اليدوي."
+      },
+      "local": {
+        "data": {
+          "host": "المضيف (Host)",
+          "token": "الرمز (Token)"
+        },
+        "description": "سوف تحتاج إلى رمز API المكون من 32 حرفاً."
+      },
+      "mi": {
+        "data": {
+          "username": "اسم المستخدم",
+          "password": "كلمة المرور",
+          "country": "دولة الخادم",
+          "prefer_cloud": "تفضيل الاتصال السحابي"
+        },
+        "description": "تسجيل الدخول إلى سحابة Xiaomi Miio."
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "رمز التحقق بخطوتين"
+        },
+        "description": "## يتطلب تسجيل الدخول هذا تحققاً أمنياً\nتم إرسال رمز التحقق إلى {dest}. يرجى إدخال الرمز أدناه."
+      },
+      "captcha": {
+        "data": {
+          "code": "الرمز"
+        },
+        "description": "## مطلوب التحقق من الكابتشا.\n![كابتشا](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "اسم المستخدم",
+          "password": "كلمة المرور",
+          "country": "دولة الخادم"
+        },
+        "description": "تسجيل الدخول إلى سحابة Dreamehome."
+      },
+      "mova": {
+        "data": {
+          "username": "اسم المستخدم",
+          "password": "كلمة المرور",
+          "country": "دولة الخادم"
+        },
+        "description": "تسجيل الدخول إلى سحابة Movahome."
+      },
+      "trouver": {
+        "data": {
+          "username": "اسم المستخدم",
+          "password": "كلمة المرور",
+          "country": "دولة الخادم"
+        },
+        "description": "تسجيل الدخول إلى سحابة Trouver."
+      },
+      "devices": {
+        "data": {
+          "devices": "الأجهزة المدعومة"
+        },
+        "description": "يرجى اختيار جهاز مكنسة Dreame الذي تريد إعداده."
+      },
+      "donation": {
+        "data": {
+          "donated": "تم التبرع"
+        },
+        "description": "## لا تنسَ دعم المشروع.{text}"
+      },
+      "options": {
+        "data": {
+          "name": "الاسم",
+          "color_scheme": "نظام ألوان الخريطة",
+          "icon_set": "مجموعة أيقونات الخريطة",
+          "notify": "الإشعارات",
+          "hidden_map_objects": "كائنات الخريطة المخفية",
+          "low_resolution": "خريطة منخفضة الدقة",
+          "square": "خريطة مربعة"
+        }
+      },
+      "reauth_confirm": {
+        "description": "يحتاج تكامل مكنسة Dreame إلى إعادة مصادقة حسابك من أجل تحديث الرموز الخاصة بك أو إضافة بيانات الدخول السحابية المفقودة.",
+        "title": "إعادة مصادقة التكامل"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "نظام ألوان الخريطة",
+          "icon_set": "مجموعة أيقونات الخريطة",
+          "notify": "الإشعارات",
+          "hidden_map_objects": "كائنات الخريطة المخفية",
+          "low_resolution": "خريطة منخفضة الدقة",
+          "square": "خريطة مربعة",
+          "configuration_type": "نوع التكوين",
+          "prefer_cloud": "تفضيل الاتصال السحابي",
+          "donated": "تم التبرع"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "بيانات الدخول السحابية غير مكتملة، يرجى إدخال اسم المستخدم وكلمة المرور والدولة"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "name": "مستوى الشفط",
+        "state": {
+          "quiet": "هادئ",
+          "standard": "قياسي",
+          "strong": "قوي",
+          "turbo": "تيربو",
+          "full_power": "قوة قصوى"
+        }
+      },
+      "water_volume": {
+        "name": "حجم الماء",
+        "state": {
+          "low": "منخفض",
+          "medium": "متوسط",
+          "high": "مرتفع"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "رطوبة وسادة الممسحة",
+        "state": {
+          "slightly_dry": "جافة قليلاً",
+          "moist": "رطبة",
+          "wet": "مبللة"
+        }
+      },
+      "cleaning_mode": {
+        "name": "وضع التنظيف",
+        "state": {
+          "sweeping": "كنس",
+          "mopping": "مسح",
+          "sweeping_and_mopping": "كنس ومسح",
+          "mopping_after_sweeping": "مسح بعد الكنس"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "حساسية السجاد",
+        "state": {
+          "low": "منخفضة",
+          "medium": "متوسطة",
+          "high": "عالية"
+        }
+      },
+      "carpet_cleaning": {
+        "name": "تنظيف السجاد",
+        "state": {
+          "avoidance": "تجنب",
+          "adaptation": "تكيف",
+          "remove_mop": "إزالة الممسحة",
+          "adaptation_without_route": "تكيف بدون مسار",
+          "vacuum_and_mop": "كنس ومسح",
+          "ignore": "تجاهل",
+          "cross": "عبور"
+        }
+      },
+      "mop_wash_level": {
+        "name": "وضع غسل الممسحة",
+        "state": {
+          "water_saving": "توفير المياه",
+          "daily": "يومي",
+          "deep": "عميق",
+          "ultra_clean_mode": "تنظيف فائق"
+        }
+      },
+      "mopping_type": {
+        "name": "نوع المسح",
+        "state": {
+          "accurate": "دقيق",
+          "daily": "يومي",
+          "deep": "عميق"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "تغطية أوسع للزوايا",
+        "state": {
+          "off": "إيقاف",
+          "high_frequency": "تردد عالي",
+          "low_frequency": "تردد منخفض"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "تأرجح وسادة الممسحة",
+        "state": {
+          "off": "إيقاف",
+          "auto": "تلقائي",
+          "daily": "يومي",
+          "weekly": "أسبوعي"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "تكرار تمدد الممسحة",
+        "state": {
+          "standard": "قياسي",
+          "intelligent": "ذكي",
+          "high": "عالي"
+        }
+      },
+      "floor_material": {
+        "name": "خامة الأرضية",
+        "state": {
+          "none": "لا شيء",
+          "tile": "بلاط",
+          "wood": "أرضية خشبية",
+          "low_pile_carpet": "سجاد قصير الوبر",
+          "medium_pile_carpet": "سجاد متوسط إلى طويل الوبر",
+          "carpet": "سجاد"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "لغة المساعد الصوتي",
+        "state": {
+          "default": "افتراضي",
+          "english": "الإنجليزية",
+          "german": "الألمانية",
+          "chinese": "الصينية",
+          "russian": "الروسية",
+          "italian": "الإيطالية",
+          "french": "الفرنسية",
+          "korean": "الكورية"
+        }
+      },
+      "mop_pressure": {
+        "name": "ضغط الممسحة",
+        "state": {
+          "light": "خفيف",
+          "normal": "عادي"
+        }
+      },
+      "mop_temperature": {
+        "name": "درجة حرارة الممسحة",
+        "state": {
+          "normal": "عادي",
+          "warm": "دافئ"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "تكرار تنظيف المناطق المنخفضة",
+        "state": {
+          "weekly": "أسبوعي",
+          "daily": "يومي"
+        }
+      },
+      "scraper_frequency": {
+        "name": "تكرار استخدام المكشطة",
+        "state": {
+          "off": "إيقاف",
+          "weekly": "أسبوعي",
+          "daily": "يومي"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "تغطية LDS التلقائية",
+        "state": {
+          "off": "إيقاف",
+          "security": "أمان",
+          "extreme": "أقصى"
+        }
+      },
+      "order": {
+        "name": "الترتيب",
+        "state": {
+          "not_set": "غير محدد"
+        }
+      },
+      "self_clean_frequency": {
+        "name": "تكرار التنظيف الذاتي",
+        "state": {
+          "by_area": "حسب المساحة",
+          "by_time": "حسب الوقت",
+          "by_room": "حسب الغرفة",
+          "intelligent": "ذكي"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "تكرار تنظيف الممسحة",
+        "state": {
+          "by_room": "حسب الغرفة",
+          "5sqm": "خمسة أمتار مربعة",
+          "8sqm": "ثمانية أمتار مربعة",
+          "10sqm": "عشرة أمتار مربعة",
+          "15sqm": "خمسة عشر متراً مربعاً",
+          "20sqm": "عشرون متراً مربعاً",
+          "25sqm": "خمسة وعشرون متراً مربعاً",
+          "86sqf": "ستة وثمانون قدماً مربعاً",
+          "108sqf": "مائة وثمانية أقدام مربعة",
+          "54sqf": "أربعة وخمسون قدماً مربعاً",
+          "162sqf": "مائة واثنان وستون قدماً مربعاً",
+          "216sqf": "مائتان وستة عشر قدماً مربعاً",
+          "270sqf": "مائتان وسبعون قدماً مربعاً"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "وضع التفريغ التلقائي",
+        "state": {
+          "off": "إيقاف",
+          "standard": "قياسي",
+          "high_frequency": "تردد عالي",
+          "low_frequency": "تردد منخفض",
+          "custom_frequency": "تردد مخصص",
+          "intelligent": "ذكي"
+        }
+      },
+      "floor_material_direction": {
+        "name": "اتجاه الأرضية",
+        "state": {
+          "vertical": "عمودي",
+          "horizontal": "أفقي"
+        }
+      },
+      "visibility": {
+        "name": "الرؤية",
+        "state": {
+          "visible": "مرئي",
+          "hidden": "مخفي"
+        }
+      },
+      "cleangenius": {
+        "name": "Cleangenius",
+        "state": {
+          "off": "إيقاف",
+          "routine_cleaning": "تنظيف روتيني",
+          "deep_cleaning": "تنظيف عميق"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "وضع Cleangenius",
+        "state": {
+          "vacuum_and_mop": "كنس ومسح",
+          "mop_after_vacuum": "مسح بعد الكنس"
+        }
+      },
+      "washing_mode": {
+        "name": "وضع غسل الممسحة",
+        "state": {
+          "smart": "ذكي",
+          "light": "خفيف",
+          "standard": "قياسي",
+          "deep": "عميق",
+          "ultra_washing": "غسل فائق"
+        }
+      },
+      "water_temperature": {
+        "name": "درجة حرارة الماء",
+        "state": {
+          "normal": "عادي",
+          "mild": "معتدل",
+          "warm": "دافئ",
+          "hot": "ساخن",
+          "max": "أقصى"
+        }
+      },
+      "auto_recleaning": {
+        "name": "إعادة التنظيف التلقائي",
+        "state": {
+          "off": "إيقاف",
+          "in_deep_mode": "في الوضع العميق",
+          "in_all_modes": "في جميع الأوضاع"
+        }
+      },
+      "auto_rewashing": {
+        "name": "إعادة الغسل التلقائي",
+        "state": {
+          "off": "إيقاف",
+          "in_deep_mode": "في الوضع العميق",
+          "in_all_modes": "في جميع الأوضاع"
+        }
+      },
+      "cleaning_route": {
+        "name": "المسار",
+        "state": {
+          "quick": "سريع",
+          "standard": "قياسي",
+          "intensive": "مكثف",
+          "deep": "عميق"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "مسار مسح مخصص",
+        "state": {
+          "off": "إيقاف",
+          "standard": "قياسي",
+          "intensive": "مكثف",
+          "deep": "عميق"
+        }
+      },
+      "task_type": {
+        "name": "نوع المهمة",
+        "state": {
+          "go_to": "الانتقال إلى نقطة",
+          "segment": "تنظيف الغرفة",
+          "all": "تنظيف شامل",
+          "zone": "تنظيف منطقة",
+          "spot": "تنظيف بقعة"
+        }
+      },
+      "cleaning_times": {
+        "name": "مرات التنظيف",
+        "state": {
+          "x1": "مرة واحدة",
+          "x2": "مرتان",
+          "x3": "ثلاث مرات"
+        }
+      },
+      "auto_empty_frequency": {
+        "name": "تكرار التفريغ التلقائي",
+        "state": {
+          "x1": "بعد كل مهمة",
+          "x2": "بعد عمليتي تنظيف",
+          "x3": "بعد ثلاث عمليات تنظيف"
+        }
+      },
+      "drying_time": {
+        "name": "وقت التجفيف",
+        "state": {
+          "silent": "صامت"
+        }
+      },
+      "battery_charge_level": {
+        "name": "مستوى شحن البطارية"
+      },
+      "object_type": {
+        "name": "نوع الكائن",
+        "state": {
+          "predefined_point": "نقطة محددة مسبقاً",
+          "low_lying_area": "منطقة منخفضة",
+          "curtain": "ستارة",
+          "threshold": "عتبة الباب",
+          "furniture": "أثاث",
+          "carpet": "سجاد",
+          "restricted": "منطقة محظورة"
+        }
+      },
+      "edit_type": {
+        "name": "نوع التعديل",
+        "state": {
+          "door": "تعديل الأبواب",
+          "split": "تقسيم الغرف",
+          "merge": "دمج الغرف",
+          "visibility": "رؤية الغرفة",
+          "material": "خامة الأرضية",
+          "type": "اسم الغرفة",
+          "wall": "تعديل الجدران"
+        }
+      },
+      "map_type": {
+        "name": "نوع الخريطة",
+        "state": {
+          "cleaning": "خريطة التنظيف",
+          "history": "تفاصيل التنظيف",
+          "wifi": "خريطة الواي فاي"
+        }
+      },
+      "carpet_type": {
+        "name": "نوع السجاد",
+        "state": {
+          "medium_pile": "متوسط إلى طويل الوبر",
+          "low_pile": "قصير الوبر",
+          "floor_mat": "دواسة أرضية",
+          "other": "آخر"
+        }
+      },
+      "mop_type": {
+        "name": "نوع الممسحة",
+        "state": {
+          "a": "ممسحة A",
+          "b": "ممسحة B",
+          "c": "ممسحة C"
+        }
+      },
+      "carpet_shape": {
+        "name": "الشكل",
+        "state": {
+          "square": "مربع",
+          "round": "دائري"
+        }
+      },
+      "mopping_pattern": {
+        "name": "نمط المسح",
+        "state": {
+          "daily": "مسح يومي",
+          "deep": "مسح عميق"
+        }
+      },
+      "wetness_level": {
+        "name": "البلل",
+        "state": {
+          "slightly_dry": "جاف قليلاً",
+          "moist": "رطب",
+          "wet": "مبلل"
+        }
+      },
+      "task_repeats": {
+        "name": "تكرار المهمة",
+        "state": {
+          "once": "مرة واحدة",
+          "daily": "يومياً",
+          "workdays": "أيام العمل",
+          "weekends": "عطلات نهاية الأسبوع"
+        }
+      },
+      "segment_name": {
+        "name": "اسم الغرفة",
+        "state": {
+          "room": "غرفة",
+          "living_room": "غرفة المعيشة",
+          "primary_bedroom": "غرفة النوم الرئيسية",
+          "study": "غرفة المكتب",
+          "kitchen": "مطبخ",
+          "dining_hall": "غرفة الطعام",
+          "bathroom": "حمام",
+          "balcony": "شرفة",
+          "corridor": "ممر",
+          "utility_room": "غرفة المرافق",
+          "closet": "خزانة",
+          "meeting_room": "غرفة اجتماعات",
+          "office": "مكتب",
+          "fitness_area": "منطقة التدريب",
+          "recreation_area": "منطقة الترفيه",
+          "secondary_bedroom": "غرفة النوم الإضافية"
+        }
+      },
+      "furniture_type": {
+        "name": "نوع الأثاث",
+        "state": {
+          "single_bed": "سرير مفرد",
+          "double_bed": "سرير مزدوج",
+          "arm_chair": "كرسي بذراعين",
+          "two_seat_sofa": "أريكة بمقعدين",
+          "three_seat_sofa": "أريكة بثلاث مقاعد",
+          "dining_table": "طاولة طعام",
+          "nightstant": "طاولة جانبية (كومودينو)",
+          "coffee_table": "طاولة قهوة",
+          "toilet": "مرحاض",
+          "litter_box": "صندوق فضلات",
+          "pet_bed": "سرير حيوانات أليفة",
+          "food_bowl": "وعاء طعام",
+          "pet_toilet": "مرحاض حيوانات أليفة",
+          "refrigerator": "ثلاجة",
+          "washing_machine": "غسالة",
+          "enclosed_litter_box": "صندوق فضلات مغلق",
+          "air_conditioner": "مكيف هواء",
+          "tv_cabinet": "خزانة تلفزيون",
+          "bookshelf": "خزانة كتب",
+          "shoe_cabinet": "خزانة أحذية",
+          "wardrobe": "دولاب ملابس",
+          "greenery": "نباتات الزينة",
+          "floor_mirror": "مرآة أرضية",
+          "l_shaped_sofa": "أريكة على شكل حرف L",
+          "round_coffee_table": "طاولة قهوة دائرية",
+          "table": "طاولة",
+          "arm_chair_narrow": "كرسي بذراعين ضيق",
+          "three_seat_sofa_narrow": "أريكة بثلاث مقاعد ضيقة",
+          "l_shaped_sofa_right": "أريكة على شكل حرف L (يمين)"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "name": "الحالة",
+        "state": {
+          "unknown": "غير معروف",
+          "sweeping": "يكنس",
+          "charging": "يشحن",
+          "error": "خطأ",
+          "idle": "قيد الانتظار",
+          "paused": "متوقف مؤقتًا",
+          "returning": "يعود إلى محطة الشحن",
+          "mopping": "يمسح",
+          "drying": "يجفف",
+          "washing": "يغسل",
+          "returning_to_wash": "يعود للغسيل",
+          "building": "يبني الخريطة",
+          "sweeping_and_mopping": "يكنس ويمسح",
+          "charging_completed": "اكتمل الشحن",
+          "upgrading": "يقوم بالتحديث",
+          "clean_summon": "استدعاء للتنظيف",
+          "station_reset": "إعادة ضبط المحطة",
+          "returning_install_mop": "العودة لتثبيت الممسحة",
+          "returning_remove_mop": "العودة لإزالة الممسحة",
+          "water_check": "فحص مستوى الماء",
+          "clean_add_water": "التنظيف وإضافة الماء",
+          "washing_paused": "إيقاف الغسيل مؤقتاً",
+          "auto_emptying": "التفريغ التلقائي",
+          "remote_control": "التحكم عن بُعد",
+          "smart_charging": "الشحن الذكي",
+          "second_cleaning": "تنظيف للمرة الثانية",
+          "human_following": "تتبع بشري",
+          "spot_cleaning": "تنظيف بقعة",
+          "returning_auto_empty": "العودة للتفريغ التلقائي",
+          "waiting_for_task": "في انتظار مهمة",
+          "station_cleaning": "تنظيف المحطة",
+          "returning_to_drain": "العودة للتصريف",
+          "draining": "يصرف",
+          "auto_water_draining": "تصريف الماء تلقائياً",
+          "emptying": "يفرغ",
+          "dust_bag_drying": "تجفيف كيس الغبار",
+          "dust_bag_drying_paused": "إيقاف تجفيف كيس الغبار مؤقتاً",
+          "heading_to_extra_cleaning": "التوجه لتنظيف إضافي",
+          "extra_cleaning": "تنظيف إضافي",
+          "finding_pet_paused": "إيقاف البحث عن الحيوانات الأليفة مؤقتاً",
+          "finding_pet": "يبحث عن الحيوانات الأليفة",
+          "shortcut": "اختصار",
+          "monitoring": "يراقب",
+          "monitoring_paused": "إيقاف المراقبة مؤقتاً",
+          "initial_deep_cleaning": "التنظيف العميق الأولي",
+          "initial_deep_cleaning_paused": "إيقاف التنظيف العميق الأولي مؤقتاً",
+          "sanitizing": "يعقم",
+          "sanitizing_with_dry": "يعقم ويجفف",
+          "changing_mop": "يستبدل الممسحة",
+          "changing_mop_paused": "إيقاف استبدال الممسحة مؤقتاً",
+          "floor_maintaining": "صيانة الأرضية",
+          "floor_maintaining_paused": "إيقاف صيانة الأرضية مؤقتاً",
+          "remote_pickup": "التقاط عن بعد",
+          "arranging_items": "ترتيب العناصر",
+          "pet_guarding": "حراسة الحيوانات الأليفة",
+          "pet_guarding_paused": "توقفت حراسة الحيوانات الأليفة مؤقتاً",
+          "installing_mop": "تثبيت الممسحة",
+          "uninstalling_mop": "إزالة الممسحة",
+          "intelligent_recharging": "إعادة الشحن الذكي",
+          "assisted_cleaning": "التنظيف المساعد",
+          "entering_dock": "الدخول إلى قاعدة الشحن",
+          "leaving_dock": "مغادرة قاعدة الشحن",
+          "navigating_to_climber": "الانتقال إلى المتسلق (Climber)",
+          "docking_to_climber": "الارتباط بالمتسلق (Climber)",
+          "climber_docked": "تم الارتباط بالمتسلق (Climber)",
+          "climber_navigating": "المتسلق (Climber) ينتقل",
+          "climbing_stairs": "صعود السلالم",
+          "climbing_stairs_completed": "اكتمل صعود السلالم",
+          "climber_at_dock": "المتسلق (Climber) في قاعدة الشحن",
+          "climber_leaving_dock": "المتسلق (Climber) يغادر قاعدة الشحن"
+        }
+      },
+      "status": {
+        "name": "الحالة",
+        "state": {
+          "unknown": "غير معروف",
+          "idle": "قيد الانتظار",
+          "paused": "متوقف مؤقتاً",
+          "cleaning": "ينظف",
+          "returning": "يعود لمحطة الشحن",
+          "spot_cleaning": "تنظيف بقعة",
+          "follow_wall_cleaning": "التنظيف بمحاذاة الحائط",
+          "charging": "يشحن",
+          "ota": "تحديث عبر الهواء (OTA)",
+          "fct": "فحص المصنع",
+          "wifi_set": "إعداد الواي فاي",
+          "power_off": "إيقاف التشغيل",
+          "factory": "وضع المصنع",
+          "error": "خطأ",
+          "remote_control": "تحكم عن بُعد",
+          "sleeping": "وضع السكون",
+          "self_test": "اختبار ذاتي",
+          "factory_test": "اختبار المصنع",
+          "standby": "استعداد",
+          "room_cleaning": "تنظيف الغرفة",
+          "zone_cleaning": "تنظيف منطقة",
+          "fast_mapping": "رسم خرائط سريع",
+          "cruising_path": "يتجول عبر المسار",
+          "cruising_point": "يتجول إلى نقطة",
+          "summon_clean": "استدعاء للتنظيف",
+          "shortcut": "اختصار",
+          "person_follow": "تتبع شخصي",
+          "water_check": "فحص مستوى الماء",
+          "pet_guarding": "حراسة الحيوانات الأليفة",
+          "auto_arrangement": "ترتيب تلقائي",
+          "smart_arrangement": "ترتيب ذكي",
+          "zoned_arrangement": "ترتيب المناطق"
+        }
+      },
+      "task_status": {
+        "name": "حالة المهمة",
+        "state": {
+          "unknown": "غير معروف",
+          "completed": "مكتملة",
+          "cleaning": "ينظف",
+          "zone_cleaning": "تنظيف منطقة",
+          "room_cleaning": "تنظيف الغرفة",
+          "spot_cleaning": "تنظيف بقعة",
+          "fast_mapping": "رسم خرائط سريع",
+          "cleaning_paused": "إيقاف التنظيف مؤقتاً",
+          "room_cleaning_paused": "إيقاف تنظيف الغرفة مؤقتاً",
+          "zone_cleaning_paused": "إيقاف تنظيف المنطقة مؤقتاً",
+          "spot_cleaning_paused": "إيقاف تنظيف البقعة مؤقتاً",
+          "map_cleaning_paused": "إيقاف تنظيف الخريطة مؤقتاً",
+          "docking_paused": "إيقاف العودة للمحطة مؤقتاً",
+          "mopping_paused": "إيقاف المسح مؤقتاً",
+          "zone_mopping_paused": "إيقاف مسح المنطقة مؤقتاً",
+          "room_mopping_paused": "إيقاف مسح الغرفة مؤقتاً",
+          "zone_docking_paused": "إيقاف العودة للمحطة الخاصة بالمنطقة مؤقتاً",
+          "room_docking_paused": "إيقاف العودة للمحطة الخاصة بالغرفة مؤقتاً",
+          "cruising_path": "يتجول عبر المسار",
+          "cruising_path_paused": "إيقاف الجولة عبر المسار مؤقتاً",
+          "cruising_point": "يتجول إلى نقطة",
+          "cruising_point_paused": "إيقاف الجولة إلى نقطة مؤقتاً",
+          "summon_clean_paused": "إيقاف الاستدعاء للتنظيف مؤقتاً",
+          "returning_to_install_mop": "العودة لتثبيت الممسحة",
+          "returning_to_remove_mop": "العودة لإزالة الممسحة",
+          "station_cleaning": "تنظيف المحطة",
+          "pet_finding": "يبحث عن الحيوانات الأليفة",
+          "auto_cleaning_washing_paused": "إيقاف غسل التنظيف التلقائي مؤقتاً",
+          "area_cleaning_washing_paused": "إيقاف غسل تنظيف المنطقة مؤقتاً",
+          "custom_cleaning_washing_paused": "إيقاف غسل التنظيف المخصص مؤقتاً",
+          "picking_up_item": "التقاط العنصر",
+          "picking_up_item_paused": "توقف التقاط العنصر مؤقتاً",
+          "picking_up_item_success": "تم التقاط العنصر بنجاح",
+          "remote_pickup_initializing": "بدء الالتقاط عن بعد",
+          "remote_pickup_identifing": "التعرف على الالتقاط عن بعد",
+          "manual_remote_pickup": "التقاط عن بعد يدوي",
+          "automatic_remote_pickup": "التقاط عن بعد تلقائي",
+          "remote_pickup_in_progress": "الالتقاط عن بعد قيد التنفيذ",
+          "remote_pickup_paused": "توقف الالتقاط عن بعد مؤقتاً",
+          "placing_item": "وضع العنصر",
+          "placing_item_paused": "توقف وضع العنصر مؤقتاً"
+        }
+      },
+      "water_tank": {
+        "name": "خزان الماء",
+        "state": {
+          "unknown": "غير معروف",
+          "installed": "مثبت",
+          "not_installed": "غير مثبت",
+          "mop_installed": "الممسحة مثبتة",
+          "in_station": "في المحطة"
+        }
+      },
+      "mop_pad": {
+        "name": "وسادة الممسحة",
+        "state": {
+          "unknown": "غير معروف",
+          "installed": "مثبتة",
+          "not_installed": "غير مثبتة",
+          "mop_installed": "الممسحة مثبتة",
+          "in_station": "في المحطة"
+        }
+      },
+      "dust_collection": {
+        "name": "تجميع الغبار",
+        "state": {
+          "unknown": "غير معروف",
+          "not_available": "غير متوفر",
+          "available": "متوفر",
+          "over_use": "استخدام مفرط",
+          "never": "أبدًا"
+        }
+      },
+      "auto_empty_status": {
+        "name": "حالة التفريغ التلقائي",
+        "state": {
+          "unknown": "غير معروف",
+          "idle": "قيد الانتظار",
+          "active": "نشط",
+          "not_performed": "لم يُنفذ"
+        }
+      },
+      "error": {
+        "name": "الخطأ",
+        "state": {
+          "unknown": "رمز خطأ غير معروف",
+          "no_error": "لا يوجد خطأ",
+          "drop": "عجلات الجهاز عالقة في الهواء",
+          "cliff": "خطأ في حساس الحافة",
+          "bumper": "حساس الاصطدام عالق",
+          "gesture": "الروبوت مائل",
+          "bumper_repeat": "حساس الاصطدام عالق",
+          "drop_repeat": "عجلات الجهاز عالقة في الهواء",
+          "optical_flow": "خطأ في حساس التدفق البصري",
+          "no_box": "صندوق الغبار غير مثبت",
+          "no_tank_box": "خزان الماء غير مثبت",
+          "water_box_empty": "خزان الماء فارغ",
+          "box_full": "الفلتر ليس جافاً أو مسدود",
+          "brush": "الفرشاة الرئيسية متشابكة",
+          "side_brush": "الفرشاة الجانبية متشابكة",
+          "fan": "الفلتر ليس جافاً أو مسدود",
+          "left_wheel_motor": "الروبوت عالق، أو قد تكون عجلته اليسرى محتجزة بسبب أجسام غريبة",
+          "right_wheel_motor": "الروبوت عالق، أو قد تكون عجلته اليمنى محتجزة بسبب أجسام غريبة",
+          "turn_suffocate": "الروبوت عالق، أو لا يستطيع الدوران",
+          "forward_suffocate": "الروبوت عالق، أو لا يستطيع التقدم للأمام",
+          "charger_get": "لا يمكن العثور على القاعدة",
+          "battery_low": "بطارية منخفضة",
+          "charge_fault": "خطأ في الشحن",
+          "battery_percentage": "خطأ في مستوى البطارية",
+          "heart": "خطأ داخلي",
+          "camera_occlusion": "خطأ في حساس تحديد المواقع المرئي",
+          "move": "خطأ في حساس الحركة",
+          "flow_shielding": "خطأ في الحساس البصري",
+          "infrared_shielding": "خطأ في حساس الأشعة تحت الحمراء",
+          "charge_no_electric": "قاعدة الشحن غير موصولة بالكهرباء",
+          "battery_fault": "خطأ في البطارية",
+          "fan_speed_error": "خطأ في حساس سرعة المروحة",
+          "left_wheell_speed": "قد تكون العجلة اليسرى محتجزة بأجسام غريبة",
+          "right_wheell_speed": "قد تكون العجلة اليمنى محتجزة بأجسام غريبة",
+          "bmi055_acce": "خطأ في مقياس التسارع",
+          "bmi055_gyro": "خطأ في الجيروسكوب",
+          "xv7001": "خطأ في الجيروسكوب",
+          "left_magnet": "خطأ في الحساس المغناطيسي الأيسر",
+          "right_magnet": "خطأ في الحساس المغناطيسي الأيمن",
+          "flow_error": "خطأ في حساس التدفق",
+          "infrared_fault": "خطأ في الأشعة تحت الحمراء",
+          "camera_fault": "خطأ في الكاميرا",
+          "strong_magnet": "تم اكتشاف مجال مغناطيسي قوي",
+          "water_pump": "خطأ في مضخة الماء",
+          "rtc": "خطأ في RTC",
+          "auto_key_trig": "خطأ داخلي",
+          "p3v3": "خطأ داخلي",
+          "camera_idle": "خطأ داخلي",
+          "blocked": "مسار التنظيف مسدود، العودة للقاعدة.",
+          "lds_error": "خطأ في حساس مسافة الليزر",
+          "lds_bumper": "خطأ في مصد حساس مسافة الليزر",
+          "filter_blocked": "الفلتر ليس جافاً أو مسدود",
+          "edge": "خطأ في حساس الحافة",
+          "carpet": "يرجى تشغيل الروبوت في منطقة غير مغطاة بالسجاد.",
+          "laser": "حساس تجنب العوائق ثلاثي الأبعاد معطل.",
+          "ultrasonic": "حساس الموجات فوق الصوتية معطل.",
+          "no_go_zone": "تم اكتشاف منطقة محظورة أو جدار افتراضي.",
+          "route": "توقف مسار التنظيف بسبب انسداد.",
+          "restricted": "اكتشف الروبوت أنه في منطقة محظورة.",
+          "remove_mop": "تم الانتهاء من المسح. يرجى إزالة الممسحة وتنظيفها في الوقت المناسب.",
+          "mop_removed": "انفصلت وسادة الممسحة أثناء مهمة التنظيف.",
+          "mop_pad_stop_rotate": "توقفت وسادة الممسحة عن الدوران.",
+          "bin_full": "كيس جمع الغبار ممتلئ، أو مجرى الهواء مسدود.",
+          "bin_open": "الغطاء العلوي لقاعدة التفريغ التلقائي غير مغلق، أو لم يتم تثبيت كيس جمع الغبار.",
+          "water_tank": "لم يتم تثبيت خزان الماء النظيف.",
+          "dirty_water_tank": "خزان الماء المتسخ ممتلئ، أو غير مثبت.",
+          "water_tank_dry": "مستوى الماء منخفض في خزان الماء النظيف، يرجى تعبئته في الوقت المناسب.",
+          "dirty_water_tank_blocked": "خزان الماء المتسخ مسدود.",
+          "dirty_water_tank_pump": "خطأ في مضخة خزان الماء المتسخ.",
+          "mop_pad": "لوح الغسيل غير مثبت بشكل صحيح.",
+          "wet_mop_pad": "مستوى الماء في لوح الغسيل غير طبيعي، يرجى تنظيف لوح الغسيل في الوقت المناسب.",
+          "clean_mop_pad": "مهمة التنظيف مكتملة، يرجى تنظيف لوح غسل الممسحة.",
+          "clean_tank_level": "تحقق من خزان الماء النظيف وقم بتعبئته.",
+          "station_disconnected": "المحطة الأساسية غير موصولة بالكهرباء",
+          "dirty_tank_level": "مستوى الماء في خزان الماء المتسخ مرتفع للغاية.",
+          "washboard_level": "مستوى الماء في لوح الغسيل بمرتفع للغاية.",
+          "no_mop_in_station": "الممسحة ليست في المحطة.",
+          "dust_bag_full": "كيس الغبار ممتلئ، أو الفتحات مسدودة.",
+          "self_test_failed": "تصريف غير طبيعي للماء من خزان الماء النظيف الخاص بالوحدات المائية العلوية والسفلية.",
+          "mop_install_failed": "فشل في تثبيت وسادة الممسحة.",
+          "low_battery_turn_off": "بطارية منخفضة. سيتم إيقاف تشغيل الروبوت قريبًا.",
+          "dirty_tank_not_installed": "خزان الماء المستخدم غير مثبت في الروبوت.",
+          "robot_in_hidden_room": "منطقة مخفية. يرجى نقل الروبوت إلى مكان مناسب وإعادة المحاولة.",
+          "washboard_not_working": "لوح الغسيل توقف عن العمل.",
+          "return_to_charge_failed": "فشل العودة إلى الشحن.",
+          "lds_failed_to_lift": "فشل في رفع وحدة LDS.",
+          "robot_stuck": "لا يمكن رفع LDS هنا لتحديد المواقع.",
+          "robot_stuck_repeat": "انقل الروبوت إلى منطقة مفتوحة واستأنف المهمة.",
+          "slippery_floor": "أرضية زلقة. يرجى إعادة المحاولة لاحقاً.",
+          "check_mop_install": "يرجى التحقق مما إذا كانت الممسحة مثبتة بشكل صحيح.",
+          "dirty_water_tank_full": "مستوى الماء في الخزان المستخدم غير طبيعي.",
+          "retractable_leg_stuck": "يرجى التحقق مما إذا كانت الأرجل القابلة للسحب متشابكة.",
+          "internal_error": "عطل بسبب خطأ داخلي. حاول إعادة تشغيل الروبوت.",
+          "robot_stuck_on_tables": "الروبوت عالق بين الطاولات والكراسي.",
+          "robot_stuck_on_passage": "الروبوت عالق في ممر ضيق.",
+          "robot_stuck_on_threshold": "الروبوت عالق عند درجة/عتبة الباب.",
+          "robot_stuck_on_low_lying_area": "الروبوت عالق في منطقة ذات ارتفاع منخفض.",
+          "robot_stuck_on_ramp": "اكتشف الروبوت منحدرات قَابِلة للسقوط على مساره.",
+          "robot_stuck_on_obstacle": "اكتشف الروبوت عوائق على مساره.",
+          "robot_stuck_on_pet": "اكتشف الروبوت أشخاصًا أو حيوانات أليفة في مساره.",
+          "robot_stuck_on_slippery_surface": "الروبوت عالق بسبب الانزلاق.",
+          "robot_stuck_on_carpet": "الروبوت ينزلق على السجادة.",
+          "drainage_failed": "تصريف غير طبيعي للماء من الخزان المستخدم",
+          "mop_not_detected": "لم يتم اكتشاف الممسحة.",
+          "mop_holder_error": "خطأ في كمية/موضع حامل الممسحة في القاعدة.",
+          "dock_error": "خطأ في القاعدة.",
+          "wash_failed": "فشل في غسل الممسحة المتسخة.",
+          "robot_stuck_on_curtain": "الروبوت ينزلق في منطقة الستائر.",
+          "edge_mop_stop_rotate": "توقفت ممسحة الزوايا عن الدوران.",
+          "edge_mop_detached": "ممسحة الزوايا منفصلة.",
+          "chassis_lift_malfunction": "عطل في نظام رفع الهيكل.",
+          "mop_cover_error": "تحقق من عدم وجود أي شوائب بالقرب من الممسحة الأسطوانية وغطاء الممسحة.",
+          "roller_mop_error": "تحقق من عدم وجود أي شوائب بالقرب من الممسحة الأسطوانية وغطاء الممسحة.",
+          "onboard_water_tank_empty": "مستوى الماء منخفض في خزان الماء المعلق بالروبوت.",
+          "onboard_dirty_water_tank_full": "خزان الماء المتسخ المعلق بالروبوت ممتلئ.",
+          "mop_not_installed": "الممسحة غير مثبتة.",
+          "fluffing_roller_error": "خطأ في الأسطوانة الزغبية.",
+          "blocked_by_obstacle": "الروبوت محجوز بسبب عائق.",
+          "robotic_arm_stopped": "توقف الذراع الآلي.",
+          "drainage_outlet_filter": "فلتر مخرج مياه الصرف الصحي للروبوت مسدود.",
+          "main_wheels_error": "خطأ في العجلات الرئيسية."
+        }
+      },
+      "charging_status": {
+        "name": "حالة الشحن",
+        "state": {
+          "unknown": "غير معروف",
+          "charging": "يشحن",
+          "not_charging": "لا يشحن",
+          "return_to_charge": "يعود للشحن",
+          "charging_completed": "اكتمل الشحن"
+        }
+      },
+      "relocation_status": {
+        "name": "حالة تحديد الموقع",
+        "state": {
+          "unknown": "غير معروف",
+          "located": "يتم تحديد موقعه",
+          "locating": "يحدد موقعه",
+          "failed": "فشل",
+          "success": "نجاح"
+        }
+      },
+      "self_wash_base_status": {
+        "name": "حالة قاعدة الغسل الذاتي",
+        "state": {
+          "unknown": "غير معروف",
+          "idle": "قيد الانتطيار",
+          "washing": "يغسل",
+          "drying": "يجفف",
+          "paused": "متوقف مؤقتاً",
+          "returning": "يعود للغسيل",
+          "clean_add_water": "تنظيف وإضافة ماء",
+          "adding_water": "يضيف ماء"
+        }
+      },
+      "low_water_warning": {
+        "name": "تحذير انخفاض مستوى الماء",
+        "state": {
+          "no_warning": "لا يوجد تحذير",
+          "no_water_left": "الماء في خزان الماء النظيف على وشك النفاد. يرجى التحقق من خزان الماء النظيف وتعبئته في أسرع وقت.",
+          "no_water_left_after_clean": "تم تنظيف وسادة الممسحة. اكتشف الروبوت أن الماء في خزان الماء النظيف غير كافٍ، يرجى تعبئة خزان الماء النظيف وإفراغ خزان الماء المتسخ.",
+          "no_water_for_clean": "مستوى الماء منخفض في خزان الماء النظيف. تحول الروبوت إلى وضع الكنس.",
+          "low_water": "الماء على وشك النفاد. يرجى تعبئة خزان الماء النظيف.",
+          "tank_not_installed": "خزان الماء النظيف غير مثبت."
+        }
+      },
+      "stream_status": {
+        "name": "حالة البث المشفر",
+        "state": {
+          "unknown": "غير معروف",
+          "idle": "قيد الانتظار",
+          "video": "فيديو",
+          "audio": "صوت",
+          "recording": "تسجيل"
+        }
+      },
+      "drainage_status": {
+        "name": "حالة التصريف",
+        "state": {
+          "unknown": "غير معروف",
+          "idle": "قيد الانتظار",
+          "draining": "يصرف",
+          "draining_successful": "تم التصريف بنجاح",
+          "draining_failed": "فشل التصريف"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "حالة خزان الماء النظيف",
+        "state": {
+          "unknown": "غير معروف",
+          "not_available": "غير متوفر",
+          "not_installed": "غير مثبت",
+          "low_water": "مستوى ماء منخفض",
+          "installed": "مثبت"
+        }
+      },
+      "dirty_water_tank_status": {
+        "name": "حالة خزان الماء المتسخ",
+        "state": {
+          "unknown": "غير معروف",
+          "installed": "مثبت",
+          "not_installed_or_full": "غير مثبت أو ممتلئ"
+        }
+      },
+      "dust_bag_status": {
+        "name": "حالة كيس الغبار",
+        "state": {
+          "unknown": "غير معروف",
+          "installed": "مثبت",
+          "not_installed": "غير مثبت",
+          "check": "تحقق"
+        }
+      },
+      "detergent_status": {
+        "name": "حالة سائل التنظيف",
+        "state": {
+          "unknown": "غير معروف",
+          "installed": "مثبت",
+          "disabled": "معطل",
+          "low_detergent": "مستوى سائل التنظيف منخفض"
+        }
+      },
+      "hot_water_status": {
+        "name": "حالة الماء الساخن",
+        "state": {
+          "unknown": "غير معروف",
+          "disabled": "معطل",
+          "enabled": "مفعل"
+        }
+      },
+      "station_drainage_status": {
+        "name": "حالة تصريف المحطة",
+        "state": {
+          "unknown": "غير معروف",
+          "idle": "قيد الانتظار",
+          "draining": "يصرف"
+        }
+      },
+      "task_type": {
+        "name": "نوع المهمة",
+        "state": {
+          "standard": "تنظيف قياسي",
+          "standard_paused": "إيقاف التنظيف القياسي مؤقتاً",
+          "custom": "تنظيف مخصص",
+          "custom_paused": "إيقاف التنظيف المخصص مؤقتاً",
+          "shortcut": "تنظيف بالاختصار",
+          "shortcut_paused": "إيقاف التنظيف بالاختصار مؤقتاً",
+          "scheduled": "تنظيف مجدول",
+          "scheduled_paused": "إيقاف التنظيف المجدول مؤقتاً",
+          "smart": "تنظيف ذكي",
+          "smart_paused": "إيقاف التنظيف الذكي مؤقتاً",
+          "partial": "تنظيف جزئي",
+          "partial_paused": "إيقاف التنظيف الجزئي مؤقتاً",
+          "summon": "التنظيف بالاستدعاء",
+          "summon_paused": "إيقاف التنظيف بالاستدعاء مؤقتاً",
+          "water_stain": "تنظيف بقعة ماء",
+          "water_stain_paused": "إيقاف تنظيف بقعة الماء مؤقتاً",
+          "boosted_edge_cleaning": "تنظيف حواف معزز",
+          "hair_compressing": "ضغط الشعر",
+          "large_particle_cleaning": "تنظيف جسيمات كبيرة",
+          "intensive_stain_cleaning": "تنظيف بقع مكثف",
+          "stain_cleaning": "تنظيف البقع",
+          "initial_deep_cleaning": "تنظيف عميق أولي",
+          "initial_deep_cleaning_paused": "إيقاف التنظيف العميق الأولي مؤقتاً",
+          "mop_pad_heating": "تدفئة وسادة الممسحة",
+          "cleaning_after_mapping": "تنظيف بعد رسم الخريطة",
+          "small_particle_cleaning": "تنظيف جسيمات صغيرة",
+          "changing_mop": "يستبدل الممسحة",
+          "changing_mop_paused": "إيقاف استبدال الممسحة مؤقتاً",
+          "floor_maintaining": "صيانة الأرضية",
+          "floor_maintaining_paused": "إيقاف صيانة الأرضية مؤقتاً",
+          "arranging_items": "ترتيب العناصر",
+          "arranging_items_paused": "توقف ترتيب العناصر مؤقتاً",
+          "intensive_hair_cleaning": "تنظيف كثيف للشعر",
+          "accessory_handling": "التعامل مع الملحقات",
+          "increased_drum_speed_cleaning": "تنظيف مع زيادة سرعة الحلة",
+          "pressurized_cleaning": "تنظيف مضغوط",
+          "steam_cleaning": "تنظيف بالبخار",
+          "steam_cleaning_paused": "توقف التنظيف بالبخار مؤقتاً"
+        }
+      },
+      "dust_bag_drying_status": {
+        "name": "حالة تجفيف كيس الغبار",
+        "state": {
+          "idle": "قيد الانتظار",
+          "drying": "يجفف",
+          "paused": "متوقف مؤقتاً"
+        }
+      },
+      "nation_matched": {
+        "name": "قفل المنطقة",
+        "state": {
+          "unknown": "معطل",
+          "matched": "غير مقفول",
+          "unmatched": "مقفول",
+          "na": "غير متوفر"
+        }
+      },
+      "startup_method": {
+        "name": "تم البدء بواسطة",
+        "state": {
+          "button": "الزر",
+          "app": "التطبيق",
+          "scheduled": "مجدول",
+          "voice": "الأوامر الصوتية",
+          "second_cleaning": "تنظيف للمرة الثانية",
+          "unknown": "غير معروف"
+        }
+      },
+      "cleaning_status": {
+        "name": "تتنظف",
+        "state": {
+          "interrupted": "تمت المقاطعة",
+          "completed": "مكتملة",
+          "manually_ended": "تم إنهاؤها يدوياً",
+          "failed": "فشل",
+          "unknown": "غير معروف"
+        }
+      },
+      "cleanup_method": {
+        "name": "طريقة التنظيف",
+        "state": {
+          "other": "أخرى",
+          "default": "افتراضي",
+          "customized": "مخصص",
+          "cleangenius": "CleanGenius",
+          "water_stain": "بقعة ماء",
+          "unknown": "غير معروف"
+        }
+      },
+      "task_end_type": {
+        "name": "مكتملة بواسطة",
+        "state": {
+          "other": "أخرى",
+          "manual_docking": "تثبيت يدوي بالقاعدة",
+          "docking": "تثبيت بالقاعدة",
+          "failed_docking": "فشل التثبيت بالقاعدة",
+          "stop": "إيقاف",
+          "unknown": "غير معروف"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "سبب المقاطعة",
+        "state": {
+          "abnormal_docking": "تثبيت غير طبيعي بالقاعدة",
+          "base_station_powered_off": "المحطة الأساسية غير موصولة بالكهرباء",
+          "brush_entangled_by_carpet": "الفرشاة متشابكة بالسجاد",
+          "brush_entangled_by_object": "الفرشاة متشابكة بجسم",
+          "brush_entangled_by_obstacle": "الفرشاة متشابكة بعائق",
+          "cannot_find_base_station": "لا يمكن العثور على المحطة الأساسية",
+          "cliff_sensor_error": "خطأ في حساس الحافة",
+          "laser_distance_sensor_error": "خطأ في حساس قياس المسافة بالليزر",
+          "mop_pad_abnormally_removed": "إزالة وسادة الممسحة بشكل غير طبيعي",
+          "mop_pad_fallen_off": "سقوط وسادة الممسحة",
+          "mop_pad_fallen_off_by_obstacle": "سقوط وسادة الممسحة بسبب عائق",
+          "mop_pad_fallen_off_by_table": "سقوط وسادة الممسحة بسبب طاولة",
+          "mop_pad_fallen_off_crossing_obstacle": "سقوط وسادة الممسحة أثناء عبور عائق",
+          "mop_pad_removed": "تمت إزالة وسادة الممسحة",
+          "mop_pad_stuck": "وسادة الممسحة عالقة",
+          "robot_fallen": "سقوط الروبوت",
+          "robot_is_stuck_on_obstacle": "الروبوت عالق عند عائق",
+          "robot_is_stuck_on_step": "الروبوت عالق عند درجة سلم",
+          "robot_lifted": "الروبوت مرفوع عن الأرض",
+          "task_completed": "اكتملت المهمة",
+          "unknown": "غير معروف"
+        }
+      },
+      "recovery_map_type": {
+        "name": "نوع الخريطة",
+        "state": {
+          "original": "الخريطة الأصلية",
+          "edited": "خريطة معدلة",
+          "backup": "خريطة احتياطية"
+        }
+      },
+      "obstacle_type": {
+        "name": "نوع العائق",
+        "state": {
+          "unknown": "غير معروف",
+          "base": "قاعدة",
+          "scale": "ميزان",
+          "thread": "خيط",
+          "wire": "سلك",
+          "toy": "لعبة",
+          "shoes": "حذاء",
+          "sock": "جورب",
+          "fece": "فضلات",
+          "trash_can": "سلة مهملات",
+          "fabric": "قماش",
+          "power_strip": "وصلة كهربائية",
+          "liquid_stain": "بقعة سائلة",
+          "obstacle": "عائق",
+          "pet": "حيوان أليف",
+          "cleaning_tools": "أدوات تنظيف",
+          "detected_stain": "بقعة مكشوفة",
+          "blocked_room": "غرفة مغلقة",
+          "easy_to_stuck_furniture": "أثاث سهل الاحتجاز به",
+          "uncleanable_stain": "بقعة غير قابلة للتنظيف",
+          "leg": "ساق",
+          "large_particles": "جسيمات كبيرة",
+          "dried_stain": "بقعة جافة",
+          "food_bowl": "وعاء طعام",
+          "pet_bed": "سرير حيوانات أليفة",
+          "cleaned_stain": "بقعة تم تنظيفها",
+          "skipped_uncleanable_stain": "تم تخطي البقعة غير القابلة للتنظيف",
+          "cleaned_dried_stain": "تم تنظيف البقعة الجافة",
+          "cleaned_large_particles": "تم تنظيف الجسيمات الكبيرة",
+          "hair": "شعر",
+          "paper": "ورق",
+          "cleaned_hair": "تم تنظيف الشعر",
+          "sundry": "أشياء متنوعة"
+        }
+      },
+      "obstacle_reason": {
+        "name": "سبب العائق",
+        "state": {
+          "blocked_by_virtual_wall": "تم إيقافه بواسطة جدار افتراضي",
+          "blocked_by_door": "تم إيقافه بواسطة باب",
+          "blocked_by_threshold": "تم إيقافه بواسطة عتبة باب",
+          "blocked_by_obstacle": "تم إيقافه بواسطة عائق",
+          "blocked_by_carpet": "تم إيقافه بواسطة سجاد",
+          "blocked_by_detected_carpet": "تم إيقافه بواسطة سجاد مكتشف",
+          "blocked_by_hidden_obstacle": "تم إيقافه بواسطة عائق خفي",
+          "blocked_by_dynamic_obstacle": "تم إيقافه بواسطة عائق متحرك",
+          "passage_too_low": "الممر منخفض جداً",
+          "step_too_low": "الدرجة منخفضة جداً",
+          "failed_to_cross_threshold": "فشل في عبور العتبة"
+        }
+      },
+      "remaining_battery": {
+        "name": "البطارية المتبقية"
+      },
+      "multiple_cleaning_time": {
+        "name": "تنظيف متعدد"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "firmware_version": {
+        "name": "إصدار البرنامج الثابت"
+      },
+      "ip_address": {
+        "name": "عنوان IP"
+      },
+      "mac_address": {
+        "name": "عنوان MAC"
+      },
+      "model": {
+        "name": "الموديل"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "serial_number": {
+        "name": "الرقم التسلسلي"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "timezone": {
+        "name": "المنطقة الزمنية"
+      },
+      "voice_packet_id": {
+        "name": "حزمة الصوت"
+      },
+      "deodorizer_left": {
+        "name": "مزيل الروائح"
+      },
+      "detergent_left": {
+        "name": "سائل التنظيف"
+      },
+      "dirty_water_channel_left": {
+        "name": "قناة الماء المتسخ"
+      },
+      "filter_left": {
+        "name": "الفلتر"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "تنظيف الأسطوانة الزغبية"
+      },
+      "main_brush_left": {
+        "name": "الفرشاة الرئيسية"
+      },
+      "mop_pad_left": {
+        "name": "وسادة الممسحة"
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "خزان الماء المتسخ المعلق بالروبوت"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "تنظيف فلتر الممسحة الدوارة"
+      },
+      "scale_inhibitor_left": {
+        "name": "مانع الترسبات"
+      },
+      "sensor_dirty_left": {
+        "name": "تنظيف الحساسات"
+      },
+      "side_brush_left": {
+        "name": "الفرشاة الجانبية"
+      },
+      "silver_ion_left": {
+        "name": "أيون الفضة"
+      },
+      "squeegee_left": {
+        "name": "الممسحة المطاطية"
+      },
+      "tank_filter_left": {
+        "name": "فلتر الخزان"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "تنظيف فلتر مخرج الماء"
+      },
+      "wheel_dirty_left": {
+        "name": "تنظيف العجلات"
+      }
+    },
+    "toggle": {
+      "customized_cleaning": {
+        "name": "تنظيف مخصص"
+      },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "تنظيف عميق"
+      },
+      "auto_dust_collecting": {
+        "name": "تفريغ تلقائي"
+      },
+      "hair_compression": {
+        "name": "ضغط الشعر"
+      },
+      "self_clean": {
+        "name": "تنظيف ذاتي"
+      },
+      "deep_mop_washing": {
+        "name": "غسيل عميق للممسحة"
+      },
+      "hot_washing": {
+        "name": "غسيل بالماء الساخن"
+      },
+      "auto_drying": {
+        "name": "تجفيف تلقائي"
+      },
+      "silent_drying": {
+        "name": "تجفيف صامت"
+      },
+      "uv_sterilization": {
+        "name": "تعقيم بالأشعة فوق البنفسجية"
+      },
+      "customized_carpet_cleaning": {
+        "name": "تنظيف مخصص"
+      },
+      "carpet_avoidance": {
+        "name": "تجنب السجاد"
+      },
+      "carpet_preferences": {
+        "name": "تفضيلات مخصصة"
+      },
+      "auto_change_mop": {
+        "name": "تغيير الممسحة التلقائي"
+      },
+      "multi_floor_map": {
+        "name": "خريطة متعددة الطوابق"
+      },
+      "intelligent_recognition": {
+        "name": "التعرف الذكي"
+      },
+      "map_saving": {
+        "name": "حفظ الخريطة"
+      },
+      "child_lock": {
+        "name": "قفل الأطفال"
+      },
+      "resume_cleaning": {
+        "name": "استئناف التنظيف"
+      },
+      "obstacle_avoidance": {
+        "name": "تجنب العوائق"
+      },
+      "carpet_boost": {
+        "name": "تعزيز تنظيف السجاد"
+      },
+      "carpet_recognition": {
+        "name": "التعرف على السجاد"
+      },
+      "clean_carpets_first": {
+        "name": "تنظيف السجاد أولاً"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "إغلاق غطاء الأسطوانة على السجاد"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "تنظيف مكثف للسجاد"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "دوران الفرشاة الجانبية على السجاد"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "رفع الهيكل على السجاد"
+      },
+      "auto_mount_mop": {
+        "name": "تثبيت الممسحة التلقائي"
+      },
+      "mopping_with_detergent": {
+        "name": "مسح باستخدام سائل التنظيف"
+      },
+      "mop_washing_with_detergent": {
+        "name": "غسل الممسحة باستخدام سائل التنظيف"
+      },
+      "auto_add_detergent": {
+        "name": "إضافة سائل التنظيف تلقائياً"
+      },
+      "smart_mop_washing": {
+        "name": "غسل ذكي للممسحة"
+      },
+      "wider_corner_coverage": {
+        "name": "تغطية أوسع للزوايا"
+      },
+      "pressurized_cleaning": {
+        "name": "تنظيف بالضغط"
+      },
+      "gap_cleaning_extension": {
+        "name": "تمديد تنظيف الفجوات"
+      },
+      "mopping_under_furnitures": {
+        "name": "مسح أسفل الأثاث"
+      },
+      "floor_direction_cleaning": {
+        "name": "التنظيف باتجاه الأرضية"
+      },
+      "ring_light_always_on": {
+        "name": "الإضاءة الحلقية تعمل دائماً"
+      },
+      "collision_avoidance": {
+        "name": "تجنب الاصطدام"
+      },
+      "fill_light": {
+        "name": "إضاءة الكاميرا"
+      },
+      "ai_obstacle_detection": {
+        "name": "اكتشاف العوائق بالذكاء الاصطناعي"
+      },
+      "ai_pet_detection": {
+        "name": "اكتشاف الحيوانات الأليفة"
+      },
+      "pet_focused_detection": {
+        "name": "اكتشاف مركز للحیوانات الأليفة"
+      },
+      "pet_focused_cleaning": {
+        "name": "تنظيف مركز للحيوانات الأليفة"
+      },
+      "ai_obstacle_picture": {
+        "name": "صور العوائق"
+      },
+      "obstacle_crossing": {
+        "name": "عبور العوائق المتزامن"
+      },
+      "active_suspension_crossing": {
+        "name": "عبور العوائق بنظام التعليق النشط"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "تنظيف العوائق المتحركة"
+      },
+      "large_particles_boost": {
+        "name": "تعزيز تنظيف الجسيمات الكبيرة"
+      },
+      "streaming_voice_prompt": {
+        "name": "توجيهات صوتية مستمرة"
+      },
+      "voice_assistant": {
+        "name": "المساعد الصوتي"
+      },
+      "off_peak_charging": {
+        "name": "الشحن في أوقات خارج الذروة"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "تعطيل استئناف التنظيف"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "تعطيل التفريغ التلقائي"
+      },
+      "dnd_reduce_volume": {
+        "name": "تقليل مستوى الصوت"
+      },
+      "dnd": {
+        "name": "عدم الإزعاج"
+      }
+    },
+    "number": {
+      "wetness_level": {
+        "name": "مستوى البلل"
+      },
+      "auto_empty_area": {
+        "name": "منطقة التفريغ التلقائي"
+      },
+      "drying_time": {
+        "name": "مدة التجفيف"
+      },
+      "self_clean_time": {
+        "name": "وقت التنظيف الذاتي"
+      },
+      "self_clean_area": {
+        "name": "منطقة التنظيف الذاتي"
+      },
+      "volume": {
+        "name": "مستوى الصوت"
+      }
+    },
+    "time": {
+      "dnd_start": {
+        "name": "وقت بدء عدم الإزعاج"
+      },
+      "dnd_end": {
+        "name": "وقت انتهاء عدم الإزعاج"
+      },
+      "off_peak_charging_start": {
+        "name": "وقت بدء خارج الذروة"
+      },
+      "off_peak_charging_end": {
+        "name": "وقت انتهاء خارج الذروة"
+      },
+      "schedule_time": {
+        "name": "وقت البدء"
+      }
+    },
+    "input": {
+      "schedule_repeats": {
+        "name": "التكرار"
+      },
+      "dnd_repeats": {
+        "name": "التكرار"
+      },
+      "map_custom_name": {
+        "name": "اسم الخريطة"
+      },
+      "segment_custom_name": {
+        "name": "اسم الغرفة"
+      },
+      "shortcut_name": {
+        "name": "اسم الاختصار"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "إضافة",
+        "add_map": "إنشاء خريطة",
+        "auto_empty_unavailable": "التفريغ التلقائي غير متوفر",
+        "auto_emptying": "يفرغ تلقائياً",
+        "backup": "نسخ احتياطي",
+        "bag_drying_unavailable": "تجفيف الكيس غير متوفر",
+        "cancel": "إلغاء",
+        "cancel_ignore": "إلغاء التجاهل",
+        "carpet": "سجاد",
+        "change": "تغيير",
+        "charge": "الشحن",
+        "clean": "تنظيف",
+        "clean_again": "تنظيف مرة أخرى",
+        "cleaning_settings": "إعدادات التنظيف",
+        "cleanings": "مرات التنظيف",
+        "close": "إغلاق",
+        "confirm": "تأكيد",
+        "delete": "حذف",
+        "delete_carpet": "حذف السجاد",
+        "deleted_carpet": "السجاد المحذوف",
+        "disable": "تعطيل",
+        "discard": "تجاهل التغييرات",
+        "dismiss": "رفض",
+        "dock": "إرساء بالمحطة",
+        "dock_settings": "إعدادات المحطة",
+        "download": "تنزيل",
+        "dry": "تجفيف",
+        "dry_bag": "تجفيف الكيس",
+        "drying_unavailable": "التجفيف غير متوفر",
+        "dynamically_ignored": "تم تجاهله ديناميكياً",
+        "edit_carpet": "تعديل السجاد",
+        "empty": "تفريغ",
+        "enable": "تفعيل",
+        "fast_mapping": "رسم خرائط سريع",
+        "get_dreame_vacuum_card": "الحصول على بطاقة Dreame Vacuum",
+        "ignore": "تجاهل",
+        "ignore_obstacle": "تجاهل العائق",
+        "impassable_threshold": "عتبة غير قابلة للعبور",
+        "job_details": "تفاصيل المهمة",
+        "keep_disabled": "إبقاء معطلاً",
+        "map_display": "عرض الخريطة",
+        "map_management": "إدارة الخرائط",
+        "new_dnd": "مهمة عدم إزعاج جديدة",
+        "new_schedule": "مهمة مجدولة جديدة",
+        "new_shortcut": "مهمة اختصار جديدة",
+        "next_job": "المهمة القادمة",
+        "no_go": "منطقة محظورة",
+        "no_mop": "يُمنع المسح",
+        "objects": "العناصر",
+        "override": "تجاوز",
+        "passable_threshold": "عتبة قابلة للعبور",
+        "pause": "إيقاف مؤقت",
+        "pause_washing": "إيقاف الغسيل مؤقتاً",
+        "previous_job": "المهمة السابقة",
+        "ramp": "منحدر",
+        "reload": "إعادة تحميل",
+        "rename": "إعادة تسمية",
+        "repeats": "التكرار",
+        "replace": "استبدال",
+        "reset": "إعادة ضبط",
+        "restore": "استعادة",
+        "restore_map": "استعادة الخريطة",
+        "resume": "استئناف",
+        "resume_washing": "استئناف الغسيل",
+        "rooms": "الغرف",
+        "rotate_left": "تدوير لليسار",
+        "rotate_right": "تدوير لليمين",
+        "round_carpet": "سجاد دائري",
+        "save": "حفظ",
+        "select_map": "تحديد خريطة",
+        "shortcuts": "الاختصارات",
+        "square_carpet": "سجاد مربع",
+        "start": "بدء",
+        "start_auto_empty": "بدء التفريغ التلقائي",
+        "start_bag_drying": "بدء تجفيف الكيس",
+        "start_drying": "بدء التجفيف",
+        "start_task": "بدء المهمة",
+        "start_washing": "بدء الغسيل",
+        "stop": "إيقاف",
+        "stop_bag_drying": "إيقاف تجفيف الكيس",
+        "stop_drying": "إيقاف التجفيف",
+        "understood": "مفهوم",
+        "virtual_threshold": "عتبة افتراضية",
+        "virtual_wall": "جدار",
+        "wash": "غسل",
+        "washing_unavailable": "الغسيل غير متوفر",
+        "wifi_map": "خريطة الواي فاي"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "صورة الخلفية",
+        "card_object_action_buttons": "أزرار الإجراءات",
+        "card_object_animations": "الرسوم المتحركة",
+        "card_object_cleanup_notification": "إشعار التنظيف",
+        "card_object_controls": "عناصر التحكم",
+        "card_object_cruising_history": "سجل الجولات التجوالية",
+        "card_object_fault_notification": "إشعار بالخطأ",
+        "card_object_information_notification": "إشعار المعلومات",
+        "card_object_low_water_notification": "إشعار انخفاض مستوى الماء",
+        "card_object_map_change_confirmation": "تأكيد تغيير الخريطة",
+        "card_object_menu": "القائمة",
+        "card_object_progress_bar": "شريط التقدم",
+        "card_object_saved_notification": "تم الحفظ بنجاح",
+        "card_object_shortcuts": "الاختصارات",
+        "card_object_state": "الحالة",
+        "card_object_status": "حالة الروبوت",
+        "card_object_task_type": "نوع المهمة",
+        "card_object_title": "العنوان",
+        "card_object_warning_notification": "إشعار تحذيري",
+        "color_scheme": "نظام الألوان",
+        "color_scheme_dreame_auto": "Dreame تلقائي",
+        "color_scheme_dreame_dark": "Dreame داكن",
+        "color_scheme_dreame_light": "Dreame فاتح",
+        "color_scheme_grayscale": "تدرج رمادي",
+        "color_scheme_mijia_auto": "Mijia تلقائي",
+        "color_scheme_mijia_dark": "Mijia داكن",
+        "color_scheme_mijia_light": "Mijia فاتح",
+        "copied": "تم النسخ",
+        "copy": "نسخ",
+        "copy_all": "نسخ الكل",
+        "disable_haptic": "تعطيل الاهتزاز",
+        "editable_objects": "عناصر قابلة للتعديل",
+        "font_size": "حجم الخط",
+        "full_height": "الارتفاع الكامل",
+        "grid_size": "حجم الشبكة",
+        "height": "الارتفاع",
+        "hidden_card_objects": "عناصر البطاقة المخفية",
+        "hidden_objects": "العناصر المخفية",
+        "hide_map_info": "إخفاء معلومات الخريطة",
+        "icon_set": "مجموعة الأيقونات",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "Dreame قديم",
+        "icon_set_material": "Material Design",
+        "icon_set_mijia": "Mijia",
+        "left": "يسار",
+        "left_handed": "وضع استخدام اليد اليسرى",
+        "limit_height": "تقييد الارتفاع ليتناسب مع الشاشة",
+        "locked": "مغلق",
+        "locked_always": "دائماً",
+        "locked_auto": "تلقائي",
+        "locked_never": "أبداً",
+        "locked_only_touch": "باللمس فقط",
+        "map": "خريطة %name%",
+        "map_1": "الخريطة الأولى",
+        "map_2": "الخريطة الثانية",
+        "map_3": "الخريطة الثالثة",
+        "map_4": "الخريطة الرابعة",
+        "map_5": "الخريطة الخامسة",
+        "map_color_active_area": "المنطقة النشطة",
+        "map_color_active_area_outline": "حدود المنطقة النشطة",
+        "map_color_active_point": "النقطة النشطة",
+        "map_color_active_point_outline": "حدود النقطة النشطة",
+        "map_color_auto_low_lying_area": "منطقة منخفضة الارتفاع (تلقائية)",
+        "map_color_carpet_color": "لون السجاد",
+        "map_color_curtain": "ستارة",
+        "map_color_detected_carpet_color": "لون السجاد المكتشف",
+        "map_color_floor": "الأرضية",
+        "map_color_floor_material": "مادة الأرضية",
+        "map_color_icon_background": "خلفية الأيقونة",
+        "map_color_impassable_threshold": "عتبة غير قابلة للعبور",
+        "map_color_manual_low_lying_area": "منطقة منخفضة الارتفاع (يدوية)",
+        "map_color_mop_path": "مسار الممسحة",
+        "map_color_new_segment": "غرفة جديدة",
+        "map_color_no_go": "منطقة محظورة",
+        "map_color_no_go_outline": "حدود المنطقة المحظورة",
+        "map_color_no_mop": "يُمنع المسح",
+        "map_color_no_mop_outline": "حدود منطقة منع المسح",
+        "map_color_obstacle_background": "خلفية العائق",
+        "map_color_order": "الترتيب",
+        "map_color_outside": "خارج المسار",
+        "map_color_passable_threshold": "عتبة قابلة للعبور",
+        "map_color_passive_segment": "غرفة غير نشطة",
+        "map_color_path": "المسار",
+        "map_color_ramp": "منحدر",
+        "map_color_segment": "غرفة",
+        "map_color_settings_background": "خلفية الإعدادات",
+        "map_color_text": "النص",
+        "map_color_text_stroke": "حواف النص",
+        "map_color_virtual_threshold": "عتبة افتراضية",
+        "map_color_virtual_wall": "جدار افتراضي",
+        "map_color_wall": "جدار",
+        "map_config": "إعدادات الخريطة",
+        "map_display": "عرض الخريطة",
+        "map_display_floor_plan": "مخطط الأرضية",
+        "map_display_floor_plan_only": "مخطط الأرضية فقط",
+        "map_display_floor_plan_without_texture": "مخطط الأرضية بدون نسيج",
+        "map_display_standard": "قياسي",
+        "map_object_active_area": "المنطقة النشطة",
+        "map_object_active_cruise_point": "نقطة تجوال نشطة",
+        "map_object_active_point": "النقطة النشطة",
+        "map_object_animations": "الرسوم المتحركة",
+        "map_object_blocked_segment": "الغرف المغلقة",
+        "map_object_blocked_segments": "الغرف المغلقة",
+        "map_object_carpet": "السجاد",
+        "map_object_charger": "قاعدة الشحن",
+        "map_object_cleaning_sequence": "تسلسل التنظيف",
+        "map_object_cruise_point": "نقطة تجوال",
+        "map_object_curtain": "الستارة",
+        "map_object_customized_cleaning": "تنظيف مخصص",
+        "map_object_deleted_carpet": "السجاد المحذوف",
+        "map_object_detected_carpet": "السجاد المكتشف",
+        "map_object_door": "باب",
+        "map_object_floor": "الأرضية",
+        "map_object_floor_material": "مادة الأرضية",
+        "map_object_furniture": "الأثاث",
+        "map_object_furniture_image": "صور الأثاث",
+        "map_object_hidden_segments": "الغرف المخفية",
+        "map_object_icon": "الأيقونة",
+        "map_object_ignored_obstacles": "العوائق المتجاهلة",
+        "map_object_impassable_threshold": "العتبات غير القابلة للعبور",
+        "map_object_lock_indicator": "مؤشر القفل",
+        "map_object_low_lying_area": "المناطق المنخفضة الارتفاع",
+        "map_object_material": "مادة الأرضية",
+        "map_object_mop_path": "مسار الممسحة",
+        "map_object_mop_type": "نوع الممسحة",
+        "map_object_name": "الاسم",
+        "map_object_name_background": "خلفية الاسم",
+        "map_object_no_go": "منطقة محظورة",
+        "map_object_no_mop": "يُمنع المسح",
+        "map_object_object_option": "خيار العنصر",
+        "map_object_obstacle": "عائق",
+        "map_object_obstacle_background": "خلفية العائق",
+        "map_object_obstacle_color": "لون العائق",
+        "map_object_order": "الترتيب",
+        "map_object_passable_threshold": "العتبات قابلة للعبور",
+        "map_object_path": "المسار",
+        "map_object_pet": "الحيوانات الأليفة",
+        "map_object_predefined_point": "النقاط المحددة مسبقاً",
+        "map_object_ramp": "المنحدر",
+        "map_object_router": "الراوتر",
+        "map_object_segment": "غرفة",
+        "map_object_segment_type": "نوع الغرفة",
+        "map_object_selected_segments": "الغرف المحددة",
+        "map_object_split_line": "خط التقسيم",
+        "map_object_stain": "البقع",
+        "map_object_station_status": "حالة المحطة",
+        "map_object_vacuum": "المكنسة",
+        "map_object_vacuum_status": "حالة المكنسة",
+        "map_object_virtual_threshold": "العتبات الافتراضية",
+        "map_object_virtual_wall": "الجدران الافتراضية",
+        "map_object_walls": "الجدران",
+        "map_object_zoom_point": "نقطة التكبير",
+        "object_opacity": "شفافية العناصر",
+        "object_scale": "حجم العناصر",
+        "opacity": "الشفافية",
+        "override_colors": "تجاوز ألوان الخريطة",
+        "overlay_image": "صورة التراكب",
+        "rotation": "الدوران",
+        "scale": "الحجم",
+        "scripts": "البرامج النصية",
+        "selectable_objects": "عناصر قابلة للتحديد",
+        "selected_map_config": "إعدادات %name%",
+        "show_map_info": "إظهار معلومات الخريطة",
+        "top": "أعلى",
+        "url": "الرابط",
+        "viewport": "إطار العرض",
+        "width": "العرض",
+        "zoom": "تكبير"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "المكنسة تقوم بمهمة حالياً!",
+        "apply_changes_or_reload": "تم تغيير الخريطة أثناء تعديلك لها!\nهل تريد تجاوز التغييرات أم تحميل التغييرات الجديدة؟",
+        "auto_mount_mop_will_enabled": "سيتم تفعيل تثبيت الممسحة التلقائي!",
+        "backup_map": "هل تريد نسخ الخريطة احتياطياً؟",
+        "backup_map_will_overwritten": "سيتم تجاوز الخريطة الاحتياطية الحالية!",
+        "bag_drying_will_stopped": "سيتم إيقاف تجفيف كيس الغبار!",
+        "carpet_recognition_will_enabled": "يجب تفعيل التعرف على السجاد للتمكن من ضبط إعدادات التنظيف المخصص للسجاد",
+        "carpet_will_deleted": "سيتم حذف السجاد!",
+        "cleangenius_will_disabled": "سيتم تعطيل Cleangenius!",
+        "cleaning_failure": "أسباب فشل التنظيف",
+        "create_map": "هل تريد إنشاء خريطة جديدة؟",
+        "custom_carpet_settings_will_enabled": "سيتم تفعيل التنظيف المخصص للسجاد!",
+        "custom_carpet_settings_will_enabled_detail": "سيتم ضبط إعدادات التنظيف المخصص للسجاد لتناسب نوع السجاد المحدد",
+        "customized_cleaning_disabled": "التنظيف المخصص معطل!",
+        "delete_carpet": "هل تريد حذف السجاد؟",
+        "delete_dnd": "هل تريد حذف مهمة عدم الإزعاج؟",
+        "delete_map": "هل تريد حذف الخريطة؟",
+        "delete_schedule": "هل تريد حذف المهمة المجدولة؟",
+        "delete_shortcut": "هل تريد حذف الاختصار؟",
+        "deleted": "تم الحذف بنجاح",
+        "device_unavailable": "الجهاز غير متوفر",
+        "disable_cleangenius": "هل تريد تعطيل Cleangenius؟",
+        "dnd_confliction": "تعارض في مهام عدم الإزعاج!",
+        "dnd_confliction_detail": "تم إعداد مهمة مجدولة خلال فترة عدم الإزعاج.",
+        "dnd_will_deleted": "سيتم حذف مهمة عدم الإزعاج من %start% إلى %end%!",
+        "dock_in_restricted_area": "محطة الشحن في منطقة محظورة!",
+        "dock_in_restricted_area_detail": "تقع قاعدة الشحن في منطقة محظورة. إذا تابعت حفظ الخريطة، قد لا يتمكن الروبوت من العودة للشحن.",
+        "drying_will_stopped": "سيتم إيقاف تجفيف وسادة الممسحة!",
+        "dust_collection_not_performed": "لن يتم تنفيذ مهمة جمع الغبار (التفريغ التلقائي)\nلن يقوم الروبوت بتنفيذ مهام التفريغ التلقائي خلال فترة عدم الإزعاج.",
+        "enable_auto_mount_mop": "هل تريد تفعيل التثبيت التلقائي للممسحة؟",
+        "enable_carpet_recognition": "سيتم تفعيل التعرف على السجاد!",
+        "enable_customized_cleaning": "هل تريد تفعيل التنظيف المخصص؟",
+        "enable_mop_change": "هل تريد تفعيل التغيير التلقائي للممسحة؟",
+        "enable_task": "هل تريد تفعيل المهمة؟",
+        "entity_is_required": "الكيان مطلوب",
+        "entity_not_available": "الكيان غير متوفر",
+        "failed_to_load_card": "فشل تحميل البطاقة",
+        "ignore_obstacle": "هل تريد تجاهل العائق؟",
+        "invalid_entity": "كيان غير صالح",
+        "map_backup": "نسخ احتياطي للخريطة قيد التقدم",
+        "map_backup_failed": "فشل النسخ الاحتياطي للخريطة!",
+        "map_backup_success": "تم النسخ الاحتياطي للخريطة",
+        "map_recovery": "استعادة الخريطة قيد التقدم",
+        "map_recovery_failed": "فشلت استعادة الخريطة!",
+        "map_recovery_success": "تمت استعادة الخريطة",
+        "map_will_deleted": "سيتم حذف %name%!",
+        "map_will_replaced": "سيتم استبدال الخريطة المحددة حالياً بالخريطة الجديدة!",
+        "map_will_restored": "سيتم استعادة الخريطة المحفوظة لحالتها في %date%",
+        "mapping_started": "بدأ رسم الخريطة...",
+        "mop_change_disabled": "التغيير التلقائي للممسحة معطل!",
+        "mop_wash_frequency_low": "معدل غسل الممسحة منخفض جداً!",
+        "mop_wash_frequency_will_increased": "لضمان بلل الممسحة بدرجة كافية، ستتم زيادة معدل غسل الممسحة تلقائياً",
+        "not_available": "غير متاح الآن...",
+        "not_fully_supported": "غير مدعوم بالكامل بعد!",
+        "not_supported": "غير مدعوم بعد!",
+        "obstacle_will_ignored": "سيتم تجاهل العائق!",
+        "override_changes": "هل تريد تجاوز التغييرات؟",
+        "preview": "هذه معاينة لبطاقة Dreame Vacuum",
+        "recommended_areas": "المناطق الموصى بها",
+        "relocating": "يحدد الموقع. يرجى الانتظار.",
+        "relocating_completed": "تم تحديد الموقع بنجاح. الروبوت مستمر في أداء عمله.",
+        "relocating_failed": "فشل تحديد الموقع!",
+        "replace_map": "استبدال الخريطة بخريطة جديدة؟",
+        "reset_usage": "هل تريد إعادة ضبط الاستهلاك؟",
+        "reset_walls": "إعادة تعيين الجدران؟",
+        "restore_map": "استعادة %name%؟",
+        "resume_cleaning": "سيستأنف الروبوت مهام التنظيف غير المكتملة تلقائياً بعد شحن بطاريته إلى 80%.",
+        "resume_cleaning_not_performed": "سيستأنف الروبوت التنظيف بعد انتهاء فترة عدم الإزعاج.",
+        "resume_cleaning_time": "سيبدأ التنظيف في %time%",
+        "save_changes": "هل تريد حفظ التغييرات؟",
+        "saved": "تم الحفظ بنجاح",
+        "schedule_will_deleted": "سيتم حذف المهمة المجدولة في %time%!",
+        "select_map": "هل تريد تحديد '%name%'؟",
+        "select_mapping_type": "حدد نوع رسم الخرائط",
+        "select_room": "حدد غرفة لتعيين تسلسل التنظيف",
+        "selected_map_will_changed": "سيتم تغيير الخريطة المحددة إلى %name%!",
+        "service_call_failed": "فشل استدعاء الخدمة",
+        "settings_will_applied": "سيتم تطبيق إعداداتك في المهمة القادمة.",
+        "shortcut_will_deleted": "سيتم حذف %name%!",
+        "stop_bag_drying": "هل تريد إيقاف تجفيف كيس الغبار؟",
+        "stop_drying": "هل تريد إيقاف التجفيف؟",
+        "stop_task": "هل تريد إيقاف المهمة الحالية؟",
+        "task_disabled": "المهمة معطلة!",
+        "task_will_stopped": "سيتم إيقاف المهمة الحالية!",
+        "unsaved_changes_present": "لديك تغييرات غير محفوظة ستفقدها!",
+        "unsupported_browser": "متصفح غير مدعوم!",
+        "usage_will_reset": "سيتم إعادة ضبط استخدام %name%!",
+        "walls_will_be_reset": "سيتم استعادة الجدران إلى موقعها المعين مبدئيًا!"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "استهلاك الملحقات",
+        "add_furniture": "إضافة أثاث",
+        "audio_settings": "إعدادات الصوت",
+        "battery_management": "إدارة البطارية",
+        "carpet_settings": "إعدادات السجاد",
+        "clean_water_tank": "خزان الماء النظيف",
+        "cleaning_details": "تفاصيل التنظيف",
+        "cleaning_history": "سجل التنظيف",
+        "cleaning_sequence": "تسلسل التنظيف",
+        "created_carpet": "سجاد تم إنشاؤه يدوياً",
+        "cruising": "تجوال",
+        "cruising_details": "تفاصيل التجوال",
+        "cruising_history": "سجل التجوال",
+        "customized_cleaning": "تنظيف مخصص",
+        "description": "الواجهة الأمامية لدمج %name% المخصص",
+        "detected_carpet": "سجاد تم اكتشافه تلقائياً",
+        "detergent": "سائل التنظيف",
+        "device_information": "معلومات الجهاز",
+        "device_settings": "إعدادات الجهاز",
+        "dnd": "عدم الإزعاج",
+        "dnd_task": "مهمة عدم الإزعاج",
+        "dust_bag": "كيس الغبار",
+        "global_carpet_settings": "إعدادات السجاد العامة",
+        "invalid": "غير صالح",
+        "locate": "تحديد الموقع",
+        "map": "خريطة",
+        "map_edit": "تعديل الخريطة",
+        "map_management": "إدارة الخرائط",
+        "map_name_placeholder": "الخريطة %index%",
+        "mop_type": "نوع الممسحة",
+        "mopping_settings": "إعدادات المسح",
+        "more_functions": "مزيد من الوظائف",
+        "name": "بطاقة %name%",
+        "new_map": "خريطة جديدة",
+        "obstacle": "العوائق",
+        "obstacle_settings": "إعدادات الكاميرا والعوائق",
+        "recovery_map_list": "استرداد الخريطة",
+        "remote_control": "التحكم عن بُعد",
+        "saved_map": "الخريطة المحفوظة",
+        "schedule_list": "التنظيف المجدول",
+        "scheduled_room": "تنظيف الغرفة المجدول",
+        "scheduled_spot": "التنظيف الموضعي المجدول",
+        "scheduled_task": "مهمة مجدولة",
+        "scheduled_zone": "تنظيف المنطقة المجدول",
+        "segment_name_placeholder": "الغرفة %index%",
+        "shortcut": "الاختصار",
+        "shortcut_list": "الاختصارات",
+        "shortcut_map": "خريطة الاختصار",
+        "shortcut_name_placeholder": "الاختصار %index%",
+        "shortcut_task": "مهمة الاختصار",
+        "task": "المهمة %index%",
+        "task_placeholder": "المهمة %index%",
+        "time_left": "متبقي %time%",
+        "unavailable": "غير متوفر",
+        "used_water_tank": "خزان الماء المستخدم",
+        "wall": "الجدران",
+        "wifi_map": "خريطة الواي فاي"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "تنظيف غرفة",
+      "description": "بدء عملية التنظيف في الغرف المحددة.",
+      "fields": {
+        "segments": {
+          "name": "الغرف",
+          "description": "قائمة الغرف المراد تنظيفها. يمكنك استخدام معرّف الغرفة، أو تخصيصه بمرات التنظيف، سرعة المروحة، ووضع المسح لتجاوز القيم الافتراضية لكل غرفة."
+        },
+        "repeats": {
+          "name": "التكرار",
+          "description": "عدد جولات التنظيف لكل غرفة محددة (ما لم يتم تجاوزها بواسطة إعدادات التنظيف المخصص)."
+        },
+        "suction_level": {
+          "name": "مستوى الشفط",
+          "description": "سرعة المروحة لكل غرفة محددة (ما لم يتم تجاوزها بواسطة إعدادات التنظيف المخصص)."
+        },
+        "water_volume": {
+          "name": "كمية الماء",
+          "description": "مستوى الماء لكل غرفة محددة (ما لم يتم تجاوزها بواسطة إعدادات التنظيف المخصص)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "تنظيف منطقة",
+      "description": "بدء عملية التنظيف في المنطقة المحددة.",
+      "fields": {
+        "zone": {
+          "name": "المنطقة",
+          "description": "الإحداثيات."
+        },
+        "repeats": {
+          "name": "التكرار",
+          "description": "عدد جولات التنظيف لكل منطقة محددة."
+        },
+        "suction_level": {
+          "name": "مستوى الشفط",
+          "description": "سرعة المروحة لكل منطقة محددة."
+        },
+        "water_volume": {
+          "name": "كمية الماء",
+          "description": "مستوى الماء لكل منطقة محددة."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "تنظيف موضعي",
+      "description": "بدء عملية التنظيف في النقاط المحددة على الخريطة.",
+      "fields": {
+        "points": {
+          "name": "النقاط",
+          "description": "قائمة الإحداثيات المراد تنظيفها."
+        },
+        "repeats": {
+          "name": "التكرار",
+          "description": "عدد جولات التنظيف لكل نقطة محددة."
+        },
+        "suction_level": {
+          "name": "مستوى الشفط",
+          "description": "سرعة المروحة لكل نقطة محددة."
+        },
+        "water_volume": {
+          "name": "كمية الماء",
+          "description": "مستوى الماء لكل نقطة محددة."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "الذهاب إلى",
+      "description": "الذهاب إلى إحداثيات محددة على الخريطة والتوقف.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "الإحداثي السيني (X) للنقطة."
+        },
+        "y": {
+          "name": "Y",
+          "description": "الإحداثي الصادي (Y) للنقطة."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "اتباع مسار",
+      "description": "اتباع قائمة الإحداثيات على الخريطة والعودة إلى القاعدة. (مدعوم فقط في المكانس المزودة بكاميرا)",
+      "fields": {
+        "points": {
+          "name": "النقاط",
+          "description": "قائمة الإحداثيات للمسار."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "بدء اختصار",
+      "description": "بدء مهمة اختصار. (لأجهزة محددة مدعومة فقط)",
+      "fields": {
+        "shortcut_id": {
+          "name": "معرّف الاختصار",
+          "description": "معرّف مهمة الاختصار."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "خطوة في التحكم عن بُعد",
+      "description": "تحريك الروبوت خطوة واحدة عن بُعد.",
+      "fields": {
+        "rotation": {
+          "name": "الدوران",
+          "description": "الالتفاف بدرجات بين -128 و 128."
+        },
+        "velocity": {
+          "name": "السرعة",
+          "description": "سرعة الحركة، من 100 (إلى الأمام) إلى -300 (إلى الخلف)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "تثبيت حزمة صوتية",
+      "description": "تثبيت حزمة صوتية رسمية أو مخصصة.",
+      "fields": {
+        "lang_id": {
+          "name": "معرّف اللغة",
+          "description": "معرّف اللغة لهذه الحزمة."
+        },
+        "url": {
+          "name": "الرابط",
+          "description": "رابط الحزمة، يجب أن يكون قابلاً للوصول بواسطة الروبوت."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "تشفير MD5 متطابق للحزمة الصوتية."
+        },
+        "size": {
+          "name": "الحجم",
+          "description": "حجم الحزمة الصوتية بالبايت."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "طلب خريطة",
+      "description": "طلب بيانات الخريطة"
+    },
+    "vacuum_select_map": {
+      "name": "تحديد الخريطة",
+      "description": "تحديد الخريطة الحالية. يستخدم عند وجود خرائط/طوابق متعددة.",
+      "fields": {
+        "map_id": {
+          "name": "معرّف الخريطة",
+          "description": "معرّف الخريطة المراد تحديدها."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "حذف الخريطة",
+      "description": "حذف الخريطة.",
+      "fields": {
+        "map_id": {
+          "name": "معرّف الخريطة",
+          "description": "معرّف الخريطة المراد حذفها."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "حفظ الخريطة المؤقتة",
+      "description": "حفظ الخريطة المؤقتة."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "تجاهل الخريطة المؤقتة",
+      "description": "تجاهل الخريطة المؤقتة وإلغاؤها."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "استبدال الخريطة المؤقتة",
+      "description": "استبدال الخريطة المؤقتة بخريطة أخرى محفوظة.",
+      "fields": {
+        "map_id": {
+          "name": "معرّف الخريطة",
+          "description": "معرّف الخريطة التي سيتم الاستبدال بها."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "إعادة تسمية الخريطة",
+      "description": "إعادة تسمية الخريطة.",
+      "fields": {
+        "map_id": {
+          "name": "معرّف الخريطة",
+          "description": "معرّف الخريطة."
+        },
+        "map_name": {
+          "name": "اسم الخريطة",
+          "description": "الاسم الجديد للخريطة."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "استعادة الخريطة",
+      "description": "استعادة خريطة.",
+      "fields": {
+        "map_id": {
+          "name": "معرّف الخريطة",
+          "description": "معرّف الخريطة المراد استعادتها."
+        },
+        "recovery_map_index": {
+          "name": "مؤشر خريطة الاسترداد",
+          "description": "مؤشر الخريطة المحفوظة المعدة للاسترداد"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "استعادة الخريطة من ملف",
+      "description": "استعادة خريطة من خلال ملف.",
+      "fields": {
+        "map_id": {
+          "name": "معرّف الخريطة",
+          "description": "معرّف الخريطة المراد استعادتها."
+        },
+        "file_url": {
+          "name": "رابط الملف",
+          "description": "رابط لملف tbz2.gz أو tar.gz المحفوظ"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "النسخ الاحتياطي للخريطة",
+      "description": "عمل نسخة احتياطية للخريطة إلى السحابة.",
+      "fields": {
+        "map_id": {
+          "name": "معرّف الخريطة",
+          "description": "معرّف الخريطة المراد أخذ نسخة احتياطية لها."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "دمج الغرف",
+      "description": "دمج الغرف معاً.",
+      "fields": {
+        "map_id": {
+          "name": "معرّف الخريطة",
+          "description": "معرّف الخريطة."
+        },
+        "segments": {
+          "name": "الغرف",
+          "description": "معرفات الغرف."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "تقسيم الغرف",
+      "description": "تقسيم الغرف.",
+      "fields": {
+        "map_id": {
+          "name": "معرّف الخريطة",
+          "description": "معرّف الخريطة."
+        },
+        "segment": {
+          "name": "الغرفة",
+          "description": "معرّف الغرفة."
+        },
+        "line": {
+          "name": "الخط",
+          "description": "إحداثيات خط التقسيم."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "إعادة تسمية الغرفة",
+      "description": "إعادة تسمية غرفة.",
+      "fields": {
+        "segment_id": {
+          "name": "معرّف الغرفة",
+          "description": "معرّف الغرفة"
+        },
+        "segment_name": {
+          "name": "اسم الغرفة",
+          "description": "الاسم الجديد للغرفة"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "ضبط تسلسل التنظيف",
+      "description": "ضبط تسلسل تنظيف الغرف. (لأجهزة محددة مدعومة فقط)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "تسلسل التنظيف",
+          "description": "قائمة معرفات الغرف لتسلسل التنظيف."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "ضبط التنظيف المخصص",
+      "description": "ضبط إعدادات التنظيف المخصص. (لأجهزة محددة مدعومة فقط)",
+      "fields": {
+        "segment_id": {
+          "name": "معرّف الغرفة",
+          "description": "معرفات الغرف."
+        },
+        "suction_level": {
+          "name": "مستوى الشفط",
+          "description": "مستوى الشفط لكل غرفة."
+        },
+        "water_volume": {
+          "name": "كمية الماء",
+          "description": "كمية الماء لكل غرفة."
+        },
+        "wetness_level": {
+          "name": "مستوى البلل",
+          "description": "مستوى البلل لكل غرفة (لأجهزة محددة مدعومة فقط)."
+        },
+        "cleaning_mode": {
+          "name": "وضع التنظيف",
+          "description": "وضع التنظيف لكل غرفة (مدعوم فقط في المكانس التي تحتوي على ميزة رفع الممسحة)."
+        },
+        "repeats": {
+          "name": "التكرار",
+          "description": "مرات التنظيف لكل غرفة."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "ضبط التنظيف المخصص للسجاد",
+      "description": "ضبط إعدادات التنظيف المخصص للسجاد. (لأجهزة محددة مدعومة فقط)",
+      "fields": {
+        "id": {
+          "name": "معرّف السجاد",
+          "description": "معرفات السجاد."
+        },
+        "type": {
+          "name": "نوع العنصر",
+          "description": "نوع العنصر المرتبط بالمعرّف. (0 = سجاد اكتُشف تلقائياً، 1 = سجاد أُنشئ يدوياً، 2 = سجاد الغرفة (إن كان مدعوماً))"
+        },
+        "carpet_cleaning": {
+          "name": "تنظيف السجاد",
+          "description": "إعداد التنظيف المخصص لكل سجاد."
+        },
+        "carpet_preferences": {
+          "name": "إعدادات السجاد",
+          "description": "إعدادات مخصصة لكل سجاد، مُمثلة بمصفوفة من الإعدادات المُمَكَنة."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "تحديد منطقة محظورة",
+      "description": "تحديد الجدران الافتراضية والمناطق المحظورة ومناطق منع المسح.",
+      "fields": {
+        "walls": {
+          "name": "الجدران",
+          "description": "الجدران الافتراضية."
+        },
+        "zones": {
+          "name": "المناطق",
+          "description": "المناطق المحظورة."
+        },
+        "no_mops": {
+          "name": "مناطق منع المسح",
+          "description": "المناطق التي يُمنع فيها المسح."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "إعادة ضبط المستهلكات",
+      "description": "إعادة ضبط جزء مستهلك.",
+      "fields": {
+        "consumable": {
+          "name": "المواد المستهلكة",
+          "description": "نوع المادة المستهلكة."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "إعادة تسمية الاختصار",
+      "description": "إعادة تسمية اختصار. (لأجهزة محددة مدعومة فقط)",
+      "fields": {
+        "shortcut_id": {
+          "name": "معرّف الاختصار",
+          "description": "معرّف الاختصار."
+        },
+        "shortcut_name": {
+          "name": "اسم الاختصار",
+          "description": "الاسم الجديد للاختصار."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "حذف اختصار",
+      "description": "حذف اختصار. (لأجهزة محددة مدعومة فقط)",
+      "fields": {
+        "shortcut_id": {
+          "name": "معرّف الاختصار",
+          "description": "معرّف الاختصار."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "تحديد منطقة السجاد",
+      "description": "تحديد مناطق السجاد ومناطق السجاد المتجاهلة. (لأجهزة محددة مدعومة فقط)",
+      "fields": {
+        "carpets": {
+          "name": "السجاد",
+          "description": "مناطق السجاد."
+        },
+        "deleted_carpets": {
+          "name": "السجاد المتجاهل",
+          "description": "مناطق السجاد المتجاهلة لحذف السجاد المكتشف تلقائياً."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "تعيين عتبة افتراضية",
+      "description": "تعيين العتبات الافتراضية.",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "العتبات الافتراضية",
+          "description": "إحداثيات خط العتبة الافتراضية."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "تعيين نقاط مسبقة التحديد",
+      "description": "تحديد إحداثيات مسبقة على الخريطة الحالية. (مدعوم فقط في المكانس المزودة بكاميرا)",
+      "fields": {
+        "points": {
+          "name": "النقاط",
+          "description": "قائمة الإحداثيات المراد حفظها."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "تعيين تجاهل العوائق",
+      "description": "تعيين حالة تجاهل لعائق. (مدعوم فقط في المكانس التي تحتوي على ميزة اكتشاف العوائق بالذكاء الاصطناعي)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "الإحداثي السيني (X) للعائق."
+        },
+        "y": {
+          "name": "Y",
+          "description": "الإحداثي الصادي (Y) للعائق."
+        },
+        "obstacle_ignored": {
+          "name": "تجاهل العائق",
+          "description": "ما إذا كان يجب تجاهل العائق أم لا."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "تعيين موقع الراوتر",
+      "description": "تعيين موقع الراوتر على الخريطة الحالية. (مدعوم فقط في المكانس التي تحتوي على ميزة خريطة الواي فاي)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "الإحداثي السيني (X) للراوتر."
+        },
+        "y": {
+          "name": "Y",
+          "description": "الإحداثي الصادي (Y) للراوتر."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "تحديد السابق",
+      "description": "تحديد الخيار السابق من قائمة الخيارات.",
+      "fields": {
+        "cycle": {
+          "name": "دوران التحديد",
+          "description": "إذا كان يجب أن يدور التحديد من العنصر الأول إلى الأخير."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "تحديد الأول",
+      "description": "تحديد الخيار الأول من قائمة الخيارات."
+    },
+    "select_select_last": {
+      "name": "تحديد الأخير",
+      "description": "تحديد الخيار الأخير من قائمة الخيارات."
+    },
+    "select_select_next": {
+      "name": "تحديد التالي",
+      "description": "تحديد الخيار التالي من قائمة الخيارات.",
+      "fields": {
+        "cycle": {
+          "name": "دوران التحديد",
+          "description": "إذا كان يجب أن يدور التحديد بالعودة إلى الأول بعد الأخير."
+        }
+      }
+    }
+  }
+}

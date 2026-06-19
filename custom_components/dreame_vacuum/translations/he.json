@@ -1,0 +1,2438 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "המכשיר כבר מוגדר",
+      "cannot_connect": "ההתחברות נכשלה.",
+      "reauth_successful": "האימות מחדש הצליח"
+    },
+    "error": {
+      "cannot_connect": "ההתחברות נכשלה.",
+      "unsupported": "המכשיר אינו נתמך",
+      "wrong_token": "שגיאת סיכום ביקורת, אסימון שגוי",
+      "2fa_failed": "האימות נכשל.",
+      "wrong_captcha": "קאפצ'ה שגויה.",
+      "credentials_incomplete": "אישורים חסרים, אנא מלאו שם משתמש, סיסמה ומדינה.",
+      "login_error": "לא ניתן להתחבר, בדקו את האישורים.",
+      "no_devices": "לא נמצאו מכשירים נתמכים בחשבון זה במדינה שנבחרה.{devices}",
+      "2fa_send_failed": "שליחת קוד האימות נכשלה. נא לנות שנית.",
+      "2fa_limit_reached": "הגעת למגבלה היומית לשליחת קודי אימות. אנא נסה שoub מחר.",
+      "2fa_cooldown_active": "יותר מדי בקשות רצופות. אנ아 המתן מספר דקות לפני שתנסה שוב."
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "סוג תצורה"
+        },
+        "description": "תכונת המפה דורשת חיבור ענן ומספקת תצורה אוטומטית. אם אינכם רוצים להשתמש בתכונת המפה, תוכלו לבחור בתצורה ידנית."
+      },
+      "local": {
+        "data": {
+          "host": "מארח (Host)",
+          "token": "אסימון (Token)"
+        },
+        "description": "תצטרכו אסימון API בן 32 תווים."
+      },
+      "mi": {
+        "data": {
+          "username": "שם משתמש",
+          "password": "סיסמה",
+          "country": "מדינת השרת",
+          "prefer_cloud": "העדף חיבור לענן"
+        },
+        "description": "התחברו לענן של Xiaomi Miio."
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "קוד אימות דו-שלבי"
+        },
+        "description": "## נדרש אימות אבטחה\nקוד אימות נשלח אל {dest}. נא להזין את הקود להלן."
+      },
+      "captcha": {
+        "data": {
+          "code": "קוד"
+        },
+        "description": "## נדרש אימות קאפצ'ה.\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "שם משתמש",
+          "password": "סיסמה",
+          "country": "מדינת השרת"
+        },
+        "description": "התחברו לענן של Dreamehome."
+      },
+      "mova": {
+        "data": {
+          "username": "שם משתמש",
+          "password": "סיסמה",
+          "country": "מדינת השרת"
+        },
+        "description": "התחברו לענן של Movahome."
+      },
+      "trouver": {
+        "data": {
+          "username": "שם משתמש",
+          "password": "סיסמה",
+          "country": "מדינת השרת"
+        },
+        "description": "התחברו לענן של Trouver."
+      },
+      "devices": {
+        "data": {
+          "devices": "מכשירים נתמכים"
+        },
+        "description": "אנא בחרו את שואב האבק מבית Dreame שברצונכם להגדיר."
+      },
+      "donation": {
+        "data": {
+          "donated": "תרמתי"
+        },
+        "description": "## אל תשכחו לתמוך בפרויקט.{text}"
+      },
+      "options": {
+        "data": {
+          "name": "שם",
+          "color_scheme": "ערכת צבעים למפה",
+          "icon_set": "ערכת סמלים למפה",
+          "notify": "התראה",
+          "hidden_map_objects": "אובייקטים מוסתרים במפה",
+          "low_resolution": "מפה ברזולוציה נמוכה",
+          "square": "מפה מרובעת"
+        }
+      },
+      "reauth_confirm": {
+        "description": "אינטגרציית Dreame Vacuum צריכה לאמת מחדש את חשבונכם כדי לעדכן את האסימונים או להוסיף אישורי ענן חסרים.",
+        "title": "אימות מחדש של האינטגרציה"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "ערכת צבעים למפה",
+          "icon_set": "ערכת סמלים למפה",
+          "notify": "התראה",
+          "hidden_map_objects": "אובייקטים מוסתרים במפה",
+          "low_resolution": "מפה ברזולוציה נמוכה",
+          "square": "מפה מרובעת",
+          "configuration_type": "סוג תצורה",
+          "prefer_cloud": "העדף חיבור לענן",
+          "donated": "תרמתי"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "אישורי ענן חסרים, אנא מלאו שם משתמש, סיסמה ומדינה"
+    }
+  },
+  "entity": {
+    "select": {
+      "suction_level": {
+        "name": "עוצמת שאיבה",
+        "state": {
+          "quiet": "שקט",
+          "standard": "רגיל",
+          "strong": "חזק",
+          "turbo": "טורבו",
+          "full_power": "עוצמה מלאה"
+        }
+      },
+      "water_volume": {
+        "name": "כמות מים",
+        "state": {
+          "low": "נמוך",
+          "medium": "בינוני",
+          "high": "גבוה"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "לחות משטח ניגוב",
+        "state": {
+          "slightly_dry": "יבש במקצת",
+          "moist": "לח",
+          "wet": "רטוב"
+        }
+      },
+      "cleaning_mode": {
+        "name": "מצב ניקיון",
+        "state": {
+          "sweeping": "שאיבה",
+          "mopping": "ניגוב",
+          "sweeping_and_mopping": "שאיבה וניגוב",
+          "mopping_after_sweeping": "ניגוב לאחר שאיבה"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "רגישות לשטיחים",
+        "state": {
+          "low": "נמוך",
+          "medium": "בינוני",
+          "high": "גבוה"
+        }
+      },
+      "carpet_cleaning": {
+        "name": "ניקוי שטיחים",
+        "state": {
+          "avoidance": "הימנעות",
+          "adaptation": "הסתגלות",
+          "remove_mop": "הסרת מגב",
+          "adaptation_without_route": "הסתגלות ללא מסלול",
+          "vacuum_and_mop": "שאיבה וניגוב",
+          "ignore": "התעלם",
+          "cross": "חצייה"
+        }
+      },
+      "mop_wash_level": {
+        "name": "רמת שטיפת מגב",
+        "state": {
+          "water_saving": "חיסכון במים",
+          "daily": "יומי",
+          "deep": "יסודי",
+          "ultra_clean_mode": "נקי במיוחד"
+        }
+      },
+      "mopping_type": {
+        "name": "סוג ניגוב",
+        "state": {
+          "accurate": "מדויק",
+          "daily": "יומי",
+          "deep": "יסודי"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "כיסוי פינות רחב יותר",
+        "state": {
+          "off": "כבוי",
+          "high_frequency": "תדירות גבוהה",
+          "low_frequency": "תדירות נמוכה"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "התנדנדות משטח ניגוב",
+        "state": {
+          "off": "כבוי",
+          "auto": "אוטומטי",
+          "daily": "יומי",
+          "weekly": "שבועי"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "תדירות הארכת מגב",
+        "state": {
+          "standard": "רגיל",
+          "intelligent": "חכם",
+          "high": "גבוה"
+        }
+      },
+      "floor_material": {
+        "name": "סוג ריצוף",
+        "state": {
+          "none": "ללא",
+          "tile": "אריחי רצפה",
+          "wood": "רצפת עץ",
+          "low_pile_carpet": "שטיח קצר-סיבים",
+          "medium_pile_carpet": "שטיח ארוך-סיבים עד בינוני",
+          "carpet": "שטיח"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "שפת עוזר קולי",
+        "state": {
+          "default": "ברירת מחדל",
+          "english": "אנגלית",
+          "german": "גרמנית",
+          "chinese": "סינית",
+          "russian": "רוסית",
+          "italian": "איטלקית",
+          "french": "צרפתית",
+          "korean": "קוריאנית"
+        }
+      },
+      "mop_pressure": {
+        "name": "לחץ מגב",
+        "state": {
+          "light": "קל",
+          "normal": "רגיל"
+        }
+      },
+      "mop_temperature": {
+        "name": "טמפרטורת מגב",
+        "state": {
+          "normal": "רגילה",
+          "warm": "חמה"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "תדירות שטח נמוך",
+        "state": {
+          "weekly": "שבועי",
+          "daily": "יומי"
+        }
+      },
+      "scraper_frequency": {
+        "name": "תדירות מגרד",
+        "state": {
+          "off": "כבוי",
+          "weekly": "שבועי",
+          "daily": "יומי"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "כיסוי LDS אוטומטי",
+        "state": {
+          "off": "כבוי",
+          "security": "אבטחה",
+          "extreme": "קיצוני"
+        }
+      },
+      "order": {
+        "name": "סדר",
+        "state": {
+          "not_set": "לא מוגדר"
+        }
+      },
+      "self_clean_frequency": {
+        "name": "תדירות ניקוי עצמי",
+        "state": {
+          "by_area": "לפי שטח",
+          "by_time": "לפי זמן",
+          "by_room": "לפי חדר",
+          "intelligent": "חכם"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "תדירות ניקוי מגב",
+        "state": {
+          "by_room": "לפי חדר",
+          "5sqm": "חמישה מ\"ר",
+          "8sqm": "שמונה מ\"ר",
+          "10sqm": "עשרה מ\"ר",
+          "15sqm": "חמישה-עשר מ\"ר",
+          "20sqm": "עשרים מ\"ר",
+          "25sqm": "עשרים וחמישה מ\"ר",
+          "86sqf": "שמונים ושישה רגל רבוע",
+          "108sqf": "מאה ושמונה רגל רבוע",
+          "54sqf": "חמישים וארבעה רגל רבוע",
+          "162sqf": "מאה שישים ושניים רגל רבוע",
+          "216sqf": "מאתיים ושישה-עשר רגל רבוע",
+          "270sqf": "מאתיים ושבעים רגל רבוע"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "מצב ריקון אוטומטי",
+        "state": {
+          "off": "כבוי",
+          "standard": "רגיל",
+          "high_frequency": "תדירות גבוהה",
+          "low_frequency": "תדירות נמוכה",
+          "custom_frequency": "תדירות מותאמת אישית",
+          "intelligent": "חכם"
+        }
+      },
+      "floor_material_direction": {
+        "name": "כיוון רצפה",
+        "state": {
+          "vertical": "אנכי",
+          "horizontal": "אופקי"
+        }
+      },
+      "visibility": {
+        "name": "נראות",
+        "state": {
+          "visible": "גלוי",
+          "hidden": "מוסתר"
+        }
+      },
+      "cleangenius": {
+        "name": "CleanGenius",
+        "state": {
+          "off": "כבוי",
+          "routine_cleaning": "ניקוי שגרתי",
+          "deep_cleaning": "ניקוי יסודי"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "מצב CleanGenius",
+        "state": {
+          "vacuum_and_mop": "שאיבה וניגוב",
+          "mop_after_vacuum": "ניגוב לאחר שאיבה"
+        }
+      },
+      "washing_mode": {
+        "name": "מצב שטיפת מגב",
+        "state": {
+          "smart": "חכם",
+          "light": "קל",
+          "standard": "רגיל",
+          "deep": "יסודי",
+          "ultra_washing": "שטיפה אולטרה"
+        }
+      },
+      "water_temperature": {
+        "name": "טמפרטורת מים",
+        "state": {
+          "normal": "רגילה",
+          "mild": "פושרת",
+          "warm": "חמה",
+          "hot": "רותחת",
+          "max": "מקסימום"
+        }
+      },
+      "auto_recleaning": {
+        "name": "ניקוי מחדש אוטומטי",
+        "state": {
+          "off": "כבוי",
+          "in_deep_mode": "במצב יסודי",
+          "in_all_modes": "בכל המצבים"
+        }
+      },
+      "auto_rewashing": {
+        "name": "שטיפה מחדש אוטומטית",
+        "state": {
+          "off": "כבוי",
+          "in_deep_mode": "במצב יסודי",
+          "in_all_modes": "בכל המצבים"
+        }
+      },
+      "cleaning_route": {
+        "name": "מסלול",
+        "state": {
+          "quick": "מהיר",
+          "standard": "רגיל",
+          "intensive": "אינטנסיבי",
+          "deep": "יסודי"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "מסלול ניגוב מותאם אישית",
+        "state": {
+          "off": "כבוי",
+          "standard": "רגיל",
+          "intensive": "אינטנסיבי",
+          "deep": "יסודי"
+        }
+      },
+      "task_type": {
+        "name": "סוג משימה",
+        "state": {
+          "go_to": "לך לנקודה",
+          "segment": "ניקוי חדר",
+          "all": "ניקוי גלובלי",
+          "zone": "ניקוי אזור",
+          "spot": "ניקוי נקודתי"
+        }
+      },
+      "cleaning_times": {
+        "name": "זמני ניקיון",
+        "state": {
+          "x1": "פעם אחת",
+          "x2": "פעמיים",
+          "x3": "שלוש פעמים"
+        }
+      },
+      "auto_empty_frequency": {
+        "name": "תדירות ריקון אוטומטי",
+        "state": {
+          "x1": "לאחר כל משימה",
+          "x2": "לאחר שני ניקיונות",
+          "x3": "לאחר שלושה ניקיונות"
+        }
+      },
+      "drying_time": {
+        "name": "זמן ייבוש",
+        "state": {
+          "silent": "שקט"
+        }
+      },
+      "battery_charge_level": {
+        "name": "רמת טעינת סוללה"
+      },
+      "object_type": {
+        "name": "סוג אובייקט",
+        "state": {
+          "predefined_point": "נקודה מוגדרת מראש",
+          "low_lying_area": "שטח נמוך",
+          "curtain": "וילון",
+          "threshold": "סף/מדרגה",
+          "furniture": "רהיטים",
+          "carpet": "שטיח",
+          "restricted": "אזור אסור"
+        }
+      },
+      "edit_type": {
+        "name": "סוג עריכה",
+        "state": {
+          "door": "ערוך דלתות",
+          "split": "פיצול חדרים",
+          "merge": "מיזוג חדרים",
+          "visibility": "נראות החדר",
+          "material": "חומר הרצפה",
+          "type": "שם חדר",
+          "wall": "ערוך קירות"
+        }
+      },
+      "map_type": {
+        "name": "סוג מפה",
+        "state": {
+          "cleaning": "מפת ניקוי",
+          "history": "פרטי ניקוי",
+          "wifi": "מפת Wi-Fi"
+        }
+      },
+      "carpet_type": {
+        "name": "סוג שטיח",
+        "state": {
+          "medium_pile": "שטיח ארוך-סיבים עד בינוני",
+          "low_pile": "שטיח קצר-סיבים",
+          "floor_mat": "שטיח רצפה",
+          "other": "אחר"
+        }
+      },
+      "mop_type": {
+        "name": "סוג מגב",
+        "state": {
+          "a": "מגב א'",
+          "b": "מגב ב'",
+          "c": "מגב ג'"
+        }
+      },
+      "carpet_shape": {
+        "name": "צורה",
+        "state": {
+          "square": "מרובע",
+          "round": "עגול"
+        }
+      },
+      "mopping_pattern": {
+        "name": "דפוס ניגוב",
+        "state": {
+          "daily": "ניגוב יומי",
+          "deep": "ניגוב יסודי"
+        }
+      },
+      "wetness_level": {
+        "name": "רטיבות",
+        "state": {
+          "slightly_dry": "יבש במקצת",
+          "moist": "לח",
+          "wet": "רטוב"
+        }
+      },
+      "task_repeats": {
+        "name": "חזרות משימה",
+        "state": {
+          "once": "פעם אחת",
+          "daily": "יומיומי",
+          "workdays": "ימי עבודה",
+          "weekends": "סופי שבוע"
+        }
+      },
+      "segment_name": {
+        "name": "שם חדר",
+        "state": {
+          "room": "חדר",
+          "living_room": "סלון",
+          "primary_bedroom": "חדר שינה ראשי",
+          "study": "חדר עבודה",
+          "kitchen": "מטבח",
+          "dining_hall": "פינת אוכל",
+          "bathroom": "חדר רחצה",
+          "balcony": "מרפסת",
+          "corridor": "מסדרון",
+          "utility_room": "חדר שירות",
+          "closet": "ארון",
+          "meeting_room": "חדר ישיבות",
+          "office": "משרד",
+          "fitness_area": "אזור כושר",
+          "recreation_area": "אזור פנאי",
+          "secondary_bedroom": "חדר שינה משני"
+        }
+      },
+      "furniture_type": {
+        "name": "סוג רהיט",
+        "state": {
+          "single_bed": "מיטת יחיד",
+          "double_bed": "מיטה זוגית",
+          "arm_chair": "כורסה",
+          "two_seat_sofa": "ספה דו-מושבית",
+          "three_seat_sofa": "ספה תלת-מושבית",
+          "dining_table": "שולחן אוכל",
+          "nightstant": "שידת לילה",
+          "coffee_table": "שולחן קפה",
+          "toilet": "אסלה",
+          "litter_box": "ארגז חול לחתול",
+          "pet_bed": "מיטת חיית מחמד",
+          "food_bowl": "קערת אוכל",
+          "pet_toilet": "שירותים לחיות מחמד",
+          "refrigerator": "מקרר",
+          "washing_machine": "מכונת כביסה",
+          "enclosed_litter_box": "ארגז חול סגור לחתול",
+          "air_conditioner": "מזגן",
+          "tv_cabinet": "מזנון טלוויזיה",
+          "bookshelf": "מדף ספרים",
+          "shoe_cabinet": "ארון נעליים",
+          "wardrobe": "ארון בגדים",
+          "greenery": "צמחייה",
+          "floor_mirror": "מראת רצפה",
+          "l_shaped_sofa": "ספה בצורת L",
+          "round_coffee_table": "שולחן קפה עגול",
+          "table": "שולחן",
+          "arm_chair_narrow": "כורסה צרה",
+          "three_seat_sofa_narrow": "ספה תלת-מושבית צרה",
+          "l_shaped_sofa_right": "ספה בצורת L ימינה"
+        }
+      }
+    },
+    "sensor": {
+      "state": {
+        "name": "מצב",
+        "state": {
+          "unknown": "לא ידוע",
+          "sweeping": "שואב",
+          "charging": "בטעינה",
+          "error": "שגיאה",
+          "idle": "בהמתנה",
+          "paused": "מושהה",
+          "returning": "חוזר לתחנת עגינה",
+          "mopping": "מנגב",
+          "drying": "מייבש",
+          "washing": "שטיפה",
+          "returning_to_wash": "חוזר לשטיפה",
+          "building": "בונה",
+          "sweeping_and_mopping": "שואב ומנגב",
+          "charging_completed": "הטעינה הושלמה",
+          "upgrading": "משדרג",
+          "clean_summon": "זומן לניקוי",
+          "station_reset": "איפוס תחנה",
+          "returning_install_mop": "חוזר להתקנת מגב",
+          "returning_remove_mop": "חוזר להסרת מגב",
+          "water_check": "בדיקת מים",
+          "clean_add_water": "מנקה ומוסיף מים",
+          "washing_paused": "השטיפה הושהתה",
+          "auto_emptying": "מרוקן אוטומטית",
+          "remote_control": "שליטה מרחוק",
+          "smart_charging": "טעינה חכמה",
+          "second_cleaning": "ניקוי בפעם השנייה",
+          "human_following": "מעקב אנושי",
+          "spot_cleaning": "ניקוי נקודתי",
+          "returning_auto_empty": "חוזר לריקון אוטומטי",
+          "waiting_for_task": "ממתין למשימה",
+          "station_cleaning": "ניקוי תחנה",
+          "returning_to_drain": "חוזר לניקוז",
+          "draining": "מנקז",
+          "auto_water_draining": "ניקוז מים אוטומטי",
+          "emptying": "מרוקן",
+          "dust_bag_drying": "ייבוש שקית אבק",
+          "dust_bag_drying_paused": "ייבוש שקית אבק הושהה",
+          "heading_to_extra_cleaning": "בדרך לניקוי נוסף",
+          "extra_cleaning": "ניקוי נוסף",
+          "finding_pet_paused": "חיפוש חיית מחמד הושהה",
+          "finding_pet": "מחפש חיית מחמד",
+          "shortcut": "קיצור דרך",
+          "monitoring": "ניטור",
+          "monitoring_paused": "הניטור הושהה",
+          "initial_deep_cleaning": "ניקוי יסודי ראשוני",
+          "initial_deep_cleaning_paused": "ניקוי יסודי ראשוני הושהה",
+          "sanitizing": "מחטא",
+          "sanitizing_with_dry": "מחטא בשילוב ייבוש",
+          "changing_mop": "מחליף מגב",
+          "changing_mop_paused": "החלפת מגב הושהתה",
+          "floor_maintaining": "תחזוקת רצפה",
+          "floor_maintaining_paused": "תחזוקת רצפה הושהתה",
+          "remote_pickup": "איסוף מרחוק",
+          "arranging_items": "סידור פריטים",
+          "pet_guarding": "שמירה על חיות מחמד",
+          "pet_guarding_paused": "שמירה על חיות מחמד הושהתה",
+          "installing_mop": "מתקין מגב",
+          "uninstalling_mop": "מסיר מגב",
+          "intelligent_recharging": "טעינה חכמה",
+          "assisted_cleaning": "ניקוי בסיוע",
+          "entering_dock": "נכנס לתחנה",
+          "leaving_dock": "יוצא מהתחנה",
+          "navigating_to_climber": "מנווט למטפס",
+          "docking_to_climber": "מתחבר למטפס",
+          "climber_docked": "מטפס מחובר",
+          "climber_navigating": "מטפס מנווט",
+          "climbing_stairs": "עולה במדרגות",
+          "climbing_stairs_completed": "עליית מדרגות הושלמה",
+          "climber_at_dock": "מטפס בתחנה",
+          "climber_leaving_dock": "מטפס יוצא מהתחנה"
+        }
+      },
+      "status": {
+        "name": "סטטוס",
+        "state": {
+          "unknown": "לא ידוע",
+          "idle": "בהמתנה",
+          "paused": "מושהה",
+          "cleaning": "מנקה",
+          "returning": "חוזר לתחנת עגינה",
+          "spot_cleaning": "ניקוי נקודתי",
+          "follow_wall_cleaning": "ניקוי לאורך קיר",
+          "charging": "בטעינה",
+          "ota": "OTA (עדכון מהאוויר)",
+          "fct": "FCT",
+          "wifi_set": "הגדרת WiFi",
+          "power_off": "כבוי",
+          "factory": "יצרן",
+          "error": "שגיאה",
+          "remote_control": "שלט רחוק",
+          "sleeping": "ישן",
+          "self_test": "בדיקה עצמית",
+          "factory_test": "בדיקת יצרן",
+          "standby": "במצב המתנה",
+          "room_cleaning": "ניקוי חדר",
+          "zone_cleaning": "ניקוי אזור",
+          "fast_mapping": "מיפוי מהיר",
+          "cruising_path": "שיוט במסלול",
+          "cruising_point": "שיוט לנקודה",
+          "summon_clean": "זומן לניקוי",
+          "shortcut": "קיצור דרך",
+          "person_follow": "מעקב אחר אדם",
+          "water_check": "בדיקת מים",
+          "pet_guarding": "שמירה על חיות מחמד",
+          "auto_arrangement": "סידור אוטומטי",
+          "smart_arrangement": "סידור חכם",
+          "zoned_arrangement": "סידור לפי אזורים"
+        }
+      },
+      "task_status": {
+        "name": "סטטוס משימה",
+        "state": {
+          "unknown": "לא ידוע",
+          "completed": "הושלמה",
+          "cleaning": "מנקה",
+          "zone_cleaning": "ניקוי אזור",
+          "room_cleaning": "ניקוי חדר",
+          "spot_cleaning": "ניקוי נקודתי",
+          "fast_mapping": "מיפוי מהיר",
+          "cleaning_paused": "הניקוי הושהה",
+          "room_cleaning_paused": "ניקוי חדר הושהה",
+          "zone_cleaning_paused": "ניקוי אזור הושהה",
+          "spot_cleaning_paused": "ניקוי נקודתי הושהה",
+          "map_cleaning_paused": "ניקוי מפה הושהה",
+          "docking_paused": "עגינה הושהתה",
+          "mopping_paused": "הניגוב הושהה",
+          "zone_mopping_paused": "ניגוב אזור הושהה",
+          "room_mopping_paused": "ניגוב חדר הושהה",
+          "zone_docking_paused": "עגינת אזור הושהתה",
+          "room_docking_paused": "עגינת חדר הושהתה",
+          "cruising_path": "שיוט במסלול",
+          "cruising_path_paused": "שיוט במסלול הושהה",
+          "cruising_point": "שיוט לנקודה",
+          "cruising_point_paused": "שיוט לנקודה הושהה",
+          "summon_clean_paused": "ניקוי מוזמן הושהה",
+          "returning_to_install_mop": "חוזר להתקנת מגב",
+          "returning_to_remove_mop": "חוזר להסרת מגב",
+          "station_cleaning": "ניקוי תחנה",
+          "pet_finding": "איתור חיית מחמד",
+          "auto_cleaning_washing_paused": "שטיפה בניקוי אוטומטי הושהתה",
+          "area_cleaning_washing_paused": "שטיפה בניקוי שטח הושהתה",
+          "custom_cleaning_washing_paused": "שטיפה בניקוי מותאם אישית הושהתה",
+          "picking_up_item": "אוסף פריט",
+          "picking_up_item_paused": "איסוף פריט הושהה",
+          "picking_up_item_success": "פריט נאסף בהצלחה",
+          "remote_pickup_initializing": "מאתחל איסוף מרחוק",
+          "remote_pickup_identifing": "מזהה איסוף מרחוק",
+          "manual_remote_pickup": "איסוף מרחוק ידני",
+          "automatic_remote_pickup": "איסוף מרחוק אוטומטי",
+          "remote_pickup_in_progress": "איסוף מרחוק בתהליך",
+          "remote_pickup_paused": "איסוף מרחוק הושהה",
+          "placing_item": "מניח פריט",
+          "placing_item_paused": "הנחת פריט הושהתה"
+        }
+      },
+      "water_tank": {
+        "name": "מכל מים",
+        "state": {
+          "unknown": "לא ידוע",
+          "installed": "מותקן",
+          "not_installed": "לא מותקן",
+          "mop_installed": "מגב מותקן",
+          "in_station": "בתחנה"
+        }
+      },
+      "mop_pad": {
+        "name": "משטח ניגוב",
+        "state": {
+          "unknown": "לא ידוע",
+          "installed": "מותקן",
+          "not_installed": "לא מותקן",
+          "mop_installed": "מגב מותקן",
+          "in_station": "בתחנה"
+        }
+      },
+      "dust_collection": {
+        "name": "איסוף אבק",
+        "state": {
+          "unknown": "לא ידוע",
+          "not_available": "לא זמין",
+          "available": "זמין",
+          "over_use": "שימוש יתר",
+          "never": "לעולם לא"
+        }
+      },
+      "auto_empty_status": {
+        "name": "סטטוס ריקון אוטומטי",
+        "state": {
+          "unknown": "לא ידוע",
+          "idle": "בהמתנה",
+          "active": "פעיל",
+          "not_performed": "לא בוצע"
+        }
+      },
+      "error": {
+        "name": "שגיאה",
+        "state": {
+          "unknown": "קוד שגיאה לא ידוע",
+          "no_error": "אין שגיאה חריגה",
+          "drop": "גלגלים תלויים באוויר",
+          "cliff": "שגיאת חיישן צוק",
+          "bumper": "חיישן התנגשות תקוע",
+          "gesture": "רובוט בהטיה",
+          "bumper_repeat": "חיישן התנגשות תקוע",
+          "drop_repeat": "גלגלים תלויים באוויר",
+          "optical_flow": "שגיאת חיישן זרימה אופטית",
+          "no_box": "מיכל האבק חסר",
+          "no_tank_box": "מכל המים חסר",
+          "water_box_empty": "מכל המים ריק",
+          "box_full": "המסנן אינו יבש או שהוא חסום",
+          "brush": "המברשת הראשית תקועה",
+          "side_brush": "מברשת הצד תקועה",
+          "fan": "המסנן אינו יבש או שהוא סתום",
+          "left_wheel_motor": "הרובוט תקוע, או שהגלגל השמאלי נתקל בחפץ",
+          "right_wheel_motor": "הרובוט תקוע, או שהגלגל הימני נתקל בחפץ",
+          "turn_suffocate": "הרובוט תקוע או אינו מסוגל להסתובב",
+          "forward_suffocate": "הרובוט תקוע או לא מסוגל להתקדם",
+          "charger_get": "התחנה לא נמצאה",
+          "battery_low": "סוללה חלשה",
+          "charge_fault": "שגיאת טעינה אוטומטית",
+          "battery_percentage": "שגיאה בקריאת אחוזי הסוללה",
+          "heart": "שגיאה פנימית",
+          "camera_occlusion": "שגיאת חיישן דימות ויזואלי",
+          "move": "שגיאת חיישן תנועה",
+          "flow_shielding": "שגיאת חיישן אופטי",
+          "infrared_shielding": "שגיאת מיגון אינפרא-אדום",
+          "charge_no_electric": "תחנת טעינה חסרת חשמל או כבויה",
+          "battery_fault": "בעיה בסוללה",
+          "fan_speed_error": "שגיאת חיישן מהירות מאוורר (שאיבה)",
+          "left_wheell_speed": "מהירות גלגל שמאלי בחריגה",
+          "right_wheell_speed": "מהירות גלגל ימני בחריגה",
+          "bmi055_acce": "שגיאת מד-תאוצה",
+          "bmi055_gyro": "שגיאת גירוסקופ",
+          "xv7001": "שגיאת מסנן אבק",
+          "left_magnet": "שגיאת חיישן מגנטי שמאלי",
+          "right_magnet": "שגיאת חיישן מגנטי ימני",
+          "flow_error": "שגיאת חיישן מפלס",
+          "infrared_fault": "פגם באינפרא-אדום",
+          "camera_fault": "תקלה במצלמה",
+          "strong_magnet": "שדה מגנטי חזק התגלה",
+          "water_pump": "שגיאת משאבת מים",
+          "rtc": "שגיאת RTC",
+          "auto_key_trig": "שגיאת הדק-אוטומטי פנימית",
+          "p3v3": "שגיאת P3V3",
+          "camera_idle": "המצלמה במצב לא פעיל עקב שגיאה",
+          "blocked": "מסלול הניקוי חסום, חוזר לתחנה.",
+          "lds_error": "שגיאת חיישן מרחק לייזר (LDS)",
+          "lds_bumper": "שגיאת פגוש חיישן מרחק לייזר (LDS)",
+          "filter_blocked": "המסנן אינו יבש או חסום",
+          "edge": "שגיאת חיישן קצה",
+          "carpet": "אנא הפעילו את הרובוט באזור שאינו כולל שטיח.",
+          "laser": "חיישן הימנעות ממכשולים בתלת-ממד אינו פועל כראוי.",
+          "ultrasonic": "החיישן האולטרסוני אינו פועל כראוי.",
+          "no_go_zone": "זוהה אזור אסור לכניסה או קיר וירטואלי.",
+          "route": "מסלול הניקוי חסום.",
+          "restricted": "זוהה שהרובוט-מגב נמצא באזור מוגבל.",
+          "remove_mop": "הניגוב הושלם. אנא הסירו ונקו את המגב בזמן.",
+          "mop_removed": "משטח הניגוב נפל/הוסר במהלך פעולת הניקוי.",
+          "mop_pad_stop_rotate": "משטח הניגוב הפסיק להסתובב.",
+          "bin_full": "שקית איסוף האבק מלאה, או שתעלת האוויר חסומה.",
+          "bin_open": "המכסה העליון של תחנת הריקון האוטומטי אינו סגור, או ששקית האבק לא מותקנת.",
+          "water_tank": "מכל המים הנקיים אינו מותקן.",
+          "dirty_water_tank": "מכל המים המלוכלכים מלא או אינו מותקן.",
+          "water_tank_dry": "מפלס מים נמוך במכל המים הנקיים, אנא מלאו מים בזמן.",
+          "dirty_water_tank_blocked": "מכל המים המלוכלכים חסום.",
+          "dirty_water_tank_pump": "שגיאת משאבה במכל המים המלוכלכים.",
+          "mop_pad": "קרש השטיפה אינו מותקן כראוי.",
+          "wet_mop_pad": "מפלס המים בקרש השטיפה חריג, אנא נקו את קרש השטיפה בהקדם.",
+          "clean_mop_pad": "פעולת הניקוי הושלמה, אנא נקו את קרש שטיפת המגב.",
+          "clean_tank_level": "בדקו ומלאו את מכל המים הנקיים.",
+          "station_disconnected": "תחנת העגינה איננה מחוברת לחשמל",
+          "dirty_tank_level": "מפלס המים במכל המים המשומשים גבוה מדי.",
+          "washboard_level": "מפלס המים בקרש השטיפה גבוה מדי.",
+          "no_mop_in_station": "משטח הניגוב אינו בתחנה.",
+          "dust_bag_full": "שקית האבק מלאה או שפתחי האוורור חסומים.",
+          "self_test_failed": "קיימת חריגה בפריקת המים ממכל המים הנקיים במודולי המים העליונים והתחתונים.",
+          "mop_install_failed": "התקנת משטח הניגוב נכשלה.",
+          "low_battery_turn_off": "סוללה חלשה. הרובוט ייכבה בקרוב.",
+          "dirty_tank_not_installed": "מכל המים המשומשים של הרובוט אינו מותקן.",
+          "robot_in_hidden_room": "אזור מוסתר. אנא הזיזו את הרובוט לאזור מתאים ונסו שוב.",
+          "washboard_not_working": "קרש השטיפה הפסיק לעבוד.",
+          "return_to_charge_failed": "החזרה לטעינה נכשלה.",
+          "lds_failed_to_lift": "הרמת מודול ה-LDS נכשלה.",
+          "robot_stuck": "ה-LDS לא מצליח להתרומם כאן לצורך מיקום חוזר.",
+          "robot_stuck_repeat": "העבירו את הרובוט לאזור פתוח וחדשו את המשימה.",
+          "slippery_floor": "רצפה חלקה. אנא נסו שוב מאוחר יותר.",
+          "check_mop_install": "אנא ודאו שהמגב מותקן כראוי.",
+          "dirty_water_tank_full": "מפלס מים חריג במכל המים המשומשים של הרובוט.",
+          "retractable_leg_stuck": "אנא ודאו שהרגליים המתכווננות אינן מסובכות.",
+          "internal_error": "תקלה עקב שגיאה פנימית. נסו להפעיל מחדש את הרובוט.",
+          "robot_stuck_on_tables": "הרובוט נתקע בין שולחנות וכיסאות.",
+          "robot_stuck_on_passage": "הרובוט נתקע במעבר הצר.",
+          "robot_stuck_on_threshold": "הרובוט נתקע במדרגה/סף.",
+          "robot_stuck_on_low_lying_area": "הרובוט נתקע באזור נמוך-מרווח.",
+          "robot_stuck_on_ramp": "הרובוט זיהה מדרונות שקל ליפול מהם במסלול.",
+          "robot_stuck_on_obstacle": "הרובוט זיהה מכשולים במסלול.",
+          "robot_stuck_on_pet": "הרובוט זיהה אנשים או חיות מחמד במסלול.",
+          "robot_stuck_on_slippery_surface": "הרובוט תקוע עקב החלקה.",
+          "robot_stuck_on_carpet": "הרובוט מחליק על השטיח",
+          "drainage_failed": "חריגה בניקוז המים ממכל המים המשומשים",
+          "mop_not_detected": "המגב לא זוהה.",
+          "mop_holder_error": "שגיאת כמות/מיקום תושבת מגב בתחנה.",
+          "dock_error": "שגיאת תחנת עגינה.",
+          "wash_failed": "שטיפת המגב המלוכלך נכשלה.",
+          "robot_stuck_on_curtain": "הרובוט מחליק באזור הווילון",
+          "edge_mop_stop_rotate": "מגב הקצה הפסיק להסתובב.",
+          "edge_mop_detached": "מגב הקצה ניתק.",
+          "chassis_lift_malfunction": "תקלת הרמת שלדה.",
+          "mop_cover_error": "בדקו אם יש פסולת ליד המגב הגלילי ומכסה המגב.",
+          "roller_mop_error": "בדקו אם יש פסולת ליד המגב הגלילי ומכסה המגב.",
+          "onboard_water_tank_empty": "מפלס מים נמוך בקופסת המים הנקיים של הרובוט.",
+          "onboard_dirty_water_tank_full": "קופסת המים המשומשים של הרובוט מלאה.",
+          "mop_not_installed": "המגב אינו מותקן.",
+          "fluffing_roller_error": "שגיאת גליל פלנל/ריפוד.",
+          "blocked_by_obstacle": "הרובוט נחסם על ידי מכשול.",
+          "robotic_arm_stopped": "הזרוע הרובוטית נעצרה.",
+          "drainage_outlet_filter": "מסנן מוצא השפכים של הרובוט סתום.",
+          "main_wheels_error": "שגיאה בגלגלים הראשיים."
+        }
+      },
+      "charging_status": {
+        "name": "סטטוס טעינה",
+        "state": {
+          "unknown": "לא ידוע",
+          "charging": "בטעינה",
+          "not_charging": "לא נטען",
+          "return_to_charge": "חוזר לטעינה",
+          "charging_completed": "הטעינה הושלמה"
+        }
+      },
+      "relocation_status": {
+        "name": "סטטוס התמקמות",
+        "state": {
+          "unknown": "לא ידוע",
+          "located": "מקם בהצלחה",
+          "locating": "מאתר מיקום",
+          "failed": "נכשל",
+          "success": "הצלחה"
+        }
+      },
+      "self_wash_base_status": {
+        "name": "סטטוס שטיפה עצמית",
+        "state": {
+          "unknown": "לא ידוע",
+          "idle": "בהמתנה",
+          "washing": "שטיפה",
+          "drying": "מייבש",
+          "paused": "מושהה",
+          "returning": "חוזר לשטיפה",
+          "clean_add_water": "מנקה ומוסיף מים",
+          "adding_water": "מוסיף מים"
+        }
+      },
+      "low_water_warning": {
+        "name": "אזהרת מים נמוכה",
+        "state": {
+          "no_warning": "אין אזהרה",
+          "no_water_left": "המים במכל המים הנקיים עומדים להיגמר. בדקו ומלאו את מכל המים הנקיים בהקדם.",
+          "no_water_left_after_clean": "משטח הניגוב נוקה. זוהה שאין מספיק מים במכל המים הנקיים, אנא מלאו את מכל המים הנקיים ורוקנו את מכל המים המשומשים.",
+          "no_water_for_clean": "מפלס המים במכל המים הנקיים נמוך. הרובוט עבר למצב שאיבה.",
+          "low_water": "המים עומדים לאזול. אנא מלאו את מכל המים הנקיים.",
+          "tank_not_installed": "מכל המים הנקיים אינו מותקן."
+        }
+      },
+      "stream_status": {
+        "name": "סטטוס הזרמה",
+        "state": {
+          "unknown": "לא ידוע",
+          "idle": "בהמתנה",
+          "video": "וידאו",
+          "audio": "שמע",
+          "recording": "הקלטה"
+        }
+      },
+      "drainage_status": {
+        "name": "סטטוס ניקוז",
+        "state": {
+          "unknown": "לא ידוע",
+          "idle": "בהמתנה",
+          "draining": "מנקז",
+          "draining_successful": "הניקוז הושלם",
+          "draining_failed": "הניקוז נכשל"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "סטטוס מכל מים נקיים",
+        "state": {
+          "unknown": "לא ידוע",
+          "not_available": "לא זמין",
+          "not_installed": "לא מותקן",
+          "low_water": "מים מועטים",
+          "installed": "מותקן"
+        }
+      },
+      "dirty_water_tank_status": {
+        "name": "סטטוס מכל מים מלוכלכים",
+        "state": {
+          "unknown": "לא ידוע",
+          "installed": "מותקן",
+          "not_installed_or_full": "לא מותקן או מלא"
+        }
+      },
+      "dust_bag_status": {
+        "name": "סטטוס שקית אבק",
+        "state": {
+          "unknown": "לא ידוע",
+          "installed": "מותקנה",
+          "not_installed": "לא מותקנה",
+          "check": "לבדוק"
+        }
+      },
+      "detergent_status": {
+        "name": "סטטוס נוזל ניקוי",
+        "state": {
+          "unknown": "לא ידוע",
+          "installed": "מותקן",
+          "disabled": "מושבת",
+          "low_detergent": "נוזל ניקוי מועט"
+        }
+      },
+      "hot_water_status": {
+        "name": "סטטוס מים חמים",
+        "state": {
+          "unknown": "לא ידוע",
+          "disabled": "מושבת",
+          "enabled": "מופעל"
+        }
+      },
+      "station_drainage_status": {
+        "name": "סטטוס ניקוז תחנה",
+        "state": {
+          "unknown": "לא ידוע",
+          "idle": "בהמתנה",
+          "draining": "מנקז"
+        }
+      },
+      "task_type": {
+        "name": "סוג משימה",
+        "state": {
+          "standard": "ניקוי רגיל",
+          "standard_paused": "ניקוי רגיל הושהה",
+          "custom": "ניקוי מותאם אישית",
+          "custom_paused": "ניקוי מותאם אישית הושהה",
+          "shortcut": "ניקוי קיצור דרך",
+          "shortcut_paused": "ניקוי קיצור דרך הושהה",
+          "scheduled": "ניקוי מתוזמן",
+          "scheduled_paused": "ניקוי מתוזמן הושהה",
+          "smart": "ניקוי חכם",
+          "smart_paused": "ניקוי חכם הושהה",
+          "partial": "ניקוי חלקי",
+          "partial_paused": "ניקוי חלקי הושהה",
+          "summon": "ניקוי מוזמן (Summon)",
+          "summon_paused": "ניקוי מוזמן הושהה",
+          "water_stain": "ניקוי כתמי מים",
+          "water_stain_paused": "ניקוי כתמי מים הושהה",
+          "boosted_edge_cleaning": "ניקוי קצוות מוגבר",
+          "hair_compressing": "דחיסת שיער",
+          "large_particle_cleaning": "ניקוי חלקיקים גדולים",
+          "intensive_stain_cleaning": "ניקוי כתמים אינטנסיבי",
+          "stain_cleaning": "ניקוי כתמים",
+          "initial_deep_cleaning": "ניקוי עמוק ראשוני",
+          "initial_deep_cleaning_paused": "ניקוי עמוק ראשוני הושהה",
+          "mop_pad_heating": "חימום משטח מגב",
+          "cleaning_after_mapping": "ניקוי לאחר מיפוי",
+          "small_particle_cleaning": "ניקוי חלקיקים קטנים",
+          "changing_mop": "מחליף מגב",
+          "changing_mop_paused": "החלפת מגב הושהתה",
+          "floor_maintaining": "תחזוקת רצפה",
+          "floor_maintaining_paused": "תחזוקת רצפה הושהתה",
+          "arranging_items": "סידור פריטים",
+          "arranging_items_paused": "סידור פריטים הושהה",
+          "intensive_hair_cleaning": "ניקוי שיער אינטנסיבי",
+          "accessory_handling": "טיפול באביזרים",
+          "increased_drum_speed_cleaning": "ניקוי במהירות תוף מוגברת",
+          "pressurized_cleaning": "ניקוי בלחץ",
+          "steam_cleaning": "ניקוי בקיטור",
+          "steam_cleaning_paused": "ניקוי בקיטור הושהה"
+        }
+      },
+      "dust_bag_drying_status": {
+        "name": "סטטוס ייבוש שקית אבק",
+        "state": {
+          "idle": "בהמתנה",
+          "drying": "מייבש",
+          "paused": "מושהה"
+        }
+      },
+      "nation_matched": {
+        "name": "נעילת אזור (Region Lock)",
+        "state": {
+          "unknown": "מושבת",
+          "matched": "לא נעול (Unlocked)",
+          "unmatched": "נעול (Locked)",
+          "na": "לא זמין"
+        }
+      },
+      "startup_method": {
+        "name": "הופעל על ידי",
+        "state": {
+          "button": "כפתור",
+          "app": "אפליקציה",
+          "scheduled": "מתוזמן",
+          "voice": "קול",
+          "second_cleaning": "ניסיון ניקוי שני",
+          "unknown": "לא ידוע"
+        }
+      },
+      "cleaning_status": {
+        "name": "ניקוי במצב",
+        "state": {
+          "interrupted": "הופסק",
+          "completed": "הושלם",
+          "manually_ended": "הסתיים ידנית",
+          "failed": "נכשל",
+          "unknown": "לא ידוע"
+        }
+      },
+      "cleanup_method": {
+        "name": "שיטת ניקוי",
+        "state": {
+          "other": "אחר",
+          "default": "ברירת מחדל",
+          "customized": "מותאם אישית",
+          "cleangenius": "CleanGenius",
+          "water_stain": "כתמי מים",
+          "unknown": "לא ידוע"
+        }
+      },
+      "task_end_type": {
+        "name": "הושלם בעקבות",
+        "state": {
+          "other": "אחר",
+          "manual_docking": "עגינה ידנית",
+          "docking": "עגינה",
+          "failed_docking": "עגינה נכשלה",
+          "stop": "עצירה",
+          "unknown": "לא ידוע"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "סיבת הפסקה",
+        "state": {
+          "abnormal_docking": "עגינה חריגה",
+          "base_station_powered_off": "תחנת העגינה כבויה",
+          "brush_entangled_by_carpet": "המברשת הסתבכה בשטיח",
+          "brush_entangled_by_object": "המברשת הסתבכה באובייקט",
+          "brush_entangled_by_obstacle": "המברשת הסתבכה במכשול",
+          "cannot_find_base_station": "לא ניתן לתקשר עם תחנת העגינה",
+          "cliff_sensor_error": "שגיאת חיישן צוק/מדרגה",
+          "laser_distance_sensor_error": "שגיאת חיישן מרחק לייזר (LDS)",
+          "mop_pad_abnormally_removed": "משטח המגב הוסר באופן חריג",
+          "mop_pad_fallen_off": "משטח המגב נפל",
+          "mop_pad_fallen_off_by_obstacle": "משטח המגב נפל בגלל מכשול",
+          "mop_pad_fallen_off_by_table": "משטח המגב נפל בגלל שולחן",
+          "mop_pad_fallen_off_crossing_obstacle": "משטח המגב נפל בעת חציית מכשול",
+          "mop_pad_removed": "משטח המגב הוסר",
+          "mop_pad_stuck": "משטח המגב נתקע",
+          "robot_fallen": "הרובוט נפל",
+          "robot_is_stuck_on_obstacle": "הרובוט נתקע במכשול",
+          "robot_is_stuck_on_step": "הרובוט נתקע במדרגה",
+          "robot_lifted": "הרובוט הורם",
+          "task_completed": "המשימה הושלמה",
+          "unknown": "לא ידוע"
+        }
+      },
+      "recovery_map_type": {
+        "name": "סוג מפה",
+        "state": {
+          "original": "מפה מקורית",
+          "edited": "מפה נערכה",
+          "backup": "מפת גיבוי"
+        }
+      },
+      "obstacle_type": {
+        "name": "סוג מכשול",
+        "state": {
+          "unknown": "לא ידוע",
+          "base": "בסיס העגינה",
+          "scale": "משקל",
+          "thread": "חוט",
+          "wire": "כבלים",
+          "toy": "צעצוע",
+          "shoes": "נעליים",
+          "sock": "גרביים",
+          "fece": "צואה",
+          "trash_can": "פח אשפה",
+          "fabric": "בד/אריג",
+          "power_strip": "מפצל חשמל",
+          "liquid_stain": "כתם נוזל",
+          "obstacle": "מכשול",
+          "pet": "חיית מחמד",
+          "cleaning_tools": "כלי ניקוי",
+          "detected_stain": "כתם שזוהה",
+          "blocked_room": "חדר חסום",
+          "easy_to_stuck_furniture": "רהיט שקל להיתקע בו",
+          "uncleanable_stain": "כתם שלא ניתן לנקות",
+          "leg": "רגל שולחן/כיסא",
+          "large_particles": "חלקיקים גדולים",
+          "dried_stain": "כתם מיובש",
+          "food_bowl": "קערת אוכל",
+          "pet_bed": "מיטת חיית מחמד",
+          "cleaned_stain": "כתם שנוקה",
+          "skipped_uncleanable_stain": "דילג על כתם שלא ניתן לנקות",
+          "cleaned_dried_stain": "נוקה כתם מיובש",
+          "cleaned_large_particles": "נוקו חלקיקים גדולים",
+          "hair": "שיער",
+          "paper": "נייר",
+          "cleaned_hair": "שיער שנוקה",
+          "sundry": "שונות"
+        }
+      },
+      "obstacle_reason": {
+        "name": "סיבת המכשול",
+        "state": {
+          "blocked_by_virtual_wall": "נחסם על ידי קיר וירטואלי",
+          "blocked_by_door": "נחסם על ידי דלת",
+          "blocked_by_threshold": "נחסם על ידי סף",
+          "blocked_by_obstacle": "נחסם על ידי מכשול",
+          "blocked_by_carpet": "נחסם על ידי שטיח",
+          "blocked_by_detected_carpet": "נחסם על ידי שטיח שזוהה",
+          "blocked_by_hidden_obstacle": "נחסם על ידי מכשול נסתר",
+          "blocked_by_dynamic_obstacle": "נחסם על ידי מכשול דינמי",
+          "passage_too_low": "המעבר נמוך מדי",
+          "step_too_low": "המדרגה נמוכה מדי",
+          "failed_to_cross_threshold": "כשל בחציית הסף (Threshold)"
+        }
+      },
+      "remaining_battery": {
+        "name": "סוללה נותרת"
+      },
+      "multiple_cleaning_time": {
+        "name": "ניקוי מרובה פעמים"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "firmware_version": {
+        "name": "גרסת קושחה"
+      },
+      "ip_address": {
+        "name": "כתובת IP"
+      },
+      "mac_address": {
+        "name": "כתובת MAC"
+      },
+      "model": {
+        "name": "דגם"
+      },
+      "rssi": {
+        "name": "עוצמת שמע (RSSI)"
+      },
+      "serial_number": {
+        "name": "מספר סידורי"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "timezone": {
+        "name": "אזור זמן"
+      },
+      "voice_packet_id": {
+        "name": "חבילת קול"
+      },
+      "deodorizer_left": {
+        "name": "מפיץ ריח"
+      },
+      "detergent_left": {
+        "name": "נוזל ניקוי"
+      },
+      "dirty_water_channel_left": {
+        "name": "תעלת מים מלוכלכים"
+      },
+      "filter_left": {
+        "name": "מסנן (פילטר)"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "ניקוי גליל פלנל"
+      },
+      "main_brush_left": {
+        "name": "מברשת ראשית"
+      },
+      "mop_pad_left": {
+        "name": "משטח מגב"
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "מכל מים מלוכלכים על-הרובוט"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "ניקוי מסנן גליל מגב"
+      },
+      "scale_inhibitor_left": {
+        "name": "מונע אבנית"
+      },
+      "sensor_dirty_left": {
+        "name": "ניקוי חיישנים"
+      },
+      "side_brush_left": {
+        "name": "מברשת צד"
+      },
+      "silver_ion_left": {
+        "name": "יוני כסף"
+      },
+      "squeegee_left": {
+        "name": "מגב גומי (Squeegee)"
+      },
+      "tank_filter_left": {
+        "name": "מסנן מיכל"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "ניקוי מסנן יציאת מים"
+      },
+      "wheel_dirty_left": {
+        "name": "ניקוי גלגלים"
+      }
+    },
+    "toggle": {
+      "customized_cleaning": {
+        "name": "ניקוי מותאם אישית"
+      },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "ניקוי עמוק"
+      },
+      "auto_dust_collecting": {
+        "name": "ריקון אוטומטי"
+      },
+      "hair_compression": {
+        "name": "דחיסת שיער"
+      },
+      "self_clean": {
+        "name": "ניקוי עצמי"
+      },
+      "deep_mop_washing": {
+        "name": "שטיפת מגב עמוקה"
+      },
+      "hot_washing": {
+        "name": "שטיפה חמה"
+      },
+      "auto_drying": {
+        "name": "ייבוש אוטומטי"
+      },
+      "silent_drying": {
+        "name": "ייבוש שקט"
+      },
+      "uv_sterilization": {
+        "name": "עיקור UV"
+      },
+      "customized_carpet_cleaning": {
+        "name": "ניקוי מותאם אישית"
+      },
+      "carpet_avoidance": {
+        "name": "הימנעות משטיח"
+      },
+      "carpet_preferences": {
+        "name": "העדפות מותאמות אישית"
+      },
+      "auto_change_mop": {
+        "name": "החלפת מגב אוטומטית"
+      },
+      "multi_floor_map": {
+        "name": "מפה מרובת קומות"
+      },
+      "intelligent_recognition": {
+        "name": "זיהוי חכם"
+      },
+      "map_saving": {
+        "name": "שמירת מפה"
+      },
+      "child_lock": {
+        "name": "נעילת ילדים"
+      },
+      "resume_cleaning": {
+        "name": "חידוש ניקוי"
+      },
+      "obstacle_avoidance": {
+        "name": "הימנעות ממכשולים"
+      },
+      "carpet_boost": {
+        "name": "הגברת שאיבה על שטיח"
+      },
+      "carpet_recognition": {
+        "name": "זיהוי שטיח"
+      },
+      "clean_carpets_first": {
+        "name": "ניקוי שטיחים תחילה"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "סגירת מכסה גליל על שטיח"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "ניקוי שטיח אינטנסיבי"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "סיבוב מברשת צד על שטיח"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "הרמת שלדה על שטיח"
+      },
+      "auto_mount_mop": {
+        "name": "הרכבת מגב אוטומטית"
+      },
+      "mopping_with_detergent": {
+        "name": "ניגוב עם נוזל ניקוי"
+      },
+      "mop_washing_with_detergent": {
+        "name": "שטיפת מגב עם נוזל ניקוי"
+      },
+      "auto_add_detergent": {
+        "name": "הוספת נוזל ניקוי אוטומטית"
+      },
+      "smart_mop_washing": {
+        "name": "שטיפת מגב חכמה"
+      },
+      "wider_corner_coverage": {
+        "name": "כיסוי פינות רחב יותר"
+      },
+      "pressurized_cleaning": {
+        "name": "ניקוי בלחץ"
+      },
+      "gap_cleaning_extension": {
+        "name": "הרחבת ניקוי חריצים"
+      },
+      "mopping_under_furnitures": {
+        "name": "ניגוב מתחת לרהיטים"
+      },
+      "floor_direction_cleaning": {
+        "name": "ניקוי בכיוון הרצפה"
+      },
+      "ring_light_always_on": {
+        "name": "תאורת טבעת דולקת תמיד"
+      },
+      "collision_avoidance": {
+        "name": "מניעת התנגשויות"
+      },
+      "fill_light": {
+        "name": "תאורת מצלמה"
+      },
+      "ai_obstacle_detection": {
+        "name": "זיהוי מכשולים AI"
+      },
+      "ai_pet_detection": {
+        "name": "זיהוי חיות מחמד"
+      },
+      "pet_focused_detection": {
+        "name": "זיהוי ממוקד חיות מחמד"
+      },
+      "pet_focused_cleaning": {
+        "name": "ניקוי ממוקד חיות מחמד"
+      },
+      "ai_obstacle_picture": {
+        "name": "תמונות מכשולים"
+      },
+      "obstacle_crossing": {
+        "name": "חציית מכשולים מסונכרנת"
+      },
+      "active_suspension_crossing": {
+        "name": "חציית מכשולים בעזרת מתלים אקטיביים"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "ניקוי מכשולים דינמי"
+      },
+      "large_particles_boost": {
+        "name": "הגברת שאיבה לחלקיקים גדולים"
+      },
+      "streaming_voice_prompt": {
+        "name": "הנחיות קוליות מוזרמות"
+      },
+      "voice_assistant": {
+        "name": "עוזרת קולית"
+      },
+      "off_peak_charging": {
+        "name": "טעינה בשעות שפל"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "השבתת חידוש ניקוי (DnD)"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "השבתת ריקון אוטומטי (DnD)"
+      },
+      "dnd_reduce_volume": {
+        "name": "הפחתת עוצמת קול (DnD)"
+      },
+      "dnd": {
+        "name": "נא לא להפריע (DnD)"
+      }
+    },
+    "number": {
+      "wetness_level": {
+        "name": "רמת רטיבות"
+      },
+      "auto_empty_area": {
+        "name": "אזור ריקון אוטומטי"
+      },
+      "drying_time": {
+        "name": "זמן ייבוש"
+      },
+      "self_clean_time": {
+        "name": "זמן ניקוי עצמי"
+      },
+      "self_clean_area": {
+        "name": "אזור ניקוי עצמי"
+      },
+      "volume": {
+        "name": "עוצמת שמע"
+      }
+    },
+    "time": {
+      "dnd_start": {
+        "name": "שעת התחלת תקופת נא לא להפריע"
+      },
+      "dnd_end": {
+        "name": "שעת סיום תקופת נא לא להפריע"
+      },
+      "off_peak_charging_start": {
+        "name": "שעת התחלה של טעינה בשעות שפל"
+      },
+      "off_peak_charging_end": {
+        "name": "שעת סיום של טעינה בשעות שפל"
+      },
+      "schedule_time": {
+        "name": "זמן התחלה"
+      }
+    },
+    "input": {
+      "schedule_repeats": {
+        "name": "חזרות"
+      },
+      "dnd_repeats": {
+        "name": "חזרות"
+      },
+      "map_custom_name": {
+        "name": "שם מפה"
+      },
+      "segment_custom_name": {
+        "name": "שם חדר"
+      },
+      "shortcut_name": {
+        "name": "שם קיצור דרך"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "הוספה",
+        "add_map": "יצירת מפה",
+        "auto_empty_unavailable": "ריקון אוטומטי לא זמין",
+        "auto_emptying": "מרוקן אוטומטית",
+        "backup": "גיבוי",
+        "bag_drying_unavailable": "ייבוש שקית אינו זמין",
+        "cancel": "ביטול",
+        "cancel_ignore": "ביטול התעלמות",
+        "carpet": "שטיח",
+        "change": "שינוי",
+        "charge": "טעינה",
+        "clean": "ניקוי",
+        "clean_again": "ניקוי חוזר",
+        "cleaning_settings": "הגדרות ניקוי",
+        "cleanings": "ניקויים",
+        "close": "סגירה",
+        "confirm": "אישור",
+        "delete": "מחיקה",
+        "delete_carpet": "מחיקת שטיח",
+        "deleted_carpet": "שטיח נמחק",
+        "disable": "השבתה",
+        "discard": "זריקה (Discard)",
+        "dismiss": "התעלמות (Dismiss)",
+        "dock": "עגינה",
+        "dock_settings": "הגדרות תחנת עגינה",
+        "download": "הורדה",
+        "dry": "ייבוש",
+        "dry_bag": "ייבוש שקית",
+        "drying_unavailable": "הייבוש אינו זמין",
+        "dynamically_ignored": "התעלמות באופן דינמי",
+        "edit_carpet": "עריכת שטיח",
+        "empty": "ריקון",
+        "enable": "הפעלה",
+        "fast_mapping": "מיפוי מהיר",
+        "get_dreame_vacuum_card": "קבל את כרטיס Dreame Vacuum",
+        "ignore": "התעלם",
+        "ignore_obstacle": "התעלם ממכשול",
+        "impassable_threshold": "סף עביר בלתי אפשרי",
+        "job_details": "פרטי משימה",
+        "keep_disabled": "שמור על השבתה",
+        "map_display": "תצוגת מפה",
+        "map_management": "ניהול מפות",
+        "new_dnd": "משימת נא לא להפריע חדשה",
+        "new_schedule": "משימה מתוזמנת חדשה",
+        "new_shortcut": "משימת קיצור דרך חדשה",
+        "next_job": "המשימה הבאה",
+        "no_go": "אזור אסור",
+        "no_mop": "אזור ללא ניגוב",
+        "objects": "אובייקטים",
+        "override": "דריסה (Override)",
+        "passable_threshold": "סף שנותן לעבור",
+        "pause": "השהייה",
+        "pause_washing": "השהיית שטיפה",
+        "previous_job": "משימה קודמת",
+        "ramp": "רמפה",
+        "reload": "טעינה מחדש",
+        "rename": "שינוי שם",
+        "repeats": "חזרות",
+        "replace": "החלפה",
+        "reset": "איפוס",
+        "restore": "שחזור",
+        "restore_map": "שחזור מפה",
+        "resume": "המשך",
+        "resume_washing": "חידוש שטיפה",
+        "rooms": "חדרים",
+        "rotate_left": "סיבוב שמאלה",
+        "rotate_right": "סיבוב ימינה",
+        "round_carpet": "שטיח עגול",
+        "save": "שמירה",
+        "select_map": "בחירת מפה",
+        "shortcuts": "קיצורי דרך",
+        "square_carpet": "שטיח מרובע",
+        "start": "התחלה",
+        "start_auto_empty": "הפעלת ריקון אוטומטי",
+        "start_bag_drying": "התחלת ייבוש שקית",
+        "start_drying": "התחלת ייבוש",
+        "start_task": "התחלת משימה",
+        "start_washing": "התחלת שטיפה",
+        "stop": "עצירה",
+        "stop_bag_drying": "עצירת ייבוש שקית",
+        "stop_drying": "עצירת ייבוש",
+        "understood": "מובן",
+        "virtual_threshold": "סף וירטואלי",
+        "virtual_wall": "קיר",
+        "wash": "שטיח (שטיפה)",
+        "washing_unavailable": "השטיפה אינה זמינה",
+        "wifi_map": "מפת WiFi"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "תמונת רקע",
+        "card_object_action_buttons": "כפתורי פעולה",
+        "card_object_animations": "אנימציות",
+        "card_object_cleanup_notification": "התראת ניקוי",
+        "card_object_controls": "בקרות",
+        "card_object_cruising_history": "היסטוריית שיוטים",
+        "card_object_fault_notification": "התראת שגיאה",
+        "card_object_information_notification": "התראת מידע",
+        "card_object_low_water_notification": "התראת מים נמוכים",
+        "card_object_map_change_confirmation": "אישור שינוי מפה",
+        "card_object_menu": "תפריט",
+        "card_object_progress_bar": "סרגל התקדמות",
+        "card_object_saved_notification": "התראת שמירה",
+        "card_object_shortcuts": "קיצורי דרך",
+        "card_object_state": "מצב",
+        "card_object_status": "סטטוס",
+        "card_object_task_type": "סוג משימה",
+        "card_object_title": "כותרת",
+        "card_object_warning_notification": "התראת אזהרה",
+        "color_scheme": "ערכת צבעים",
+        "color_scheme_dreame_auto": "Dreame אוטומטי",
+        "color_scheme_dreame_dark": "Dreame כהה",
+        "color_scheme_dreame_light": "Dreame בהיר",
+        "color_scheme_grayscale": "גווני אפור",
+        "color_scheme_mijia_auto": "Mijia אוטומטי",
+        "color_scheme_mijia_dark": "Mijia כהה",
+        "color_scheme_mijia_light": "Mijia בהיר",
+        "copied": "הועתק",
+        "copy": "העתקה",
+        "copy_all": "העתקת הכל",
+        "disable_haptic": "השבתת משוב רטט (Haptic)",
+        "editable_objects": "אובייקטים הניתנים לעריכה",
+        "font_size": "גודל גופן",
+        "full_height": "גובה מלא",
+        "grid_size": "גודל רשת",
+        "height": "גובה",
+        "hidden_card_objects": "אובייקטי כרטיס מוסתרים",
+        "hidden_objects": "אובייקטים מוסתרים",
+        "hide_map_info": "הסתרת מידע על המפה",
+        "icon_set": "ערכת סמלים (אייקונים)",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "Dreame (ישן)",
+        "icon_set_material": "Material",
+        "icon_set_mijia": "Mijia",
+        "left": "שמאל",
+        "left_handed": "מצב לשמאליים",
+        "limit_height": "הגבלת גובה למסך",
+        "locked": "נעול",
+        "locked_always": "תמיד",
+        "locked_auto": "אוטומטי",
+        "locked_never": "אף פעם",
+        "locked_only_touch": "רק במגע",
+        "map": "מפה %name%",
+        "map_1": "המפה הראשונה",
+        "map_2": "המפה השנייה",
+        "map_3": "המפה השלישית",
+        "map_4": "המפה הרביעית",
+        "map_5": "המפה החמישית",
+        "map_color_active_area": "אזור פעיל",
+        "map_color_active_area_outline": "גבול אזור פעיל",
+        "map_color_active_point": "נקודה פעילה",
+        "map_color_active_point_outline": "גבול נקודה פעילה",
+        "map_color_auto_low_lying_area": "אזור נמוך-מרווח אוטומטי",
+        "map_color_carpet_color": "צבע שטיח",
+        "map_color_curtain": "וילון",
+        "map_color_detected_carpet_color": "צבע שטיח שזוהה",
+        "map_color_floor": "רצפה",
+        "map_color_floor_material": "חומר הרצפה",
+        "map_color_icon_background": "רקע סמל",
+        "map_color_impassable_threshold": "סף שאינו עביר",
+        "map_color_manual_low_lying_area": "אזור נמוך-מרווח ידני",
+        "map_color_mop_path": "מסלול ניגוב",
+        "map_color_new_segment": "חדר חדש",
+        "map_color_no_go": "אסור לכניסה",
+        "map_color_no_go_outline": "גבול אזור אסור לכניסה",
+        "map_color_no_mop": "ללא ניגוב",
+        "map_color_no_mop_outline": "גבול אזור ללא ניגוב",
+        "map_color_obstacle_background": "רקע מכשול",
+        "map_color_order": "סדר",
+        "map_color_outside": "בחוץ",
+        "map_color_passable_threshold": "סף שכביכול עביר",
+        "map_color_passive_segment": "חדר פסיבי",
+        "map_color_path": "נתיב/מסלול",
+        "map_color_ramp": "רמפה",
+        "map_color_segment": "חדר",
+        "map_color_settings_background": "רקע הגדרות",
+        "map_color_text": "טקסט",
+        "map_color_text_stroke": "קו מתאר טקסט",
+        "map_color_virtual_threshold": "סף וירטואלי",
+        "map_color_virtual_wall": "קיר וירטואלי",
+        "map_color_wall": "קיר",
+        "map_config": "הגדרת מפה",
+        "map_display": "תצוגת מפה",
+        "map_display_floor_plan": "תוכנית קומה",
+        "map_display_floor_plan_only": "תוכנית קומה בלבד",
+        "map_display_floor_plan_without_texture": "תוכנית קומה ללא טקסטורה",
+        "map_display_standard": "רגיל",
+        "map_object_active_area": "אזור פעיל",
+        "map_object_active_cruise_point": "נקודת שיוט פעילה",
+        "map_object_active_point": "נקודה פעילה",
+        "map_object_animations": "אנימציות",
+        "map_object_blocked_segment": "חדרים חסומים",
+        "map_object_blocked_segments": "חדרים חסומים",
+        "map_object_carpet": "שטיח",
+        "map_object_charger": "מטען (Charger)",
+        "map_object_cleaning_sequence": "סדר ניקוי",
+        "map_object_cruise_point": "נקודת שיוט",
+        "map_object_curtain": "וילון",
+        "map_object_customized_cleaning": "ניקוי מותאם אישית",
+        "map_object_deleted_carpet": "שטיח נמחק",
+        "map_object_detected_carpet": "שטיח שזוהה",
+        "map_object_door": "דלת",
+        "map_object_floor": "רצפה",
+        "map_object_floor_material": "חומר הרצפה",
+        "map_object_furniture": "רהיטים",
+        "map_object_furniture_image": "תמונות רהיטים",
+        "map_object_hidden_segments": "חדרים מוסתרים",
+        "map_object_icon": "אייקון",
+        "map_object_ignored_obstacles": "מכשולים מהם התעלם",
+        "map_object_impassable_threshold": "ספים בלתי עבירים",
+        "map_object_lock_indicator": "מחוון נעילה",
+        "map_object_low_lying_area": "אזורים ירודים (Low-Lying)",
+        "map_object_material": "חומר הרצפה",
+        "map_object_mop_path": "מסלול ניגוב",
+        "map_object_mop_type": "סוג המגב",
+        "map_object_name": "שם",
+        "map_object_name_background": "שם רקע",
+        "map_object_no_go": "אסור לכניסה",
+        "map_object_no_mop": "אזור ללא ניגוב",
+        "map_object_object_option": "אפשרות אובייקט",
+        "map_object_obstacle": "מכשול",
+        "map_object_obstacle_background": "רקע מכשולים",
+        "map_object_obstacle_color": "צבע מכשול",
+        "map_object_order": "סדר",
+        "map_object_passable_threshold": "ספים שניתן לעבור",
+        "map_object_path": "נתיב/מסלול",
+        "map_object_pet": "חיית מחמד",
+        "map_object_predefined_point": "נקודות מוגדרות מראש",
+        "map_object_ramp": "רמפה",
+        "map_object_router": "נתב (ראוטר)",
+        "map_object_segment": "חדר",
+        "map_object_segment_type": "סוג החדר",
+        "map_object_selected_segments": "חדרים שנבחרו",
+        "map_object_split_line": "קו פיצול",
+        "map_object_stain": "כתם",
+        "map_object_station_status": "סטטוס תחנה",
+        "map_object_vacuum": "שואב אבק (Vacuum)",
+        "map_object_vacuum_status": "סטטוס שואב אבק",
+        "map_object_virtual_threshold": "ספים וירטואליים",
+        "map_object_virtual_wall": "קירות וירטואליים",
+        "map_object_walls": "קירות",
+        "map_object_zoom_point": "נקודת זום",
+        "object_opacity": "אטימות (Opacity) אובייקט",
+        "object_scale": "היקף (Scale) אובייקט",
+        "opacity": "אטימות (Opacity)",
+        "override_colors": "דריסת צבעי מפה",
+        "overlay_image": "תמונת שכבת עליונה (Overlay)",
+        "rotation": "סיבוב",
+        "scale": "היקף (Scale)",
+        "scripts": "סקריפטים",
+        "selectable_objects": "אובייקטים הניתנים לסימון (בחירה)",
+        "selected_map_config": "הגדרת %name%",
+        "show_map_info": "הצג מידע עבור המפה",
+        "top": "עליון",
+        "url": "כתובת (URL)",
+        "viewport": "תצוגה (Viewport)",
+        "width": "רוחב",
+        "zoom": "תקריב (Zoom)"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "שימו לב: לשואב יש משימה פעילה!",
+        "apply_changes_or_reload": "המפה השתנתה בזמן שעבדתם עליה!\nהאם תרצו לדרוס את השינויים או לטעון מחדש?",
+        "auto_mount_mop_will_enabled": "הרכבת מגב אוטומטית תופעל!",
+        "backup_map": "לגבות את המפה?",
+        "backup_map_will_overwritten": "גיבוי המפה הקיים יידרס ויבוטל!",
+        "bag_drying_will_stopped": "פעולת ייבוש שקית האבק תיפסק!",
+        "carpet_recognition_will_enabled": "זיהוי השטיחים חייב להיות מופעל כדי שיהיה אפשר להפעיל ניקוי שטיח מותאם",
+        "carpet_will_deleted": "השטיח יימחק!",
+        "cleangenius_will_disabled": "פעולת CleanGenius תושבת!",
+        "cleaning_failure": "סיבות לכשל בניקוי",
+        "create_map": "ליצור מפה חדשה?",
+        "custom_carpet_settings_will_enabled": "ניקוי השטיח המותאם אישית יופעל!",
+        "custom_carpet_settings_will_enabled_detail": "הגדרות ניקוי שטיח מותאמות אישית יוגדרו בהתאם לסוג השטיח שנבחר",
+        "customized_cleaning_disabled": "הניקוי המותאם אישית מושבת!",
+        "delete_carpet": "למחוק את השטיח?",
+        "delete_dnd": "למחוק את משימת נא לא להפריע (DnD)?",
+        "delete_map": "למחוק את המפה?",
+        "delete_schedule": "למחוק את המשימה המתוזמנת?",
+        "delete_shortcut": "למחוק את קיצור הדרך?",
+        "deleted": "נמחק בהצלחה",
+        "device_unavailable": "ההתקן אינו זמין",
+        "disable_cleangenius": "להשבית את CleanGenius?",
+        "dnd_confliction": "התנגשות עם משימת 'נא לא להפריע' (DnD)!",
+        "dnd_confliction_detail": "הוגדרה משימה מתוזמנת במהלך תקופת 'נא לא להפריע'.",
+        "dnd_will_deleted": "משימת ה'נא לא להפריע' משעה %start% עד %end% תימחק!",
+        "dock_in_restricted_area": "תחנת העגינה ממוקמת באזור מוגבל (אסור)!",
+        "dock_in_restricted_area_detail": "תחנת הטעינה ממוקמת בתוך אזור אסור לכניסה. אם תמשיכו ותשמרו את המפה, הרובוט עלול לא להצליח לחזור ולהיטען.",
+        "drying_will_stopped": "ייבוש משטח המגב ייעצר!",
+        "dust_collection_not_performed": "משימת ריקון האבק (Auto-Empty) לא התבצעה!\nהרובוט לא יבצע ריקון אוטומטי במהלך תקופת ה-DND.",
+        "enable_auto_mount_mop": "להפעיל הרכבת מגב אוטומטית?",
+        "enable_carpet_recognition": "זיהוי השטיחים יופעל!",
+        "enable_customized_cleaning": "האם ברצונכם להפעיל ניקוי מותאם אישית?",
+        "enable_mop_change": "האם ברצונכם להפעיל החלפת מגב אוטומטית?",
+        "enable_task": "האם ברצונכם להפעיל את המשימה?",
+        "entity_is_required": "נדרש לבחור ישות (Entity)",
+        "entity_not_available": "הישות (Entity) אינה זמינה",
+        "failed_to_load_card": "טעינת הכרטיס נכשלה",
+        "ignore_obstacle": "להתעלם מהמכשול?",
+        "invalid_entity": "ישות בלתי חוקית",
+        "map_backup": "גיבוי מפה בביצוע",
+        "map_backup_failed": "גיבוי מפה נכשל!",
+        "map_backup_success": "גיבוי מפה הושלם",
+        "map_recovery": "שחזור מפה בביצוע",
+        "map_recovery_failed": "שחזור מפה נכשל!",
+        "map_recovery_success": "שחזור מפה הושלם",
+        "map_will_deleted": "המפה %name% תימחק!",
+        "map_will_replaced": "המפה הנבחרת הנוכחית תוחלף במפה חדשה!",
+        "map_will_restored": "המפה השמורה תשוחזר למצב שבו הייתה בתאריך %date%",
+        "mapping_started": "פעולת המיפוי החלה...",
+        "mop_change_disabled": "החלפת המגב האוטומטית מושבתת!",
+        "mop_wash_frequency_low": "תדירות שטיפת המגב נמוכה מדי!",
+        "mop_wash_frequency_will_increased": "כדי להבטיח שהמגב יהיה רטוב מספיק, תדירות השטיפה תוגבר אוטומטית",
+        "not_available": "לא זמין כרגע...",
+        "not_fully_supported": "עדיין לא נתמך במלואו!",
+        "not_supported": "עדיין לא נתמך!",
+        "obstacle_will_ignored": "הרובוט יתעלם מהמכשול!",
+        "override_changes": "לדרוס שינויים?",
+        "preview": "זוהי תצוגה מקדימה של כרטיס Dreame Vacuum",
+        "recommended_areas": "אזורים מומלצים",
+        "relocating": "מבצע התמקמות (Positioning). אנא המתינו.",
+        "relocating_completed": "ההתמקמות הצליחה. הרובוט ממשיך למשימתו.",
+        "relocating_failed": "ההתמקמות (Self-Positioning) נכשלה!",
+        "replace_map": "להחליף למפה חדשה?",
+        "reset_usage": "לאפס את נתוני השימוש?",
+        "reset_walls": "לאפס קירות?",
+        "restore_map": "לשחזר את %name%?",
+        "resume_cleaning": "הרובוט ימשיך אוטומטית את משימת הניקוי מהנקודה בה עצר לאחר שהסוללה תיטען ל-80%.",
+        "resume_cleaning_not_performed": "הרובוט ימשיך בניקוי לאחר תום תקופת ה-DND (נא לא להפריע).",
+        "resume_cleaning_time": "הניקוי יתחיל ב-%time%",
+        "save_changes": "לשמור את השינויים?",
+        "saved": "נשמר בהצלחה",
+        "schedule_will_deleted": "המשימה המתוזמנת לשעה %time% תימחק!",
+        "select_map": "לבחור את %name%?",
+        "select_mapping_type": "בחרו את סוג המיפוי",
+        "select_room": "בחרו חדר להגדרת סדר הניקוי",
+        "selected_map_will_changed": "המפה הנבחרת תשונה ל-%name%!",
+        "service_call_failed": "קריאת השירות (Service call) נכשלה",
+        "settings_will_applied": "הגדרותיכם יחולו במשימה הבאה.",
+        "shortcut_will_deleted": "%name% יימחק!",
+        "stop_bag_drying": "לעצור את ייבוש שקית האבק?",
+        "stop_drying": "לעצור ייבוש?",
+        "stop_task": "לעצור את המשימה הנוכחית?",
+        "task_disabled": "המשימה מושבתת!",
+        "task_will_stopped": "המשימה הנוכחית תיעצר!",
+        "unsaved_changes_present": "יש לכם שינויים שלא נשמרו ויאבדו!",
+        "unsupported_browser": "דפדפן שאינו נתמך!",
+        "usage_will_reset": "השימוש ב-%name% יאופס!",
+        "walls_will_be_reset": "הקירות ישוחזרו למיקומם המקורי במפה!"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "שימוש באביזרים",
+        "add_furniture": "הוספת רהיט",
+        "audio_settings": "הגדרות שמע",
+        "battery_management": "ניהול סוללה",
+        "carpet_settings": "הגדרות שטיחים",
+        "clean_water_tank": "מכל מים נקיים",
+        "cleaning_details": "פרטי ניקוי",
+        "cleaning_history": "היסטוריית ניקוי",
+        "cleaning_sequence": "סדר הניקוי",
+        "created_carpet": "שטיח שנוצר באופן ידני",
+        "cruising": "שיוט",
+        "cruising_details": "פרטי שיוט",
+        "cruising_history": "היסטוריית שיוט",
+        "customized_cleaning": "ניקוי מותאם אישית",
+        "description": "ממשק המשתמש של התממשקות מותאמת אישית של %name%",
+        "detected_carpet": "שטיח שזוהה אוטומטית",
+        "detergent": "נוזל ניקוי",
+        "device_information": "מידע על המכשיר",
+        "device_settings": "הגדרות מכשיר",
+        "dnd": "נא לא להפריע",
+        "dnd_task": "משימת נא לא להפריע (DnD)",
+        "dust_bag": "שקית אבק",
+        "global_carpet_settings": "הגדרות שטיח גלובליות",
+        "invalid": "לא חוקי",
+        "locate": "איתור",
+        "map": "מפה",
+        "map_edit": "עריכת מפה",
+        "map_management": "ניהול מפות",
+        "map_name_placeholder": "מפה %index%",
+        "mop_type": "סוג מגב",
+        "mopping_settings": "הגדרות ניגוב",
+        "more_functions": "פונקציות נוספות",
+        "name": "כרטיס %name%",
+        "new_map": "מפה חדשה",
+        "obstacle": "מכשול",
+        "obstacle_settings": "הגדרות מצלמה ומכשולים",
+        "recovery_map_list": "שחזור מפה",
+        "remote_control": "שלט רחוק",
+        "saved_map": "מפה שמורה",
+        "schedule_list": "ניקוי מתוזמן",
+        "scheduled_room": "ניקוי חדר מתוזמן",
+        "scheduled_spot": "ניקוי נקודתי מתוזמן",
+        "scheduled_task": "משימה מתוזמנת",
+        "scheduled_zone": "ניקוי אזור מתוזמן",
+        "segment_name_placeholder": "חדר %index%",
+        "shortcut": "קיצור דרך",
+        "shortcut_list": "קיצורי דרך",
+        "shortcut_map": "מפת קיצור דרך",
+        "shortcut_name_placeholder": "קיצור דרך %index%",
+        "shortcut_task": "משימת קיצור דרך",
+        "task": "משימה %index%",
+        "task_placeholder": "משימה %index%",
+        "time_left": "נותרו %time%",
+        "unavailable": "לא זמין",
+        "used_water_tank": "מכל מים משומשים",
+        "wall": "קירות",
+        "wifi_map": "מפת WiFi"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "ניקוי חדר",
+      "description": "מתחיל פעולת ניקוי בחדרים נבחרים.",
+      "fields": {
+        "segments": {
+          "name": "חדרים (Segments)",
+          "description": "רשימה של חדרים לניקוי. אפשר להשתמש במספר/מזהה החדר בלבד, או במערך המכיל את מזהה החדר, כמות החזרות, עוצמת השאיבה, מצב המגב כדי לדרוס את ההגדרות ברירת המחדל לכל חדר ספציפי."
+        },
+        "repeats": {
+          "name": "חזרות",
+          "description": "מספר החזרות (מעברים) עבור כל חדר נבחר (אלא אם דורסים אותו דרך הגדרות ניקוי מותאם אישית)."
+        },
+        "suction_level": {
+          "name": "עוצמת שאיבה",
+          "description": "מהירות המאוורר/עוצמת השאיבה בעבור כל חדר שנבחר (אלא אם דורסים זאת דרך הגדרות ניקוי מותאם)."
+        },
+        "water_volume": {
+          "name": "כמות מים",
+          "description": "רמת שחרור המים בעבור כל חדר שנבחר (אלא אם דורסים זאת דרך ניקוי מותאם אישית)."
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "ניקוי אזור",
+      "description": "מתחיל פעולת ניקוי באזור הנבחר.",
+      "fields": {
+        "zone": {
+          "name": "אזור",
+          "description": "קואורדינטות (Coordinates)."
+        },
+        "repeats": {
+          "name": "חזרות",
+          "description": "מספר החזרות (מעברים) בעבור כל אזור הנבחר לניקוי."
+        },
+        "suction_level": {
+          "name": "עוצמת שאיבה",
+          "description": "רמת שאיבה/מאוורר בעבור כל אזור נבחר."
+        },
+        "water_volume": {
+          "name": "כמות מים",
+          "description": "רמת המים בעבור כל אזור נבחר."
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "ניקוי נקודתי",
+      "description": "מתחיל פעולת ניקוי בנקודות (Spots) נבחרות על המפה.",
+      "fields": {
+        "points": {
+          "name": "נקודות",
+          "description": "רשימה של קואורדינטות המיועדות לניקוי."
+        },
+        "repeats": {
+          "name": "חזרות",
+          "description": "מספר המעברים לכל נקודה שנבחרה."
+        },
+        "suction_level": {
+          "name": "עוצמת שאיבה",
+          "description": "עוצמת השאיבה לכל אזור שנבחר."
+        },
+        "water_volume": {
+          "name": "כמות מים",
+          "description": "רמת המים לכל אזור שנבחר."
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "ללכת ל...",
+      "description": "לגשת לנקודה או מיקום במפה ולעצור שם.",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "ציר ה-X של הנקודה."
+        },
+        "y": {
+          "name": "Y",
+          "description": "ציר ה-Y של הנקודה."
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "עקוב אחר נתיב",
+      "description": "הולך לפי רשימת קואורדינטות על המפה וחוזר לבסיס. (נתמך רק ברובוטים עם מצלמה)",
+      "fields": {
+        "points": {
+          "name": "נקודות",
+          "description": "רשימת קואורדינטות של הנתיב/מסלול."
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "התחלת קיצור דרך",
+      "description": "מתחיל משימת קיצור דרך. (רק בהתקנים נתמכים)",
+      "fields": {
+        "shortcut_id": {
+          "name": "מזהה קיצור (Shortcut ID)",
+          "description": "מספר זהות (ID) של קיצור הדרך המיועד."
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "הזזת שלב עם שלט רחוק",
+      "description": "לשלוט מרחוק ולהזיז את הרובוט בצעד אחד.",
+      "fields": {
+        "rotation": {
+          "name": "סיבוב (Rotation)",
+          "description": "מעלות פנייה בינאריות מ--128 עד 128."
+        },
+        "velocity": {
+          "name": "מהירות",
+          "description": "מהירות התנועה, מ-100 (קדימה) ועד -300 (אחורה)."
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "התקנת חבילת שפה/קול",
+      "description": "התקנת חבילת קול (רשמית או מותאמת אישית).",
+      "fields": {
+        "lang_id": {
+          "name": "מזהה שפה (Language ID)",
+          "description": "ה-ID של חבילת השפה/הקול."
+        },
+        "url": {
+          "name": "כתובת התקנה (URL)",
+          "description": "קישור לחבילה. חייב להיות נגיש על ידי שואב האבק ברשת."
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "סיכום ביקורת (Checksum) מסוג MD5 עבור חבילת השפה/הקול."
+        },
+        "size": {
+          "name": "גודל",
+          "description": "גודל חבילת השפה/הקול בבתים (bytes)."
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "בקשת מפה",
+      "description": "בקשת נתוני המפה"
+    },
+    "vacuum_select_map": {
+      "name": "בחירת מפה",
+      "description": "בחירת המפה הנוכחית. שימושי כאשר יש מספר מפות/קומות.",
+      "fields": {
+        "map_id": {
+          "name": "מזהה מפה (Map ID)",
+          "description": "מספר הזיהוי של המפה המיועדת לבחירה."
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "מחיקת מפה",
+      "description": "מחיקת מפה קיימת.",
+      "fields": {
+        "map_id": {
+          "name": "מזהה מפה (Map ID)",
+          "description": "מספר הזיהוי של המפה המיועדת למחיקה."
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "שמירת מפה זמנית",
+      "description": "לשמור את המפה הזמנית."
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "ביטול מפה זמנית",
+      "description": "ביטול (זריקת) המפה הזמנית."
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "החלפת מפה זמנית",
+      "description": "החלפת המפה הזמנית במפה שמורה אחרת.",
+      "fields": {
+        "map_id": {
+          "name": "מזהה מפה (Map ID)",
+          "description": "מספר הזיהוי של המפה שתחליף את המפה הנוכחית."
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "שינוי שם המפה",
+      "description": "משנה את שם המפה.",
+      "fields": {
+        "map_id": {
+          "name": "מזהה מפה (Map ID)",
+          "description": "מספר ה-ID של המפה."
+        },
+        "map_name": {
+          "name": "שם המפה",
+          "description": "השם החדש של המפה."
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "שחזור מפה",
+      "description": "שחזור מפה מהגיבוי/מהענן.",
+      "fields": {
+        "map_id": {
+          "name": "מזהה מפה (Map ID)",
+          "description": "מספר הזיהוי של המפה המיועדת לשחזור."
+        },
+        "recovery_map_index": {
+          "name": "אינדקס מיועד לשחזור (Recovery Map Index)",
+          "description": "האינדקס של המפה השמורה המיועדת לשחזור"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "שחזור מפה מקובץ",
+      "description": "לשחזר מפה מקובץ מקומי/ברשת.",
+      "fields": {
+        "map_id": {
+          "name": "מזהה מפה (Map ID)",
+          "description": "מספר הזיהוי של המפה המיועדת לשחזור."
+        },
+        "file_url": {
+          "name": "כתובת (URL) הקובץ",
+          "description": "קישור (URL) אל קובץ ה-tbz2.gz או ה-tar.gz השמור"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "גיבוי מפה",
+      "description": "גיבוי של המפה לענן.",
+      "fields": {
+        "map_id": {
+          "name": "מזהה מפה (Map ID)",
+          "description": "מספר הזיהוי של המפה שמיועדת לגיבוי."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "איחוד חדרים",
+      "description": "מיזוג חדרים לישות אחת.",
+      "fields": {
+        "map_id": {
+          "name": "מזהה מפה (Map ID)",
+          "description": "ה-ID של המפה."
+        },
+        "segments": {
+          "name": "חדרים (Segments)",
+          "description": "מזהי (IDs) החדרים."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "פיצול חדר",
+      "description": "מפצל חדר לשני חדרים נפרדים.",
+      "fields": {
+        "map_id": {
+          "name": "מזהה מפה (Map ID)",
+          "description": "ה-ID של המפה."
+        },
+        "segment": {
+          "name": "חדר (Segment)",
+          "description": "מספר הזיהוי (ID) של החדר (Segment)."
+        },
+        "line": {
+          "name": "קו חיתוך (Line)",
+          "description": "קואורדינטות קו הפיצול."
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "שינוי שם חדר",
+      "description": "משנה את שם החדר (Segment).",
+      "fields": {
+        "segment_id": {
+          "name": "מזהה חדר (Segment ID)",
+          "description": "מספר ה-ID של החדר (Segment)"
+        },
+        "segment_name": {
+          "name": "שם החדר",
+          "description": "השם החדש של החדר"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "קביעת סדר ניקוי",
+      "description": "מגדיר סדר לניקוי חדרים רצוף. (רק עבור מכשירים נתמכים)",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "סדר ניקוי",
+          "description": "רשימה של מספרי זיהוי חדרים (Segment IDs) המדמים את סדר הניקוי."
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "הגדרת ניקוי מותאם אישית",
+      "description": "מאפשר הגדרת פרמטרי ניקוי מותאמים אישית. (רק ברובוטים נתמכים)",
+      "fields": {
+        "segment_id": {
+          "name": "מזהה חדר (Segment ID)",
+          "description": "מזהי (IDs) החדרים."
+        },
+        "suction_level": {
+          "name": "עוצמת שאיבה",
+          "description": "עוצמת השאיבה בעבור כל חדר בנפרד."
+        },
+        "water_volume": {
+          "name": "כמות מים",
+          "description": "כמות זרימת המים בעבור כל חדר בנפרד."
+        },
+        "wetness_level": {
+          "name": "רמת רטיבות",
+          "description": "קביעת רמת רטיבות בעבור כל חדר בנפרד (ברובוטים נתמכים)."
+        },
+        "cleaning_mode": {
+          "name": "מצב ניקוי",
+          "description": "תצורת ניקוי לכל חדר (נתמך רק בשואבים עם מנגנון הרמת מגב)."
+        },
+        "repeats": {
+          "name": "חזרות",
+          "description": "כמות החזרות/המעברים שיבוצעו בכל חדר."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "הגדרת ניקוי שטיח מותאם אישית",
+      "description": "הגדרת תצורת ניקוי מותאמת אישית בעבור שטיחים. (במכשירים נתמכים)",
+      "fields": {
+        "id": {
+          "name": "מזהה שטיח (Carpet ID)",
+          "description": "מזהי (IDs) של שטיחים."
+        },
+        "type": {
+          "name": "סוג האובייקט",
+          "description": "סוג האובייקט לפי זיהוי. (0 = שטיח שזוהה אוטומטית, 1 = שטיח שנוצר באופן ידני, 2 = חדר שהוא שטיח (אם נתמך))"
+        },
+        "carpet_cleaning": {
+          "name": "ניקוי שטיח",
+          "description": "העדפת ניקוי התקפה ספציפית לכל שטיח רשום."
+        },
+        "carpet_preferences": {
+          "name": "הגדרות שטיחים",
+          "description": "מערך נתונים המאפיין את כל הגדרות השטיח הזמינות והמופעלות בעבור כל אחד מהם."
+        }
+      }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "הגדרת אזור מוגבל (אזור אסור)",
+      "description": "יצירה/החלפה של קירות וירטואליים, אזורים אסורים, או אזורים ללא ניגוב.",
+      "fields": {
+        "walls": {
+          "name": "קירות",
+          "description": "קירות וירטואליים."
+        },
+        "zones": {
+          "name": "אזורים",
+          "description": "אזורים שאסור לרובוט להיכנס אליהם."
+        },
+        "no_mops": {
+          "name": "ללא ניגוב",
+          "description": "אזורים מוגבלים לניגוב בלבד."
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "איפוס מתכלה (Consumable)",
+      "description": "יאפס מזהה רכיב מתכלה.",
+      "fields": {
+        "consumable": {
+          "name": "פריט מתכלה",
+          "description": "סוג הפריט המתכלה שיש לאפס."
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "שינוי שם קיצור דרך",
+      "description": "משנה שם קיצור דרך קיים. (במכשירים נתמכים)",
+      "fields": {
+        "shortcut_id": {
+          "name": "מזהה קיצור (Shortcut ID)",
+          "description": "ה-ID של הסקריפט (קיצור הדרך)."
+        },
+        "shortcut_name": {
+          "name": "שם קיצור הדרך",
+          "description": "השם החדש של קיצור הדרך."
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "מחיקת קיצור דרך",
+      "description": "מוחק קיצור דרך קיים. (בהתקנים נתמכים)",
+      "fields": {
+        "shortcut_id": {
+          "name": "מזהה (ID) קיצור דרך",
+          "description": "מזהה הפעולה (ID) של הקיצור המיועד למחיקה."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "הגדרת אזור שטיח",
+      "description": "מגדיר אזורי שטיח או שטיחים שמהם יש להתעלם במפה הנוכחית. (מכשירים נתמכים)",
+      "fields": {
+        "carpets": {
+          "name": "שטיחים",
+          "description": "אזורי השטיחים."
+        },
+        "deleted_carpets": {
+          "name": "שטיחים להתעלמות (Ignored Carpets)",
+          "description": "אזורי שטיחים שהרובוט יתעלם מהם במטרה למחוק/להתעלם משטיחים המזוהים אוטומטית."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "הגדרת סף וירטואלי",
+      "description": "להגדיר ספים וירטואליים (Virtual thresholds) בהם מותר לעבור.",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "ספים וירטואליים",
+          "description": "קואורדינטות לייצוג הסף הווירטואלי במפה."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "הגדרת נקודות מוגדרות מראש",
+      "description": "קובע קואורדינטות מוגדרות מראש למפה הנוכחית. (רק לשואבים עם מצלמה)",
+      "fields": {
+        "points": {
+          "name": "נקודות",
+          "description": "רשימה נקודות (Coordinates) הנדרשות לשמירה."
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "הגדר התעלמות ממכשול",
+      "description": "קובע אם הרובוט יתעלם מהמכשול. (נתמך אך ורק ברובוטים בעלי זיהוי מכשולים AI)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "ציר ה-X של המכשול."
+        },
+        "y": {
+          "name": "Y",
+          "description": "ציר ה-Y של המכשול."
+        },
+        "obstacle_ignored": {
+          "name": "מכשול נדחה (התעלמוּת)",
+          "description": "האם להתעלם מהמכשול הספציפי או לא."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "הגדרת מיקום נתב (ראוטר)",
+      "description": "הגדר את המיקום הפיזי של הנתב על גבי המפה הנוכחית. (במוצרים תומכי שידור מפות WiFi)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "ציר ה-X של הראוטר (הנתב)."
+        },
+        "y": {
+          "name": "Y",
+          "description": "ציר ה-Y של הראוטר."
+        }
+      }
+    },
+    "select_select_previous": {
+      "name": "בחירת האפשרות הקודמת",
+      "description": "בוחר באפשרות שקדמה לה בישות מסוג select.",
+      "fields": {
+        "cycle": {
+          "name": "מחזוריות (Cycle)",
+          "description": "האם על האפשרויות לחזור לתחילת הרשימה אחרי או לפני האחרונה."
+        }
+      }
+    },
+    "select_select_first": {
+      "name": "בחירת הראשון",
+      "description": "בחירת האפשרות הראשונה מתוך ישות select קיימת."
+    },
+    "select_select_last": {
+      "name": "בחירת האחרון",
+      "description": "בחירת האפשרות האחרונה מתוך ישות select קיימת."
+    },
+    "select_select_next": {
+      "name": "בחירת הבא",
+      "description": "בוחר באפשרויות הבאות אחרי הנוכחית בישות מסוג select.",
+      "fields": {
+        "cycle": {
+          "name": "מחזוריות (Cycle)",
+          "description": "האם על האפשרויות לחזור לתחילת הרשימה אחרי הגעה לסוף הרשימה."
+        }
+      }
+    }
+  }
+}
