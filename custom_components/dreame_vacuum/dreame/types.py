@@ -4523,6 +4523,7 @@ class MapData:
         self.deleted_carpets: Optional[List[Carpet]] = None  # Data json: vw.nocpt
         self.detected_carpets: Optional[List[Carpet]] = None  # Data json: carpet_info
         self.low_lying_areas: Optional[List[Polygon]] = None  # Data json: sneak_areas or sneak_areas_end
+        self.low_lying_area_key: Optional[str] = None  # Data json: sneak_areas or sneak_areas_end
         self.cleaning_sequence: Optional[Dict[int, int]] = None  # Data json: cleanareaorder
         self.mop_type: Optional[Dict[int, str]] = None  # Data json: mop_type_with_order
         self.current_mop_type: Optional[Dict[int, str]] = None  # Data json: moptype

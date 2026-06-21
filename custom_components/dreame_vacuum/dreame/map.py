@@ -2577,6 +2577,7 @@ class DreameMapVacuumMapEditor:
             )
 
         map_data.low_lying_areas = low_lying_areas
+        low_lying_area_key = map_data.low_lying_area_key or "sneak_areas_end"
 
         self._set_updated_frame_id(map_data.frame_id)
         if (
@@ -2585,18 +2586,20 @@ class DreameMapVacuumMapEditor:
             and self._selected_map_id in self._saved_map_data
         ):
             self._saved_map_data[self._selected_map_id].low_lying_areas = map_data.low_lying_areas
+            self._saved_map_data[self._selected_map_id].low_lying_area_key = low_lying_area_key
             self.refresh_map(self._selected_map_id)
         self.refresh_map()
 
+        areas_payload = [
+            {
+                "id": area.id,
+                "roi": area.polygon,
+                "type": area.type,
+            }
+            for area in map_data.low_lying_areas
+        ]
         return {
-            "sneak_areas": [
-                {
-                    "id": area.id,
-                    "roi": area.polygon,
-                    "type": area.type,
-                }
-                for area in map_data.low_lying_areas
-            ]
+            low_lying_area_key: areas_payload,
         }
 
     def set_predefined_points(self, predefined_points) -> None:
@@ -5399,8 +5402,13 @@ class DreameVacuumMapDecoder:
                     )
 
             low_lying_area_key = "sneak_areas_end" if "sneak_areas_end" in data_json else "sneak_areas"
+            map_data.low_lying_area_key = low_lying_area_key
             low_lying_areas = (
-                changes["sneak_areas"] if changes and "sneak_areas" in changes else data_json.get(low_lying_area_key)
+                changes.get(low_lying_area_key)
+                or changes.get("sneak_areas_end")
+                or changes.get("sneak_areas")
+                if changes
+                else data_json.get(low_lying_area_key)
             )
 
             if low_lying_areas and not map_data.low_lying_areas:
