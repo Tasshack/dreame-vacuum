@@ -2550,6 +2550,7 @@ class DreameMapVacuumMapEditor:
         for index, area in enumerate(areas or [], 1):
             x_coords = sorted([area[0], area[2]])
             y_coords = sorted([area[1], area[3]])
+            area_size = round(abs((x_coords[1] - x_coords[0]) * (y_coords[1] - y_coords[0])) / 1000000, 2)
             polygon = [
                 x_coords[0],
                 y_coords[0],
@@ -2573,6 +2574,9 @@ class DreameMapVacuumMapEditor:
                     y_coords[1],
                     polygon,
                     1,
+                    0,
+                    None,
+                    area_size,
                 )
             )
 
@@ -2595,6 +2599,8 @@ class DreameMapVacuumMapEditor:
                 "id": area.id,
                 "roi": area.polygon,
                 "type": area.type,
+                "hide": area.hidden,
+                "area": area.area,
             }
             for area in map_data.low_lying_areas
         ]
