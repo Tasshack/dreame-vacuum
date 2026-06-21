@@ -236,6 +236,7 @@ CHARGING_STATUS_CHARGING_COMPLETED: Final = "charging_completed"
 
 DUST_COLLECTION_NOT_AVAILABLE: Final = "not_available"
 DUST_COLLECTION_AVAILABLE: Final = "available"
+DUST_COLLECTION_OVER_USE: Final = "over_use"
 
 AUTO_EMPTY_STATUS_ACTIVE: Final = "active"
 AUTO_EMPTY_STATUS_NOT_PERFORMED: Final = "not_performed"
@@ -1482,6 +1483,7 @@ DUST_COLLECTION_TO_NAME: Final = {
     DreameVacuumDustCollection.UNKNOWN: STATE_UNKNOWN,
     DreameVacuumDustCollection.NOT_AVAILABLE: DUST_COLLECTION_NOT_AVAILABLE,
     DreameVacuumDustCollection.AVAILABLE: DUST_COLLECTION_AVAILABLE,
+    DreameVacuumDustCollection.OVER_USE: DUST_COLLECTION_OVER_USE,
 }
 
 AUTO_EMPTY_STATUS_TO_NAME: Final = {

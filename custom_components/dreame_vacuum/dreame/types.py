@@ -3153,9 +3153,9 @@ class DreameVacuumDeviceCapability:
 
         if self.self_wash_base and self.washless_base:
             self.self_wash_base = False
-        if self.auto_empty_base and (
-            not self.auto_emptying
-            or self._device.get_property(DreameVacuumProperty.DUST_COLLECTION)
+        if (
+            self.auto_empty_base
+            and self._device.get_property(DreameVacuumProperty.DUST_COLLECTION)
             == DreameVacuumDustCollection.NEVER.value
         ):
             self.auto_empty_base = False
