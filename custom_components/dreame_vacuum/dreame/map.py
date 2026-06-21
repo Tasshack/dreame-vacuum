@@ -2541,6 +2541,64 @@ class DreameMapVacuumMapEditor:
             self.refresh_map(self._selected_map_id)
         self.refresh_map()
 
+    def set_low_lying_areas(self, areas) -> dict[str, list[dict[str, Any]]] | None:
+        map_data = self._map_data
+        if not map_data or not self._selected_map_id:
+            return
+
+        low_lying_areas = []
+        for index, area in enumerate(areas or [], 1):
+            x_coords = sorted([area[0], area[2]])
+            y_coords = sorted([area[1], area[3]])
+            polygon = [
+                x_coords[0],
+                y_coords[0],
+                x_coords[1],
+                y_coords[0],
+                x_coords[1],
+                y_coords[1],
+                x_coords[0],
+                y_coords[1],
+            ]
+            low_lying_areas.append(
+                Polygon(
+                    index,
+                    x_coords[0],
+                    y_coords[0],
+                    x_coords[1],
+                    y_coords[0],
+                    x_coords[1],
+                    y_coords[1],
+                    x_coords[0],
+                    y_coords[1],
+                    polygon,
+                    1,
+                )
+            )
+
+        map_data.low_lying_areas = low_lying_areas
+
+        self._set_updated_frame_id(map_data.frame_id)
+        if (
+            self._saved_map_data
+            and self._selected_map_id is not None
+            and self._selected_map_id in self._saved_map_data
+        ):
+            self._saved_map_data[self._selected_map_id].low_lying_areas = map_data.low_lying_areas
+            self.refresh_map(self._selected_map_id)
+        self.refresh_map()
+
+        return {
+            "sneak_areas": [
+                {
+                    "id": area.id,
+                    "roi": area.polygon,
+                    "type": area.type,
+                }
+                for area in map_data.low_lying_areas
+            ]
+        }
+
     def set_predefined_points(self, predefined_points) -> None:
         map_data = self._map_data
         if not map_data or not self._selected_map_id or map_data.predefined_points is None:
