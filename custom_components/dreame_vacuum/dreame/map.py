@@ -911,6 +911,8 @@ class DreameMapVacuumMapManager:
                         map_data.no_go_areas = saved_map_data.no_go_areas
                         map_data.no_mopping_areas = saved_map_data.no_mopping_areas
                         map_data.virtual_walls = saved_map_data.virtual_walls
+                        map_data.low_lying_areas = saved_map_data.low_lying_areas
+                        map_data.low_lying_area_key = saved_map_data.low_lying_area_key
                         map_data.robot_position = None
                         map_data.docked = True
                         # map_data.restored_map = True
@@ -2606,6 +2608,8 @@ class DreameMapVacuumMapEditor:
         ]
         return {
             low_lying_area_key: areas_payload,
+            "sneak_areas": areas_payload,
+            "sneak_areas_end": areas_payload,
         }
 
     def set_predefined_points(self, predefined_points) -> None:
@@ -4949,6 +4953,8 @@ class DreameVacuumMapDecoder:
                         map_data.detected_carpets = saved_map_data.detected_carpets
                         map_data.router_position = saved_map_data.router_position
                         map_data.curtains = saved_map_data.curtains
+                        map_data.low_lying_areas = saved_map_data.low_lying_areas
+                        map_data.low_lying_area_key = saved_map_data.low_lying_area_key
                         map_data.hidden_segments = saved_map_data.hidden_segments
                         map_data.predefined_points = saved_map_data.predefined_points
                         map_data.cleaning_sequence = saved_map_data.cleaning_sequence
@@ -5579,6 +5585,8 @@ class DreameVacuumMapDecoder:
                         map_data.deleted_obstacles = deleted_objects["ai_obstacle"]
                     if "sneak_areas" in deleted_objects:
                         map_data.deleted_low_lying_areas = deleted_objects["sneak_areas"]
+                    if "sneak_areas_end" in deleted_objects:
+                        map_data.deleted_low_lying_areas = deleted_objects["sneak_areas_end"]
                     if "rec_vw" in deleted_objects:
                         map_data.deleted_recommended_area_type = deleted_objects["rec_vw"]  ## TODO: Handle this
 
