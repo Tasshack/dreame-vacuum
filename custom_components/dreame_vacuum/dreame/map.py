@@ -2583,7 +2583,7 @@ class DreameMapVacuumMapEditor:
             )
 
         map_data.low_lying_areas = low_lying_areas
-        low_lying_area_key = map_data.low_lying_area_key or "sneak_areas_end"
+        low_lying_area_key = map_data.low_lying_area_key or "sneak_areas"
 
         self._set_updated_frame_id(map_data.frame_id)
         if (
@@ -2602,15 +2602,10 @@ class DreameMapVacuumMapEditor:
                 "roi": area.polygon,
                 "type": area.type,
                 "hide": area.hidden,
-                "area": area.area,
             }
             for area in map_data.low_lying_areas
         ]
-        return {
-            low_lying_area_key: areas_payload,
-            "sneak_areas": areas_payload,
-            "sneak_areas_end": areas_payload,
-        }
+        return {low_lying_area_key: areas_payload}
 
     def set_predefined_points(self, predefined_points) -> None:
         map_data = self._map_data
