@@ -1602,12 +1602,9 @@ class DreameVacuumDevice:
             ]
         if dnd_list and len(dnd_list) > 1:
             dnd_list.sort(
-                key=cmp_to_key(
-                    lambda a, b: (
-                        b.id - a.id
-                        if a.start == b.start
-                        else int(a.start.replace(":", "")) - int(b.start.replace(":", ""))
-                    )
+                key=lambda x: (
+                    int(x.start.replace(":", "")) if x.start else 0,
+                    -x.id if x.id is not None else 0,
                 )
             )
         self.status.dnd_tasks = dnd_list
@@ -1639,12 +1636,9 @@ class DreameVacuumDevice:
 
         if schedule_list and len(schedule_list) > 1:
             schedule_list.sort(
-                key=cmp_to_key(
-                    lambda a, b: (
-                        b.id - a.id
-                        if a.time == b.time
-                        else int(a.time.replace(":", "")) - int(b.time.replace(":", ""))
-                    )
+                key=lambda x: (
+                    int(x.time.replace(":", "")) if x.time else 0,
+                    -x.id if x.id is not None else 0,
                 )
             )
 

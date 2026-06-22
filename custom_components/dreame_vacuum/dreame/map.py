@@ -1796,13 +1796,11 @@ class DreameMapVacuumMapManager:
                                 )
                             if len(recovery_map_list) > 2:
                                 recovery_map_list.sort(
-                                    key=cmp_to_key(
-                                        lambda a, b: (
-                                            int(a.map_type) - int(b.map_type)
-                                            if a.map_type is RecoveryMapType.EDITED
-                                            and b.map_type is RecoveryMapType.BACKUP
-                                            else 1 if a.date > b.date else -1
-                                        )
+                                    key=lambda x: (
+                                        0 if x.map_type is RecoveryMapType.EDITED
+                                        else 2 if x.map_type is RecoveryMapType.BACKUP
+                                        else 1,
+                                        x.date
                                     )
                                 )
 
@@ -6523,10 +6521,10 @@ class DreameVacuumMapDecoder:
             max_area_item = max(segment_info, key=lambda s: s[2])
             sorted_segments = [max_area_item] + sorted(
                 [s for s in segment_info if s[0] != max_area_item[0]],
-                key=cmp_to_key(DreameVacuumMapDecoder._compare_segment_neighbors),
+                key=lambda s: (-len(s[1]) if s[1] else 0, s[0]),
             )
         else:
-            sorted_segments = sorted(segment_info, key=cmp_to_key(DreameVacuumMapDecoder._compare_segment_neighbors))
+            sorted_segments = sorted(segment_info, key=lambda s: (-len(s[1]) if s[1] else 0, s[0]))
 
         for segment in sorted_segments:
             used_ids = []
@@ -6544,7 +6542,7 @@ class DreameVacuumMapDecoder:
 
             area_color_num = sorted(
                 area_color_num.values(),
-                key=cmp_to_key(DreameVacuumMapDecoder._compare_colors),
+                key=lambda x: (x[1], x[0]),
             )
 
             for area_color in area_color_num:
@@ -7137,7 +7135,7 @@ class DreameVacuumMapDataJsonRenderer:
                             val
                             for sublist in sorted(
                                 floor_pixels,
-                                key=cmp_to_key(DreameVacuumMapDataJsonRenderer._coordinate_tuple_sort),
+                                key=lambda c: (c[1], c[0]),
                             )
                             for val in sublist
                         ],
@@ -7152,7 +7150,7 @@ class DreameVacuumMapDataJsonRenderer:
                             val
                             for sublist in sorted(
                                 wall_pixels,
-                                key=cmp_to_key(DreameVacuumMapDataJsonRenderer._coordinate_tuple_sort),
+                                key=lambda c: (c[1], c[0]),
                             )
                             for val in sublist
                         ],
@@ -7173,7 +7171,7 @@ class DreameVacuumMapDataJsonRenderer:
                                 val
                                 for sublist in sorted(
                                     v,
-                                    key=cmp_to_key(DreameVacuumMapDataJsonRenderer._coordinate_tuple_sort),
+                                    key=lambda c: (c[1], c[0]),
                                 )
                                 for val in sublist
                             ],
@@ -12886,11 +12884,7 @@ class DreameVacuumMapOptimizer:
         if arr1[0] >= arr2[1] or arr2[0] >= arr1[1]:
             return None
 
-        def sort_data(a, b):
-            return a - b
-
-        tmp = arr1 + arr2
-        tmp.sort(key=cmp_to_key(sort_data))
+        tmp = sorted(arr1 + arr2)
         return [tmp[1], tmp[2]]
 
     def _find_original_points(self, original_data, data, width, xs, ys) -> float:
