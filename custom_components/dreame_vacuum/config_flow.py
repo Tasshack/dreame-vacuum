@@ -721,6 +721,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             country_list.pop(1)
         elif self.account_type == ACCOUNT_TYPE_DREAME:
             country_list.append("kr")
+            country_list.append("by")
 
         return vol.Schema(
             {
