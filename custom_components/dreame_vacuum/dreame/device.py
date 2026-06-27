@@ -8974,8 +8974,10 @@ class DreameVacuumDeviceStatus:
     @property
     def mop_in_station(self) -> bool:
         """Returns true when the mop pad is in the station."""
+        if self.water_tank_or_mop_installed:
+            return False
         value = self._get_property(DreameVacuumProperty.MOP_IN_STATION)
-        return bool(value == 1 or value == 4) and not self.docked
+        return bool(value == 1 or value == 4)
 
     @property
     def auto_add_detergent(self) -> bool:
