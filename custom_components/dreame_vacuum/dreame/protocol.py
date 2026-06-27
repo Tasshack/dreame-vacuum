@@ -819,6 +819,7 @@ class DreameVacuumMiHomeCloudProtocol:
         self._ssecurity = None
         self._userId = None
         self._service_token = None
+        self._pass_token = None
         self._captcha_ick = None
         self._captcha_code = None
         self._logged_in = False
@@ -829,11 +830,13 @@ class DreameVacuumMiHomeCloudProtocol:
 
         if self._auth_key:
             data = self._auth_key.split(" ")
-            if len(data) == 4:
+            if len(data) >= 4:
                 self._service_token = data[0]
                 self._ssecurity = data[1]
                 self._userId = data[2]
                 self._client_id = data[3]
+            if len(data) >= 5:
+                self._pass_token = data[4]  # silent-refresh credential (rides along in auth_key)
 
         self._useragent = f"Android-7.1.1-1.0.0-ONEPLUS A3010-136-{self._client_id} APP/xiaomi.smarthome APPV/62830"
         self._locale = locale.getdefaultlocale()[0]
@@ -860,7 +863,7 @@ class DreameVacuumMiHomeCloudProtocol:
                 self._thread = None
                 return
             response = self._api_call(item[1], item[2], item[3])
-            if not self.check_login(response):
+            if response is not None and not self.check_login(response):
                 self._logged_in = False
                 self._auth_failed = True
                 response = None
@@ -881,7 +884,7 @@ class DreameVacuumMiHomeCloudProtocol:
             f"{self.get_api_url()}/{url}", {"data": json.dumps(params, separators=(",", ":"))}, retry_count, timeout
         )
 
-        if not self.check_login(response):
+        if response is not None and not self.check_login(response):
             self._logged_in = False
             self._auth_failed = True
             response = None
@@ -916,6 +919,7 @@ class DreameVacuumMiHomeCloudProtocol:
         return f"{str(self._uid)}/{str(self._did)}/0"
 
     def check_login(self, response=None) -> bool:
+        self_check = response is None
         try:
             if response is None:
                 response = self.request(
@@ -942,6 +946,19 @@ class DreameVacuumMiHomeCloudProtocol:
                 ):
                     return False
                 return True
+            # No response object at all while validating our OWN cached session.
+            # Distinguish two cases via _last_timeout (set by request()):
+            #  - TRUE network timeout (no server response): NOT an auth rejection -> keep the
+            #    cached session, don't cascade into a full password re-login (avoids spurious 2FA).
+            #  - Server responded non-200 (auth rejection -> request() returned None but not a
+            #    timeout): treat as auth failure (return False) so login() proceeds to
+            #    refresh_token()/full re-login.
+            if self_check:
+                if getattr(self, "_last_timeout", False):
+                    _LOGGER.debug("check_login: network timeout — keeping cached session, skipping re-login")
+                    return True
+                _LOGGER.debug("check_login: server rejected token (non-200) — treating as auth failure")
+                return False
         except:
             pass
         return False
@@ -955,7 +972,7 @@ class DreameVacuumMiHomeCloudProtocol:
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
                 cookies={"deviceId": self._client_id},
-                timeout=10,
+                timeout=120,
             )
             if response is not None:
                 if response.status_code == 200:
@@ -1003,7 +1020,7 @@ class DreameVacuumMiHomeCloudProtocol:
                 data=data,
                 params=params,
                 cookies=cookies,
-                timeout=10,
+                timeout=120,
             )
             if response is not None:
                 if response.status_code == 200:
@@ -1013,6 +1030,13 @@ class DreameVacuumMiHomeCloudProtocol:
                         self._userId = data.get("userId", self._userId)
                         self._ssecurity = data.get("ssecurity", self._ssecurity)
                         self._location = location
+                        try:
+                            pass_token = data.get("passToken") or response.cookies.get("passToken")
+                            if pass_token:
+                                self._pass_token = pass_token
+                                _LOGGER.debug("Captured passToken (len=%s) for future silent re-login", len(pass_token))
+                        except Exception:
+                            pass
                         return True
 
                     if "notificationUrl" in data:
@@ -1044,17 +1068,69 @@ class DreameVacuumMiHomeCloudProtocol:
                     "User-Agent": self._useragent,
                     "Content-Type": "application/x-www-form-urlencoded",
                 },
-                timeout=10,
+                timeout=120,
             )
             if response is not None:
                 if response.status_code == 200 and "serviceToken" in response.cookies:
                     self._service_token = response.cookies.get("serviceToken")
-                    self._auth_key = f"{self._service_token} {self._ssecurity} {self._userId} {self._client_id}"
+                    pt = self._session.cookies.get("passToken")
+                    if pt:
+                        self._pass_token = pt
+                    self._auth_key = f"{self._service_token} {self._ssecurity} {self._userId} {self._client_id}" + (
+                        f" {self._pass_token}" if self._pass_token else ""
+                    )
                     return True
                 else:
                     self._auth_failed = True
         except:
             pass
+        return False
+
+    def refresh_token(self) -> bool:
+        """Silently refresh the session using a stored passToken (no password/2FA).
+
+        Mirrors what the Mi Home app does: GET serviceLogin with the passToken cookie ->
+        code:0 + fresh ssecurity + (rotated) passToken + STS location -> follow it for a
+        new serviceToken. Self-contained (own temp session) so a failure leaves the
+        caller's session intact for the full-login fallback. Validated working 2026-06-26.
+        """
+        if not self._pass_token:
+            return False
+        try:
+            s = requests.session()
+            s.cookies.set("sdkVersion", "3.8.6", domain="xiaomi.com")
+            s.cookies.set("deviceId", self._client_id, domain="xiaomi.com")
+            if self._userId:
+                s.cookies.set("userId", str(self._userId), domain="xiaomi.com")
+            s.cookies.set("passToken", self._pass_token, domain="xiaomi.com")
+            r = s.get(
+                "https://account.xiaomi.com/pass/serviceLogin?sid=xiaomiio&_json=true",
+                headers={"User-Agent": self._useragent, "Content-Type": "application/x-www-form-urlencoded"},
+                timeout=120,
+            )
+            if r is None or r.status_code != 200:
+                return False
+            data = self.to_json(r.text)
+            if data.get("code") != 0 or not data.get("location"):
+                _LOGGER.debug("refresh_token: passToken rejected (code=%s)", data.get("code"))
+                return False
+            user_id = data.get("userId", self._userId)
+            ssecurity = data.get("ssecurity", self._ssecurity)
+            location = data.get("location")
+            new_pt = data.get("passToken") or s.cookies.get("passToken") or self._pass_token
+            r2 = s.get(location, headers={"User-Agent": self._useragent}, timeout=120)
+            service_token = s.cookies.get("serviceToken")
+            if r2 is not None and r2.status_code == 200 and service_token:
+                self._userId = user_id
+                self._ssecurity = ssecurity
+                self._service_token = service_token
+                self._pass_token = new_pt
+                self._session = s
+                self._auth_key = f"{self._service_token} {self._ssecurity} {self._userId} {self._client_id} {self._pass_token}"
+                _LOGGER.debug("refresh_token: silent re-login via passToken OK")
+                return True
+        except Exception as ex:  # noqa: BLE001
+            _LOGGER.debug("refresh_token error: %s", ex)
         return False
 
     def login(self) -> bool:
@@ -1067,8 +1143,10 @@ class DreameVacuumMiHomeCloudProtocol:
         self._session.cookies.set("deviceId", self._client_id, domain="mi.com")
         self._session.cookies.set("deviceId", self._client_id, domain="xiaomi.com")
 
-        logged_in = (self._ssecurity and self.check_login()) or (
-            self.login_step_1() and self.login_step_2() and self.login_step_3()
+        logged_in = (
+            (self._ssecurity and self.check_login())
+            or self.refresh_token()
+            or (self.login_step_1() and self.login_step_2() and self.login_step_3())
         )
 
         if logged_in:
@@ -1076,6 +1154,12 @@ class DreameVacuumMiHomeCloudProtocol:
             self._auth_failed = False
             self._fail_count = 0
             self._connected = True
+            try:
+                pt = self._session.cookies.get("passToken")
+                if pt:
+                    self._pass_token = pt
+            except Exception:  # noqa: BLE001
+                pass
         else:
             self._ssecurity = None
 
@@ -1094,7 +1178,7 @@ class DreameVacuumMiHomeCloudProtocol:
                     response = self._session.get(
                         "https://account.xiaomi.com/identity/list",
                         params={"sid": "xiaomiio", "context": context, "_locale": str(self._locale)},
-                        timeout=10,
+                        timeout=120,
                     )
                     if response and response.status_code == 200:
                         identity_session = response.cookies.get("identity_session")
@@ -1120,7 +1204,7 @@ class DreameVacuumMiHomeCloudProtocol:
                                     "mask": "0",
                                     "_locale": str(self._locale),
                                 },
-                                timeout=10,
+                                timeout=120,
                             )
                             if not verify_response or verify_response.status_code != 200:
                                 return False
@@ -1159,7 +1243,7 @@ class DreameVacuumMiHomeCloudProtocol:
                                     "_json": "true",
                                     "ick": self._session.cookies.get("ick", ""),
                                 },
-                                timeout=10,
+                                timeout=120,
                             )
                             if not send_response or send_response.status_code != 200:
                                 return False
@@ -1210,7 +1294,7 @@ class DreameVacuumMiHomeCloudProtocol:
                 "https://account.xiaomi.com/identity/list",
                 params={"sid": "xiaomiio", "context": context, "_locale": str(self._locale)},
                 headers=headers,
-                timeout=10,
+                timeout=120,
             )
             if response is None:
                 _LOGGER.error(f"2FA failed: identity/list endpoint failed!")
@@ -1293,7 +1377,7 @@ class DreameVacuumMiHomeCloudProtocol:
                 params={"sid": "xiaomiio", "context": context, "_locale": str(self._locale)},
                 headers=headers,
                 allow_redirects=False,
-                timeout=10,
+                timeout=120,
             )
 
             if response is None:
@@ -1384,7 +1468,7 @@ class DreameVacuumMiHomeCloudProtocol:
             retry_count = 0
         while retries < retry_count + 1:
             try:
-                response = self._session.get(url, timeout=6)
+                response = self._session.get(url, timeout=120)
             except Exception as ex:
                 response = None
                 _LOGGER.warning("Unable to get file at %s: %s", url, ex)
@@ -1616,7 +1700,7 @@ class DreameVacuumMiHomeCloudProtocol:
             return None
         return api_response["result"]
 
-    def request(self, url: str, params: Dict[str, str], retry_count=2, timeout=None) -> Any:
+    def request(self, url: str, params: Dict[str, str], retry_count=5, timeout=None) -> Any:
         retries = 0
         if not retry_count or retry_count < 0:
             retry_count = 0
@@ -1645,14 +1729,21 @@ class DreameVacuumMiHomeCloudProtocol:
         while retries < retry_count + 1:
             try:
                 response = self._session.post(
-                    url, headers=headers, cookies=cookies, data=fields, timeout=timeout if timeout else 6
+                    url, headers=headers, cookies=cookies, data=fields, timeout=timeout if timeout else 120
                 )
                 break
             except Exception as ex:
                 retries = retries + 1
                 response = None
                 if self._connected:
-                    _LOGGER.warning("Error while executing request: %s %s", url, str(ex))
+                    _LOGGER.warning("Error while executing request (try %s/%s): %s %s", retries, retry_count + 1, url, str(ex))
+                if retries < retry_count + 1:
+                    sleep(min(2 * retries, 10))
+
+        # Distinguish a true network timeout (no response at all) from a server
+        # response (incl. non-200 auth rejection). Used by check_login to decide
+        # whether to keep the cached session (timeout) or treat it as auth failure.
+        self._last_timeout = response is None
 
         if response is not None:
             if response.status_code == 200:
