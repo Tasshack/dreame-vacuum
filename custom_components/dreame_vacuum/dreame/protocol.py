@@ -819,6 +819,7 @@ class DreameVacuumMiHomeCloudProtocol:
         self._ssecurity = None
         self._userId = None
         self._service_token = None
+        self._pass_token = None
         self._captcha_ick = None
         self._captcha_code = None
         self._logged_in = False
@@ -829,11 +830,13 @@ class DreameVacuumMiHomeCloudProtocol:
 
         if self._auth_key:
             data = self._auth_key.split(" ")
-            if len(data) == 4:
+            if len(data) >= 4:
                 self._service_token = data[0]
                 self._ssecurity = data[1]
                 self._userId = data[2]
                 self._client_id = data[3]
+            if len(data) >= 5:
+                self._pass_token = data[4]
 
         self._useragent = f"Android-7.1.1-1.0.0-ONEPLUS A3010-136-{self._client_id} APP/xiaomi.smarthome APPV/62830"
         self._locale = locale.getdefaultlocale()[0]
@@ -965,6 +968,9 @@ class DreameVacuumMiHomeCloudProtocol:
                         self._userId = data.get("userId", self._userId)
                         self._ssecurity = data.get("ssecurity", self._ssecurity)
                         self._location = data.get("location")
+                        pass_token = data.get("passToken") or response.cookies.get("passToken")
+                        if pass_token:
+                            self._pass_token = pass_token
                     return True
                 self._auth_failed = True
         except:
@@ -1013,6 +1019,9 @@ class DreameVacuumMiHomeCloudProtocol:
                         self._userId = data.get("userId", self._userId)
                         self._ssecurity = data.get("ssecurity", self._ssecurity)
                         self._location = location
+                        pass_token = data.get("passToken") or response.cookies.get("passToken")
+                        if pass_token:
+                            self._pass_token = pass_token
                         return True
 
                     if "notificationUrl" in data:
@@ -1049,7 +1058,12 @@ class DreameVacuumMiHomeCloudProtocol:
             if response is not None:
                 if response.status_code == 200 and "serviceToken" in response.cookies:
                     self._service_token = response.cookies.get("serviceToken")
+                    pass_token = self._session.cookies.get("passToken") or response.cookies.get("passToken")
+                    if pass_token:
+                        self._pass_token = pass_token
                     self._auth_key = f"{self._service_token} {self._ssecurity} {self._userId} {self._client_id}"
+                    if self._pass_token:
+                        self._auth_key = f"{self._auth_key} {self._pass_token}"
                     return True
                 else:
                     self._auth_failed = True
@@ -1066,9 +1080,16 @@ class DreameVacuumMiHomeCloudProtocol:
         self._session.cookies.set("sdkVersion", "3.8.6", domain="xiaomi.com")
         self._session.cookies.set("deviceId", self._client_id, domain="mi.com")
         self._session.cookies.set("deviceId", self._client_id, domain="xiaomi.com")
+        if self._pass_token:
+            self._session.cookies.set("passToken", self._pass_token, domain="mi.com")
+            self._session.cookies.set("passToken", self._pass_token, domain="xiaomi.com")
+        if self._userId:
+            self._session.cookies.set("userId", str(self._userId), domain="mi.com")
+            self._session.cookies.set("userId", str(self._userId), domain="xiaomi.com")
 
+        self._location = None
         logged_in = (self._ssecurity and self.check_login()) or (
-            self.login_step_1() and self.login_step_2() and self.login_step_3()
+            self.login_step_1() and (self._location or self.login_step_2()) and self.login_step_3()
         )
 
         if logged_in:
