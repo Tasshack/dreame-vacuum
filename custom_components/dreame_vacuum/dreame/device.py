@@ -1071,7 +1071,7 @@ class DreameVacuumDevice:
                 new_list.pop(DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING)
 
             if not self.capability.embedded_tank and (
-                not self.status.auto_mount_mop or not self.status.mop_in_station
+                not self.status.auto_mount_mop or not self.status.mop_pad_in_station
             ):
                 try:
                     if not self.status.water_tank_or_mop_installed:
@@ -3874,7 +3874,7 @@ class DreameVacuumDevice:
         ):
             raise InvalidActionException("Cannot set mopping after sweeping")
 
-        if not self.status.auto_mount_mop or not self.status.mop_in_station:
+        if not self.status.auto_mount_mop or not self.status.mop_pad_in_station:
             if cleaning_mode == DreameVacuumCleaningMode.SWEEPING.value:
                 if self.status.water_tank_or_mop_installed and not self.capability.mop_pad_lifting:
                     if self.capability.self_wash_base:
@@ -8976,6 +8976,17 @@ class DreameVacuumDeviceStatus:
         """Returns true when the mop pad is in the station."""
         value = self._get_property(DreameVacuumProperty.MOP_IN_STATION)
         return bool(value == 1 or value == 4) and not self.docked
+
+    @property
+    def mop_pad_in_station(self) -> bool:
+        """Returns true when the mop pad is parked in the station, regardless of dock status.
+
+        Unlike `mop_in_station`, this is not forced to False while docked, so it can be used
+        to determine mopping availability for auto-mount models that park their pads in the
+        station while sitting on the dock.
+        """
+        value = self._get_property(DreameVacuumProperty.MOP_IN_STATION)
+        return bool(value == 1 or value == 4)
 
     @property
     def auto_add_detergent(self) -> bool:
