@@ -300,6 +300,14 @@ from .map import DreameMapVacuumMapManager, DreameVacuumMapDecoder
 
 _LOGGER = logging.getLogger(__name__)
 
+## The KEEP_ALIVE property (siid 14/piid 4) is how the vendor app plugin tells the robot that its
+## page is open in the foreground. Asserting it permanently (as this integration did since
+## v2.0.0b22) keeps the robot out of its idle dock state, which on Mova self-wash base models
+## makes the mop pad subsystem micro-rotate indefinitely while docked (#1628). It cannot simply
+## be removed either: some firmwares stop pushing wash base telemetry to the cloud without it
+## (#1342). Compromise: assert it only while the device or its base is doing something and let
+## it decay while idle at the dock; see _keep_alive_required.
+
 
 class DreameVacuumDevice:
     """Support for Dreame Vacuum"""
@@ -357,6 +365,7 @@ class DreameVacuumDevice:
         self._property_update_callback = {}
         self._update_timer: Timer = None  # Update schedule timer
         self._keep_alive_timer: Timer = None  # Keep alive request timer
+        self._keep_alive_active: bool = False  # Whether keep alive is currently being sustained
         self._callback_timer: Timer = None  # Update listener debouncing timer
         # Used for requesting consumable properties after reset action otherwise they will only requested when cleaning completed
         self._consumable_change: bool = False
@@ -942,9 +951,58 @@ class DreameVacuumDevice:
     def _drying_progress_changed(self, previous_drying_progress: Any = None) -> None:
         self.status._drying_time = self.get_property(DreameVacuumProperty.DRYING_TIME)
 
+    @property
+    def _keep_alive_required(self) -> bool:
+        """Keep alive should only be asserted while the device or its base is doing something.
+        Holding it while idle at the dock keeps the robot out of its low power state and makes
+        the mop pad subsystem micro-rotate indefinitely on Mova self-wash models (#1628)."""
+        try:
+            return bool(
+                self.device_connected
+                and not self.disconnected
+                ## Devices without the property must never enter the keep alive loop
+                and self.get_property(DreameVacuumProperty.KEEP_ALIVE) is not None
+                and (
+                    self.status.active
+                    or self.status.started
+                    or self.status.running
+                    or self.status.washing
+                    or self.status.returning
+                    or self.status.returning_to_wash
+                    or self.status.auto_emptying
+                    or self.status.returning_to_empty
+                )
+            )
+        except Exception:
+            return False
+
+    def _keep_alive_check(self) -> None:
+        """Assert or release the keep alive property when device activity changes.
+        Called from the status listeners and at the end of every update cycle. The dedicated
+        flag (not the timer) tracks assertion state: the timer is briefly None while
+        _keep_alive_task executes its network request, so it must not be used as state or
+        every status change in that window re-triggers assertion and leaks parallel timers."""
+        if self._keep_alive_required:
+            if not self._keep_alive_active:
+                self._keep_alive_active = True
+                _LOGGER.info("Keep alive asserted (device is active)")
+                self._keep_alive_changed()
+        elif self._keep_alive_active:
+            self._keep_alive_active = False
+            _LOGGER.info("Keep alive released (device is idle), flag will decay on its own")
+            if self._keep_alive_timer is not None:
+                self._keep_alive_timer.cancel()
+                self._keep_alive_timer = None
+
     def _keep_alive_changed(self, previous_keep_alive: Any = None) -> None:
         ## Latest generation vacuum app plugin uses this property to inform the device about app is visibile or not
         ## so that the device does not send unnecessary data to cloud but obviously we don't want that in Home Assistant
+
+        if not self._keep_alive_active:
+            ## Do not impersonate a foregrounded app while the device is idle at the dock (#1628);
+            ## the flag decays on its own when it is not requested periodically. Assertion state
+            ## is owned by _keep_alive_check.
+            return
 
         if (
             self.get_property(DreameVacuumProperty.KEEP_ALIVE) == 0
@@ -1126,6 +1184,7 @@ class DreameVacuumDevice:
 
     def _task_status_changed(self, previous_task_status: Any = None) -> None:
         """Task status is a very important property and must be listened to trigger necessary actions when a task started or ended"""
+        self._keep_alive_check()
         if previous_task_status is not None:
             if previous_task_status in DreameVacuumTaskStatus._value2member_map_:
                 previous_task_status = DreameVacuumTaskStatus(previous_task_status)
@@ -1307,6 +1366,7 @@ class DreameVacuumDevice:
                 self._property_changed(False)
 
     def _status_changed(self, previous_status: Any = None) -> None:
+        self._keep_alive_check()
         if previous_status is not None:
             if previous_status in DreameVacuumStatus._value2member_map_:
                 previous_status = DreameVacuumStatus(previous_status)
@@ -1701,6 +1761,7 @@ class DreameVacuumDevice:
                     self.status.washing_mode_list.pop(WASHING_MODE_ULTRA_WASHING)
 
     def _self_wash_base_status_changed(self, previous_self_wash_base_status: Any = None) -> None:
+        self._keep_alive_check()
         if previous_self_wash_base_status is not None:
             if (
                 bool(
@@ -1754,6 +1815,7 @@ class DreameVacuumDevice:
         self.status._last_updated_time["low_water_warning"] = int(time.time())
 
     def _auto_empty_status_changed(self, previous_auto_empty_status: Any = None) -> None:
+        self._keep_alive_check()
         if self.capability.auto_empty_base:
             self.status._last_updated_time["auto_empty_status"] = int(time.time())
 
@@ -2029,6 +2091,11 @@ class DreameVacuumDevice:
 
     def _keep_alive_task(self):
         self._keep_alive_timer = None
+
+        ## Re-evaluate activity; releases (and logs) if the device went idle (#1628)
+        self._keep_alive_check()
+        if not self._keep_alive_active:
+            return
 
         if (
             self.device_connected
@@ -3437,6 +3504,20 @@ class DreameVacuumDevice:
                 DreameVacuumProperty.FAULTS,
             ]
 
+            if self.status.washing or self.status.returning_to_wash:
+                ## Tank status changes while the base is washing but these properties were dropped
+                ## from the forced poll list above and relied on cloud push, which some firmwares
+                ## gate behind KEEP_ALIVE (#1342). Poll them directly during washing so wash base
+                ## sensors stay fresh without holding the keep alive flag around the clock.
+                properties.extend(
+                    [
+                        DreameVacuumProperty.CLEAN_WATER_TANK_STATUS,
+                        DreameVacuumProperty.DIRTY_WATER_TANK_STATUS,
+                        DreameVacuumProperty.DETERGENT_STATUS,
+                        DreameVacuumProperty.LOW_WATER_WARNING,
+                    ]
+                )
+
         try:
             if self._protocol.dreame_cloud and (not self.device_connected or not self.cloud_connected):
                 force_request_properties = True
@@ -3528,6 +3609,9 @@ class DreameVacuumDevice:
             self._draining_complete_time = None
             if self.status.draining_complete:
                 self.set_property(DreameVacuumProperty.DRAINAGE_STATUS, 0)
+
+        ## Safety net for missed pushes: re-evaluate keep alive state every update cycle (#1628)
+        self._keep_alive_check()
 
         if self.cloud_connected:
             self._request_cleaning_history()
