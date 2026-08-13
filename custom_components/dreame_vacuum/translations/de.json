@@ -687,6 +687,20 @@
         }
       }
     },
+    "vacuum_restore_map": {
+      "name": "Karte wiederherstellen",
+      "description": "Stellt eine Karte wieder her.",
+      "fields": {
+        "map_id": {
+          "name": "Karten-ID",
+          "description": "ID der wiederherzustellenden Karte."
+        },
+        "recovery_map_index": {
+          "name": "Index der Wiederherstellungskarte",
+          "description": "Index der gespeicherten Wiederherstellungskarte."
+        }
+      }
+    },
     "vacuum_restore_map_from_file": {
       "name": "Karte aus Datei wiederherstellen",
       "description": "Stellen Sie eine Karte aus einer Datei wieder her.",
