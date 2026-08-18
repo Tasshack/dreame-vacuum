@@ -8581,6 +8581,21 @@ class DreameVacuumDeviceStatus:
         return ERROR_CODE_TO_ERROR_NAME.get(self.error, STATE_UNKNOWN)
 
     @property
+    def warn_status(self) -> DreameVacuumErrorCode:
+        """Return warning status of the device."""
+        value = self._get_property(DreameVacuumProperty.WARN_STATUS)
+        if value is not None and value in DreameVacuumErrorCode._value2member_map_:
+            return DreameVacuumErrorCode(value)
+        if value is not None:
+            _LOGGER.debug("WARN_STATUS not supported: %s", value)
+        return DreameVacuumErrorCode.NO_ERROR
+
+    @property
+    def warn_status_name(self) -> str:
+        """Return warning status as string for translation."""
+        return ERROR_CODE_TO_ERROR_NAME.get(self.warn_status, STATE_UNKNOWN)
+
+    @property
     def error_description(self) -> str:
         """Return error description of the device."""
         return ERROR_CODE_TO_ERROR_DESCRIPTION.get(self.error, [STATE_UNKNOWN, ""])

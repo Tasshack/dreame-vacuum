@@ -170,6 +170,14 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         },
     ),
     DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.WARN_STATUS,
+        icon_fn=lambda value, device: (
+            "mdi:alert-outline" if device.status.warn_status.value else "mdi:check-circle-outline"
+        ),
+        attrs_fn=lambda device: {ATTR_VALUE: device.status.warn_status.value},
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.CHARGING_STATUS,
         icon="mdi:home-lightning-bolt",
     ),
