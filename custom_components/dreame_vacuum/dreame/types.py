@@ -3639,6 +3639,7 @@ class Segment(Zone):
         self.cleanset_type = CleansetType.NONE
         self.carpet_cleaning = None
         self.carpet_preferences = None
+        self.area = None
         self.set_name()
         if x1 != None and x0 != None and y1 != None and y0 != None:
             self.area = abs(x1 - x0) * abs(y1 - y0)
