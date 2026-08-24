@@ -35,6 +35,18 @@ DREAME_STRINGS: Final = (
 
 _LOGGER = logging.getLogger(__name__)
 
+# The Dreame cloud consistently needs ~5s (measured: 4.3-5.2s) to answer the
+# first request on a freshly established connection; follow-up requests on
+# the same connection return in 0.1-0.3s. The previous 6s default was close
+# enough to that first-request latency that occasional timeouts were
+# expected, and each timeout triggered login(), which opened a new
+# connection and repeated the slow first request - a self-sustaining storm
+# of timeouts and re-logins.
+API_TIMEOUT: Final = 20
+LOGIN_TIMEOUT: Final = 20
+LOGIN_BACKOFF_START: Final = 5
+LOGIN_BACKOFF_MAX: Final = 300
+
 
 class DreameVacuumDeviceProtocol(MiIOProtocol):
     def __init__(self, ip: str, token: str) -> None:
@@ -118,6 +130,8 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._connected_callback = None
         self._logged_in = False
         self._auth_failed = False
+        self._login_backoff = 0
+        self._login_blocked_until = None
         self._stream_key = None
         self._client_key = None
         self._secondary_key = auth_key
@@ -337,6 +351,13 @@ class DreameVacuumDreameHomeCloudProtocol:
         return None
 
     def login(self) -> bool:
+        # A failed login must not be retried immediately - each attempt
+        # blocks the next one for a growing interval (capped at
+        # LOGIN_BACKOFF_MAX) instead of opening a new connection right away.
+        if self._login_blocked_until and time.time() < self._login_blocked_until:
+            _LOGGER.debug("Skipping login, retrying in %.0f s", self._login_blocked_until - time.time())
+            return False
+
         self._session.close()
         self._session = requests.session()
 
@@ -375,7 +396,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                 self.get_api_url() + self._strings[17],
                 headers=headers,
                 data=data,
-                timeout=10,
+                timeout=LOGIN_TIMEOUT,
             )
             if response.status_code == 200:
                 data = json.loads(response.text)
@@ -401,7 +422,7 @@ class DreameVacuumDreameHomeCloudProtocol:
         except requests.exceptions.Timeout:
             response = None
             self._logged_in = False
-            _LOGGER.warning("Login Failed: Read timed out. (read timeout=10)")
+            _LOGGER.warning("Login Failed: Read timed out. (read timeout=%s)", LOGIN_TIMEOUT)
         except Exception as ex:
             response = None
             self._logged_in = False
@@ -410,6 +431,15 @@ class DreameVacuumDreameHomeCloudProtocol:
         if self._logged_in:
             self._fail_count = 0
             self._connected = True
+            self._login_backoff = 0
+            self._login_blocked_until = None
+        else:
+            self._login_backoff = min(
+                LOGIN_BACKOFF_MAX,
+                LOGIN_BACKOFF_START if not self._login_backoff else self._login_backoff * 2,
+            )
+            self._login_blocked_until = time.time() + self._login_backoff
+            _LOGGER.debug("Login failed, next attempt in %s s", self._login_backoff)
         return self._logged_in
 
     def get_supported_devices(self, models, host=None, mac=None, device_id=None) -> Any:
@@ -548,9 +578,17 @@ class DreameVacuumDreameHomeCloudProtocol:
         )
 
     def send(self, method, parameters, retry_count: int = 2, timeout=None) -> Any:
-        host = ""
-        if self._host and len(self._host):
-            host = f"-{self._host.split('.')[0]}"
+        # Without a known host the URL below is missing the device-server
+        # prefix and the cloud answers with 404 instead of routing the
+        # request - fetch it once instead of sending a request we know
+        # will fail.
+        if not self._host:
+            self.get_device_info()
+            if not self._host:
+                _LOGGER.warning("Cannot send %s: device host is unknown", method)
+                return None
+
+        host = f"-{self._host.split('.')[0]}"
 
         api_response = self._api_call(
             f"{self._strings[37]}{host}/{self._strings[27]}/{self._strings[38]}",
@@ -724,15 +762,24 @@ class DreameVacuumDreameHomeCloudProtocol:
     def request(self, url: str, data, retry_count=2, timeout=None) -> Any:
         retries = 0
         if not timeout:
-            timeout = 6
+            timeout = API_TIMEOUT
 
         if self._key_expire and time.time() > self._key_expire:
+            if not self.login():
+                return None
+
+        # Without a token every request fails with 401, which in turn
+        # triggers a login - log in once up front instead of running that
+        # loop.
+        if not self._key:
             if not self.login():
                 return None
 
         if not retry_count or retry_count < 0:
             retry_count = 0
         while retries < retry_count + 1:
+            if retries:
+                sleep(min(2 ** (retries - 1), 8))
             try:
                 headers = {
                     "Accept": "*/*",
@@ -754,12 +801,18 @@ class DreameVacuumDreameHomeCloudProtocol:
                 retries = retries + 1
                 response = None
                 if self._connected:
-                    _LOGGER.warning(f"Error while executing request: Read timed out. (timeout={timeout})")
+                    _LOGGER.warning(
+                        "Error while executing request: Read timed out. (timeout=%s, url=%s, attempt %s/%s)",
+                        timeout,
+                        url,
+                        retries,
+                        retry_count + 1,
+                    )
             except Exception as ex:
                 retries = retries + 1
                 response = None
                 if self._connected:
-                    _LOGGER.warning("Error while executing request: %s", str(ex))
+                    _LOGGER.warning("Error while executing request to %s: %s", url, str(ex))
 
         if response is not None:
             if response.status_code == 200:
@@ -767,10 +820,10 @@ class DreameVacuumDreameHomeCloudProtocol:
                 self._connected = True
                 return json.loads(response.text)
             elif response.status_code == 401 and self._secondary_key:
-                _LOGGER.warning("Execute api call failed: Token Expired")
+                _LOGGER.warning("Execute api call failed: Token Expired (%s)", url)
                 self.login()
             else:
-                _LOGGER.warning("Execute api call failed with response: %s", response.text)
+                _LOGGER.warning("Execute api call to %s failed with response: %s", url, response.text)
 
         if self._fail_count == 5:
             self._connected = False

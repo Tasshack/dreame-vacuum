@@ -812,10 +812,16 @@ class DreameVacuumDevice:
         props = property_list.copy()
         results = []
         while props:
-            result = self._protocol.get_properties(props[:15], timeout=(10 if len(property_list) > 15 else None))
-            if result is not None:
-                results.extend(result)
-                props[:] = props[15:]
+            # No separate, tighter timeout here anymore - the central value in
+            # protocol.py already covers the ~5s the first request on a new
+            # connection needs.
+            result = self._protocol.get_properties(props[:15])
+            if result is None:
+                # Otherwise this loop spins forever, firing requests against
+                # the cloud without end.
+                break
+            results.extend(result)
+            props[:] = props[15:]
 
         return self._handle_properties(results)
 
