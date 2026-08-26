@@ -7345,6 +7345,7 @@ class DreameVacuumMapRenderer:
         low_resolution: bool = False,
         square: bool = False,
         cache: bool = True,
+        floor_plan: bool = False,
     ) -> None:
         self.color_scheme: MapRendererColorScheme = MAP_COLOR_SCHEME_LIST.get(color_scheme, MapRendererColorScheme())
         self.icon_set: int = icon_set
@@ -7364,6 +7365,7 @@ class DreameVacuumMapRenderer:
         self._low_memory: bool = low_resolution
         self._square: bool = square
         self._cache: bool = cache
+        self._floor_plan: bool = floor_plan
         self._has_mask: bool = False
         self._calibration_points: dict[str, int] = None
         self._default_calibration_points: dict[str, int] = [
@@ -7827,6 +7829,68 @@ class DreameVacuumMapRenderer:
                         check = not check
             return check
         return True
+
+    @staticmethod
+    def _floor_plan_pixel_type(map_data: MapData) -> Any:
+        """Rasterize the closed wall chain of every segment into a pixel type map.
+
+        Emitting pixel types instead of an overlay keeps floor material, carpet,
+        cropping and calibration working exactly as they do for the lidar map.
+        """
+        dimensions = map_data.dimensions
+        size = (dimensions.width, dimensions.height)
+        fill = Image.new("L", size, MapPixelType.OUTSIDE.value)
+        outline = Image.new("L", size, MapPixelType.OUTSIDE.value)
+        fill_draw = ImageDraw.Draw(fill)
+        outline_draw = ImageDraw.Draw(outline)
+        rendered = False
+
+        for segment_id, walls in map_data.walls.items():
+            if segment_id <= 0 or segment_id >= 100 or len(walls) < 3:
+                continue
+
+            # Only a closed chain of walls describes an area that can be filled
+            if walls[-1].x1 != walls[0].x0 or walls[-1].y1 != walls[0].y0:
+                continue
+            if any(
+                wall.x1 != walls[index + 1].x0 or wall.y1 != walls[index + 1].y0
+                for index, wall in enumerate(walls[:-1])
+            ):
+                continue
+
+            points = [
+                (
+                    (wall.x0 - dimensions.left) / dimensions.grid_size,
+                    (wall.y0 - dimensions.top) / dimensions.grid_size,
+                )
+                for wall in walls
+            ]
+            fill_draw.polygon(points, fill=segment_id)
+            outline_draw.polygon(points, fill=segment_id, outline=100 + segment_id)
+            rendered = True
+
+        if not rendered:
+            return None
+
+        pixel_type = np.array(outline)
+        if map_data.doors:
+            doors = Image.new("L", size, 0)
+            doors_draw = ImageDraw.Draw(doors)
+            for door in map_data.doors:
+                doors_draw.line(
+                    [
+                        (door.x0 - dimensions.left) / dimensions.grid_size,
+                        (door.y0 - dimensions.top) / dimensions.grid_size,
+                        (door.x1 - dimensions.left) / dimensions.grid_size,
+                        (door.y1 - dimensions.top) / dimensions.grid_size,
+                    ],
+                    255,
+                    width=1,
+                )
+            # Doorways are openings in the wall, restore the segment underneath them
+            pixel_type = np.where(np.array(doors) > 0, np.array(fill), pixel_type)
+
+        return pixel_type.astype(map_data.pixel_type.dtype).transpose()
 
     @staticmethod
     def _calculate_calibration_points(map_data: MapData) -> dict[str, int] | None:
@@ -9100,6 +9164,10 @@ class DreameVacuumMapRenderer:
                 or self._map_data.active_areas != map_data.active_areas
                 or self._map_data.segments != map_data.segments
                 or self._map_data.data != map_data.data
+                or (
+                    self._floor_plan
+                    and (self._map_data.walls != map_data.walls or self._map_data.doors != map_data.doors)
+                )
                 or (self._has_mask and not cached_layers.get(MapRendererLayer.PATH_MASK))
                 or (render_material and self._map_data.floor_material != map_data.floor_material)
                 or (
@@ -9168,6 +9236,12 @@ class DreameVacuumMapRenderer:
                             else:
                                 area_colors[k] = area_colors[MapPixelType.FLOOR.value]
 
+                pixel_type = map_data.pixel_type
+                if self._floor_plan and map_data.walls and not map_data.wifi_map and not map_data.cleaning_map:
+                    floor_plan_pixel_type = DreameVacuumMapRenderer._floor_plan_pixel_type(map_data)
+                    if floor_plan_pixel_type is not None:
+                        pixel_type = floor_plan_pixel_type
+
                 pixels = np.full(
                     (
                         map_data.dimensions.height,
@@ -9208,7 +9282,7 @@ class DreameVacuumMapRenderer:
 
                 for y in range(map_data.dimensions.height):
                     for x in range(map_data.dimensions.width):
-                        px_type = int(map_data.pixel_type[x, map_data.dimensions.height - y - 1])
+                        px_type = int(pixel_type[x, map_data.dimensions.height - y - 1])
                         if px_type > 200 and px_type < 232:
                             continue
                         if px_type != 0:
@@ -9236,7 +9310,7 @@ class DreameVacuumMapRenderer:
                             pixels,
                             map_data.floor_material,
                             map_data.hidden_segments,
-                            map_data.pixel_type,
+                            pixel_type,
                             self.color_scheme.material_color,
                             map_data.dimensions,
                             floor_scale,
@@ -9249,7 +9323,7 @@ class DreameVacuumMapRenderer:
                     if render_carpet:
                         carpet = self.render_carpets(
                             pixels,
-                            map_data.pixel_type,
+                            pixel_type,
                             map_data.carpets,
                             map_data.deleted_carpets,
                             map_data.detected_carpets,

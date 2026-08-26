@@ -42,6 +42,7 @@ from .const import (
     CONF_PREFER_CLOUD,
     CONF_LOW_RESOLUTION,
     CONF_SQUARE,
+    CONF_FLOOR_PLAN,
     CONF_DONATED,
     CONF_VERSION,
     NOTIFICATION,
@@ -101,6 +102,10 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
                         default=self._config_entry.options.get(CONF_HIDDEN_MAP_OBJECTS, []),
                     ): cv.multi_select(MAP_OBJECTS),
                     vol.Required(CONF_SQUARE, default=self._config_entry.options.get(CONF_SQUARE, False)): bool,
+                    vol.Required(
+                        CONF_FLOOR_PLAN,
+                        default=self._config_entry.options.get(CONF_FLOOR_PLAN, False),
+                    ): bool,
                     vol.Required(
                         CONF_LOW_RESOLUTION,
                         default=self._config_entry.options.get(CONF_LOW_RESOLUTION, False),
@@ -568,6 +573,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 CONF_ICON_SET: user_input.get(CONF_ICON_SET),
                 CONF_HIDDEN_MAP_OBJECTS: user_input.get(CONF_HIDDEN_MAP_OBJECTS),
                 CONF_SQUARE: user_input.get(CONF_SQUARE),
+                CONF_FLOOR_PLAN: user_input.get(CONF_FLOOR_PLAN),
                 CONF_LOW_RESOLUTION: user_input.get(CONF_LOW_RESOLUTION),
                 CONF_PREFER_CLOUD: self.prefer_cloud,
             }
@@ -605,6 +611,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                     vol.Required(CONF_ICON_SET, default=default_icon_set): vol.In(list(MAP_ICON_SET_LIST.keys())),
                     vol.Required(CONF_HIDDEN_MAP_OBJECTS, default=hidden_map_objects): cv.multi_select(MAP_OBJECTS),
                     vol.Required(CONF_SQUARE, default=False): bool,
+                    vol.Required(CONF_FLOOR_PLAN, default=False): bool,
                     vol.Required(CONF_LOW_RESOLUTION, default=False): bool,
                 }
             )

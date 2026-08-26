@@ -34,6 +34,7 @@ from .const import (
     CONF_COLOR_SCHEME,
     CONF_ICON_SET,
     CONF_HIDDEN_MAP_OBJECTS,
+    CONF_FLOOR_PLAN,
     CONF_LOW_RESOLUTION,
     CONF_SQUARE,
     MAP_OBJECTS,
@@ -378,6 +379,7 @@ async def async_setup_entry(
         icon_set = entry.options.get(CONF_ICON_SET)
         low_resolution = entry.options.get(CONF_LOW_RESOLUTION, False)
         square = entry.options.get(CONF_SQUARE, False)
+        floor_plan = entry.options.get(CONF_FLOOR_PLAN, False)
         hidden_map_objects = entry.options.get(CONF_HIDDEN_MAP_OBJECTS, [])
 
         async_add_entities(
@@ -389,6 +391,7 @@ async def async_setup_entry(
                 hidden_map_objects,
                 low_resolution,
                 square,
+                floor_plan=floor_plan,
             )
             for description in CAMERAS
         )
@@ -403,6 +406,7 @@ async def async_setup_entry(
             hidden_map_objects,
             low_resolution,
             square,
+            floor_plan,
         )
         platform = entity_platform.current_platform.get()
         platform.async_register_entity_service("update", {}, DreameVacuumCameraEntity.async_update.__name__)
@@ -433,6 +437,7 @@ def async_update_map_cameras(
     hidden_map_objects: list[str],
     low_resolution: bool,
     square: bool,
+    floor_plan: bool,
 ) -> None:
     new_indexes = set([k for k in range(1, len(coordinator.device.status.map_list) + 1)])
     current_ids = set(current)
@@ -456,6 +461,7 @@ def async_update_map_cameras(
                 low_resolution,
                 square,
                 map_index,
+                floor_plan,
             )
         ]
 
@@ -476,6 +482,7 @@ def async_update_map_cameras(
                     True,
                     square,
                     map_index,
+                    floor_plan,
                 )
             )
 
@@ -518,6 +525,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         low_resolution: bool = False,
         square: bool = False,
         map_index: int = 0,
+        floor_plan: bool = False,
     ) -> None:
         """Initialize a Dreame Vacuum Camera entity."""
         super().__init__(coordinator, description)
@@ -557,6 +565,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 self.device.capability.robot_type,
                 low_resolution,
                 square,
+                floor_plan=floor_plan,
             )
             if not self.wifi_map:
                 self._proxy_renderer = DreameVacuumMapRenderer(
@@ -567,6 +576,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                     low_resolution,
                     square,
                     False,
+                    floor_plan,
                 )
         self._image = None
         self._default_map = None

@@ -97,7 +97,8 @@
           "notify": "Notification",
           "hidden_map_objects": "Hidden Map objects",
           "low_resolution": "Low resolution map",
-          "square": "Square map"
+          "square": "Square map",
+          "floor_plan": "Floor plan map"
         }
       },
       "reauth_confirm": {
@@ -116,6 +117,7 @@
           "hidden_map_objects": "Hidden Map objects",
           "low_resolution": "Low resolution map",
           "square": "Square map",
+          "floor_plan": "Floor plan map",
           "configuration_type": "Configuration type",
           "prefer_cloud": "Prefer cloud connection",
           "donated": "Donated"

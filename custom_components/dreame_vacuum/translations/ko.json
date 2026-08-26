@@ -97,7 +97,8 @@
           "notify": "알림",
           "hidden_map_objects": "숨겨진 지도 개체",
           "low_resolution": "저해상도 지도",
-          "square": "정사각형 지도"
+          "square": "정사각형 지도",
+          "floor_plan": "평면도 지도"
         }
       },
       "reauth_confirm": {
@@ -116,6 +117,7 @@
           "hidden_map_objects": "숨겨진 지도 개체",
           "low_resolution": "저해상도 지도",
           "square": "정사각형 지도",
+          "floor_plan": "평면도 지도",
           "configuration_type": "구성 유형",
           "prefer_cloud": "클라우드 연결 우선",
           "donated": "후원 완료"
