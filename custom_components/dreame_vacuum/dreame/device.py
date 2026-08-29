@@ -340,6 +340,7 @@ class DreameVacuumDevice:
         self._ready: bool = False
         # Last settings properties requested time
         self._last_settings_request: float = 0
+        self._last_water_tank_status_request: float = 0
         self._last_map_list_request: float = 0  # Last map list property requested time
         self._last_map_request: float = 0  # Last map request trigger time
         self._last_change: float = 0  # Last property change time
@@ -3403,6 +3404,17 @@ class DreameVacuumDevice:
             properties.extend([DreameVacuumProperty.MAP_LIST, DreameVacuumProperty.RECOVERY_MAP_LIST])
             self._last_map_list_request = time.time()
 
+        clean_water_tank_status = self.get_property(DreameVacuumProperty.CLEAN_WATER_TANK_STATUS)
+        water_tank_status_properties = None
+        if self.status.low_water or clean_water_tank_status in (
+            DreameVacuumCleanWaterTankStatus.NOT_INSTALLED.value,
+            DreameVacuumCleanWaterTankStatus.LOW_WATER.value,
+        ):
+            water_tank_status_properties = [
+                DreameVacuumProperty.LOW_WATER_WARNING,
+                DreameVacuumProperty.CLEAN_WATER_TANK_STATUS,
+            ]
+
         if (
             self._protocol.dreame_cloud
             and self.device_connected
@@ -3436,6 +3448,8 @@ class DreameVacuumDevice:
                 DreameVacuumProperty.ERROR,
                 DreameVacuumProperty.FAULTS,
             ]
+            if water_tank_status_properties:
+                properties.extend(water_tank_status_properties)
 
         try:
             if self._protocol.dreame_cloud and (not self.device_connected or not self.cloud_connected):
@@ -3447,6 +3461,10 @@ class DreameVacuumDevice:
                 self._request_properties([DreameVacuumProperty.MAP_BACKUP_STATUS])
             elif self.status.map_recovery_status:
                 self._request_properties([DreameVacuumProperty.MAP_RECOVERY_STATUS])
+            elif water_tank_status_properties and now - self._last_water_tank_status_request >= 30:
+                # Dreame Cloud does not always push the cleared status after a tank is refilled.
+                self._last_water_tank_status_request = now
+                self._request_properties(water_tank_status_properties)
         except Exception as ex:
             raise DeviceUpdateFailedException(ex) from None
 
