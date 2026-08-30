@@ -517,21 +517,34 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 self._device.schedule_update()
                 self.async_set_updated_data()
                 return self._device
-        except Exception as ex:
-            if self._device.auth_failed:
-                raise ConfigEntryAuthFailed("Authentication Failed!") from ex
-
+        except BaseException as ex:
+            # Teardown must run for every failure, including CancelledError raised
+            # when Home Assistant cancels a slow setup after its timeout. Without
+            # this, every setup retry leaks the previous device together with its
+            # worker threads and cloud sessions until Home Assistant runs out of
+            # memory (https://github.com/Tasshack/dreame-vacuum/issues/1762).
             LOGGER.warning("Integration start failed: %s", traceback.format_exc())
+            auth_failed = False
             if self._device is not None:
+                auth_failed = self._device.auth_failed
                 self._device.listen(None)
                 self._device.listen_error(None)
-                self._device.disconnect()
+                try:
+                    self._device.disconnect()
+                except Exception:
+                    LOGGER.exception("Error while disconnecting device after failed start")
                 del self._device
                 self._device = None
-                
+
             if self._unsub_dispatcher:
                 self._unsub_dispatcher()
                 self._unsub_dispatcher = None
+
+            if not isinstance(ex, Exception):
+                raise  # propagate CancelledError / KeyboardInterrupt untouched
+
+            if auth_failed:
+                raise ConfigEntryAuthFailed("Authentication Failed!") from ex
 
             raise UpdateFailed(ex) from ex
 
