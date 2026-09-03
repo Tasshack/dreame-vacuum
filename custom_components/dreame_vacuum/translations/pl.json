@@ -1303,15 +1303,9 @@
         "name": "Czyszczenie kół"
       }
     },
-    "toggle": {
+    "switch": {
       "customized_cleaning": {
         "name": "Sprzątanie niestandardowe"
-      },
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Głębokie czyszczenie"
       },
       "auto_dust_collecting": {
         "name": "Automatyczne opróżnianie"
@@ -1321,9 +1315,6 @@
       },
       "self_clean": {
         "name": "Autoczyszczenie"
-      },
-      "deep_mop_washing": {
-        "name": "Głębokie mycie mopa"
       },
       "hot_washing": {
         "name": "Mycie gorącą wodą"
@@ -1337,14 +1328,8 @@
       "uv_sterilization": {
         "name": "Sterylizacja UV"
       },
-      "customized_carpet_cleaning": {
-        "name": "Sprzątanie niestandardowe"
-      },
       "carpet_avoidance": {
         "name": "Omijanie dywanów"
-      },
-      "carpet_preferences": {
-        "name": "Niestandardowe preferencje"
       },
       "auto_change_mop": {
         "name": "Automatyczna zmiana mopa"
@@ -1402,9 +1387,6 @@
       },
       "smart_mop_washing": {
         "name": "Inteligentne mycie mopa"
-      },
-      "wider_corner_coverage": {
-        "name": "Szybsze pokrycie narożników"
       },
       "pressurized_cleaning": {
         "name": "Czyszczenie pod ciśnieniem"
@@ -1474,6 +1456,26 @@
       },
       "dnd": {
         "name": "Tryb Nie przeszkadzać"
+      }
+    },
+    "toggle": {
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Głębokie czyszczenie"
+      },
+      "deep_mop_washing": {
+        "name": "Głębokie mycie mopa"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Sprzątanie niestandardowe"
+      },
+      "carpet_preferences": {
+        "name": "Niestandardowe preferencje"
+      },
+      "wider_corner_coverage": {
+        "name": "Szybsze pokrycie narożników"
       }
     },
     "number": {

@@ -1303,15 +1303,9 @@
         "name": "Очищення коліс"
       }
     },
-    "toggle": {
+    "switch": {
       "customized_cleaning": {
         "name": "Індивідуальне прибирання"
-      },
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Ретельне прибирання"
       },
       "auto_dust_collecting": {
         "name": "Автоматичне вивантаження сміття"
@@ -1321,9 +1315,6 @@
       },
       "self_clean": {
         "name": "Самоочищення"
-      },
-      "deep_mop_washing": {
-        "name": "Ретельне миття швабри"
       },
       "hot_washing": {
         "name": "Миття гарячою водою"
@@ -1337,14 +1328,8 @@
       "uv_sterilization": {
         "name": "УФ-стерилізація"
       },
-      "customized_carpet_cleaning": {
-        "name": "Індивідуальне прибирання"
-      },
       "carpet_avoidance": {
         "name": "Уникати килимів"
-      },
-      "carpet_preferences": {
-        "name": "Індивідуальні налаштування"
       },
       "auto_change_mop": {
         "name": "Автозміна швабри"
@@ -1402,9 +1387,6 @@
       },
       "smart_mop_washing": {
         "name": "Розумне миття швабри"
-      },
-      "wider_corner_coverage": {
-        "name": "Ширше охоплення кутів"
       },
       "pressurized_cleaning": {
         "name": "Прибирання під тиском"
@@ -1474,6 +1456,26 @@
       },
       "dnd": {
         "name": "Режим «Не турбувати»"
+      }
+    },
+    "toggle": {
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Ретельне прибирання"
+      },
+      "deep_mop_washing": {
+        "name": "Ретельне миття швабри"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Індивідуальне прибирання"
+      },
+      "carpet_preferences": {
+        "name": "Індивідуальні налаштування"
+      },
+      "wider_corner_coverage": {
+        "name": "Ширше охоплення кутів"
       }
     },
     "number": {

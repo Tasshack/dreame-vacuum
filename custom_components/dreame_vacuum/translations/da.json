@@ -1303,15 +1303,9 @@
         "name": "Hjulrengøring"
       }
     },
-    "toggle": {
+    "switch": {
       "customized_cleaning": {
         "name": "Brugerdefineret rengøring"
-      },
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
-      },
-      "deep_cleaning": {
-        "name": "Dybdegående rengøring"
       },
       "auto_dust_collecting": {
         "name": "Auto-tømning"
@@ -1321,9 +1315,6 @@
       },
       "self_clean": {
         "name": "Selvrensning"
-      },
-      "deep_mop_washing": {
-        "name": "Dyb moppevask"
       },
       "hot_washing": {
         "name": "Varmtvandsvask"
@@ -1337,14 +1328,8 @@
       "uv_sterilization": {
         "name": "UV-sterilisering"
       },
-      "customized_carpet_cleaning": {
-        "name": "Brugerdefineret rengøring"
-      },
       "carpet_avoidance": {
         "name": "Tæppeundgåelse"
-      },
-      "carpet_preferences": {
-        "name": "Brugerdefinerede præferencer"
       },
       "auto_change_mop": {
         "name": "Automatisk moppeskift"
@@ -1402,9 +1387,6 @@
       },
       "smart_mop_washing": {
         "name": "Smart-moppevask"
-      },
-      "wider_corner_coverage": {
-        "name": "Bredere hjørnedækning"
       },
       "pressurized_cleaning": {
         "name": "Trykrengøring"
@@ -1474,6 +1456,26 @@
       },
       "dnd": {
         "name": "Forstyr ikke"
+      }
+    },
+    "toggle": {
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "Dybdegående rengøring"
+      },
+      "deep_mop_washing": {
+        "name": "Dyb moppevask"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Brugerdefineret rengøring"
+      },
+      "carpet_preferences": {
+        "name": "Brugerdefinerede præferencer"
+      },
+      "wider_corner_coverage": {
+        "name": "Bredere hjørnedækning"
       }
     },
     "number": {

@@ -1304,15 +1304,9 @@
         "name": "Pulizia ruote"
       }
     },
-    "toggle": {
+    "switch": {
       "customized_cleaning": {
         "name": "Pulizia personalizzata"
-      },
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Pulizia profonda"
       },
       "auto_dust_collecting": {
         "name": "Svuotamento automatico"
@@ -1322,9 +1316,6 @@
       },
       "self_clean": {
         "name": "Auto-pulizia"
-      },
-      "deep_mop_washing": {
-        "name": "Lavaggio profondo del panno"
       },
       "hot_washing": {
         "name": "Lavaggio con acqua calda"
@@ -1338,14 +1329,8 @@
       "uv_sterilization": {
         "name": "Sterilizzazione UV"
       },
-      "customized_carpet_cleaning": {
-        "name": "Pulizia personalizzata"
-      },
       "carpet_avoidance": {
         "name": "Evitamento tappeti"
-      },
-      "carpet_preferences": {
-        "name": "Preferenze personalizzate"
       },
       "auto_change_mop": {
         "name": "Cambio automatico del panno"
@@ -1403,9 +1388,6 @@
       },
       "smart_mop_washing": {
         "name": "Lavaggio intelligente del panno"
-      },
-      "wider_corner_coverage": {
-        "name": "Copertura angoli ampia"
       },
       "pressurized_cleaning": {
         "name": "Pulizia pressurizzata"
@@ -1475,6 +1457,26 @@
       },
       "dnd": {
         "name": "DnD"
+      }
+    },
+    "toggle": {
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Pulizia profonda"
+      },
+      "deep_mop_washing": {
+        "name": "Lavaggio profondo del panno"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Pulizia personalizzata"
+      },
+      "carpet_preferences": {
+        "name": "Preferenze personalizzate"
+      },
+      "wider_corner_coverage": {
+        "name": "Copertura angoli ampia"
       }
     },
     "number": {

@@ -1303,15 +1303,9 @@
         "name": "पहिया सफाई"
       }
     },
-    "toggle": {
+    "switch": {
       "customized_cleaning": {
         "name": "अनुकूलित सफाई"
-      },
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
-      },
-      "deep_cleaning": {
-        "name": "गहरी सफाई"
       },
       "auto_dust_collecting": {
         "name": "ऑटो-एम्प्टी"
@@ -1321,9 +1315,6 @@
       },
       "self_clean": {
         "name": "स्वयं-सफाई"
-      },
-      "deep_mop_washing": {
-        "name": "गहरा मॉप धुलाई"
       },
       "hot_washing": {
         "name": "गर्म धुलाई"
@@ -1337,14 +1328,8 @@
       "uv_sterilization": {
         "name": "यूवी नसबंदी"
       },
-      "customized_carpet_cleaning": {
-        "name": "अनुकूलित सफाई"
-      },
       "carpet_avoidance": {
         "name": "कालीन बचाव"
-      },
-      "carpet_preferences": {
-        "name": "अनुकूलित प्राथमिकताएं"
       },
       "auto_change_mop": {
         "name": "ऑटो मॉप बदलना"
@@ -1402,9 +1387,6 @@
       },
       "smart_mop_washing": {
         "name": "स्मार्ट मॉप धुलाई"
-      },
-      "wider_corner_coverage": {
-        "name": "व्यापक कोना कवरेज"
       },
       "pressurized_cleaning": {
         "name": "दबावयुक्त सफाई"
@@ -1474,6 +1456,26 @@
       },
       "dnd": {
         "name": "DnD"
+      }
+    },
+    "toggle": {
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "गहरी सफाई"
+      },
+      "deep_mop_washing": {
+        "name": "गहरा मॉप धुलाई"
+      },
+      "customized_carpet_cleaning": {
+        "name": "अनुकूलित सफाई"
+      },
+      "carpet_preferences": {
+        "name": "अनुकूलित प्राथमिकताएं"
+      },
+      "wider_corner_coverage": {
+        "name": "व्यापक कोना कवरेज"
       }
     },
     "number": {

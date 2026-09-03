@@ -345,7 +345,7 @@
         }
       },
       "cleangenius": {
-        "name": "Cleangenius",
+        "name": "CleanGenius",
         "state": {
           "off": "Off",
           "routine_cleaning": "Routine cleaning",
@@ -353,7 +353,7 @@
         }
       },
       "cleangenius_mode": {
-        "name": "Cleangenius Mode",
+        "name": "CleanGenius Mode",
         "state": {
           "vacuum_and_mop": "Vacuum and Mop",
           "mop_after_vacuum": "Mop after Vacuum"
@@ -929,7 +929,7 @@
         }
       },
       "self_wash_base_status": {
-        "name": "Self Wash Base Status",
+        "name": "Self-Wash Base Status",
         "state": {
           "unknown": "Unknown",
           "idle": "Idle",
@@ -1303,15 +1303,9 @@
         "name": "Wheel Cleaning"
       }
     },
-    "toggle": {
+    "switch": {
       "customized_cleaning": {
         "name": "Customized Cleaning"
-      },
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
-      },
-      "deep_cleaning": {
-        "name": "Deep Cleaning"
       },
       "auto_dust_collecting": {
         "name": "Auto-Empty"
@@ -1321,9 +1315,6 @@
       },
       "self_clean": {
         "name": "Self-Clean"
-      },
-      "deep_mop_washing": {
-        "name": "Deep Mop Washing"
       },
       "hot_washing": {
         "name": "Hot Washing"
@@ -1337,14 +1328,8 @@
       "uv_sterilization": {
         "name": "UV Sterilization"
       },
-      "customized_carpet_cleaning": {
-        "name": "Customized Cleaning"
-      },
       "carpet_avoidance": {
         "name": "Carpet Avoidance"
-      },
-      "carpet_preferences": {
-        "name": "Customized Preferences"
       },
       "auto_change_mop": {
         "name": "Auto Mop Changing"
@@ -1398,13 +1383,10 @@
         "name": "Mop-Washing With Detergent"
       },
       "auto_add_detergent": {
-        "name": "Auto Add Detergent"
+        "name": "Auto-Add Detergent"
       },
       "smart_mop_washing": {
         "name": "Smart Mop Washing"
-      },
-      "wider_corner_coverage": {
-        "name": "Wider Corner Coverage"
       },
       "pressurized_cleaning": {
         "name": "Pressurized Cleaning"
@@ -1474,6 +1456,26 @@
       },
       "dnd": {
         "name": "DnD"
+      }
+    },
+    "toggle": {
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "Deep Cleaning"
+      },
+      "deep_mop_washing": {
+        "name": "Deep Mop Washing"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Customized Cleaning"
+      },
+      "carpet_preferences": {
+        "name": "Customized Preferences"
+      },
+      "wider_corner_coverage": {
+        "name": "Wider Corner Coverage"
       }
     },
     "number": {

@@ -1303,15 +1303,9 @@
         "name": "Почистване на колелата"
       }
     },
-    "toggle": {
+    "switch": {
       "customized_cleaning": {
         "name": "Персонализирано почистване"
-      },
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
-      },
-      "deep_cleaning": {
-        "name": "Дълбоко почистване"
       },
       "auto_dust_collecting": {
         "name": "Автоматично изпразване"
@@ -1321,9 +1315,6 @@
       },
       "self_clean": {
         "name": "Самопочистване"
-      },
-      "deep_mop_washing": {
-        "name": "Дълбоко изпиране на мопа"
       },
       "hot_washing": {
         "name": "Измиване с гореща вода"
@@ -1337,14 +1328,8 @@
       "uv_sterilization": {
         "name": "UV стерилизация"
       },
-      "customized_carpet_cleaning": {
-        "name": "Персонализирано почистване на килими"
-      },
       "carpet_avoidance": {
         "name": "Избягване на килими"
-      },
-      "carpet_preferences": {
-        "name": "Персонализирани предпочитания"
       },
       "auto_change_mop": {
         "name": "Автоматична смяна на мопа"
@@ -1402,9 +1387,6 @@
       },
       "smart_mop_washing": {
         "name": "Умно измиване на мопа"
-      },
-      "wider_corner_coverage": {
-        "name": "По-широко покритие на ъглите"
       },
       "pressurized_cleaning": {
         "name": "Почистване под налягане"
@@ -1474,6 +1456,26 @@
       },
       "dnd": {
         "name": "Не ме безпокойте"
+      }
+    },
+    "toggle": {
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "Дълбоко почистване"
+      },
+      "deep_mop_washing": {
+        "name": "Дълбоко изпиране на мопа"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Персонализирано почистване на килими"
+      },
+      "carpet_preferences": {
+        "name": "Персонализирани предпочитания"
+      },
+      "wider_corner_coverage": {
+        "name": "По-широко покритие на ъглите"
       }
     },
     "number": {

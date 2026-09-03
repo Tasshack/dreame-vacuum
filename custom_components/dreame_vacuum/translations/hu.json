@@ -1303,15 +1303,9 @@
         "name": "Kerekek tisztítása"
       }
     },
-    "toggle": {
+    "switch": {
       "customized_cleaning": {
         "name": "Egyéni takarítás"
-      },
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Mélytisztítás"
       },
       "auto_dust_collecting": {
         "name": "Automatikus ürítés"
@@ -1321,9 +1315,6 @@
       },
       "self_clean": {
         "name": "Öntisztítás"
-      },
-      "deep_mop_washing": {
-        "name": "Felmosó alapos mosása"
       },
       "hot_washing": {
         "name": "Forró vizes mosás"
@@ -1337,14 +1328,8 @@
       "uv_sterilization": {
         "name": "UV sterilizálás"
       },
-      "customized_carpet_cleaning": {
-        "name": "Egyéni takarítás"
-      },
       "carpet_avoidance": {
         "name": "Szőnyeg elkerülése"
-      },
-      "carpet_preferences": {
-        "name": "Egyéni beállítások"
       },
       "auto_change_mop": {
         "name": "Felmosó automatikus cseréje"
@@ -1402,9 +1387,6 @@
       },
       "smart_mop_washing": {
         "name": "Okos felmosómosás"
-      },
-      "wider_corner_coverage": {
-        "name": "Szélesebb saroklefedettség"
       },
       "pressurized_cleaning": {
         "name": "Nyomás alatti takarítás"
@@ -1474,6 +1456,26 @@
       },
       "dnd": {
         "name": "Ne zavarjanak"
+      }
+    },
+    "toggle": {
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Mélytisztítás"
+      },
+      "deep_mop_washing": {
+        "name": "Felmosó alapos mosása"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Egyéni takarítás"
+      },
+      "carpet_preferences": {
+        "name": "Egyéni beállítások"
+      },
+      "wider_corner_coverage": {
+        "name": "Szélesebb saroklefedettség"
       }
     },
     "number": {

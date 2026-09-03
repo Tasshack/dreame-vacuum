@@ -1303,15 +1303,9 @@
         "name": "Nettoyage roues"
       }
     },
-    "toggle": {
+    "switch": {
       "customized_cleaning": {
         "name": "Nettoyage personnalisé"
-      },
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Nettoyage approfondi"
       },
       "auto_dust_collecting": {
         "name": "Vidage automatique"
@@ -1321,9 +1315,6 @@
       },
       "self_clean": {
         "name": "Auto-nettoyage"
-      },
-      "deep_mop_washing": {
-        "name": "Lavage approfondi de la serpillière"
       },
       "hot_washing": {
         "name": "Lavage à l'eau chaude"
@@ -1337,14 +1328,8 @@
       "uv_sterilization": {
         "name": "Stérilisation UV"
       },
-      "customized_carpet_cleaning": {
-        "name": "Nettoyage personnalisé"
-      },
       "carpet_avoidance": {
         "name": "Évitement des tapis"
-      },
-      "carpet_preferences": {
-        "name": "Préférences personnalisées"
       },
       "auto_change_mop": {
         "name": "Changement automatique de serpillière"
@@ -1402,9 +1387,6 @@
       },
       "smart_mop_washing": {
         "name": "Lavage intelligent de la serpillière"
-      },
-      "wider_corner_coverage": {
-        "name": "Couverture plus large des coins"
       },
       "pressurized_cleaning": {
         "name": "Nettoyage sous pression"
@@ -1474,6 +1456,26 @@
       },
       "dnd": {
         "name": "DnD"
+      }
+    },
+    "toggle": {
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Nettoyage approfondi"
+      },
+      "deep_mop_washing": {
+        "name": "Lavage approfondi de la serpillière"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Nettoyage personnalisé"
+      },
+      "carpet_preferences": {
+        "name": "Préférences personnalisées"
+      },
+      "wider_corner_coverage": {
+        "name": "Couverture plus large des coins"
       }
     },
     "number": {
