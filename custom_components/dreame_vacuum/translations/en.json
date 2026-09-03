@@ -582,6 +582,12 @@
           "three_seat_sofa_narrow": "Three-Seat sofa narrow",
           "l_shaped_sofa_right": "L-Shaped sofa right"
         }
+      },
+      "map_rotation": {
+        "name": "Map Rotation"
+      },
+      "selected_map": {
+        "name": "Selected Map"
       }
     },
     "sensor": {
@@ -1301,6 +1307,99 @@
       },
       "wheel_dirty_left": {
         "name": "Wheel Cleaning"
+      },
+      "battery_level": {
+        "name": "Battery Level"
+      },
+      "cleaned_area": {
+        "name": "Cleaned Area"
+      },
+      "cleaning_count": {
+        "name": "Cleaning Count"
+      },
+      "cleaning_history": {
+        "name": "Cleaning History"
+      },
+      "cleaning_progress": {
+        "name": "Cleaning Progress"
+      },
+      "cleaning_time": {
+        "name": "Cleaning Time"
+      },
+      "cruising_history": {
+        "name": "Cruising History"
+      },
+      "current_room": {
+        "name": "Current Room"
+      },
+      "deodorizer_time_left": {
+        "name": "Deodorizer Time Left"
+      },
+      "detergent_time_left": {
+        "name": "Detergent Time Left"
+      },
+      "drying_left": {
+        "name": "Drying Left"
+      },
+      "drying_progress": {
+        "name": "Drying Progress"
+      },
+      "dust_bag_drying_left": {
+        "name": "Dust Bag Drying Left"
+      },
+      "filter_time_left": {
+        "name": "Filter Time Left"
+      },
+      "first_cleaning_date": {
+        "name": "First Cleaning Date"
+      },
+      "fluffing_roller_dirty_time_left": {
+        "name": "Fluffing Roller Dirty Time Left"
+      },
+      "main_brush_time_left": {
+        "name": "Main Brush Time Left"
+      },
+      "mapping_time": {
+        "name": "Mapping Time"
+      },
+      "mop_pad_time_left": {
+        "name": "Mop Pad Time Left"
+      },
+      "onboard_dirty_water_tank_time_left": {
+        "name": "Onboard Dirty Water Tank Time Left"
+      },
+      "roller_mop_filter_dirty_time_left": {
+        "name": "Roller Mop Filter Dirty Time Left"
+      },
+      "scale_inhibitor_time_left": {
+        "name": "Scale Inhibitor Time Left"
+      },
+      "sensor_dirty_time_left": {
+        "name": "Sensor Dirty Time Left"
+      },
+      "side_brush_time_left": {
+        "name": "Side Brush Time Left"
+      },
+      "silver_ion_time_left": {
+        "name": "Silver-ion Time Left"
+      },
+      "squeegee_time_left": {
+        "name": "Squeegee Time Left"
+      },
+      "tank_filter_time_left": {
+        "name": "Tank Filter Time Left"
+      },
+      "total_cleaned_area": {
+        "name": "Total Cleaned Area"
+      },
+      "total_cleaning_time": {
+        "name": "Total Cleaning Time"
+      },
+      "water_outlet_filter_dirty_time_left": {
+        "name": "Water Outlet Filter Dirty Time Left"
+      },
+      "wheel_dirty_time_left": {
+        "name": "Wheel Dirty Time Left"
       }
     },
     "switch": {
@@ -1456,6 +1555,178 @@
       },
       "dnd": {
         "name": "DnD"
+      },
+      "ai_fluid_detection": {
+        "name": "AI Fluid Detection"
+      },
+      "ai_furniture_detection": {
+        "name": "AI Furniture Detection"
+      },
+      "ai_human_detection": {
+        "name": "AI Human Detection"
+      },
+      "ai_obstacle_image_upload": {
+        "name": "AI Obstacle Image Upload"
+      },
+      "ai_pet_avoidance": {
+        "name": "AI Pet Avoidance"
+      },
+      "auto_charging": {
+        "name": "Auto Charging"
+      },
+      "auto_water_refilling": {
+        "name": "Auto Water Refilling"
+      },
+      "camera_light_brightness_auto": {
+        "name": "Camera Light Brightness Auto"
+      },
+      "cleaning_sequence": {
+        "name": "Cleaning Sequence"
+      },
+      "dust_bag_drying": {
+        "name": "Dust Bag Drying"
+      },
+      "fuzzy_obstacle_detection": {
+        "name": "Fuzzy Obstacle Detection"
+      },
+      "human_follow": {
+        "name": "Human Follow"
+      },
+      "lds_state": {
+        "name": "LDS State"
+      },
+      "max_suction_power": {
+        "name": "Max Suction Power"
+      },
+      "mop_extend": {
+        "name": "Mop Extend"
+      },
+      "pet_picture": {
+        "name": "Pet Picture"
+      },
+      "self_clean_by_zone": {
+        "name": "Self Clean By Zone"
+      },
+      "side_reach": {
+        "name": "Side Reach"
+      },
+      "smart_drying": {
+        "name": "Smart Drying"
+      },
+      "stain_avoidance": {
+        "name": "Stain Avoidance"
+      },
+      "tight_mopping": {
+        "name": "Tight Mopping"
+      },
+      "ultra_clean_mode": {
+        "name": "Ultra Clean Mode"
+      },
+      "water_electrolysis": {
+        "name": "Water Electrolysis"
+      }
+    },
+    "button": {
+      "backup_saved_map": {
+        "name": "Backup Saved Map"
+      },
+      "base_station_cleaning": {
+        "name": "Base Station Cleaning"
+      },
+      "base_station_self_repair": {
+        "name": "Base Station Self Repair"
+      },
+      "clear_warning": {
+        "name": "Clear Warning"
+      },
+      "empty_water_tank": {
+        "name": "Empty Water Tank"
+      },
+      "manual_drying": {
+        "name": "Manual Drying"
+      },
+      "manual_dust_bag_drying": {
+        "name": "Manual Dust Bag Drying"
+      },
+      "reload_shortcuts": {
+        "name": "Reload Shortcuts"
+      },
+      "reset_deodorizer": {
+        "name": "Reset Deodorizer"
+      },
+      "reset_detergent": {
+        "name": "Reset Detergent"
+      },
+      "reset_dirty_water_channel": {
+        "name": "Reset Dirty Water Channel"
+      },
+      "reset_filter": {
+        "name": "Reset Filter"
+      },
+      "reset_fluffing_roller": {
+        "name": "Reset Fluffing Roller"
+      },
+      "reset_main_brush": {
+        "name": "Reset Main Brush"
+      },
+      "reset_mop_pad": {
+        "name": "Reset Mop Pad"
+      },
+      "reset_onboard_dirty_water_tank": {
+        "name": "Reset Onboard Dirty Water Tank"
+      },
+      "reset_roller_mop_filter": {
+        "name": "Reset Roller Mop Filter"
+      },
+      "reset_scale_inhibitor": {
+        "name": "Reset Scale Inhibitor"
+      },
+      "reset_sensor": {
+        "name": "Reset Sensor"
+      },
+      "reset_side_brush": {
+        "name": "Reset Side Brush"
+      },
+      "reset_silver_ion": {
+        "name": "Reset Silver-ion"
+      },
+      "reset_squeegee": {
+        "name": "Reset Squeegee"
+      },
+      "reset_water_outlet_filter": {
+        "name": "Reset Water Outlet Filter"
+      },
+      "reset_wheel": {
+        "name": "Reset Wheel"
+      },
+      "self_clean": {
+        "name": "Self Clean"
+      },
+      "start_auto_empty": {
+        "name": "Start Auto Empty"
+      },
+      "start_fast_mapping": {
+        "name": "Start Fast Mapping"
+      },
+      "start_mapping": {
+        "name": "Start Mapping"
+      },
+      "start_recleaning": {
+        "name": "Start Re-Cleaning"
+      },
+      "water_tank_draining": {
+        "name": "Water Tank Draining"
+      }
+    },
+    "binary_sensor": {
+      "charging_state": {
+        "name": "Charging State"
+      },
+      "lds_status": {
+        "name": "LDS Status"
+      },
+      "roller_cover_status": {
+        "name": "Roller Cover Status"
       }
     },
     "toggle": {
@@ -1496,6 +1767,12 @@
       },
       "volume": {
         "name": "Volume"
+      },
+      "camera_light_brightness": {
+        "name": "Camera Light Brightness"
+      },
+      "mop_cleaning_remainder": {
+        "name": "Mop Cleaning Remainder"
       }
     },
     "time": {

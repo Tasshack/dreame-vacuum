@@ -582,6 +582,12 @@
           "three_seat_sofa_narrow": "Schmales Dreisitzer-Sofa",
           "l_shaped_sofa_right": "L-förmiges Sofa rechts"
         }
+      },
+      "map_rotation": {
+        "name": "Kartendrehung"
+      },
+      "selected_map": {
+        "name": "Ausgewählte Karte"
       }
     },
     "sensor": {
@@ -1301,6 +1307,99 @@
       },
       "wheel_dirty_left": {
         "name": "Radreinigung"
+      },
+      "battery_level": {
+        "name": "Batteriestand"
+      },
+      "cleaned_area": {
+        "name": "Gereinigte Fläche"
+      },
+      "cleaning_count": {
+        "name": "Anzahl Reinigungen"
+      },
+      "cleaning_history": {
+        "name": "Reinigungsverlauf"
+      },
+      "cleaning_progress": {
+        "name": "Reinigungsfortschritt"
+      },
+      "cleaning_time": {
+        "name": "Reinigungszeit"
+      },
+      "cruising_history": {
+        "name": "Fahrtverlauf"
+      },
+      "current_room": {
+        "name": "Aktueller Raum"
+      },
+      "deodorizer_time_left": {
+        "name": "Deodorisierer (Restzeit)"
+      },
+      "detergent_time_left": {
+        "name": "Reinigungsmittel (Restzeit)"
+      },
+      "drying_left": {
+        "name": "Trocknung (Restzeit)"
+      },
+      "drying_progress": {
+        "name": "Trocknungsfortschritt"
+      },
+      "dust_bag_drying_left": {
+        "name": "Staubbeutel-Trocknung (Restzeit)"
+      },
+      "filter_time_left": {
+        "name": "Filter (Restzeit)"
+      },
+      "first_cleaning_date": {
+        "name": "Erste Reinigung"
+      },
+      "fluffing_roller_dirty_time_left": {
+        "name": "Flusenwalzenreinigung (Restzeit)"
+      },
+      "main_brush_time_left": {
+        "name": "Hauptbürste (Restzeit)"
+      },
+      "mapping_time": {
+        "name": "Kartierungszeit"
+      },
+      "mop_pad_time_left": {
+        "name": "Mopp-Pad (Restzeit)"
+      },
+      "onboard_dirty_water_tank_time_left": {
+        "name": "Interner Schmutzwassertank (Restzeit)"
+      },
+      "roller_mop_filter_dirty_time_left": {
+        "name": "Walzenmopp-Filterreinigung (Restzeit)"
+      },
+      "scale_inhibitor_time_left": {
+        "name": "Kalkschutzmittel (Restzeit)"
+      },
+      "sensor_dirty_time_left": {
+        "name": "Sensorreinigung (Restzeit)"
+      },
+      "side_brush_time_left": {
+        "name": "Seitenbürste (Restzeit)"
+      },
+      "silver_ion_time_left": {
+        "name": "Silberion (Restzeit)"
+      },
+      "squeegee_time_left": {
+        "name": "Abzieher (Restzeit)"
+      },
+      "tank_filter_time_left": {
+        "name": "Tankfilter (Restzeit)"
+      },
+      "total_cleaned_area": {
+        "name": "Gesamte gereinigte Fläche"
+      },
+      "total_cleaning_time": {
+        "name": "Gesamte Reinigungszeit"
+      },
+      "water_outlet_filter_dirty_time_left": {
+        "name": "Wasserauslass-Filterreinigung (Restzeit)"
+      },
+      "wheel_dirty_time_left": {
+        "name": "Radreinigung (Restzeit)"
       }
     },
     "switch": {
@@ -1456,6 +1555,178 @@
       },
       "dnd": {
         "name": "DnD"
+      },
+      "ai_fluid_detection": {
+        "name": "KI-Flüssigkeitserkennung"
+      },
+      "ai_furniture_detection": {
+        "name": "KI-Möbelerkennung"
+      },
+      "ai_human_detection": {
+        "name": "KI-Personenerkennung"
+      },
+      "ai_obstacle_image_upload": {
+        "name": "KI-Hindernisbild-Upload"
+      },
+      "ai_pet_avoidance": {
+        "name": "KI-Haustiervermeidung"
+      },
+      "auto_charging": {
+        "name": "Intelligentes Laden"
+      },
+      "auto_water_refilling": {
+        "name": "Automatische Wasserzufuhr"
+      },
+      "camera_light_brightness_auto": {
+        "name": "Kameralicht-Helligkeit automatisch"
+      },
+      "cleaning_sequence": {
+        "name": "Individuelle Reinigungsreihenfolge"
+      },
+      "dust_bag_drying": {
+        "name": "Staubbeutel-Trocknung"
+      },
+      "fuzzy_obstacle_detection": {
+        "name": "Unscharfe Hinderniserkennung"
+      },
+      "human_follow": {
+        "name": "Personenverfolgung"
+      },
+      "lds_state": {
+        "name": "LDS-Modul anheben"
+      },
+      "max_suction_power": {
+        "name": "Maximale Saugkraft"
+      },
+      "mop_extend": {
+        "name": "Mopp-Ausfahren"
+      },
+      "pet_picture": {
+        "name": "Haustierbilder"
+      },
+      "self_clean_by_zone": {
+        "name": "Selbstreinigung nach Zimmer"
+      },
+      "side_reach": {
+        "name": "Seitenbürsten-Ausfahren"
+      },
+      "smart_drying": {
+        "name": "Intelligente Trocknung"
+      },
+      "stain_avoidance": {
+        "name": "Fleckenvermeidung"
+      },
+      "tight_mopping": {
+        "name": "Enges Wischmuster"
+      },
+      "ultra_clean_mode": {
+        "name": "Ultra-Moppwäsche"
+      },
+      "water_electrolysis": {
+        "name": "Wasserelektrolyse"
+      }
+    },
+    "button": {
+      "backup_saved_map": {
+        "name": "Karte sichern"
+      },
+      "base_station_cleaning": {
+        "name": "Basisstation reinigen"
+      },
+      "base_station_self_repair": {
+        "name": "Selbstreparatur starten"
+      },
+      "clear_warning": {
+        "name": "Warnung löschen"
+      },
+      "empty_water_tank": {
+        "name": "Frischwassertank leeren"
+      },
+      "manual_drying": {
+        "name": "Trocknung starten/stoppen"
+      },
+      "manual_dust_bag_drying": {
+        "name": "Staubbeutel-Trocknung starten/stoppen"
+      },
+      "reload_shortcuts": {
+        "name": "Kurzbefehle neu laden"
+      },
+      "reset_deodorizer": {
+        "name": "Deodorisierer zurücksetzen"
+      },
+      "reset_detergent": {
+        "name": "Reinigungsmittel zurücksetzen"
+      },
+      "reset_dirty_water_channel": {
+        "name": "Schmutzwasserkanal zurücksetzen"
+      },
+      "reset_filter": {
+        "name": "Filter zurücksetzen"
+      },
+      "reset_fluffing_roller": {
+        "name": "Flusenwalze zurücksetzen"
+      },
+      "reset_main_brush": {
+        "name": "Hauptbürste zurücksetzen"
+      },
+      "reset_mop_pad": {
+        "name": "Mopp-Pad zurücksetzen"
+      },
+      "reset_onboard_dirty_water_tank": {
+        "name": "Internen Schmutzwassertank zurücksetzen"
+      },
+      "reset_roller_mop_filter": {
+        "name": "Walzenmopp-Filter zurücksetzen"
+      },
+      "reset_scale_inhibitor": {
+        "name": "Kalkschutzmittel zurücksetzen"
+      },
+      "reset_sensor": {
+        "name": "Sensorreinigung zurücksetzen"
+      },
+      "reset_side_brush": {
+        "name": "Seitenbürste zurücksetzen"
+      },
+      "reset_silver_ion": {
+        "name": "Silberion zurücksetzen"
+      },
+      "reset_squeegee": {
+        "name": "Abzieher zurücksetzen"
+      },
+      "reset_water_outlet_filter": {
+        "name": "Wasserauslass-Filter zurücksetzen"
+      },
+      "reset_wheel": {
+        "name": "Radreinigung zurücksetzen"
+      },
+      "self_clean": {
+        "name": "Moppwäsche starten/pausieren"
+      },
+      "start_auto_empty": {
+        "name": "Automatische Entleerung starten"
+      },
+      "start_fast_mapping": {
+        "name": "Schnellkartierung starten"
+      },
+      "start_mapping": {
+        "name": "Kartierung starten"
+      },
+      "start_recleaning": {
+        "name": "Nachreinigung starten"
+      },
+      "water_tank_draining": {
+        "name": "Entwässerung starten"
+      }
+    },
+    "binary_sensor": {
+      "charging_state": {
+        "name": "Ladevorgang"
+      },
+      "lds_status": {
+        "name": "LDS-Status"
+      },
+      "roller_cover_status": {
+        "name": "Rollenabdeckung"
       }
     },
     "toggle": {
@@ -1496,6 +1767,12 @@
       },
       "volume": {
         "name": "Lautstärke"
+      },
+      "camera_light_brightness": {
+        "name": "Kameralicht-Helligkeit"
+      },
+      "mop_cleaning_remainder": {
+        "name": "Mopp-Reinigungserinnerung"
       }
     },
     "time": {
