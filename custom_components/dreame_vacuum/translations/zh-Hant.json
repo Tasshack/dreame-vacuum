@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "定制清潔"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "精細清潔"
+      },
       "auto_dust_collecting": {
         "name": "自動集塵"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "自清潔"
+      },
+      "deep_mop_washing": {
+        "name": "精細洗抹布"
       },
       "hot_washing": {
         "name": "熱水洗"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "UV 殺菌"
       },
+      "customized_carpet_cleaning": {
+        "name": "定制清潔"
+      },
       "carpet_avoidance": {
         "name": "規避地毯"
+      },
+      "carpet_preferences": {
+        "name": "個性化偏好"
       },
       "auto_change_mop": {
         "name": "自動換抹布"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "智能洗抹布"
+      },
+      "wider_corner_coverage": {
+        "name": "邊角覆蓋增強"
       },
       "pressurized_cleaning": {
         "name": "加壓清潔"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "勿擾"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "精細清潔"
-      },
-      "deep_mop_washing": {
-        "name": "精細洗抹布"
-      },
-      "customized_carpet_cleaning": {
-        "name": "定制清潔"
-      },
-      "carpet_preferences": {
-        "name": "個性化偏好"
-      },
-      "wider_corner_coverage": {
-        "name": "邊角覆蓋增強"
       }
     },
     "number": {

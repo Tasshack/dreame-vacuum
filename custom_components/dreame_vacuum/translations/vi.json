@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Làm sạch tùy chỉnh"
       },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "Làm sạch sâu"
+      },
       "auto_dust_collecting": {
         "name": "Tự động đổ rác"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Tự làm sạch"
+      },
+      "deep_mop_washing": {
+        "name": "Giặt giẻ lau sâu"
       },
       "hot_washing": {
         "name": "Giặt nước nóng"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "Khử trùng bằng tia UV"
       },
+      "customized_carpet_cleaning": {
+        "name": "Làm sạch tùy chỉnh"
+      },
       "carpet_avoidance": {
         "name": "Tránh thảm"
+      },
+      "carpet_preferences": {
+        "name": "Sở thích tùy chỉnh"
       },
       "auto_change_mop": {
         "name": "Tự động thay giẻ lau"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Giặt giẻ lau thông minh"
+      },
+      "wider_corner_coverage": {
+        "name": "Độ bao phủ góc rộng hơn"
       },
       "pressurized_cleaning": {
         "name": "Làm sạch có áp lực"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "Chế độ không làm phiền (DnD)"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
-      },
-      "deep_cleaning": {
-        "name": "Làm sạch sâu"
-      },
-      "deep_mop_washing": {
-        "name": "Giặt giẻ lau sâu"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Làm sạch tùy chỉnh"
-      },
-      "carpet_preferences": {
-        "name": "Sở thích tùy chỉnh"
-      },
-      "wider_corner_coverage": {
-        "name": "Độ bao phủ góc rộng hơn"
       }
     },
     "number": {

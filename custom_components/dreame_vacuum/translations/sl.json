@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Prilagojeno čiščenje"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Globinsko čiščenje"
+      },
       "auto_dust_collecting": {
         "name": "Samodejno praznjenje"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Samočiščenje"
+      },
+      "deep_mop_washing": {
+        "name": "Globinsko pranje krpe"
       },
       "hot_washing": {
         "name": "Pranje z vročo vodo"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "UV sterilizacija"
       },
+      "customized_carpet_cleaning": {
+        "name": "Prilagojeno čiščenje"
+      },
       "carpet_avoidance": {
         "name": "Izogibanje preprogam"
+      },
+      "carpet_preferences": {
+        "name": "Prilagojene nastavitve"
       },
       "auto_change_mop": {
         "name": "Samodejna menjava krpe"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Pametno pranje krpe"
+      },
+      "wider_corner_coverage": {
+        "name": "Širša pokritost kotov"
       },
       "pressurized_cleaning": {
         "name": "Čiščenje pod pritiskom"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "Ne moti"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Globinsko čiščenje"
-      },
-      "deep_mop_washing": {
-        "name": "Globinsko pranje krpe"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Prilagojeno čiščenje"
-      },
-      "carpet_preferences": {
-        "name": "Prilagojene nastavitve"
-      },
-      "wider_corner_coverage": {
-        "name": "Širša pokritost kotov"
       }
     },
     "number": {

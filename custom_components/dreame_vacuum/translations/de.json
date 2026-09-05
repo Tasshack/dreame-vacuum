@@ -1406,6 +1406,12 @@
       "customized_cleaning": {
         "name": "Individuelle Reinigung"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Tiefenreinigung"
+      },
       "auto_dust_collecting": {
         "name": "Automatische Entleerung"
       },
@@ -1414,6 +1420,9 @@
       },
       "self_clean": {
         "name": "Selbstreinigung"
+      },
+      "deep_mop_washing": {
+        "name": "Tiefenreinigung des Mopps"
       },
       "hot_washing": {
         "name": "Heißwasserwäsche"
@@ -1427,8 +1436,14 @@
       "uv_sterilization": {
         "name": "UV-Sterilisation"
       },
+      "customized_carpet_cleaning": {
+        "name": "Individuelle Reinigung"
+      },
       "carpet_avoidance": {
         "name": "Teppichvermeidung"
+      },
+      "carpet_preferences": {
+        "name": "Individuelle Einstellungen"
       },
       "auto_change_mop": {
         "name": "Automatischer Moppwechsel"
@@ -1486,6 +1501,9 @@
       },
       "smart_mop_washing": {
         "name": "Intelligente Moppwäsche"
+      },
+      "wider_corner_coverage": {
+        "name": "Größere Eckenabdeckung"
       },
       "pressurized_cleaning": {
         "name": "Druckreinigung"
@@ -1727,26 +1745,6 @@
       },
       "roller_cover_status": {
         "name": "Rollenabdeckung"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Tiefenreinigung"
-      },
-      "deep_mop_washing": {
-        "name": "Tiefenreinigung des Mopps"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Individuelle Reinigung"
-      },
-      "carpet_preferences": {
-        "name": "Individuelle Einstellungen"
-      },
-      "wider_corner_coverage": {
-        "name": "Größere Eckenabdeckung"
       }
     },
     "number": {

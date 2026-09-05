@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Pielāgota tīrīšana"
       },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "Dziļā tīrīšana"
+      },
       "auto_dust_collecting": {
         "name": "Automātiska iztukšošana"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Pašattīrīšanās"
+      },
+      "deep_mop_washing": {
+        "name": "Dziļā mopa mazgāšana"
       },
       "hot_washing": {
         "name": "Mazgāšana ar karstu ūdeni"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "UV sterilizācija"
       },
+      "customized_carpet_cleaning": {
+        "name": "Pielāgota tīrīšana"
+      },
       "carpet_avoidance": {
         "name": "Izvairīšanās no paklājiem"
+      },
+      "carpet_preferences": {
+        "name": "Pielāgotas izvēles"
       },
       "auto_change_mop": {
         "name": "Automātiska mopa maiņa"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Viedā mopa mazgāšana"
+      },
+      "wider_corner_coverage": {
+        "name": "Plašāks stūru pārklājums"
       },
       "pressurized_cleaning": {
         "name": "Tīrīšana ar spiedienu"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "DnD"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
-      },
-      "deep_cleaning": {
-        "name": "Dziļā tīrīšana"
-      },
-      "deep_mop_washing": {
-        "name": "Dziļā mopa mazgāšana"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Pielāgota tīrīšana"
-      },
-      "carpet_preferences": {
-        "name": "Pielāgotas izvēles"
-      },
-      "wider_corner_coverage": {
-        "name": "Plašāks stūru pārklājums"
       }
     },
     "number": {

@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "ทำความสะอาดที่กำหนดเอง"
       },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "ทำความสะอาดล้ำลึก"
+      },
       "auto_dust_collecting": {
         "name": "ทิ้งฝุ่นอัตโนมัติ"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "ทำความสะอาดตัวเอง"
+      },
+      "deep_mop_washing": {
+        "name": "ซักแผ่นถูล้ำลึก"
       },
       "hot_washing": {
         "name": "ซักด้วยน้ำร้อน"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "การฆ่าเชื้อด้วย UV"
       },
+      "customized_carpet_cleaning": {
+        "name": "ทำความสะอาดที่กำหนดเอง"
+      },
       "carpet_avoidance": {
         "name": "หลีกเลี่ยงพรม"
+      },
+      "carpet_preferences": {
+        "name": "การตั้งค่าที่กำหนดเอง"
       },
       "auto_change_mop": {
         "name": "เปลี่ยนแผ่นถูอัตโนมัติ"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "ซักแผ่นถูสมาร์ท"
+      },
+      "wider_corner_coverage": {
+        "name": "ครอบคลุมมุมกว้างขึ้น"
       },
       "pressurized_cleaning": {
         "name": "ทำความสะอาดแบบเพิ่มแรงดัน"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "ห้ามรบกวน (DnD)"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
-      },
-      "deep_cleaning": {
-        "name": "ทำความสะอาดล้ำลึก"
-      },
-      "deep_mop_washing": {
-        "name": "ซักแผ่นถูล้ำลึก"
-      },
-      "customized_carpet_cleaning": {
-        "name": "ทำความสะอาดที่กำหนดเอง"
-      },
-      "carpet_preferences": {
-        "name": "การตั้งค่าที่กำหนดเอง"
-      },
-      "wider_corner_coverage": {
-        "name": "ครอบคลุมมุมกว้างขึ้น"
       }
     },
     "number": {

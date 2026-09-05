@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Limpieza personalizada"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Limpieza profunda"
+      },
       "auto_dust_collecting": {
         "name": "Vaciado automático"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Autolimpieza"
+      },
+      "deep_mop_washing": {
+        "name": "Lavado profundo de mopa"
       },
       "hot_washing": {
         "name": "Lavado con agua caliente"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "Esterilización UV"
       },
+      "customized_carpet_cleaning": {
+        "name": "Limpieza personalizada"
+      },
       "carpet_avoidance": {
         "name": "Evitar alfombras"
+      },
+      "carpet_preferences": {
+        "name": "Preferencias personalizadas"
       },
       "auto_change_mop": {
         "name": "Cambio automático de mopa"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Lavado inteligente de mopa"
+      },
+      "wider_corner_coverage": {
+        "name": "Mayor cobertura de esquinas"
       },
       "pressurized_cleaning": {
         "name": "Limpieza presurizada"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "DnD"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Limpieza profunda"
-      },
-      "deep_mop_washing": {
-        "name": "Lavado profundo de mopa"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Limpieza personalizada"
-      },
-      "carpet_preferences": {
-        "name": "Preferencias personalizadas"
-      },
-      "wider_corner_coverage": {
-        "name": "Mayor cobertura de esquinas"
       }
     },
     "number": {

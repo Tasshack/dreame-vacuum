@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Anpassad städning"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Djupstötning"
+      },
       "auto_dust_collecting": {
         "name": "Automatisk tömning"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Självrengöring"
+      },
+      "deep_mop_washing": {
+        "name": "Djup mopptvätt"
       },
       "hot_washing": {
         "name": "Varmvattentvätt"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "UV-sterilisering"
       },
+      "customized_carpet_cleaning": {
+        "name": "Anpassad städning"
+      },
       "carpet_avoidance": {
         "name": "Undvik mattor"
+      },
+      "carpet_preferences": {
+        "name": "Anpassade preferenser"
       },
       "auto_change_mop": {
         "name": "Automatiskt moppbyte"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Smart mopptvätt"
+      },
+      "wider_corner_coverage": {
+        "name": "Bredare hörntäckning"
       },
       "pressurized_cleaning": {
         "name": "Trycksatt städning"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "Stör ej"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Djupstötning"
-      },
-      "deep_mop_washing": {
-        "name": "Djup mopptvätt"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Anpassad städning"
-      },
-      "carpet_preferences": {
-        "name": "Anpassade preferenser"
-      },
-      "wider_corner_coverage": {
-        "name": "Bredare hörntäckning"
       }
     },
     "number": {

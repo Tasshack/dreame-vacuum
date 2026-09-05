@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Prispôsobené čistenie"
       },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "Hlboké čistenie"
+      },
       "auto_dust_collecting": {
         "name": "Automatické vyprázdňovanie"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Samočistenie"
+      },
+      "deep_mop_washing": {
+        "name": "Hlboké umývanie mopu"
       },
       "hot_washing": {
         "name": "Umývanie horúcou vodou"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "UV sterilizácia"
       },
+      "customized_carpet_cleaning": {
+        "name": "Prispôsobené čistenie"
+      },
       "carpet_avoidance": {
         "name": "Vyhýbanie sa kobercom"
+      },
+      "carpet_preferences": {
+        "name": "Prispôsobené predvoľby"
       },
       "auto_change_mop": {
         "name": "Automatická výmena mopu"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Inteligentné umývanie mopu"
+      },
+      "wider_corner_coverage": {
+        "name": "Širšie pokrytie rohov"
       },
       "pressurized_cleaning": {
         "name": "Tlakové čistenie"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "DnD"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
-      },
-      "deep_cleaning": {
-        "name": "Hlboké čistenie"
-      },
-      "deep_mop_washing": {
-        "name": "Hlboké umývanie mopu"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Prispôsobené čistenie"
-      },
-      "carpet_preferences": {
-        "name": "Prispôsobené predvoľby"
-      },
-      "wider_corner_coverage": {
-        "name": "Širšie pokrytie rohov"
       }
     },
     "number": {

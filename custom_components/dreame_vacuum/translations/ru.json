@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Индивидуальная уборка"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Глубокая уборка"
+      },
       "auto_dust_collecting": {
         "name": "Автовыгрузка мусора"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Самоочистка"
+      },
+      "deep_mop_washing": {
+        "name": "Глубокая мойка швабры"
       },
       "hot_washing": {
         "name": "Мойка горячей водой"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "УФ-стерилизация"
       },
+      "customized_carpet_cleaning": {
+        "name": "Индивидуальная уборка"
+      },
       "carpet_avoidance": {
         "name": "Избегать ковров"
+      },
+      "carpet_preferences": {
+        "name": "Индивидуальные настройки"
       },
       "auto_change_mop": {
         "name": "Автосмена швабры"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Умная мойка швабры"
+      },
+      "wider_corner_coverage": {
+        "name": "Более широкий охват углов"
       },
       "pressurized_cleaning": {
         "name": "Уборка под давлением"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "Режим «Не беспокоить»"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Глубокая уборка"
-      },
-      "deep_mop_washing": {
-        "name": "Глубокая мойка швабры"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Индивидуальная уборка"
-      },
-      "carpet_preferences": {
-        "name": "Индивидуальные настройки"
-      },
-      "wider_corner_coverage": {
-        "name": "Более широкий охват углов"
       }
     },
     "number": {

@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Mukautettu siivous"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Perusteellinen puhdistus"
+      },
       "auto_dust_collecting": {
         "name": "Automaattityhjennys"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Itsepuhdistus"
+      },
+      "deep_mop_washing": {
+        "name": "Perusteellinen mopin pesu"
       },
       "hot_washing": {
         "name": "Kuuma pesu"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "UV-sterilointi"
       },
+      "customized_carpet_cleaning": {
+        "name": "Mukautettu siivous"
+      },
       "carpet_avoidance": {
         "name": "Maton välttäminen"
+      },
+      "carpet_preferences": {
+        "name": "Mukautetut mieltymykset"
       },
       "auto_change_mop": {
         "name": "Automaattinen mopin vaihto"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Älykäs mopipesu"
+      },
+      "wider_corner_coverage": {
+        "name": "Laajempi kulmien peitto"
       },
       "pressurized_cleaning": {
         "name": "Paineistettu siivous"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "Älä häiritse -tila (DnD)"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Perusteellinen puhdistus"
-      },
-      "deep_mop_washing": {
-        "name": "Perusteellinen mopin pesu"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Mukautettu siivous"
-      },
-      "carpet_preferences": {
-        "name": "Mukautetut mieltymykset"
-      },
-      "wider_corner_coverage": {
-        "name": "Laajempi kulmien peitto"
       }
     },
     "number": {

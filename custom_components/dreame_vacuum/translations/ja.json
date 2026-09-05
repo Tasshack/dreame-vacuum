@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "カスタマイズ清掃"
       },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "徹底清掃"
+      },
       "auto_dust_collecting": {
         "name": "自動ゴミ収集"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "自動クリーニング"
+      },
+      "deep_mop_washing": {
+        "name": "しっかりモップ水洗い"
       },
       "hot_washing": {
         "name": "温水洗浄"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "UV除菌"
       },
+      "customized_carpet_cleaning": {
+        "name": "カスタマイズ清掃"
+      },
       "carpet_avoidance": {
         "name": "カーペット回避"
+      },
+      "carpet_preferences": {
+        "name": "カスタム設定"
       },
       "auto_change_mop": {
         "name": "自動モップ交換"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "スマートモップ洗浄"
+      },
+      "wider_corner_coverage": {
+        "name": "広範囲の隅の清掃"
       },
       "pressurized_cleaning": {
         "name": "加圧清掃"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "おやすみモード"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
-      },
-      "deep_cleaning": {
-        "name": "徹底清掃"
-      },
-      "deep_mop_washing": {
-        "name": "しっかりモップ水洗い"
-      },
-      "customized_carpet_cleaning": {
-        "name": "カスタマイズ清掃"
-      },
-      "carpet_preferences": {
-        "name": "カスタム設定"
-      },
-      "wider_corner_coverage": {
-        "name": "広範囲の隅の清掃"
       }
     },
     "number": {

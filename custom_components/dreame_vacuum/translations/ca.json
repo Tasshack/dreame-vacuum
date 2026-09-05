@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Neteja personalitzada"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Neteja profunda"
+      },
       "auto_dust_collecting": {
         "name": "Buidat automàtic"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Autoneteja"
+      },
+      "deep_mop_washing": {
+        "name": "Rentat profund de mopa"
       },
       "hot_washing": {
         "name": "Rentat amb aigua calenta"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "Esterilització UV"
       },
+      "customized_carpet_cleaning": {
+        "name": "Neteja personalitzada"
+      },
       "carpet_avoidance": {
         "name": "Evitar catifes"
+      },
+      "carpet_preferences": {
+        "name": "Preferències personalitzades"
       },
       "auto_change_mop": {
         "name": "Canvi automàtic de mopa"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Rentat intel·ligent de mopa"
+      },
+      "wider_corner_coverage": {
+        "name": "Major cobertura de racons"
       },
       "pressurized_cleaning": {
         "name": "Neteja pressuritzada"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "DnD"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Neteja profunda"
-      },
-      "deep_mop_washing": {
-        "name": "Rentat profund de mopa"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Neteja personalitzada"
-      },
-      "carpet_preferences": {
-        "name": "Preferències personalitzades"
-      },
-      "wider_corner_coverage": {
-        "name": "Major cobertura de racons"
       }
     },
     "number": {

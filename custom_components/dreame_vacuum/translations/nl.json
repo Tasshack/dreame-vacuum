@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Gepersonaliseerde reiniging"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Grondige reiniging"
+      },
       "auto_dust_collecting": {
         "name": "Automatisch legen"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Zelfreiniging"
+      },
+      "deep_mop_washing": {
+        "name": "Grondige dweilwas"
       },
       "hot_washing": {
         "name": "Wassen met heet water"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "UV-sterilisatie"
       },
+      "customized_carpet_cleaning": {
+        "name": "Gepersonaliseerde reiniging"
+      },
       "carpet_avoidance": {
         "name": "Tapijt vermijden"
+      },
+      "carpet_preferences": {
+        "name": "Gepersonaliseerde voorkeuren"
       },
       "auto_change_mop": {
         "name": "Automatische dweilwissel"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Slimme dweilwas"
+      },
+      "wider_corner_coverage": {
+        "name": "Bredere hoekdekking"
       },
       "pressurized_cleaning": {
         "name": "Onder druk reinigen"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "DnD"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Grondige reiniging"
-      },
-      "deep_mop_washing": {
-        "name": "Grondige dweilwas"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Gepersonaliseerde reiniging"
-      },
-      "carpet_preferences": {
-        "name": "Gepersonaliseerde voorkeuren"
-      },
-      "wider_corner_coverage": {
-        "name": "Bredere hoekdekking"
       }
     },
     "number": {

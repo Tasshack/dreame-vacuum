@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Pembersihan Tersuai"
       },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "Pembersihan Mendalam"
+      },
       "auto_dust_collecting": {
         "name": "Auto-Kosong"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Cuci Kendiri"
+      },
+      "deep_mop_washing": {
+        "name": "Basuhan Mop Mendalam"
       },
       "hot_washing": {
         "name": "Basuhan Panas"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "Pensterilan UV"
       },
+      "customized_carpet_cleaning": {
+        "name": "Pembersihan Tersuai"
+      },
       "carpet_avoidance": {
         "name": "Pengelakan Karpet"
+      },
+      "carpet_preferences": {
+        "name": "Keutamaan Tersuai"
       },
       "auto_change_mop": {
         "name": "Penukaran Mop Auto"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Basuhan Mop Pintar"
+      },
+      "wider_corner_coverage": {
+        "name": "Liputan Sudut Lebih Luas"
       },
       "pressurized_cleaning": {
         "name": "Pembersihan Bertekanan"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "DnD"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
-      },
-      "deep_cleaning": {
-        "name": "Pembersihan Mendalam"
-      },
-      "deep_mop_washing": {
-        "name": "Basuhan Mop Mendalam"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Pembersihan Tersuai"
-      },
-      "carpet_preferences": {
-        "name": "Keutamaan Tersuai"
-      },
-      "wider_corner_coverage": {
-        "name": "Liputan Sudut Lebih Luas"
       }
     },
     "number": {

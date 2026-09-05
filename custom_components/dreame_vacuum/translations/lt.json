@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Pasirinktinis valymas"
       },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "Gilus valymas"
+      },
       "auto_dust_collecting": {
         "name": "Automatinis dulkių surinkimas"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Savaiminis išsivalymas"
+      },
+      "deep_mop_washing": {
+        "name": "Gilus šluostės plovimas"
       },
       "hot_washing": {
         "name": "Plovimas karštu vandeniu"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "UV sterilizacija"
       },
+      "customized_carpet_cleaning": {
+        "name": "Pasirinktinis kilimų valymas"
+      },
       "carpet_avoidance": {
         "name": "Kilimų vengimas"
+      },
+      "carpet_preferences": {
+        "name": "Pasirinktiniai nustatymai"
       },
       "auto_change_mop": {
         "name": "Automatinis šluostės keitimas"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Išmanusis šluostės plovimas"
+      },
+      "wider_corner_coverage": {
+        "name": "Platesnė kampų aprėptis"
       },
       "pressurized_cleaning": {
         "name": "Valymas su slėgiu"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "Netrukdymo režimas (DnD)"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
-      },
-      "deep_cleaning": {
-        "name": "Gilus valymas"
-      },
-      "deep_mop_washing": {
-        "name": "Gilus šluostės plovimas"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Pasirinktinis kilimų valymas"
-      },
-      "carpet_preferences": {
-        "name": "Pasirinktiniai nustatymai"
-      },
-      "wider_corner_coverage": {
-        "name": "Platesnė kampų aprėptis"
       }
     },
     "number": {

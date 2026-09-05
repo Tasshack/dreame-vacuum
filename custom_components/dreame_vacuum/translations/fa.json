@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "تمیزکاری سفارشی"
       },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "تمیزکاری عمیق"
+      },
       "auto_dust_collecting": {
         "name": "تخلیه خودکار زباله"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "خودتمیزکاری"
+      },
+      "deep_mop_washing": {
+        "name": "شستشوی عمیق طی"
       },
       "hot_washing": {
         "name": "شستشو با آب داغ"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "استریلیزاسیون UV"
       },
+      "customized_carpet_cleaning": {
+        "name": "تمیزکاری سفارشی"
+      },
       "carpet_avoidance": {
         "name": "اجتناب از فرش"
+      },
+      "carpet_preferences": {
+        "name": "تنظیمات سفارشی"
       },
       "auto_change_mop": {
         "name": "تعویض خودکار طی"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "شستشوی هوشمند طی"
+      },
+      "wider_corner_coverage": {
+        "name": "پوشش گسترده‌تر گوشه‌ها"
       },
       "pressurized_cleaning": {
         "name": "تمیزکاری تحت فشار"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "عدم مزاحمت (DnD)"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
-      },
-      "deep_cleaning": {
-        "name": "تمیزکاری عمیق"
-      },
-      "deep_mop_washing": {
-        "name": "شستشوی عمیق طی"
-      },
-      "customized_carpet_cleaning": {
-        "name": "تمیزکاری سفارشی"
-      },
-      "carpet_preferences": {
-        "name": "تنظیمات سفارشی"
-      },
-      "wider_corner_coverage": {
-        "name": "پوشش گسترده‌تر گوشه‌ها"
       }
     },
     "number": {

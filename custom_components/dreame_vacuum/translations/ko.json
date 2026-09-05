@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "맞춤 청소"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "정밀 청소"
+      },
       "auto_dust_collecting": {
         "name": "자동 먼지 비움"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "자가 청소"
+      },
+      "deep_mop_washing": {
+        "name": "정밀 걸레 세척"
       },
       "hot_washing": {
         "name": "온수 세척"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "UV 살균"
       },
+      "customized_carpet_cleaning": {
+        "name": "맞춤 청소"
+      },
       "carpet_avoidance": {
         "name": "카펫 회피"
+      },
+      "carpet_preferences": {
+        "name": "카펫 맞춤 설정"
       },
       "auto_change_mop": {
         "name": "자동 걸레 교체"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "스마트 걸레 세척"
+      },
+      "wider_corner_coverage": {
+        "name": "코너 청소 범위 확대"
       },
       "pressurized_cleaning": {
         "name": "가압 청소"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "방해 금지 모드"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "정밀 청소"
-      },
-      "deep_mop_washing": {
-        "name": "정밀 걸레 세척"
-      },
-      "customized_carpet_cleaning": {
-        "name": "맞춤 청소"
-      },
-      "carpet_preferences": {
-        "name": "카펫 맞춤 설정"
-      },
-      "wider_corner_coverage": {
-        "name": "코너 청소 범위 확대"
       }
     },
     "number": {

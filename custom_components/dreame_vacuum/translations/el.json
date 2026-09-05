@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Προσαρμοσμένος καθαρισμός"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Βαθύς καθαρισμός"
+      },
       "auto_dust_collecting": {
         "name": "Αυτόματο άδειασμα"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Αυτοκαθαρισμός"
+      },
+      "deep_mop_washing": {
+        "name": "Βαθύ πλύσιμο πανιού"
       },
       "hot_washing": {
         "name": "Πλύσιμο με ζεστό νερό"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "Αποστείρωση UV"
       },
+      "customized_carpet_cleaning": {
+        "name": "Προσαρμοσμένος καθαρισμός"
+      },
       "carpet_avoidance": {
         "name": "Αποφυγή χαλιών"
+      },
+      "carpet_preferences": {
+        "name": "Προσαρμοσμένες προτιμήσεις"
       },
       "auto_change_mop": {
         "name": "Αυτόματη αλλαγή πανιού"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Έξυπνο πλύσιμο πανιού"
+      },
+      "wider_corner_coverage": {
+        "name": "Μεγαλύτερη κάλυψη γωνιών"
       },
       "pressurized_cleaning": {
         "name": "Καθαρισμός υπό πίεση"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "DnD"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Βαθύς καθαρισμός"
-      },
-      "deep_mop_washing": {
-        "name": "Βαθύ πλύσιμο πανιού"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Προσαρμοσμένος καθαρισμός"
-      },
-      "carpet_preferences": {
-        "name": "Προσαρμοσμένες προτιμήσεις"
-      },
-      "wider_corner_coverage": {
-        "name": "Μεγαλύτερη κάλυψη γωνιών"
       }
     },
     "number": {

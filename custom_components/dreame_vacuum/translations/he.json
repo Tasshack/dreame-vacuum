@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "ניקוי מותאם אישית"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "ניקוי עמוק"
+      },
       "auto_dust_collecting": {
         "name": "ריקון אוטומטי"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "ניקוי עצמי"
+      },
+      "deep_mop_washing": {
+        "name": "שטיפת מגב עמוקה"
       },
       "hot_washing": {
         "name": "שטיפה חמה"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "עיקור UV"
       },
+      "customized_carpet_cleaning": {
+        "name": "ניקוי מותאם אישית"
+      },
       "carpet_avoidance": {
         "name": "הימנעות משטיח"
+      },
+      "carpet_preferences": {
+        "name": "העדפות מותאמות אישית"
       },
       "auto_change_mop": {
         "name": "החלפת מגב אוטומטית"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "שטיפת מגב חכמה"
+      },
+      "wider_corner_coverage": {
+        "name": "כיסוי פינות רחב יותר"
       },
       "pressurized_cleaning": {
         "name": "ניקוי בלחץ"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "נא לא להפריע (DnD)"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "ניקוי עמוק"
-      },
-      "deep_mop_washing": {
-        "name": "שטיפת מגב עמוקה"
-      },
-      "customized_carpet_cleaning": {
-        "name": "ניקוי מותאם אישית"
-      },
-      "carpet_preferences": {
-        "name": "העדפות מותאמות אישית"
-      },
-      "wider_corner_coverage": {
-        "name": "כיסוי פינות רחב יותר"
       }
     },
     "number": {

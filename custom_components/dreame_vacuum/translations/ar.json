@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "تنظيف مخصص"
       },
+      "cleangenius_cleaning": {
+        "name": "Cleangenius"
+      },
+      "deep_cleaning": {
+        "name": "تنظيف عميق"
+      },
       "auto_dust_collecting": {
         "name": "تفريغ تلقائي"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "تنظيف ذاتي"
+      },
+      "deep_mop_washing": {
+        "name": "غسيل عميق للممسحة"
       },
       "hot_washing": {
         "name": "غسيل بالماء الساخن"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "تعقيم بالأشعة فوق البنفسجية"
       },
+      "customized_carpet_cleaning": {
+        "name": "تنظيف مخصص"
+      },
       "carpet_avoidance": {
         "name": "تجنب السجاد"
+      },
+      "carpet_preferences": {
+        "name": "تفضيلات مخصصة"
       },
       "auto_change_mop": {
         "name": "تغيير الممسحة التلقائي"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "غسل ذكي للممسحة"
+      },
+      "wider_corner_coverage": {
+        "name": "تغطية أوسع للزوايا"
       },
       "pressurized_cleaning": {
         "name": "تنظيف بالضغط"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "عدم الإزعاج"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
-      },
-      "deep_cleaning": {
-        "name": "تنظيف عميق"
-      },
-      "deep_mop_washing": {
-        "name": "غسيل عميق للممسحة"
-      },
-      "customized_carpet_cleaning": {
-        "name": "تنظيف مخصص"
-      },
-      "carpet_preferences": {
-        "name": "تفضيلات مخصصة"
-      },
-      "wider_corner_coverage": {
-        "name": "تغطية أوسع للزوايا"
       }
     },
     "number": {

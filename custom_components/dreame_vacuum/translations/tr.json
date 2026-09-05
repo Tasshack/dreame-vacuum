@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Özelleştirilmiş Temizlik"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Derin Temizlik"
+      },
       "auto_dust_collecting": {
         "name": "Otomatik Boşaltma"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Kendi Kendine Temizlik"
+      },
+      "deep_mop_washing": {
+        "name": "Derin Mop Yıkama"
       },
       "hot_washing": {
         "name": "Sıcak Yıkama"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "UV Sterilizasyon"
       },
+      "customized_carpet_cleaning": {
+        "name": "Özelleştirilmiş Temizlik"
+      },
       "carpet_avoidance": {
         "name": "Halıdan Kaçınma"
+      },
+      "carpet_preferences": {
+        "name": "Özelleştirilmiş Tercihler"
       },
       "auto_change_mop": {
         "name": "Otomatik Mop Değişimi"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Akıllı Mop Yıkama"
+      },
+      "wider_corner_coverage": {
+        "name": "Geniş Köşe Kapsamı"
       },
       "pressurized_cleaning": {
         "name": "Basınçlı Temizlik"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "Rahatsız Etme (DnD)"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Derin Temizlik"
-      },
-      "deep_mop_washing": {
-        "name": "Derin Mop Yıkama"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Özelleştirilmiş Temizlik"
-      },
-      "carpet_preferences": {
-        "name": "Özelleştirilmiş Tercihler"
-      },
-      "wider_corner_coverage": {
-        "name": "Geniş Köşe Kapsamı"
       }
     },
     "number": {

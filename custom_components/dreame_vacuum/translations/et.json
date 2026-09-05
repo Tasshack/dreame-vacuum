@@ -1307,6 +1307,12 @@
       "customized_cleaning": {
         "name": "Kohandatud puhastus"
       },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "deep_cleaning": {
+        "name": "Süvapuhastus"
+      },
       "auto_dust_collecting": {
         "name": "Automaatne tühjendus"
       },
@@ -1315,6 +1321,9 @@
       },
       "self_clean": {
         "name": "Isepuhastus"
+      },
+      "deep_mop_washing": {
+        "name": "Sügav mopi pesemine"
       },
       "hot_washing": {
         "name": "Kuum pesu"
@@ -1328,8 +1337,14 @@
       "uv_sterilization": {
         "name": "UV-idandite hävitamine"
       },
+      "customized_carpet_cleaning": {
+        "name": "Kohandatud puhastus"
+      },
       "carpet_avoidance": {
         "name": "Vaiba vältimine"
+      },
+      "carpet_preferences": {
+        "name": "Kohandatud eelistused"
       },
       "auto_change_mop": {
         "name": "Automaatne mopi vahetus"
@@ -1387,6 +1402,9 @@
       },
       "smart_mop_washing": {
         "name": "Nutikas mopopesu"
+      },
+      "wider_corner_coverage": {
+        "name": "Laiem nurkade katvus"
       },
       "pressurized_cleaning": {
         "name": "Survepesu"
@@ -1456,26 +1474,6 @@
       },
       "dnd": {
         "name": "Mitte segada"
-      }
-    },
-    "toggle": {
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
-      },
-      "deep_cleaning": {
-        "name": "Süvapuhastus"
-      },
-      "deep_mop_washing": {
-        "name": "Sügav mopi pesemine"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Kohandatud puhastus"
-      },
-      "carpet_preferences": {
-        "name": "Kohandatud eelistused"
-      },
-      "wider_corner_coverage": {
-        "name": "Laiem nurkade katvus"
       }
     },
     "number": {
