@@ -4,3 +4,4 @@
 *.sln
 /env
 *.zip
+.idea

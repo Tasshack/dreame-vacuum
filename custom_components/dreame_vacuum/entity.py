@@ -6,26 +6,63 @@ from collections.abc import Callable
 from functools import partial
 
 from homeassistant.core import callback
+from homeassistant.const import EVENT_CORE_CONFIG_UPDATE
 from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC
-from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers import entity_registry
+from homeassistant.helpers.entity import DeviceInfo, Entity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers.entity import async_generate_entity_id
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
-from .const import DOMAIN, LOGGER, ATTR_VALUE
+from .const import DOMAIN, LOGGER
+from .dreame.const import ATTR_VALUE
+from .dreame.types import SEGMENT_TYPE_CODE_TO_NAME
 from .dreame import (
     DreameVacuumDevice,
     DreameVacuumProperty,
+    DreameVacuumAutoSwitchProperty,
+    DreameVacuumStrAIProperty,
+    DreameVacuumAIProperty,
     DreameVacuumAction,
     DeviceException,
     DeviceUpdateFailedException,
     InvalidActionException,
     InvalidValueException,
-    PROPERTY_TO_NAME,
-    ACTION_TO_NAME,
     PROPERTY_AVAILABILITY,
     ACTION_AVAILABILITY,
 )
+
+
+def remove_entities(hass, entry, coordinator, domain, descriptions):
+    """Remove entities from registry that are no longer provided by the integration"""
+
+    registry = entity_registry.async_get(hass)
+    for entry in entity_registry.async_entries_for_config_entry(registry, entry.entry_id):
+        entity_id = entry.entity_id
+        if (
+            entity_id.startswith(f"{domain}.")
+            and ("_map_" not in entity_id or domain == "button")
+            and "_room_" not in entity_id
+            and "_shortcut_" not in entity_id
+        ):
+            if entry.translation_key is not None:
+                found = False
+                for description in descriptions:
+                    key = description.key
+                    if key is None and description.property_key is not None:
+                        key = description.property_key.name.lower()
+                    if key is None and description.action_key is not None:
+                        key = description.action_key.name.lower()
+                    if key is None and description.name is not None:
+                        key = description.name.lower().replace(" ", "_")
+
+                    if key == entry.translation_key:
+                        found = description.exists_fn(description, coordinator.device)
+                        break
+
+                if not found:
+                    registry.async_remove(entity_id)
 
 
 @dataclass
@@ -38,9 +75,26 @@ class DreameVacuumEntityDescription:
     exists_fn: Callable[[object, object], bool] = lambda description, device: bool(
         (description.action_key is not None and description.action_key in device.action_mapping)
         or description.property_key is None
-        or description.property_key.value in device.data
+        or (
+            isinstance(description.property_key, DreameVacuumProperty)
+            and description.property_key.value in device.data
+        )
+        or (
+            isinstance(description.property_key, DreameVacuumAutoSwitchProperty)
+            and device.auto_switch_data
+            and description.property_key.name in device.auto_switch_data
+        )
+        or (
+            (
+                isinstance(description.property_key, DreameVacuumStrAIProperty)
+                or isinstance(description.property_key, DreameVacuumAIProperty)
+            )
+            and device.ai_data
+            and description.property_key.name in device.ai_data
+        )
     )
     value_fn: Callable[[object, object], Any] = None
+    value_int_fn: Callable[[object, str], int] = None
     format_fn: Callable[[str, object], Any] = None
     available_fn: Callable[[object], bool] = None
     icon_fn: Callable[[str, object], str] = None
@@ -51,7 +105,8 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
     """Defines a base Dreame Vacuum entity."""
 
     _attr_has_entity_name = True
-  
+    _name_placeholder = hasattr(Entity, "_attr_translation_placeholders")
+
     def __init__(
         self,
         coordinator: DreameVacuumDataUpdateCoordinator,
@@ -60,30 +115,33 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
         if description is not None:
             if description.key is None:
                 if description.property_key is not None:
-                    name = PROPERTY_TO_NAME.get(description.property_key)
-                    if name:
-                        description.key = name[0]
-                        description.name = name[1]
-                    else:
-                        description.key = description.property_key.name.lower()
+                    description.key = description.property_key.name.lower()
                 elif description.action_key is not None:
-                    name = ACTION_TO_NAME.get(description.action_key)
-                    if name:
-                        description.key = name[0]
-                        description.name = name[1]
-                    else:
-                        description.key = description.action_key.name.lower()
+                    description.key = description.action_key.name.lower()
 
             if description.name is None and description.key is not None:
                 description.name = description.key.replace("_", " ").title()
             elif description.key is None and description.name is not None:
                 description.key = description.name.lower().replace(" ", "_").replace("-", "_")
 
+            if description.value_fn is None and (description.property_key is not None or description.key is not None):
+                if description.property_key is not None:
+                    prop = description.property_key.name.lower()
+                else:
+                    prop = description.key.lower()
+                if hasattr(coordinator.device.status, prop):
+                    description.value_fn = lambda value, entity: getattr(entity.device.status, prop)
+
             if description.available_fn is None:
                 if description.property_key is not None:
-                    description.available_fn = PROPERTY_AVAILABILITY.get(description.property_key)
+                    description.available_fn = PROPERTY_AVAILABILITY.get(description.property_key.name)
                 elif description.action_key is not None:
-                    description.available_fn = ACTION_AVAILABILITY.get(description.action_key)
+                    description.available_fn = ACTION_AVAILABILITY.get(description.action_key.name)
+                elif description.key is not None:
+                    if description.key in PROPERTY_AVAILABILITY:
+                        description.available_fn = PROPERTY_AVAILABILITY[description.key]
+                    elif description.key in ACTION_AVAILABILITY:
+                        description.available_fn = ACTION_AVAILABILITY[description.key]
 
         super().__init__(coordinator=coordinator)
         if description:
@@ -91,46 +149,106 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
                 self._attr_translation_key = description.key
             self.entity_description = description
             self._set_id()
+            self._attr_unique_id = f"{self.device.mac}_{self.entity_description.key}"
 
     def _set_id(self) -> None:
         if self.entity_description:
             if self.entity_description.icon_fn is not None:
                 self._attr_icon = self.entity_description.icon_fn(self.native_value, self.device)
 
-            self._attr_name = self.entity_description.name
-            self._attr_unique_id = f"{self.device.mac}_{self.entity_description.key}"
+    def _generate_entity_id(self, format) -> None:
+        if self.entity_description.key:
+            self.entity_id = async_generate_entity_id(
+                format, f"{self.device.name}_{self.entity_description.key}", hass=self.coordinator.hass
+            )
 
     @callback
     def _handle_coordinator_update(self) -> None:
-        if self.entity_description.icon_fn is not None:
-            self._attr_icon = self.entity_description.icon_fn(self.native_value, self.device)
-        super()._handle_coordinator_update()
+        self._set_id()
+        self.async_write_ha_state()
+
+    def _localize_entity(self, domain: str, name: str, default: str) -> str:
+        return self._localize(f"entity.{domain}.{name}.name", default)
+
+    def _localize_entity_state(self, domain: str, name: str, key: str, default: str) -> str:
+        return self._localize(f"entity.{domain}.{name}.state.{key}", default)
+
+    def _localize_entity_component(self, name: str, default: str) -> str:
+        return self._localize(f"entity_component.frontend_title.state.{name}", default)
+
+    def _localize(self, path: str, default: str) -> str:
+        return self.coordinator.localize(path, default)
+
+    def _localize_segment_name(self, segment, segment_id) -> str:
+        if segment:
+            type_name = SEGMENT_TYPE_CODE_TO_NAME.get(segment.type) if segment.type else None
+            if type_name:
+                key = type_name.lower().replace(" ", "_")
+                name = self._localize_entity_state("select", "segment_name", key, type_name).title()
+                if segment.index:
+                    name = f"{name} {segment.index + 1}"
+                return name
+            if segment.custom_name:
+                return segment.custom_name
+            template = self._localize_entity_component("segment_name_placeholder", "Room {index}")
+            return template.replace("%index%", str(segment_id))
+        template = self._localize_entity_component("segment_unavailable", "Room {index} Unavailable")
+        return template.replace("%index%", str(segment_id))
+
+    def _localize_map_name(self, map_data) -> str:
+        if map_data is None:
+            return None
+        if map_data.custom_name:
+            return map_data.custom_name
+        template = self._localize_entity_component("map_name_placeholder", "Map %index%")
+        return template.replace("%index%", str(map_data.map_index))
 
     async def _try_command(self, mask_error, func, *args, **kwargs) -> bool:
         """Call a vacuum command handling error messages."""
+        if not self.device.device_connected:
+            raise HomeAssistantError("Device is not available") from None
+
         try:
             await self.hass.async_add_executor_job(partial(func, *args, **kwargs))
             return True
         except (InvalidActionException, InvalidValueException) as exc:
             LOGGER.error(mask_error, exc)
-            raise ValueError(str(exc)) from None
+            raise HomeAssistantError(str(exc)) from None
         except (DeviceUpdateFailedException, DeviceException) as exc:
-            if self.coordinator._available:
+            if self.device.available:
                 raise HomeAssistantError(str(exc)) from None
             return False
+
+    def _on_locale_changed(self):
+        self._set_id()
+        self.__dict__.pop("name", None)
+        self.async_write_ha_state()
+
+    async def async_added_to_hass(self) -> None:
+        await super().async_added_to_hass()
+
+        async def on_config_update(event) -> None:
+            if "language" not in event.data:
+                return
+            await self.coordinator.async_load_locale(self.hass)
+            self._on_locale_changed()
+
+        self.async_on_remove(self.hass.bus.async_listen(EVENT_CORE_CONFIG_UPDATE, on_config_update))
 
     @property
     def device_info(self) -> DeviceInfo:
         """Return device information about this Dreame Vacuum device."""
-        return DeviceInfo(
-            connections={(CONNECTION_NETWORK_MAC, self.device.mac)},
-            identifiers={(DOMAIN, self.device.mac)},
-            name=self.device.name,
-            manufacturer=self.device.info.manufacturer,
-            model=self.device.info.model,
-            sw_version=self.device.info.firmware_version,
-            hw_version=self.device.info.hardware_version,
-        )
+        if self.device.info:
+            return DeviceInfo(
+                connections={(CONNECTION_NETWORK_MAC, self.device.info.mac_address or self.device.mac)},
+                identifiers={(DOMAIN, self.device.mac)},
+                name=self.device.name,
+                serial_number=self.device.status.serial_number if self.device.status else None,
+                manufacturer=self.device.info.manufacturer,
+                model=self.device.info.model,
+                sw_version=self.device.info.firmware_version,
+                hw_version=self.device.info.hardware_version,
+            )
 
     @property
     def available(self) -> bool:
@@ -149,18 +267,20 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
         if self.entity_description.property_key is not None:
             value = self.device.get_property(self.entity_description.property_key)
         if self.entity_description.value_fn is not None:
-            return self.entity_description.value_fn(value, self.device)
+            return self.entity_description.value_fn(value, self)
         return value
 
     @property
     def extra_state_attributes(self) -> dict[str, str] | None:
         """Return the extra state attributes of the entity."""
         attrs = None
-        if self.entity_description.value_fn is not None:
+        if self.entity_description.attrs_fn is not None:
+            attrs = self.entity_description.attrs_fn(self.device)
+        elif self.entity_description.value_fn is not None or self.entity_description.value_int_fn is not None:
             if self.entity_description.property_key is not None:
                 attrs = {ATTR_VALUE: self.device.get_property(self.entity_description.property_key)}
-            elif self.entity_description.attrs_fn is not None:
-                attrs = self.entity_description.attrs_fn(self.device)
+            elif self.entity_description.value_int_fn is not None:
+                attrs = {ATTR_VALUE: self.entity_description.value_int_fn(self.native_value, self)}
         return attrs
 
     @property

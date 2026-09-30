@@ -1,0 +1,2956 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "デバイスはすでに設定されています",
+      "cannot_connect": "接続に失敗しました。",
+      "reauth_successful": "再認証に成功しました"
+    },
+    "error": {
+      "cannot_connect": "接続に失敗しました。",
+      "unsupported": "デバイスはサポートされていません",
+      "wrong_token": "チェックサムエラー、間違ったトークン",
+      "2fa_failed": "認証に失敗しました。",
+      "wrong_captcha": "間違ったキャプチャ。",
+      "credentials_incomplete": "資格情報が不完全です。ユーザー名、パスワード、国を入力してください。",
+      "login_error": "ログインできませんでした。資格情報を確認してください。",
+      "no_devices": "選択した国のこのアカウントにサポートされているデバイスが見つかりません。{devices}",
+      "2fa_send_failed": "認証コードの送信に失敗しました。もう一度お試しください。",
+      "2fa_limit_reached": "認証コードの1日の送信制限に達しました。明日もう一度お試しください。",
+      "2fa_cooldown_active": "連続したリクエストが多すぎます。再試行する前に数分間お待ちください。",
+      "invalid_key": "無効なキーです。"
+    },
+    "step": {
+      "user": {
+        "data": {
+          "configuration_type": "設定タイプ"
+        },
+        "description": "デバイスの管理に使用しているアプリに対応するアカウントタイプを選択してください。"
+      },
+      "local": {
+        "data": {
+          "host": "ホスト",
+          "token": "トークン"
+        },
+        "description": "ローカル接続は、Xiaomi Homeアプリに追加できるデバイスでのみ利用可能です。必要な32文字のAPIトークンは、Xiaomi Miioクラウド経由でのみ取得できます。"
+      },
+      "mi": {
+        "data": {
+          "username": "ユーザー名",
+          "password": "パスワード",
+          "country": "サーバーの国",
+          "prefer_cloud": "クラウド接続を優先する"
+        },
+        "description": "Xiaomi Homeアプリへのログインに使用している認証情報を入力してください。"
+      },
+      "2fa": {
+        "data": {
+          "verification_code": "2段階認証コード"
+        },
+        "description": "## セキュリティ認証が必要です\n認証コードが {dest} に送信されました。以下にコードを入力してください。"
+      },
+      "captcha": {
+        "data": {
+          "code": "コード"
+        },
+        "description": "## キャプチャ認証が必要です。\n![captcha](data:image/jpeg;base64,{img})"
+      },
+      "dreame": {
+        "data": {
+          "username": "ユーザー名",
+          "password": "パスワード",
+          "country": "サーバーの国"
+        },
+        "description": "Dreamehomeアプリへのログインに使用している認証情報を入力してください。"
+      },
+      "mova": {
+        "data": {
+          "username": "ユーザー名",
+          "password": "パスワード",
+          "country": "サーバーの国"
+        },
+        "description": "MOVAhomeアプリへのログインに使用している認証情報を入力してください。"
+      },
+      "trouver": {
+        "data": {
+          "username": "ユーザー名",
+          "password": "パスワード",
+          "country": "サーバーの国"
+        },
+        "description": "TROUVERアプリへのログインに使用している認証情報を入力してください。"
+      },
+      "devices": {
+        "data": {
+          "devices": "サポートされているデバイス"
+        },
+        "description": "設定したいDreame Vacuumデバイスを選択してください。"
+      },
+      "dvc": {
+        "data": {
+          "dvc_key": "Dreame Vacuum Card キー"
+        },
+        "description": "## Dreame Vacuum Card\r\n #### Dreame Vacuum のインターフェース{text}\r\n\r\nDreame Vacuum Cardをアクティベートするには、ライセンスキーを入力してください。お持ちでない場合は、**[こちら]({url})**から取得できます。\r\n\r\n*注: 各キーは1台のデバイスにのみ有効です。*"
+      },
+      "options": {
+        "data": {
+          "name": "名前",
+          "color_scheme": "マップのカラースキーム",
+          "icon_set": "マップのアイコンセット",
+          "notify": "通知",
+          "hidden_map_objects": "隠しマップオブジェクト",
+          "low_resolution": "低解像度マップ",
+          "square": "正方形のマップ"
+        }
+      },
+      "reauth_confirm": {
+        "description": "Dreame Vacuum統合は、トークンを更新したり不足しているクラウド資格情報を追加したりするために、アカウントを再認証する必要があります。",
+        "title": "統合の再認証"
+      }
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "color_scheme": "マップのカラースキーム",
+          "icon_set": "マップのアイコンセット",
+          "notify": "通知",
+          "hidden_map_objects": "隠しマップオブジェクト",
+          "low_resolution": "低解像度マップ",
+          "square": "正方形のマップ",
+          "configuration_type": "設定タイプ",
+          "prefer_cloud": "クラウド接続を優先する",
+          "dvc_key": "Dreame Vacuum Card キー"
+        }
+      }
+    },
+    "error": {
+      "cloud_credentials_incomplete": "クラウドの資格情報が不完全です。ユーザー名、パスワード、国を入力してください",
+      "invalid_key": "無効なキーです。"
+    }
+  },
+  "selector": {
+    "map_objects": {
+      "options": {
+        "color": "部屋の色",
+        "icon": "部屋のアイコン",
+        "name": "部屋の名前",
+        "name_background": "部屋名の背景",
+        "order": "部屋の順序",
+        "suction_level": "部屋の吸引力",
+        "water_volume": "部屋の水量",
+        "cleaning_times": "部屋の清掃回数",
+        "cleaning_mode": "部屋の清掃モード",
+        "mopping_mode": "部屋の水拭きモード",
+        "path": "経路",
+        "no_go": "進入禁止エリア",
+        "no_mop": "水拭き禁止エリア",
+        "virtual_wall": "バーチャルウォール",
+        "pathway": "バーチャル敷居",
+        "active_area": "アクティブエリア",
+        "active_point": "アクティブポイント",
+        "charger": "充電ドックのアイコン",
+        "robot": "ロボットのアイコン",
+        "cleaning_direction": "清掃方向",
+        "obstacle": "AI障害物",
+        "pet": "ペット",
+        "carpet": "カーペットエリア",
+        "material": "床材",
+        "low_lying_area": "低地エリア",
+        "furniture": "家具",
+        "ramp": "スロープ",
+        "curtain": "カーテン",
+        "cruise_point": "巡回ポイント"
+      }
+    },
+    "notifications": {
+      "options": {
+        "cleanup_completed": "清掃完了",
+        "consumable": "消耗品",
+        "information": "情報",
+        "warning": "警告",
+        "error": "エラー"
+      }
+    },
+    "color_scheme": {
+      "options": {
+        "dreame_dark": "Dreameダーク",
+        "dreame_light": "Dreameライト",
+        "grayscale": "グレースケール",
+        "mijia_dark": "Mijiaダーク",
+        "mijia_light": "Mijiaライト"
+      }
+    },
+    "icon_set": {
+      "options": {
+        "dreame": "Dreame",
+        "dreame_old": "Dreame Old",
+        "material": "Material",
+        "mijia": "Mijia"
+      }
+    },
+    "configuration_type": {
+      "options": {
+        "dreame": "Dreamehome",
+        "mi": "Xiaomi Home",
+        "mova": "MOVAhome",
+        "trouver": "TROUVER",
+        "local": "ローカル接続"
+      }
+    },
+    "country": {
+      "options": {
+        "eu": "ヨーロッパ",
+        "cn": "中国",
+        "us": "米国",
+        "ru": "ロシア",
+        "tw": "台湾",
+        "sg": "シンガポール",
+        "in": "インド",
+        "kr": "韓国",
+        "de": "ドイツ",
+        "i2": "インターナショナル",
+        "by": "ベラルーシ"
+      }
+    }
+  },
+  "entity": {
+    "vacuum": {
+      "dreame_vacuum": {
+        "state_attributes": {
+          "fan_speed": {
+            "name": "吸引力",
+            "state": {
+              "standard": "標準",
+              "strong": "強力",
+              "turbo": "ターボ",
+              "silent": "静音",
+              "unknown": "不明"
+            }
+          },
+          "status": {
+            "state": {
+              "unknown": "不明",
+              "idle": "待機中",
+              "paused": "一時停止",
+              "cleaning": "清掃中",
+              "returning": "ドックへ戻る",
+              "spot_cleaning": "スポット清掃",
+              "follow_wall_cleaning": "壁沿い清掃",
+              "charging": "充電中",
+              "ota": "OTA",
+              "fct": "FCT",
+              "wifi_set": "Wi-Fi設定",
+              "power_off": "電源オフ",
+              "factory": "出荷時設定",
+              "error": "エラー",
+              "remote_control": "リモートコントロール",
+              "sleeping": "スリープ",
+              "self_repair": "セルフテスト",
+              "factory_test": "工場テスト",
+              "standby": "スタンバイ",
+              "room_cleaning": "部屋単位清掃",
+              "zone_cleaning": "ゾーン清掃",
+              "fast_mapping": "高速マッピング",
+              "cruising_path": "経路上を巡回中",
+              "cruising_point": "ポイントへ移動中",
+              "summon_clean": "呼び寄せ清掃",
+              "shortcut": "ショートカット",
+              "person_follow": "人に追従",
+              "water_check": "水量チェック中",
+              "pet_guarding": "ペット見守り",
+              "auto_arrangement": "自動整理",
+              "smart_arrangement": "スマート整理",
+              "zoned_arrangement": "ゾーン整理"
+            }
+          }
+        }
+      }
+    },
+    "select": {
+      "auto_empty_frequency": {
+        "name": "自動ゴミ収集頻度",
+        "state": {
+          "1x": "各タスク後",
+          "2x": "2回の清掃ごと",
+          "3x": "3回の清掃ごと"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "自動ゴミ収集モード",
+        "state": {
+          "off": "オフ",
+          "standard": "標準",
+          "high_frequency": "高頻度",
+          "low_frequency": "低頻度",
+          "custom_frequency": "カスタム頻度",
+          "intelligent": "インテリジェント"
+        }
+      },
+      "auto_lds_coverage": {
+        "name": "自動LDSカバレッジ",
+        "state": {
+          "off": "オフ",
+          "security": "セキュリティ",
+          "extreme": "極度"
+        }
+      },
+      "auto_recleaning": {
+        "name": "自動再清掃",
+        "state": {
+          "off": "オフ",
+          "in_deep_mode": "徹底モード時",
+          "in_all_modes": "全モード時"
+        }
+      },
+      "auto_rewashing": {
+        "name": "自動再洗浄",
+        "state": {
+          "off": "オフ",
+          "in_deep_mode": "徹底モード時",
+          "in_all_modes": "全モード時"
+        }
+      },
+      "battery_charge_level": {
+        "name": "バッテリー充電レベル"
+      },
+      "carpet_cleaning": {
+        "name": "カーペット清掃",
+        "state": {
+          "avoidance": "回避",
+          "adaptation": "適応",
+          "remove_mop": "モップを外す",
+          "adaptation_without_route": "ルートなしの適応",
+          "vacuum_and_mop": "吸引と水拭き",
+          "ignore": "無視",
+          "cross": "横切る"
+        }
+      },
+      "carpet_sensitivity": {
+        "name": "カーペット感度",
+        "state": {
+          "low": "低",
+          "medium": "中",
+          "high": "高"
+        }
+      },
+      "carpet_shape": {
+        "name": "形状",
+        "state": {
+          "square": "正方形",
+          "round": "円形"
+        }
+      },
+      "carpet_type": {
+        "name": "カーペットタイプ",
+        "state": {
+          "medium_pile": "ハイ～ミディアムパイル",
+          "low_pile": "ローパイル",
+          "floor_mat": "フロアマット",
+          "other": "その他"
+        }
+      },
+      "cleangenius": {
+        "name": "CleanGenius",
+        "state": {
+          "off": "オフ",
+          "routine_cleaning": "日常清掃",
+          "deep_cleaning": "徹底清掃"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "CleanGeniusモード",
+        "state": {
+          "vacuum_and_mop": "吸引と水拭き",
+          "mop_after_vacuum": "吸引後に水拭き"
+        }
+      },
+      "cleaning_mode": {
+        "name": "清掃モード",
+        "state": {
+          "sweeping": "掃き掃除",
+          "mopping": "水拭き",
+          "sweeping_and_mopping": "掃き掃除と水拭き",
+          "mopping_after_sweeping": "掃き掃除後に水拭き"
+        }
+      },
+      "cleaning_route": {
+        "name": "ルート",
+        "state": {
+          "quick": "クイック",
+          "standard": "標準",
+          "intensive": "集中",
+          "deep": "しっかり"
+        }
+      },
+      "cleaning_times": {
+        "name": "清掃回数",
+        "state": {
+          "1x": "1回",
+          "2x": "2回",
+          "3x": "3回"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "カスタム水拭きルート",
+        "state": {
+          "off": "オフ",
+          "standard": "標準",
+          "intensive": "集中",
+          "deep": "しっかり"
+        }
+      },
+      "drying_time": {
+        "name": "乾燥時間",
+        "state": {
+          "silent": "静音",
+          "1h": "1時間",
+          "2h": "2時間",
+          "3h": "3時間",
+          "4h": "4時間",
+          "5h": "5時間",
+          "6h": "6時間",
+          "7h": "7時間",
+          "8h": "8時間"
+        }
+      },
+      "edit_type": {
+        "name": "編集タイプ",
+        "state": {
+          "door": "ドアを編集",
+          "split": "部屋の分割",
+          "merge": "部屋の結合",
+          "visibility": "部屋の表示",
+          "material": "床の素材",
+          "type": "部屋の名前",
+          "wall": "壁を編集"
+        }
+      },
+      "floor_material": {
+        "name": "床の素材",
+        "state": {
+          "none": "なし",
+          "tile": "床タイル",
+          "wood": "フローリング",
+          "low_pile_carpet": "ローパイルカーペット",
+          "medium_pile_carpet": "ハイ～ミディアムパイルカーペット",
+          "carpet": "カーペット"
+        }
+      },
+      "floor_material_direction": {
+        "name": "床の方向",
+        "state": {
+          "vertical": "縦",
+          "horizontal": "横"
+        }
+      },
+      "furniture_type": {
+        "name": "家具のタイプ",
+        "state": {
+          "single_bed": "シングルベッド",
+          "double_bed": "ダブルベッド",
+          "arm_chair": "シングルソファー",
+          "two_seat_sofa": "ダブルソファー",
+          "three_seat_sofa": "3人掛けソファー",
+          "dining_table": "ダイニングテーブルと椅子",
+          "nightstant": "ナイトテーブル",
+          "coffee_table": "ローテーブル",
+          "toilet": "トイレ",
+          "litter_box": "猫用トイレ",
+          "pet_bed": "ペットハウス",
+          "food_bowl": "フードボウル",
+          "pet_toilet": "トイレシート",
+          "refrigerator": "冷蔵庫",
+          "washing_machine": "洗濯機",
+          "enclosed_litter_box": "密閉型猫トイレ",
+          "air_conditioner": "エアコン",
+          "tv_cabinet": "テレビ台",
+          "bookshelf": "本棚",
+          "shoe_cabinet": "下駄箱",
+          "wardrobe": "クローゼット",
+          "greenery": "観葉植物",
+          "floor_mirror": "床置き鏡",
+          "l_shaped_sofa": "L字型ソファ",
+          "round_coffee_table": "丸型コーヒーテーブル",
+          "table": "テーブル",
+          "arm_chair_narrow": "狭いアームチェア",
+          "three_seat_sofa_narrow": "狭い3人掛けソファ",
+          "l_shaped_sofa_right": "右L字型ソファ"
+        }
+      },
+      "low_lying_area_frequency": {
+        "name": "低地エリアの頻度",
+        "state": {
+          "weekly": "毎週",
+          "daily": "毎日"
+        }
+      },
+      "map_rotation": {
+        "name": "マップの回転"
+      },
+      "map_type": {
+        "name": "マップタイプ",
+        "state": {
+          "cleaning": "清掃マップ",
+          "history": "清掃履歴",
+          "wifi": "Wi-Fiマップ"
+        }
+      },
+      "mop_clean_frequency": {
+        "name": "モップ洗浄頻度",
+        "state": {
+          "by_room": "部屋別",
+          "5sqm": "5平方メートル",
+          "8sqm": "8平方メートル",
+          "10sqm": "10平方メートル",
+          "15sqm": "15平方メートル",
+          "20sqm": "20平方メートル",
+          "25sqm": "25平方メートル",
+          "86sqf": "86平方フィート",
+          "108sqf": "108平方フィート",
+          "54sqf": "54平方フィート",
+          "162sqf": "162平方フィート",
+          "216sqf": "216平方フィート",
+          "270sqf": "270平方フィート"
+        }
+      },
+      "mop_extend_frequency": {
+        "name": "モップ延長頻度",
+        "state": {
+          "standard": "標準",
+          "intelligent": "インテリジェント",
+          "high": "高"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "モップの湿度",
+        "state": {
+          "slightly_dry": "少し乾燥",
+          "moist": "湿らせる",
+          "wet": "濡らす"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "モップスイング",
+        "state": {
+          "off": "オフ",
+          "auto": "自動",
+          "daily": "毎日",
+          "weekly": "毎週"
+        }
+      },
+      "mop_pressure": {
+        "name": "モップ圧力",
+        "state": {
+          "light": "弱",
+          "normal": "標準"
+        }
+      },
+      "mop_temperature": {
+        "name": "モップ温度",
+        "state": {
+          "normal": "通常",
+          "warm": "温かい"
+        }
+      },
+      "mop_type": {
+        "name": "モップタイプ",
+        "state": {
+          "a": "モップA",
+          "b": "モップB",
+          "c": "モップC"
+        }
+      },
+      "mop_wash_level": {
+        "name": "モップ洗浄モード",
+        "state": {
+          "water_saving": "節水",
+          "daily": "日常",
+          "deep": "しっかり",
+          "ultra_clean_mode": "ウルトラクリーン"
+        }
+      },
+      "mopping_pattern": {
+        "name": "水拭きパターン",
+        "state": {
+          "daily": "日常水拭き",
+          "deep": "しっかり水拭き"
+        }
+      },
+      "mopping_type": {
+        "name": "水拭きタイプ",
+        "state": {
+          "accurate": "正確",
+          "daily": "日常",
+          "deep": "しっかり"
+        }
+      },
+      "name": {
+        "name": "部屋 {index} の名前",
+        "state_attributes": {
+          "room_id": {
+            "name": "ルームID"
+          },
+          "index": {
+            "name": "インデックス"
+          },
+          "type": {
+            "name": "部屋タイプ"
+          }
+        }
+      },
+      "object_type": {
+        "name": "オブジェクトタイプ",
+        "state": {
+          "predefined_point": "事前定義されたポイント",
+          "low_lying_area": "低地",
+          "curtain": "カーテン",
+          "threshold": "段差/敷居",
+          "furniture": "家具",
+          "carpet": "カーペット",
+          "restricted": "進入禁止エリア"
+        }
+      },
+      "order": {
+        "name": "順序",
+        "state": {
+          "not_set": "未設定"
+        }
+      },
+      "scraper_frequency": {
+        "name": "スクレーパー頻度",
+        "state": {
+          "off": "オフ",
+          "weekly": "毎週",
+          "daily": "毎日"
+        }
+      },
+      "segment_name": {
+        "name": "部屋の名前",
+        "state": {
+          "room": "部屋",
+          "living_room": "リビングルーム",
+          "primary_bedroom": "メインベッドルーム",
+          "study": "書斎",
+          "kitchen": "キッチン",
+          "dining_hall": "ダイニングルーム",
+          "bathroom": "浴室",
+          "balcony": "ベランダ",
+          "corridor": "廊下",
+          "utility_room": "ユーティリティルーム",
+          "closet": "クローゼット",
+          "meeting_room": "会議室",
+          "office": "オフィス",
+          "fitness_area": "フィットネスエリア",
+          "recreation_area": "レクリエーションエリア",
+          "secondary_bedroom": "セカンドベッドルーム"
+        }
+      },
+      "selected_map": {
+        "name": "選択されたマップ",
+        "state_attributes": {
+          "map_id": {
+            "name": "マップ ID"
+          },
+          "map_index": {
+            "name": "マップインデックス"
+          }
+        }
+      },
+      "self_clean_frequency": {
+        "name": "自動クリーニング頻度",
+        "state": {
+          "by_area": "エリア別",
+          "by_time": "時間別",
+          "by_room": "部屋別",
+          "intelligent": "インテリジェント"
+        }
+      },
+      "suction_level": {
+        "name": "吸引レベル",
+        "state": {
+          "quiet": "静音",
+          "standard": "標準",
+          "strong": "強力",
+          "turbo": "ターボ",
+          "full_power": "フルパワー"
+        }
+      },
+      "task_repeats": {
+        "name": "タスクの繰り返し",
+        "state": {
+          "once": "1回",
+          "daily": "毎日",
+          "workdays": "平日",
+          "weekends": "週末"
+        }
+      },
+      "task_type": {
+        "name": "タスクタイプ",
+        "state": {
+          "go_to": "ポイントへ移動",
+          "segment": "部屋の清掃",
+          "all": "全体清掃",
+          "zone": "ゾーン清掃",
+          "spot": "スポット清掃"
+        }
+      },
+      "visibility": {
+        "name": "表示",
+        "state": {
+          "visible": "表示",
+          "hidden": "非表示"
+        }
+      },
+      "voice_assistant_language": {
+        "name": "音声アシスタント言語",
+        "state": {
+          "default": "デフォルト",
+          "english": "英語",
+          "german": "ドイツ語",
+          "chinese": "中国語",
+          "russian": "ロシア語",
+          "italian": "イタリア語",
+          "french": "フランス語",
+          "korean": "韓国語"
+        }
+      },
+      "washing_mode": {
+        "name": "モップ洗浄モード",
+        "state": {
+          "smart": "スマート",
+          "light": "弱",
+          "standard": "標準",
+          "deep": "しっかり",
+          "ultra_washing": "ウルトラ洗浄"
+        }
+      },
+      "water_temperature": {
+        "name": "水温",
+        "state": {
+          "normal": "通常",
+          "mild": "やや温かい",
+          "warm": "温かい",
+          "hot": "熱い",
+          "max": "最大"
+        }
+      },
+      "water_volume": {
+        "name": "水量",
+        "state": {
+          "low": "少ない",
+          "medium": "中",
+          "high": "多い"
+        }
+      },
+      "wetness_level": {
+        "name": "湿り気",
+        "state": {
+          "slightly_dry": "少し乾燥",
+          "moist": "湿らせる",
+          "wet": "濡らす"
+        }
+      },
+      "wider_corner_coverage": {
+        "name": "より広いコーナーカバレッジ",
+        "state": {
+          "off": "オフ",
+          "high_frequency": "高頻度",
+          "low_frequency": "低頻度"
+        }
+      }
+    },
+    "sensor": {
+      "auto_empty_status": {
+        "name": "自動ゴミ収集ステータス",
+        "state": {
+          "unknown": "不明",
+          "idle": "待機中",
+          "active": "アクティブ",
+          "not_performed": "未実行"
+        }
+      },
+      "battery_level": {
+        "name": "バッテリー残量"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "charging_status": {
+        "name": "充電ステータス",
+        "state": {
+          "unknown": "不明",
+          "charging": "充電中",
+          "not_charging": "充電していません",
+          "return_to_charge": "充電へ戻る",
+          "charging_completed": "充電完了"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "浄水タンクのステータス",
+        "state": {
+          "unknown": "不明",
+          "not_available": "利用不可",
+          "not_installed": "未装着",
+          "low_water": "水が少ない",
+          "installed": "装着済み"
+        }
+      },
+      "cleaned_area": {
+        "name": "清掃面積"
+      },
+      "cleaning_count": {
+        "name": "清掃回数"
+      },
+      "cleaning_history": {
+        "name": "清掃履歴"
+      },
+      "cleaning_progress": {
+        "name": "清掃の進捗"
+      },
+      "cleaning_status": {
+        "name": "清掃",
+        "state": {
+          "interrupted": "中断",
+          "completed": "完了",
+          "manually_ended": "手動で終了",
+          "failed": "失敗",
+          "unknown": "不明"
+        }
+      },
+      "cleaning_time": {
+        "name": "清掃時間"
+      },
+      "cleanup_method": {
+        "name": "清掃方法",
+        "state": {
+          "other": "その他",
+          "default": "デフォルト",
+          "customized": "カスタマイズ",
+          "cleangenius": "CleanGenius",
+          "water_stain": "水垢",
+          "unknown": "不明"
+        }
+      },
+      "cruising_history": {
+        "name": "巡航履歴"
+      },
+      "current_room": {
+        "name": "現在の部屋",
+        "state_attributes": {
+          "room_id": {
+            "name": "ルームID"
+          },
+          "room_icon": {
+            "name": "部屋のアイコン"
+          },
+          "room_name": {
+            "name": "部屋名"
+          }
+        }
+      },
+      "deodorizer_left": {
+        "name": "消臭剤"
+      },
+      "deodorizer_time_left": {
+        "name": "消臭モジュール残り時間"
+      },
+      "detergent_left": {
+        "name": "洗剤"
+      },
+      "detergent_status": {
+        "name": "洗剤ステータス",
+        "state": {
+          "unknown": "不明",
+          "installed": "装着済み",
+          "disabled": "無効",
+          "low_detergent": "洗剤が少ない"
+        }
+      },
+      "detergent_time_left": {
+        "name": "洗剤残り時間"
+      },
+      "dirty_water_channel_left": {
+        "name": "汚水チャネル"
+      },
+      "dirty_water_tank_status": {
+        "name": "汚水タンクのステータス",
+        "state": {
+          "unknown": "不明",
+          "installed": "装着済み",
+          "not_installed_or_full": "未装着又はいっぱい"
+        }
+      },
+      "drainage_status": {
+        "name": "排水ステータス",
+        "state": {
+          "unknown": "不明",
+          "idle": "待機中",
+          "draining": "排水中",
+          "draining_successful": "排水に成功",
+          "draining_failed": "排水に失敗"
+        }
+      },
+      "drying_left": {
+        "name": "乾燥残り時間"
+      },
+      "drying_progress": {
+        "name": "乾燥進捗"
+      },
+      "dust_bag_drying_left": {
+        "name": "ダストバッグ乾燥残り時間"
+      },
+      "dust_bag_drying_status": {
+        "name": "ダストバッグ乾燥ステータス",
+        "state": {
+          "idle": "待機中",
+          "drying": "乾燥中",
+          "paused": "一時停止"
+        }
+      },
+      "dust_bag_status": {
+        "name": "ダストバッグのステータス",
+        "state": {
+          "unknown": "不明",
+          "installed": "装着済み",
+          "not_installed": "未装着",
+          "check": "確認してください"
+        }
+      },
+      "dust_collection": {
+        "name": "ダスト収集",
+        "state": {
+          "unknown": "不明",
+          "not_available": "利用不可",
+          "available": "利用可能",
+          "over_use": "使用過剰",
+          "never": "しない"
+        }
+      },
+      "error": {
+        "name": "エラー",
+        "state": {
+          "unknown": "不明なエラーコード",
+          "no_error": "エラーなし",
+          "drop": "車輪が浮いています",
+          "cliff": "クリフセンサーエラー",
+          "bumper": "衝突センサーが挟まっています",
+          "gesture": "ロボットが傾いています",
+          "bumper_repeat": "衝突センサーが挟まっています",
+          "drop_repeat": "車輪が浮いています",
+          "optical_flow": "オプティカルフローセンサーエラー",
+          "no_box": "ダストビンが未装着",
+          "no_tank_box": "水タンクが未装着",
+          "water_box_empty": "水タンクが空です",
+          "box_full": "フィルターが乾いていないか、詰まっています",
+          "brush": "メインブラシが絡まっています",
+          "side_brush": "サイドブラシが絡まっています",
+          "fan": "フィルターが乾いていないか、詰まっています",
+          "left_wheel_motor": "ロボットが動けなくなっているか、左車輪に異物が挟まっています",
+          "right_wheel_motor": "ロボットが動けなくなっているか、右車輪に異物が挟まっています",
+          "turn_suffocate": "ロボットが動けなくなっているか、曲がれません",
+          "forward_suffocate": "ロボットが動けなくなっているか、前進できません",
+          "charger_get": "ベースが見つかりません",
+          "battery_low": "バッテリー残量低下",
+          "charge_fault": "充電エラー",
+          "battery_percentage": "バッテリー残量エラー",
+          "heart": "内部エラー",
+          "camera_occlusion": "視覚ポジショニングセンサーエラー",
+          "move": "移動センサーエラー",
+          "flow_shielding": "光学センサーエラー",
+          "infrared_shielding": "赤外線シールドエラー",
+          "charge_no_electric": "充電ドックの電源が入っていません",
+          "battery_fault": "バッテリーエラー",
+          "fan_speed_error": "ファンスピードセンサーエラー",
+          "left_wheell_speed": "左車輪に異物が挟まっている可能性があります",
+          "right_wheell_speed": "右車輪に異物が挟まっている可能性があります",
+          "bmi055_acce": "加速度センサーエラー",
+          "bmi055_gyro": "ジャイロエラー",
+          "xv7001": "ジャイロエラー",
+          "left_magnet": "左マグネットセンサーエラー",
+          "right_magnet": "右マグネットセンサーエラー",
+          "flow_error": "フローセンサーエラー",
+          "infrared_fault": "赤外線エラー",
+          "camera_fault": "カメラエラー",
+          "strong_magnet": "強い磁場が検出されました",
+          "water_pump": "ウォーターポンプエラー",
+          "rtc": "RTCエラー",
+          "auto_key_trig": "内部エラー",
+          "p3v3": "内部エラー",
+          "camera_idle": "内部エラー",
+          "blocked": "清掃ルートがふさがれています、ドックへ戻ります。",
+          "lds_error": "レーザー距離センサーエラー",
+          "lds_bumper": "レーザー距離センサーバンパーエラー",
+          "filter_blocked": "フィルターが乾いていないか、詰まっています",
+          "edge": "エッジセンサーエラー",
+          "carpet": "非カーペットエリアでロボットを起動してください。",
+          "laser": "3D障害物回避センサーが故障しています。",
+          "ultrasonic": "超音波センサーが故障しています。",
+          "no_go_zone": "進入禁止エリアまたは仮想壁が検出されました。",
+          "route": "清掃ルートがふさがれています。",
+          "restricted": "ロボットが制限エリアにいることが検出されました。",
+          "remove_mop": "水拭きが完了しました。早めにモップを取り外して洗ってください。",
+          "mop_removed": "清掃中にモップパッドが外れました。",
+          "mop_pad_stop_rotate": "モップパッドの回転が停止しました。",
+          "bin_full": "ダストバッグがいっぱいか、吸気口が詰まっています。",
+          "bin_open": "自動ゴミ収集ベースの上部カバーが閉まっていないか、ダストバッグが未装着です。",
+          "water_tank": "浄水タンクが未装着です。",
+          "dirty_water_tank": "汚水タンクがいっぱいか、未装着です。",
+          "water_tank_dry": "浄水タンクの水位が低いです。早めに水を補充してください。",
+          "dirty_water_tank_blocked": "汚水タンクが詰まっています。",
+          "dirty_water_tank_pump": "汚水タンクポンプエラー。",
+          "mop_pad": "ウォッシュボードが正しく装着されていません。",
+          "wet_mop_pad": "ウォッシュボードの水位が異常です。早めにウォッシュボードを清掃してください。",
+          "clean_mop_pad": "清掃タスクが完了しました。モップパッドウォッシュボードを清掃してください。",
+          "clean_tank_level": "浄水タンクを確認して水を補充してください。",
+          "station_disconnected": "ベースステーションの電源が入っていません",
+          "dirty_tank_level": "汚水タンクの水位が高すぎます。",
+          "washboard_level": "ウォッシュボードの水位が高すぎます。",
+          "no_mop_in_station": "ステーション内にモップパッドがありません。",
+          "dust_bag_full": "ダストバッグがいっぱいか、排気口が詰まっています。",
+          "self_test_failed": "上下水道モジュールの浄水タンクからの排水が異常です。",
+          "mop_install_failed": "モップパッドの取り付けに失敗しました。",
+          "low_battery_turn_off": "バッテリー残量低下。ロボットはまもなくシャットダウンします。",
+          "dirty_tank_not_installed": "ロボットの汚水タンクが未装着です。",
+          "robot_in_hidden_room": "隠しエリアです。ロボットを適切なエリアに移動し、再試行してください。",
+          "washboard_not_working": "ウォッシュボードの停止。",
+          "return_to_charge_failed": "充電場所への帰還に失敗しました。",
+          "lds_failed_to_lift": "LDSモジュールの持ち上げに失敗しました。",
+          "robot_stuck": "位置付けのためLDSをここで上昇させることができません。",
+          "slippery_floor": "滑りやすい床です。後でもう一度お試しください。",
+          "check_mop_install": "モップが正しく取り付けられているか確認してください。",
+          "dirty_water_tank_full": "ロボットの汚水タンクの水位が異常です。",
+          "retractable_leg_stuck": "伸縮脚が絡まっていないか確認してください。",
+          "internal_error": "内部エラーによる誤動作。ロボットの再起動を試みてください",
+          "robot_stuck_on_tables": "テーブルや椅子の間で動けなくなりました。",
+          "robot_stuck_on_passage": "狭い通路で動けなくなりました。",
+          "robot_stuck_on_threshold": "段差/敷居で動けなくなりました。",
+          "robot_stuck_on_low_lying_area": "隙間の狭いエリアで動けなくなりました。",
+          "robot_stuck_on_ramp": "経路上に落下しやすい段差を検出しました。",
+          "robot_stuck_on_obstacle": "経路上に障害物を検出しました。",
+          "robot_stuck_on_pet": "経路上に人やペットを検出しました。",
+          "robot_stuck_on_slippery_surface": "滑って動けなくなりました。",
+          "robot_stuck_on_carpet": "カーペットでスリップしています",
+          "drainage_failed": "汚水タンクからの排水異常",
+          "mop_not_detected": "モップが検出されません。",
+          "mop_holder_error": "ドック内のモップホルダーの数/配置エラー。",
+          "dock_error": "ドックエラー。",
+          "wash_failed": "汚れたモップの洗浄に失敗しました。",
+          "robot_stuck_on_curtain": "カーテンエリアでスリップしています",
+          "edge_mop_stop_rotate": "エッジモップの回転が停止しました。",
+          "edge_mop_detached": "エッジモップが外れました。",
+          "chassis_lift_malfunction": "シャーシのリフト異常。",
+          "mop_cover_error": "ローラーモップ及びモップカバー付近にゴミがないか確認してください。",
+          "roller_mop_error": "ローラーモップ及びモップカバー付近にゴミがないか確認してください。",
+          "onboard_water_tank_empty": "ロボットの浄水タンクの水位が低いです。",
+          "onboard_dirty_water_tank_full": "ロボットの汚水タンクがいっぱいです。",
+          "mop_not_installed": "モップ未装着。",
+          "fluffing_roller_error": "起毛ローラーエラー。",
+          "blocked_by_obstacle": "障害物で塞がれています。",
+          "robotic_arm_stopped": "ロボットアームが停止しました。",
+          "drainage_outlet_filter": "ロボットの排水口フィルターが詰まっています。",
+          "main_wheels_error": "メインホイールエラー。"
+        },
+        "state_attributes": {
+          "description": {
+            "name": "説明",
+            "state": {
+              "no_error": "エラーなし",
+              "drop": "車輪が浮いています\nロボットの位置を変更して再起動してください。",
+              "cliff": "クリフセンサーエラー\n崖センサーを拭き、階段から離れた場所から掃除を始めてください。",
+              "bumper": "衝突センサーが挟まっています\n衝突センサーを掃除し、軽くたたいてください。",
+              "gesture": "ロボットが傾いています\nロボットを平らな場所に移動し、再起動してください。",
+              "bumper_repeat": "衝突センサーが挟まっています\n衝突センサーを掃除し、軽くたたいてください。",
+              "drop_repeat": "車輪が浮いています\nロボットの位置を変更して再起動してください。",
+              "optical_flow": "オプティカルフローセンサーエラー\nロボットを再起動してみてください。",
+              "no_box": "ダストビンが未装着\nダストボックスとフィルターを設置してください。",
+              "no_tank_box": "水タンクが未装着\n給水タンクを設置してください。",
+              "water_box_empty": "水タンクが空です\n水タンクを満水にしてください。",
+              "box_full": "フィルターが乾いていないか、詰まっています\nフィルターが乾燥していないか、掃除が必要かどうかを確認してください。",
+              "brush": "メインブラシが絡まっています\nメインブラシを取り外し、毛先とベアリングを掃除してください。",
+              "side_brush": "サイドブラシが絡まっています\nサイドブラシを取り外して掃除してください。",
+              "fan": "フィルターが乾いていないか、詰まっています\nフィルターが乾燥していないか、掃除が必要かどうかを確認してください。",
+              "left_wheel_motor": "ロボットが動けなくなっているか、左車輪に異物が挟まっています\n主輪に異物が挟まっていないかを確認し、ロボットを新しい位置で始動させてください。",
+              "right_wheel_motor": "ロボットが動けなくなっているか、右車輪に異物が挟まっています\n主輪に異物が挟まっていないかを確認し、ロボットを新しい位置で始動させてください。",
+              "turn_suffocate": "ロボットが動けなくなっているか、曲がれません\nロボットがブロックされているか、動けなくなっている可能性があります。",
+              "forward_suffocate": "ロボットが動けなくなっているか、前進できません\nロボットがブロックされているか、動けなくなっている可能性があります。",
+              "charger_get": "ベースが見つかりません\n電源コードが正しく差し込まれているか確認してください。",
+              "battery_low": "バッテリー残量低下\nバッテリー残量が低すぎます。充電してください。",
+              "charge_fault": "充電エラー\nロボットと自動空ベースの充電接点を乾いた布で拭いてください。",
+              "battery_percentage": "バッテリー残量エラー",
+              "heart": "内部エラー\nロボットを再起動してみてください。",
+              "camera_occlusion": "視覚ポジショニングセンサーエラー\n視覚位置センサーを清掃してください。",
+              "move": "移動センサーエラー\nロボットを再起動してみてください。",
+              "flow_shielding": "光学センサーエラー\n光学センサーをきれいに拭き、再起動してください。",
+              "infrared_shielding": "赤外線シールドエラー\nロボットを再起動してみてください。",
+              "charge_no_electric": "充電ドックの電源が入っていません\n充電ステーションの電源が入っていません。電源コードが正しく差し込まれているか確認してください。",
+              "battery_fault": "バッテリーエラー\nバッテリー温度が正常に戻るまでお待ちください。",
+              "fan_speed_error": "ファンスピードセンサーエラー\nロボットを再起動してみてください。",
+              "left_wheell_speed": "左車輪に異物が挟まっている可能性があります\n主輪に異物が挟まっていないかを確認し、ロボットを新しい位置で始動させてください。",
+              "right_wheell_speed": "右車輪に異物が挟まっている可能性があります\n主輪に異物が挟まっていないかを確認し、ロボットを新しい位置で始動させてください。",
+              "bmi055_acce": "加速度センサーエラー\nロボットを再起動してみてください。",
+              "bmi055_gyro": "ジャイロエラー\nロボットを再起動してみてください。",
+              "xv7001": "ジャイロエラー\nロボットを再起動してみてください。",
+              "left_magnet": "左マグネットセンサーエラー\nロボットを再起動してみてください。",
+              "right_magnet": "右マグネットセンサーエラー\nロボットを再起動してみてください。",
+              "flow_error": "フローセンサーエラー\nロボットを再起動してみてください。",
+              "infrared_fault": "赤外線エラー\nロボットを再起動してみてください。",
+              "camera_fault": "カメラエラー\nロボットを再起動してみてください。",
+              "strong_magnet": "強い磁場が検出されました\n強い磁場を検出しました。仮想の壁から離れて始めてください。",
+              "water_pump": "ウォーターポンプエラー\nロボットを再起動してみてください。",
+              "rtc": "RTCエラー\nロボットを再起動してみてください。",
+              "auto_key_trig": "内部エラー\nロボットを再起動してみてください。",
+              "p3v3": "内部エラー\nロボットを再起動してみてください。",
+              "camera_idle": "内部エラー\nロボットを再起動してみてください。",
+              "blocked": "清掃ルートがふさがれています、ドックへ戻ります。\nロボットがブロックされているか、動けなくなっている可能性があります。",
+              "lds_error": "レーザー距離センサーエラー\nレーザー距離センサーに何か詰まっていないか確認してください",
+              "lds_bumper": "レーザー距離センサーバンパーエラー\nレーザー距離センサーのバンパーが詰まっていないか確認してください",
+              "filter_blocked": "フィルターが乾いていないか、詰まっています\nフィルターが乾燥したか、掃除が必要かどうかを確認してください",
+              "edge": "エッジセンサーエラー\nエッジセンサーエラー。チェックして掃除してください。",
+              "carpet": "非カーペットエリアでロボットを起動してください。\nロボットがモップ掛けをしているときに、ロボットの下にカーペットが検出されました。ロボットを別の場所に移動して再起動してください。",
+              "laser": "3D障害物回避センサーが故障しています。\n3D障害物回避センサーを清掃してみてください。",
+              "ultrasonic": "超音波センサーが故障しています。\nロボットを再起動して、もう一度試してください。",
+              "no_go_zone": "進入禁止エリアまたは仮想壁が検出されました。\nロボットをその場から離れて再起動してください。",
+              "route": "清掃ルートがふさがれています。\n家のすべてのドアが開いていることを確認し、経路に沿って障害物を取り除くか、経路内の立ち入り禁止エリアを削除してください。",
+              "restricted": "ロボットが制限エリアにいることが検出されました。\nロボットをこのエリアから移動してください。",
+              "remove_mop": "水拭きが完了しました。早めにモップを取り外して洗ってください。",
+              "mop_removed": "清掃中にモップパッドが外れました。\nモップパッドが外れているので、作業を再開する前に取り付けてください。",
+              "mop_pad_stop_rotate": "モップパッドの回転が停止しました。\nモップパッドを確認してください。",
+              "bin_full": "ダストバッグがいっぱいか、吸気口が詰まっています。\nシステムは、集塵袋がいっぱいであるか、エアダクトが詰まっていることを検出します。",
+              "bin_open": "自動ゴミ収集ベースの上部カバーが閉まっていないか、ダストバッグが未装着です。\nオートエンプティベースの上蓋が閉まっていない、または集塵袋が取り付けられていないことをシステムが検知します。",
+              "water_tank": "浄水タンクが未装着です。\n浄水タンクは設置されていませんので設置してください。",
+              "dirty_water_tank": "汚水タンクがいっぱいか、未装着です。\n汚水タンクが満水であるか、汚水タンクが設置されているかを確認してください。",
+              "water_tank_dry": "浄水タンクの水位が低いです。早めに水を補充してください。\nそうしないと、ロボットは掃除作業中にモップパッドを掃除するためにベースに戻りません。",
+              "dirty_water_tank_blocked": "汚水タンクが詰まっています。\nロボットを再起動してみてください。",
+              "dirty_water_tank_pump": "汚水タンクポンプエラー。\nロボットを再起動してみてください。",
+              "mop_pad": "ウォッシュボードが正しく装着されていません。\n洗濯板が設置されていないため、自動洗浄台に戻ることができません。洗濯板を設置し、両側の留め具がしっかりと締まっていることを確認してください。",
+              "wet_mop_pad": "ウォッシュボードの水位が異常です。早めにウォッシュボードを清掃してください。\n洗濯板の水位が異常です。詰まりを避けるために、適時に掃除してください。それでも問題が解決しない場合は、カスタマーサービスまでご連絡ください。",
+              "clean_mop_pad": "清掃タスクが完了しました。モップパッドウォッシュボードを清掃してください。\n汚れや臭いを避けるために、モップパッド洗濯板を適時に掃除してください。",
+              "clean_tank_level": "浄水タンクを確認して水を補充してください。\n浄水タンクの水がもうすぐなくなります。",
+              "station_disconnected": "ベースステーションの電源が入っていません\nご自宅の電源がオフになっているか、電源スイッチがオンになっているかを確認し、ベースステーションの電源の両端を差し込み直してください。",
+              "dirty_tank_level": "汚水タンクの水位が高すぎます。\n使用水タンクが満水かどうかを確認してください。",
+              "washboard_level": "ウォッシュボードの水位が高すぎます。\n使用済みの水タンクと洗濯板は適時に掃除してください。",
+              "no_mop_in_station": "ステーション内にモップパッドがありません。\nベースステーションに入れるか、手動でロボットに取り付けてください。",
+              "dust_bag_full": "ダストバッグがいっぱいか、排気口が詰まっています。\nバッグがいっぱいの場合は交換してください。ダストボックスとベースステーションの自動空排気口を定期的に掃除してください。",
+              "self_test_failed": "上下水道モジュールの浄水タンクからの排水が異常です。\nセルフテストに失敗しました - 上部および下部の水モジュールの浄水タンクに水がありません。",
+              "mop_install_failed": "モップパッドの取り付けに失敗しました。\nモップパッドの取り付けに失敗しました。手動でインストールしてください。",
+              "low_battery_turn_off": "バッテリー残量低下。ロボットはまもなくシャットダウンします。",
+              "dirty_tank_not_installed": "ロボットの汚水タンクが未装着です。\nロボットの使用水タンクが正しく設置されていることを確認してから作業を開始してください。",
+              "robot_in_hidden_room": "隠しエリアです。ロボットを適切なエリアに移動し、再試行してください。\nエリアは非表示になりました。再利用するには、特定のマップに移動し、灰色の領域をクリックして非表示の領域を手動で回復してください。",
+              "washboard_not_working": "ウォッシュボードの停止。\n次のトラブルシューティング手順に従ってください:\n1.洗濯板が絡まっていないか確認してください。使用前に掃除してください。\n2.洗濯板が正しく取り付けられているか確認してください。\n3. 問題が解決しない場合は、カスタマーサービスにお問い合わせください。",
+              "return_to_charge_failed": "充電場所への帰還に失敗しました。\n基地局を確認してください。\n1. ランプ拡張プレートがベースステーションまで取り付けられているかどうかを確認します。\n2. ベースステーションの電源が入っているかどうかを確認します。\n3. ベースステーションの前に障害物がないことを確認してください。",
+              "lds_failed_to_lift": "LDSモジュールの持ち上げに失敗しました。\nタスクを再開するには、LDS の周囲の破片を取り除き、ロボットを空き領域に移動してください。",
+              "robot_stuck": "位置付けのためLDSをここで上昇させることができません。\nロボットを空いている場所に移動し、タスクを再開します。",
+              "slippery_floor": "滑りやすい床です。後でもう一度お試しください。\n滑りやすい床。ロボットは障害物を通過できませんでした。ロボットが再試行するまで待つか、ロボットの周囲の水を取り除いてタスクを再開することができます。",
+              "check_mop_install": "モップが正しく取り付けられているか確認してください。\nモップの取り付け手順を確認してください",
+              "dirty_water_tank_full": "ロボットの汚水タンクの水位が異常です。\nロボットの使用済み水タンクが汚れすぎています。時間内に取り外して掃除してください。",
+              "retractable_leg_stuck": "伸縮脚が絡まっていないか確認してください。\n伸縮脚が絡まる可能性があります。",
+              "internal_error": "内部エラーによる誤動作。ロボットの再起動を試みてください\n内部エラー",
+              "robot_stuck_on_tables": "テーブルや椅子の間で動けなくなりました\n1. ロボットを空いている場所に移動し、タスクを再開してください。\n2. ロボットが立ち往生しないように、テーブルと椅子をきれいに配置することをお勧めします。\nロボットが動けなくなってしまった",
+              "robot_stuck_on_passage": "狭い通路で動けなくなりました\n1. ロボットを空いている場所に移動し、タスクを再開してください。\n2. ロボットの立ち往生を防ぐために、狭い通路は立ち入り禁止区域として設定することをお勧めします。\nロボットが動けなくなってしまった",
+              "robot_stuck_on_threshold": "段差/敷居で動けなくなりました\n1. ロボットを空いている場所に移動し、タスクを再開してください。\n2. ロボットが動けなくなるのを防ぐために、ステップ/しきい値を通行不可能なしきい値として設定することをお勧めします。\nロボットが動けなくなってしまった",
+              "robot_stuck_on_low_lying_area": "隙間の狭いエリアで動けなくなりました\n1. ロボットを空いている場所に移動し、タスクを再開してください。\n2. ロボットが立ち往生するのを防ぐために、低いエリアを立ち入り禁止ゾーンとして設定することをお勧めします。\nロボットが動けなくなってしまった",
+              "robot_stuck_on_ramp": "経路上に落下しやすい段差を検出しました。\nパス上に転落しやすいスロープがない場合は、通過可能なしきい値を設定することをお勧めします。",
+              "robot_stuck_on_obstacle": "経路上に障害物を検出しました。\n経路上の障害物を取り除き、タスクを再開してください。",
+              "robot_stuck_on_pet": "経路上に人やペットを検出しました。\nタスクを再開するときは、経路上に人やペットがいないことを確認してください。",
+              "robot_stuck_on_slippery_surface": "滑って動けなくなりました。\nロボットが滑って動けなくなってしまった。主輪を清掃してください。",
+              "robot_stuck_on_carpet": "カーペットでスリップしています\n1. ロボットをカーペットから離し、タスクを再開してください\n2. ロボットが立ち往生するのを防ぐために、カーペットを立入禁止区域として設定することをお勧めします。\nロボットが動けなくなってしまった",
+              "drainage_failed": "汚水タンクからの排水異常\n下水ポンプのエラー。カスタマーサービスまでご連絡ください。",
+              "mop_not_detected": "モップが検出されません。\nモップが検出されませんでした。インストールしてタスクを続行してください。",
+              "mop_holder_error": "ドック内のモップホルダーの数/配置エラー。 適切な清掃を確保するために、モップホルダーを取り付けるか、その位置を調整してください。\nステーション内のモップホルダーエラー。",
+              "dock_error": "ドックエラー。\nステーションを確認し、次の手順を試してください。\n1. ハッチが完全に閉まっていることを確認します。\n2. モップの 3 つのグループが赤、黄、青の順序でハッチに配置されていることを確認します。モップが輸送キャリアまたは洗濯板の上にある場合は、この順序でハッチに戻し、もう一度試してください。\n3. ステーション内にゴミがないか確認します。モップを交換するときは、洗濯板に手やロボットなどを置かないでください。",
+              "wash_failed": "汚れたモップの洗浄に失敗しました。\nステーションを確認し、次の手順を試してください。\n1. 洗浄が必要なモップを手動でロボットに取り付けてください。\n2. 他の汚れたモップをハッチに取り付けてください。\n3. アプリでステーション機能に移動し、次に洗浄して、モップ洗浄タスクを再開します。",
+              "robot_stuck_on_curtain": "カーテンエリアでスリップしています\n1. ロボットをカーテンエリアから遠ざけ、タスクを再開してください。\n2. ロボットはこのカーテン領域を掃除できません。削除することをお勧めします。\nロボットが動けなくなってしまった",
+              "edge_mop_stop_rotate": "エッジモップの回転が停止しました。\nエッジモップが回転を停止しました。次の手順に従ってください:\n1. ロボットがカーペットの上にあるかどうかを確認します。エッジモップとカーペットの間の摩擦により回転が止まる場合があります。ロボットをカーペット以外のエリアに移動し、掃除を再開します。\n2. エッジモップが絡まっていないか確認してください。その場合は、それらを取り外して清掃を再開してください。",
+              "edge_mop_detached": "エッジモップが外れました。\nエッジモップが検出されませんでした。クリーニングを再開する前にインストールしてください。",
+              "chassis_lift_malfunction": "シャーシのリフト異常。\nシャーシリフトの故障。タスクを再起動してください。問題が解決しない場合は、カスタマー サービスにお問い合わせください。",
+              "mop_cover_error": "ローラーモップ及びモップカバー付近にゴミがないか確認してください。 カバーの固着を防ぐためにローラーモップを掃除してください。その後、ロボットを平らに置き、タスクを再開します。問題が解決しない場合は、カスタマー サービスにお問い合わせください。\nモップカバーエラー。",
+              "roller_mop_error": "ローラーモップ及びモップカバー付近にゴミがないか確認してください。 ローラーモップが固着しないように掃除してください。その後、ロボットを平らに置き、タスクを再開します。問題が解決しない場合は、カスタマー サービスにお問い合わせください。\nローラーモップエラー。",
+              "onboard_water_tank_empty": "ロボットの浄水タンクの水位が低いです。\nロボットの浄水ボックスの水位が低下しています。速やかに補充してください。",
+              "onboard_dirty_water_tank_full": "ロボットの汚水タンクがいっぱいです。 速やかに空にしてください。\n箱を取り出して空にしてください。あるいは、モップ洗浄のためにロボットをステーションに移動することもできます (これにより、使用済みの水も排水されます)。",
+              "mop_not_installed": "モップ未装着。\n作業を開始または再開する前に、ローラーモップが正しく取り付けられていることを確認してください。",
+              "fluffing_roller_error": "起毛ローラーエラー。\n1. ロボットを裏返し、底部を上に向けます。ローラーモップの片側にあるリリースボタンを押して取り外し、周囲のゴミを取り除きます。\n2. オレンジ色のクリップを押して、毛羽立てローラーを取り出します。髪の毛やゴミなどを取り除いてください。\n3. 清掃後、毛羽立てローラーを取り付け、クリップをしっかりと押し込みます。次に、ローラーモップを取り付け、ロボットを平らに置き、タスクを再開します。\n問題が解決しない場合は、詳細を確認するか、カスタマーサービスにお問い合わせください。",
+              "blocked_by_obstacle": "障害物で塞がれています。\nロボットの前方に障害物がないか確認し、障害物を取り除いてください。",
+              "robotic_arm_stopped": "ロボットアームが停止しました。\n再度使用する前に、ステーション ボタンとロボット アーム オン/オフ ボタンを押し続けてリセットしてください。",
+              "drainage_outlet_filter": "ロボットの排水口フィルターが詰まっています。\n水の流れをスムーズにするために、ロボットの排水口フィルターを速やかに掃除してください。",
+              "main_wheels_error": "メインホイールエラー。\nホイールの異常が検出されました。クリーニングタスクは一時停止されました。ロボットのボタンまたはアプリを使用して、掃除を再開してみてください。問題が解決しない場合は、弊社までご連絡ください。",
+              "unknown": "不明なエラー"
+            }
+          }
+        }
+      },
+      "filter_left": {
+        "name": "フィルター"
+      },
+      "filter_time_left": {
+        "name": "フィルター残り時間"
+      },
+      "firmware_version": {
+        "name": "ファームウェアバージョン"
+      },
+      "first_cleaning_date": {
+        "name": "初清掃日"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "起毛ローラーの清掃"
+      },
+      "fluffing_roller_dirty_time_left": {
+        "name": "フラッフィングローラー残り時間"
+      },
+      "hot_water_status": {
+        "name": "温水ステータス",
+        "state": {
+          "unknown": "不明",
+          "disabled": "無効",
+          "enabled": "有効"
+        }
+      },
+      "ip_address": {
+        "name": "IPアドレス"
+      },
+      "low_water_warning": {
+        "name": "低水位の警告",
+        "state": {
+          "no_warning": "警告なし",
+          "no_water_left": "浄水タンクの水がもうすぐなくなります。早めに水を入れてください。",
+          "no_water_left_after_clean": "モップパッドの洗浄が完了しました。浄水タンクの水が不足しています。浄水タンクに水を入れて、汚水タンクを空にしてください。",
+          "no_water_for_clean": "浄水タンクの水位低下。ロボットは吸引モードに切り替わりました。",
+          "low_water": "水がもうすぐなくなります。浄水タンクに水を入れてください。",
+          "tank_not_installed": "浄水タンクが装着されていません。"
+        }
+      },
+      "mac_address": {
+        "name": "MACアドレス"
+      },
+      "main_brush_left": {
+        "name": "メインブラシ"
+      },
+      "main_brush_time_left": {
+        "name": "メインブラシ残り時間"
+      },
+      "mapping_time": {
+        "name": "マッピング時間"
+      },
+      "model": {
+        "name": "モデル"
+      },
+      "mop_pad": {
+        "name": "モップパッド",
+        "state": {
+          "unknown": "不明",
+          "installed": "装着済み",
+          "not_installed": "未装着",
+          "mop_installed": "モップ装着済み",
+          "in_station": "ステーション内"
+        }
+      },
+      "mop_pad_left": {
+        "name": "モップパッド"
+      },
+      "mop_pad_time_left": {
+        "name": "モップパッド残り時間"
+      },
+      "multiple_cleaning_time": {
+        "name": "清掃の反復"
+      },
+      "nation_matched": {
+        "name": "リージョンロック",
+        "state": {
+          "unknown": "無効",
+          "matched": "ロック解除",
+          "unmatched": "ロック",
+          "na": "利用不可"
+        }
+      },
+      "obstacle_reason": {
+        "name": "障害物の理由",
+        "state": {
+          "blocked_by_virtual_wall": "仮想壁にブロックされました",
+          "blocked_by_door": "ドアにブロックされました",
+          "blocked_by_threshold": "段差/敷居にブロックされました",
+          "blocked_by_obstacle": "障害物にブロックされました",
+          "blocked_by_carpet": "カーペットにブロックされました",
+          "blocked_by_detected_carpet": "検出されたカーペットにブロックされました",
+          "blocked_by_hidden_obstacle": "見えない障害物にブロックされました",
+          "blocked_by_dynamic_obstacle": "動的な障害物にブロックされました",
+          "passage_too_low": "通路が低すぎます",
+          "step_too_low": "段差が低すぎます",
+          "failed_to_cross_threshold": "段差/敷居を乗り越えられませんでした"
+        }
+      },
+      "obstacle_type": {
+        "name": "障害物の種類",
+        "state": {
+          "unknown": "不明",
+          "base": "ベース",
+          "scale": "体重計",
+          "thread": "コード状の物体",
+          "wire": "糸の塊",
+          "toy": "おもちゃ",
+          "shoes": "靴",
+          "sock": "靴下",
+          "fece": "ペットの糞",
+          "trash_can": "ゴミ入れ",
+          "fabric": "布製品",
+          "power_strip": "電源タップ",
+          "liquid_stain": "液体の汚れ",
+          "obstacle": "障害物",
+          "pet": "ペット",
+          "cleaning_tools": "クリーニングツール",
+          "detected_stain": "汚れ",
+          "blocked_room": "ロボット掃除機の障害になりやすい家具",
+          "easy_to_stuck_furniture": "ロボット掃除機の障害になりやすい家具",
+          "uncleanable_stain": "汚れ",
+          "leg": "脚",
+          "large_particles": "大きな粒子",
+          "dried_stain": "汚れ",
+          "food_bowl": "フードボウル",
+          "pet_bed": "ペットハウス",
+          "cleaned_stain": "汚れ",
+          "skipped_uncleanable_stain": "汚れ",
+          "cleaned_dried_stain": "汚れ",
+          "cleaned_large_particles": "大きな粒子",
+          "hair": "コード状の物体",
+          "paper": "織物",
+          "cleaned_hair": "コード状の物体",
+          "sundry": "雑多物"
+        }
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "ロボット内蔵汚水タンク"
+      },
+      "onboard_dirty_water_tank_time_left": {
+        "name": "内蔵汚水タンク残り時間"
+      },
+      "recovery_map_type": {
+        "name": "マップタイプ",
+        "state": {
+          "original": "オリジナルマップ",
+          "edited": "編集済みマップ",
+          "backup": "バックアップマップ"
+        }
+      },
+      "relocation_status": {
+        "name": "再配置ステータス",
+        "state": {
+          "unknown": "不明",
+          "located": "位置特定の成功",
+          "locating": "位置特定中",
+          "failed": "失敗",
+          "success": "成功"
+        }
+      },
+      "remaining_battery": {
+        "name": "残りのバッテリー"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "ローラーモップフィルター清掃"
+      },
+      "roller_mop_filter_dirty_time_left": {
+        "name": "ローラーモップフィルター残り時間"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "scale_inhibitor_left": {
+        "name": "スケール防止剤"
+      },
+      "scale_inhibitor_time_left": {
+        "name": "スケール防止剤残り時間"
+      },
+      "self_wash_base_status": {
+        "name": "自動洗浄ベースステータス",
+        "state": {
+          "unknown": "不明",
+          "idle": "待機中",
+          "washing": "洗浄中",
+          "drying": "乾燥中",
+          "paused": "一時停止",
+          "returning": "洗浄に戻る",
+          "clean_add_water": "洗浄および給水",
+          "adding_water": "給水中"
+        }
+      },
+      "sensor_dirty_left": {
+        "name": "センサー清掃"
+      },
+      "sensor_dirty_time_left": {
+        "name": "センサー清掃残り時間"
+      },
+      "serial_number": {
+        "name": "シリアル番号"
+      },
+      "side_brush_left": {
+        "name": "サイドブラシ"
+      },
+      "side_brush_time_left": {
+        "name": "サイドブラシ残り時間"
+      },
+      "silver_ion_left": {
+        "name": "銀イオン"
+      },
+      "silver_ion_time_left": {
+        "name": "銀イオン残り時間"
+      },
+      "squeegee_left": {
+        "name": "スクイージー"
+      },
+      "squeegee_time_left": {
+        "name": "スクイジー残り時間"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "startup_method": {
+        "name": "起動方法",
+        "state": {
+          "button": "ボタン",
+          "app": "アプリ",
+          "scheduled": "スケジュール",
+          "voice": "音声",
+          "second_cleaning": "2回目の清掃",
+          "unknown": "不明"
+        }
+      },
+      "state": {
+        "name": "状態",
+        "state": {
+          "unknown": "不明",
+          "sweeping": "掃き掃除中",
+          "charging": "充電中",
+          "error": "エラー",
+          "idle": "待機中",
+          "paused": "一時停止",
+          "returning": "ドックへ戻る",
+          "mopping": "水拭き中",
+          "drying": "乾燥中",
+          "washing": "洗浄中",
+          "returning_to_wash": "洗浄に戻る",
+          "building": "マップ構築中",
+          "sweeping_and_mopping": "掃き掃除と水拭き中",
+          "charging_completed": "充電完了",
+          "upgrading": "アップグレード中",
+          "clean_summon": "呼び寄せ清掃",
+          "station_reset": "ステーションリセット",
+          "returning_install_mop": "モップ取り付けに戻る",
+          "returning_remove_mop": "モップ取り外しに戻る",
+          "water_check": "水量チェック中",
+          "clean_add_water": "清掃および給水",
+          "washing_paused": "洗浄一時停止",
+          "auto_emptying": "自動ゴミ収集",
+          "remote_control": "リモートコントロール",
+          "smart_charging": "スマート充電",
+          "second_cleaning": "2回目の清掃",
+          "human_following": "人に追従",
+          "spot_cleaning": "スポット清掃",
+          "returning_auto_empty": "自動収集に戻る",
+          "waiting_for_task": "タスク待機中",
+          "station_cleaning": "ステーション清掃",
+          "returning_to_drain": "排水に戻る",
+          "draining": "排水中",
+          "auto_water_draining": "自動排水",
+          "emptying": "空にする",
+          "dust_bag_drying": "ダストバッグ乾燥中",
+          "dust_bag_drying_paused": "ダストバッグ乾燥一時停止",
+          "heading_to_extra_cleaning": "追加清掃へ移動中",
+          "extra_cleaning": "追加清掃",
+          "finding_pet_paused": "ペット探索一時停止",
+          "finding_pet": "ペット探索中",
+          "shortcut": "ショートカット",
+          "monitoring": "監視中",
+          "monitoring_paused": "監視一時停止",
+          "initial_deep_cleaning": "初回徹底清掃",
+          "initial_deep_cleaning_paused": "初回徹底清掃一時停止",
+          "sanitizing": "除菌中",
+          "sanitizing_with_dry": "除菌と乾燥",
+          "changing_mop": "モップ交換中",
+          "changing_mop_paused": "モップ交換一時停止",
+          "floor_maintaining": "床メンテナンス中",
+          "floor_maintaining_paused": "床メンテナンス一時停止",
+          "remote_pickup": "リモートピックアップ",
+          "arranging_items": "アイテム整理",
+          "pet_guarding": "ペット見守り",
+          "pet_guarding_paused": "ペット見守り一時停止",
+          "installing_mop": "モップ取り付け中",
+          "uninstalling_mop": "モップ取り外し中",
+          "intelligent_recharging": "インテリジェント充電",
+          "assisted_cleaning": "アシスト清掃",
+          "entering_dock": "ドックに進入中",
+          "leaving_dock": "ドックから退出中",
+          "navigating_to_climber": "クライマーへ移動中",
+          "docking_to_climber": "クライマーにドッキング中",
+          "climber_docked": "クライマーにドッキング済み",
+          "climber_navigating": "クライマーがナビゲート中",
+          "climbing_stairs": "階段を昇っています",
+          "climbing_stairs_completed": "階段昇り完了",
+          "climber_at_dock": "クライマーがドックにいます",
+          "climber_leaving_dock": "クライマーがドックを離れています"
+        }
+      },
+      "station_drainage_status": {
+        "name": "ステーション排水ステータス",
+        "state": {
+          "unknown": "不明",
+          "idle": "待機中",
+          "draining": "排水中"
+        }
+      },
+      "status": {
+        "name": "ステータス",
+        "state": {
+          "unknown": "不明",
+          "idle": "待機中",
+          "paused": "一時停止",
+          "cleaning": "清掃中",
+          "returning": "ドックへ戻る",
+          "spot_cleaning": "スポット清掃",
+          "follow_wall_cleaning": "壁沿い清掃",
+          "charging": "充電中",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "Wi-Fi設定",
+          "power_off": "電源オフ",
+          "factory": "出荷時設定",
+          "error": "エラー",
+          "remote_control": "リモートコントロール",
+          "sleeping": "スリープ",
+          "self_test": "セルフテスト",
+          "factory_test": "工場テスト",
+          "standby": "スタンバイ",
+          "room_cleaning": "部屋単位清掃",
+          "zone_cleaning": "ゾーン清掃",
+          "fast_mapping": "高速マッピング",
+          "cruising_path": "経路上を巡回中",
+          "cruising_point": "ポイントへ移動中",
+          "summon_clean": "呼び寄せ清掃",
+          "shortcut": "ショートカット",
+          "person_follow": "人に追従",
+          "water_check": "水量チェック中",
+          "pet_guarding": "ペット見守り",
+          "auto_arrangement": "自動整理",
+          "smart_arrangement": "スマート整理",
+          "zoned_arrangement": "ゾーン整理"
+        }
+      },
+      "stream_status": {
+        "name": "ストリームステータス",
+        "state": {
+          "unknown": "不明",
+          "idle": "待機中",
+          "video": "ビデオ",
+          "audio": "オーディオ",
+          "recording": "録画中"
+        }
+      },
+      "tank_filter_left": {
+        "name": "タンクフィルター"
+      },
+      "tank_filter_time_left": {
+        "name": "タンクフィルター残り時間"
+      },
+      "task_end_type": {
+        "name": "終了方法",
+        "state": {
+          "other": "その他",
+          "manual_docking": "手動ドッキング",
+          "docking": "ドッキング",
+          "failed_docking": "ドッキング失敗",
+          "stop": "停止",
+          "unknown": "不明"
+        }
+      },
+      "task_interrupt_reason": {
+        "name": "中断理由",
+        "state": {
+          "abnormal_docking": "異常なドッキング",
+          "base_station_powered_off": "ベースステーションの電源オフ",
+          "brush_entangled_by_carpet": "ブラシがカーペットに絡まりました",
+          "brush_entangled_by_object": "ブラシが物体に絡まりました",
+          "brush_entangled_by_obstacle": "ブラシが障害物に絡まりました",
+          "cannot_find_base_station": "ベースステーションが見つかりません",
+          "cliff_sensor_error": "クリフセンサーエラー",
+          "laser_distance_sensor_error": "レーザー距離センサーエラー",
+          "mop_pad_abnormally_removed": "モップパッドが異常に取り外されました",
+          "mop_pad_fallen_off": "モップパッドが脱落しました",
+          "mop_pad_fallen_off_by_obstacle": "障害物によりモップパッドが脱落しました",
+          "mop_pad_fallen_off_by_table": "テーブルによりモップパッドが脱落しました",
+          "mop_pad_fallen_off_crossing_obstacle": "障害物を乗り越える際にモップパッドが脱落しました",
+          "mop_pad_removed": "モップパッドが取り外されました",
+          "mop_pad_stuck": "モップパッドが引っかかりました",
+          "robot_fallen": "ロボットが落下しました",
+          "robot_is_stuck_on_obstacle": "ロボットが障害物で動けなくなりました",
+          "robot_is_stuck_on_step": "ロボットが段差で動けなくなりました",
+          "robot_lifted": "ロボットが持ち上げられました",
+          "task_completed": "タスク完了",
+          "unknown": "不明"
+        }
+      },
+      "task_status": {
+        "name": "タスクステータス",
+        "state": {
+          "unknown": "不明",
+          "completed": "完了",
+          "cleaning": "清掃中",
+          "zone_cleaning": "ゾーン清掃",
+          "room_cleaning": "部屋単位清掃",
+          "spot_cleaning": "スポット清掃",
+          "fast_mapping": "高速マッピング",
+          "cleaning_paused": "清掃一時停止",
+          "room_cleaning_paused": "部屋清掃一時停止",
+          "zone_cleaning_paused": "ゾーン清掃一時停止",
+          "spot_cleaning_paused": "スポット清掃一時停止",
+          "map_cleaning_paused": "マップ清掃一時停止",
+          "docking_paused": "ドッキング一時停止",
+          "mopping_paused": "水拭き一時停止",
+          "zone_mopping_paused": "ゾーン水拭き一時停止",
+          "room_mopping_paused": "部屋水拭き一時停止",
+          "zone_docking_paused": "ゾーンドッキング一時停止",
+          "room_docking_paused": "部屋ドッキング一時停止",
+          "cruising_path": "経路上を巡回中",
+          "cruising_path_paused": "経路巡回一時停止",
+          "cruising_point": "ポイントへ移動中",
+          "cruising_point_paused": "ポイント移動一時停止",
+          "summon_clean_paused": "呼び寄せ清掃一時停止",
+          "returning_to_install_mop": "モップ取り付けに戻る",
+          "returning_to_remove_mop": "モップ取り外しに戻る",
+          "station_cleaning": "ステーション清掃",
+          "pet_finding": "ペット探索中",
+          "auto_cleaning_washing_paused": "自動清掃洗浄一時停止",
+          "area_cleaning_washing_paused": "エリア清掃洗浄一時停止",
+          "custom_cleaning_washing_paused": "カスタム清掃洗浄一時停止",
+          "picking_up_item": "アイテムを拾っています",
+          "picking_up_item_paused": "アイテム拾い一時停止",
+          "picking_up_item_success": "アイテムを正常に拾いました",
+          "remote_pickup_initializing": "リモートピックアップ初期化中",
+          "remote_pickup_identifing": "リモートピックアップ識別中",
+          "manual_remote_pickup": "手動リモートピックアップ",
+          "automatic_remote_pickup": "自動リモートピックアップ",
+          "remote_pickup_in_progress": "リモートピックアップ進行中",
+          "remote_pickup_paused": "リモートピックアップ一時停止",
+          "placing_item": "アイテムを置いています",
+          "placing_item_paused": "アイテム置き一時停止"
+        }
+      },
+      "task_type": {
+        "name": "タスクタイプ",
+        "state": {
+          "standard": "標準清掃",
+          "standard_paused": "標準清掃一時停止",
+          "custom": "カスタム清掃",
+          "custom_paused": "カスタム清掃一時停止",
+          "shortcut": "ショートカット清掃",
+          "shortcut_paused": "ショートカット清掃一時停止",
+          "scheduled": "スケジュール清掃",
+          "scheduled_paused": "スケジュール清掃一時停止",
+          "smart": "スマート清掃",
+          "smart_paused": "スマート清掃一時停止",
+          "partial": "部分清掃",
+          "partial_paused": "部分清掃一時停止",
+          "summon": "呼び寄せ清掃",
+          "summon_paused": "呼び寄せ清掃一時停止",
+          "water_stain": "水垢清掃",
+          "water_stain_paused": "水垢清掃一時停止",
+          "boosted_edge_cleaning": "強化されたエッジ清掃",
+          "hair_compressing": "髪の毛の圧縮",
+          "large_particle_cleaning": "大きな粒子の清掃",
+          "intensive_stain_cleaning": "頑固な汚れの清掃",
+          "stain_cleaning": "汚れ清掃",
+          "initial_deep_cleaning": "初回徹底清掃",
+          "initial_deep_cleaning_paused": "初回徹底清掃一時停止",
+          "mop_pad_heating": "モップパッド加熱",
+          "cleaning_after_mapping": "マッピング後の清掃",
+          "small_particle_cleaning": "細かい粒子の清掃",
+          "changing_mop": "モップの交換",
+          "changing_mop_paused": "モップ交換一時停止",
+          "floor_maintaining": "床のメンテナンス",
+          "floor_maintaining_paused": "床メンテナンス一時停止",
+          "arranging_items": "アイテム整理",
+          "arranging_items_paused": "アイテム整理一時停止",
+          "intensive_hair_cleaning": "強力ヘアクリーニング",
+          "accessory_handling": "アクセサリー処理",
+          "increased_drum_speed_cleaning": "ドラム回転速度を上げた清掃",
+          "pressurized_cleaning": "加圧清掃",
+          "steam_cleaning": "スチーム清掃",
+          "steam_cleaning_paused": "スチーム清掃一時停止"
+        }
+      },
+      "timezone": {
+        "name": "タイムゾーン"
+      },
+      "total_cleaned_area": {
+        "name": "総清掃面積"
+      },
+      "total_cleaning_time": {
+        "name": "総清掃時間"
+      },
+      "voice_packet_id": {
+        "name": "音声パック"
+      },
+      "water_outlet_filter_dirty_left": {
+        "name": "排水口フィルター清掃"
+      },
+      "water_outlet_filter_dirty_time_left": {
+        "name": "排水フィルター残り時間"
+      },
+      "water_tank": {
+        "name": "水タンク",
+        "state": {
+          "unknown": "不明",
+          "installed": "装着済み",
+          "not_installed": "未装着",
+          "mop_installed": "モップ装着済み",
+          "in_station": "ステーション内"
+        }
+      },
+      "wheel_dirty_left": {
+        "name": "ホイールクリーニング"
+      },
+      "wheel_dirty_time_left": {
+        "name": "車輪残り時間"
+      }
+    },
+    "switch": {
+      "active_suspension_crossing": {
+        "name": "アクティブサスペンション乗り越え"
+      },
+      "ai_fluid_detection": {
+        "name": "AI 液体検知"
+      },
+      "ai_furniture_detection": {
+        "name": "AI 家具検知"
+      },
+      "ai_human_detection": {
+        "name": "AI 人物検知"
+      },
+      "ai_obstacle_detection": {
+        "name": "AI障害物検知"
+      },
+      "ai_obstacle_image_upload": {
+        "name": "AI 障害物写真アップロード"
+      },
+      "ai_obstacle_picture": {
+        "name": "障害物の写真"
+      },
+      "ai_pet_avoidance": {
+        "name": "AI ペット回避"
+      },
+      "ai_pet_detection": {
+        "name": "ペット検知"
+      },
+      "auto_add_detergent": {
+        "name": "洗剤の自動追加"
+      },
+      "auto_change_mop": {
+        "name": "自動モップ交換"
+      },
+      "auto_charging": {
+        "name": "自動充電"
+      },
+      "auto_drying": {
+        "name": "自動乾燥"
+      },
+      "auto_dust_collecting": {
+        "name": "自動ゴミ収集"
+      },
+      "auto_mount_mop": {
+        "name": "自動モップ装着"
+      },
+      "auto_water_refilling": {
+        "name": "自動給水"
+      },
+      "camera_light_brightness_auto": {
+        "name": "カメラライト自動調光"
+      },
+      "carpet_avoidance": {
+        "name": "カーペット回避"
+      },
+      "carpet_boost": {
+        "name": "カーペットブースト"
+      },
+      "carpet_preferences": {
+        "name": "カスタム設定"
+      },
+      "carpet_recognition": {
+        "name": "カーペット認識"
+      },
+      "child_lock": {
+        "name": "チャイルドロック"
+      },
+      "clean_carpets_first": {
+        "name": "カーペットを先に清掃"
+      },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "cleaning_sequence": {
+        "name": "清掃順序"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "カーペットでローラーカバーを閉じる"
+      },
+      "collision_avoidance": {
+        "name": "衝突回避"
+      },
+      "customized_carpet_cleaning": {
+        "name": "カスタマイズ清掃"
+      },
+      "customized_cleaning": {
+        "name": "カスタマイズ清掃"
+      },
+      "deep_cleaning": {
+        "name": "徹底清掃"
+      },
+      "deep_mop_washing": {
+        "name": "しっかりモップ水洗い"
+      },
+      "dnd": {
+        "name": "おやすみモード"
+      },
+      "dnd_disable_auto_empty": {
+        "name": "自動ゴミ収集を無効化"
+      },
+      "dnd_disable_resume_cleaning": {
+        "name": "自動再開を無効化"
+      },
+      "dnd_reduce_volume": {
+        "name": "音量を下げる"
+      },
+      "dust_bag_drying": {
+        "name": "ダストバッグ乾燥"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "動的障害物の清掃"
+      },
+      "fill_light": {
+        "name": "カメラライト"
+      },
+      "floor_direction_cleaning": {
+        "name": "床の方向清掃"
+      },
+      "fuzzy_obstacle_detection": {
+        "name": "あいまい障害物検知"
+      },
+      "gap_cleaning_extension": {
+        "name": "隙間清掃の延長"
+      },
+      "hair_compression": {
+        "name": "髪の毛の圧縮"
+      },
+      "hot_washing": {
+        "name": "温水洗浄"
+      },
+      "human_follow": {
+        "name": "人物追従"
+      },
+      "intelligent_recognition": {
+        "name": "インテリジェント認識"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "集中カーペット清掃"
+      },
+      "large_particles_boost": {
+        "name": "大きな粒子のブースト"
+      },
+      "lds_state": {
+        "name": "LDS 昇降状態"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "カーペットでシャーシを持ち上げる"
+      },
+      "map_saving": {
+        "name": "マップ保存"
+      },
+      "max_suction_power": {
+        "name": "最大吸引力"
+      },
+      "mop_extend": {
+        "name": "モップ拡張"
+      },
+      "mop_washing_with_detergent": {
+        "name": "洗剤によるモップ洗浄"
+      },
+      "mopping_under_furnitures": {
+        "name": "家具の下の水拭き"
+      },
+      "mopping_with_detergent": {
+        "name": "洗剤による水拭き"
+      },
+      "multi_floor_map": {
+        "name": "複数階マップ"
+      },
+      "obstacle_avoidance": {
+        "name": "障害物回避"
+      },
+      "obstacle_crossing": {
+        "name": "同期障害物乗り越え"
+      },
+      "off_peak_charging": {
+        "name": "オフピーク充電"
+      },
+      "pet_focused_cleaning": {
+        "name": "ペット集中清掃"
+      },
+      "pet_focused_detection": {
+        "name": "ペット集中検知"
+      },
+      "pet_picture": {
+        "name": "ペット撮影"
+      },
+      "pressurized_cleaning": {
+        "name": "加圧清掃"
+      },
+      "resume_cleaning": {
+        "name": "自動再開"
+      },
+      "ring_light_always_on": {
+        "name": "リングライト常時点灯"
+      },
+      "self_clean": {
+        "name": "自動クリーニング"
+      },
+      "self_clean_by_zone": {
+        "name": "ゾーン別自動洗浄"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "カーペットでのサイドブラシ回転"
+      },
+      "side_reach": {
+        "name": "サイドブラシ拡張"
+      },
+      "silent_drying": {
+        "name": "静音乾燥"
+      },
+      "smart_drying": {
+        "name": "スマート乾燥"
+      },
+      "smart_mop_washing": {
+        "name": "スマートモップ洗浄"
+      },
+      "stain_avoidance": {
+        "name": "頑固な汚れ回避"
+      },
+      "streaming_voice_prompt": {
+        "name": "ストリーミング音声プロンプト"
+      },
+      "tight_mopping": {
+        "name": "高密度モップ掛け"
+      },
+      "ultra_clean_mode": {
+        "name": "ウルトラクリーンモード"
+      },
+      "uv_sterilization": {
+        "name": "UV除菌"
+      },
+      "voice_assistant": {
+        "name": "音声アシスタント"
+      },
+      "water_electrolysis": {
+        "name": "電解水除菌"
+      },
+      "wider_corner_coverage": {
+        "name": "広範囲の隅の清掃"
+      }
+    },
+    "button": {
+      "backup_saved_map": {
+        "name": "保存マップのバックアップ"
+      },
+      "base_station_cleaning": {
+        "name": "ステーション清掃"
+      },
+      "base_station_self_repair": {
+        "name": "ステーション自己修復"
+      },
+      "clear_warning": {
+        "name": "警告の解除"
+      },
+      "empty_water_tank": {
+        "name": "水タンクを空にする"
+      },
+      "manual_drying": {
+        "name": "手動乾燥"
+      },
+      "manual_dust_bag_drying": {
+        "name": "手動ダストバッグ乾燥"
+      },
+      "reload_shortcuts": {
+        "name": "ショートカットの再読み込み"
+      },
+      "reset_deodorizer": {
+        "name": "消臭モジュールリセット"
+      },
+      "reset_detergent": {
+        "name": "洗剤リセット"
+      },
+      "reset_dirty_water_channel": {
+        "name": "汚水流路リセット"
+      },
+      "reset_filter": {
+        "name": "フィルターリセット"
+      },
+      "reset_fluffing_roller": {
+        "name": "フラッフィングローラーリセット"
+      },
+      "reset_main_brush": {
+        "name": "メインブラシリセット"
+      },
+      "reset_mop_pad": {
+        "name": "モップパッドリセット"
+      },
+      "reset_onboard_dirty_water_tank": {
+        "name": "内蔵汚水タンクリセット"
+      },
+      "reset_roller_mop_filter": {
+        "name": "ローラーモップフィルターリセット"
+      },
+      "reset_scale_inhibitor": {
+        "name": "スケール防止剤リセット"
+      },
+      "reset_sensor": {
+        "name": "センサーリセット"
+      },
+      "reset_side_brush": {
+        "name": "サイドブラシリセット"
+      },
+      "reset_silver_ion": {
+        "name": "銀イオンリセット"
+      },
+      "reset_squeegee": {
+        "name": "スクイジーリセット"
+      },
+      "reset_tank_filter": {
+        "name": "タンクフィルターリセット"
+      },
+      "reset_water_outlet_filter": {
+        "name": "排水フィルターリセット"
+      },
+      "reset_wheel": {
+        "name": "車輪リセット"
+      },
+      "self_clean": {
+        "name": "モップ自動洗浄"
+      },
+      "shortcut": {
+        "name": "ショートカット {name}"
+      },
+      "start_auto_empty": {
+        "name": "自動ゴミ収集の開始"
+      },
+      "start_fast_mapping": {
+        "name": "高速マッピングの開始"
+      },
+      "start_mapping": {
+        "name": "マッピングの開始"
+      },
+      "start_recleaning": {
+        "name": "再清掃の開始"
+      },
+      "water_tank_draining": {
+        "name": "水タンク排水"
+      }
+    },
+    "camera": {
+      "map": {
+        "name": "現在のマップ"
+      },
+      "map_data": {
+        "name": "現在のマップデータ"
+      },
+      "saved_map": {
+        "name": "保存マップ {name}"
+      },
+      "wifi_map": {
+        "name": "保存 Wi-Fi マップ {name}"
+      }
+    },
+    "binary_sensor": {
+      "charging_state": {
+        "name": "充電状態",
+        "state": {
+          "on": "充電中",
+          "off": "充電していません"
+        }
+      },
+      "lds_status": {
+        "name": "LDS ステータス"
+      },
+      "roller_cover_status": {
+        "name": "ローラーカバーの状態"
+      }
+    },
+    "number": {
+      "auto_empty_area": {
+        "name": "自動ゴミ収集エリア"
+      },
+      "camera_light_brightness": {
+        "name": "カメラライトの明るさ"
+      },
+      "drying_time": {
+        "name": "乾燥時間"
+      },
+      "mop_cleaning_remainder": {
+        "name": "モップ洗浄リマインダー"
+      },
+      "self_clean_area": {
+        "name": "自動クリーニングエリア"
+      },
+      "self_clean_time": {
+        "name": "自動クリーニング時間"
+      },
+      "volume": {
+        "name": "音量"
+      },
+      "wetness_level": {
+        "name": "湿り気"
+      }
+    },
+    "time": {
+      "dnd_end": {
+        "name": "おやすみ終了時間"
+      },
+      "dnd_start": {
+        "name": "おやすみ開始時間"
+      },
+      "off_peak_charging_end": {
+        "name": "オフピーク終了時間"
+      },
+      "off_peak_charging_start": {
+        "name": "オフピーク開始時間"
+      },
+      "schedule_time": {
+        "name": "開始時間"
+      }
+    },
+    "input": {
+      "dnd_repeats": {
+        "name": "繰り返し"
+      },
+      "map_custom_name": {
+        "name": "マップ名"
+      },
+      "schedule_repeats": {
+        "name": "繰り返し"
+      },
+      "segment_custom_name": {
+        "name": "部屋名"
+      },
+      "shortcut_name": {
+        "name": "ショートカット名"
+      }
+    }
+  },
+  "entity_component": {
+    "frontend_action": {
+      "state": {
+        "add": "追加",
+        "add_map": "マップ作成",
+        "auto_empty_unavailable": "自動ゴミ収集不可",
+        "auto_emptying": "自動ゴミ収集",
+        "backup": "バックアップ",
+        "bag_drying_unavailable": "バッグ乾燥不可",
+        "cancel": "キャンセル",
+        "cancel_ignore": "無視をキャンセル",
+        "carpet": "カーペット",
+        "change": "変更",
+        "charge": "充電",
+        "clean": "清掃",
+        "clean_again": "再清掃",
+        "cleaning_settings": "清掃設定",
+        "cleanings": "清掃回数",
+        "close": "閉じる",
+        "confirm": "確認",
+        "delete": "削除",
+        "delete_carpet": "カーペットを削除",
+        "deleted_carpet": "削除されたカーペット",
+        "disable": "無効",
+        "discard": "破棄",
+        "dismiss": "閉じる",
+        "dock": "ドック",
+        "dock_settings": "ドック設定",
+        "download": "ダウンロード",
+        "dry": "乾燥",
+        "dry_bag": "バッグ乾燥",
+        "drying_unavailable": "乾燥不可",
+        "dynamically_ignored": "動的に無視",
+        "edit_carpet": "カーペットを編集",
+        "empty": "空にする",
+        "enable": "有効",
+        "enter_dvc_key": "既存のキーを入力",
+        "fast_mapping": "高速マッピング",
+        "get_dvc_key": "DVCキーを取得",
+        "ignore": "無視",
+        "ignore_obstacle": "障害物を無視",
+        "impassable_threshold": "通行不可の段差",
+        "job_details": "タスク詳細",
+        "keep_disabled": "無効のままにする",
+        "map_display": "マップ表示",
+        "map_management": "マップ管理",
+        "new_dnd": "新規おやすみタスク",
+        "new_schedule": "新規スケジュールタスク",
+        "new_shortcut": "新規ショートカットタスク",
+        "next_job": "次のタスク",
+        "no_go": "進入禁止",
+        "no_mop": "水拭き禁止",
+        "objects": "オブジェクト",
+        "override": "上書き",
+        "passable_threshold": "通行可能な段差",
+        "pause": "一時停止",
+        "pause_washing": "洗浄一時停止",
+        "previous_job": "前のタスク",
+        "ramp": "スロープ",
+        "reload": "再読み込み",
+        "rename": "名前変更",
+        "repeats": "繰り返し",
+        "replace": "置き換え",
+        "reset": "リセット",
+        "restore": "復元",
+        "restore_map": "マップ復元",
+        "resume": "再開",
+        "resume_washing": "洗浄再開",
+        "rooms": "部屋",
+        "rotate_left": "左回転",
+        "rotate_right": "右回転",
+        "round_carpet": "円形カーペット",
+        "save": "保存",
+        "select_map": "マップ選択",
+        "shortcuts": "ショートカット",
+        "square_carpet": "正方形カーペット",
+        "start": "開始",
+        "start_auto_empty": "自動ゴミ収集を開始",
+        "start_bag_drying": "バッグ乾燥を開始",
+        "start_drying": "乾燥開始",
+        "start_task": "タスクを開始",
+        "start_washing": "洗浄を開始",
+        "stop": "停止",
+        "stop_bag_drying": "バッグ乾燥を停止",
+        "stop_drying": "乾燥停止",
+        "understood": "了解",
+        "virtual_threshold": "仮想の段差",
+        "virtual_wall": "仮想壁",
+        "wash": "洗浄",
+        "washing_unavailable": "洗浄不可",
+        "wifi_map": "Wi-Fiマップ"
+      }
+    },
+    "frontend_config": {
+      "state": {
+        "background_image": "背景画像",
+        "card_object_action_buttons": "アクションボタン",
+        "card_object_animations": "アニメーション",
+        "card_object_cleanup_notification": "清掃通知",
+        "card_object_controls": "コントロール",
+        "card_object_cruising_history": "巡回履歴",
+        "card_object_fault_notification": "エラー通知",
+        "card_object_information_notification": "情報通知",
+        "card_object_low_water_notification": "低水位通知",
+        "card_object_map_change_confirmation": "マップ変更の確認",
+        "card_object_menu": "メニュー",
+        "card_object_progress_bar": "プログレスバー",
+        "card_object_saved_notification": "保存完了通知",
+        "card_object_shortcuts": "ショートカット",
+        "card_object_state": "状態",
+        "card_object_status": "ステータス",
+        "card_object_task_type": "タスクタイプ",
+        "card_object_title": "タイトル",
+        "card_object_warning_notification": "警告通知",
+        "color_scheme": "カラースキーム",
+        "color_scheme_dreame_auto": "Dreame自動",
+        "color_scheme_dreame_dark": "Dreameダーク",
+        "color_scheme_dreame_light": "Dreameライト",
+        "color_scheme_grayscale": "グレースケール",
+        "color_scheme_mijia_auto": "Mijia自動",
+        "color_scheme_mijia_dark": "Mijiaダーク",
+        "color_scheme_mijia_light": "Mijiaライト",
+        "copied": "コピー済み",
+        "copy": "コピー",
+        "copy_all": "すべてコピー",
+        "disable_haptic": "触覚フィードバックを無効化",
+        "dvc_key": "DVCキー",
+        "dvc_key_title": "DVCキーを入力",
+        "editable_objects": "編集可能なオブジェクト",
+        "font_size": "フォントサイズ",
+        "full_height": "全高",
+        "grid_size": "グリッドサイズ",
+        "height": "高さ",
+        "hidden_card_objects": "非表示のカードオブジェクト",
+        "hidden_objects": "非表示のオブジェクト",
+        "hide_map_info": "マップ情報を非表示",
+        "icon_set": "アイコンセット",
+        "icon_set_dreame": "Dreame",
+        "icon_set_dreame_old": "Dreame Old",
+        "icon_set_material": "Material",
+        "icon_set_mijia": "Mijia",
+        "left": "左",
+        "left_handed": "左利きモード",
+        "limit_height": "画面の高さに制限",
+        "locked": "ロック",
+        "locked_always": "常に",
+        "locked_auto": "自動",
+        "locked_never": "しない",
+        "locked_only_touch": "タッチのみ",
+        "map": "マップ %name%",
+        "map_1": "1番目のマップ",
+        "map_2": "2番目のマップ",
+        "map_3": "3番目のマップ",
+        "map_4": "4番目のマップ",
+        "map_5": "5番目のマップ",
+        "map_color_active_area": "アクティブエリア",
+        "map_color_active_area_outline": "アクティブエリアの枠線",
+        "map_color_active_point": "アクティブポイント",
+        "map_color_active_point_outline": "アクティブポイントの枠線",
+        "map_color_auto_low_lying_area": "自動低地エリア",
+        "map_color_carpet_color": "カーペットの色",
+        "map_color_curtain": "カーテン",
+        "map_color_detected_carpet_color": "検出されたカーペットの色",
+        "map_color_floor": "床",
+        "map_color_floor_material": "床の素材",
+        "map_color_icon_background": "アイコン背景",
+        "map_color_impassable_threshold": "通行不可の段差",
+        "map_color_manual_low_lying_area": "手動低地エリア",
+        "map_color_mop_path": "水拭きパス",
+        "map_color_new_segment": "新しい部屋",
+        "map_color_no_go": "進入禁止",
+        "map_color_no_go_outline": "進入禁止の枠線",
+        "map_color_no_mop": "水拭き禁止",
+        "map_color_no_mop_outline": "水拭き禁止の枠線",
+        "map_color_obstacle_background": "障害物背景",
+        "map_color_order": "順序",
+        "map_color_outside": "外側",
+        "map_color_passable_threshold": "通行可能な段差",
+        "map_color_passive_segment": "受動的部屋",
+        "map_color_path": "パス",
+        "map_color_ramp": "スロープ",
+        "map_color_segment": "部屋",
+        "map_color_settings_background": "設定の背景",
+        "map_color_text": "テキスト",
+        "map_color_text_stroke": "テキスト枠線",
+        "map_color_virtual_threshold": "仮想の段差",
+        "map_color_virtual_wall": "仮想壁",
+        "map_color_wall": "壁",
+        "map_config": "マップ構成",
+        "map_display": "マップ表示",
+        "map_display_floor_plan": "間取り",
+        "map_display_floor_plan_only": "間取りのみ",
+        "map_display_floor_plan_without_texture": "テクスチャなしの間取り",
+        "map_display_standard": "標準",
+        "map_object_active_area": "アクティブエリア",
+        "map_object_active_cruise_point": "アクティブ巡回ポイント",
+        "map_object_active_point": "アクティブポイント",
+        "map_object_animations": "アニメーション",
+        "map_object_blocked_segment": "ブロックされた部屋",
+        "map_object_blocked_segments": "ブロックされた部屋",
+        "map_object_carpet": "カーペット",
+        "map_object_charger": "充電器",
+        "map_object_cleaning_sequence": "清掃順序",
+        "map_object_cruise_point": "巡回ポイント",
+        "map_object_curtain": "カーテン",
+        "map_object_customized_cleaning": "カスタマイズ清掃",
+        "map_object_deleted_carpet": "削除されたカーペット",
+        "map_object_detected_carpet": "検出されたカーペット",
+        "map_object_door": "ドア",
+        "map_object_floor": "床",
+        "map_object_floor_material": "床の素材",
+        "map_object_furniture": "家具",
+        "map_object_furniture_image": "家具の画像",
+        "map_object_hidden_segments": "非表示の部屋",
+        "map_object_icon": "アイコン",
+        "map_object_ignored_obstacles": "無視された障害物",
+        "map_object_impassable_threshold": "通行不可の段差",
+        "map_object_lock_indicator": "ロックインジケーター",
+        "map_object_low_lying_area": "低地エリア",
+        "map_object_material": "床の素材",
+        "map_object_mop_path": "水拭きパス",
+        "map_object_mop_type": "モップタイプ",
+        "map_object_name": "名前",
+        "map_object_name_background": "名前の背景",
+        "map_object_no_go": "進入禁止",
+        "map_object_no_mop": "水拭き禁止",
+        "map_object_object_option": "オブジェクトオプション",
+        "map_object_obstacle": "障害物",
+        "map_object_obstacle_background": "障害物の背景",
+        "map_object_obstacle_color": "障害物の色",
+        "map_object_order": "順序",
+        "map_object_passable_threshold": "通行可能な段差",
+        "map_object_path": "パス",
+        "map_object_pet": "ペット",
+        "map_object_predefined_point": "事前定義されたポイント",
+        "map_object_ramp": "スロープ",
+        "map_object_router": "ルーター",
+        "map_object_segment": "部屋",
+        "map_object_segment_type": "部屋のタイプ",
+        "map_object_selected_segments": "選択された部屋",
+        "map_object_split_line": "分割ライン",
+        "map_object_stain": "汚れ",
+        "map_object_station_status": "ステーションステータス",
+        "map_object_vacuum": "ロボット",
+        "map_object_vacuum_status": "ロボットステータス",
+        "map_object_virtual_threshold": "仮想の段差",
+        "map_object_virtual_wall": "仮想壁",
+        "map_object_walls": "壁",
+        "map_object_zoom_point": "ズームポイント",
+        "object_opacity": "オブジェクトの不透明度",
+        "object_scale": "オブジェクトの縮尺",
+        "opacity": "不透明度",
+        "override_colors": "マップの色を上書き",
+        "overlay_image": "オーバーレイ画像",
+        "rotation": "回転",
+        "scale": "縮尺",
+        "scripts": "スクリプト",
+        "selectable_objects": "選択可能なオブジェクト",
+        "selected_map_config": "%name% 設定",
+        "show_map_info": "マップ情報を表示",
+        "top": "上",
+        "url": "URL",
+        "viewport": "ビューポート",
+        "width": "幅",
+        "zoom": "ズーム"
+      }
+    },
+    "frontend_message": {
+      "state": {
+        "active_task": "ロボットにアクティブなタスクがあります！",
+        "apply_changes_or_reload": "編集中にマップが変更されました！\n変更を上書きしますか、それとも新しい変更を読み込みますか？",
+        "auto_mount_mop_will_enabled": "自動モップ装着が有効になります！",
+        "backup_map": "マップをバックアップしますか？",
+        "backup_map_will_overwritten": "バックアップされたマップは上書きされます！",
+        "bag_drying_will_stopped": "ダストバッグ乾燥が停止します！",
+        "carpet_recognition_will_enabled": "カスタマイズされたカーペット清掃を設定するには、カーペット認識を有効にする必要があります",
+        "carpet_will_deleted": "カーペットは削除されます！",
+        "cleangenius_will_disabled": "CleanGeniusは無効になります！",
+        "cleaning_failure": "清掃失敗の原因",
+        "create_map": "新しいマップを作成しますか？",
+        "custom_carpet_settings_will_enabled": "カスタマイズされたカーペット清掃が有効になります！",
+        "custom_carpet_settings_will_enabled_detail": "カスタマイズされたカーペット清掃設定は、選択したカーペットのタイプに合わせて設定されます",
+        "customized_cleaning_disabled": "カスタマイズ清掃は無効化されています！",
+        "delete_carpet": "カーペットを削除しますか？",
+        "delete_dnd": "おやすみタスクを削除しますか？",
+        "delete_map": "マップを削除しますか？",
+        "delete_schedule": "スケジュールタスクを削除しますか？",
+        "delete_shortcut": "ショートカットを削除しますか？",
+        "deleted": "正常に削除されました",
+        "device_unavailable": "デバイスが利用できません",
+        "disable_cleangenius": "CleanGeniusを無効にしますか？",
+        "dnd_confliction": "おやすみタスクの競合！",
+        "dnd_confliction_detail": "おやすみモード期間中にスケジュールタスクが設定されています。",
+        "dnd_will_deleted": "%start%から%end%までのおやすみタスクは削除されます！",
+        "dock_in_restricted_area": "ドックが制限エリアにあります！",
+        "dock_in_restricted_area_detail": "充電ドックが制限エリアにあります。マップの保存を続行すると、ロボットが充電できなくなる可能性があります。",
+        "drying_will_stopped": "モップパッド乾燥が停止します！",
+        "dust_collection_not_performed": "自動ゴミ収集タスクは実行されません\nロボットはDND期間中は自動ゴミ収集タスクを実行しません。",
+        "dvc_key_description": "キーは1台のデバイスに対して有効です。このキーを初めて使用する場合、今このデバイス用に有効化されます。",
+        "enable_auto_mount_mop": "自動モップ装着を有効にしますか？",
+        "enable_carpet_recognition": "カーペット認識が有効になります！",
+        "enable_customized_cleaning": "カスタマイズ清掃を有効にしますか？",
+        "enable_mop_change": "自動モップ交換を有効にしますか？",
+        "enable_task": "タスクを有効にしますか？",
+        "entity_is_required": "エンティティが必要です",
+        "entity_not_available": "エンティティが利用できません",
+        "failed_to_load_card": "カードを読み込めませんでした",
+        "ignore_obstacle": "障害物を無視しますか？",
+        "invalid_entity": "無効なエンティティ",
+        "invalid_key": "無効なキーです。",
+        "map_backup": "マップのバックアップが実行されています",
+        "map_backup_failed": "マップのバックアップに失敗しました！",
+        "map_backup_success": "マップのバックアップが完了しました",
+        "map_recovery": "マップの復元が実行されています",
+        "map_recovery_failed": "マップの復元に失敗しました！",
+        "map_recovery_success": "マップの復元が完了しました",
+        "map_will_deleted": "%name%は削除されます！",
+        "map_will_replaced": "現在選択されているマップは新しいマップに置き換えられます！",
+        "map_will_restored": "保存されたマップは%date%の状態に復元されます",
+        "mapping_started": "マッピングを開始しました...",
+        "mop_change_disabled": "自動モップ交換は無効化されています！",
+        "mop_wash_frequency_low": "モップ洗浄頻度が低すぎます！",
+        "mop_wash_frequency_will_increased": "モップを十分に濡らすため、モップ洗浄頻度が自動的に増えます",
+        "not_available": "現在は利用できません...",
+        "not_fully_supported": "まだ完全にはサポートされていません！",
+        "not_supported": "まだサポートされていません！",
+        "obstacle_will_ignored": "障害物は無視されます！",
+        "override_changes": "変更を上書きしますか？",
+        "preview": "これはDreame Vacuumカードのプレビューです",
+        "recommended_areas": "おすすめエリア",
+        "relocating": "自己位置推定中。お待ちください。",
+        "relocating_completed": "自己位置推定に成功しました。ロボットはタスクを続行します。",
+        "relocating_failed": "自己位置推定に失敗しました！",
+        "replace_map": "新しいマップに置き換えますか？",
+        "reset_usage": "使用状況をリセットしますか？",
+        "reset_walls": "壁をリセットしますか？",
+        "restore_map": "%name%を復元しますか？",
+        "resume_cleaning": "ロボットはバッテリーを80%まで充電した後、未完了の清掃タスクを自動的に再開します。",
+        "resume_cleaning_not_performed": "ロボットはおやすみ期間が終了した後に清掃を再開します。",
+        "resume_cleaning_time": "清掃は%time%に開始されます",
+        "save_changes": "変更を保存しますか？",
+        "saved": "正常に保存されました",
+        "schedule_will_deleted": "%time%のスケジュールタスクは削除されます！",
+        "select_map": "%name%を選択しますか？",
+        "select_mapping_type": "マッピングタイプを選択",
+        "select_room": "清掃順序を設定する部屋を選択してください",
+        "selected_map_will_changed": "選択されたマップは%name%に変更されます！",
+        "service_call_failed": "サービス呼び出しに失敗しました",
+        "settings_will_applied": "設定は次のタスクで適用されます。",
+        "shortcut_will_deleted": "%name%は削除されます！",
+        "stop_bag_drying": "ダストバッグ乾燥を停止しますか？",
+        "stop_drying": "乾燥を停止しますか？",
+        "stop_task": "現在のタスクを停止しますか？",
+        "task_disabled": "タスクは無効化されています！",
+        "task_will_stopped": "現在のタスクは停止します！",
+        "unsaved_changes_present": "保存されていない変更があり、失われます！",
+        "unsupported_browser": "サポートされていないブラウザです！",
+        "usage_will_reset": "%name%の使用状況はリセットされます！",
+        "walls_will_be_reset": "壁は最初にマッピングされた位置に復元されます！"
+      }
+    },
+    "frontend_title": {
+      "state": {
+        "accessory_usage": "消耗品・アクセサリの使用状況",
+        "add_furniture": "家具を追加",
+        "audio_settings": "音声設定",
+        "battery_management": "バッテリー管理",
+        "carpet_settings": "カーペット設定",
+        "clean_water_tank": "浄水タンク",
+        "cleaning_details": "清掃詳細",
+        "cleaning_history": "清掃履歴",
+        "cleaning_sequence": "清掃順序",
+        "created_carpet": "手動で作成されたカーペット",
+        "cruising": "巡回",
+        "cruising_details": "巡回詳細",
+        "cruising_history": "巡回履歴",
+        "customized_cleaning": "カスタマイズ清掃",
+        "description": "%name%カスタムインテグレーションのフロントエンド",
+        "detected_carpet": "自動的に検出されたカーペット",
+        "detergent": "洗剤",
+        "device_information": "デバイス情報",
+        "device_settings": "デバイス設定",
+        "dnd": "おやすみモード",
+        "dnd_task": "おやすみモードタスク",
+        "dust_bag": "ダストバッグ",
+        "global_carpet_settings": "グローバルカーペット設定",
+        "invalid": "無効",
+        "locate": "見つける",
+        "map": "マップ",
+        "map_edit": "マップ編集",
+        "map_management": "マップ管理",
+        "map_name_placeholder": "マップ %index%",
+        "mop_type": "モップタイプ",
+        "mopping_settings": "水拭き設定",
+        "more_functions": "その他の機能",
+        "name": "%name%カード",
+        "new_map": "新しいマップ",
+        "obstacle": "障害物",
+        "obstacle_settings": "カメラと障害物の設定",
+        "recovery_map_list": "マップ復元",
+        "remote_control": "リモートコントロール",
+        "saved_map": "保存されたマップ",
+        "schedule_list": "スケジュール清掃",
+        "scheduled_room": "スケジュールされた部屋の清掃",
+        "scheduled_spot": "スケジュールされたスポット清掃",
+        "scheduled_task": "スケジュールタスク",
+        "scheduled_zone": "スケジュールされたゾーン清掃",
+        "segment_name_placeholder": "部屋 %index%",
+        "segment_unavailable": "部屋 %index% は利用できません",
+        "shortcut": "ショートカット",
+        "shortcut_list": "ショートカット",
+        "shortcut_map": "ショートカットマップ",
+        "shortcut_name_placeholder": "ショートカット %index%",
+        "shortcut_task": "ショートカットタスク",
+        "task": "タスク %index%",
+        "task_placeholder": "タスク %index%",
+        "time_left": "残り %time%",
+        "unavailable": "利用不可",
+        "used_water_tank": "汚水タンク",
+        "wall": "壁",
+        "wifi_map": "Wi-Fiマップ"
+      }
+    },
+    "notification": {
+      "state": {
+        "cleanup_completed": "清掃完了",
+        "dust_collection_not_performed": "自動ゴミ収集タスクは実行されません\nロボットはDND期間中は自動ゴミ収集タスクを実行しません。",
+        "resume_cleaning": "清掃再開モード\nロボットはバッテリーを80%まで充電した後、未完了の清掃タスクを自動的に再開します。",
+        "resume_cleaning_not_performed": "ロボットはおやすみモードの時間帯です\nおやすみモードの時間帯が終了した後、ロボットは清掃を再開します。",
+        "resume_cleaning_not_performed_with_time": "ロボットはおやすみモードの時間帯です\nおやすみモードの時間帯が終了した後、ロボットは清掃を再開します。\n## 清掃は %hour% 時間 %minute% 分後に開始します",
+        "replace_map": "新しいマップが作成されました\n使用する前にマップを保存するか破棄する必要があります。",
+        "replace_multi_map": "新しいマップが作成されました\n保存できる複数フロアのマップが上限に達しました。使用する前にマップを置き換えるか破棄する必要があります。",
+        "drainage_completed": "排水完了",
+        "drainage_failed": "排水に失敗しました",
+        "main_brush_left": "メインブラシを交換する必要があります\nメインブラシが摩耗しています。早めに交換してカウンターをリセットしてください。",
+        "main_brush_left_low": "メインブラシは間もなく交換する必要があります\nメインブラシはほぼ摩耗しています。早めに交換してください。",
+        "side_brush_left": "サイドブラシを交換する必要があります\nサイドブラシが摩耗しています。交換してカウンターをリセットしてください。",
+        "side_brush_left_low": "サイドブラシは間もなく交換する必要があります\nサイドブラシはほぼ摩耗しています。できるだけ早く交換してください。",
+        "filter_left": "フィルターを交換する必要があります\nフィルターが摩耗しています。早めに交換してカウンターをリセットしてください。",
+        "filter_left_low": "フィルターは間もなく交換する必要があります\nフィルターはほぼ摩耗しています。早めに交換してください。",
+        "sensor_dirty_left": "センサーを清掃する必要があります\nセンサーを清掃してカウンターをリセットしてください",
+        "tank_filter_left": "タンクフィルターを交換する必要があります\nタンクフィルターが摩耗しています。早めに交換してカウンターをリセットしてください。",
+        "tank_filter_left_low": "タンクフィルターは間もなく交換する必要があります\nタンクフィルターはほぼ摩耗しています。早めに交換してください。",
+        "mop_pad_left": "モップパッドの摩耗\nモップパッドを交換してカウンターをリセットしてください。",
+        "mop_pad_left_low": "モップパッドがほぼ摩耗しています\n早めにモップパッドを交換してください。",
+        "silver_ion_left": "銀イオン除菌剤の劣化\n銀イオン除菌剤を交換してカウンターをリセットしてください。",
+        "silver_ion_left_low": "銀イオン除菌剤が劣化しそうです\n早めに銀イオン除菌剤を交換してください。",
+        "detergent_left": "洗剤がなくなりました\n洗剤カートリッジを交換してカウンターをリセットしてください。",
+        "detergent_left_low": "洗剤がなくなりそうです\n洗剤がなくなりそうです。早めに交換してください。",
+        "squeegee_left": "スキージの摩耗\nスキージを交換してカウンターをリセットしてください。",
+        "squeegee_left_low": "スキージがほぼ摩耗しています\n早めにスキージを交換してください。",
+        "onboard_dirty_water_tank_left": "オンボードの汚水タンクを清掃する必要があります\nオンボードの汚水タンクを清掃してカウンターをリセットしてください。",
+        "dirty_water_channel_dirty_left": "汚水チャネルを清掃する必要があります\n汚水チャネルを清掃してカウンターをリセットしてください。",
+        "deodorizer_left": "使用済み水タンクの消臭剤がなくなりました。\n使用済み水タンクの消臭剤がなくなりました。交換してください。",
+        "deodorizer_left_low": "使用済み水タンクの消臭剤がなくなりそうです。\n使用済み水タンクの消臭剤がなくなりそうです。交換してください。",
+        "wheel_dirty_left": "全方向ホイールを清掃する必要があります\n全方向ホイールを清掃してカウンターをリセットしてください。",
+        "scale_inhibitor_left": "水垢防止剤がなくなりました\n水垢防止剤を交換してカウンターをリセットしてください。",
+        "scale_inhibitor_left_low": "水垢防止剤がなくなりそうです\n早めに水垢防止剤を交換してください。",
+        "fluffing_roller_dirty_left": "フラッフィングローラーを清掃する必要があります\nフラッフィングローラーを清掃してカウンターをリセットしてください。",
+        "roller_mop_filter_dirty_left": "ローラーモップフィルターを清掃する必要があります\nローラーモップフィルターを清掃してカウンターをリセットしてください。",
+        "water_outlet_filter_dirty_left": "水出口フィルターを清掃する必要があります\n水出口フィルターを清掃してカウンターをリセットしてください。",
+        "no_water_left": "浄水タンクに水を入れてください。\n浄水タンクの水がなくなりそうです。確認してすぐに浄水タンクに水を入れてください。",
+        "no_water_left_after_clean": "浄水タンクに水を入れてください。\nモップパッドが清掃されました。浄水タンクの水が不十分であることが検出されました。浄水タンクに水を入れて、使用済み水タンクを空にしてください。",
+        "no_water_for_clean": "浄水タンクの水位が低いです。\nロボットは吸引モードに切り替わりました。",
+        "low_water": "水がなくなりそうです\n浄水タンクに水を入れてください。",
+        "tank_not_installed": "浄水タンクが取り付けられていません。\n浄水タンクを確認してください"
+      }
+    }
+  },
+  "services": {
+    "vacuum_clean_segment": {
+      "name": "部屋の清掃",
+      "description": "選択した部屋で清掃作業を開始します。",
+      "fields": {
+        "segments": {
+          "name": "部屋",
+          "description": "清掃する部屋のリスト。部屋単位でデフォルト値を上書きするための部屋の文字（または文字の配列）、清掃回数、ファンスピード、モップモードのみ。"
+        },
+        "repeats": {
+          "name": "繰り返し",
+          "description": "選択した各部屋の清掃パスの数（カスタマイズ清掃パラメータで上書きされない限り）。"
+        },
+        "suction_level": {
+          "name": "吸引レベル",
+          "description": "選択した各部屋のファンスピード（カスタマイズ清掃パラメータで上書きされない限り）。"
+        },
+        "water_volume": {
+          "name": "水量",
+          "description": "選択した各部屋の水量レベル（カスタマイズ清掃パラメータで上書きされない限り）。"
+        }
+      }
+    },
+    "vacuum_clean_zone": {
+      "name": "ゾーン清掃",
+      "description": "選択したエリアで清掃作業を開始します。",
+      "fields": {
+        "zone": {
+          "name": "ゾーン",
+          "description": "座標。"
+        },
+        "repeats": {
+          "name": "繰り返し",
+          "description": "選択した各ゾーンの清掃パスの数。"
+        },
+        "suction_level": {
+          "name": "吸引レベル",
+          "description": "選択した各ゾーンのファンスピード。"
+        },
+        "water_volume": {
+          "name": "水量",
+          "description": "選択した各ゾーンの水量レベル。"
+        }
+      }
+    },
+    "vacuum_clean_spot": {
+      "name": "スポット清掃",
+      "description": "マップ上の選択したポイントで清掃作業を開始します。",
+      "fields": {
+        "points": {
+          "name": "ポイント",
+          "description": "清掃する座標のリスト。"
+        },
+        "repeats": {
+          "name": "繰り返し",
+          "description": "選択した各ゾーンの清掃パスの数。"
+        },
+        "suction_level": {
+          "name": "吸引レベル",
+          "description": "選択した各ゾーンのファンスピード。"
+        },
+        "water_volume": {
+          "name": "水量",
+          "description": "選択した各ゾーンの水量レベル。"
+        }
+      }
+    },
+    "vacuum_goto": {
+      "name": "移動",
+      "description": "マップの座標に移動して停止します。",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "ポイントのX座標。"
+        },
+        "y": {
+          "name": "Y",
+          "description": "ポイントのY座標。"
+        }
+      }
+    },
+    "vacuum_follow_path": {
+      "name": "パスに従う",
+      "description": "マップ上の座標のリストに従ってベースに戻ります。（カメラ付きロボットでのみサポート）",
+      "fields": {
+        "points": {
+          "name": "ポイント",
+          "description": "パスの座標のリスト。"
+        }
+      }
+    },
+    "vacuum_start_shortcut": {
+      "name": "ショートカットの開始",
+      "description": "ショートカットタスクを開始します。（サポートされているデバイスでのみ）",
+      "fields": {
+        "shortcut_id": {
+          "name": "ショートカットID",
+          "description": "ショートカットのID。"
+        }
+      }
+    },
+    "vacuum_remote_control_move_step": {
+      "name": "リモコン移動ステップ",
+      "description": "ロボットをリモートコントロールで1ステップ移動させます。",
+      "fields": {
+        "rotation": {
+          "name": "回転",
+          "description": "-128と128の間のバイナリ度で回転します。"
+        },
+        "velocity": {
+          "name": "速度",
+          "description": "100（前進）から-300（後退）までの移動速度。"
+        }
+      }
+    },
+    "vacuum_install_voice_pack": {
+      "name": "音声パックのインストール",
+      "description": "公式またはカスタムの音声パックをインストールします。",
+      "fields": {
+        "lang_id": {
+          "name": "言語ID",
+          "description": "このパックの言語ID。"
+        },
+        "url": {
+          "name": "URL",
+          "description": "このパックのURL。ロボットが到達可能である必要があります。"
+        },
+        "md5": {
+          "name": "MD5",
+          "description": "言語パックのMD5チェックサム。"
+        },
+        "size": {
+          "name": "サイズ",
+          "description": "言語パックのサイズ（バイト）。"
+        }
+      }
+    },
+    "vacuum_request_map": {
+      "name": "マップデータの要求",
+      "description": "マップデータを要求します。"
+    },
+    "vacuum_select_map": {
+      "name": "マップを選択",
+      "description": "現在のマップを選択します。複数のマップ/フロアを持つ場合に使用します。",
+      "fields": {
+        "map_id": {
+          "name": "マップID",
+          "description": "選択するマップのID。"
+        }
+      }
+    },
+    "vacuum_delete_map": {
+      "name": "マップを削除",
+      "description": "マップを削除します。",
+      "fields": {
+        "map_id": {
+          "name": "マップID",
+          "description": "削除するマップのID。"
+        }
+      }
+    },
+    "vacuum_save_temporary_map": {
+      "name": "一時マップを保存",
+      "description": "一時マップを保存します。"
+    },
+    "vacuum_discard_temporary_map": {
+      "name": "一時マップを破棄",
+      "description": "一時マップを破棄します。"
+    },
+    "vacuum_replace_temporary_map": {
+      "name": "一時マップを置き換え",
+      "description": "一時マップを別の保存されたマップに置き換えます。",
+      "fields": {
+        "map_id": {
+          "name": "マップID",
+          "description": "置き換えるマップのID。"
+        }
+      }
+    },
+    "vacuum_rename_map": {
+      "name": "マップの名前変更",
+      "description": "マップの名前を変更します。",
+      "fields": {
+        "map_id": {
+          "name": "マップID",
+          "description": "マップのID。"
+        },
+        "map_name": {
+          "name": "マップ名",
+          "description": "マップの新しい名前。"
+        }
+      }
+    },
+    "vacuum_restore_map": {
+      "name": "マップの復元",
+      "description": "マップを復元します。",
+      "fields": {
+        "map_id": {
+          "name": "マップID",
+          "description": "復元するマップのID。"
+        },
+        "recovery_map_index": {
+          "name": "復元マップのインデックス",
+          "description": "保存された復元マップのインデックス。"
+        }
+      }
+    },
+    "vacuum_restore_map_from_file": {
+      "name": "ファイルからマップを復元",
+      "description": "ファイルからマップを復元します。",
+      "fields": {
+        "map_id": {
+          "name": "マップID",
+          "description": "復元するマップのID。"
+        },
+        "file_url": {
+          "name": "ファイルのURL",
+          "description": "保存されたtbz2.gzまたはtar.gzファイルのURL。"
+        }
+      }
+    },
+    "vacuum_backup_map": {
+      "name": "マップのバックアップ",
+      "description": "マップをクラウドにバックアップします。",
+      "fields": {
+        "map_id": {
+          "name": "マップID",
+          "description": "バックアップするマップのID。"
+        }
+      }
+    },
+    "vacuum_rename_segment": {
+      "name": "部屋の名前変更",
+      "description": "部屋の名前を変更します。",
+      "fields": {
+        "segment_id": {
+          "name": "部屋ID",
+          "description": "部屋のID。"
+        },
+        "segment_name": {
+          "name": "部屋名",
+          "description": "部屋の新しい名前。"
+        }
+      }
+    },
+    "vacuum_set_cleaning_sequence": {
+      "name": "清掃順序の設定",
+      "description": "部屋の清掃順序を設定します。（サポートされているデバイスでのみ）",
+      "fields": {
+        "cleaning_sequence": {
+          "name": "清掃順序",
+          "description": "清掃順序の部屋IDリスト。"
+        }
+      }
+    },
+    "vacuum_set_custom_cleaning": {
+      "name": "カスタマイズ清掃の設定",
+      "description": "カスタマイズ清掃のパラメータを設定します。（サポートされているデバイスでのみ）",
+      "fields": {
+        "segment_id": {
+          "name": "部屋ID",
+          "description": "部屋のID。"
+        },
+        "suction_level": {
+          "name": "吸引レベル",
+          "description": "各部屋の吸引レベル。"
+        },
+        "water_volume": {
+          "name": "水量",
+          "description": "各部屋の水量。"
+        },
+        "wetness_level": {
+          "name": "湿り気レベル",
+          "description": "各部屋の湿り気レベル（サポートされているデバイスでのみ）。"
+        },
+        "cleaning_mode": {
+          "name": "清掃モード",
+          "description": "各部屋の清掃モード（モップパッドリフトアップ機能付きのロボットでのみサポート）。"
+        },
+        "repeats": {
+          "name": "繰り返し",
+          "description": "各部屋の清掃回数。"
+        },
+        "mop_temperature": {
+          "name": "モップ温度",
+          "description": "各部屋のモップ温度（対応デバイスのみ）。"
+        },
+        "mop_pressure": {
+          "name": "モップ圧力",
+          "description": "各部屋のモップ圧力（対応デバイスのみ）。"
+        }
+      }
+    },
+    "vacuum_reset_consumable": {
+      "name": "消耗品のリセット",
+      "description": "消耗品をリセットします。",
+      "fields": {
+        "consumable": {
+          "name": "消耗品",
+          "description": "消耗品のタイプ。"
+        }
+      }
+    },
+    "vacuum_rename_shortcut": {
+      "name": "ショートカットの名前変更",
+      "description": "ショートカットの名前を変更します。（サポートされているデバイスでのみ）",
+      "fields": {
+        "shortcut_id": {
+          "name": "ショートカットID",
+          "description": "ショートカットのID。"
+        },
+        "shortcut_name": {
+          "name": "ショートカット名",
+          "description": "ショートカットの新しい名前。"
+        }
+      }
+    },
+    "vacuum_delete_shortcut": {
+      "name": "ショートカットの削除",
+      "description": "ショートカットを削除します。（サポートされているデバイスでのみ）",
+      "fields": {
+        "shortcut_id": {
+          "name": "ショートカットID",
+          "description": "ショートカットのID。"
+        }
+      }
+    },
+    "vacuum_set_obstacle_ignore": {
+      "name": "障害物を無視に設定",
+      "description": "障害物の無視状態を設定します。（AI障害物検知機能のあるロボットでのみサポート）",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "障害物のX座標。"
+        },
+        "y": {
+          "name": "Y",
+          "description": "障害物のY座標。"
+        },
+        "obstacle_ignored": {
+          "name": "障害物を無視",
+          "description": "障害物を無視するかどうか。"
+        }
+      }
+    }
+  }
+}
