@@ -505,7 +505,7 @@ class DreameVacuumWaterTank(IntEnum):
     NOT_INSTALLED = 0
     INSTALLED = 1
     MOP_INSTALLED = 10
-    MOP_IN_STATION = 99
+    IN_STATION = 99
 
 
 class DreameVacuumWaterVolume(IntEnum):
