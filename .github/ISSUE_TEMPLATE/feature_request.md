@@ -1,20 +1,30 @@
 ---
-name: Feature request
-about: Suggest an idea for this project
-title: ''
-labels: enhancement
-assignees: ''
+name: "Integration · Feature Request"
+about: "Suggest a new feature or improvement for the integration (entities, services, device features, map data). For dashboard ideas, use the Dreame Vacuum Card feature request."
+title: ""
+labels: enhancement, integration
+assignees: Tasshack
 
 ---
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+## Problem or Need
+What is missing or frustrating today? Explain why this matters to you.
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+## Proposed Solution
+Describe how the feature should work. Mention the related entity, service or device function if you know it.
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+## Alternatives Considered
+Other solutions or workarounds you tried or thought about.
 
-**Additional context**
-Add any other context or screenshots about the feature request here.
+## Additional Context
+Screenshots, or examples from other apps such as the official Dreame app, that show the expected behavior.
+
+## Environment
+- **Device Model Number** (e.g. `dreame.vacuum.r2364a`):
+- **Home Assistant Version:**
+
+## Checklist
+- [ ] I am using the latest release of the integration, this feature might already exist.
+- [ ] I searched the open and closed issues and could not find the same request.
+- [ ] This request is about the integration. Dreame Vacuum Card ideas belong in the Dreame Vacuum Card feature request.
+- [ ] I filled out all the environment fields.

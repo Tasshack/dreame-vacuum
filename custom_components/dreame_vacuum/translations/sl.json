@@ -16,21 +16,22 @@
       "no_devices": "V tem računu v izbrani državi ni bilo najdenih podprtih naprav.{devices}",
       "2fa_send_failed": "Pošiljanje potrditvene kode ni uspelo. Poskusite znova.",
       "2fa_limit_reached": "Dosežena je dnevna omejitev za pošiljanje potrditvenih kod. Prosimo, poskusite znova jutri.",
-      "2fa_cooldown_active": "Preveč zaporednih zahtev. Prosimo, počakajte na nekaj minut, preden poskusite znova."
+      "2fa_cooldown_active": "Preveč zaporednih zahtev. Prosimo, počakajte na nekaj minut, preden poskusite znova.",
+      "invalid_key": "Neveljaven ključ."
     },
     "step": {
       "user": {
         "data": {
           "configuration_type": "Vrsta konfiguracije"
         },
-        "description": "Zemljevidna funkcija zahteva povezavo v oblak in omogoča samodejno konfiguracijo. Če ne želite uporabljati funkcije zemljevida, lahko izberete ročno konfiguracijo."
+        "description": "Izberite vrsto računa, ki ustreza aplikaciji, ki jo uporabljate za upravljanje naprave."
       },
       "local": {
         "data": {
           "host": "Gostitelj",
           "token": "Žeton"
         },
-        "description": "Potrebovali boste 32-mestni API žeton."
+        "description": "Lokalna povezava je na voljo samo za naprave, ki jih je mogoče dodati v aplikacijo Xiaomi Home. Zahtevani 32-mestni API žeton je mogoče pridobiti samo prek oblaka Xiaomi Miio."
       },
       "mi": {
         "data": {
@@ -39,7 +40,7 @@
           "country": "Država strežnika",
           "prefer_cloud": "Raje uporabljajte povezavo v oblak"
         },
-        "description": "Prijavite se v Xiaomi Miio oblak."
+        "description": "Vnesite poverilnice, ki jih uporabljate za prijavo v aplikacijo Xiaomi Home."
       },
       "2fa": {
         "data": {
@@ -59,7 +60,7 @@
           "password": "Geslo",
           "country": "Država strežnika"
         },
-        "description": "Prijavite se v Dreamehome oblak."
+        "description": "Vnesite poverilnice, ki jih uporabljate za prijavo v aplikacijo Dreamehome."
       },
       "mova": {
         "data": {
@@ -67,7 +68,7 @@
           "password": "Geslo",
           "country": "Država strežnika"
         },
-        "description": "Prijavite se v Movahome oblak."
+        "description": "Vnesite poverilnice, ki jih uporabljate za prijavo v aplikacijo MOVAhome."
       },
       "trouver": {
         "data": {
@@ -75,7 +76,7 @@
           "password": "Geslo",
           "country": "Država strežnika"
         },
-        "description": "Prijavite se v Trouver oblak."
+        "description": "Vnesite poverilnice, ki jih uporabljate za prijavo v aplikacijo TROUVER."
       },
       "devices": {
         "data": {
@@ -83,11 +84,11 @@
         },
         "description": "Prosimo, izberite napravo Dreame Vacuum, ki jo želite nastaviti."
       },
-      "donation": {
+      "dvc": {
         "data": {
-          "donated": "Donacija je bila opravljena"
+          "dvc_key": "Ključ Dreame Vacuum Card"
         },
-        "description": "## Ne pozabite podpreti projekta.{text}"
+        "description": "## Dreame Vacuum Card\r\n #### Vmesnik Dreame Vacuum{text}\r\n\r\nVnesite svoj licenčni ključ za aktivacijo Dreame Vacuum Card. Če ga nimate, ga lahko pridobite **[tukaj]({url})**.\r\n\r\n*Opomba: vsak ključ velja samo za eno napravo.*"
       },
       "options": {
         "data": {
@@ -118,58 +119,278 @@
           "square": "Kvadratni zemljevid",
           "configuration_type": "Vrsta konfiguracije",
           "prefer_cloud": "Raje uporabljajte povezavo v oblak",
-          "donated": "Donacija je bila opravljena"
+          "dvc_key": "Ključ Dreame Vacuum Card"
         }
       }
     },
     "error": {
-      "cloud_credentials_incomplete": "Nepravilni podatki za oblak, prosimo izpolnite uporabniško ime, geslo in državo"
+      "cloud_credentials_incomplete": "Nepravilni podatki za oblak, prosimo izpolnite uporabniško ime, geslo in državo",
+      "invalid_key": "Neveljaven ključ."
+    }
+  },
+  "selector": {
+    "map_objects": {
+      "options": {
+        "color": "Barve sob",
+        "icon": "Ikone sob",
+        "name": "Imena sob",
+        "name_background": "Ozadje imena sobe",
+        "order": "Vrstni red sob",
+        "suction_level": "Moč sesanja sobe",
+        "water_volume": "Količina vode v sobi",
+        "cleaning_times": "Število čiščenj sobe",
+        "cleaning_mode": "Način čiščenja sobe",
+        "mopping_mode": "Način mopiranja sobe",
+        "path": "Pot",
+        "no_go": "Prepovedana območja",
+        "no_mop": "Območja brez mopiranja",
+        "virtual_wall": "Navidezne stene",
+        "pathway": "Navidezni pragovi",
+        "active_area": "Aktivna območja",
+        "active_point": "Aktivne točke",
+        "charger": "Ikona polnilne postaje",
+        "robot": "Ikona robota",
+        "cleaning_direction": "Smer čiščenja",
+        "obstacle": "Ovira UI",
+        "pet": "Hišni ljubljenček",
+        "carpet": "Območje preproge",
+        "material": "Material tal",
+        "low_lying_area": "Nižje ležeča območja",
+        "furniture": "Pohištvo",
+        "ramp": "Klančina",
+        "curtain": "Zavesa",
+        "cruise_point": "Točke obhoda"
+      }
+    },
+    "notifications": {
+      "options": {
+        "cleanup_completed": "Čiščenje končano",
+        "consumable": "Potrošni material",
+        "information": "Informacija",
+        "warning": "Opozorilo",
+        "error": "Napaka"
+      }
+    },
+    "color_scheme": {
+      "options": {
+        "Dreame Dark": "Dreame temna",
+        "Dreame Light": "Dreame svetla",
+        "Grayscale": "Sivinska",
+        "Mijia Dark": "Mijia temna",
+        "Mijia Light": "Mijia svetla"
+      }
+    },
+    "icon_set": {
+      "options": {
+        "Dreame": "Dreame",
+        "Dreame Old": "Dreame stara",
+        "Material": "Material Design",
+        "Mijia": "Mijia"
+      }
+    },
+    "configuration_type": {
+      "options": {
+        "dreame": "Dreamehome",
+        "mi": "Xiaomi Home",
+        "mova": "MOVAhome",
+        "trouver": "TROUVER",
+        "local": "Lokalna povezava"
+      }
+    },
+    "country": {
+      "options": {
+        "eu": "Evropa",
+        "cn": "Kitajska",
+        "us": "ZDA",
+        "ru": "Rusija",
+        "tw": "Tajvan",
+        "sg": "Singapur",
+        "in": "Indija",
+        "kr": "Južna Koreja",
+        "de": "Nemčija",
+        "i2": "Mednarodni",
+        "by": "Belorusija"
+      }
     }
   },
   "entity": {
+    "vacuum": {
+      "dreame_vacuum": {
+        "state_attributes": {
+          "fan_speed": {
+            "name": "Moč sesanja",
+            "state": {
+              "Standard": "Standardno",
+              "Strong": "Močno",
+              "Turbo": "Turbo",
+              "Silent": "Tiho",
+              "Unknown": "Neznano"
+            }
+          },
+          "status": {
+            "state": {
+              "Unknown": "Neznano",
+              "Idle": "V mirovanju",
+              "Paused": "Zaustavljeno",
+              "Cleaning": "Čiščenje",
+              "Returning": "Vračanje na postajo",
+              "Spot cleaning": "Točkovno čiščenje",
+              "Follow wall cleaning": "Čiščenje ob steni",
+              "Charging": "Polnjenje",
+              "Ota": "OTA",
+              "Fct": "FCT",
+              "Wifi set": "WiFi nastavitev",
+              "Power off": "Izklop",
+              "Factory": "Tovarna",
+              "Error": "Napaka",
+              "Remote control": "Daljinsko upravljanje",
+              "Sleeping": "Spanje",
+              "Self test": "Samopreizkus",
+              "Factory test": "Tovarniški preizkus",
+              "Standby": "Pripravljenost",
+              "Room cleaning": "Čiščenje sobe",
+              "Zone cleaning": "Čiščenje območja",
+              "Fast mapping": "Hitro kartiranje",
+              "Cruising path": "Križarjenje po poti",
+              "Cruising point": "Križarjenje do točke",
+              "Summon clean": "Klicanje za čiščenje",
+              "Shortcut": "Bližnjica",
+              "Person follow": "Sledenje osebi",
+              "Water check": "Preverjanje vode",
+              "Pet guarding": "Varovanje hišnih ljubljenčkov",
+              "Auto arrangement": "Samodejna razporeditev",
+              "Smart arrangement": "Pametna razporeditev",
+              "Zoned arrangement": "Conska razporeditev"
+            }
+          }
+        },
+        "state": {
+          "Unknown": "Neznano",
+          "Sweeping": "Pometanje",
+          "Charging": "Polnjenje",
+          "Error": "Napaka",
+          "Idle": "V mirovanju",
+          "Paused": "Zaustavljeno",
+          "Returning": "Vračanje na postajo",
+          "Mopping": "Brisanje",
+          "Drying": "Sušenje",
+          "Washing": "Pranje",
+          "Returning to wash": "Vračanje na pranje",
+          "Building": "Gradnja",
+          "Sweeping and mopping": "Pometanje in brisanje",
+          "Charging completed": "Polnjenje zaključeno",
+          "Upgrading": "Nadgrajevanje",
+          "Clean summon": "Klicanje za čiščenje",
+          "Station reset": "Ponastavitev postaje",
+          "Returning install mop": "Vračanje za namestitev mopa",
+          "Returning remove mop": "Vračanje za odstranitev mopa",
+          "Water check": "Preverjanje vode",
+          "Clean add water": "Čiščenje in dodajanje vode",
+          "Washing paused": "Pranje zaustavljeno",
+          "Auto emptying": "Samodejno praznjenje",
+          "Remote control": "Daljinsko upravljanje",
+          "Smart charging": "Pametno polnjenje",
+          "Second cleaning": "Drugo čiščenje",
+          "Human following": "Sledenje človeku",
+          "Spot cleaning": "Točkovno čiščenje",
+          "Returning auto empty": "Vračanje za samodejno praznjenje",
+          "Waiting for task": "Čakanje na nalogo",
+          "Station cleaning": "Čiščenje postaje",
+          "Returning to drain": "Vračanje za odvajanje",
+          "Draining": "Odvajanje",
+          "Auto water draining": "Samodejno odvajanje vode",
+          "Emptying": "Prazenje",
+          "Dust bag drying": "Sušenje vrečke za prah",
+          "Dust bag drying paused": "Sušenje vrečke za prah prekinjeno",
+          "Heading to extra cleaning": "Na poti k dodatnem čiščenju",
+          "Extra cleaning": "Dodatno čiščenje",
+          "Finding pet paused": "Iskanje hišnega ljubljenčka prekinjeno",
+          "Finding pet": "Iskanje hišnega ljubljenčka",
+          "Shortcut": "Bližnjica",
+          "Monitoring": "Nadzor",
+          "Monitoring paused": "Nadzor zaustavljen",
+          "Initial deep cleaning": "Začetno globinsko čiščenje",
+          "Initial deep cleaning paused": "Začetno globinsko čiščenje prekinjeno",
+          "Sanitizing": "Sanitizacija",
+          "Sanitizing with dry": "Sanitizacija s sušenjem",
+          "Changing mop": "Menjava krpe",
+          "Changing mop paused": "Menjava krpe začasno ustavljena",
+          "Floor maintaining": "Vzdrževanje tal",
+          "Floor maintaining paused": "Vzdrževanje tal začasno ustavljeno",
+          "Remote pickup": "Oddaljeno pobiranje",
+          "Arranging items": "Urejanje predmetov",
+          "Pet guarding": "Varovanje ljubljenčkov",
+          "Pet guarding paused": "Varovanje ljubljenčkov zaustavljeno",
+          "Installing mop": "Nameščanje krpe",
+          "Uninstalling mop": "Odstranjevanje krpe",
+          "Intelligent recharging": "Inteligentno ponovno polnjenje",
+          "Assisted cleaning": "Asistirano čiščenje",
+          "Entering dock": "Vstop v postajo",
+          "Leaving dock": "Izstop iz postaje",
+          "Navigating to climber": "Navigacija do plezalca",
+          "Docking to climber": "Priklop na plezalca",
+          "Climber docked": "Plezač priklopljen",
+          "Climber navigating": "Plezač navigira",
+          "Climbing stairs": "Vzpon po stopnicah",
+          "Climbing stairs completed": "Vzpon po stopnicah zaključen",
+          "Climber at dock": "Plezač pri postaji",
+          "Climber leaving dock": "Plezač zapušča postajo",
+          "cleaning": "Čiščenje",
+          "docked": "V postaji",
+          "error": "Napaka",
+          "idle": "V mirovanju",
+          "paused": "Zaustavljeno",
+          "returning": "Vračanje na postajo",
+          "unknown": "Neznano"
+        }
+      }
+    },
     "select": {
-      "suction_level": {
-        "name": "Raven sesanja",
+      "auto_empty_frequency": {
+        "name": "Pogostost samodejnega praznjenja",
         "state": {
-          "quiet": "Tiho",
+          "1x": "Po vsakem opravilu",
+          "2x": "Po dveh čiščenjih",
+          "3x": "Po treh čiščenjih"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "Način samodejnega praznjenja",
+        "state": {
+          "off": "Izklopljeno",
           "standard": "Standardno",
-          "strong": "Močno",
-          "turbo": "Turbo",
-          "full_power": "Polna moč"
+          "high_frequency": "Visoka frekvenca",
+          "low_frequency": "Nizka frekvenca",
+          "custom_frequency": "Frekvenca po meri",
+          "intelligent": "Inteligentno"
         }
       },
-      "water_volume": {
-        "name": "Količina vode",
+      "auto_lds_coverage": {
+        "name": "Samodejno pokritost LDS",
         "state": {
-          "low": "Nizko",
-          "medium": "Srednje",
-          "high": "Visoko"
+          "off": "Izklopljeno",
+          "security": "Varnost",
+          "extreme": "Ekstremno"
         }
       },
-      "mop_pad_humidity": {
-        "name": "Vlažnost krpe",
+      "auto_recleaning": {
+        "name": "Samodejno ponovno čiščenje",
         "state": {
-          "slightly_dry": "Rahlo suho",
-          "moist": "Vlažno",
-          "wet": "Mokro"
+          "off": "Izklopljeno",
+          "in_deep_mode": "V globokem načinu",
+          "in_all_modes": "V vseh načinih"
         }
       },
-      "cleaning_mode": {
-        "name": "Način čiščenja",
+      "auto_rewashing": {
+        "name": "Samodejno ponovno pranje",
         "state": {
-          "sweeping": "Pometanje",
-          "mopping": "Brisanje",
-          "sweeping_and_mopping": "Pometanje in Brisanje",
-          "mopping_after_sweeping": "Brisanje po Pometanju"
+          "off": "Izklopljeno",
+          "in_deep_mode": "V globokem načinu",
+          "in_all_modes": "V vseh načinih"
         }
       },
-      "carpet_sensitivity": {
-        "name": "Občutljivost za preproge",
-        "state": {
-          "low": "Nizko",
-          "medium": "Srednje",
-          "high": "Visoko"
-        }
+      "battery_charge_level": {
+        "name": "Raven napolnjenosti baterije"
       },
       "carpet_cleaning": {
         "name": "Čiščenje preprog",
@@ -183,46 +404,104 @@
           "cross": "Prečkati"
         }
       },
-      "mop_wash_level": {
-        "name": "Način pranja krpe",
+      "carpet_sensitivity": {
+        "name": "Občutljivost za preproge",
         "state": {
-          "water_saving": "Varčevanje z vodo",
-          "daily": "Dnevno",
-          "deep": "Globoko",
-          "ultra_clean_mode": "Ultra čisto"
+          "low": "Nizko",
+          "medium": "Srednje",
+          "high": "Visoko"
         }
       },
-      "mopping_type": {
-        "name": "Vrsta brisanja",
+      "carpet_shape": {
+        "name": "Oblika",
         "state": {
-          "accurate": "Natančno",
-          "daily": "Dnevno",
+          "square": "Kvadrat",
+          "round": "Okroglo"
+        }
+      },
+      "carpet_type": {
+        "name": "Vrsta preproge",
+        "state": {
+          "medium_pile": "Srednje do visoke dlake",
+          "low_pile": "Kratke dlake",
+          "floor_mat": "Predpražnik",
+          "other": "Ostalo"
+        }
+      },
+      "cleangenius": {
+        "name": "CleanGenius",
+        "state": {
+          "off": "Izklopljeno",
+          "routine_cleaning": "Rutinsko čiščenje",
+          "deep_cleaning": "Globinsko čiščenje"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "Način CleanGenius",
+        "state": {
+          "vacuum_and_mop": "Vakuum in Mop",
+          "mop_after_vacuum": "Mop po Vakuumu"
+        }
+      },
+      "cleaning_mode": {
+        "name": "Način čiščenja",
+        "state": {
+          "sweeping": "Pometanje",
+          "mopping": "Brisanje",
+          "sweeping_and_mopping": "Pometanje in Brisanje",
+          "mopping_after_sweeping": "Brisanje po Pometanju"
+        }
+      },
+      "cleaning_route": {
+        "name": "Pot",
+        "state": {
+          "quick": "Hitro",
+          "standard": "Standardno",
+          "intensive": "Intenzivno",
           "deep": "Globoko"
         }
       },
-      "wider_corner_coverage": {
-        "name": "Širša pokritost vogalov",
+      "cleaning_times": {
+        "name": "Število čiščenj",
         "state": {
-          "off": "Izklopljeno",
-          "high_frequency": "Visoka frekvenca",
-          "low_frequency": "Nizka frekvenca"
+          "1x": "Enkrat",
+          "2x": "Dvakrat",
+          "3x": "Trikrat"
         }
       },
-      "mop_pad_swing": {
-        "name": "Nihanje krpe",
+      "custom_mopping_route": {
+        "name": "Pot brisanja po meri",
         "state": {
           "off": "Izklopljeno",
-          "auto": "Samodejno",
-          "daily": "Dnevno",
-          "weekly": "Tedensko"
-        }
-      },
-      "mop_extend_frequency": {
-        "name": "Frekvenca podaljšanja mopa",
-        "state": {
           "standard": "Standardno",
-          "intelligent": "Inteligenten",
-          "high": "Visok"
+          "intensive": "Intenzivno",
+          "deep": "Globoko"
+        }
+      },
+      "drying_time": {
+        "name": "Čas sušenja",
+        "state": {
+          "silent": "Tiho",
+          "1h": "Ena ura",
+          "2h": "Dve uri",
+          "3h": "Tri ure",
+          "4h": "Štiri ure",
+          "5h": "Pet ur",
+          "6h": "Šest ur",
+          "7h": "Sedem ur",
+          "8h": "Osem ur"
+        }
+      },
+      "edit_type": {
+        "name": "Vrsta urejanja",
+        "state": {
+          "door": "Uredi vrata",
+          "split": "Razdeli sobe",
+          "merge": "Združi sobe",
+          "visibility": "Vidnost sobe",
+          "material": "Material tal",
+          "type": "Ime sobe",
+          "wall": "Uredi stene"
         }
       },
       "floor_material": {
@@ -236,31 +515,45 @@
           "carpet": "Preproga"
         }
       },
-      "voice_assistant_language": {
-        "name": "Jezik glasovnega pomočnika",
+      "floor_material_direction": {
+        "name": "Smer tal",
         "state": {
-          "default": "Privzeto",
-          "english": "Angleščina",
-          "german": "Nemščina",
-          "chinese": "Kitajščina",
-          "russian": "Ruščina",
-          "italian": "Italijanščina",
-          "french": "Francoščina",
-          "korean": "Korejščina"
+          "vertical": "Navpično",
+          "horizontal": "Vodoravno"
         }
       },
-      "mop_pressure": {
-        "name": "Pritisk mopa",
+      "furniture_type": {
+        "name": "Vrsta pohištva",
         "state": {
-          "light": "Lahek",
-          "normal": "Normalen"
-        }
-      },
-      "mop_temperature": {
-        "name": "Temperatura mopa",
-        "state": {
-          "normal": "Normalna",
-          "warm": "Topla"
+          "single_bed": "Enojna postelja",
+          "double_bed": "Zakonska postelja",
+          "arm_chair": "Fotelj",
+          "two_seat_sofa": "Dvosed",
+          "three_seat_sofa": "Trosed",
+          "dining_table": "Jedilna miza in stoli",
+          "nightstant": "Nočna omarica",
+          "coffee_table": "Klubska mizica",
+          "toilet": "Stranišče",
+          "litter_box": "Stranišče za živali",
+          "pet_bed": "Postelja/hišica za hišne ljubljenčke",
+          "food_bowl": "Posoda za hrano",
+          "pet_toilet": "Podloga za uriniranje",
+          "refrigerator": "Hladilnik",
+          "washing_machine": "Pralni stroj",
+          "enclosed_litter_box": "Zaprto stranišče za živali",
+          "air_conditioner": "Klimatska naprava",
+          "tv_cabinet": "TV omarica",
+          "bookshelf": "Knjižna polica",
+          "shoe_cabinet": "Omara za čevlje",
+          "wardrobe": "Garderoba",
+          "greenery": "Rastline",
+          "floor_mirror": "Talno ogledalo",
+          "l_shaped_sofa": "Kavč v obliki črke L",
+          "round_coffee_table": "Okrogla klubska mizica",
+          "table": "Miza",
+          "arm_chair_narrow": "Ozek naslanjač",
+          "three_seat_sofa_narrow": "Ozek Trosed",
+          "l_shaped_sofa_right": "Sedežna-Garnitura v-Obliki-L desna"
         }
       },
       "low_lying_area_frequency": {
@@ -270,35 +563,15 @@
           "daily": "Dnevno"
         }
       },
-      "scraper_frequency": {
-        "name": "Frekvenca strganja",
-        "state": {
-          "off": "Izklopljeno",
-          "weekly": "Tedensko",
-          "daily": "Dnevno"
-        }
+      "map_rotation": {
+        "name": "Vrtenje zemljevida"
       },
-      "auto_lds_coverage": {
-        "name": "Samodejno pokritost LDS",
+      "map_type": {
+        "name": "Vrsta zemljevida",
         "state": {
-          "off": "Izklopljeno",
-          "security": "Varnost",
-          "extreme": "Ekstremno"
-        }
-      },
-      "order": {
-        "name": "Vrstni red",
-        "state": {
-          "not_set": "Ni nastavljeno"
-        }
-      },
-      "self_clean_frequency": {
-        "name": "Frekvenca samočiščenja",
-        "state": {
-          "by_area": "Po območju",
-          "by_time": "Po času",
-          "by_room": "Po sobi",
-          "intelligent": "Inteligentno"
+          "cleaning": "Zemljevid čiščenja",
+          "history": "Podrobnosti čiščenja",
+          "wifi": "Zemljevid Wi-Fi"
         }
       },
       "mop_clean_frequency": {
@@ -319,22 +592,185 @@
           "270sqf": "Dvesto sedemdeset kvadratnih čevljev"
         }
       },
-      "auto_empty_mode": {
-        "name": "Način samodejnega praznjenja",
+      "mop_extend_frequency": {
+        "name": "Frekvenca podaljšanja mopa",
+        "state": {
+          "standard": "Standardno",
+          "intelligent": "Inteligenten",
+          "high": "Visok"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "Vlažnost krpe",
+        "state": {
+          "slightly_dry": "Rahlo suho",
+          "moist": "Vlažno",
+          "wet": "Mokro"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "Nihanje krpe",
         "state": {
           "off": "Izklopljeno",
-          "standard": "Standardno",
-          "high_frequency": "Visoka frekvenca",
-          "low_frequency": "Nizka frekvenca",
-          "custom_frequency": "Frekvenca po meri",
+          "auto": "Samodejno",
+          "daily": "Dnevno",
+          "weekly": "Tedensko"
+        }
+      },
+      "mop_pressure": {
+        "name": "Pritisk mopa",
+        "state": {
+          "light": "Lahek",
+          "normal": "Normalen"
+        }
+      },
+      "mop_temperature": {
+        "name": "Temperatura mopa",
+        "state": {
+          "normal": "Normalna",
+          "warm": "Topla"
+        }
+      },
+      "mop_type": {
+        "name": "Vrsta mopa",
+        "state": {
+          "a": "Mop A",
+          "b": "Mop B",
+          "c": "Mop C"
+        }
+      },
+      "mop_wash_level": {
+        "name": "Način pranja krpe",
+        "state": {
+          "water_saving": "Varčevanje z vodo",
+          "daily": "Dnevno",
+          "deep": "Globoko",
+          "ultra_clean_mode": "Ultra čisto"
+        }
+      },
+      "mopping_pattern": {
+        "name": "Vzorec brisanja",
+        "state": {
+          "daily": "Dnevno brisanje",
+          "deep": "Globoko brisanje"
+        }
+      },
+      "mopping_type": {
+        "name": "Vrsta brisanja",
+        "state": {
+          "accurate": "Natančno",
+          "daily": "Dnevno",
+          "deep": "Globoko"
+        }
+      },
+      "name": {
+        "name": "Ime sobe {index}",
+        "state_attributes": {
+          "room_id": {
+            "name": "ID sobe"
+          },
+          "index": {
+            "name": "Kazalo"
+          },
+          "type": {
+            "name": "Tip sobe"
+          }
+        }
+      },
+      "object_type": {
+        "name": "Vrsta objekta",
+        "state": {
+          "predefined_point": "Vnaprej določena točka",
+          "low_lying_area": "Nizko ležeče območje",
+          "curtain": "Zavesa",
+          "threshold": "Prag",
+          "furniture": "Pohištvo",
+          "carpet": "Preproga",
+          "restricted": "Omejeno območje"
+        }
+      },
+      "order": {
+        "name": "Vrstni red",
+        "state": {
+          "not_set": "Ni nastavljeno"
+        }
+      },
+      "scraper_frequency": {
+        "name": "Frekvenca strganja",
+        "state": {
+          "off": "Izklopljeno",
+          "weekly": "Tedensko",
+          "daily": "Dnevno"
+        }
+      },
+      "segment_name": {
+        "name": "Ime sobe",
+        "state": {
+          "room": "Prostor",
+          "living_room": "Dnevna prostor",
+          "primary_bedroom": "Primarna spalnica",
+          "study": "Delovna prostor",
+          "kitchen": "Kuhinja",
+          "dining_hall": "Jedilnica",
+          "bathroom": "Kopalnica",
+          "balcony": "Balkon",
+          "corridor": "Koridor",
+          "utility_room": "Utility",
+          "closet": "Omara",
+          "meeting_room": "Sejna prostor",
+          "office": "Pisarna",
+          "fitness_area": "Fitnes",
+          "recreation_area": "Rekreacija",
+          "secondary_bedroom": "Dodatna spalnica"
+        }
+      },
+      "selected_map": {
+        "name": "Izbrani zemljevid",
+        "state_attributes": {
+          "map_id": {
+            "name": "ID zemljevida"
+          },
+          "map_index": {
+            "name": "Indeks zemljevida"
+          }
+        }
+      },
+      "self_clean_frequency": {
+        "name": "Frekvenca samočiščenja",
+        "state": {
+          "by_area": "Po območju",
+          "by_time": "Po času",
+          "by_room": "Po sobi",
           "intelligent": "Inteligentno"
         }
       },
-      "floor_material_direction": {
-        "name": "Smer tal",
+      "suction_level": {
+        "name": "Raven sesanja",
         "state": {
-          "vertical": "Navpično",
-          "horizontal": "Vodoravno"
+          "quiet": "Tiho",
+          "standard": "Standardno",
+          "strong": "Močno",
+          "turbo": "Turbo",
+          "full_power": "Polna moč"
+        }
+      },
+      "task_repeats": {
+        "name": "Ponovitve opravila",
+        "state": {
+          "once": "Enkrat",
+          "daily": "Dnevno",
+          "workdays": "Delovni dnevi",
+          "weekends": "Vikendi"
+        }
+      },
+      "task_type": {
+        "name": "Vrsta opravila",
+        "state": {
+          "go_to": "Pojdi na Točko",
+          "segment": "Čiščenje sobe",
+          "all": "Globalno čiščenje",
+          "zone": "Čiščenje območja",
+          "spot": "Točkovno čiščenje"
         }
       },
       "visibility": {
@@ -344,19 +780,17 @@
           "hidden": "Skrito"
         }
       },
-      "cleangenius": {
-        "name": "Cleangenius",
+      "voice_assistant_language": {
+        "name": "Jezik glasovnega pomočnika",
         "state": {
-          "off": "Izklopljeno",
-          "routine_cleaning": "Rutinsko čiščenje",
-          "deep_cleaning": "Globinsko čiščenje"
-        }
-      },
-      "cleangenius_mode": {
-        "name": "Način Cleangenius",
-        "state": {
-          "vacuum_and_mop": "Vakuum in Mop",
-          "mop_after_vacuum": "Mop po Vakuumu"
+          "default": "Privzeto",
+          "english": "Angleščina",
+          "german": "Nemščina",
+          "chinese": "Kitajščina",
+          "russian": "Ruščina",
+          "italian": "Italijanščina",
+          "french": "Francoščina",
+          "korean": "Korejščina"
         }
       },
       "washing_mode": {
@@ -379,136 +813,12 @@
           "max": "Maksimalna"
         }
       },
-      "auto_recleaning": {
-        "name": "Samodejno ponovno čiščenje",
+      "water_volume": {
+        "name": "Količina vode",
         "state": {
-          "off": "Izklopljeno",
-          "in_deep_mode": "V globokem načinu",
-          "in_all_modes": "V vseh načinih"
-        }
-      },
-      "auto_rewashing": {
-        "name": "Samodejno ponovno pranje",
-        "state": {
-          "off": "Izklopljeno",
-          "in_deep_mode": "V globokem načinu",
-          "in_all_modes": "V vseh načinih"
-        }
-      },
-      "cleaning_route": {
-        "name": "Pot",
-        "state": {
-          "quick": "Hitro",
-          "standard": "Standardno",
-          "intensive": "Intenzivno",
-          "deep": "Globoko"
-        }
-      },
-      "custom_mopping_route": {
-        "name": "Pot brisanja po meri",
-        "state": {
-          "off": "Izklopljeno",
-          "standard": "Standardno",
-          "intensive": "Intenzivno",
-          "deep": "Globoko"
-        }
-      },
-      "task_type": {
-        "name": "Vrsta opravila",
-        "state": {
-          "go_to": "Pojdi na Točko",
-          "segment": "Čiščenje sobe",
-          "all": "Globalno čiščenje",
-          "zone": "Čiščenje območja",
-          "spot": "Točkovno čiščenje"
-        }
-      },
-      "cleaning_times": {
-        "name": "Število čiščenj",
-        "state": {
-          "x1": "Enkrat",
-          "x2": "Dvakrat",
-          "x3": "Trikrat"
-        }
-      },
-      "auto_empty_frequency": {
-        "name": "Pogostost samodejnega praznjenja",
-        "state": {
-          "x1": "Po vsakem opravilu",
-          "x2": "Po dveh čiščenjih",
-          "x3": "Po treh čiščenjih"
-        }
-      },
-      "drying_time": {
-        "name": "Čas sušenja",
-        "state": {
-          "silent": "Tiho"
-        }
-      },
-      "battery_charge_level": {
-        "name": "Raven napolnjenosti baterije"
-      },
-      "object_type": {
-        "name": "Vrsta objekta",
-        "state": {
-          "predefined_point": "Vnaprej določena točka",
-          "low_lying_area": "Nizko ležeče območje",
-          "curtain": "Zavesa",
-          "threshold": "Prag",
-          "furniture": "Pohištvo",
-          "carpet": "Preproga",
-          "restricted": "Omejeno območje"
-        }
-      },
-      "edit_type": {
-        "name": "Vrsta urejanja",
-        "state": {
-          "door": "Uredi vrata",
-          "split": "Razdeli sobe",
-          "merge": "Združi sobe",
-          "visibility": "Vidnost sobe",
-          "material": "Material tal",
-          "type": "Ime sobe",
-          "wall": "Uredi stene"
-        }
-      },
-      "map_type": {
-        "name": "Vrsta zemljevida",
-        "state": {
-          "cleaning": "Zemljevid čiščenja",
-          "history": "Podrobnosti čiščenja",
-          "wifi": "Zemljevid Wi-Fi"
-        }
-      },
-      "carpet_type": {
-        "name": "Vrsta preproge",
-        "state": {
-          "medium_pile": "Srednje do visoke dlake",
-          "low_pile": "Kratke dlake",
-          "floor_mat": "Predpražnik",
-          "other": "Ostalo"
-        }
-      },
-      "mop_type": {
-        "name": "Vrsta mopa",
-        "state": {
-          "a": "Mop A",
-          "b": "Mop B",
-          "c": "Mop C"
-        }
-      },
-      "carpet_shape": {
-        "name": "Oblika",
-        "state": {
-          "square": "Kvadrat",
-          "round": "Okroglo"
-        }
-      },
-      "mopping_pattern": {
-        "name": "Vzorec brisanja",
-        "state": {
-          "daily": "Dnevno brisanje",
-          "deep": "Globoko brisanje"
+          "low": "Nizko",
+          "medium": "Srednje",
+          "high": "Visoko"
         }
       },
       "wetness_level": {
@@ -519,248 +829,170 @@
           "wet": "Mokro"
         }
       },
-      "task_repeats": {
-        "name": "Ponovitve opravila",
+      "wider_corner_coverage": {
+        "name": "Širša pokritost vogalov",
         "state": {
-          "once": "Enkrat",
-          "daily": "Dnevno",
-          "workdays": "Delovni dnevi",
-          "weekends": "Vikendi"
-        }
-      },
-      "segment_name": {
-        "name": "Ime sobe",
-        "state": {
-          "room": "Soba",
-          "living_room": "Dnevna soba",
-          "primary_bedroom": "Glavna spalnica",
-          "study": "Kabinet",
-          "kitchen": "Kuhinja",
-          "dining_hall": "Jedilnica",
-          "bathroom": "Kopalnica",
-          "balcony": "Balkon",
-          "corridor": "Hodnik",
-          "utility_room": "Utility",
-          "closet": "Garderoba",
-          "meeting_room": "Sejna soba",
-          "office": "Pisarna",
-          "fitness_area": "Fitnes",
-          "recreation_area": "Rekreacija",
-          "secondary_bedroom": "Druga spalnica"
-        }
-      },
-      "furniture_type": {
-        "name": "Vrsta pohištva",
-        "state": {
-          "single_bed": "Enojna postelja",
-          "double_bed": "Dvojna postelja",
-          "arm_chair": "Naslanjač",
-          "two_seat_sofa": "Dvosed",
-          "three_seat_sofa": "Trosed",
-          "dining_table": "Jedilna miza",
-          "nightstant": "Nočna omarica",
-          "coffee_table": "Klubska mizica",
-          "toilet": "Stranišče",
-          "litter_box": "Mačje stranišče",
-          "pet_bed": "Ležišče za ljubljenčke",
-          "food_bowl": "Skleda za hrano",
-          "pet_toilet": "Stranišče za ljubljenčke",
-          "refrigerator": "Hladilnik",
-          "washing_machine": "Pralni stroj",
-          "enclosed_litter_box": "Zaprto mačje stranišče",
-          "air_conditioner": "Klimatska naprava",
-          "tv_cabinet": "TV omarica",
-          "bookshelf": "Knjižna polica",
-          "shoe_cabinet": "Omarica za čevlje",
-          "wardrobe": "Garderobna omara",
-          "greenery": "Rastlinje",
-          "floor_mirror": "Samostoječe ogledalo",
-          "l_shaped_sofa": "Sedežna-Garnitura v-Obliki-L",
-          "round_coffee_table": "Okrogla klubska mizica",
-          "table": "Miza",
-          "arm_chair_narrow": "Ozek naslanjač",
-          "three_seat_sofa_narrow": "Ozek Trosed",
-          "l_shaped_sofa_right": "Sedežna-Garnitura v-Obliki-L desna"
+          "off": "Izklopljeno",
+          "high_frequency": "Visoka frekvenca",
+          "low_frequency": "Nizka frekvenca"
         }
       }
     },
     "sensor": {
-      "state": {
-        "name": "Stanje",
+      "auto_empty_status": {
+        "name": "Status samodejnega praznjenja",
         "state": {
           "unknown": "Neznano",
-          "sweeping": "Pometanje",
-          "charging": "Polnjenje",
-          "error": "Napaka",
           "idle": "V mirovanju",
-          "paused": "Zaustavljeno",
-          "returning": "Vračanje na postajo",
-          "mopping": "Brisanje",
-          "drying": "Sušenje",
-          "washing": "Pranje",
-          "returning_to_wash": "Vračanje na pranje",
-          "building": "Gradnja",
-          "sweeping_and_mopping": "Pometanje in brisanje",
-          "charging_completed": "Polnjenje zaključeno",
-          "upgrading": "Nadgrajevanje",
-          "clean_summon": "Klicanje za čiščenje",
-          "station_reset": "Ponastavitev postaje",
-          "returning_install_mop": "Vračanje za namestitev mopa",
-          "returning_remove_mop": "Vračanje za odstranitev mopa",
-          "water_check": "Preverjanje vode",
-          "clean_add_water": "Čiščenje in dodajanje vode",
-          "washing_paused": "Pranje zaustavljeno",
-          "auto_emptying": "Samodejno praznjenje",
-          "remote_control": "Daljinsko upravljanje",
-          "smart_charging": "Pametno polnjenje",
-          "second_cleaning": "Drugo čiščenje",
-          "human_following": "Sledenje človeku",
-          "spot_cleaning": "Točkovno čiščenje",
-          "returning_auto_empty": "Vračanje za samodejno praznjenje",
-          "waiting_for_task": "Čakanje na nalogo",
-          "station_cleaning": "Čiščenje postaje",
-          "returning_to_drain": "Vračanje za odvajanje",
+          "active": "Aktivno",
+          "not_performed": "Ni izvedeno"
+        }
+      },
+      "battery_level": {
+        "name": "Raven baterije"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "charging_status": {
+        "name": "Status polnjenja",
+        "state": {
+          "unknown": "Neznano",
+          "charging": "Polnjenje",
+          "not_charging": "Ne polni",
+          "return_to_charge": "Vračanje na polnjenje",
+          "charging_completed": "Polnjenje zaključeno"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "Status rezervoarja za čisto vodo",
+        "state": {
+          "unknown": "Neznano",
+          "not_available": "Ni na voljo",
+          "not_installed": "Ni nameščen",
+          "low_water": "Nizka voda",
+          "installed": "Nameščen"
+        }
+      },
+      "cleaned_area": {
+        "name": "Očiščeno območje"
+      },
+      "cleaning_count": {
+        "name": "Število čiščenj"
+      },
+      "cleaning_history": {
+        "name": "Zgodovina čiščenja"
+      },
+      "cleaning_progress": {
+        "name": "Napredek čiščenja"
+      },
+      "cleaning_status": {
+        "name": "Čiščenje",
+        "state": {
+          "interrupted": "Prekinjeno",
+          "completed": "Dokončano",
+          "manually_ended": "Ročno končano",
+          "failed": "Neuspešno",
+          "unknown": "Neznano"
+        }
+      },
+      "cleaning_time": {
+        "name": "Čas čiščenja"
+      },
+      "cleanup_method": {
+        "name": "Način čiščenja",
+        "state": {
+          "other": "Drugo",
+          "default": "Privzeto",
+          "customized": "Prilagojeno",
+          "cleangenius": "CleanGenius",
+          "water_stain": "Vodni madež",
+          "unknown": "Neznano"
+        }
+      },
+      "cruising_history": {
+        "name": "Zgodovina patruljiranja"
+      },
+      "current_room": {
+        "name": "Trenutna prostor",
+        "state_attributes": {
+          "room_id": {
+            "name": "ID sobe"
+          },
+          "room_icon": {
+            "name": "Ikona sobe"
+          },
+          "room_name": {
+            "name": "Ime sobe"
+          }
+        }
+      },
+      "deodorizer_left": {
+        "name": "Osvežilec"
+      },
+      "deodorizer_time_left": {
+        "name": "Preostali čas osvežilca"
+      },
+      "detergent_left": {
+        "name": "Detergent"
+      },
+      "detergent_status": {
+        "name": "Status detergenta",
+        "state": {
+          "unknown": "Neznano",
+          "installed": "Nameščen",
+          "disabled": "Invalid",
+          "low_detergent": "Nizek detergent"
+        }
+      },
+      "detergent_time_left": {
+        "name": "Preostali čas detergenta"
+      },
+      "dirty_water_channel_left": {
+        "name": "Kanal umazane vode"
+      },
+      "dirty_water_tank_status": {
+        "name": "Status rezervoarja za umazano vodo",
+        "state": {
+          "unknown": "Neznano",
+          "installed": "Nameščen",
+          "not_installed_or_full": "Ni nameščen ali poln"
+        }
+      },
+      "drainage_status": {
+        "name": "Status odvodnjavanja",
+        "state": {
+          "unknown": "Neznano",
+          "idle": "V mirovanju",
           "draining": "Odvajanje",
-          "auto_water_draining": "Samodejno odvajanje vode",
-          "emptying": "Prazenje",
-          "dust_bag_drying": "Sušenje vrečke za prah",
-          "dust_bag_drying_paused": "Sušenje vrečke za prah prekinjeno",
-          "heading_to_extra_cleaning": "Na poti k dodatnem čiščenju",
-          "extra_cleaning": "Dodatno čiščenje",
-          "finding_pet_paused": "Iskanje hišnega ljubljenčka prekinjeno",
-          "finding_pet": "Iskanje hišnega ljubljenčka",
-          "shortcut": "Bližnjica",
-          "monitoring": "Nadzor",
-          "monitoring_paused": "Nadzor zaustavljen",
-          "initial_deep_cleaning": "Začetno globinsko čiščenje",
-          "initial_deep_cleaning_paused": "Začetno globinsko čiščenje prekinjeno",
-          "sanitizing": "Sanitizacija",
-          "sanitizing_with_dry": "Sanitizacija s sušenjem",
-          "changing_mop": "Menjava krpe",
-          "changing_mop_paused": "Menjava krpe začasno ustavljena",
-          "floor_maintaining": "Vzdrževanje tal",
-          "floor_maintaining_paused": "Vzdrževanje tal začasno ustavljeno",
-          "remote_pickup": "Oddaljeno pobiranje",
-          "arranging_items": "Urejanje predmetov",
-          "pet_guarding": "Varovanje ljubljenčkov",
-          "pet_guarding_paused": "Varovanje ljubljenčkov zaustavljeno",
-          "installing_mop": "Nameščanje krpe",
-          "uninstalling_mop": "Odstranjevanje krpe",
-          "intelligent_recharging": "Inteligentno ponovno polnjenje",
-          "assisted_cleaning": "Asistirano čiščenje",
-          "entering_dock": "Vstop v postajo",
-          "leaving_dock": "Izstop iz postaje",
-          "navigating_to_climber": "Navigacija do plezalca",
-          "docking_to_climber": "Priklop na plezalca",
-          "climber_docked": "Plezač priklopljen",
-          "climber_navigating": "Plezač navigira",
-          "climbing_stairs": "Vzpon po stopnicah",
-          "climbing_stairs_completed": "Vzpon po stopnicah zaključen",
-          "climber_at_dock": "Plezač pri postaji",
-          "climber_leaving_dock": "Plezač zapušča postajo"
+          "draining_successful": "Odvajanje uspešno",
+          "draining_failed": "Odvajanje neuspešno"
         }
       },
-      "status": {
-        "name": "Status",
+      "drying_left": {
+        "name": "Preostali čas sušenja"
+      },
+      "drying_progress": {
+        "name": "Napredek sušenja"
+      },
+      "dust_bag_drying_left": {
+        "name": "Preostali čas sušenja vrečke za prah"
+      },
+      "dust_bag_drying_status": {
+        "name": "Status sušenja vrečke za prah",
         "state": {
-          "unknown": "Neznano",
           "idle": "V mirovanju",
-          "paused": "Zaustavljeno",
-          "cleaning": "Čiščenje",
-          "returning": "Vračanje na postajo",
-          "spot_cleaning": "Točkovno čiščenje",
-          "follow_wall_cleaning": "Čiščenje ob steni",
-          "charging": "Polnjenje",
-          "ota": "OTA",
-          "fct": "FCT",
-          "wifi_set": "WiFi nastavitev",
-          "power_off": "Izklop",
-          "factory": "Tovarna",
-          "error": "Napaka",
-          "remote_control": "Daljinsko upravljanje",
-          "sleeping": "Spanje",
-          "self_test": "Samopreizkus",
-          "factory_test": "Tovarniški preizkus",
-          "standby": "Pripravljenost",
-          "room_cleaning": "Čiščenje sobe",
-          "zone_cleaning": "Čiščenje območja",
-          "fast_mapping": "Hitro kartiranje",
-          "cruising_path": "Križarjenje po poti",
-          "cruising_point": "Križarjenje do točke",
-          "summon_clean": "Klicanje za čiščenje",
-          "shortcut": "Bližnjica",
-          "person_follow": "Sledenje osebi",
-          "water_check": "Preverjanje vode",
-          "pet_guarding": "Varovanje hišnih ljubljenčkov",
-          "auto_arrangement": "Samodejna razporeditev",
-          "smart_arrangement": "Pametna razporeditev",
-          "zoned_arrangement": "Conska razporeditev"
+          "drying": "Sušenje",
+          "paused": "Začasno ustavljeno"
         }
       },
-      "task_status": {
-        "name": "Status opravila",
+      "dust_bag_status": {
+        "name": "Status vrečke za prah",
         "state": {
           "unknown": "Neznano",
-          "completed": "Zaključeno",
-          "cleaning": "Čiščenje",
-          "zone_cleaning": "Čiščenje območja",
-          "room_cleaning": "Čiščenje sobe",
-          "spot_cleaning": "Točkovno čiščenje",
-          "fast_mapping": "Hitro kartiranje",
-          "cleaning_paused": "Čiščenje zaustavljeno",
-          "room_cleaning_paused": "Čiščenje sobe zaustavljeno",
-          "zone_cleaning_paused": "Čiščenje območja zaustavljeno",
-          "spot_cleaning_paused": "Točkovno čiščenje zaustavljeno",
-          "map_cleaning_paused": "Kartiranje čiščenja zaustavljeno",
-          "docking_paused": "Priklop zaustavljen",
-          "mopping_paused": "Brisanje zaustavljeno",
-          "zone_mopping_paused": "Brisanje območja zaustavljeno",
-          "room_mopping_paused": "Brisanje sobe zaustavljeno",
-          "zone_docking_paused": "Priklop območja zaustavljen",
-          "room_docking_paused": "Priklop sobe zaustavljen",
-          "cruising_path": "Križarjenje po poti",
-          "cruising_path_paused": "Križarjenje po poti zaustavljeno",
-          "cruising_point": "Križarjenje do točke",
-          "cruising_point_paused": "Križarjenje do točke zaustavljeno",
-          "summon_clean_paused": "Klicanje za čiščenje zaustavljeno",
-          "returning_to_install_mop": "Vračanje za namestitev mopa",
-          "returning_to_remove_mop": "Vračanje za odstranitev mopa",
-          "station_cleaning": "Čiščenje postaje",
-          "pet_finding": "Iskanje hišnih ljubljenčkov",
-          "auto_cleaning_washing_paused": "Samodejno čiščenje pranje",
-          "area_cleaning_washing_paused": "Območje čiščenja pranje je bilo zaustavljeno",
-          "custom_cleaning_washing_paused": "Čiščenje po meri začasno",
-          "picking_up_item": "Pobiranje predmeta",
-          "picking_up_item_paused": "Pobiranje predmeta zaustavljeno",
-          "picking_up_item_success": "Predmet uspešno pobran",
-          "remote_pickup_initializing": "Iniciaizacija oddaljenega pobiranja",
-          "remote_pickup_identifing": "Identifikacija oddaljenega pobiranja",
-          "manual_remote_pickup": "Ročno oddaljeno pobiranje",
-          "automatic_remote_pickup": "Samodejno oddaljeno pobiranje",
-          "remote_pickup_in_progress": "Oddaljeno pobiranje v teku",
-          "remote_pickup_paused": "Oddaljeno pobiranje zaustavljeno",
-          "placing_item": "Postavljanje predmeta",
-          "placing_item_paused": "Postavljanje predmeta zaustavljeno"
-        }
-      },
-      "water_tank": {
-        "name": "Rezervoar za vodo",
-        "state": {
-          "unknown": "Neznano",
-          "installed": "Nameščeno",
-          "not_installed": "Ni nameščeno",
-          "mop_installed": "Mop nameščen",
-          "in_station": "V postaji"
-        }
-      },
-      "mop_pad": {
-        "name": "Mop",
-        "state": {
-          "unknown": "Neznano",
-          "installed": "Nameščeno",
-          "not_installed": "Ni nameščeno",
-          "mop_installed": "Mop nameščen",
-          "in_station": "V postaji"
+          "installed": "Nameščen",
+          "not_installed": "Ni nameščen",
+          "check": "Preverite"
         }
       },
       "dust_collection": {
@@ -771,15 +1003,6 @@
           "available": "Na voljo",
           "over_use": "Prekomerna uporaba",
           "never": "Nikoli"
-        }
-      },
-      "auto_empty_status": {
-        "name": "Status samodejnega praznjenja",
-        "state": {
-          "unknown": "Neznano",
-          "idle": "V mirovanju",
-          "active": "Aktivno",
-          "not_performed": "Ni izvedeno"
         }
       },
       "error": {
@@ -872,7 +1095,6 @@
           "return_to_charge_failed": "Vračanje na polnjenje ni uspelo.",
           "lds_failed_to_lift": "Dvig modula LDS ni uspel.",
           "robot_stuck": "LDS se tukaj ne more dvigniti za pozicioniranje.",
-          "robot_stuck_repeat": "Premaknite robota na odprto območje in nadaljujte z nalogo.",
           "slippery_floor": "Spolzka tla. Poskusite znova kasneje.",
           "check_mop_install": "Preverite, ali je krpa pravilno nameščena.",
           "dirty_water_tank_full": "Nenormalen nivo vode v rezervoarju za umazano vodo.",
@@ -906,16 +1128,284 @@
           "robotic_arm_stopped": "Robotska roka se je ustavila.",
           "drainage_outlet_filter": "Filter odtočne odprtine robota je zamašen.",
           "main_wheels_error": "Napaka glavnih koles."
+        },
+        "state_attributes": {
+          "description": {
+            "name": "Opis",
+            "state": {
+              "no_error": "Brez napake",
+              "drop": "Kolesa so dvignjena\nProsimo, premaknite robota in ga znova zaženite.",
+              "cliff": "Napaka senzorja za prepad\nObrišite senzor pečine in začnite s čiščenjem stran od stopnic.",
+              "bumper": "Senzor trka je zataknjen\nOčistite in nežno tapnite senzor trka.",
+              "gesture": "Robot je nagnjen\nPremaknite robota na ravno površino in začnite znova.",
+              "bumper_repeat": "Senzor trka je zataknjen\nOčistite in nežno tapnite senzor trka.",
+              "drop_repeat": "Kolesa so dvignjena\nProsimo, premaknite robota in ga znova zaženite.",
+              "optical_flow": "Napaka optičnega senzorja pretoka\nPoskusite ponovno zagnati robota.",
+              "no_box": "Posoda za prah ni nameščena\nNamestite posodo za prah in filter.",
+              "no_tank_box": "Rezervoar za vodo ni nameščen\nNamestite rezervoar za vodo.",
+              "water_box_empty": "Rezervoar za vodo je prazen\nNapolnite rezervoar za vodo.",
+              "box_full": "Filter ni suh ali je zamašen\nPreverite, ali se je filter posušil ali ga je treba očistiti.",
+              "brush": "Glavna krtača je zavita\nOdstranite glavno krtačo in očistite njene ščetine in ležaje.",
+              "side_brush": "Stranska krtača je zavita\nOdstranite in očistite stransko krtačo.",
+              "fan": "Filter ni suh ali je zamašen\nPreverite, ali se je filter posušil ali ga je treba očistiti.",
+              "left_wheel_motor": "Robot je zataknjen ali je levo kolo blokirano s tujki\nPreverite, ali je v glavnih kolesih kakšen predmet zagozden, in zaženite robota v novem položaju.",
+              "right_wheel_motor": "Robot je zataknjen ali je desno kolo blokirano s tujki\nPreverite, ali je v glavnih kolesih kakšen predmet zagozden, in zaženite robota v novem položaju.",
+              "turn_suffocate": "Robot je zataknjen ali se ne more obrniti\nRobot je morda blokiran ali zataknjen.",
+              "forward_suffocate": "Robot je zataknjen ali ne more naprej\nRobot je morda blokiran ali zataknjen.",
+              "charger_get": "Ne najde postaje\nPreverite, ali je napajalni kabel pravilno priključen.",
+              "battery_low": "Nizka baterija\nRaven baterije je prenizka. Prosimo, polnite.",
+              "charge_fault": "Napaka pri polnjenju\nUporabite suho krpo za brisanje polnilnih kontaktov robota in podstavka za samodejno izpraznitev.",
+              "battery_percentage": "Napaka nivoja baterije",
+              "heart": "Notranja napaka\nPoskusite ponovno zagnati robota.",
+              "camera_occlusion": "Napaka senzorja vizualnega pozicioniranja\nOčistite senzor vizualnega položaja.",
+              "move": "Napaka senzorja gibanja\nPoskusite ponovno zagnati robota.",
+              "flow_shielding": "Napaka optičnega senzorja\nOčistite optični senzor in znova zaženite.",
+              "infrared_shielding": "Napaka infrardečega senzorja\nPoskusite ponovno zagnati robota.",
+              "charge_no_electric": "Polnilna postaja ni vklopljena\nPolnilna postaja ni vklopljena. Preverite, ali je napajalni kabel pravilno priključen.",
+              "battery_fault": "Napaka baterije\nPočakajte, da se temperatura baterije vrne na normalno.",
+              "fan_speed_error": "Napaka senzorja hitrosti ventilatorja\nPoskusite ponovno zagnati robota.",
+              "left_wheell_speed": "Levo kolo je lahko blokirano s tujki\nPreverite, ali je v glavnih kolesih kakšen predmet zagozden, in zaženite robota v novem položaju.",
+              "right_wheell_speed": "Desno kolo je lahko blokirano s tujki\nPreverite, ali je v glavnih kolesih kakšen predmet zagozden, in zaženite robota v novem položaju.",
+              "bmi055_acce": "Napaka pospeškomera\nPoskusite ponovno zagnati robota.",
+              "bmi055_gyro": "Napaka žiroskopa\nPoskusite ponovno zagnati robota.",
+              "xv7001": "Napaka žiroskopa\nPoskusite ponovno zagnati robota.",
+              "left_magnet": "Napaka levega magnetnega senzorja\nPoskusite ponovno zagnati robota.",
+              "right_magnet": "Napaka desnega magnetnega senzorja\nPoskusite ponovno zagnati robota.",
+              "flow_error": "Napaka senzorja pretoka\nPoskusite ponovno zagnati robota.",
+              "infrared_fault": "Napaka infrardečega senzorja\nPoskusite ponovno zagnati robota.",
+              "camera_fault": "Napaka kamere\nPoskusite ponovno zagnati robota.",
+              "strong_magnet": "Zaznano močno magnetno polje\nZaznano močno magnetno polje. Začnite stran od virtualnega zidu.",
+              "water_pump": "Napaka vodne črpalke\nPoskusite ponovno zagnati robota.",
+              "rtc": "Napaka RTC\nPoskusite ponovno zagnati robota.",
+              "auto_key_trig": "Notranja napaka\nPoskusite ponovno zagnati robota.",
+              "p3v3": "Notranja napaka\nPoskusite ponovno zagnati robota.",
+              "camera_idle": "Notranja napaka\nPoskusite ponovno zagnati robota.",
+              "blocked": "Pot čiščenja je blokirana, vračanje na postajo.\nRobot je morda blokiran ali zataknjen.",
+              "lds_error": "Napaka laserskega senzorja razdalje\nPreverite, ali so v laserskem senzorju razdalje zagozdeni predmeti",
+              "lds_bumper": "Napaka odbijača laserskega senzorja razdalje\nPreverite, ali je odbijač laserskega senzorja razdalje zagozden",
+              "filter_blocked": "Filter ni suh ali je zamašen\nPreverite, ali se je filter posušil ali ga je treba očistiti",
+              "edge": "Napaka senzorja roba\nNapaka senzorja robov. Preverite in očistite.",
+              "carpet": "Prosimo, začnite z robotom na območju brez preprog.\nMed brisanjem je pod robotom zaznana preproga. Premaknite robota na drugo mesto in ga znova zaženite.",
+              "laser": "Napaka senzorja za 3D izogibanje oviram.\nPoskusite očistiti 3D senzor za izogibanje oviram.",
+              "ultrasonic": "Napaka ultrazvočnega senzorja.\nZnova zaženite robota in poskusite znova.",
+              "no_go_zone": "Zaznano območje brez prehoda ali virtualna stena.\nProsimo, premaknite robota stran od območja in znova zaženite.",
+              "route": "Pot čiščenja je blokirana.\nPrepričajte se, da so vsa vrata v hiši odprta in odpravite morebitne ovire na poti ali poskusite izbrisati omejeno območje na poti.",
+              "restricted": "Zaznano, da je robot v omejenem območju.\nProsimo, premaknite robota iz tega območja.",
+              "remove_mop": "Brisanje končano. Prosimo, odstranite in očistite mop pravočasno.",
+              "mop_removed": "Mop pad je med čiščenjem padel.\nBlazinice za brisanje se odstranijo, namestite jih, preden nadaljujete z delom.",
+              "mop_pad_stop_rotate": "Mop pad je prenehal vrteti.\nPreverite blazinico za brisanje.",
+              "bin_full": "Vrečka za prah je polna ali je zračni kanal zamašen.\nSistem zazna, da je vrečka za zbiranje prahu polna ali da je zračni kanal zamašen.",
+              "bin_open": "Zgornji pokrov postaje za samodejno praznjenje ni zaprt ali vrečka za prah ni nameščena.\nSistem zazna, da zgornji pokrov podstavka za samodejno praznjenje ni zaprt ali da vrečka za zbiranje prahu ni nameščena.",
+              "water_tank": "Rezervoar za čisto vodo ni nameščen.\nRezervoar za čisto vodo ni nameščen, namestite ga.",
+              "dirty_water_tank": "Rezervoar za umazano vodo je poln ali ni nameščen.\nPreverite, ali je rezervoar za umazano vodo poln in ali je nameščen.",
+              "water_tank_dry": "Nizka raven vode v rezervoarju za čisto vodo, prosimo, pravočasno napolnite z vodo.\nV nasprotnem primeru se robot med čiščenjem ne bo vrnil v bazo, da bi očistil krpo za brisanje.",
+              "dirty_water_tank_blocked": "Rezervoar za umazano vodo je zamašen.\nPoskusite ponovno zagnati robota.",
+              "dirty_water_tank_pump": "Napaka črpalke za umazano vodo.\nPoskusite ponovno zagnati robota.",
+              "mop_pad": "Pralna deska ni pravilno nameščena.\nPralna deska ni nameščena in robot se ne more vrniti na samopralno podlago. Prepričajte se, da je pralna deska nameščena in da so sponke na obeh straneh trdno pritrjene.",
+              "wet_mop_pad": "Raven vode na pralni deski je nenormalna, prosimo, pravočasno očistite pralno desko.\nNivo vode na pralni deski je nenormalen. Očistite ga pravočasno, da preprečite blokado. Če težave še vedno ni mogoče rešiti, se obrnite na službo za pomoč uporabnikom.",
+              "clean_mop_pad": "Čiščenje končano, prosimo, očistite pralno desko mop pad.\nPravočasno očistite pralno ploščo za brisanje, da preprečite madeže ali vonjave.",
+              "clean_tank_level": "Preverite in napolnite rezervoar za čisto vodo.\nVoda v rezervoarju za čisto vodo bo kmalu porabljena.",
+              "station_disconnected": "Postaja ni vklopljena\nPreverite, ali je v vašem domu napajanje izklopljeno ali je stikalo za vklop vklopljeno, in ponovno priključite oba konca napajanja bazne postaje.",
+              "dirty_tank_level": "Raven vode v rezervoarju za umazano vodo je previsoka.\nPreverite, ali je rezervoar za uporabljeno vodo poln.",
+              "washboard_level": "Raven vode na pralni deski je previsoka.\nProsimo, pravočasno očistite posodo za uporabljeno vodo in pralno desko.",
+              "no_mop_in_station": "Mop pad ni v postaji.\nVstavite ga v bazno postajo ali ga ročno namestite na robota.",
+              "dust_bag_full": "Vrečka za prah je polna ali so odprtine zamašene.\nČe je vrečka polna, jo zamenjajte. Prosimo, redno čistite samodejne praznilne odprtine zabojnika za prah in bazne postaje.",
+              "self_test_failed": "Nenormalno odvajanje vode iz rezervoarja za čisto vodo zgornjega in spodnjega vodnega modula.\nSamotestiranje ni uspelo — v rezervoarju za čisto vodo zgornjega in spodnjega vodnega modula ni vode.",
+              "mop_install_failed": "Namestitev mop pad ni uspela.\nBlazinic za brisanje ni bilo mogoče namestiti. Prosimo, namestite ročno.",
+              "low_battery_turn_off": "Nizka baterija. Robot se bo kmalu izklopil.",
+              "dirty_tank_not_installed": "Rezervoar za umazano vodo robota ni nameščen.\nPrepričajte se, da je rezervoar za rabljeno vodo robota pravilno nameščen, nato pa začnite z nalogo.",
+              "robot_in_hidden_room": "Skrito območje. Prosimo, premaknite robota na ustrezno območje in poskusite znova.\nObmočje je skrito. Če ga želite znova uporabiti, pojdite na določen zemljevid in kliknite sivo območje, da ročno obnovite skrito območje.",
+              "washboard_not_working": "Pralna deska ne deluje.\nSledite spodnjim korakom za odpravljanje težav:\n1. Preverite, ali je pralna deska zamotana. Očistite pred uporabo.\n2. Preverite, ali je pralna plošča pravilno nameščena.\n3. Če težave ne odpravite, se obrnite na službo za pomoč uporabnikom.",
+              "return_to_charge_failed": "Vračanje na polnjenje ni uspelo.\nPreverite bazno postajo.\n1. Preverite, ali je podaljšek rampe nameščen do osnovne postaje;\n2. Preverite, ali je bazna postaja vklopljena;\n3. Prepričajte se, da pred bazno postajo ni ovir.",
+              "lds_failed_to_lift": "Dvig modula LDS ni uspel.\nPočistite morebitne ostanke okoli LDS in premaknite robota na odprto območje, da nadaljuje z nalogo.",
+              "robot_stuck": "LDS se tukaj ne more dvigniti za pozicioniranje.\nPremaknite robota na odprto območje in nadaljujte z nalogo.",
+              "slippery_floor": "Spolzka tla. Poskusite znova kasneje.\nSpolzka tla. Robot se ni uspel prebiti skozi ovire. Lahko počakate, da robot znova poskusi, ali očistite vodo okoli sebe in nadaljujete z nalogo.",
+              "check_mop_install": "Preverite, ali je krpa pravilno nameščena.\nPreverite navodila za namestitev mopa",
+              "dirty_water_tank_full": "Nenormalen nivo vode v rezervoarju za umazano vodo.\nRobotov rezervoar za uporabljeno vodo je preveč umazan. Odstranite in očistite ga pravočasno.",
+              "retractable_leg_stuck": "Preverite, ali so zložljive noge zapletene.\nZložljive noge se lahko zapletajo.",
+              "internal_error": "Motnja v delovanju zaradi notranje napake. Poskusite znova zagnati robota.\nNotranja napaka",
+              "robot_stuck_on_tables": "Robot se je zataknil med mizami in stoli\n1. Premaknite robota na odprto območje in znova zaženite nalogo.\n2. Priporočljivo je, da mize in stole lepo razporedite, da preprečite, da bi se robot zagozdil.\nRobot je obtičal",
+              "robot_stuck_on_passage": "Robot se je zataknil v ozkem prehodu\n1. Premaknite robota na odprto območje in znova zaženite nalogo.\n2. Priporočljivo je, da ozek prehod nastavite kot prepovedano območje, da preprečite, da bi se robot zagozdil.\nRobot je obtičal",
+              "robot_stuck_on_threshold": "Robot se je zataknil na stopnici/pragu\n1. Premaknite robota na odprto območje in znova zaženite nalogo.\n2. Priporočljivo je, da nastavite korak/prag kot neprehoden prag, da preprečite, da bi se robot zagozdil.\nRobot je obtičal",
+              "robot_stuck_on_low_lying_area": "Robot se je zataknil v nizkem območju\n1. Premaknite robota na odprto območje in znova zaženite nalogo.\n2. Priporočljivo je, da nizko območje nastavite kot prepovedano območje, da preprečite, da bi se robot zagozdil.\nRobot je obtičal",
+              "robot_stuck_on_ramp": "Robot je zaznal nevarne klančine na poti.\nPriporočljivo je, da nastavite prehodne pragove, če na poti ni klančin, ki jih je enostavno pasti.",
+              "robot_stuck_on_obstacle": "Robot je zaznal ovire na poti.\nOdstranite ovire s poti in znova zaženite nalogo.",
+              "robot_stuck_on_pet": "Robot je zaznal ljudi ali živali na poti.\nPrepričajte se, da ob ponovnem zagonu naloge na poti ni ljudi ali hišnih ljubljenčkov.",
+              "robot_stuck_on_slippery_surface": "Robot je obtičal zaradi zdrsa.\nRobot je obtičal zaradi zdrsa. Očistite glavna kolesa.",
+              "robot_stuck_on_carpet": "Robot drsi na preprogi\n1. Prosimo, premaknite robota stran od preproge in znova zaženite nalogo\n2. Priporočljivo je, da preprogo nastavite kot prepovedano območje, da preprečite, da bi se robot zagozdil.\nRobot je obtičal",
+              "drainage_failed": "Nenormalno odtekanje iz rezervoarja za umazano vodo\nNapaka črpalke za kanalizacijo. Obrnite se na službo za stranke.",
+              "mop_not_detected": "Krpa ni zaznana.\nMop ni zaznan. Namestite in nadaljujte z nalogo.",
+              "mop_holder_error": "Napaka količine/namestitve držala krpe v postaji. Namestite držalo za krpo ali prilagodite njegovo namestitev, da zagotovite pravilno čiščenje.\nNapaka držala mopa v postaji.",
+              "dock_error": "Napaka postaje.\nPreverite postajo in poskusite z naslednjimi koraki:\n1. Prepričajte se, da je loputa popolnoma zaprta.\n2. Prepričajte se, da so tri skupine mopov nameščene na loputo v rdeče-rumeno-modrem vrstnem redu. Če so krpe trenutno na transportnem nosilcu ali pralni deski, jih v tem vrstnem redu postavite nazaj na loputo in poskusite znova.\n3. Preverite, ali so v postaji morebitni ostanki. Ne postavljajte rok, robota ali drugih predmetov v pralno desko, ko menjate mope.",
+              "wash_failed": "Pranje umazane krpe ni uspelo.\nPreverite postajo in poskusite z naslednjimi koraki:\n1. Ročno pritrdite krpo, ki jo je treba oprati, na robota.\n2. Na loputo namestite druge umazane krpe.\n3. V aplikaciji pojdite na funkcije postaje in nato pomijte, da znova zaženete opravilo pomivanja.",
+              "robot_stuck_on_curtain": "Robot drsi v območju zavese\n1. Premaknite robota stran od območja zavese in znova zaženite nalogo.\n2. Robot ne more očistiti tega območja zaves. Priporočljivo je, da ga odstranite.\nRobot je obtičal",
+              "edge_mop_stop_rotate": "Robna krpa se je prenehala vrteti.\nBrisalo robov se je prenehalo vrteti. Sledite tem korakom:\n1. Preverite, ali je robot na preprogi. Trenje med krpo za robove in preprogo lahko prepreči njeno vrtenje. Premaknite robota na območje brez preprog in nadaljujte s čiščenjem.\n2. Preverite, ali je krpa za robove zapletena. Če je tako, jih odstranite in nadaljujte s čiščenjem.",
+              "edge_mop_detached": "Robna krpa se je ločila.\nEdge mop ni zaznan. Pred nadaljevanjem čiščenja ga namestite.",
+              "chassis_lift_malfunction": "Motnja dviga šasije.\nOkvara dvigala šasije. Prosimo, znova zaženite nalogo. Če težave ne odpravite, se obrnite na službo za pomoč uporabnikom.",
+              "mop_cover_error": "Preverite morebitne ostanke v bližini valja krpe in pokrova. Očistite valjčno krpo, da preprečite, da bi se pokrov zataknil. Po tem postavite robota ravno in nadaljujte z nalogo. Če težave ne odpravite, se obrnite na službo za pomoč uporabnikom.\nNapaka pokrova mopa.",
+              "roller_mop_error": "Preverite morebitne ostanke v bližini valja krpe in pokrova. Očistite valjčno krpo, da se ne zatakne. Po tem postavite robota ravno in nadaljujte z nalogo. Če težave ne odpravite, se obrnite na službo za pomoč uporabnikom.\nNapaka z valjčno krpo.",
+              "onboard_water_tank_empty": "Nizek nivo vode v rezervoarju za čisto vodo robota.\nNizek nivo vode v robotovi posodi za čisto vodo. Prosimo, takoj napolnite.",
+              "onboard_dirty_water_tank_full": "Rezervoar za umazano vodo robota je poln. Prosimo, da ga takoj izpraznite.\nProsimo, vzemite škatlo in jo izpraznite. Druga možnost je, da robota premaknete na postajo za mop pranje (s tem boste tudi izčrpali uporabljeno vodo).",
+              "mop_not_installed": "Krpa ni nameščena.\nPred začetkom ali nadaljevanjem opravila preverite, ali je valjčna krpa pravilno nameščena.",
+              "fluffing_roller_error": "Napaka valja.\n1. Obrnite robota z dnom obrnjenim navzgor. Pritisnite gumb za sprostitev na eni strani valjčne krpe, da jo odstranite, nato očistite morebitne ostanke okoli nje.\n2. Pritisnite oranžno sponko in vzemite ven puhasti valj. Očistite dlake ali umazanijo na njem.\n3. Po čiščenju namestite puhasti valj in trdno pritisnite sponko. Nato namestite valjčno krpo, postavite robota ravno in nadaljujte z nalogo.\nČe težave ne odpravite, preverite več podrobnosti ali se obrnite na službo za pomoč uporabnikom.",
+              "blocked_by_obstacle": "Robot blokiran z oviro.\nPreverite morebitne ovire pred robotom in jih odstranite.",
+              "robotic_arm_stopped": "Robotska roka se je ustavila.\nZa ponastavitev pred ponovno uporabo pritisnite in držite gumb Station in gumb za vklop/izklop robotske roke.",
+              "drainage_outlet_filter": "Filter odtočne odprtine robota je zamašen.\nTakoj očistite izhodni filter za odpadno vodo robota, da zagotovite nemoten pretok vode.",
+              "main_wheels_error": "Napaka glavnih koles.\nZaznana anomalija kolesa. Naloga čiščenja je bila začasno ustavljena. Čiščenje lahko poskusite nadaljevati z gumbom na robotu ali prek aplikacije. Če težave ne odpravite, se za pomoč obrnite na nas.",
+              "unknown": "Neznana napaka"
+            }
+          }
         }
       },
-      "charging_status": {
-        "name": "Status polnjenja",
+      "filter_left": {
+        "name": "Filter"
+      },
+      "filter_time_left": {
+        "name": "Preostali čas filtra"
+      },
+      "firmware_version": {
+        "name": "Različica strojne programske opreme"
+      },
+      "first_cleaning_date": {
+        "name": "Datum prvega čiščenja"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "Čiščenje valja"
+      },
+      "fluffing_roller_dirty_time_left": {
+        "name": "Preostali čas mehkega valja"
+      },
+      "hot_water_status": {
+        "name": "Status tople vode",
         "state": {
           "unknown": "Neznano",
-          "charging": "Polnjenje",
-          "not_charging": "Ne polni",
-          "return_to_charge": "Vračanje na polnjenje",
-          "charging_completed": "Polnjenje zaključeno"
+          "disabled": "Invalid",
+          "enabled": "Omogočeno"
+        }
+      },
+      "ip_address": {
+        "name": "IP naslov"
+      },
+      "low_water_warning": {
+        "name": "Opozorilo za malo vode",
+        "state": {
+          "no_warning": "Brez opozorila",
+          "no_water_left": "Voda v rezervoarju za čisto vodo bo kmalu porabljena. Preverite in pravočasno napolnite rezervoar za čisto vodo.",
+          "no_water_left_after_clean": "Mop pad je očiščen. Zaznano je, da je voda v rezervoarju za čisto vodo nezadostna, prosimo, napolnite rezervoar za čisto vodo in izpraznite rezervoar za umazano vodo.",
+          "no_water_for_clean": "Nizka raven vode v rezervoarju za čisto vodo. Robot je preklopil na način sesanja.",
+          "low_water": "Voda bo kmalu porabljena. Prosimo, napolnite rezervoar za čisto vodo.",
+          "tank_not_installed": "Rezervoar za čisto vodo ni nameščen."
+        }
+      },
+      "mac_address": {
+        "name": "MAC naslov"
+      },
+      "main_brush_left": {
+        "name": "Glavna krtača"
+      },
+      "main_brush_time_left": {
+        "name": "Preostali čas glavne krtače"
+      },
+      "mapping_time": {
+        "name": "Čas kartiranja"
+      },
+      "model": {
+        "name": "Model"
+      },
+      "mop_pad": {
+        "name": "Mop",
+        "state": {
+          "unknown": "Neznano",
+          "installed": "Nameščeno",
+          "not_installed": "Ni nameščeno",
+          "mop_installed": "Mop nameščen",
+          "in_station": "V postaji"
+        }
+      },
+      "mop_pad_left": {
+        "name": "Krpa za brisanje"
+      },
+      "mop_pad_time_left": {
+        "name": "Preostali čas krpe za brisanje"
+      },
+      "multiple_cleaning_time": {
+        "name": "Večkratno čiščenje"
+      },
+      "nation_matched": {
+        "name": "Conska zapora",
+        "state": {
+          "unknown": "Onemogočeno",
+          "matched": "Odklenjeno",
+          "unmatched": "Zaklenjeno",
+          "na": "Ni na voljo"
+        }
+      },
+      "obstacle_reason": {
+        "name": "Razlog za oviro",
+        "state": {
+          "blocked_by_virtual_wall": "Blokirano z navidezno steno",
+          "blocked_by_door": "Blokirano z vrati",
+          "blocked_by_threshold": "Blokirano s pragom",
+          "blocked_by_obstacle": "Blokirano z oviro",
+          "blocked_by_carpet": "Blokirano s preprogo",
+          "blocked_by_detected_carpet": "Blokirano z zaznano preprogo",
+          "blocked_by_hidden_obstacle": "Blokirano s skrito oviro",
+          "blocked_by_dynamic_obstacle": "Blokirano z dinamično oviro",
+          "passage_too_low": "Prehod prenizek",
+          "step_too_low": "Stopnica prenizka",
+          "failed_to_cross_threshold": "Prestop praga ni uspel"
+        }
+      },
+      "obstacle_type": {
+        "name": "Vrsta ovire",
+        "state": {
+          "unknown": "Neznano",
+          "base": "Postaja",
+          "scale": "Kopalniška tehtnica",
+          "thread": "Vrvicam podobni predmeti",
+          "wire": "Žice",
+          "toy": "Igrača",
+          "shoes": "Čevlji",
+          "sock": "Nogavica",
+          "fece": "Iztrebki hišnih ljubljenčkov",
+          "trash_can": "Smetnjaki",
+          "fabric": "Tkanine",
+          "power_strip": "Razdelilec",
+          "liquid_stain": "Tekoč madež",
+          "obstacle": "Ovira",
+          "pet": "Ljubljenčki",
+          "cleaning_tools": "Orodja za čiščenje",
+          "detected_stain": "Madeži",
+          "blocked_room": "Pohištvo, kjer se lahko robot zatakne",
+          "easy_to_stuck_furniture": "Pohištvo, kjer se lahko robot zatakne",
+          "uncleanable_stain": "Madeži",
+          "leg": "Noga",
+          "large_particles": "Veliki delci",
+          "dried_stain": "Madeži",
+          "food_bowl": "Posoda za hrano",
+          "pet_bed": "Postelja/hišica za hišne ljubljenčke",
+          "cleaned_stain": "Madeži",
+          "skipped_uncleanable_stain": "Madeži",
+          "cleaned_dried_stain": "Madeži",
+          "cleaned_large_particles": "Veliki delci",
+          "hair": "Vrvicam podobni predmeti",
+          "paper": "Tkanine",
+          "cleaned_hair": "Vrvicam podobni predmeti",
+          "sundry": "Razno"
+        }
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "Notranji rezervoar umazane vode"
+      },
+      "onboard_dirty_water_tank_time_left": {
+        "name": "Preostali čas vgrajenega rezervoarja za umazano vodo"
+      },
+      "recovery_map_type": {
+        "name": "Vrsta zemljevida",
+        "state": {
+          "original": "Prvotni zemljevid",
+          "edited": "Urejen zemljevid",
+          "backup": "Varnostna kopija"
         }
       },
       "relocation_status": {
@@ -927,6 +1417,24 @@
           "failed": "Neuspešno",
           "success": "Uspešno"
         }
+      },
+      "remaining_battery": {
+        "name": "Preostala baterija"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "Filter valja za brisanje"
+      },
+      "roller_mop_filter_dirty_time_left": {
+        "name": "Preostali čas filtra valjčne krpe"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "scale_inhibitor_left": {
+        "name": "Inhibitor vodnega kamna"
+      },
+      "scale_inhibitor_time_left": {
+        "name": "Preostali čas sredstva proti vodnemu kamnu"
       },
       "self_wash_base_status": {
         "name": "Status postaje za pranje",
@@ -941,15 +1449,165 @@
           "adding_water": "Dodajanje vode"
         }
       },
-      "low_water_warning": {
-        "name": "Opozorilo za malo vode",
+      "sensor_dirty_left": {
+        "name": "Čiščenje senzorjev"
+      },
+      "sensor_dirty_time_left": {
+        "name": "Preostali čas čiščenja senzorjev"
+      },
+      "serial_number": {
+        "name": "Serijska številka"
+      },
+      "side_brush_left": {
+        "name": "Stranska krtača"
+      },
+      "side_brush_time_left": {
+        "name": "Preostali čas stranske krtače"
+      },
+      "silver_ion_left": {
+        "name": "Srebrovi ioni"
+      },
+      "silver_ion_time_left": {
+        "name": "Preostali čas srebrovih ionov"
+      },
+      "squeegee_left": {
+        "name": "Strgalo"
+      },
+      "squeegee_time_left": {
+        "name": "Preostali čas strgala"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "startup_method": {
+        "name": "Začetek s",
         "state": {
-          "no_warning": "Brez opozorila",
-          "no_water_left": "Voda v rezervoarju za čisto vodo bo kmalu porabljena. Preverite in pravočasno napolnite rezervoar za čisto vodo.",
-          "no_water_left_after_clean": "Mop pad je očiščen. Zaznano je, da je voda v rezervoarju za čisto vodo nezadostna, prosimo, napolnite rezervoar za čisto vodo in izpraznite rezervoar za umazano vodo.",
-          "no_water_for_clean": "Nizka raven vode v rezervoarju za čisto vodo. Robot je preklopil na način sesanja.",
-          "low_water": "Voda bo kmalu porabljena. Prosimo, napolnite rezervoar za čisto vodo.",
-          "tank_not_installed": "Rezervoar za čisto vodo ni nameščen."
+          "button": "Gumbom",
+          "app": "Aplikacijo",
+          "scheduled": "Urnikom",
+          "voice": "Glasom",
+          "second_cleaning": "Drugim čiščenjem",
+          "unknown": "Neznano"
+        }
+      },
+      "state": {
+        "name": "Stanje",
+        "state": {
+          "unknown": "Neznano",
+          "sweeping": "Pometanje",
+          "charging": "Polnjenje",
+          "error": "Napaka",
+          "idle": "V mirovanju",
+          "paused": "Zaustavljeno",
+          "returning": "Vračanje na postajo",
+          "mopping": "Brisanje",
+          "drying": "Sušenje",
+          "washing": "Pranje",
+          "returning_to_wash": "Vračanje na pranje",
+          "building": "Gradnja",
+          "sweeping_and_mopping": "Pometanje in brisanje",
+          "charging_completed": "Polnjenje zaključeno",
+          "upgrading": "Nadgrajevanje",
+          "clean_summon": "Klicanje za čiščenje",
+          "station_reset": "Ponastavitev postaje",
+          "returning_install_mop": "Vračanje za namestitev mopa",
+          "returning_remove_mop": "Vračanje za odstranitev mopa",
+          "water_check": "Preverjanje vode",
+          "clean_add_water": "Čiščenje in dodajanje vode",
+          "washing_paused": "Pranje zaustavljeno",
+          "auto_emptying": "Samodejno praznjenje",
+          "remote_control": "Daljinsko upravljanje",
+          "smart_charging": "Pametno polnjenje",
+          "second_cleaning": "Drugo čiščenje",
+          "human_following": "Sledenje človeku",
+          "spot_cleaning": "Točkovno čiščenje",
+          "returning_auto_empty": "Vračanje za samodejno praznjenje",
+          "waiting_for_task": "Čakanje na nalogo",
+          "station_cleaning": "Čiščenje postaje",
+          "returning_to_drain": "Vračanje za odvajanje",
+          "draining": "Odvajanje",
+          "auto_water_draining": "Samodejno odvajanje vode",
+          "emptying": "Prazenje",
+          "dust_bag_drying": "Sušenje vrečke za prah",
+          "dust_bag_drying_paused": "Sušenje vrečke za prah prekinjeno",
+          "heading_to_extra_cleaning": "Na poti k dodatnem čiščenju",
+          "extra_cleaning": "Dodatno čiščenje",
+          "finding_pet_paused": "Iskanje hišnega ljubljenčka prekinjeno",
+          "finding_pet": "Iskanje hišnega ljubljenčka",
+          "shortcut": "Bližnjica",
+          "monitoring": "Nadzor",
+          "monitoring_paused": "Nadzor zaustavljen",
+          "initial_deep_cleaning": "Začetno globinsko čiščenje",
+          "initial_deep_cleaning_paused": "Začetno globinsko čiščenje prekinjeno",
+          "sanitizing": "Sanitizacija",
+          "sanitizing_with_dry": "Sanitizacija s sušenjem",
+          "changing_mop": "Menjava krpe",
+          "changing_mop_paused": "Menjava krpe začasno ustavljena",
+          "floor_maintaining": "Vzdrževanje tal",
+          "floor_maintaining_paused": "Vzdrževanje tal začasno ustavljeno",
+          "remote_pickup": "Oddaljeno pobiranje",
+          "arranging_items": "Urejanje predmetov",
+          "pet_guarding": "Varovanje ljubljenčkov",
+          "pet_guarding_paused": "Varovanje ljubljenčkov zaustavljeno",
+          "installing_mop": "Nameščanje krpe",
+          "uninstalling_mop": "Odstranjevanje krpe",
+          "intelligent_recharging": "Inteligentno ponovno polnjenje",
+          "assisted_cleaning": "Asistirano čiščenje",
+          "entering_dock": "Vstop v postajo",
+          "leaving_dock": "Izstop iz postaje",
+          "navigating_to_climber": "Navigacija do plezalca",
+          "docking_to_climber": "Priklop na plezalca",
+          "climber_docked": "Plezač priklopljen",
+          "climber_navigating": "Plezač navigira",
+          "climbing_stairs": "Vzpon po stopnicah",
+          "climbing_stairs_completed": "Vzpon po stopnicah zaključen",
+          "climber_at_dock": "Plezač pri postaji",
+          "climber_leaving_dock": "Plezač zapušča postajo"
+        }
+      },
+      "station_drainage_status": {
+        "name": "Status odvodnjavanja postaje",
+        "state": {
+          "unknown": "Neznano",
+          "idle": "V prostem teku",
+          "draining": "Odtok"
+        }
+      },
+      "status": {
+        "name": "Status",
+        "state": {
+          "unknown": "Neznano",
+          "idle": "V mirovanju",
+          "paused": "Zaustavljeno",
+          "cleaning": "Čiščenje",
+          "returning": "Vračanje na postajo",
+          "spot_cleaning": "Točkovno čiščenje",
+          "follow_wall_cleaning": "Čiščenje ob steni",
+          "charging": "Polnjenje",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "WiFi nastavitev",
+          "power_off": "Izklop",
+          "factory": "Tovarna",
+          "error": "Napaka",
+          "remote_control": "Daljinsko upravljanje",
+          "sleeping": "Spanje",
+          "self_test": "Samopreizkus",
+          "factory_test": "Tovarniški preizkus",
+          "standby": "Pripravljenost",
+          "room_cleaning": "Čiščenje sobe",
+          "zone_cleaning": "Čiščenje območja",
+          "fast_mapping": "Hitro kartiranje",
+          "cruising_path": "Križarjenje po poti",
+          "cruising_point": "Križarjenje do točke",
+          "summon_clean": "Klicanje za čiščenje",
+          "shortcut": "Bližnjica",
+          "person_follow": "Sledenje osebi",
+          "water_check": "Preverjanje vode",
+          "pet_guarding": "Varovanje hišnih ljubljenčkov",
+          "auto_arrangement": "Samodejna razporeditev",
+          "smart_arrangement": "Pametna razporeditev",
+          "zoned_arrangement": "Conska razporeditev"
         }
       },
       "stream_status": {
@@ -962,66 +1620,93 @@
           "recording": "Snemanje"
         }
       },
-      "drainage_status": {
-        "name": "Status odvodnjavanja",
+      "tank_filter_left": {
+        "name": "Filter rezervoarja"
+      },
+      "tank_filter_time_left": {
+        "name": "Preostali čas filtra rezervoarja"
+      },
+      "task_end_type": {
+        "name": "Končano s",
         "state": {
-          "unknown": "Neznano",
-          "idle": "V mirovanju",
-          "draining": "Odvajanje",
-          "draining_successful": "Odvajanje uspešno",
-          "draining_failed": "Odvajanje neuspešno"
+          "other": "Drugo",
+          "manual_docking": "Ročnim priklopom",
+          "docking": "Priklopom",
+          "failed_docking": "Neuspešnim priklopom",
+          "stop": "Ustavitvijo",
+          "unknown": "Neznano"
         }
       },
-      "clean_water_tank_status": {
-        "name": "Status rezervoarja za čisto vodo",
+      "task_interrupt_reason": {
+        "name": "Razlog za prekinitev",
         "state": {
-          "unknown": "Neznano",
-          "not_available": "Ni na voljo",
-          "not_installed": "Ni nameščen",
-          "low_water": "Nizka voda",
-          "installed": "Nameščen"
+          "abnormal_docking": "Nenormalen priklop",
+          "base_station_powered_off": "Postaja izklopljena",
+          "brush_entangled_by_carpet": "Krtača zapletena v preprogo",
+          "brush_entangled_by_object": "Krtača zapletena v predmet",
+          "brush_entangled_by_obstacle": "Krtača zapletena v oviro",
+          "cannot_find_base_station": "Postaje ni mogoče najti",
+          "cliff_sensor_error": "Napaka senzorja stopnic",
+          "laser_distance_sensor_error": "Napaka laserskega senzorja",
+          "mop_pad_abnormally_removed": "Krpa nenormalno odstranjena",
+          "mop_pad_fallen_off": "Krpa je odpadla",
+          "mop_pad_fallen_off_by_obstacle": "Krpa odpadla zaradi ovire",
+          "mop_pad_fallen_off_by_table": "Krpa odpadla zaradi mize",
+          "mop_pad_fallen_off_crossing_obstacle": "Krpa odpadla med ovira",
+          "mop_pad_removed": "Krpa odstranjena",
+          "mop_pad_stuck": "Krpa se je zataknila",
+          "robot_fallen": "Robot je padel",
+          "robot_is_stuck_on_obstacle": "Robot zataknjen na oviri",
+          "robot_is_stuck_on_step": "Robot zataknjen na stopnici",
+          "robot_lifted": "Robot dvignjen",
+          "task_completed": "Opravilo dokončano",
+          "unknown": "Neznano"
         }
       },
-      "dirty_water_tank_status": {
-        "name": "Status rezervoarja za umazano vodo",
+      "task_status": {
+        "name": "Status opravila",
         "state": {
           "unknown": "Neznano",
-          "installed": "Nameščen",
-          "not_installed_or_full": "Ni nameščen ali poln"
-        }
-      },
-      "dust_bag_status": {
-        "name": "Status vrečke za prah",
-        "state": {
-          "unknown": "Neznano",
-          "installed": "Nameščen",
-          "not_installed": "Ni nameščen",
-          "check": "Preverite"
-        }
-      },
-      "detergent_status": {
-        "name": "Status detergenta",
-        "state": {
-          "unknown": "Neznano",
-          "installed": "Nameščen",
-          "disabled": "Invalid",
-          "low_detergent": "Nizek detergent"
-        }
-      },
-      "hot_water_status": {
-        "name": "Status tople vode",
-        "state": {
-          "unknown": "Neznano",
-          "disabled": "Invalid",
-          "enabled": "Omogočeno"
-        }
-      },
-      "station_drainage_status": {
-        "name": "Status odvodnjavanja postaje",
-        "state": {
-          "unknown": "Neznano",
-          "idle": "V prostem teku",
-          "draining": "Odtok"
+          "completed": "Zaključeno",
+          "cleaning": "Čiščenje",
+          "zone_cleaning": "Čiščenje območja",
+          "room_cleaning": "Čiščenje sobe",
+          "spot_cleaning": "Točkovno čiščenje",
+          "fast_mapping": "Hitro kartiranje",
+          "cleaning_paused": "Čiščenje zaustavljeno",
+          "room_cleaning_paused": "Čiščenje sobe zaustavljeno",
+          "zone_cleaning_paused": "Čiščenje območja zaustavljeno",
+          "spot_cleaning_paused": "Točkovno čiščenje zaustavljeno",
+          "map_cleaning_paused": "Kartiranje čiščenja zaustavljeno",
+          "docking_paused": "Priklop zaustavljen",
+          "mopping_paused": "Brisanje zaustavljeno",
+          "zone_mopping_paused": "Brisanje območja zaustavljeno",
+          "room_mopping_paused": "Brisanje sobe zaustavljeno",
+          "zone_docking_paused": "Priklop območja zaustavljen",
+          "room_docking_paused": "Priklop sobe zaustavljen",
+          "cruising_path": "Križarjenje po poti",
+          "cruising_path_paused": "Križarjenje po poti zaustavljeno",
+          "cruising_point": "Križarjenje do točke",
+          "cruising_point_paused": "Križarjenje do točke zaustavljeno",
+          "summon_clean_paused": "Klicanje za čiščenje zaustavljeno",
+          "returning_to_install_mop": "Vračanje za namestitev mopa",
+          "returning_to_remove_mop": "Vračanje za odstranitev mopa",
+          "station_cleaning": "Čiščenje postaje",
+          "pet_finding": "Iskanje hišnih ljubljenčkov",
+          "auto_cleaning_washing_paused": "Samodejno čiščenje pranje",
+          "area_cleaning_washing_paused": "Območje čiščenja pranje je bilo zaustavljeno",
+          "custom_cleaning_washing_paused": "Čiščenje po meri začasno",
+          "picking_up_item": "Pobiranje predmeta",
+          "picking_up_item_paused": "Pobiranje predmeta zaustavljeno",
+          "picking_up_item_success": "Predmet uspešno pobran",
+          "remote_pickup_initializing": "Iniciaizacija oddaljenega pobiranja",
+          "remote_pickup_identifing": "Identifikacija oddaljenega pobiranja",
+          "manual_remote_pickup": "Ročno oddaljeno pobiranje",
+          "automatic_remote_pickup": "Samodejno oddaljeno pobiranje",
+          "remote_pickup_in_progress": "Oddaljeno pobiranje v teku",
+          "remote_pickup_paused": "Oddaljeno pobiranje zaustavljeno",
+          "placing_item": "Postavljanje predmeta",
+          "placing_item_paused": "Postavljanje predmeta zaustavljeno"
         }
       },
       "task_type": {
@@ -1067,461 +1752,462 @@
           "steam_cleaning_paused": "Čiščenje s paro zaustavljeno"
         }
       },
-      "dust_bag_drying_status": {
-        "name": "Status sušenja vrečke za prah",
-        "state": {
-          "idle": "V mirovanju",
-          "drying": "Sušenje",
-          "paused": "Začasno ustavljeno"
-        }
-      },
-      "nation_matched": {
-        "name": "Conska zapora",
-        "state": {
-          "unknown": "Onemogočeno",
-          "matched": "Odklenjeno",
-          "unmatched": "Zaklenjeno",
-          "na": "Ni na voljo"
-        }
-      },
-      "startup_method": {
-        "name": "Začetek s",
-        "state": {
-          "button": "Gumbom",
-          "app": "Aplikacijo",
-          "scheduled": "Urnikom",
-          "voice": "Glasom",
-          "second_cleaning": "Drugim čiščenjem",
-          "unknown": "Neznano"
-        }
-      },
-      "cleaning_status": {
-        "name": "Čiščenje",
-        "state": {
-          "interrupted": "Prekinjeno",
-          "completed": "Dokončano",
-          "manually_ended": "Ročno končano",
-          "failed": "Neuspešno",
-          "unknown": "Neznano"
-        }
-      },
-      "cleanup_method": {
-        "name": "Način čiščenja",
-        "state": {
-          "other": "Drugo",
-          "default": "Privzeto",
-          "customized": "Prilagojeno",
-          "cleangenius": "CleanGenius",
-          "water_stain": "Vodni madež",
-          "unknown": "Neznano"
-        }
-      },
-      "task_end_type": {
-        "name": "Končano s",
-        "state": {
-          "other": "Drugo",
-          "manual_docking": "Ročnim priklopom",
-          "docking": "Priklopom",
-          "failed_docking": "Neuspešnim priklopom",
-          "stop": "Ustavitvijo",
-          "unknown": "Neznano"
-        }
-      },
-      "task_interrupt_reason": {
-        "name": "Razlog za prekinitev",
-        "state": {
-          "abnormal_docking": "Nenormalen priklop",
-          "base_station_powered_off": "Postaja izklopljena",
-          "brush_entangled_by_carpet": "Krtača zapletena v preprogo",
-          "brush_entangled_by_object": "Krtača zapletena v predmet",
-          "brush_entangled_by_obstacle": "Krtača zapletena v oviro",
-          "cannot_find_base_station": "Postaje ni mogoče najti",
-          "cliff_sensor_error": "Napaka senzorja stopnic",
-          "laser_distance_sensor_error": "Napaka laserskega senzorja",
-          "mop_pad_abnormally_removed": "Krpa nenormalno odstranjena",
-          "mop_pad_fallen_off": "Krpa je odpadla",
-          "mop_pad_fallen_off_by_obstacle": "Krpa odpadla zaradi ovire",
-          "mop_pad_fallen_off_by_table": "Krpa odpadla zaradi mize",
-          "mop_pad_fallen_off_crossing_obstacle": "Krpa odpadla med ovira",
-          "mop_pad_removed": "Krpa odstranjena",
-          "mop_pad_stuck": "Krpa se je zataknila",
-          "robot_fallen": "Robot je padel",
-          "robot_is_stuck_on_obstacle": "Robot zataknjen na oviri",
-          "robot_is_stuck_on_step": "Robot zataknjen na stopnici",
-          "robot_lifted": "Robot dvignjen",
-          "task_completed": "Opravilo dokončano",
-          "unknown": "Neznano"
-        }
-      },
-      "recovery_map_type": {
-        "name": "Vrsta zemljevida",
-        "state": {
-          "original": "Prvotni zemljevid",
-          "edited": "Urejen zemljevid",
-          "backup": "Varnostna kopija"
-        }
-      },
-      "obstacle_type": {
-        "name": "Vrsta ovire",
-        "state": {
-          "unknown": "Neznano",
-          "base": "Podstavek",
-          "scale": "Tehtnica",
-          "thread": "Nit",
-          "wire": "Žica",
-          "toy": "Igrača",
-          "shoes": "Čevlji",
-          "sock": "Nogavica",
-          "fece": "Iztrebek",
-          "trash_can": "Koš za smeti",
-          "fabric": "Tkanina",
-          "power_strip": "Razdelilec",
-          "liquid_stain": "Tekoč madež",
-          "obstacle": "Ovira",
-          "pet": "Ljubljenček",
-          "cleaning_tools": "Pripomočki za čiščenje",
-          "detected_stain": "Zaznan madež",
-          "blocked_room": "Blokirana soba",
-          "easy_to_stuck_furniture": "Tvegano pohištvo",
-          "uncleanable_stain": "Madež ni mogoče očistiti",
-          "leg": "Noga",
-          "large_particles": "Veliki delci",
-          "dried_stain": "Suh madež",
-          "food_bowl": "Posoda za hrano",
-          "pet_bed": "Ležišče za ljubljenčka",
-          "cleaned_stain": "Očiščen madež",
-          "skipped_uncleanable_stain": "Preskočen madež",
-          "cleaned_dried_stain": "Očiščen suh madež",
-          "cleaned_large_particles": "Očiščeni veliki delci",
-          "hair": "Lasje",
-          "paper": "Papir",
-          "cleaned_hair": "Očiščeni lasje",
-          "sundry": "Razno"
-        }
-      },
-      "obstacle_reason": {
-        "name": "Razlog za oviro",
-        "state": {
-          "blocked_by_virtual_wall": "Blokirano z navidezno steno",
-          "blocked_by_door": "Blokirano z vrati",
-          "blocked_by_threshold": "Blokirano s pragom",
-          "blocked_by_obstacle": "Blokirano z oviro",
-          "blocked_by_carpet": "Blokirano s preprogo",
-          "blocked_by_detected_carpet": "Blokirano z zaznano preprogo",
-          "blocked_by_hidden_obstacle": "Blokirano s skrito oviro",
-          "blocked_by_dynamic_obstacle": "Blokirano z dinamično oviro",
-          "passage_too_low": "Prehod prenizek",
-          "step_too_low": "Stopnica prenizka",
-          "failed_to_cross_threshold": "Prestop praga ni uspel"
-        }
-      },
-      "remaining_battery": {
-        "name": "Preostala baterija"
-      },
-      "multiple_cleaning_time": {
-        "name": "Večkratno čiščenje"
-      },
-      "bssid": {
-        "name": "BSSID"
-      },
-      "firmware_version": {
-        "name": "Različica strojne programske opreme"
-      },
-      "ip_address": {
-        "name": "IP naslov"
-      },
-      "mac_address": {
-        "name": "MAC naslov"
-      },
-      "model": {
-        "name": "Model"
-      },
-      "rssi": {
-        "name": "RSSI"
-      },
-      "serial_number": {
-        "name": "Serijska številka"
-      },
-      "ssid": {
-        "name": "SSID"
-      },
       "timezone": {
         "name": "Časovni pas"
+      },
+      "total_cleaned_area": {
+        "name": "Skupno očiščeno območje"
+      },
+      "total_cleaning_time": {
+        "name": "Skupni čas čiščenja"
       },
       "voice_packet_id": {
         "name": "Glasovni paket"
       },
-      "deodorizer_left": {
-        "name": "Osvežilec"
-      },
-      "detergent_left": {
-        "name": "Detergent"
-      },
-      "dirty_water_channel_left": {
-        "name": "Kanal umazane vode"
-      },
-      "filter_left": {
-        "name": "Filter"
-      },
-      "fluffing_roller_dirty_left": {
-        "name": "Čiščenje valja"
-      },
-      "main_brush_left": {
-        "name": "Glavna krtača"
-      },
-      "mop_pad_left": {
-        "name": "Krpa za brisanje"
-      },
-      "onboard_dirty_water_tank_left": {
-        "name": "Notranji rezervoar umazane vode"
-      },
-      "roller_mop_filter_dirty_left": {
-        "name": "Filter valja za brisanje"
-      },
-      "scale_inhibitor_left": {
-        "name": "Inhibitor vodnega kamna"
-      },
-      "sensor_dirty_left": {
-        "name": "Čiščenje senzorjev"
-      },
-      "side_brush_left": {
-        "name": "Stranska krtača"
-      },
-      "silver_ion_left": {
-        "name": "Srebrovi ioni"
-      },
-      "squeegee_left": {
-        "name": "Strgalo"
-      },
-      "tank_filter_left": {
-        "name": "Filter rezervoarja"
-      },
       "water_outlet_filter_dirty_left": {
         "name": "Čiščenje iztočnega filtra"
       },
+      "water_outlet_filter_dirty_time_left": {
+        "name": "Preostali čas filtra iztoka vode"
+      },
+      "water_tank": {
+        "name": "Rezervoar za vodo",
+        "state": {
+          "unknown": "Neznano",
+          "installed": "Nameščeno",
+          "not_installed": "Ni nameščeno",
+          "mop_installed": "Mop nameščen",
+          "in_station": "V postaji"
+        }
+      },
       "wheel_dirty_left": {
         "name": "Čiščenje koles"
+      },
+      "wheel_dirty_time_left": {
+        "name": "Preostali čas koles"
       }
     },
-    "toggle": {
-      "customized_cleaning": {
-        "name": "Prilagojeno čiščenje"
+    "switch": {
+      "active_suspension_crossing": {
+        "name": "Prehajanje z aktivnim vzmetenjem"
       },
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
+      "ai_fluid_detection": {
+        "name": "AI zaznavanje tekočin"
       },
-      "deep_cleaning": {
-        "name": "Globinsko čiščenje"
+      "ai_furniture_detection": {
+        "name": "AI zaznavanje pohištva"
       },
-      "auto_dust_collecting": {
-        "name": "Samodejno praznjenje"
-      },
-      "hair_compression": {
-        "name": "Stiskanje las"
-      },
-      "self_clean": {
-        "name": "Samočiščenje"
-      },
-      "deep_mop_washing": {
-        "name": "Globinsko pranje krpe"
-      },
-      "hot_washing": {
-        "name": "Pranje z vročo vodo"
-      },
-      "auto_drying": {
-        "name": "Samodejno sušenje"
-      },
-      "silent_drying": {
-        "name": "Tiho sušenje"
-      },
-      "uv_sterilization": {
-        "name": "UV sterilizacija"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Prilagojeno čiščenje"
-      },
-      "carpet_avoidance": {
-        "name": "Izogibanje preprogam"
-      },
-      "carpet_preferences": {
-        "name": "Prilagojene nastavitve"
-      },
-      "auto_change_mop": {
-        "name": "Samodejna menjava krpe"
-      },
-      "multi_floor_map": {
-        "name": "Večnadstropni zemljevid"
-      },
-      "intelligent_recognition": {
-        "name": "Inteligentno prepoznavanje"
-      },
-      "map_saving": {
-        "name": "Shranjevanje zemljevida"
-      },
-      "child_lock": {
-        "name": "Otroška ključavnica"
-      },
-      "resume_cleaning": {
-        "name": "Nadaljevanje čiščenja"
-      },
-      "obstacle_avoidance": {
-        "name": "Izogibanje oviram"
-      },
-      "carpet_boost": {
-        "name": "Povečana moč na preprogah"
-      },
-      "carpet_recognition": {
-        "name": "Prepoznavanje preprog"
-      },
-      "clean_carpets_first": {
-        "name": "Najprej očisti preproge"
-      },
-      "close_roller_cover_on_carpet": {
-        "name": "Zapri pokrov valja na preprogi"
-      },
-      "intensive_carpet_cleaning": {
-        "name": "Intenzivno čiščenje preprog"
-      },
-      "side_brush_carpet_rotate": {
-        "name": "Vrtenje stranske krtače na preprogi"
-      },
-      "lift_chassis_on_carpet": {
-        "name": "Dvig podvozja na preprogi"
-      },
-      "auto_mount_mop": {
-        "name": "Samodejna namestitev krpe"
-      },
-      "mopping_with_detergent": {
-        "name": "Brisanje z detergentom"
-      },
-      "mop_washing_with_detergent": {
-        "name": "Pranje krpe z detergentom"
-      },
-      "auto_add_detergent": {
-        "name": "Samodejno dodajanje detergenta"
-      },
-      "smart_mop_washing": {
-        "name": "Pametno pranje krpe"
-      },
-      "wider_corner_coverage": {
-        "name": "Širša pokritost kotov"
-      },
-      "pressurized_cleaning": {
-        "name": "Čiščenje pod pritiskom"
-      },
-      "gap_cleaning_extension": {
-        "name": "Podaljšek za čiščenje vrzeli"
-      },
-      "mopping_under_furnitures": {
-        "name": "Brisanje pod pohištvom"
-      },
-      "floor_direction_cleaning": {
-        "name": "Čiščenje v smeri tal"
-      },
-      "ring_light_always_on": {
-        "name": "Svetlobni obroč vedno vklopljen"
-      },
-      "collision_avoidance": {
-        "name": "Preprečevanje trkov"
-      },
-      "fill_light": {
-        "name": "Luč kamere"
+      "ai_human_detection": {
+        "name": "AI zaznavanje ljudi"
       },
       "ai_obstacle_detection": {
         "name": "AI zaznavanje ovir"
       },
-      "ai_pet_detection": {
-        "name": "Zaznavanje ljubljenčkov"
-      },
-      "pet_focused_detection": {
-        "name": "Zaznavanje osredotočeno na ljubljenčke"
-      },
-      "pet_focused_cleaning": {
-        "name": "Čiščenje osredotočeno na ljubljenčke"
+      "ai_obstacle_image_upload": {
+        "name": "AI nalaganje slik ovir"
       },
       "ai_obstacle_picture": {
         "name": "Slike ovir"
       },
-      "obstacle_crossing": {
-        "name": "Sinhronizirano prehajanje ovir"
+      "ai_pet_avoidance": {
+        "name": "AI izogibanje hišnim ljubljenčkom"
       },
-      "active_suspension_crossing": {
-        "name": "Prehajanje z aktivnim vzmetenjem"
+      "ai_pet_detection": {
+        "name": "Zaznavanje ljubljenčkov"
       },
-      "dynamic_obstacle_cleaning": {
-        "name": "Dinamično čiščenje ovir"
+      "auto_add_detergent": {
+        "name": "Samodejno dodajanje detergenta"
       },
-      "large_particles_boost": {
-        "name": "Povečana moč za velike delce"
+      "auto_change_mop": {
+        "name": "Samodejna menjava krpe"
       },
-      "streaming_voice_prompt": {
-        "name": "Pretočni glasovni poziv"
+      "auto_charging": {
+        "name": "Samodejno polnjenje"
       },
-      "voice_assistant": {
-        "name": "Glasovni pomočnik"
+      "auto_drying": {
+        "name": "Samodejno sušenje"
       },
-      "off_peak_charging": {
-        "name": "Polnjenje izven konic"
+      "auto_dust_collecting": {
+        "name": "Samodejno praznjenje"
       },
-      "dnd_disable_resume_cleaning": {
-        "name": "Onemogoči nadaljevanje čiščenja"
+      "auto_mount_mop": {
+        "name": "Samodejna namestitev krpe"
+      },
+      "auto_water_refilling": {
+        "name": "Samodejno dolivanje vode"
+      },
+      "camera_light_brightness_auto": {
+        "name": "Samodejna svetlost luči kamere"
+      },
+      "carpet_avoidance": {
+        "name": "Izogibanje preprogam"
+      },
+      "carpet_boost": {
+        "name": "Povečana moč na preprogah"
+      },
+      "carpet_preferences": {
+        "name": "Prilagojene nastavitve"
+      },
+      "carpet_recognition": {
+        "name": "Prepoznavanje preprog"
+      },
+      "child_lock": {
+        "name": "Otroška ključavnica"
+      },
+      "clean_carpets_first": {
+        "name": "Najprej očisti preproge"
+      },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "cleaning_sequence": {
+        "name": "Vrstni red čiščenja"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "Zapri pokrov valja na preprogi"
+      },
+      "collision_avoidance": {
+        "name": "Preprečevanje trkov"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Prilagojeno čiščenje"
+      },
+      "customized_cleaning": {
+        "name": "Prilagojeno čiščenje"
+      },
+      "deep_cleaning": {
+        "name": "Globinsko čiščenje"
+      },
+      "deep_mop_washing": {
+        "name": "Globinsko pranje krpe"
+      },
+      "dnd": {
+        "name": "Ne moti"
       },
       "dnd_disable_auto_empty": {
         "name": "Onemogoči samodejno praznjenje"
       },
+      "dnd_disable_resume_cleaning": {
+        "name": "Onemogoči nadaljevanje čiščenja"
+      },
       "dnd_reduce_volume": {
         "name": "Zmanjšaj glasnost"
       },
-      "dnd": {
-        "name": "Ne moti"
+      "dust_bag_drying": {
+        "name": "Sušenje vrečke za prah"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "Dinamično čiščenje ovir"
+      },
+      "fill_light": {
+        "name": "Luč kamere"
+      },
+      "floor_direction_cleaning": {
+        "name": "Čiščenje v smeri tal"
+      },
+      "fuzzy_obstacle_detection": {
+        "name": "Približno zaznavanje ovir"
+      },
+      "gap_cleaning_extension": {
+        "name": "Podaljšek za čiščenje vrzeli"
+      },
+      "hair_compression": {
+        "name": "Stiskanje las"
+      },
+      "hot_washing": {
+        "name": "Pranje z vročo vodo"
+      },
+      "human_follow": {
+        "name": "Sledenje človeku"
+      },
+      "intelligent_recognition": {
+        "name": "Inteligentno prepoznavanje"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "Intenzivno čiščenje preprog"
+      },
+      "large_particles_boost": {
+        "name": "Povečana moč za velike delce"
+      },
+      "lds_state": {
+        "name": "Stanje LDS"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "Dvig podvozja na preprogi"
+      },
+      "map_saving": {
+        "name": "Shranjevanje zemljevida"
+      },
+      "max_suction_power": {
+        "name": "Največja sesalna moč"
+      },
+      "mop_extend": {
+        "name": "Izteg krpe"
+      },
+      "mop_washing_with_detergent": {
+        "name": "Pranje krpe z detergentom"
+      },
+      "mopping_under_furnitures": {
+        "name": "Brisanje pod pohištvom"
+      },
+      "mopping_with_detergent": {
+        "name": "Brisanje z detergentom"
+      },
+      "multi_floor_map": {
+        "name": "Večnadstropni zemljevid"
+      },
+      "obstacle_avoidance": {
+        "name": "Izogibanje oviram"
+      },
+      "obstacle_crossing": {
+        "name": "Sinhronizirano prehajanje ovir"
+      },
+      "off_peak_charging": {
+        "name": "Polnjenje izven konic"
+      },
+      "pet_focused_cleaning": {
+        "name": "Čiščenje osredotočeno na ljubljenčke"
+      },
+      "pet_focused_detection": {
+        "name": "Zaznavanje osredotočeno na ljubljenčke"
+      },
+      "pet_picture": {
+        "name": "Fotografija hišnega ljubljenčka"
+      },
+      "pressurized_cleaning": {
+        "name": "Čiščenje pod pritiskom"
+      },
+      "resume_cleaning": {
+        "name": "Nadaljevanje čiščenja"
+      },
+      "ring_light_always_on": {
+        "name": "Svetlobni obroč vedno vklopljen"
+      },
+      "self_clean": {
+        "name": "Samočiščenje"
+      },
+      "self_clean_by_zone": {
+        "name": "Samočiščenje po conah"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "Vrtenje stranske krtače na preprogi"
+      },
+      "side_reach": {
+        "name": "Stranski doseg"
+      },
+      "silent_drying": {
+        "name": "Tiho sušenje"
+      },
+      "smart_drying": {
+        "name": "Pametno sušenje"
+      },
+      "smart_mop_washing": {
+        "name": "Pametno pranje krpe"
+      },
+      "stain_avoidance": {
+        "name": "Izogibanje madežem"
+      },
+      "streaming_voice_prompt": {
+        "name": "Pretočni glasovni poziv"
+      },
+      "tight_mopping": {
+        "name": "Gosto brisanje"
+      },
+      "ultra_clean_mode": {
+        "name": "Ultra čist način"
+      },
+      "uv_sterilization": {
+        "name": "UV sterilizacija"
+      },
+      "voice_assistant": {
+        "name": "Glasovni pomočnik"
+      },
+      "water_electrolysis": {
+        "name": "Elektroliza vode"
+      },
+      "wider_corner_coverage": {
+        "name": "Širša pokritost kotov"
+      }
+    },
+    "button": {
+      "backup_saved_map": {
+        "name": "Varnostna kopija shranjenega zemljevida"
+      },
+      "base_station_cleaning": {
+        "name": "Čiščenje bazne postaje"
+      },
+      "base_station_self_repair": {
+        "name": "Samopopravilo bazne postaje"
+      },
+      "clear_warning": {
+        "name": "Počisti opozorilo"
+      },
+      "empty_water_tank": {
+        "name": "Izprazni rezervoar za vodo"
+      },
+      "manual_drying": {
+        "name": "Ročno sušenje"
+      },
+      "manual_dust_bag_drying": {
+        "name": "Ročno sušenje vrečke za prah"
+      },
+      "reload_shortcuts": {
+        "name": "Znova naloži bližnjice"
+      },
+      "reset_deodorizer": {
+        "name": "Ponastavi osvežilec"
+      },
+      "reset_detergent": {
+        "name": "Ponastavi detergent"
+      },
+      "reset_dirty_water_channel": {
+        "name": "Ponastavi kanal za umazano vodo"
+      },
+      "reset_filter": {
+        "name": "Ponastavi filter"
+      },
+      "reset_fluffing_roller": {
+        "name": "Ponastavi mehki valj"
+      },
+      "reset_main_brush": {
+        "name": "Ponastavi glavno krtačo"
+      },
+      "reset_mop_pad": {
+        "name": "Ponastavi krpo za brisanje"
+      },
+      "reset_onboard_dirty_water_tank": {
+        "name": "Ponastavi vgrajeni rezervoar za umazano vodo"
+      },
+      "reset_roller_mop_filter": {
+        "name": "Ponastavi filter valjčne krpe"
+      },
+      "reset_scale_inhibitor": {
+        "name": "Ponastavi sredstvo proti vodnemu kamnu"
+      },
+      "reset_sensor": {
+        "name": "Ponastavi senzorje"
+      },
+      "reset_side_brush": {
+        "name": "Ponastavi stransko krtačo"
+      },
+      "reset_silver_ion": {
+        "name": "Ponastavi srebrove ione"
+      },
+      "reset_squeegee": {
+        "name": "Ponastavi strgalo"
+      },
+      "reset_tank_filter": {
+        "name": "Ponastavi filter rezervoarja"
+      },
+      "reset_water_outlet_filter": {
+        "name": "Ponastavi filter iztoka vode"
+      },
+      "reset_wheel": {
+        "name": "Ponastavi kolesa"
+      },
+      "self_clean": {
+        "name": "Samočiščenje"
+      },
+      "shortcut": {
+        "name": "Bližnjica {name}"
+      },
+      "start_auto_empty": {
+        "name": "Zaženi samodejno praznjenje"
+      },
+      "start_fast_mapping": {
+        "name": "Zaženi hitro kartiranje"
+      },
+      "start_mapping": {
+        "name": "Zaženi kartiranje"
+      },
+      "start_recleaning": {
+        "name": "Zaženi ponovno čiščenje"
+      },
+      "water_tank_draining": {
+        "name": "Praznjenje rezervoarja za vodo"
+      }
+    },
+    "camera": {
+      "map": {
+        "name": "Trenutni zemljevid"
+      },
+      "map_data": {
+        "name": "Podatki trenutnega zemljevida"
+      },
+      "saved_map": {
+        "name": "Shranjeni zemljevid {name}"
+      },
+      "wifi_map": {
+        "name": "Shranjeni Wi-Fi zemljevid {name}"
+      }
+    },
+    "binary_sensor": {
+      "charging_state": {
+        "name": "Stanje polnjenja",
+        "state": {
+          "on": "Polnjenje",
+          "off": "Ne polni"
+        }
+      },
+      "lds_status": {
+        "name": "Stanje LDS"
+      },
+      "roller_cover_status": {
+        "name": "Stanje pokrova valja"
       }
     },
     "number": {
-      "wetness_level": {
-        "name": "Vlažnost"
-      },
       "auto_empty_area": {
         "name": "Območje samodejnega praznjenja"
+      },
+      "camera_light_brightness": {
+        "name": "Svetlost luči kamere"
       },
       "drying_time": {
         "name": "Čas sušenja"
       },
-      "self_clean_time": {
-        "name": "Čas samočiščenja"
+      "mop_cleaning_remainder": {
+        "name": "Opomnik za čiščenje krpe"
       },
       "self_clean_area": {
         "name": "Območje samočiščenja"
       },
+      "self_clean_time": {
+        "name": "Čas samočiščenja"
+      },
       "volume": {
         "name": "Glasnost"
+      },
+      "wetness_level": {
+        "name": "Vlažnost"
       }
     },
     "time": {
-      "dnd_start": {
-        "name": "Čas začetka Ne moti"
-      },
       "dnd_end": {
         "name": "Čas konca Ne moti"
       },
-      "off_peak_charging_start": {
-        "name": "Čas začetka polnjenja izven konic"
+      "dnd_start": {
+        "name": "Čas začetka Ne moti"
       },
       "off_peak_charging_end": {
         "name": "Čas konca polnjenja izven konic"
+      },
+      "off_peak_charging_start": {
+        "name": "Čas začetka polnjenja izven konic"
       },
       "schedule_time": {
         "name": "Čas začetka"
       }
     },
     "input": {
-      "schedule_repeats": {
-        "name": "Ponovitve"
-      },
       "dnd_repeats": {
         "name": "Ponovitve"
       },
       "map_custom_name": {
         "name": "Ime zemljevida"
+      },
+      "schedule_repeats": {
+        "name": "Ponovitve"
       },
       "segment_custom_name": {
         "name": "Ime sobe"
@@ -1567,8 +2253,9 @@
         "edit_carpet": "Uredi preprogo",
         "empty": "Izprazni",
         "enable": "Omogoči",
+        "enter_dvc_key": "Vnesi obstoječi ključ",
         "fast_mapping": "Hitro kartiranje",
-        "get_dreame_vacuum_card": "Pridobi kartico Dreame Vacuum",
+        "get_dvc_key": "Pridobi ključ DVC",
         "ignore": "Prezri",
         "ignore_obstacle": "Prezri oviro",
         "impassable_threshold": "Neprehoden prag",
@@ -1656,6 +2343,8 @@
         "copy": "Kopiraj",
         "copy_all": "Kopiraj vse",
         "disable_haptic": "Onemogoči haptiko",
+        "dvc_key": "Ključ DVC",
+        "dvc_key_title": "Vnesite ključ DVC",
         "editable_objects": "Uredljivi objekti",
         "font_size": "Velikost pisave",
         "full_height": "Polna višina",
@@ -1697,7 +2386,7 @@
         "map_color_impassable_threshold": "Neprehoden prag",
         "map_color_manual_low_lying_area": "Ročna vdolbina",
         "map_color_mop_path": "Pot brisanja",
-        "map_color_new_segment": "Nova soba",
+        "map_color_new_segment": "Nova prostor",
         "map_color_no_go": "Prepov. območje",
         "map_color_no_go_outline": "Obroba prepov. obm.",
         "map_color_no_mop": "Območje brez brisanja",
@@ -1706,10 +2395,10 @@
         "map_color_order": "Vrstni red",
         "map_color_outside": "Zunaj",
         "map_color_passable_threshold": "Prehoden prag",
-        "map_color_passive_segment": "Pasivna soba",
+        "map_color_passive_segment": "Pasivna prostor",
         "map_color_path": "Pot",
         "map_color_ramp": "Rampa",
-        "map_color_segment": "Soba",
+        "map_color_segment": "Prostor",
         "map_color_settings_background": "Ozadje nastavitev",
         "map_color_text": "Besedilo",
         "map_color_text_stroke": "Obroba besedila",
@@ -1765,7 +2454,7 @@
         "map_object_predefined_point": "Predn. točka",
         "map_object_ramp": "Rampa",
         "map_object_router": "Usmerjevalnik",
-        "map_object_segment": "Soba",
+        "map_object_segment": "Prostor",
         "map_object_segment_type": "Vrsta sobe",
         "map_object_selected_segments": "Izbrane sobe",
         "map_object_split_line": "Ločilna črta",
@@ -1826,6 +2515,7 @@
         "dock_in_restricted_area_detail": "Postaja je v območju z omejitvami. Robot se morda ne bo polnil.",
         "drying_will_stopped": "Sušenje mopa ustavljeno!",
         "dust_collection_not_performed": "Zbiranje prahu (samodejno praznjenje) ni bilo izvedeno\nRobot ne bo izvajal samodejnega praznjenja v obdobju Ne moti.",
+        "dvc_key_description": "Ključ velja za eno napravo. Če ta ključ uporabljate prvič, bo zdaj aktiviran za to napravo.",
         "enable_auto_mount_mop": "Omogoči sam. namestitev mopa?",
         "enable_carpet_recognition": "Zaznavanje preprog bo aktivirano!",
         "enable_customized_cleaning": "Omogoči prilagojeno čiščenje?",
@@ -1836,6 +2526,7 @@
         "failed_to_load_card": "Nalaganje kartice ni uspelo",
         "ignore_obstacle": "Prezri oviro?",
         "invalid_entity": "Neveljavna entiteta",
+        "invalid_key": "Neveljaven ključ.",
         "map_backup": "Varnostno kopiranje zemljevida v teku",
         "map_backup_failed": "Varnostno kopiranje zemljevida ni uspelo!",
         "map_backup_success": "Varnostno kopiranje zemljevida dokončano",
@@ -1929,11 +2620,12 @@
         "remote_control": "Daljinski upravljalnik",
         "saved_map": "Shranjen zemljevid",
         "schedule_list": "Urniki",
-        "scheduled_room": "Urnik: Soba",
+        "scheduled_room": "Urnik: Prostor",
         "scheduled_spot": "Urnik: Točka",
         "scheduled_task": "Načrtovana opravila",
         "scheduled_zone": "Urnik: Območje",
-        "segment_name_placeholder": "Soba %index%",
+        "segment_name_placeholder": "Prostor %index%",
+        "segment_unavailable": "Prostor %index% ni na voljo",
         "shortcut": "Bližnjica",
         "shortcut_list": "Bližnjice",
         "shortcut_map": "Zemljevid bližnjic",
@@ -1947,12 +2639,57 @@
         "wall": "Stene",
         "wifi_map": "Wifi zemljevid"
       }
+    },
+    "notification": {
+      "state": {
+        "cleanup_completed": "Čiščenje končano",
+        "dust_collection_not_performed": "Zbiranje prahu (samodejno praznjenje) ni bilo izvedeno\nRobot ne bo izvajal samodejnega praznjenja v obdobju Ne moti.",
+        "resume_cleaning": "Način nadaljevanja čiščenja\nRobot bo samodejno nadaljeval nedokončana opravila čiščenja, ko napolni baterijo na 80 %.",
+        "resume_cleaning_not_performed": "Robot je v obdobju Ne moti\nRobot bo nadaljeval s čiščenjem po koncu obdobja Ne moti.",
+        "resume_cleaning_not_performed_with_time": "Robot je v obdobju Ne moti\nRobot bo nadaljeval s čiščenjem po koncu obdobja Ne moti.\n## Čiščenje se bo začelo čez {hour} h in {minute} min",
+        "replace_map": "Ustvarjen je bil nov zemljevid\nPred uporabo morate zemljevid shraniti ali zavreči.",
+        "replace_multi_map": "Ustvarjen je bil nov zemljevid\nŠtevilo shranjenih večnadstropnih zemljevidov je doseglo zgornjo mejo. Pred uporabo morate zemljevid zamenjati ali zavreči.",
+        "drainage_completed": "Izpust vode končan",
+        "drainage_failed": "Izpust vode ni uspel",
+        "main_brush_left": "Glavno krtačo je treba zamenjati\nGlavna krtača je obrabljena. Pravočasno jo zamenjajte in ponastavite števec.",
+        "main_brush_left_low": "Glavno krtačo bo treba kmalu zamenjati\nGlavna krtača je skoraj obrabljena. Pravočasno jo zamenjajte.",
+        "side_brush_left": "Stransko krtačo je treba zamenjati\nStranska krtača je obrabljena. Zamenjajte jo in ponastavite števec.",
+        "side_brush_left_low": "Stransko krtačo bo treba kmalu zamenjati\nStranska krtača je skoraj obrabljena. Čim prej jo zamenjajte.",
+        "filter_left": "Filter je treba zamenjati\nFilter je obrabljen. Pravočasno ga zamenjajte in ponastavite števec.",
+        "filter_left_low": "Filter bo treba kmalu zamenjati\nFilter je skoraj obrabljen. Pravočasno ga zamenjajte.",
+        "sensor_dirty_left": "Senzorje je treba očistiti\nOčistite senzorje in ponastavite števec",
+        "tank_filter_left": "Filter rezervoarja je treba zamenjati\nFilter rezervoarja je obrabljen. Pravočasno ga zamenjajte in ponastavite števec.",
+        "tank_filter_left_low": "Filter rezervoarja bo treba kmalu zamenjati\nFilter rezervoarja je skoraj obrabljen. Pravočasno ga zamenjajte.",
+        "mop_pad_left": "Krpa za brisanje je obrabljena\nZamenjajte krpo za brisanje in ponastavite števec.",
+        "mop_pad_left_low": "Krpa za brisanje je skoraj obrabljena\nPravočasno zamenjajte krpo za brisanje.",
+        "silver_ion_left": "Sterilizator s srebrovimi ioni je poslabšan\nZamenjajte sterilizator s srebrovimi ioni in ponastavite števec.",
+        "silver_ion_left_low": "Sterilizator s srebrovimi ioni je blizu poslabšanja\nPravočasno zamenjajte sterilizator s srebrovimi ioni.",
+        "detergent_left": "Detergent je porabljen\nZamenjajte kartušo z detergentom in ponastavite števec.",
+        "detergent_left_low": "Detergenta bo kmalu zmanjkalo\nDetergenta bo kmalu zmanjkalo, pravočasno ga zamenjajte.",
+        "squeegee_left": "Brisač je obrabljen\nZamenjajte brisač in ponastavite števec.",
+        "squeegee_left_low": "Brisač je skoraj obrabljen\nPravočasno zamenjajte brisač.",
+        "onboard_dirty_water_tank_left": "Vgrajeni rezervoar za umazano vodo potrebuje čiščenje\nOčistite vgrajeni rezervoar za umazano vodo in ponastavite števec.",
+        "dirty_water_channel_dirty_left": "Kanal za umazano vodo potrebuje čiščenje\nOčistite kanal za umazano vodo in ponastavite števec.",
+        "deodorizer_left": "Dezodorant v rezervoarju za porabljeno vodo je izrabljen.\nDezodorant v rezervoarju za porabljeno vodo je izrabljen. Prosimo, zamenjajte ga.",
+        "deodorizer_left_low": "Dezodorant v rezervoarju za porabljeno vodo je pri koncu.\nDezodorant v rezervoarju za porabljeno vodo je pri koncu. Prosimo, zamenjajte ga.",
+        "wheel_dirty_left": "Vsesmerno kolo potrebuje čiščenje\nOčistite vsesmerno kolo in ponastavite števec.",
+        "scale_inhibitor_left": "Inhibitor vodnega kamna je porabljen\nZamenjajte inhibitor vodnega kamna in ponastavite števec.",
+        "scale_inhibitor_left_low": "Inhibitorja vodnega kamna bo kmalu zmanjkalo\nPravočasno zamenjajte inhibitor vodnega kamna.",
+        "fluffing_roller_dirty_left": "Valjček za razprševanje potrebuje čiščenje\nOčistite valjček za razprševanje in ponastavite števec.",
+        "roller_mop_filter_dirty_left": "Filter valjčnega mopa potrebuje čiščenje\nOčistite filter valjčnega mopa in ponastavite števec.",
+        "water_outlet_filter_dirty_left": "Filter za odvod vode potrebuje čiščenje\nOčistite filter za odvod vode in ponastavite števec.",
+        "no_water_left": "Napolnite rezervoar za čisto vodo.\nVode v rezervoarju za čisto vodo bo kmalu zmanjkalo. Takoj preverite in napolnite rezervoar za čisto vodo.",
+        "no_water_left_after_clean": "Napolnite rezervoar za čisto vodo.\nKrpa za brisanje je bila očiščena. Zaznano je bilo, da je vode v rezervoarju za čisto vodo premalo, napolnite rezervoar za čisto vodo in izpraznite rezervoar za uporabljeno vodo.",
+        "no_water_for_clean": "Nizek nivo vode v rezervoarju za čisto vodo.\nRobot je preklopil v način sesanja.",
+        "low_water": "Skoraj brez vode\nNapolnite rezervoar za čisto vodo.",
+        "tank_not_installed": "Rezervoar za čisto vodo ni nameščen.\nPreverite rezervoar za čisto vodo"
+      }
     }
   },
   "services": {
     "vacuum_clean_segment": {
       "name": "Čiščenje segmenta",
-      "description": "Začnite čiščenje v izbranih sobah.",
+      "description": "Začnite čiščenje v izbranih prostorh.",
       "fields": {
         "segments": {
           "name": "Segmenti",
@@ -2180,38 +2917,6 @@
         }
       }
     },
-    "vacuum_merge_segments": {
-      "name": "Združi segmente",
-      "description": "Združi sobe.",
-      "fields": {
-        "map_id": {
-          "name": "ID zemljevida",
-          "description": "ID zemljevida."
-        },
-        "segments": {
-          "name": "Segmenti",
-          "description": "ID-ji sob."
-        }
-      }
-    },
-    "vacuum_split_segments": {
-      "name": "Razdeli segmente",
-      "description": "Razdeli sobe.",
-      "fields": {
-        "map_id": {
-          "name": "ID zemljevida",
-          "description": "ID zemljevida."
-        },
-        "segment": {
-          "name": "Segment",
-          "description": "ID sobe."
-        },
-        "line": {
-          "name": "Črta",
-          "description": "Koordinate razdelitvene črte."
-        }
-      }
-    },
     "vacuum_rename_segment": {
       "name": "Preimenuj segment",
       "description": "Preimenuj segment.",
@@ -2266,46 +2971,6 @@
         }
       }
     },
-    "vacuum_set_custom_carpet_cleaning": {
-      "name": "Nastavi prilagojeno čiščenje preprog",
-      "description": "Nastavi prilagojene nastavitve čiščenja preprog. (Samo na podprtih napravah)",
-      "fields": {
-        "id": {
-          "name": "ID preproge",
-          "description": "ID-ji preprog."
-        },
-        "type": {
-          "name": "Vrsta predmeta",
-          "description": "Vrsta predmeta z danim ID-jem. (0 = Samodejno zaznana preproga, 1 = Ročno ustvarjena preproga, 2 = Preproga sobe (če je podprto))"
-        },
-        "carpet_cleaning": {
-          "name": "Čiščenje preproge",
-          "description": "Prilagojena nastavitev čiščenja za vsako preprogo."
-        },
-        "carpet_preferences": {
-          "name": "Nastavitve preproge",
-          "description": "Prilagojene nastavitve za vsako preprogo z naborom omogočenih nastavitev."
-        }
-      }
-    },
-    "vacuum_set_restricted_zone": {
-      "name": "Nastavi omejeno območje",
-      "description": "Določi virtualne stene, omejena območja in/ali območja brez mopiranja.",
-      "fields": {
-        "walls": {
-          "name": "Stene",
-          "description": "Virtualne stene."
-        },
-        "zones": {
-          "name": "Območja",
-          "description": "Območja brez prehoda."
-        },
-        "no_mops": {
-          "name": "Brez mopiranja",
-          "description": "Območja brez mopiranja."
-        }
-      }
-    },
     "vacuum_reset_consumable": {
       "name": "Ponastavi potrošni material",
       "description": "Ponastavi potrošni material.",
@@ -2340,40 +3005,6 @@
         }
       }
     },
-    "vacuum_set_carpet_area": {
-      "name": "Nastavi območje preproge",
-      "description": "Določi preproge in prezrte preproge. (Samo na podprtih napravah)",
-      "fields": {
-        "carpets": {
-          "name": "Preproge",
-          "description": "Območja preprog."
-        },
-        "deleted_carpets": {
-          "name": "Prezrte preproge",
-          "description": "Prezrta območja preprog za brisanje samodejno zaznanih preprog."
-        }
-      }
-    },
-    "vacuum_set_virtual_threshold": {
-      "name": "Nastavi virtualni prag",
-      "description": "Določi virtualne pragove.",
-      "fields": {
-        "virtual_thresholds": {
-          "name": "Virtualni pragovi",
-          "description": "Koordinate virtualnih pragov."
-        }
-      }
-    },
-    "vacuum_set_predefined_points": {
-      "name": "Nastavi vnaprej določene točke",
-      "description": "Določi vnaprej določene koordinate na trenutnem zemljevidu. (Samo na sesalnikih s kamero)",
-      "fields": {
-        "points": {
-          "name": "Točke",
-          "description": "Seznam koordinat za shranjevanje."
-        }
-      }
-    },
     "vacuum_set_obstacle_ignore": {
       "name": "Nastavi ignoriranje ovir",
       "description": "Nastavi status ignoriranja ovire. (Samo na sesalnikih s funkcijo zaznavanja ovir AI)",
@@ -2389,48 +3020,6 @@
         "obstacle_ignored": {
           "name": "Ovira ignorirana",
           "description": "Ali je ovira ignorirana ali ne."
-        }
-      }
-    },
-    "vacuum_set_router_position": {
-      "name": "Nastavi položaj usmerjevalnika",
-      "description": "Nastavi položaj usmerjevalnika na trenutnem zemljevidu. (Samo na sesalnikih s funkcijo WiFi zemljevida)",
-      "fields": {
-        "x": {
-          "name": "X",
-          "description": "X koordinata usmerjevalnika."
-        },
-        "y": {
-          "name": "Y",
-          "description": "Y koordinata usmerjevalnika."
-        }
-      }
-    },
-    "select_select_previous": {
-      "name": "Izberi prejšnjo",
-      "description": "Izberi prejšnjo možnost izbirne entitete.",
-      "fields": {
-        "cycle": {
-          "name": "Cikel",
-          "description": "Če naj se možnost ciklično premika od prve do zadnje."
-        }
-      }
-    },
-    "select_select_first": {
-      "name": "Izberi prvo",
-      "description": "Izberi prvo možnost izbirne entitete."
-    },
-    "select_select_last": {
-      "name": "Izberi zadnjo",
-      "description": "Izberi zadnjo možnost izbirne entitete."
-    },
-    "select_select_next": {
-      "name": "Izberi naslednjo",
-      "description": "Izberi naslednjo možnost izbirne entitete.",
-      "fields": {
-        "cycle": {
-          "name": "Cikel",
-          "description": "Če naj se možnost ciklično premika od prve do zadnje."
         }
       }
     }

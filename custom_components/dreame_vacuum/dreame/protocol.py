@@ -6,31 +6,33 @@ import base64
 import hmac
 import requests
 import zlib
-import ssl
 import queue
-from threading import Thread, Timer
+import copy
+import os
+import socket
+import struct
+import errno
+import gzip
+from threading import Thread, Lock
 from time import sleep
 import time, locale
 import paho.mqtt
 from paho.mqtt.client import Client
 from typing import Any, Dict, Final, Optional, Tuple
-from Crypto.Cipher import ARC4
+from Crypto.Cipher import ARC4, AES
+from Crypto.Util.Padding import pad
+from cryptography.hazmat.primitives.asymmetric import x25519, ec
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM, ChaCha20Poly1305
+from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 from miio.miioprotocol import MiIOProtocol
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs, quote, urlsplit
 import re
 
 from .exceptions import DeviceException
+from .types import RestartableTimer
 
-from . import VERSION
-
-DATA_URL: Final = (
-    "aHR0cHM6Ly93d3cuZ29vZ2xlLWFuYWx5dGljcy5jb20vbXAvY29sbGVjdD9tZWFzdXJlbWVudF9pZD1HLTcwN1g2N0MzWlAmYXBpX3NlY3JldD1jX2taVDJlV1N1Q3Q4Q2swTGdtaE1n"
-)
-DATA_JSON: Final = (
-    "e3siY2xpZW50X2lkIjoiezB9IiwiZXZlbnRzIjpbe3sicGFyYW1zIjp7eyJ2ZXJzaW9uIjoiezF9IiwibW9kZWwiOiJ7Mn0iLCJkZXZpY2VfaWQiOiJ7MH0iLCJzZXNzaW9uX2lkIjp7M30sImVuZ2FnZW1lbnRfdGltZV9tc2VjIjoxMDB9fSwibmFtZSI6Ins0fSJ9fV19fQ=="
-)
 DREAME_STRINGS: Final = (
-    "H4sICAAAAAAEAGNsb3VkX3N0cmluZ3MuanNvbgCNU9tuGjEQ/RUUKaiVyt5ALFWUBwpCSatqmwBpkqpCg+3ddePL1ja59Os7tklJ+pR9WM+Z+xx7fhwlXLuEGgaSJY6R9ujDUT4sxiWel9MncTM7ruXyS1cer36jah4cN0sJxrVasrRI8uRj7x3/1mrFTnq8WvbySTJK8pPekoBg6TDJsvc+KZlk22E5KbdFMR6X5XhLKBlN8npY0kkNo2ILeQbDDOpJDmNaD3IM+gSWk97t2Wdx8z0X18XigZzdPFZ3i4treVlcnHXTdb64vVJtVc2bUwzIwoeCdeB2FgUJ1jGz5hTlLVd0riVwhaAzumPGPaGIFJxTrxLgam3k6Xm17FuC9lMQot8YUG7jnhCik2G1YbbdOH3HVP8V8uYOrH3QhvZ3lhkFMsT0n7UBhExAiN4phziN7A9g59pUh3/IhiZ0YtbG5IfS/zB77DgqNjwaG6694Jjy/YaJ96l9LwOcMs7qkaciosjUwULBgY9k95wwFAS37qrwdlXraKhWs/MItCNeCnMbkHbvH3Djo6WmTITuCI5vDy1htQHR0l8VU3SmpYTnjmoufKg/PIH7u/Kxnjk8Wiyhjb+5hrl5aHQeu7b/4XksNkVSEa09DdOGKXcwXQqCwDtow/+AixyuAoeD8CpmWjmGYBWLQ9cJToJj+ssG726Dv82+Hf2ghAa6NiIqKmtz+kobd07qexj4jUsiDV8Rv1isPCmS0VsWKyRzRu/umXmZbxVVr1Jmb9vV1FM/2BpOG5b6N5EGnrknduEv5+dfaHOmATgEAAA="
+    "H4sIAAAAAAAC/41U23LiOBD9FSpVQ81uLcYy4eJN8UDCMDCzCRtuAbamKCEJW4ksOZaAwNevWjYJzFN4MH36pu6jbv135XFlPJoxnDDPMBJf/XWFakGjaf9HnYNY3H3ZJOOfafPL5NWqus5xNU5wZmKVsGrgIS8sfeX/xkqymxIfjkuo5V176KY0Jliwas3z/T9s5C3WnJSW/R9i8YTEPOjtSX/xNnzpPc6TUfDYTztT1FvOZDwcdqO2DfDdzwraYLPVVkiwNiybcmrlNZe0qxLMpQVpplKWmYMVbTcDsJdTrPVeZRRSVfP+Knhr4qpyX6NeGIRiQpjWqxPM2CZjOn7H7C3lVrHiuTHiCgTDJJZm5QopUm81yyr28LwEQFBhjt4bKCwUGwyRbMcJs4Lg2swCsMuNyg3Dyd0gB8qQQkpxhhNd+DscQXSiKBOuOmLb1R8l2dMqRCXAIJP0TiUJPlW04QJC4U9a14JCiDWHFGBsj1AZEBox03WFdvOq9W/4jFqLpkBDJ2ISCgSdyvgRm3PaKo42oqSFplKch9NUcOIcq8/aeaer4nS1l0JhOs1Erhhqjeil1g1xona4AiPs5V3fW3w2qcgLvOvPTKpLZjK13dlezvJNctVFSv9zw18FpivrjNOIVWEEqo5WDjz28rv49m3yrI/bP+eD+lH29QB65dGbSF73y19N9bSc9qCne+oHz4fR63G7QY+3448LSJi7DrJr49WHNhPkA6QamJdsD9fII3clPGF2PJMU1t4P/IZfczuHrFSv13LRquo1mE/1EhuTVm2DgQemriXC9oj80ldqxb+5gmbXT2GwmIUx6Xcas2f6z9p/UJMeuaYv8e1jrddfRG1YyhuC5Q7rPtaxg3u2jsQ72nHN7QQO6EkTZbByMC7t02qXNbF738ZClFOBzUZlSbvz0B0NB92yc7TLrbbSlIFxmHPIU3aq7OBkgWX0W/KLF+DTJ1xEQUba/7Gj86UgIifiYX7r33+fNai/R5PjqH//PWzgvSOiYDG8ILFQNi6U9dOTiNw3Vu4dOK2S3eXILaGx3eiNHV4miaJcRmdOlyrJSLGb8A6ml+ZNgDBtXrN6iBsIoTVDtEX8ALFGfd0KEQlwYNWNJl6vW6TO/GbI/JAFpIVbtVoIc5e8GnP163+JjsKlZAYAAA=="
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -50,6 +52,7 @@ class DreameVacuumDeviceProtocol(MiIOProtocol):
             item = self._queue.get()
             if len(item) == 0:
                 self._queue.task_done()
+                self._thread = None
                 return
             response = self.send(item[1], item[2], item[3])
             if item[0]:
@@ -85,6 +88,476 @@ class DreameVacuumDeviceProtocol(MiIOProtocol):
 
 
 class DreameVacuumDreameHomeCloudProtocol:
+    class DreameTLSSocket:
+        @staticmethod
+        def _expand_label(secret, label, context, length, h):
+            lbl = b"tls13 " + label
+            info = struct.pack("!H", length) + bytes([len(lbl)]) + lbl + bytes([len(context)]) + context
+            out = b""
+            t = b""
+            i = 1
+            while len(out) < length:
+                t = hmac.new(secret, t + info + bytes([i]), h).digest()
+                out += t
+                i += 1
+            return out[:length]
+
+        @staticmethod
+        def _prf(secret, label, seed, length, h):
+            seed = label + seed
+            a = seed
+            out = b""
+            while len(out) < length:
+                a = hmac.new(secret, a, h).digest()
+                out += hmac.new(secret, a + seed, h).digest()
+            return out[:length]
+
+        def __init__(self, host, port, server_name, timeout, strings):
+            self._host = host
+            self._port = port
+            self._sni = server_name
+            self._timeout = timeout
+            self._strings = strings
+            self._sock = None
+            self._rbuf = b""
+            self._appbuf = b""
+            self._tls12 = False
+
+        def __getattr__(self, name):
+            return getattr(self._sock, name)
+
+        def _read_record(self):
+            while len(self._rbuf) < 5:
+                d = self._sock.recv(65536)
+                if not d:
+                    raise ConnectionError("connection closed during handshake")
+                self._rbuf += d
+            ln = (self._rbuf[3] << 8) | self._rbuf[4]
+            while len(self._rbuf) < 5 + ln:
+                d = self._sock.recv(65536)
+                if not d:
+                    raise ConnectionError("connection closed during handshake")
+                self._rbuf += d
+            typ = self._rbuf[0]
+            body = self._rbuf[5 : 5 + ln]
+            self._rbuf = self._rbuf[5 + ln :]
+            return typ, body
+
+        def connect(self):
+            self._sock = socket.create_connection((self._host, self._port), timeout=self._timeout)
+            self._sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+            try:
+                self._sock.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+                for opt, val in (("TCP_KEEPIDLE", 60), ("TCP_KEEPINTVL", 15), ("TCP_KEEPCNT", 4)):
+                    if hasattr(socket, opt):
+                        self._sock.setsockopt(socket.IPPROTO_TCP, getattr(socket, opt), val)
+            except OSError:
+                pass
+            priv = x25519.X25519PrivateKey.generate()
+            pub = priv.public_key().public_bytes_raw()
+            ext = b""
+            sni = self._sni.encode("idna") if self._sni else b""
+            sni_list = struct.pack("!BH", 0, len(sni)) + sni
+            ext += struct.pack("!HH", 0, len(sni_list) + 2) + struct.pack("!H", len(sni_list)) + sni_list
+            ext += struct.pack("!HH", 23, 0)
+            ext += struct.pack("!HH", 65281, 1) + b"\x00"
+            g = b"".join(struct.pack("!H", x) for x in [0x001D, 0x0017, 0x0018])
+            ext += struct.pack("!HH", 10, len(g) + 2) + struct.pack("!H", len(g)) + g
+            ext += struct.pack("!HH", 11, 2) + b"\x01\x00"
+            ext += struct.pack("!HH", 35, 0)
+            sa = b"".join(
+                struct.pack("!H", x) for x in [0x0403, 0x0804, 0x0401, 0x0503, 0x0805, 0x0501, 0x0806, 0x0601, 0x0201]
+            )
+            ext += struct.pack("!HH", 13, len(sa) + 2) + struct.pack("!H", len(sa)) + sa
+            ks = struct.pack("!HH", 0x001D, len(pub)) + pub
+            ext += struct.pack("!HH", 51, len(ks) + 2) + struct.pack("!H", len(ks)) + ks
+            ext += struct.pack("!HH", 45, 2) + b"\x01\x01"
+            ext += struct.pack("!HH", 43, 5) + b"\x04\x03\x04\x03\x03"
+            chbody = b"\x03\x03" + os.urandom(32) + bytes([32]) + os.urandom(32)
+            cs = b"".join(
+                struct.pack("!H", c)
+                for c in [
+                    0x1303,
+                    0x1301,
+                    0x1302,
+                    0xCCA9,
+                    0xCCA8,
+                    0xC02B,
+                    0xC02F,
+                    0xC02C,
+                    0xC030,
+                    0xC009,
+                    0xC013,
+                    0xC00A,
+                    0xC014,
+                    0x009C,
+                    0x009D,
+                    0x002F,
+                    0x0035,
+                ]
+            )
+            chbody += struct.pack("!H", len(cs)) + cs + b"\x01\x00"
+            msg_len = 4 + len(chbody) + 2 + len(ext)
+            if 256 <= msg_len < 512:
+                need = 512 - msg_len - 4
+                if need < 0:
+                    need = 0
+                ext += struct.pack("!HH", 21, need) + b"\x00" * need
+            chbody += struct.pack("!H", len(ext)) + ext
+            ch = struct.pack("!B", 1) + struct.pack("!I", len(chbody))[1:] + chbody
+            self._client_random = ch[6:38]
+            transcript = ch
+            self._sock.sendall(b"\x16\x03\x01" + struct.pack("!H", len(ch)) + ch)
+
+            typ, sh = self._read_record()
+            while typ == 20:
+                typ, sh = self._read_record()
+            if typ != 22 or not sh or sh[0] != 2:
+                raise ConnectionError("expected ServerHello")
+            i = 6 + 32
+            sidlen = sh[i]
+            i += 1 + sidlen
+            self._cipher = (sh[i] << 8) | sh[i + 1]
+            i += 3
+            extlen = (sh[i] << 8) | sh[i + 1]
+            i += 2
+            end = i + extlen
+            srv_pub = None
+            self._ems = False
+            is_hrr = sh[6:38] == bytes.fromhex(self._strings[89])
+            while i + 4 <= end:
+                et = (sh[i] << 8) | sh[i + 1]
+                el = (sh[i + 2] << 8) | sh[i + 3]
+                ed = sh[i + 4 : i + 4 + el]
+                i += 4 + el
+                if et == 51 and len(ed) >= 4:
+                    kl = (ed[2] << 8) | ed[3]
+                    srv_pub = ed[4 : 4 + kl]
+                elif et == 23:
+                    self._ems = True
+            if is_hrr:
+                raise ConnectionError("server requested retry")
+            if srv_pub is None:
+                return self._handshake_tls12(transcript, sh)
+
+            self._h = hashlib.sha384 if self._cipher == 0x1302 else hashlib.sha256
+            self._hlen = 48 if self._cipher == 0x1302 else 32
+            self._keylen = 16 if self._cipher == 0x1301 else 32
+            h, hlen = self._h, self._hlen
+            transcript += sh
+            shared = priv.exchange(x25519.X25519PublicKey.from_public_bytes(srv_pub))
+            zero = b"\x00" * hlen
+            early = hmac.new(zero, zero, h).digest()
+            derived = self._expand_label(early, b"derived", h(b"").digest(), hlen, h)
+            hs_secret = hmac.new(derived, shared, h).digest()
+            c_hs = self._expand_label(hs_secret, b"c hs traffic", h(transcript).digest(), hlen, h)
+            s_hs = self._expand_label(hs_secret, b"s hs traffic", h(transcript).digest(), hlen, h)
+            c_hs_key = self._expand_label(c_hs, b"key", b"", self._keylen, h)
+            c_hs_iv = self._expand_label(c_hs, b"iv", b"", 12, h)
+            s_hs_key = self._expand_label(s_hs, b"key", b"", self._keylen, h)
+            s_hs_iv = self._expand_label(s_hs, b"iv", b"", 12, h)
+
+            sseq = 0
+            buf = b""
+            got_fin = False
+            while not got_fin:
+                typ, body = self._read_record()
+                if typ == 20:
+                    continue
+                if typ == 21:
+                    raise ConnectionError("alert during handshake")
+                aad = bytes([typ]) + b"\x03\x03" + struct.pack("!H", len(body))
+                nonce = bytes(a ^ b for a, b in zip(s_hs_iv, b"\x00\x00\x00\x00" + struct.pack("!Q", sseq)))
+                cipher = ChaCha20Poly1305(s_hs_key) if self._cipher == 0x1303 else AESGCM(s_hs_key)
+                pt = cipher.decrypt(nonce, body, aad)
+                sseq += 1
+                pt = pt.rstrip(b"\x00")
+                if not pt or pt[-1] != 22:
+                    continue
+                buf += pt[:-1]
+                while len(buf) >= 4:
+                    mlen = (buf[1] << 16) | (buf[2] << 8) | buf[3]
+                    if len(buf) < 4 + mlen:
+                        break
+                    msg = buf[: 4 + mlen]
+                    buf = buf[4 + mlen :]
+                    transcript += msg
+                    if msg[0] == 20:
+                        got_fin = True
+                        break
+
+            fk = self._expand_label(c_hs, b"finished", b"", hlen, h)
+            vd = hmac.new(fk, h(transcript).digest(), h).digest()
+            fin = struct.pack("!B", 20) + struct.pack("!I", len(vd))[1:] + vd
+            self._sock.sendall(b"\x14\x03\x03\x00\x01\x01")
+            inner = fin + b"\x16"
+            aad = b"\x17\x03\x03" + struct.pack("!H", len(inner) + 16)
+            nonce = bytes(a ^ b for a, b in zip(c_hs_iv, b"\x00\x00\x00\x00" + struct.pack("!Q", 0)))
+            cipher = ChaCha20Poly1305(c_hs_key) if self._cipher == 0x1303 else AESGCM(c_hs_key)
+            ct = cipher.encrypt(nonce, inner, aad)
+            self._sock.sendall(b"\x17\x03\x03" + struct.pack("!H", len(ct)) + ct)
+
+            derived2 = self._expand_label(hs_secret, b"derived", h(b"").digest(), hlen, h)
+            master = hmac.new(derived2, zero, h).digest()
+            self._c_ap = self._expand_label(master, b"c ap traffic", h(transcript).digest(), hlen, h)
+            self._s_ap = self._expand_label(master, b"s ap traffic", h(transcript).digest(), hlen, h)
+            self._c_key = self._expand_label(self._c_ap, b"key", b"", self._keylen, h)
+            self._c_iv = self._expand_label(self._c_ap, b"iv", b"", 12, h)
+            self._s_key = self._expand_label(self._s_ap, b"key", b"", self._keylen, h)
+            self._s_iv = self._expand_label(self._s_ap, b"iv", b"", 12, h)
+            self._cseq = 0
+            self._sseq = 0
+            return self
+
+        def _handshake_tls12(self, transcript, sh):
+            self._tls12 = True
+            server_random = sh[6:38]
+            ske = None
+            got_shd = False
+            buf = sh
+            while not got_shd:
+                while len(buf) >= 4:
+                    mlen = (buf[1] << 16) | (buf[2] << 8) | buf[3]
+                    if len(buf) < 4 + mlen:
+                        break
+                    msg = buf[: 4 + mlen]
+                    buf = buf[4 + mlen :]
+                    transcript += msg
+                    if msg[0] == 12:
+                        ske = msg[4 : 4 + mlen]
+                    elif msg[0] == 14:
+                        got_shd = True
+                        break
+                if got_shd:
+                    break
+                typ, body = self._read_record()
+                if typ == 21:
+                    raise ConnectionError("alert during handshake")
+                if typ != 22:
+                    continue
+                buf += body
+            if ske is None:
+                raise ConnectionError("no ServerKeyExchange")
+            named_curve = (ske[1] << 8) | ske[2]
+            pk_len = ske[3]
+            server_pub = ske[4 : 4 + pk_len]
+            if named_curve == 0x001D:
+                my = x25519.X25519PrivateKey.generate()
+                my_pub = my.public_key().public_bytes_raw()
+                shared = my.exchange(x25519.X25519PublicKey.from_public_bytes(server_pub))
+            else:
+                curve = {0x0017: ec.SECP256R1(), 0x0018: ec.SECP384R1(), 0x0019: ec.SECP521R1()}[named_curve]
+                my = ec.generate_private_key(curve)
+                my_pub = my.public_key().public_bytes(Encoding.X962, PublicFormat.UncompressedPoint)
+                shared = my.exchange(ec.ECDH(), ec.EllipticCurvePublicKey.from_encoded_point(curve, server_pub))
+            self._h = (
+                hashlib.sha384 if self._cipher in (0xC030, 0xC02C, 0xC024, 0xC028, 0x009F, 0x006B) else hashlib.sha256
+            )
+            ph = self._h
+            self._keylen = 32 if self._cipher in (0xC030, 0xC02C, 0x009D, 0xCCA8, 0xCCA9, 0x1302, 0x1303) else 16
+            keylen = self._keylen
+            cke_body = bytes([len(my_pub)]) + my_pub
+            cke = bytes([16]) + struct.pack("!I", len(cke_body))[1:] + cke_body
+            transcript += cke
+            if self._ems:
+                master = self._prf(shared, b"extended master secret", ph(transcript).digest(), 48, ph)
+            else:
+                master = self._prf(shared, b"master secret", self._client_random + server_random, 48, ph)
+            ivlen = 12 if self._cipher in (0xCCA8, 0xCCA9) else 4
+            kb = self._prf(master, b"key expansion", server_random + self._client_random, 2 * keylen + 2 * ivlen, ph)
+            self._c_key = kb[0:keylen]
+            self._s_key = kb[keylen : 2 * keylen]
+            self._c_iv = kb[2 * keylen : 2 * keylen + ivlen]
+            self._s_iv = kb[2 * keylen + ivlen : 2 * keylen + 2 * ivlen]
+            self._cseq = 0
+            self._sseq = 0
+            self._sock.sendall(b"\x16\x03\x03" + struct.pack("!H", len(cke)) + cke)
+            self._sock.sendall(b"\x14\x03\x03\x00\x01\x01")
+            vd = self._prf(master, b"client finished", ph(transcript).digest(), 12, ph)
+            fin = bytes([20]) + struct.pack("!I", len(vd))[1:] + vd
+            enc = self._encrypt12(22, fin)
+            self._sock.sendall(b"\x16\x03\x03" + struct.pack("!H", len(enc)) + enc)
+            ccs_seen = False
+            while True:
+                typ, body = self._read_record()
+                if typ == 20:
+                    ccs_seen = True
+                    continue
+                if typ == 21:
+                    raise ConnectionError("alert")
+                if typ == 22:
+                    if ccs_seen:
+                        self._decrypt12(22, body)
+                        break
+                    continue
+            return self
+
+        def _encrypt12(self, content_type, plaintext):
+            chacha = self._cipher in (0xCCA8, 0xCCA9)
+            cipher = ChaCha20Poly1305(self._c_key) if chacha else AESGCM(self._c_key)
+            aad = (
+                struct.pack("!Q", self._cseq) + bytes([content_type]) + b"\x03\x03" + struct.pack("!H", len(plaintext))
+            )
+            if chacha:
+                nonce = bytes(a ^ b for a, b in zip(self._c_iv, b"\x00\x00\x00\x00" + struct.pack("!Q", self._cseq)))
+                ct = cipher.encrypt(nonce, plaintext, aad)
+                self._cseq += 1
+                return ct
+            explicit = struct.pack("!Q", self._cseq)
+            ct = cipher.encrypt(self._c_iv + explicit, plaintext, aad)
+            self._cseq += 1
+            return explicit + ct
+
+        def _decrypt12(self, content_type, body):
+            chacha = self._cipher in (0xCCA8, 0xCCA9)
+            cipher = ChaCha20Poly1305(self._s_key) if chacha else AESGCM(self._s_key)
+            if chacha:
+                nonce = bytes(a ^ b for a, b in zip(self._s_iv, b"\x00\x00\x00\x00" + struct.pack("!Q", self._sseq)))
+                aad = (
+                    struct.pack("!Q", self._sseq)
+                    + bytes([content_type])
+                    + b"\x03\x03"
+                    + struct.pack("!H", len(body) - 16)
+                )
+                pt = cipher.decrypt(nonce, body, aad)
+                self._sseq += 1
+                return pt
+            explicit = body[:8]
+            ct = body[8:]
+            aad = struct.pack("!Q", self._sseq) + bytes([content_type]) + b"\x03\x03" + struct.pack("!H", len(ct) - 16)
+            pt = cipher.decrypt(self._s_iv + explicit, ct, aad)
+            self._sseq += 1
+            return pt
+
+        def send(self, data):
+            data = bytes(data)
+            total = 0
+            while data:
+                chunk = data[:16384]
+                data = data[16384:]
+                if self._tls12:
+                    enc = self._encrypt12(23, chunk)
+                else:
+                    inner = chunk + b"\x17"
+                    aad = b"\x17\x03\x03" + struct.pack("!H", len(inner) + 16)
+                    nonce = bytes(
+                        a ^ b for a, b in zip(self._c_iv, b"\x00\x00\x00\x00" + struct.pack("!Q", self._cseq))
+                    )
+                    cipher = ChaCha20Poly1305(self._c_key) if self._cipher == 0x1303 else AESGCM(self._c_key)
+                    enc = cipher.encrypt(nonce, inner, aad)
+                    self._cseq += 1
+                self._sock.sendall(b"\x17\x03\x03" + struct.pack("!H", len(enc)) + enc)
+                total += len(chunk)
+            return total
+
+        sendall = send
+
+        def _fill_once(self):
+            try:
+                d = self._sock.recv(65536)
+            except BlockingIOError:
+                return False
+            except OSError as ex:
+                if ex.errno in (errno.EAGAIN, errno.EWOULDBLOCK):
+                    return False
+                raise
+            if not d:
+                raise ConnectionError("connection closed")
+            self._rbuf += d
+            processed = False
+            while len(self._rbuf) >= 5:
+                ln = (self._rbuf[3] << 8) | self._rbuf[4]
+                if len(self._rbuf) < 5 + ln:
+                    break
+                typ = self._rbuf[0]
+                body = self._rbuf[5 : 5 + ln]
+                self._rbuf = self._rbuf[5 + ln :]
+                processed = True
+                if typ == 20:
+                    continue
+                if typ == 21:
+                    raise ConnectionError("tls alert")
+                if self._tls12:
+                    pt = self._decrypt12(typ, body)
+                    if typ == 23:
+                        self._appbuf += pt
+                    continue
+                aad = bytes([typ]) + b"\x03\x03" + struct.pack("!H", len(body))
+                nonce = bytes(a ^ b for a, b in zip(self._s_iv, b"\x00\x00\x00\x00" + struct.pack("!Q", self._sseq)))
+                cipher = ChaCha20Poly1305(self._s_key) if self._cipher == 0x1303 else AESGCM(self._s_key)
+                pt = cipher.decrypt(nonce, body, aad)
+                self._sseq += 1
+                pt = pt.rstrip(b"\x00")
+                if not pt:
+                    continue
+                it = pt[-1]
+                payload = pt[:-1]
+                if it == 23:
+                    self._appbuf += payload
+                elif it == 22:
+                    m = payload
+                    while len(m) >= 4:
+                        mt = m[0]
+                        mlen = (m[1] << 16) | (m[2] << 8) | m[3]
+                        mbody = m[4 : 4 + mlen]
+                        m = m[4 + mlen :]
+                        if mt == 0x18:
+                            request = mbody[0] if mbody else 0
+                            self._s_ap = self._expand_label(self._s_ap, b"traffic upd", b"", self._hlen, self._h)
+                            self._s_key = self._expand_label(self._s_ap, b"key", b"", self._keylen, self._h)
+                            self._s_iv = self._expand_label(self._s_ap, b"iv", b"", 12, self._h)
+                            self._sseq = 0
+                            if request == 1:
+                                upd = b"\x18\x00\x00\x01\x00" + b"\x16"
+                                uaad = b"\x17\x03\x03" + struct.pack("!H", len(upd) + 16)
+                                unonce = bytes(
+                                    a ^ b
+                                    for a, b in zip(self._c_iv, b"\x00\x00\x00\x00" + struct.pack("!Q", self._cseq))
+                                )
+                                ucipher = (
+                                    ChaCha20Poly1305(self._c_key) if self._cipher == 0x1303 else AESGCM(self._c_key)
+                                )
+                                uct = ucipher.encrypt(unonce, upd, uaad)
+                                self._cseq += 1
+                                self._sock.sendall(b"\x17\x03\x03" + struct.pack("!H", len(uct)) + uct)
+                                self._c_ap = self._expand_label(self._c_ap, b"traffic upd", b"", self._hlen, self._h)
+                                self._c_key = self._expand_label(self._c_ap, b"key", b"", self._keylen, self._h)
+                                self._c_iv = self._expand_label(self._c_ap, b"iv", b"", 12, self._h)
+                                self._cseq = 0
+                elif it == 21:
+                    raise ConnectionError("tls alert")
+            return processed
+
+        def recv(self, n=4096):
+            while not self._appbuf:
+                got = self._fill_once()
+                if not got:
+                    if self._sock.gettimeout() == 0.0:
+                        raise BlockingIOError(errno.EAGAIN, "no data")
+                    continue
+            r = self._appbuf[:n]
+            self._appbuf = self._appbuf[n:]
+            return r
+
+        def pending(self):
+            return len(self._appbuf)
+
+    class DreameClient(Client):
+        def _create_socket_connection(self):
+            timeout = getattr(self, "_connect_timeout", 15) or 15
+            return DreameVacuumDreameHomeCloudProtocol.DreameTLSSocket(
+                self._host, int(self._port), self._host, timeout, self._userdata._strings
+            ).connect()
+
+        def _packet_queue(self, command, packet, *args, **kwargs):
+            if command == 0x10:
+                packet = bytearray(packet)
+                i = 1
+                while packet[i] & 0x80:
+                    i += 1
+                packet[i + 8] |= 0x08
+            return super()._packet_queue(command, packet, *args, **kwargs)
+
     def __init__(
         self,
         username: str,
@@ -99,7 +572,8 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._account_type = account_type
         self._country = country
         self._did = did
-        self._session = requests.session()
+        self._conns = {}
+        self._http_lock = Lock()
         self._queue = queue.Queue()
         self._thread = None
         self._client_queue = queue.Queue()
@@ -125,9 +599,129 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._key = None
         self._uid = None
         self._uuid = None
+        self._domain = None
+        self._region = None
+        self._lang = None
+        self._ccode = None
+        self._cid = None
+        self._vid = None
+        self._au = None
+        self._ua = None
+        self._vs = hashlib.md5(random.randbytes(16)).hexdigest()
+        self._mt = False
         self._strings = None
         self.verification_url = None
         self.captcha_img = None
+
+    def _http(self, method, url, headers, body, timeout):
+        s = self._strings
+        u = urlsplit(url)
+        host, port = u.hostname, (u.port or 443)
+        path = u.path or "/"
+        if u.query:
+            path += "?" + u.query
+        host_hdr = host if port == 443 else ("%s:%d" % (host, port))
+        data = body.encode("utf-8") if isinstance(body, str) else body
+        key = (host, port)
+        with self._http_lock:
+            for attempt in range(2):
+                sock = self._conns.get(key)
+                fresh = sock is None
+                if fresh:
+                    sock = self.DreameTLSSocket(host, port, host, timeout, s).connect()
+                    self._conns[key] = sock
+                try:
+                    sock.settimeout(timeout)
+                    lines = ["%s %s HTTP/1.1" % (method, path)]
+                    host_done = cl_done = False
+                    for k, v in headers.items():
+                        if v is None:
+                            continue
+                        lk = k.lower()
+                        if lk == s[83]:
+                            host_done = True
+                        elif lk == s[84]:
+                            cl_done = True
+                        lines.append("%s: %s" % (k, v))
+                        if lk == s[88] and data is not None and not cl_done:
+                            lines.append("%s: %d" % (s[84], len(data)))
+                            cl_done = True
+                        elif lk == s[43] and not host_done:
+                            lines.append("%s: %s" % (s[83], host_hdr))
+                            host_done = True
+                    if data is not None and not cl_done:
+                        lines.append("%s: %d" % (s[84], len(data)))
+                    if not host_done:
+                        lines.insert(1, "%s: %s" % (s[83], host_hdr))
+                    sock.send(("\r\n".join(lines) + "\r\n\r\n").encode("utf-8"))
+                    if data:
+                        sock.send(data)
+                    buf = [b""]
+
+                    def line():
+                        while b"\r\n" not in buf[0]:
+                            buf[0] += sock.recv(4096)
+                        ln, _, rest = buf[0].partition(b"\r\n")
+                        buf[0] = rest
+                        return ln
+
+                    def readn(n):
+                        while len(buf[0]) < n:
+                            buf[0] += sock.recv(65536)
+                        r = buf[0][:n]
+                        buf[0] = buf[0][n:]
+                        return r
+
+                    status = int(line().split(b" ", 2)[1])
+                    hdrs = {}
+                    while True:
+                        h = line()
+                        if h == b"":
+                            break
+                        hk, _, hv = h.partition(b":")
+                        hdrs[hk.decode("latin1").strip().lower()] = hv.decode("latin1").strip()
+                    if "chunked" in hdrs.get(s[85], "").lower():
+                        content = b""
+                        while True:
+                            size = int(line().split(b";")[0], 16)
+                            if size == 0:
+                                line()
+                                break
+                            content += readn(size)
+                            readn(2)
+                    elif s[84] in hdrs:
+                        content = readn(int(hdrs[s[84]]))
+                    else:
+                        content = buf[0]
+                        try:
+                            while True:
+                                content += sock.recv(65536)
+                        except (ConnectionError, OSError):
+                            pass
+                        self._close_conn(key)
+                    enc = hdrs.get(s[86], "").lower()
+                    if "gzip" in enc:
+                        content = gzip.decompress(content)
+                    elif "deflate" in enc:
+                        content = zlib.decompress(content)
+                    if hdrs.get(s[87], "").lower() == "close":
+                        self._close_conn(key)
+                    return status, content
+                except (ConnectionError, OSError) as ex:
+                    self._close_conn(key)
+                    if isinstance(ex, TimeoutError):
+                        raise
+                    if fresh:
+                        raise
+            raise ConnectionError("request failed")
+
+    def _close_conn(self, key):
+        sock = self._conns.pop(key, None)
+        if sock is not None:
+            try:
+                sock.close()
+            except Exception:
+                pass
 
     def _api_task(self):
         while True:
@@ -151,6 +745,8 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._queue.put((callback, url, params, retry_count))
 
     def _api_call(self, url, params=None, retry_count=2, timeout=None):
+        if isinstance(params, dict):
+            params = self._signed(params)
         return self.request(
             f"{self.get_api_url()}/{url}",
             json.dumps(params, separators=(",", ":")) if params is not None else None,
@@ -160,6 +756,80 @@ class DreameVacuumDreameHomeCloudProtocol:
 
     def get_api_url(self) -> str:
         return f"https://{self._country}{self._strings[0]}:{self._strings[1]}"
+
+    def _s(self, base, tag) -> str:
+        return hashlib.md5(f"{base}{tag}".encode("utf-8")).hexdigest()
+
+    def _base_headers(self, content_type) -> Dict[str, str]:
+        s = self._strings
+        meta = f"{s[59]}{self._vid}"
+        if self._mt:
+            meta += (
+                f"{s[71]}{self._s(self._username, 'c')[:8]}"
+                f"{s[72]}{self._s(self._username, 'w')[:8]}"
+                f"{s[73]}{self._vs}"
+            )
+        headers = {
+            s[42].lower(): self._ua,
+            s[58]: meta,
+            s[88]: "gzip",
+        }
+        if self._region and self._lang and self._ccode:
+            data = pad(f"{self._region}|{self._lang}|{self._ccode}".encode("utf-8"), 16)
+            headers[s[60]] = base64.b64encode(AES.new(self._cid, AES.MODE_ECB).encrypt(data)).decode()
+        headers[s[44]] = self._ti if self._ti else s[5]
+        headers[s[43]] = "Basic " + self._au
+        if self._account_type == "mova":
+            headers[s[61]] = s[62]
+        headers[s[45]] = content_type
+        return headers
+
+    def _refresh_expired_key(self) -> None:
+        if self._key_expire:
+            remaining = self._key_expire - time.time()
+            if 0 < remaining <= 600:
+                self.login()
+
+    def _auth_failure(self, text) -> int:
+        try:
+            code = json.loads(text).get("code")
+        except:
+            return 1
+        return 1 if code is None or code == 401 else 2
+
+    def _auth_headers(self, content_type) -> Dict[str, str]:
+        headers = self._base_headers(content_type)
+        if self._key:
+            headers[self._strings[41]] = self._key
+        return headers
+
+    def _spliced(self, obj, top) -> str:
+        parts = []
+        for k in sorted(obj.keys()):
+            v = obj[k]
+            if isinstance(v, dict):
+                inner = self._spliced(v, False)
+                parts.append(f"{k}=[{inner}]" if inner else f"{k}=]")
+            elif isinstance(v, list):
+                if top:
+                    parts.append(f"{k}={json.dumps(v, sort_keys=True, separators=(',', ':'), ensure_ascii=False)}")
+            elif isinstance(v, bool):
+                parts.append(f"{k}={'true' if v else 'false'}")
+            elif v is None:
+                parts.append(f"{k}=null")
+            elif top:
+                parts.append(f"{k}={v}")
+            else:
+                parts.append(f"{k}={json.dumps(v, ensure_ascii=False)}")
+        return "&".join(parts)
+
+    def _signed(self, params) -> Dict[str, Any]:
+        ms = int(time.time() * 1000)
+        base = self._spliced(params, True) + str(ms) + self._cid.decode("utf-8")
+        result = dict(params)
+        result[self._strings[63]] = hashlib.md5(base.encode("utf-8")).hexdigest()
+        result[self._strings[64]] = ms
+        return result
 
     @property
     def device_id(self) -> str:
@@ -192,8 +862,6 @@ class DreameVacuumDreameHomeCloudProtocol:
     def _reconnect_timer_cancel(self):
         if self._reconnect_timer is not None:
             self._reconnect_timer.cancel()
-            del self._reconnect_timer
-            self._reconnect_timer = None
 
     def _reconnect_timer_task(self):
         self._reconnect_timer_cancel()
@@ -235,8 +903,8 @@ class DreameVacuumDreameHomeCloudProtocol:
             if (
                 self._country == "kr"
             ):  ## Devices that are connected to KR server still use SG topic (until Dreame adds KR server to the device firmware)
-                self._client.subscribe(f"/{self._strings[7]}/{self._did}/{self._uid}/{self._model}/sg/")
-            client.subscribe(f"/{self._strings[7]}/{self._did}/{self._uid}/{self._model}/{self._country}/")
+                self._client.subscribe(f"/{self._strings[6]}/{self._did}/{self._uid}/{self._model}/sg/")
+            client.subscribe(f"/{self._strings[6]}/{self._did}/{self._uid}/{self._model}/{self._country}/")
             if self._connected_callback:
                 self._client_queue.put((self._connected_callback, None))
         else:
@@ -255,8 +923,9 @@ class DreameVacuumDreameHomeCloudProtocol:
                     self._client_connecting = True
                     _LOGGER.info("Device Client disconnected (%s) Reconnecting...", rc)
                 self._reconnect_timer_cancel()
-                self._reconnect_timer = Timer(10, self._reconnect_timer_task)
-                self._reconnect_timer.start()
+                if self._reconnect_timer is None:
+                    self._reconnect_timer = RestartableTimer()
+                self._reconnect_timer.start(10, self._reconnect_timer_task)
 
     @staticmethod
     def _on_client_message(client, self, message):
@@ -276,15 +945,15 @@ class DreameVacuumDreameHomeCloudProtocol:
                 pass
 
     def _handle_device_info(self, info):
-        self._uid = info[self._strings[8]]
+        self._uid = info[self._strings[7]]
         self._did = info["did"]
-        self._model = info[self._strings[35]]
-        self._host = info[self._strings[9]]
-        prop = info[self._strings[10]]
+        self._model = info[self._strings[30]]
+        self._host = info[self._strings[8]]
+        prop = info[self._strings[9]]
         if prop and prop != "":
             prop = json.loads(prop)
-            if self._strings[11] in prop:
-                self._stream_key = prop[self._strings[11]]
+            if self._strings[10] in prop:
+                self._stream_key = prop[self._strings[10]]
 
     def connect(self, message_callback=None, connected_callback=None):
         if self._logged_in:
@@ -303,16 +972,16 @@ class DreameVacuumDreameHomeCloudProtocol:
                             host = self._host.split(":")
                             if self._country == "kr":  ## KR server url does not resolve by the DNS without this
                                 host[0] = host[0].replace("10100", "10000")
-                            key = f"{self._strings[53]}{self._uid}{self._strings[54]}{DreameVacuumDreameHomeCloudProtocol.get_random_agent_id()}{self._strings[54]}{host[0]}"
+                            key = f"{self._strings[47]}{self._s(self._did, self._strings[90])}"
                             if paho.mqtt.__version__[0] > "1":
-                                self._client = Client(
+                                self._client = self.DreameClient(
                                     paho.mqtt.client.CallbackAPIVersion.VERSION1,
                                     key,
                                     clean_session=True,
                                     userdata=self,
                                 )
                             else:
-                                self._client = Client(
+                                self._client = self.DreameClient(
                                     key,
                                     clean_session=True,
                                     userdata=self,
@@ -321,8 +990,6 @@ class DreameVacuumDreameHomeCloudProtocol:
                             self._client.on_disconnect = DreameVacuumDreameHomeCloudProtocol._on_client_disconnect
                             self._client.on_message = DreameVacuumDreameHomeCloudProtocol._on_client_message
                             self._client.reconnect_delay_set(1, 15)
-                            self._client.tls_set(cert_reqs=ssl.CERT_NONE)
-                            self._client.tls_insecure_set(True)
                             self._set_client_key()
                             self._client.connect_timeout = 10
                             self._client.disable_logger()
@@ -337,59 +1004,70 @@ class DreameVacuumDreameHomeCloudProtocol:
         return None
 
     def login(self) -> bool:
-        self._session.close()
-        self._session = requests.session()
+        for k in list(self._conns):
+            self._close_conn(k)
 
         if self._strings is None:
             self._strings = json.loads(zlib.decompress(base64.b64decode(DREAME_STRINGS), zlib.MAX_WBITS | 32))
             if self._account_type == "mova":
-                self._strings[0] = self._strings[57]
-                self._strings[3] = self._strings[58]
-                self._strings[6] = f"{self._strings[6][:5]}2"
+                self._strings[0] = self._strings[50]
+                self._strings[3] = self._strings[51]
+                self._strings[5] = f"{self._strings[5][:5]}2"
             elif self._account_type == "trouver":
-                self._strings[0] = self._strings[59]
-                self._strings[3] = self._strings[60]
-                self._strings[6] = f"{self._strings[6][:5]}5"
+                self._strings[0] = self._strings[52]
+                self._strings[3] = self._strings[53]
+                self._strings[5] = f"{self._strings[5][:5]}5"
+
+        if self._account_type == "mova":
+            self._cid = self._strings[56].encode("utf-8")
+            self._vid = self._strings[66]
+            self._au = self._strings[70]
+            self._ua = self._strings[69]
+            self._mt = True
+        elif self._account_type == "trouver":
+            self._cid = self._strings[57].encode("utf-8")
+            self._vid = self._strings[67]
+            self._au = self._strings[78]
+            self._ua = self._strings[80]
+            self._mt = False
+        else:
+            self._cid = self._strings[55].encode("utf-8")
+            self._vid = self._strings[65]
+            self._au = self._strings[4].split()[-1]
+            self._ua = self._strings[79]
+            self._mt = True
 
         self._auth_failed = False
         try:
+            s = self._strings
             if self._secondary_key:
-                data = f"{self._strings[12]}{self._strings[13]}{self._secondary_key}"
+                data = f"{s[77]}{self._secondary_key}"
             else:
-                data = f"{self._strings[12]}{self._strings[14]}{self._username}{self._strings[15]}{hashlib.md5((self._password + self._strings[2]).encode('utf-8')).hexdigest()}{self._strings[16]}"
+                pw = hashlib.md5((self._password + s[2]).encode("utf-8")).hexdigest()
+                data = f"{s[74]}{quote(self._username, safe='')}{s[11]}{pw}"
+                if self._ccode and self._lang:
+                    data = f"{data}{s[75]}{self._ccode}{s[76]}{self._lang}"
 
-            headers = {
-                "Accept": "*/*",
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Accept-Language": "en-US;q=0.8",
-                "Accept-Encoding": "gzip, deflate",
-                self._strings[47]: self._strings[3],
-                self._strings[49]: self._strings[5],
-                self._strings[50]: self._ti if self._ti else self._strings[6],
-            }
+            headers = self._base_headers("application/x-www-form-urlencoded")
 
-            if self._country == "cn":
-                headers[self._strings[48]] = self._strings[4]
-
-            response = self._session.post(
-                self.get_api_url() + self._strings[17],
-                headers=headers,
-                data=data,
-                timeout=10,
-            )
-            if response.status_code == 200:
-                data = json.loads(response.text)
-                if self._strings[18] in data:
-                    self._key = data.get(self._strings[18])
-                    self._secondary_key = data.get(self._strings[19])
-                    self._key_expire = time.time() + data.get(self._strings[20]) - 120
+            status, content = self._http("POST", self.get_api_url() + self._strings[12], headers, data, 10)
+            if status == 200:
+                data = json.loads(content)
+                if self._strings[13] in data:
+                    self._key = data.get(self._strings[13])
+                    self._secondary_key = data.get(self._strings[14])
+                    self._key_expire = time.time() + data.get(self._strings[15])
                     self._uuid = data.get("uid")
-                    self._ti = data.get(self._strings[22], self._ti)
+                    self._domain = data.get("domain", self._domain)
+                    self._region = data.get("region", self._region)
+                    self._lang = data.get("lang", self._lang)
+                    self._ccode = data.get("country", self._ccode)
+                    self._ti = data.get(self._strings[17], self._ti)
                     self._logged_in = True
             else:
                 if self._username and self._password:
                     try:
-                        data = json.loads(response.text)
+                        data = json.loads(content)
                         if "error_description" in data and "refresh token" in data["error_description"]:
                             self._secondary_key = None
                             return self.login()
@@ -397,13 +1075,11 @@ class DreameVacuumDreameHomeCloudProtocol:
                         pass
                 self._logged_in = False
                 self._auth_failed = True
-                _LOGGER.error("Login failed: %s", response.text)
-        except requests.exceptions.Timeout:
-            response = None
+                _LOGGER.error("Login failed: %s", content.decode("utf-8", "replace"))
+        except TimeoutError:
             self._logged_in = False
             _LOGGER.warning("Login Failed: Read timed out. (read timeout=10)")
         except Exception as ex:
-            response = None
             self._logged_in = False
             _LOGGER.error("Login failed: %s", str(ex))
 
@@ -431,57 +1107,55 @@ class DreameVacuumDreameHomeCloudProtocol:
                         devices = [device]
                         break
                 elif ".vacuum." in model:
-                    _LOGGER.warning("Unsupported device: %s", device)
-                    unsupported_devices.append(device)
+                    info = copy.deepcopy(device)
+                    ## Redact user/device targeted information so it can be safely shared publicly within an issue
+                    for key in [
+                        "id",
+                        "did",
+                        "mac",
+                        "masterUid",
+                        "masterUid2UUID",
+                        "masterName",
+                        "customName",
+                        "property",
+                    ]:
+                        if key in info:
+                            del info[key]
 
-            if mac is None:
-                try:
-                    session_id = random.randint(1000, 100000000)
-                    for device in all_devices:
-                        model = device["model"]
-                        if ".vacuum." in model:
-                            device_id = hashlib.sha256(
-                                (device["mac"].replace(":", "").lower()).encode(encoding="UTF-8")
-                            ).hexdigest()
-                            requests.post(
-                                base64.b64decode(DATA_URL),
-                                data=base64.b64decode(DATA_JSON)
-                                .decode("utf-8")
-                                .format(
-                                    device_id,
-                                    VERSION,
-                                    model,
-                                    session_id,
-                                    "device" if model in models else "unsupported_device",
-                                ),
-                                timeout=5,
-                            )
-                except:
-                    pass
+                    ## First 5/6 characters of the serial number contains actual device firmware model name so it is required
+                    if "sn" in info and isinstance(info["sn"], str):
+                        sn_str = info["sn"]
+                        if len(sn_str) > 6:
+                            info["sn"] = sn_str[:6] + "*" * (len(sn_str) - 6)
+                        else:
+                            del info["sn"]
+
+                    _LOGGER.warning("Unsupported device: %s", info)
+                    unsupported_devices.append(device)
         return devices, unsupported_devices
 
     def get_devices(self) -> Any:
-        response = self._api_call(f"{self._strings[23]}/{self._strings[24]}/{self._strings[27]}/{self._strings[28]}")
+        response = self._api_call(f"{self._strings[18]}/{self._strings[19]}/{self._strings[22]}/{self._strings[23]}")
         if response and "data" in response and response["code"] == 0:
             return response["data"]
         return None
 
     def get_device_info(self) -> Any:
         response = self._api_call(
-            f"{self._strings[23]}/{self._strings[24]}/{self._strings[27]}/{self._strings[29]}",
+            f"{self._strings[18]}/{self._strings[19]}/{self._strings[22]}/{self._strings[24]}",
             {"did": self._did},
         )
         if response and "data" in response and response["code"] == 0:
             data = response["data"]
             self._handle_device_info(data)
             response = self._api_call(
-                f"{self._strings[23]}/{self._strings[25]}/{self._strings[30]}",
+                f"{self._strings[18]}/{self._strings[20]}/{self._strings[25]}",
                 {"did": self._did},
             )
             if response and "data" in response and response["code"] == 0:
-                if self._strings[31] in response["data"]:
+                if self._strings[26] in response["data"]:
                     data = {
-                        **response["data"][self._strings[31]][self._strings[32]],
+                        **response["data"][self._strings[26]][self._strings[27]],
                         **data,
                     }
                 else:
@@ -491,7 +1165,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                         found = list(
                             filter(
                                 lambda d: str(d["did"]) == self._did,
-                                devices[self._strings[34]][self._strings[36]],
+                                devices[self._strings[29]][self._strings[31]],
                             )
                         )
                         if len(found) > 0:
@@ -523,7 +1197,7 @@ class DreameVacuumDreameHomeCloudProtocol:
         if self._host and len(self._host):
             host = f"-{self._host.split('.')[0]}"
 
-        self._id = self._id + 1
+        self._id = self._id + 1  # random.randint(0, int(self._strings[81]) - 1) + int(self._strings[82])
         self._api_call_async(
             lambda api_response: callback(
                 None
@@ -533,7 +1207,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                 or "result" not in api_response["data"]
                 else api_response["data"]["result"]
             ),
-            f"{self._strings[37]}{host}/{self._strings[27]}/{self._strings[38]}",
+            f"{self._strings[32]}{host}/{self._strings[22]}/{self._strings[33]}",
             {
                 "did": str(self._did),
                 "id": self._id,
@@ -552,8 +1226,9 @@ class DreameVacuumDreameHomeCloudProtocol:
         if self._host and len(self._host):
             host = f"-{self._host.split('.')[0]}"
 
+        self._id = self._id + 1  # random.randint(0, int(self._strings[81]) - 1) + int(self._strings[82])
         api_response = self._api_call(
-            f"{self._strings[37]}{host}/{self._strings[27]}/{self._strings[38]}",
+            f"{self._strings[32]}{host}/{self._strings[22]}/{self._strings[33]}",
             {
                 "did": str(self._did),
                 "id": self._id,
@@ -567,7 +1242,6 @@ class DreameVacuumDreameHomeCloudProtocol:
             retry_count,
             timeout,
         )
-        self._id = self._id + 1
         if (
             api_response is None
             or "data" not in api_response
@@ -582,38 +1256,37 @@ class DreameVacuumDreameHomeCloudProtocol:
             return None
         return api_response["data"]["result"]
 
-    def get_device_file(self, file_name, file_type) -> Any:
+    def get_device_file(self, file_name, file_type, retried=False) -> Any:
         try:
-            if self._key_expire and time.time() > self._key_expire:
-                if not self.login():
-                    return None
+            self._refresh_expired_key()
 
-            response = self._session.post(
-                f"{self.get_api_url()}{self._strings[61]}",
-                headers={
-                    "Accept": "*/*",
-                    self._strings[47]: self._strings[3],
-                    self._strings[49]: self._strings[5],
-                    self._strings[50]: self._ti if self._ti else self._strings[6],
-                    self._strings[46]: self._key,
-                    self._strings[48]: self._strings[4] if self._country == "cn" else None,
-                },
-                json={
+            body = self._signed(
+                {
                     "did": str(self._did),
                     "uid": str(self._uid),
                     "fileinfo": json.dumps({"filename": file_name, "type": file_type}, separators=(",", ":")),
-                },
-                timeout=15,
+                }
             )
-            if response.status_code == 200:
-                return response.content
-            elif response.status_code == 401 and self._secondary_key:
-                _LOGGER.warning("Execute api call failed: Token Expired")
-                if self.login():
-                    return self.get_device_file(file_name, file_name)
-            _LOGGER.warning("Get device file failed! (%s)", response.text)
+            status, content = self._http(
+                "POST",
+                f"{self.get_api_url()}{self._strings[54]}",
+                self._auth_headers(self._strings[46]),
+                json.dumps(body, separators=(",", ":")),
+                15,
+            )
+            if status == 200:
+                return content
+            elif status == 401:
+                if self._auth_failure(content.decode("utf-8", "replace")) == 2:
+                    self._logged_in = False
+                    self._auth_failed = True
+                    _LOGGER.error("Get device file failed: Session invalid (%s)", content.decode("utf-8", "replace"))
+                    return None
+                if not retried and self.login():
+                    return self.get_device_file(file_name, file_type, True)
+            _LOGGER.warning("Get device file failed! (%s)", content.decode("utf-8", "replace"))
 
-        except requests.exceptions.Timeout:
+        except TimeoutError:
             _LOGGER.warning("Error while executing request: Read timed out. (timeout=15)")
         except Exception as ex:
             _LOGGER.warning("Error while executing request: %s", str(ex))
@@ -623,26 +1296,31 @@ class DreameVacuumDreameHomeCloudProtocol:
         retries = 0
         if not retry_count or retry_count < 0:
             retry_count = 0
+        headers = {
+            "Accept": None,
+            "Connection": "Keep-Alive",
+            "Accept-Encoding": "gzip",
+            self._strings[42]: self._strings[68],
+        }
         while retries < retry_count + 1:
             try:
-                response = self._session.get(url, timeout=6)
+                status, content = self._http("GET", url, headers, None, 6)
+                if status == 200:
+                    return content
             except Exception as ex:
-                response = None
                 _LOGGER.warning("Unable to get file at %s: %s", url, ex)
-            if response is not None and response.status_code == 200:
-                return response.content
             retries = retries + 1
         return None
 
     def get_file_url(self, object_name: str = "") -> Any:
         api_response = self._api_call(
-            f"{self._strings[23]}/{self._strings[39]}/{self._strings[56]}",
+            f"{self._strings[18]}/{self._strings[34]}/{self._strings[49]}",
             {
                 "did": str(self._did),
                 "uid": str(self._uid),
-                self._strings[35]: self._model,
+                self._strings[30]: self._model,
                 "filename": object_name[1:],
-                self._strings[21]: self._country,
+                self._strings[16]: self._country,
             },
         )
         if api_response is None or "data" not in api_response:
@@ -652,12 +1330,12 @@ class DreameVacuumDreameHomeCloudProtocol:
 
     def get_interim_file_url(self, object_name: str = "") -> str:
         api_response = self._api_call(
-            f"{self._strings[23]}/{self._strings[39]}/{self._strings[55]}",
+            f"{self._strings[18]}/{self._strings[34]}/{self._strings[48]}",
             {
                 "did": str(self._did),
-                self._strings[35]: self._model,
-                self._strings[40]: object_name,
-                self._strings[21]: self._country,
+                self._strings[30]: self._model,
+                self._strings[35]: object_name,
+                self._strings[16]: self._country,
             },
         )
         if api_response is None or "data" not in api_response:
@@ -667,7 +1345,7 @@ class DreameVacuumDreameHomeCloudProtocol:
 
     def get_properties(self, keys):
         params = {"did": str(self._did), "keys": keys}
-        api_response = self._api_call(f"{self._strings[23]}/{self._strings[25]}/{self._strings[41]}", params)
+        api_response = self._api_call(f"{self._strings[18]}/{self._strings[20]}/{self._strings[36]}", params)
         if api_response is None or "data" not in api_response:
             return None
 
@@ -687,8 +1365,8 @@ class DreameVacuumDreameHomeCloudProtocol:
             "from": time_start if time_start else 1687019188,
             "limit": limit,
             "siid": data_keys[0],
-            self._strings[21]: self._country,
-            self._strings[42]: 3,
+            self._strings[16]: self._country,
+            self._strings[37]: 3,
         }
         param_name = "piid"
         if type == "event":
@@ -697,16 +1375,16 @@ class DreameVacuumDreameHomeCloudProtocol:
             param_name = "aiid"
 
         params[param_name] = data_keys[1]
-        api_response = self._api_call(f"{self._strings[23]}/{self._strings[25]}/{self._strings[43]}", params)
-        if api_response is None or "data" not in api_response or self._strings[33] not in api_response["data"]:
+        api_response = self._api_call(f"{self._strings[18]}/{self._strings[20]}/{self._strings[38]}", params)
+        if api_response is None or "data" not in api_response or self._strings[28] not in api_response["data"]:
             return None
 
-        return api_response["data"][self._strings[33]]
+        return api_response["data"][self._strings[28]]
 
     def get_batch_device_datas(self, props) -> Any:
         api_response = self._api_call(
-            f"{self._strings[23]}/{self._strings[26]}/{self._strings[44]}",
-            {"did": self._did, self._strings[35]: props},
+            f"{self._strings[18]}/{self._strings[21]}/{self._strings[39]}",
+            {"did": self._did, self._strings[30]: props},
         )
         if api_response is None or "data" not in api_response:
             return None
@@ -714,63 +1392,52 @@ class DreameVacuumDreameHomeCloudProtocol:
 
     def set_batch_device_datas(self, props) -> Any:
         api_response = self._api_call(
-            f"{self._strings[23]}/{self._strings[26]}/{self._strings[45]}",
-            {"did": self._did, self._strings[35]: props},
+            f"{self._strings[18]}/{self._strings[21]}/{self._strings[40]}",
+            {"did": self._did, self._strings[30]: props},
         )
         if api_response is None or "result" not in api_response:
             return None
         return api_response["result"]
 
-    def request(self, url: str, data, retry_count=2, timeout=None) -> Any:
+    def request(self, url: str, data, retry_count=2, timeout=None, retried=False) -> Any:
         retries = 0
         if not timeout:
             timeout = 6
 
-        if self._key_expire and time.time() > self._key_expire:
-            if not self.login():
-                return None
+        self._refresh_expired_key()
 
         if not retry_count or retry_count < 0:
             retry_count = 0
+        result = None
         while retries < retry_count + 1:
             try:
-                headers = {
-                    "Accept": "*/*",
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "Accept-Language": "en-US;q=0.8",
-                    "Accept-Encoding": "gzip, deflate",
-                    self._strings[47]: self._strings[3],
-                    self._strings[49]: self._strings[5],
-                    self._strings[50]: self._ti if self._ti else self._strings[6],
-                    self._strings[51]: self._strings[52],
-                    self._strings[46]: self._key,
-                }
-
-                if self._country == "cn":
-                    headers[self._strings[48]] = self._strings[4]
-                response = self._session.post(url, headers=headers, data=data, timeout=timeout)
+                headers = self._auth_headers(self._strings[46])
+                result = self._http("POST", url, headers, data, timeout)
                 break
-            except requests.exceptions.Timeout:
+            except TimeoutError:
                 retries = retries + 1
-                response = None
                 if self._connected:
                     _LOGGER.warning(f"Error while executing request: Read timed out. (timeout={timeout})")
             except Exception as ex:
                 retries = retries + 1
-                response = None
                 if self._connected:
                     _LOGGER.warning("Error while executing request: %s", str(ex))
 
-        if response is not None:
-            if response.status_code == 200:
+        if result is not None:
+            status, content = result
+            if status == 200:
                 self._fail_count = 0
                 self._connected = True
-                return json.loads(response.text)
-            elif response.status_code == 401 and self._secondary_key:
-                _LOGGER.warning("Execute api call failed: Token Expired")
-                self.login()
+                return json.loads(content)
+            elif status == 401:
+                if self._auth_failure(content.decode("utf-8", "replace")) == 2:
+                    self._logged_in = False
+                    self._auth_failed = True
+                    _LOGGER.error("Execute api call failed: Session invalid (%s)", content.decode("utf-8", "replace"))
+                elif not retried and self.login():
+                    return self.request(url, data, retry_count, timeout, True)
             else:
-                _LOGGER.warning("Execute api call failed with response: %s", response.text)
+                _LOGGER.warning("Execute api call failed with response: %s", content.decode("utf-8", "replace"))
 
         if self._fail_count == 5:
             self._connected = False
@@ -779,11 +1446,13 @@ class DreameVacuumDreameHomeCloudProtocol:
         return None
 
     def disconnect(self):
-        self._session.close()
+        for k in list(self._conns):
+            self._close_conn(k)
         self._connected = False
         self._logged_in = False
         self._auth_failed = False
-        self._reconnect_timer_cancel()
+        if self._reconnect_timer is not None:
+            self._reconnect_timer.stop()
         if self._client is not None:
             self._client.disconnect()
             self._client.loop_stop()
@@ -797,12 +1466,6 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._message_callback = None
         self._connected_callback = None
 
-    @staticmethod
-    def get_random_agent_id() -> str:
-        letters = "ABCDEF"
-        result_str = "".join(random.choice(letters) for i in range(13))
-        return result_str
-
 
 class DreameVacuumMiHomeCloudProtocol:
     def __init__(
@@ -812,13 +1475,14 @@ class DreameVacuumMiHomeCloudProtocol:
         self._password = password
         self._country = country
         self._auth_key = auth_key
-        self._session = requests.session()
+        self._session_obj = None
         self._queue = queue.Queue()
         self._thread = None
         self._sign = None
         self._ssecurity = None
         self._userId = None
         self._service_token = None
+        self._pass_token = None
         self._captcha_ick = None
         self._captcha_code = None
         self._logged_in = False
@@ -829,11 +1493,13 @@ class DreameVacuumMiHomeCloudProtocol:
 
         if self._auth_key:
             data = self._auth_key.split(" ")
-            if len(data) == 4:
+            if len(data) >= 4:
                 self._service_token = data[0]
                 self._ssecurity = data[1]
                 self._userId = data[2]
                 self._client_id = data[3]
+            if len(data) >= 5:
+                self._pass_token = data[4]
 
         self._useragent = f"Android-7.1.1-1.0.0-ONEPLUS A3010-136-{self._client_id} APP/xiaomi.smarthome APPV/62830"
         self._locale = locale.getdefaultlocale()[0]
@@ -852,6 +1518,11 @@ class DreameVacuumMiHomeCloudProtocol:
         except:
             self._timezone = "GMT+00:00"
 
+    def _get_session(self) -> requests.Session:
+        if self._session_obj is None:
+            self._session_obj = requests.session()
+        return self._session_obj
+
     def _api_task(self):
         while True:
             item = self._queue.get()
@@ -864,7 +1535,10 @@ class DreameVacuumMiHomeCloudProtocol:
                 self._logged_in = False
                 self._auth_failed = True
                 response = None
-            item[0](response)
+            try:
+                item[0](response)
+            except:
+                pass
 
             sleep(0.1)
             self._queue.task_done()
@@ -918,18 +1592,56 @@ class DreameVacuumMiHomeCloudProtocol:
     def check_login(self, response=None) -> bool:
         try:
             if response is None:
-                response = self.request(
-                    f"{self.get_api_url()}/v2/message/v2/check_new_msg",
-                    {
-                        "data": json.dumps(
-                            {
-                                "begin_at": int(time.time()) - 60,
-                            },
-                            separators=(",", ":"),
+                url = f"{self.get_api_url()}/v2/message/v2/check_new_msg"
+                params = {
+                    "data": json.dumps(
+                        {
+                            "begin_at": int(time.time()) - 60,
+                        },
+                        separators=(",", ":"),
+                    )
+                }
+                headers = {
+                    "User-Agent": self._useragent,
+                    "Accept-Encoding": "identity",
+                    "x-xiaomi-protocal-flag-cli": "PROTOCAL-HTTP2",
+                    "content-type": "application/x-www-form-urlencoded",
+                    "MIOT-ENCRYPT-ALGORITHM": "ENCRYPT-RC4",
+                }
+                cookies = {
+                    "userId": str(self._userId),
+                    "yetAnotherServiceToken": self._service_token,
+                    "serviceToken": self._service_token,
+                    "locale": str(self._locale),
+                    "timezone": str(self._timezone),
+                    "is_daylight": str(time.daylight),
+                    "dst_offset": str(time.localtime().tm_isdst * 60 * 60 * 1000),
+                    "channel": "MI_APP_STORE",
+                }
+                nonce = self.generate_nonce()
+                signed_nonce = self.signed_nonce(nonce)
+                fields = self.generate_enc_params(url, "POST", signed_nonce, nonce, params, self._ssecurity)
+
+                retries = 0
+                http_response = None
+                while retries < 2:
+                    try:
+                        http_response = self._get_session().post(
+                            url, headers=headers, cookies=cookies, data=fields, timeout=6
                         )
-                    },
-                    1,
-                )
+                        break
+                    except Exception:
+                        retries += 1
+                        http_response = None
+
+                if http_response is None:
+                    return True
+                if http_response.status_code != 200:
+                    return False
+
+                decoded = self.decrypt_rc4(self.signed_nonce(fields["_nonce"]), http_response.text)
+                response = json.loads(decoded) if decoded else None
+
             if response is not None:
                 message = response.get("message", "")
                 code = response.get("code", 0)
@@ -948,7 +1660,7 @@ class DreameVacuumMiHomeCloudProtocol:
 
     def login_step_1(self) -> bool:
         try:
-            response = self._session.get(
+            response = self._get_session().get(
                 "https://account.xiaomi.com/pass/serviceLogin?sid=xiaomiio&_json=true",
                 headers={
                     "User-Agent": self._useragent,
@@ -965,6 +1677,9 @@ class DreameVacuumMiHomeCloudProtocol:
                         self._userId = data.get("userId", self._userId)
                         self._ssecurity = data.get("ssecurity", self._ssecurity)
                         self._location = data.get("location")
+                        pass_token = data.get("passToken") or response.cookies.get("passToken")
+                        if pass_token:
+                            self._pass_token = pass_token
                     return True
                 self._auth_failed = True
         except:
@@ -988,13 +1703,14 @@ class DreameVacuumMiHomeCloudProtocol:
         self.captcha_img = None
 
         try:
+            session = self._get_session()
             cookies = {}
             if self._captcha_code and self._captcha_ick:
                 data["captCode"] = self._captcha_code
                 params["_dc"] = int(time.time() * 1000)
                 cookies["ick"] = self._captcha_ick
 
-            response = self._session.post(
+            response = session.post(
                 "https://account.xiaomi.com/pass/serviceLoginAuth2",
                 headers={
                     "User-Agent": self._useragent,
@@ -1013,13 +1729,16 @@ class DreameVacuumMiHomeCloudProtocol:
                         self._userId = data.get("userId", self._userId)
                         self._ssecurity = data.get("ssecurity", self._ssecurity)
                         self._location = location
+                        pass_token = data.get("passToken") or response.cookies.get("passToken")
+                        if pass_token:
+                            self._pass_token = pass_token
                         return True
 
                     if "notificationUrl" in data:
                         verification_url = data["notificationUrl"]
                         if verification_url[:4] != "http":
                             verification_url = f"https://account.xiaomi.com{verification_url}"
-                        self.send_2fa_code(verification_url)
+                        self.verification_url = verification_url
 
                     if "captchaUrl" in data:
                         url = data["captchaUrl"]
@@ -1027,7 +1746,7 @@ class DreameVacuumMiHomeCloudProtocol:
                             if url[:4] != "http":
                                 url = f"https://account.xiaomi.com{url}"
 
-                            response = self._session.get(url)
+                            response = session.get(url)
                             if ick := response.cookies.get("ick"):
                                 self._captcha_ick = ick
                                 self.captcha_img = base64.b64encode(response.content).decode()
@@ -1038,7 +1757,7 @@ class DreameVacuumMiHomeCloudProtocol:
 
     def login_step_3(self) -> bool:
         try:
-            response = self._session.get(
+            response = self._get_session().get(
                 self._location,
                 headers={
                     "User-Agent": self._useragent,
@@ -1049,7 +1768,12 @@ class DreameVacuumMiHomeCloudProtocol:
             if response is not None:
                 if response.status_code == 200 and "serviceToken" in response.cookies:
                     self._service_token = response.cookies.get("serviceToken")
+                    pass_token = self._get_session().cookies.get("passToken") or response.cookies.get("passToken")
+                    if pass_token:
+                        self._pass_token = pass_token
                     self._auth_key = f"{self._service_token} {self._ssecurity} {self._userId} {self._client_id}"
+                    if self._pass_token:
+                        self._auth_key = f"{self._auth_key} {self._pass_token}"
                     return True
                 else:
                     self._auth_failed = True
@@ -1060,15 +1784,20 @@ class DreameVacuumMiHomeCloudProtocol:
     def login(self) -> bool:
         self.login_error = None
         self.verification_dest = None
-        self._session.close()
-        self._session = requests.session()
-        self._session.cookies.set("sdkVersion", "3.8.6", domain="mi.com")
-        self._session.cookies.set("sdkVersion", "3.8.6", domain="xiaomi.com")
-        self._session.cookies.set("deviceId", self._client_id, domain="mi.com")
-        self._session.cookies.set("deviceId", self._client_id, domain="xiaomi.com")
+        if self._session_obj is not None:
+            self._session_obj.close()
+        session = self._session_obj = requests.session()
+        for domain in ("mi.com", "xiaomi.com"):
+            session.cookies.set("sdkVersion", "3.8.6", domain=domain)
+            session.cookies.set("deviceId", self._client_id, domain=domain)
+            if self._pass_token:
+                session.cookies.set("passToken", self._pass_token, domain=domain)
+            if self._userId:
+                session.cookies.set("userId", str(self._userId), domain=domain)
 
+        self._location = None
         logged_in = (self._ssecurity and self.check_login()) or (
-            self.login_step_1() and self.login_step_2() and self.login_step_3()
+            self.login_step_1() and (self._location or self.login_step_2()) and self.login_step_3()
         )
 
         if logged_in:
@@ -1081,17 +1810,18 @@ class DreameVacuumMiHomeCloudProtocol:
 
         return self._logged_in
 
-    def send_2fa_code(self, verification_url) -> bool:
-        if verification_url:
+    def send_2fa_code(self) -> bool:
+        if self.verification_url:
             path = "fe/service/identity/authStart"
-            if path in verification_url:
+            if path in self.verification_url:
                 self.login_error = "2fa_send_failed"
                 self.verification_dest = None
                 try:
-                    self._session.get(verification_url, headers={"User-Agent": self._useragent}, timeout=10)
-                    context = parse_qs(urlparse(verification_url).query).get("context", [""])[0]
+                    session = self._get_session()
+                    session.get(self.verification_url, headers={"User-Agent": self._useragent}, timeout=10)
+                    context = parse_qs(urlparse(self.verification_url).query).get("context", [""])[0]
 
-                    response = self._session.get(
+                    response = session.get(
                         "https://account.xiaomi.com/identity/list",
                         params={"sid": "xiaomiio", "context": context, "_locale": str(self._locale)},
                         timeout=10,
@@ -1109,7 +1839,7 @@ class DreameVacuumMiHomeCloudProtocol:
                                 flag = data.get("flag", 4)
 
                             key = "Phone" if flag == 4 else "Email"
-                            verify_response = self._session.get(
+                            verify_response = session.get(
                                 f"https://account.xiaomi.com/identity/auth/verify{key}",
                                 cookies={"identity_session": identity_session},
                                 params={
@@ -1143,7 +1873,7 @@ class DreameVacuumMiHomeCloudProtocol:
                                     self.login_error = desc or msg or "2fa_send_failed"
                                 return False
 
-                            send_response = self._session.post(
+                            send_response = session.post(
                                 f"https://account.xiaomi.com/identity/auth/send{key}Ticket",
                                 cookies={"identity_session": identity_session},
                                 params={
@@ -1157,7 +1887,7 @@ class DreameVacuumMiHomeCloudProtocol:
                                     "retry": 0,
                                     "icode": "",
                                     "_json": "true",
-                                    "ick": self._session.cookies.get("ick", ""),
+                                    "ick": session.cookies.get("ick", ""),
                                 },
                                 timeout=10,
                             )
@@ -1183,7 +1913,6 @@ class DreameVacuumMiHomeCloudProtocol:
                                 return False
 
                             self.login_error = None
-                            self.verification_url = verification_url
                             self.verification_dest = (
                                 verify_data.get("maskedPhone") or verify_data.get("maskedEmail") or "*****"
                             )
@@ -1194,7 +1923,8 @@ class DreameVacuumMiHomeCloudProtocol:
 
     def verify_code(self, code) -> bool:
         verification_url = self.verification_url
-        if not (code and verification_url and self._session and "fe/service/identity/authStart" in verification_url):
+        session = self._get_session()
+        if not (code and verification_url and session and "fe/service/identity/authStart" in verification_url):
             _LOGGER.error("2FA failed: Missing code, session, or invalid verification URL.")
             return False
 
@@ -1206,7 +1936,7 @@ class DreameVacuumMiHomeCloudProtocol:
                 _LOGGER.error("2FA failed: 'context' parameter missing from verification_url.")
                 return False
 
-            response = self._session.get(
+            response = session.get(
                 "https://account.xiaomi.com/identity/list",
                 params={"sid": "xiaomiio", "context": context, "_locale": str(self._locale)},
                 headers=headers,
@@ -1232,11 +1962,11 @@ class DreameVacuumMiHomeCloudProtocol:
                 _LOGGER.error(f"2FA failed: Could not parse identity/list JSON. Error: {e}")
                 return False
 
-            if not self._session.cookies.get("identity_session"):
+            if not session.cookies.get("identity_session"):
                 _LOGGER.error("2FA failed: Missing 'identity_session' cookie.")
                 return False
 
-            response = self._session.post(
+            response = session.post(
                 f"https://account.xiaomi.com/identity/auth/verify{'Phone' if flag == 4 else 'Email'}",
                 headers=headers,
                 params={
@@ -1252,7 +1982,7 @@ class DreameVacuumMiHomeCloudProtocol:
                     "ticket": code,
                     "trust": "false",
                     "_json": "true",
-                    "ick": self._session.cookies.get("ick", ""),
+                    "ick": session.cookies.get("ick", ""),
                 },
                 timeout=15,
             )
@@ -1272,9 +2002,9 @@ class DreameVacuumMiHomeCloudProtocol:
                 location_url = response.headers.get("Location")
 
             if location_url:
-                response = self._session.get(location_url, headers=headers, allow_redirects=True, timeout=10)
+                response = session.get(location_url, headers=headers, allow_redirects=True, timeout=10)
                 if response is not None and response.status_code == 200:
-                    for c in self._session.cookies:
+                    for c in session.cookies:
                         if c.name in ("userId", "cUserId") and c.value:
                             self._userId = str(c.value)
                             break
@@ -1288,7 +2018,7 @@ class DreameVacuumMiHomeCloudProtocol:
                         self._connected = True
                         return True
 
-            response = self._session.get(
+            response = session.get(
                 "https://account.xiaomi.com/identity/result/check",
                 params={"sid": "xiaomiio", "context": context, "_locale": str(self._locale)},
                 headers=headers,
@@ -1308,13 +2038,13 @@ class DreameVacuumMiHomeCloudProtocol:
                 _LOGGER.error(f"2FA failed: 'location_url' missing from check API. HTTP {response.status_code}")
                 return False
 
-            response = self._session.get(location_url, headers=headers, allow_redirects=False, timeout=10)
+            response = session.get(location_url, headers=headers, allow_redirects=False, timeout=10)
             if response is None:
                 _LOGGER.error("2FA failed: sts_init failed!")
                 return False
 
             if response.status_code == 200 and "Xiaomi Account - Tips" in response.text:
-                response = self._session.get(location_url, headers=headers, allow_redirects=False, timeout=10)
+                response = session.get(location_url, headers=headers, allow_redirects=False, timeout=10)
 
             extension_pragma = response.headers.get("extension-pragma")
             if extension_pragma and extension_pragma.startswith("{"):
@@ -1336,7 +2066,7 @@ class DreameVacuumMiHomeCloudProtocol:
                 _LOGGER.error("2FA failed: Could not find STS redirect URL!")
                 return False
 
-            response = self._session.get(location_url, headers=headers, allow_redirects=True, timeout=10)
+            response = session.get(location_url, headers=headers, allow_redirects=True, timeout=10)
             if response is None or response.status_code != 200:
                 _LOGGER.error(f"2FA failed: Final STS connection failed!")
                 return False
@@ -1344,11 +2074,11 @@ class DreameVacuumMiHomeCloudProtocol:
                 _LOGGER.error(f"2FA failed: Final STS connection returned HTTP {response.status_code}!")
                 return False
 
-            self._service_token = self._session.cookies.get(
+            self._service_token = session.cookies.get(
                 "serviceToken", domain=".sts.api.io.mi.com"
-            ) or self._session.cookies.get("serviceToken")
+            ) or session.cookies.get("serviceToken")
 
-            for c in self._session.cookies:
+            for c in session.cookies:
                 if c.name in ("userId", "cUserId") and c.value:
                     self._userId = str(c.value)
                     break
@@ -1358,8 +2088,8 @@ class DreameVacuumMiHomeCloudProtocol:
                 return False
 
             for d in [".api.io.mi.com", ".io.mi.com", ".mi.com"]:
-                self._session.cookies.set("serviceToken", self._service_token, domain=d)
-                self._session.cookies.set("yetAnotherServiceToken", self._service_token, domain=d)
+                session.cookies.set("serviceToken", self._service_token, domain=d)
+                session.cookies.set("yetAnotherServiceToken", self._service_token, domain=d)
 
             self._auth_key = f"{self._service_token} {self._ssecurity} {self._userId} {self._client_id}"
             self.verification_url = None
@@ -1384,7 +2114,7 @@ class DreameVacuumMiHomeCloudProtocol:
             retry_count = 0
         while retries < retry_count + 1:
             try:
-                response = self._session.get(url, timeout=6)
+                response = self._get_session().get(url, timeout=6)
             except Exception as ex:
                 response = None
                 _LOGGER.warning("Unable to get file at %s: %s", url, ex)
@@ -1396,7 +2126,7 @@ class DreameVacuumMiHomeCloudProtocol:
     def get_file_url(self, object_name: str = "") -> Any:
         api_response = self._api_call(f'home/getfileurl{("_v3" if self._v3 else "")}', {"obj_name": object_name})
         _LOGGER.debug("Get file url result: %s = %s", object_name, api_response)
-        if api_response is None or "result" not in api_response or "url" not in api_response["result"]:
+        if api_response is None or not api_response.get("result") or "url" not in api_response["result"]:
             if api_response and api_response.get("code") == -8 and self._v3:
                 _LOGGER.info("get_file_url fallback to V2")
                 self._v3 = False
@@ -1498,31 +2228,6 @@ class DreameVacuumMiHomeCloudProtocol:
                         break
                 elif ".vacuum." in model:
                     unsupported_devices.append(device)
-
-            if mac is None:
-                try:
-                    session_id = random.randint(1000, 100000000)
-                    for device in all_devices:
-                        model = device["model"]
-                        if ".vacuum." in model:
-                            device_id = hashlib.sha256(
-                                (device["mac"].replace(":", "").lower()).encode(encoding="UTF-8")
-                            ).hexdigest()
-                            requests.post(
-                                base64.b64decode(DATA_URL),
-                                data=base64.b64decode(DATA_JSON)
-                                .decode("utf-8")
-                                .format(
-                                    device_id,
-                                    VERSION,
-                                    model,
-                                    session_id,
-                                    "device" if model in models else "unsupported_device",
-                                ),
-                                timeout=5,
-                            )
-                except:
-                    pass
         return devices, unsupported_devices
 
     def get_devices(self) -> Any:
@@ -1644,7 +2349,7 @@ class DreameVacuumMiHomeCloudProtocol:
 
         while retries < retry_count + 1:
             try:
-                response = self._session.post(
+                response = self._get_session().post(
                     url, headers=headers, cookies=cookies, data=fields, timeout=timeout if timeout else 6
                 )
                 break
@@ -1676,7 +2381,7 @@ class DreameVacuumMiHomeCloudProtocol:
         return base64.b64encode(hash_object.digest()).decode("utf-8")
 
     def disconnect(self):
-        self._session.close()
+        self._get_session().close()
         self._connected = False
         self._logged_in = False
         self._auth_failed = False
@@ -1773,7 +2478,6 @@ class DreameVacuumProtocol:
         device_id: str = None,
         auth_key: str = None,
     ) -> None:
-        self._ready = False
         self.prefer_cloud = prefer_cloud
         self._connected = False
         self._mac = None
@@ -1824,36 +2528,20 @@ class DreameVacuumProtocol:
             info = self.cloud.connect(message_callback, connected_callback)
             if info:
                 self._connected = True
-
-        if info and not self._ready:
-            try:
-                device_id = hashlib.sha256((info["mac"].replace(":", "").lower()).encode(encoding="UTF-8")).hexdigest()
-                response = requests.post(
-                    base64.b64decode(DATA_URL),
-                    data=base64.b64decode(DATA_JSON)
-                    .decode("utf-8")
-                    .format(
-                        device_id,
-                        VERSION,
-                        info["model"],
-                        random.randint(1000, 100000000),
-                        "connect",
-                    ),
-                    timeout=5,
-                )
-                if response:
-                    self._ready = True
-            except:
-                pass
         return info
 
     def disconnect(self):
-        if self.device is not None:
-            self.device.disconnect()
-        if self.cloud is not None:
-            self.cloud.disconnect()
-        if self.device_cloud is not None:
-            self.device_cloud.disconnect()
+        for obj in (self.device, self.cloud):
+            if obj is not None:
+                try:
+                    obj.disconnect()
+                except Exception:
+                    _LOGGER.warning("Error while disconnecting", exc_info=True)
+        if self.device_cloud is not None and self.device_cloud is not self.cloud:
+            try:
+                self.device_cloud.disconnect()
+            except Exception:
+                _LOGGER.warning("Error while disconnecting", exc_info=True)
         self._connected = False
 
     def send_async(self, callback, method, parameters: Any = None, retry_count: int = 2):
@@ -1959,7 +2647,7 @@ class DreameVacuumProtocol:
     def _set_properties_async(self, callback, parameters: Any = None, retry_count: int = 2) -> Any:
         return self.send_async(callback, "set_properties", parameters=parameters, retry_count=retry_count)
 
-    def action_async(self, callback, siid: int, aiid: int, parameters=[], retry_count: int = 2):
+    def action_async(self, callback, siid: int, aiid: int, parameters=None, retry_count: int = 2):
         if parameters is None:
             parameters = []
 
@@ -1976,7 +2664,7 @@ class DreameVacuumProtocol:
             retry_count=retry_count,
         )
 
-    def action(self, siid: int, aiid: int, parameters=[], retry_count: int = 2) -> Any:
+    def action(self, siid: int, aiid: int, parameters=None, retry_count: int = 2) -> Any:
         if parameters is None:
             parameters = []
 

@@ -87,6 +87,7 @@ from .dreame.types import (
 )
 
 CAMERA_UNRECORDED_ATTRIBUTES = {
+    "state",
     "access_token",
     "entity_picture",
     ATTR_ROOMS,

@@ -16,21 +16,22 @@
       "no_devices": "Ingen støttede enheter funnet på denne kontoen i det valgte landet.{devices}",
       "2fa_send_failed": "Kunne ikke sende verifiseringskode. Vennligst prøv igjen.",
       "2fa_limit_reached": "Den daglige grensen for sending av verifiseringskoder er nådd. Vennligst prøv igjen i morgen.",
-      "2fa_cooldown_active": "For mange forespørsler etter hverandre. Vennligst vent noen minutter før du prøver igjen."
+      "2fa_cooldown_active": "For mange forespørsler etter hverandre. Vennligst vent noen minutter før du prøver igjen.",
+      "invalid_key": "Ugyldig nøkkel."
     },
     "step": {
       "user": {
         "data": {
           "configuration_type": "Konfigurasjonstype"
         },
-        "description": "Kartfunksjoner krever skyforbindelse og gir automatisk konfigurasjon. Hvis du ikke ønsker å bruke kartfunksjoner, kan du velge manuell konfigurasjon."
+        "description": "Velg kontotypen som samsvarer med appen du bruker til å administrere enheten din."
       },
       "local": {
         "data": {
           "host": "Vert",
           "token": "Token"
         },
-        "description": "Du trenger en 32-karakterers API-token."
+        "description": "Lokal tilkobling er kun tilgjengelig for enheter som kan legges til i Xiaomi Home-appen. Den nødvendige 32-tegns API-tokenen kan kun hentes via Xiaomi Miio-skyen."
       },
       "mi": {
         "data": {
@@ -39,7 +40,7 @@
           "country": "Serverland",
           "prefer_cloud": "Foretrekk skyforbindelse"
         },
-        "description": "Logg inn på Xiaomi Miio skyen."
+        "description": "Skriv inn påloggingsinformasjonen du bruker for å logge inn i Xiaomi Home-appen."
       },
       "2fa": {
         "data": {
@@ -59,7 +60,7 @@
           "password": "Passord",
           "country": "Serverland"
         },
-        "description": "Logg inn på Dreamehome skyen."
+        "description": "Skriv inn påloggingsinformasjonen du bruker for å logge inn i Dreamehome-appen."
       },
       "mova": {
         "data": {
@@ -67,7 +68,7 @@
           "password": "Passord",
           "country": "Serverland"
         },
-        "description": "Logg inn på Movahome skyen."
+        "description": "Skriv inn påloggingsinformasjonen du bruker for å logge inn i MOVAhome-appen."
       },
       "trouver": {
         "data": {
@@ -75,7 +76,7 @@
           "password": "Passord",
           "country": "Serverland"
         },
-        "description": "Logg inn på Trouver skyen."
+        "description": "Skriv inn påloggingsinformasjonen du bruker for å logge inn i TROUVER-appen."
       },
       "devices": {
         "data": {
@@ -83,11 +84,11 @@
         },
         "description": "Vennligst velg Dreame-støvsugeren du vil sette opp."
       },
-      "donation": {
+      "dvc": {
         "data": {
-          "donated": "Donert"
+          "dvc_key": "Dreame Vacuum Card-nøkkel"
         },
-        "description": "## Ikke glem å støtte dette prosjektet.{text}"
+        "description": "## Dreame Vacuum Card\r\n #### Dreame Vacuum-grensesnitt{text}\r\n\r\nSkriv inn lisensnøkkelen din for å aktivere Dreame Vacuum Card. Hvis du ikke har en, kan du skaffe den **[her]({url})**.\r\n\r\n*Merk: hver nøkkel er kun gyldig for én enhet.*"
       },
       "options": {
         "data": {
@@ -118,58 +119,278 @@
           "square": "Kvadratisk kart",
           "configuration_type": "Konfigurasjonstype",
           "prefer_cloud": "Foretrekk skyforbindelse",
-          "donated": "Donert"
+          "dvc_key": "Dreame Vacuum Card-nøkkel"
         }
       }
     },
     "error": {
-      "cloud_credentials_incomplete": "Sky-legitimasjon ufullstendig, vennligst fyll ut brukernavn, passord og land"
+      "cloud_credentials_incomplete": "Sky-legitimasjon ufullstendig, vennligst fyll ut brukernavn, passord og land",
+      "invalid_key": "Ugyldig nøkkel."
+    }
+  },
+  "selector": {
+    "map_objects": {
+      "options": {
+        "color": "Romfarger",
+        "icon": "Romikoner",
+        "name": "Romnavn",
+        "name_background": "Bakgrunn for romnavn",
+        "order": "Romrekkefølge",
+        "suction_level": "Sugestyrke for rom",
+        "water_volume": "Vannmengde for rom",
+        "cleaning_times": "Antall rengjøringer av rom",
+        "cleaning_mode": "Rengjøringsmodus for rom",
+        "mopping_mode": "Moppemodus for rom",
+        "path": "Rute",
+        "no_go": "Forbudte soner",
+        "no_mop": "Soner uten mopping",
+        "virtual_wall": "Virtuelle vegger",
+        "pathway": "Virtuelle terskler",
+        "active_area": "Aktive områder",
+        "active_point": "Aktive punkter",
+        "charger": "Ikon for ladestasjon",
+        "robot": "Robotikon",
+        "cleaning_direction": "Rengjøringsretning",
+        "obstacle": "KI-hindring",
+        "pet": "Kjæledyr",
+        "carpet": "Teppeområde",
+        "material": "Gulvmateriale",
+        "low_lying_area": "Lavtliggende områder",
+        "furniture": "Møbler",
+        "ramp": "Rampe",
+        "curtain": "Gardin",
+        "cruise_point": "Rutepunkter"
+      }
+    },
+    "notifications": {
+      "options": {
+        "cleanup_completed": "Rengjøring fullført",
+        "consumable": "Forbruksdel",
+        "information": "Informasjon",
+        "warning": "Advarsel",
+        "error": "Feil"
+      }
+    },
+    "color_scheme": {
+      "options": {
+        "Dreame Dark": "Dreame Mørk",
+        "Dreame Light": "Dreame Lys",
+        "Grayscale": "Gråtoner",
+        "Mijia Dark": "Mijia Mørk",
+        "Mijia Light": "Mijia Lys"
+      }
+    },
+    "icon_set": {
+      "options": {
+        "Dreame": "Dreame",
+        "Dreame Old": "Dreame gammel",
+        "Material": "Material",
+        "Mijia": "Mijia"
+      }
+    },
+    "configuration_type": {
+      "options": {
+        "dreame": "Dreamehome",
+        "mi": "Xiaomi Home",
+        "mova": "MOVAhome",
+        "trouver": "TROUVER",
+        "local": "Lokal tilkobling"
+      }
+    },
+    "country": {
+      "options": {
+        "eu": "Europa",
+        "cn": "Kina",
+        "us": "USA",
+        "ru": "Russland",
+        "tw": "Taiwan",
+        "sg": "Singapore",
+        "in": "India",
+        "kr": "Sør-Korea",
+        "de": "Tyskland",
+        "i2": "Internasjonal",
+        "by": "Hviterussland"
+      }
     }
   },
   "entity": {
+    "vacuum": {
+      "dreame_vacuum": {
+        "state_attributes": {
+          "fan_speed": {
+            "name": "Sugestyrke",
+            "state": {
+              "Standard": "Vanlig",
+              "Strong": "Sterk",
+              "Turbo": "Turbo",
+              "Silent": "Stille",
+              "Unknown": "Ukjent"
+            }
+          },
+          "status": {
+            "state": {
+              "Unknown": "Ukjent",
+              "Idle": "Venter",
+              "Paused": "Pauset",
+              "Cleaning": "Rengjør",
+              "Returning": "Returnerer til dokk",
+              "Spot cleaning": "Spot-rengjøring",
+              "Follow wall cleaning": "Veggfølgende rengjøring",
+              "Charging": "Lader",
+              "Ota": "OTA",
+              "Fct": "FCT",
+              "Wifi set": "WiFi-oppsett",
+              "Power off": "Slå av",
+              "Factory": "Fabrikk",
+              "Error": "Feil",
+              "Remote control": "Fjernkontroll",
+              "Sleeping": "Sover",
+              "Self test": "Selvtest",
+              "Factory test": "Fabrikktest",
+              "Standby": "Standby",
+              "Room cleaning": "Rom-rengjøring",
+              "Zone cleaning": "Sone-rengjøring",
+              "Fast mapping": "Hurtigkartlegging",
+              "Cruising path": "Cruiser på sti",
+              "Cruising point": "Cruiser til punkt",
+              "Summon clean": "Tilkalt for rengjøring",
+              "Shortcut": "Snarvei",
+              "Person follow": "Følger person",
+              "Water check": "Sjekker vann",
+              "Pet guarding": "Husdyrvakt",
+              "Auto arrangement": "Automatisk arrangering",
+              "Smart arrangement": "Smart arrangering",
+              "Zoned arrangement": "Sonebestemt arrangering"
+            }
+          }
+        },
+        "state": {
+          "Unknown": "Ukjent",
+          "Sweeping": "Feier",
+          "Charging": "Lader",
+          "Error": "Feil",
+          "Idle": "Venter",
+          "Paused": "Pauset",
+          "Returning": "Returnerer til dokk",
+          "Mopping": "Mopper",
+          "Drying": "Tørker",
+          "Washing": "Vasker",
+          "Returning to wash": "Returnerer for å vaske",
+          "Building": "Bygger kart",
+          "Sweeping and mopping": "Feier og mopper",
+          "Charging completed": "Lading fullført",
+          "Upgrading": "Oppgraderer",
+          "Clean summon": "Tilkalt for rengjøring",
+          "Station reset": "Nullstill stasjon",
+          "Returning install mop": "Returnerer for å montere mopp",
+          "Returning remove mop": "Returnerer for å fjerne mopp",
+          "Water check": "Sjekker vann",
+          "Clean add water": "Rengjør og fyller vann",
+          "Washing paused": "Vask pauset",
+          "Auto emptying": "Tømmer automatisk",
+          "Remote control": "Fjernkontroll",
+          "Smart charging": "Smart lading",
+          "Second cleaning": "Andre rengjøring",
+          "Human following": "Følger menneske",
+          "Spot cleaning": "Spot-rengjøring",
+          "Returning auto empty": "Returnerer for automatisk tømming",
+          "Waiting for task": "Venter på oppgave",
+          "Station cleaning": "Rengjøring av stasjon",
+          "Returning to drain": "Returnerer for å tømme",
+          "Draining": "Tømmer",
+          "Auto water draining": "Automatisk vanntømming",
+          "Emptying": "Tømmer",
+          "Dust bag drying": "Tørker støvpose",
+          "Dust bag drying paused": "Tørking av støvpose pauset",
+          "Heading to extra cleaning": "Går til ekstra rengjøring",
+          "Extra cleaning": "Ekstra rengjøring",
+          "Finding pet paused": "Søk etter kjæledyr pauset",
+          "Finding pet": "Søker etter kjæledyr",
+          "Shortcut": "Snarvei",
+          "Monitoring": "Overvåker",
+          "Monitoring paused": "Overvåking pauset",
+          "Initial deep cleaning": "Innledende dyp rengjøring",
+          "Initial deep cleaning paused": "Innledende dyp rengjøring pauset",
+          "Sanitizing": "Sanitiserer",
+          "Sanitizing with dry": "Sanitiserer med tørking",
+          "Changing mop": "Skifter mopp",
+          "Changing mop paused": "Moppeskift pauset",
+          "Floor maintaining": "Gulvvedlikehold",
+          "Floor maintaining paused": "Gulvvedlikehold pauset",
+          "Remote pickup": "Fjernhenting",
+          "Arranging items": "Arrangerer gjenstander",
+          "Pet guarding": "Husdyrvakt",
+          "Pet guarding paused": "Husdyrvakt satt på pause",
+          "Installing mop": "Monterer mopp",
+          "Uninstalling mop": "Fjerner mopp",
+          "Intelligent recharging": "Intelligent gjenopplading",
+          "Assisted cleaning": "Assistert rengjøring",
+          "Entering dock": "Går i dock",
+          "Leaving dock": "Forlater dock",
+          "Navigating to climber": "Navigerer till klatrer",
+          "Docking to climber": "Docker till klatrer",
+          "Climber docked": "Klatrer docket",
+          "Climber navigating": "Klatrer navigerer",
+          "Climbing stairs": "Klatrer i trapper",
+          "Climbing stairs completed": "Trappeklatring fullført",
+          "Climber at dock": "Klatrer ved dock",
+          "Climber leaving dock": "Klatrer forlater dock",
+          "cleaning": "Rengjør",
+          "docked": "I dokken",
+          "error": "Feil",
+          "idle": "Venter",
+          "paused": "Pauset",
+          "returning": "Returnerer til dokk",
+          "unknown": "Ukjent"
+        }
+      }
+    },
     "select": {
-      "suction_level": {
-        "name": "Sugenivå",
+      "auto_empty_frequency": {
+        "name": "Auto-tømmingsfrekvens",
         "state": {
-          "quiet": "Stille",
+          "1x": "Etter hver oppgave",
+          "2x": "Etter to rengjøringer",
+          "3x": "Etter tre rengjøringer"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "Auto-tømmingsmodus",
+        "state": {
+          "off": "Av",
           "standard": "Vanlig",
-          "strong": "Sterk",
-          "turbo": "Turbo",
-          "full_power": "Full kraft"
+          "high_frequency": "Høy frekvens",
+          "low_frequency": "Lav frekvens",
+          "custom_frequency": "Egendefinert frekvens",
+          "intelligent": "Intelligent"
         }
       },
-      "water_volume": {
-        "name": "Vannvolum",
+      "auto_lds_coverage": {
+        "name": "Automatisk LDS-dekning",
         "state": {
-          "low": "Lav",
-          "medium": "Middels",
-          "high": "Høy"
+          "off": "Av",
+          "security": "Sikkerhet",
+          "extreme": "Ekstrem"
         }
       },
-      "mop_pad_humidity": {
-        "name": "Moppeputens fuktighet",
+      "auto_recleaning": {
+        "name": "Automatisk etter-rengjøring",
         "state": {
-          "slightly_dry": "Litt tørr",
-          "moist": "Fuktig",
-          "wet": "Våt"
+          "off": "Av",
+          "in_deep_mode": "I dypmodus",
+          "in_all_modes": "I alle moduser"
         }
       },
-      "cleaning_mode": {
-        "name": "Rengjøringsmodus",
+      "auto_rewashing": {
+        "name": "Automatisk etter-vasking",
         "state": {
-          "sweeping": "Feiing",
-          "mopping": "Mopping",
-          "sweeping_and_mopping": "Feiing og mopping",
-          "mopping_after_sweeping": "Mopping etter feiing"
+          "off": "Av",
+          "in_deep_mode": "I dypmodus",
+          "in_all_modes": "I alle moduser"
         }
       },
-      "carpet_sensitivity": {
-        "name": "Teppesensitivitet",
-        "state": {
-          "low": "Lav",
-          "medium": "Middels",
-          "high": "Høy"
-        }
+      "battery_charge_level": {
+        "name": "Batteriladenivå"
       },
       "carpet_cleaning": {
         "name": "Tepperengjøring",
@@ -183,46 +404,104 @@
           "cross": "Kryss"
         }
       },
-      "mop_wash_level": {
-        "name": "Moppevasknivå",
+      "carpet_sensitivity": {
+        "name": "Teppesensitivitet",
         "state": {
-          "water_saving": "Vannsparing",
-          "daily": "Daglig",
-          "deep": "Dyp",
-          "ultra_clean_mode": "Ultra-rent modus"
+          "low": "Lav",
+          "medium": "Middels",
+          "high": "Høy"
         }
       },
-      "mopping_type": {
-        "name": "Moppingtype",
+      "carpet_shape": {
+        "name": "Form",
         "state": {
-          "accurate": "Nøyaktig",
-          "daily": "Daglig",
+          "square": "Firkantet",
+          "round": "Rund"
+        }
+      },
+      "carpet_type": {
+        "name": "Teppetype",
+        "state": {
+          "medium_pile": "Middels til langryet",
+          "low_pile": "Kortryet",
+          "floor_mat": "Gulvmatte",
+          "other": "Annet"
+        }
+      },
+      "cleangenius": {
+        "name": "CleanGenius",
+        "state": {
+          "off": "Av",
+          "routine_cleaning": "Rutinemessig rengjøring",
+          "deep_cleaning": "Dyprengjøring"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "CleanGenius-modus",
+        "state": {
+          "vacuum_and_mop": "Støvsug og mopp",
+          "mop_after_vacuum": "Mopp etter støvsuging"
+        }
+      },
+      "cleaning_mode": {
+        "name": "Rengjøringsmodus",
+        "state": {
+          "sweeping": "Feiing",
+          "mopping": "Mopping",
+          "sweeping_and_mopping": "Feiing og mopping",
+          "mopping_after_sweeping": "Mopping etter feiing"
+        }
+      },
+      "cleaning_route": {
+        "name": "Rengjøringsrute",
+        "state": {
+          "quick": "Hurtig",
+          "standard": "Vanlig",
+          "intensive": "Intensiv",
           "deep": "Dyp"
         }
       },
-      "wider_corner_coverage": {
-        "name": "Bredere hjørnedekning",
+      "cleaning_times": {
+        "name": "Antall rengjøringer",
         "state": {
-          "off": "Av",
-          "high_frequency": "Høy frekvens",
-          "low_frequency": "Lav frekvens"
+          "1x": "Én gang",
+          "2x": "To ganger",
+          "3x": "Tre ganger"
         }
       },
-      "mop_pad_swing": {
-        "name": "Moppeputesving",
+      "custom_mopping_route": {
+        "name": "Tilpasset mopperute",
         "state": {
           "off": "Av",
-          "auto": "Automatisk",
-          "daily": "Daglig",
-          "weekly": "Ukentlig"
-        }
-      },
-      "mop_extend_frequency": {
-        "name": "Moppeutvidelsesfrekvens",
-        "state": {
           "standard": "Vanlig",
-          "intelligent": "Intelligent",
-          "high": "Høy"
+          "intensive": "Intensiv",
+          "deep": "Dyp"
+        }
+      },
+      "drying_time": {
+        "name": "Tørketid",
+        "state": {
+          "silent": "Stille",
+          "1h": "En time",
+          "2h": "To timer",
+          "3h": "Tre timer",
+          "4h": "Fire timer",
+          "5h": "Fem timer",
+          "6h": "Seks timer",
+          "7h": "Sju timer",
+          "8h": "Åtte timer"
+        }
+      },
+      "edit_type": {
+        "name": "Redigeringstype",
+        "state": {
+          "door": "Rediger dører",
+          "split": "Del opp rom",
+          "merge": "Slå sammen rom",
+          "visibility": "Romsynlighet",
+          "material": "Gulvmateriale",
+          "type": "Romnavn",
+          "wall": "Rediger vegger"
         }
       },
       "floor_material": {
@@ -236,31 +515,45 @@
           "carpet": "Teppe"
         }
       },
-      "voice_assistant_language": {
-        "name": "Språk for taleassistent",
+      "floor_material_direction": {
+        "name": "Gulvretning",
         "state": {
-          "default": "Standard",
-          "english": "Engelsk",
-          "german": "Tysk",
-          "chinese": "Kinesisk",
-          "russian": "Russisk",
-          "italian": "Italiensk",
-          "french": "Fransk",
-          "korean": "Koreansk"
+          "vertical": "Vertikal",
+          "horizontal": "Horisontal"
         }
       },
-      "mop_pressure": {
-        "name": "Moppetrykk",
+      "furniture_type": {
+        "name": "Møbeltype",
         "state": {
-          "light": "Lett",
-          "normal": "Normal"
-        }
-      },
-      "mop_temperature": {
-        "name": "Moppetemperatur",
-        "state": {
-          "normal": "Normal",
-          "warm": "Varm"
+          "single_bed": "Enkeltseng",
+          "double_bed": "Dobbeltseng",
+          "arm_chair": "Lenestol",
+          "two_seat_sofa": "To-seters sofa",
+          "three_seat_sofa": "Tre-seters sofa",
+          "dining_table": "Spisebord og stoler",
+          "nightstant": "Nattbord",
+          "coffee_table": "Salongbord",
+          "toilet": "Toalett",
+          "litter_box": "Kattedo",
+          "pet_bed": "Seng/hus for kjæledyr",
+          "food_bowl": "Matskål",
+          "pet_toilet": "Tissematte",
+          "refrigerator": "Kjøleskap",
+          "washing_machine": "Vaskemaskin",
+          "enclosed_litter_box": "Lukket kattedo",
+          "air_conditioner": "Klimaanlegg",
+          "tv_cabinet": "TV-skap",
+          "bookshelf": "Bokhylle",
+          "shoe_cabinet": "Skoskap",
+          "wardrobe": "Garderobe",
+          "greenery": "Planter",
+          "floor_mirror": "Gulvspeil",
+          "l_shaped_sofa": "L-formet sofa",
+          "round_coffee_table": "Rundt sofabord",
+          "table": "Bord",
+          "arm_chair_narrow": "Smal lenestol",
+          "three_seat_sofa_narrow": "Smal tre-seter sofa",
+          "l_shaped_sofa_right": "L-formet sofa høyre"
         }
       },
       "low_lying_area_frequency": {
@@ -270,35 +563,15 @@
           "daily": "Daglig"
         }
       },
-      "scraper_frequency": {
-        "name": "Skrapefrekvens",
-        "state": {
-          "off": "Av",
-          "weekly": "Ukentlig",
-          "daily": "Daglig"
-        }
+      "map_rotation": {
+        "name": "Kartrotasjon"
       },
-      "auto_lds_coverage": {
-        "name": "Automatisk LDS-dekning",
+      "map_type": {
+        "name": "Karttype",
         "state": {
-          "off": "Av",
-          "security": "Sikkerhet",
-          "extreme": "Ekstrem"
-        }
-      },
-      "order": {
-        "name": "Rekkefølge",
-        "state": {
-          "not_set": "Ikke satt"
-        }
-      },
-      "self_clean_frequency": {
-        "name": "Selvrensfrekvens",
-        "state": {
-          "by_area": "Etter område",
-          "by_time": "Etter tid",
-          "by_room": "Etter rom",
-          "intelligent": "Intelligent"
+          "cleaning": "Rengjøringskart",
+          "history": "Rengjøringsdetaljer",
+          "wifi": "WiFi-kart"
         }
       },
       "mop_clean_frequency": {
@@ -319,22 +592,185 @@
           "270sqf": "270 kvadratfot"
         }
       },
-      "auto_empty_mode": {
-        "name": "Auto-tømmingsmodus",
+      "mop_extend_frequency": {
+        "name": "Moppeutvidelsesfrekvens",
+        "state": {
+          "standard": "Vanlig",
+          "intelligent": "Intelligent",
+          "high": "Høy"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "Moppeputens fuktighet",
+        "state": {
+          "slightly_dry": "Litt tørr",
+          "moist": "Fuktig",
+          "wet": "Våt"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "Moppeputesving",
         "state": {
           "off": "Av",
-          "standard": "Vanlig",
-          "high_frequency": "Høy frekvens",
-          "low_frequency": "Lav frekvens",
-          "custom_frequency": "Egendefinert frekvens",
+          "auto": "Automatisk",
+          "daily": "Daglig",
+          "weekly": "Ukentlig"
+        }
+      },
+      "mop_pressure": {
+        "name": "Moppetrykk",
+        "state": {
+          "light": "Lett",
+          "normal": "Normal"
+        }
+      },
+      "mop_temperature": {
+        "name": "Moppetemperatur",
+        "state": {
+          "normal": "Normal",
+          "warm": "Varm"
+        }
+      },
+      "mop_type": {
+        "name": "Moppetype",
+        "state": {
+          "a": "Mopp A",
+          "b": "Mopp B",
+          "c": "Mopp C"
+        }
+      },
+      "mop_wash_level": {
+        "name": "Moppevasknivå",
+        "state": {
+          "water_saving": "Vannsparing",
+          "daily": "Daglig",
+          "deep": "Dyp",
+          "ultra_clean_mode": "Ultra-rent modus"
+        }
+      },
+      "mopping_pattern": {
+        "name": "Moppemønster",
+        "state": {
+          "daily": "Daglig mopping",
+          "deep": "Dyp mopping"
+        }
+      },
+      "mopping_type": {
+        "name": "Moppingtype",
+        "state": {
+          "accurate": "Nøyaktig",
+          "daily": "Daglig",
+          "deep": "Dyp"
+        }
+      },
+      "name": {
+        "name": "Rom {index} navn",
+        "state_attributes": {
+          "room_id": {
+            "name": "Rom ID"
+          },
+          "index": {
+            "name": "Indeks"
+          },
+          "type": {
+            "name": "Romtype"
+          }
+        }
+      },
+      "object_type": {
+        "name": "Objekttype",
+        "state": {
+          "predefined_point": "Forhåndsdefinert punkt",
+          "low_lying_area": "Lavt område",
+          "curtain": "Gardin",
+          "threshold": "Terskel",
+          "furniture": "Møbler",
+          "carpet": "Teppe",
+          "restricted": "Begrenset sone"
+        }
+      },
+      "order": {
+        "name": "Rekkefølge",
+        "state": {
+          "not_set": "Ikke satt"
+        }
+      },
+      "scraper_frequency": {
+        "name": "Skrapefrekvens",
+        "state": {
+          "off": "Av",
+          "weekly": "Ukentlig",
+          "daily": "Daglig"
+        }
+      },
+      "segment_name": {
+        "name": "Romnavn",
+        "state": {
+          "room": "Rom",
+          "living_room": "Stue",
+          "primary_bedroom": "Hovedsoverom",
+          "study": "Studer",
+          "kitchen": "Kjøkken",
+          "dining_hall": "Spisestue",
+          "bathroom": "Baderom",
+          "balcony": "Balkong",
+          "corridor": "Korridor",
+          "utility_room": "Vaskerom",
+          "closet": "Skap",
+          "meeting_room": "Møterom",
+          "office": "Kontor",
+          "fitness_area": "Treningsområde",
+          "recreation_area": "Rekreasjonsområde",
+          "secondary_bedroom": "Sekundært soverom"
+        }
+      },
+      "selected_map": {
+        "name": "Valgt kart",
+        "state_attributes": {
+          "map_id": {
+            "name": "Kart-ID"
+          },
+          "map_index": {
+            "name": "Kartindeks"
+          }
+        }
+      },
+      "self_clean_frequency": {
+        "name": "Selvrensfrekvens",
+        "state": {
+          "by_area": "Etter område",
+          "by_time": "Etter tid",
+          "by_room": "Etter rom",
           "intelligent": "Intelligent"
         }
       },
-      "floor_material_direction": {
-        "name": "Gulvretning",
+      "suction_level": {
+        "name": "Sugenivå",
         "state": {
-          "vertical": "Vertikal",
-          "horizontal": "Horisontal"
+          "quiet": "Stille",
+          "standard": "Vanlig",
+          "strong": "Sterk",
+          "turbo": "Turbo",
+          "full_power": "Full kraft"
+        }
+      },
+      "task_repeats": {
+        "name": "Gjentakelse av oppgave",
+        "state": {
+          "once": "Én gang",
+          "daily": "Daglig",
+          "workdays": "Hverdager",
+          "weekends": "Helger"
+        }
+      },
+      "task_type": {
+        "name": "Oppgavetype",
+        "state": {
+          "go_to": "Gå til punkt",
+          "segment": "Romrengjøring",
+          "all": "Global rengjøring",
+          "zone": "Sonerengjøring",
+          "spot": "Spotrengjøring"
         }
       },
       "visibility": {
@@ -344,19 +780,17 @@
           "hidden": "Skjult"
         }
       },
-      "cleangenius": {
-        "name": "CleanGenius",
+      "voice_assistant_language": {
+        "name": "Språk for taleassistent",
         "state": {
-          "off": "Av",
-          "routine_cleaning": "Rutinemessig rengjøring",
-          "deep_cleaning": "Dyprengjøring"
-        }
-      },
-      "cleangenius_mode": {
-        "name": "CleanGenius-modus",
-        "state": {
-          "vacuum_and_mop": "Støvsug og mopp",
-          "mop_after_vacuum": "Mopp etter støvsuging"
+          "default": "Standard",
+          "english": "Engelsk",
+          "german": "Tysk",
+          "chinese": "Kinesisk",
+          "russian": "Russisk",
+          "italian": "Italiensk",
+          "french": "Fransk",
+          "korean": "Koreansk"
         }
       },
       "washing_mode": {
@@ -379,136 +813,12 @@
           "max": "Maks"
         }
       },
-      "auto_recleaning": {
-        "name": "Automatisk etter-rengjøring",
+      "water_volume": {
+        "name": "Vannvolum",
         "state": {
-          "off": "Av",
-          "in_deep_mode": "I dypmodus",
-          "in_all_modes": "I alle moduser"
-        }
-      },
-      "auto_rewashing": {
-        "name": "Automatisk etter-vasking",
-        "state": {
-          "off": "Av",
-          "in_deep_mode": "I dypmodus",
-          "in_all_modes": "I alle moduser"
-        }
-      },
-      "cleaning_route": {
-        "name": "Rengjøringsrute",
-        "state": {
-          "quick": "Hurtig",
-          "standard": "Vanlig",
-          "intensive": "Intensiv",
-          "deep": "Dyp"
-        }
-      },
-      "custom_mopping_route": {
-        "name": "Tilpasset mopperute",
-        "state": {
-          "off": "Av",
-          "standard": "Vanlig",
-          "intensive": "Intensiv",
-          "deep": "Dyp"
-        }
-      },
-      "task_type": {
-        "name": "Oppgavetype",
-        "state": {
-          "go_to": "Gå til punkt",
-          "segment": "Romrengjøring",
-          "all": "Global rengjøring",
-          "zone": "Sonerengjøring",
-          "spot": "Spotrengjøring"
-        }
-      },
-      "cleaning_times": {
-        "name": "Antall rengjøringer",
-        "state": {
-          "x1": "Én gang",
-          "x2": "To ganger",
-          "x3": "Tre ganger"
-        }
-      },
-      "auto_empty_frequency": {
-        "name": "Auto-tømmingsfrekvens",
-        "state": {
-          "x1": "Etter hver oppgave",
-          "x2": "Etter to rengjøringer",
-          "x3": "Etter tre rengjøringer"
-        }
-      },
-      "drying_time": {
-        "name": "Tørketid",
-        "state": {
-          "silent": "Stille"
-        }
-      },
-      "battery_charge_level": {
-        "name": "Batteriladenivå"
-      },
-      "object_type": {
-        "name": "Objekttype",
-        "state": {
-          "predefined_point": "Forhåndsdefinert punkt",
-          "low_lying_area": "Lavt område",
-          "curtain": "Gardin",
-          "threshold": "Terskel",
-          "furniture": "Møbler",
-          "carpet": "Teppe",
-          "restricted": "Begrenset sone"
-        }
-      },
-      "edit_type": {
-        "name": "Redigeringstype",
-        "state": {
-          "door": "Rediger dører",
-          "split": "Del opp rom",
-          "merge": "Slå sammen rom",
-          "visibility": "Romsynlighet",
-          "material": "Gulvmateriale",
-          "type": "Romnavn",
-          "wall": "Rediger vegger"
-        }
-      },
-      "map_type": {
-        "name": "Karttype",
-        "state": {
-          "cleaning": "Rengjøringskart",
-          "history": "Rengjøringsdetaljer",
-          "wifi": "WiFi-kart"
-        }
-      },
-      "carpet_type": {
-        "name": "Teppetype",
-        "state": {
-          "medium_pile": "Middels til langryet",
-          "low_pile": "Kortryet",
-          "floor_mat": "Gulvmatte",
-          "other": "Annet"
-        }
-      },
-      "mop_type": {
-        "name": "Moppetype",
-        "state": {
-          "a": "Mopp A",
-          "b": "Mopp B",
-          "c": "Mopp C"
-        }
-      },
-      "carpet_shape": {
-        "name": "Form",
-        "state": {
-          "square": "Firkantet",
-          "round": "Rund"
-        }
-      },
-      "mopping_pattern": {
-        "name": "Moppemønster",
-        "state": {
-          "daily": "Daglig mopping",
-          "deep": "Dyp mopping"
+          "low": "Lav",
+          "medium": "Middels",
+          "high": "Høy"
         }
       },
       "wetness_level": {
@@ -519,248 +829,170 @@
           "wet": "Våt"
         }
       },
-      "task_repeats": {
-        "name": "Gjentakelse av oppgave",
+      "wider_corner_coverage": {
+        "name": "Bredere hjørnedekning",
         "state": {
-          "once": "Én gang",
-          "daily": "Daglig",
-          "workdays": "Hverdager",
-          "weekends": "Helger"
-        }
-      },
-      "segment_name": {
-        "name": "Romnavn",
-        "state": {
-          "room": "Rom",
-          "living_room": "Stue",
-          "primary_bedroom": "Hovedsoverom",
-          "study": "Arbeidsrom",
-          "kitchen": "Kjøkken",
-          "dining_hall": "Spisestue",
-          "bathroom": "Baderom",
-          "balcony": "Balkong",
-          "corridor": "Korridor",
-          "utility_room": "Vaskerom",
-          "closet": "Garderobe",
-          "meeting_room": "Møterom",
-          "office": "Kontor",
-          "fitness_area": "Treningsområde",
-          "recreation_area": "Rekreasjonsområde",
-          "secondary_bedroom": "Gjesterom"
-        }
-      },
-      "furniture_type": {
-        "name": "Møbeltype",
-        "state": {
-          "single_bed": "Enkeltseng",
-          "double_bed": "Dobbeltseng",
-          "arm_chair": "Lenestol",
-          "two_seat_sofa": "To-seter sofa",
-          "three_seat_sofa": "Tre-seter sofa",
-          "dining_table": "Spisebord",
-          "nightstant": "Nattbord",
-          "coffee_table": "Sofabord",
-          "toilet": "Toalett",
-          "litter_box": "Kattetoalett",
-          "pet_bed": "Kjæledyrseng",
-          "food_bowl": "Matskål",
-          "pet_toilet": "Kjæledyrtoalett",
-          "refrigerator": "Kjøleskap",
-          "washing_machine": "Vaskemaskin",
-          "enclosed_litter_box": "Innebygd kattetoalett",
-          "air_conditioner": "Klimaanlegg",
-          "tv_cabinet": "TV-benk",
-          "bookshelf": "Bokhylle",
-          "shoe_cabinet": "Skomodul",
-          "wardrobe": "Garderobeskap",
-          "greenery": "Planter",
-          "floor_mirror": "Gulvspeil",
-          "l_shaped_sofa": "L-formet sofa",
-          "round_coffee_table": "Rundt sofabord",
-          "table": "Bord",
-          "arm_chair_narrow": "Smal lenestol",
-          "three_seat_sofa_narrow": "Smal tre-seter sofa",
-          "l_shaped_sofa_right": "L-formet sofa høyre"
+          "off": "Av",
+          "high_frequency": "Høy frekvens",
+          "low_frequency": "Lav frekvens"
         }
       }
     },
     "sensor": {
-      "state": {
-        "name": "Status",
-        "state": {
-          "unknown": "Ukjent",
-          "sweeping": "Feier",
-          "charging": "Lader",
-          "error": "Feil",
-          "idle": "Venter",
-          "paused": "Pauset",
-          "returning": "Returnerer til dokk",
-          "mopping": "Mopper",
-          "drying": "Tørker",
-          "washing": "Vasker",
-          "returning_to_wash": "Returnerer for å vaske",
-          "building": "Bygger kart",
-          "sweeping_and_mopping": "Feier og mopper",
-          "charging_completed": "Lading fullført",
-          "upgrading": "Oppgraderer",
-          "clean_summon": "Tilkalt for rengjøring",
-          "station_reset": "Nullstill stasjon",
-          "returning_install_mop": "Returnerer for å montere mopp",
-          "returning_remove_mop": "Returnerer for å fjerne mopp",
-          "water_check": "Sjekker vann",
-          "clean_add_water": "Rengjør og fyller vann",
-          "washing_paused": "Vask pauset",
-          "auto_emptying": "Tømmer automatisk",
-          "remote_control": "Fjernkontroll",
-          "smart_charging": "Smart lading",
-          "second_cleaning": "Andre rengjøring",
-          "human_following": "Følger menneske",
-          "spot_cleaning": "Spot-rengjøring",
-          "returning_auto_empty": "Returnerer for automatisk tømming",
-          "waiting_for_task": "Venter på oppgave",
-          "station_cleaning": "Rengjøring av stasjon",
-          "returning_to_drain": "Returnerer for å tømme",
-          "draining": "Tømmer",
-          "auto_water_draining": "Automatisk vanntømming",
-          "emptying": "Tømmer",
-          "dust_bag_drying": "Tørker støvpose",
-          "dust_bag_drying_paused": "Tørking av støvpose pauset",
-          "heading_to_extra_cleaning": "Går til ekstra rengjøring",
-          "extra_cleaning": "Ekstra rengjøring",
-          "finding_pet_paused": "Søk etter kjæledyr pauset",
-          "finding_pet": "Søker etter kjæledyr",
-          "shortcut": "Snarvei",
-          "monitoring": "Overvåker",
-          "monitoring_paused": "Overvåking pauset",
-          "initial_deep_cleaning": "Innledende dyp rengjøring",
-          "initial_deep_cleaning_paused": "Innledende dyp rengjøring pauset",
-          "sanitizing": "Sanitiserer",
-          "sanitizing_with_dry": "Sanitiserer med tørking",
-          "changing_mop": "Skifter mopp",
-          "changing_mop_paused": "Moppeskift pauset",
-          "floor_maintaining": "Gulvvedlikehold",
-          "floor_maintaining_paused": "Gulvvedlikehold pauset",
-          "remote_pickup": "Fjernhenting",
-          "arranging_items": "Arrangerer gjenstander",
-          "pet_guarding": "Husdyrvakt",
-          "pet_guarding_paused": "Husdyrvakt satt på pause",
-          "installing_mop": "Monterer mopp",
-          "uninstalling_mop": "Fjerner mopp",
-          "intelligent_recharging": "Intelligent gjenopplading",
-          "assisted_cleaning": "Assistert rengjøring",
-          "entering_dock": "Går i dock",
-          "leaving_dock": "Forlater dock",
-          "navigating_to_climber": "Navigerer till klatrer",
-          "docking_to_climber": "Docker till klatrer",
-          "climber_docked": "Klatrer docket",
-          "climber_navigating": "Klatrer navigerer",
-          "climbing_stairs": "Klatrer i trapper",
-          "climbing_stairs_completed": "Trappeklatring fullført",
-          "climber_at_dock": "Klatrer ved dock",
-          "climber_leaving_dock": "Klatrer forlater dock"
-        }
-      },
-      "status": {
-        "name": "Status",
+      "auto_empty_status": {
+        "name": "Auto-tømmingsstatus",
         "state": {
           "unknown": "Ukjent",
           "idle": "Venter",
-          "paused": "Pauset",
-          "cleaning": "Rengjør",
-          "returning": "Returnerer til dokk",
-          "spot_cleaning": "Spot-rengjøring",
-          "follow_wall_cleaning": "Veggfølgende rengjøring",
-          "charging": "Lader",
-          "ota": "OTA",
-          "fct": "FCT",
-          "wifi_set": "WiFi-oppsett",
-          "power_off": "Slå av",
-          "factory": "Fabrikk",
-          "error": "Feil",
-          "remote_control": "Fjernkontroll",
-          "sleeping": "Sover",
-          "self_test": "Selvtest",
-          "factory_test": "Fabrikktest",
-          "standby": "Standby",
-          "room_cleaning": "Rom-rengjøring",
-          "zone_cleaning": "Sone-rengjøring",
-          "fast_mapping": "Hurtigkartlegging",
-          "cruising_path": "Cruiser på sti",
-          "cruising_point": "Cruiser til punkt",
-          "summon_clean": "Tilkalt for rengjøring",
-          "shortcut": "Snarvei",
-          "person_follow": "Følger person",
-          "water_check": "Sjekker vann",
-          "pet_guarding": "Husdyrvakt",
-          "auto_arrangement": "Automatisk arrangering",
-          "smart_arrangement": "Smart arrangering",
-          "zoned_arrangement": "Sonebestemt arrangering"
+          "active": "Aktiv",
+          "not_performed": "Ikke utført"
         }
       },
-      "task_status": {
-        "name": "Oppgavestatus",
+      "battery_level": {
+        "name": "Batterinivå"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "charging_status": {
+        "name": "Ladestatus",
         "state": {
           "unknown": "Ukjent",
+          "charging": "Lader",
+          "not_charging": "Lader ikke",
+          "return_to_charge": "Returnerer for å lade",
+          "charging_completed": "Lading fullført"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "Rentvannstank-status",
+        "state": {
+          "unknown": "Ukjent",
+          "not_available": "Ikke tilgjengelig",
+          "not_installed": "Ikke installert",
+          "low_water": "Lavt vannivå",
+          "installed": "Installert"
+        }
+      },
+      "cleaned_area": {
+        "name": "Rengjort område"
+      },
+      "cleaning_count": {
+        "name": "Antall rengjøringer"
+      },
+      "cleaning_history": {
+        "name": "Rengjøringshistorikk"
+      },
+      "cleaning_progress": {
+        "name": "Rengjøringsfremdrift"
+      },
+      "cleaning_status": {
+        "name": "Rengjøring",
+        "state": {
+          "interrupted": "Avbrutt",
           "completed": "Fullført",
-          "cleaning": "Rengjør",
-          "zone_cleaning": "Sone-rengjøring",
-          "room_cleaning": "Rom-rengjøring",
-          "spot_cleaning": "Arealrengjøring",
-          "fast_mapping": "Hurtigkartlegging",
-          "cleaning_paused": "Rengjøring pauset",
-          "room_cleaning_paused": "Rom-rengjøring pauset",
-          "zone_cleaning_paused": "Sone-rengjøring pauset",
-          "spot_cleaning_paused": "Spot-rengjøring pauset",
-          "map_cleaning_paused": "Kart-rengjøring pauset",
-          "docking_paused": "Dokking pauset",
-          "mopping_paused": "Mopping pauset",
-          "zone_mopping_paused": "Sone-mopping pauset",
-          "room_mopping_paused": "Rom-mopping pauset",
-          "zone_docking_paused": "Sone-dokking pauset",
-          "room_docking_paused": "Rom-dokking pauset",
-          "cruising_path": "Cruiser på sti",
-          "cruising_path_paused": "Cruising på sti pauset",
-          "cruising_point": "Cruiser til punkt",
-          "cruising_point_paused": "Cruising til punkt pauset",
-          "summon_clean_paused": "Tilkalt rengjøring pauset",
-          "returning_to_install_mop": "Returnerer for å montere mopp",
-          "returning_to_remove_mop": "Returnerer for å fjerne mopp",
-          "station_cleaning": "Rengjøring av stasjon",
-          "pet_finding": "Kjæledyrsøk",
-          "auto_cleaning_washing_paused": "Automatisk rengjøring/vask pauset",
-          "area_cleaning_washing_paused": "Arealrengjøring/vask pauset",
-          "custom_cleaning_washing_paused": "Tilpasset rengjøring/vask pauset",
-          "picking_up_item": "Plukker opp gjenstand",
-          "picking_up_item_paused": "Opphenting av gjenstand satt på pause",
-          "picking_up_item_success": "Gjenstand plukket opp",
-          "remote_pickup_initializing": "Fjernhenting initialiserer",
-          "remote_pickup_identifing": "Fjernhenting identifiserer",
-          "manual_remote_pickup": "Manuell fjernhentning",
-          "automatic_remote_pickup": "Automatisk fjernhentning",
-          "remote_pickup_in_progress": "Fjernhenting pågår",
-          "remote_pickup_paused": "Fjernhenting satt på pause",
-          "placing_item": "Plasserer gjenstand",
-          "placing_item_paused": "Plassering av gjenstand satt på pause"
+          "manually_ended": "Avsluttet manuelt",
+          "failed": "Mislyktes",
+          "unknown": "Ukjent"
         }
       },
-      "water_tank": {
-        "name": "Vanntank",
+      "cleaning_time": {
+        "name": "Rengjøringstid"
+      },
+      "cleanup_method": {
+        "name": "Rengjøringsmetode",
+        "state": {
+          "other": "Annet",
+          "default": "Standard",
+          "customized": "Tilpasset",
+          "cleangenius": "CleanGenius",
+          "water_stain": "Vannflekk",
+          "unknown": "Ukjent"
+        }
+      },
+      "cruising_history": {
+        "name": "Patruljehistorikk"
+      },
+      "current_room": {
+        "name": "Nåværende rom",
+        "state_attributes": {
+          "room_id": {
+            "name": "Rom ID"
+          },
+          "room_icon": {
+            "name": "Romikon"
+          },
+          "room_name": {
+            "name": "Romnavn"
+          }
+        }
+      },
+      "deodorizer_left": {
+        "name": "Luktfjerner"
+      },
+      "deodorizer_time_left": {
+        "name": "Gjenværende tid for luktfjerner"
+      },
+      "detergent_left": {
+        "name": "Vaskemiddel"
+      },
+      "detergent_status": {
+        "name": "Vaskemiddel-status",
+        "state": {
+          "unknown": "Ukjent",
+          "installed": "Installert",
+          "disabled": "Deaktivert",
+          "low_detergent": "Lite vaskemiddel"
+        }
+      },
+      "detergent_time_left": {
+        "name": "Gjenværende tid for vaskemiddel"
+      },
+      "dirty_water_channel_left": {
+        "name": "Tømmekanal for skittent vann"
+      },
+      "dirty_water_tank_status": {
+        "name": "Skittenvannstank-status",
+        "state": {
+          "unknown": "Ukjent",
+          "installed": "Installert",
+          "not_installed_or_full": "Ikke installert eller full"
+        }
+      },
+      "drainage_status": {
+        "name": "Tømmestatus",
+        "state": {
+          "unknown": "Ukjent",
+          "idle": "Venter",
+          "draining": "Tømmer",
+          "draining_successful": "Tømming vellykket",
+          "draining_failed": "Tømming mislyktes"
+        }
+      },
+      "drying_left": {
+        "name": "Gjenværende tørketid"
+      },
+      "drying_progress": {
+        "name": "Tørkefremdrift"
+      },
+      "dust_bag_drying_left": {
+        "name": "Gjenværende tørketid for støvpose"
+      },
+      "dust_bag_drying_status": {
+        "name": "Tørkestatus for støvpose",
+        "state": {
+          "idle": "Venter",
+          "drying": "Tørker",
+          "paused": "Pauset"
+        }
+      },
+      "dust_bag_status": {
+        "name": "Støvpose-status",
         "state": {
           "unknown": "Ukjent",
           "installed": "Installert",
           "not_installed": "Ikke installert",
-          "mop_installed": "Mopp installert",
-          "in_station": "I stasjonen"
-        }
-      },
-      "mop_pad": {
-        "name": "Moppepute",
-        "state": {
-          "unknown": "Ukjent",
-          "installed": "Installert",
-          "not_installed": "Ikke installert",
-          "mop_installed": "Mopp installert",
-          "in_station": "I stasjonen"
+          "check": "Sjekk"
         }
       },
       "dust_collection": {
@@ -771,15 +1003,6 @@
           "available": "Tilgjengelig",
           "over_use": "Overforbruk",
           "never": "Aldri"
-        }
-      },
-      "auto_empty_status": {
-        "name": "Auto-tømmingsstatus",
-        "state": {
-          "unknown": "Ukjent",
-          "idle": "Venter",
-          "active": "Aktiv",
-          "not_performed": "Ikke utført"
         }
       },
       "error": {
@@ -872,7 +1095,6 @@
           "return_to_charge_failed": "Kunne ikke returnere for å lade.",
           "lds_failed_to_lift": "LDS-modul feilet i å løfte seg.",
           "robot_stuck": "LDS kan ikke løfte seg i denne posisjonen.",
-          "robot_stuck_repeat": "Flytt roboten til et åpent område og fortsett oppgaven.",
           "slippery_floor": "Glatt gulv. Vennligst prøv igjen senere.",
           "check_mop_install": "Past på at moppeputen er riktig montert.",
           "dirty_water_tank_full": "Skittenvannstank full.",
@@ -906,16 +1128,284 @@
           "robotic_arm_stopped": "Robotarm har stoppet.",
           "drainage_outlet_filter": "Robotens utløpsfilter for avløpsvann er tilstoppet.",
           "main_wheels_error": "Feil på hovedhjulene."
+        },
+        "state_attributes": {
+          "description": {
+            "name": "Beskrivelse",
+            "state": {
+              "no_error": "Ingen feil",
+              "drop": "Hjul i luften\nVennligst flytt roboten og start på nytt.",
+              "cliff": "Klippesensorfeil\nTørk av klippesensoren og start oppryddingen vekk fra trappen.",
+              "bumper": "Støtfangersensor sitter fast\nRengjør og bank forsiktig på kollisjonssensoren.",
+              "gesture": "Robot er skråstilt\nFlytt roboten til en jevn overflate og start på nytt.",
+              "bumper_repeat": "Støtfangersensor sitter fast\nRengjør og bank forsiktig på kollisjonssensoren.",
+              "drop_repeat": "Hjul i luften\nVennligst flytt roboten og start på nytt.",
+              "optical_flow": "Optisk flytsensorfeil\nPrøv å starte roboten på nytt.",
+              "no_box": "Støvbeholder ikke installert\nInstaller støvbeholderen og filteret.",
+              "no_tank_box": "Vanntank ikke installert\nInstaller vanntanken.",
+              "water_box_empty": "Vanntank er tom\nVennligst fyll opp vanntanken.",
+              "box_full": "Filteret er ikke tørt eller er blokkert\nVennligst sjekk om filteret har tørket eller må rengjøres.",
+              "brush": "Hovedbørste er viklet inn\nVennligst fjern hovedbørsten og rengjør busten og lagrene.",
+              "side_brush": "Sidebørste er viklet inn\nVennligst fjern og rengjør sidebørsten.",
+              "fan": "Filteret er ikke tørt eller er blokkert\nVennligst sjekk om filteret har tørket eller må rengjøres.",
+              "left_wheel_motor": "Robot sitter fast, eller venstre hjul er blokkert\nSjekk om det er en gjenstand fast i hovedhjulene og start roboten i en ny posisjon.",
+              "right_wheel_motor": "Robot sitter fast, eller høyre hjul er blokkert\nSjekk om det er en gjenstand fast i hovedhjulene og start roboten i en ny posisjon.",
+              "turn_suffocate": "Robot sitter fast eller kan ikke snu\nRoboten kan være blokkert eller sittende fast.",
+              "forward_suffocate": "Robot sitter fast eller kan ikke bevege seg fremover\nRoboten kan være blokkert eller sittende fast.",
+              "charger_get": "Finner ikke basen\nKontroller om strømledningen er riktig plugget inn.",
+              "battery_low": "Lavt batteri\nBatterinivået er for lavt. Vennligst belast.",
+              "charge_fault": "Ladefeil\nBruk en tørr klut til å tørke av ladekontaktene til roboten og den automatiske tømmebasen.",
+              "battery_percentage": "Batterinivåfeil",
+              "heart": "Intern feil\nPrøv å starte roboten på nytt.",
+              "camera_occlusion": "Visuell posisjoneringssensorfeil\nRengjør den visuelle posisjonssensoren.",
+              "move": "Bevegelsessensorfeil\nPrøv å starte roboten på nytt.",
+              "flow_shielding": "Optisk sensorfeil\nRengjør den optiske sensoren og start på nytt.",
+              "infrared_shielding": "Infrarød sensorfeil\nPrøv å starte roboten på nytt.",
+              "charge_no_electric": "Ladestasjon er ikke slått på\nLadestasjonen er ikke slått på. Kontroller om strømledningen er riktig plugget inn.",
+              "battery_fault": "Batterifeil\nVent til batteritemperaturen går tilbake til normalen.",
+              "fan_speed_error": "Viftehastighetssensorfeil\nPrøv å starte roboten på nytt.",
+              "left_wheell_speed": "Venstre hjul kan være blokkert av fremmedlegemer\nSjekk om det er en gjenstand fast i hovedhjulene og start roboten i en ny posisjon.",
+              "right_wheell_speed": "Høyre hjul kan være blokkert av fremmedlegemer\nSjekk om det er en gjenstand fast i hovedhjulene og start roboten i en ny posisjon.",
+              "bmi055_acce": "Akselerometerfeil\nPrøv å starte roboten på nytt.",
+              "bmi055_gyro": "Gyroskopfell\nPrøv å starte roboten på nytt.",
+              "xv7001": "Gyroskopfell\nPrøv å starte roboten på nytt.",
+              "left_magnet": "Venstre magnetsensorfeil\nPrøv å starte roboten på nytt.",
+              "right_magnet": "Høyre magnetsensorfeil\nPrøv å starte roboten på nytt.",
+              "flow_error": "Strømningssensorfeil\nPrøv å starte roboten på nytt.",
+              "infrared_fault": "Infrarød feil\nPrøv å starte roboten på nytt.",
+              "camera_fault": "Kamerafeil\nPrøv å starte roboten på nytt.",
+              "strong_magnet": "Sterkt magnetfelt detektert\nSterkt magnetfelt oppdaget. Vennligst start vekk fra den virtuelle veggen.",
+              "water_pump": "Vannpumpefeil\nPrøv å starte roboten på nytt.",
+              "rtc": "RTC-feil\nPrøv å starte roboten på nytt.",
+              "auto_key_trig": "Intern feil\nPrøv å starte roboten på nytt.",
+              "p3v3": "Intern feil\nPrøv å starte roboten på nytt.",
+              "camera_idle": "Intern feil\nPrøv å starte roboten på nytt.",
+              "blocked": "Rengjøringsrute blokkert, returnerer til dokk.\nRoboten kan være blokkert eller sittende fast.",
+              "lds_error": "Laseravstandssensorfeil\nVennligst sjekk om laseravstandssensoren har fastkjørte elementer",
+              "lds_bumper": "Laseravstandssensor-støtfangerfeil\nKontroller om laseravstandssensorens støtfanger sitter fast",
+              "filter_blocked": "Filteret er vått eller blokkert\nVennligst sjekk om filteret har tørket eller må rengjøres",
+              "edge": "Kantsensorfeil\nKantsensorfeil. Vennligst sjekk og rengjør den.",
+              "carpet": "Vennligst start roboten på et område uten teppe.\nEt teppe oppdages under roboten når den mopper. Flytt roboten til et annet sted og start den på nytt.",
+              "laser": "3D-hindringssensor feilet.\nPrøv å rengjøre 3D-sensoren for unngåelse av hindringer.",
+              "ultrasonic": "Ultralydsensorfeil.\nStart roboten på nytt og prøv på nytt.",
+              "no_go_zone": "No-Go-sone eller virtuell vegg detektert.\nFlytt roboten vekk fra området og start på nytt.",
+              "route": "Rengjøringsrute blokkert.\nSørg for at alle dører i boligen er åpne og fjern eventuelle hindringer langs stien, eller prøv å slette det begrensede området i stien.",
+              "restricted": "Robot-mopp er i et begrenset område.\nVennligst flytt roboten ut av dette området.",
+              "remove_mop": "Rengjøring ferdig. Vennligst fjern og rengjør moppeputen.",
+              "mop_removed": "Moppeputen falt av under rengjøring.\nMoppputene løsner, installer dem før du fortsetter arbeidet.",
+              "mop_pad_stop_rotate": "Moppeputen har sluttet å rotere.\nVennligst sjekk moppeputen.",
+              "bin_full": "Støvpose full eller luftkanal blokkert.\nSystemet oppdager at støvoppsamlingsposen er full, eller at luftkanalen er blokkert.",
+              "bin_open": "Dekselet på basestasjonen er ikke lukket, eller støvposen er ikke installert.\nSystemet oppdager at det øvre dekselet til den automatiske tømmebasen ikke er lukket, eller at støvoppsamlingsposen ikke er installert.",
+              "water_tank": "Rentvannstank ikke installert.\nRenvannstanken er ikke installert, installer den.",
+              "dirty_water_tank": "Skittenvannstank full eller ikke installert.\nKontroller om skittenvannstanken er full og skittenvannstanken er installert.",
+              "water_tank_dry": "Lavt vannivå i rentvannstanken, vennligst fyll på vann.\nEllers vil ikke roboten gå tilbake til basen for å få rengjort moppputen under rengjøringsoppgaven.",
+              "dirty_water_tank_blocked": "Skittenvannstank blokkert.\nPrøv å starte roboten på nytt.",
+              "dirty_water_tank_pump": "Skittenvannstankpumpe-feil.\nPrøv å starte roboten på nytt.",
+              "mop_pad": "Vaskebrettet er ikke installert riktig.\nVaskebrettet er ikke installert og roboten kan ikke gå tilbake til selvvaskebasen. Sørg for at vaskebrettet er installert og at spennene på begge sider er godt festet.",
+              "wet_mop_pad": "Vannivået i vaskebrettet er unormalt, vennligst rengjør vaskebrettet.\nVannstanden på vaskebrettet er unormal. Rengjør den i tide for å unngå blokkering. Hvis problemet fortsatt ikke kan løses, vennligst kontakt kundeservice.",
+              "clean_mop_pad": "Rengjøringsnivået er fullført, vennligst rengjør vaskebrettet.\nRengjør vaskebrettet til moppputen i tide for å unngå flekker eller lukt.",
+              "clean_tank_level": "Sjekk og fyll rentvannstanken.\nVannet i rentvannstanken er i ferd med å bli brukt opp.",
+              "station_disconnected": "Basestasjon ikke tilkoblet\nVennligst sjekk om strømmen er av eller strømbryteren er på i hjemmet ditt, og koble til begge ender av basestasjonens strømforsyning igjen.",
+              "dirty_tank_level": "Vannivået i skittenvannstanken er for høyt.\nVennligst sjekk om den brukte vanntanken er full.",
+              "washboard_level": "Vannivået i vaskebrettet er for høyt.\nRengjør den brukte vanntanken og vaskebrettet i tide.",
+              "no_mop_in_station": "Moppepute ikke i stasjonen.\nSett den inn i basestasjonen, eller installer den manuelt på roboten.",
+              "dust_bag_full": "Støvpose full eller luftkanal blokkert.\nHvis posen er full, skift den ut. Rengjør automatisk tømmeventilene på støvbeholderen og basestasjonen regelmessig.",
+              "self_test_failed": "Unormal vannstrøm fra rentvannstanken.\nSelvtest mislyktes — det er ikke vann i rentvannstanken til de øvre og nedre vannmodulene.",
+              "mop_install_failed": "Installasjon av moppepute feilet.\nKunne ikke installere moppeputer. Vennligst installer manuelt.",
+              "low_battery_turn_off": "Batteriet er veldig lavt. Roboten vil snart slå seg av.",
+              "dirty_tank_not_installed": "Skittenvannstank ikke installert.\nSørg for at den brukte vanntanken til roboten er riktig installert, og start deretter oppgaven.",
+              "robot_in_hidden_room": "Skjult område. Vennligst flytt roboten til et passende sted og prøv igjen.\nOmrådet har vært skjult. For å gjenbruke det, gå til det spesifikke kartet og klikk på det grå området for å gjenopprette det skjulte området manuelt.",
+              "washboard_not_working": "Vaskebrettet sluttet å fungere.\nFølg feilsøkingstrinnene nedenfor:\n1. Sjekk om vaskebrettet er sammenfiltret. Rengjør før bruk.\n2. Sjekk om vaskebrettet er riktig installert.\n3. Hvis problemet vedvarer, vennligst kontakt kundeservice.",
+              "return_to_charge_failed": "Kunne ikke returnere for å lade.\nVennligst sjekk basestasjonen.\n1. Sjekk om rampeforlengelsesplaten er installert ned til basestasjonen;\n2. Sjekk om basestasjonen er slått på;\n3. Pass på at det ikke er noen hindring foran basestasjonen.",
+              "lds_failed_to_lift": "LDS-modul feilet i å løfte seg.\nFjern alle rusk rundt LDS og flytt roboten til et åpent område for å gjenoppta oppgaven.",
+              "robot_stuck": "LDS kan ikke løfte seg i denne posisjonen.\nFlytt roboten til et åpent område og fortsett oppgaven.",
+              "slippery_floor": "Glatt gulv. Vennligst prøv igjen senere.\nGlatt gulv. Roboten klarte ikke å komme seg gjennom hindringer. Du kan vente til roboten prøver på nytt, eller tømme vannet rundt den og gjenoppta oppgaven.",
+              "check_mop_install": "Past på at moppeputen er riktig montert.\nSjekk mopp installasjonsinstruksjoner",
+              "dirty_water_tank_full": "Skittenvannstank full.\nRobotens brukte vanntank er for skitten. Vennligst fjern og rengjør den i tide.",
+              "retractable_leg_stuck": "Sjekk robotens beineenhet.\nUttrekkbare ben kan være sammenfiltret.",
+              "internal_error": "Intern feil oppstod. Vennligst prøv å starte roboten på nytt.\nIntern feil",
+              "robot_stuck_on_tables": "Robot sitter fast nær bord eller stoler\n1. Flytt roboten til et åpent område og start oppgaven på nytt.\n2. Det anbefales å ordne bordene og stolene pent for å forhindre at roboten setter seg fast.\nRoboten sitter fast",
+              "robot_stuck_on_passage": "Robot sitter fast i en smal gang\n1. Flytt roboten til et åpent område og start oppgaven på nytt.\n2. Det anbefales å sette den smale passasjen som en forbudssone for å forhindre at roboten setter seg fast.\nRoboten sitter fast",
+              "robot_stuck_on_threshold": "Robot sitter fast på en terskel/trapp\n1. Flytt roboten til et åpent område og start oppgaven på nytt.\n2. Det anbefales å sette trinnet/terskelen som en uoverkommelig terskel for å forhindre at roboten setter seg fast.\nRoboten sitter fast",
+              "robot_stuck_on_low_lying_area": "Robot sitter fast i et lavt område\n1. Flytt roboten til et åpent område og start oppgaven på nytt.\n2. Det anbefales å sette det lave området som en no-go-sone for å forhindre at roboten setter seg fast.\nRoboten sitter fast",
+              "robot_stuck_on_ramp": "Robot sitter fast på en rampe.\nDet anbefales å sette farbare terskler dersom det ikke er ramper som er lett å falle på stien.",
+              "robot_stuck_on_obstacle": "Robot sitter fast på en hindring.\nFjern hindringer fra banen og start oppgaven på nytt.",
+              "robot_stuck_on_pet": "Robot sitter fast på grunn av folk eller kjæledyr.\nSørg for at ingen mennesker eller kjæledyr er på banen når du starter oppgaven på nytt.",
+              "robot_stuck_on_slippery_surface": "Robot sitter fast på grunn av glatt overflate.\nRoboten sitter fast på grunn av glidning. Rengjør hovedhjulene.",
+              "robot_stuck_on_carpet": "Robot sitter fast på teppet.\n1. Flytt roboten vekk fra teppet og start oppgaven på nytt\n2. Det anbefales å sette teppet som en no-go-sone for å forhindre at roboten setter seg fast.\nRoboten sitter fast",
+              "drainage_failed": "Unormal vannstrøm til avløp.\nFeil ved kloakkpumpe. Vennligst kontakt kundeservice.",
+              "mop_not_detected": "Moppepute ikke detektert.\nMopp ikke oppdaget. Installer og fortsett oppgaven.",
+              "mop_holder_error": "Feil på moppepute-holder. Installer moppholderen eller juster plasseringen for å sikre riktig rengjøring.\nMoppholderfeil i stasjonen.",
+              "dock_error": "Feil på ladestasjonen.\nVennligst sjekk stasjonen og prøv følgende trinn:\n1. Sørg for at luken er helt lukket.\n2. Sørg for at de tre gruppene med mopper er plassert på luken i rød-gul-blå rekkefølge. Hvis moppene for øyeblikket er på transportbæreren eller vaskebrettet, sett dem tilbake på luken i denne rekkefølgen og prøv igjen.\n3. Se etter eventuelt rusk inne i stasjonen. Ikke plasser hånden, roboten eller andre gjenstander i vaskebrettet når du bytter moppe.",
+              "wash_failed": "Feil ved vasking av moppepute.\nVennligst sjekk stasjonen og prøv følgende trinn:\n1. Fest moppen som må vaskes manuelt til roboten.\n2. Installer andre skitne mopper på luken.\n3. Gå til stasjonsfunksjoner i appen, og vask deretter for å starte moppvask-oppgaven på nytt.",
+              "robot_stuck_on_curtain": "Robot sitter fast i gardinene.\n1. Flytt roboten bort fra gardinområdet og start oppgaven på nytt.\n2. Roboten kan ikke rengjøre dette gardinområdet. Det anbefales å fjerne det.\nRoboten sitter fast",
+              "edge_mop_stop_rotate": "Kantvask sluttet å rotere.\nKantmopp sluttet å rotere. Følg disse trinnene:\n1. Sjekk om roboten er på et teppe. Friksjon mellom kantmoppen og teppet kan hindre den i å rotere. Flytt roboten til et område uten teppe og gjenoppta rengjøringen.\n2. Sjekk om kantmoppen er sammenfiltret. Hvis ja, fjern dem og gjenoppta rengjøringen.",
+              "edge_mop_detached": "Kantmopp løsnet.\nKantmopp ikke oppdaget. Installer den før du fortsetter rengjøringen.",
+              "chassis_lift_malfunction": "Malfunksjon ved løfting av sasis.\nFeil på chassisløft. Start oppgaven på nytt. Hvis problemet vedvarer, kontakt kundeservice.",
+              "mop_cover_error": "Sjekk om det er rusk nær rullen og moppdekselet. Rengjør rullemoppen for å unngå at dekselet setter seg fast. Etter det, plasser roboten flatt og gjenoppta oppgaven. Hvis problemet vedvarer, vennligst kontakt kundeservice.\nMoppdekselfeil.",
+              "roller_mop_error": "Sjekk om det er rusk nær rullen og moppdekselet. Rengjør rullemoppen for å unngå at den setter seg fast. Etter det, plasser roboten flatt og gjenoppta oppgaven. Hvis problemet vedvarer, vennligst kontakt kundeservice.\nRullemopp feil.",
+              "onboard_water_tank_empty": "Robotens interne vanntank er tom.\nLavt vannnivå i robotens rentvannsboks. Vennligst fyll på omgående.",
+              "onboard_dirty_water_tank_full": "Robotens interne skittenvannstank er full. Vennligst tøm den umiddelbart.\nTa ut esken og tøm den. Alternativt kan du flytte roboten til stasjonen for moppvask (dette vil også tømme det brukte vannet).",
+              "mop_not_installed": "Moppepute ikke installert.\nBekreft at rullemoppen er riktig installert før du starter eller fortsetter oppgaven.",
+              "fluffing_roller_error": "Feil på renserullen.\n1. Snu roboten med bunnen vendt opp. Trykk på utløserknappen på den ene siden av rullemoppen for å ta den ut, og rengjør deretter eventuelt rusk rundt den.\n2. Trykk på den oransje klipsen og ta ut flufferullen. Rengjør eventuelt hår eller rusk på den.\n3. Etter rengjøring, installer flufferullen og trykk klemmen godt. Installer deretter rullemoppen, plasser roboten flatt og fortsett oppgaven.\nHvis problemet vedvarer, vennligst sjekk flere detaljer eller kontakt kundeservice.",
+              "blocked_by_obstacle": "Robot blokkert av hindring.\nVennligst se etter eventuelle hindringer foran roboten og fjern dem.",
+              "robotic_arm_stopped": "Robotarm har stoppet.\nTrykk og hold inne stasjonsknappen og robotarm på/av-knappen for å tilbakestille før du bruker den igjen.",
+              "drainage_outlet_filter": "Robotens utløpsfilter for avløpsvann er tilstoppet.\nRengjør avløpsvannets utløpsfilter på roboten umiddelbart for å sikre jevn vannstrøm.",
+              "main_wheels_error": "Feil på hovedhjulene.\nHjulavvik oppdaget. Rengjøringsoppgaven er satt på pause. Du kan prøve å gjenoppta rengjøringen ved å bruke knappen på roboten eller via appen. Hvis problemet vedvarer, vennligst kontakt oss for å få hjelp.",
+              "unknown": "Ukjent feil"
+            }
+          }
         }
       },
-      "charging_status": {
-        "name": "Ladestatus",
+      "filter_left": {
+        "name": "Filterenhet"
+      },
+      "filter_time_left": {
+        "name": "Gjenværende filtertid"
+      },
+      "firmware_version": {
+        "name": "Fastvareversjon"
+      },
+      "first_cleaning_date": {
+        "name": "Dato for første rengjøring"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "Rengjøring av renserull"
+      },
+      "fluffing_roller_dirty_time_left": {
+        "name": "Gjenværende tid for plysjvalse"
+      },
+      "hot_water_status": {
+        "name": "Varmtvann-status",
         "state": {
           "unknown": "Ukjent",
-          "charging": "Lader",
-          "not_charging": "Lader ikke",
-          "return_to_charge": "Returnerer for å lade",
-          "charging_completed": "Lading fullført"
+          "disabled": "Deaktivert",
+          "enabled": "Aktivert"
+        }
+      },
+      "ip_address": {
+        "name": "IP-adresse"
+      },
+      "low_water_warning": {
+        "name": "Varsel om lavt vannivå",
+        "state": {
+          "no_warning": "Ingen varsler",
+          "no_water_left": "Vannet i rentvannstanken er nesten brukt opp. Sjekk og fyll rentvannstanken omgående.",
+          "no_water_left_after_clean": "Moppeputen er rengjort. Det ble oppdaget at vannet i rentvannstanken er utilstrekkelig, vennligst fyll rentvannstanken og tøm brukt vann-tanken.",
+          "no_water_for_clean": "Lavt vannivå i rentvannstanken. Roboten har byttet til støvsugingsmodus.",
+          "low_water": "Nesten tom for vann. Vennligst fyll rentvannstanken.",
+          "tank_not_installed": "Rentvannstanken er ikke installert."
+        }
+      },
+      "mac_address": {
+        "name": "MAC-adresse"
+      },
+      "main_brush_left": {
+        "name": "Hovedbørste"
+      },
+      "main_brush_time_left": {
+        "name": "Gjenværende tid for hovedbørste"
+      },
+      "mapping_time": {
+        "name": "Kartleggingstid"
+      },
+      "model": {
+        "name": "Modell"
+      },
+      "mop_pad": {
+        "name": "Moppepute",
+        "state": {
+          "unknown": "Ukjent",
+          "installed": "Installert",
+          "not_installed": "Ikke installert",
+          "mop_installed": "Mopp installert",
+          "in_station": "I stasjonen"
+        }
+      },
+      "mop_pad_left": {
+        "name": "Moppepute"
+      },
+      "mop_pad_time_left": {
+        "name": "Gjenværende tid for moppepute"
+      },
+      "multiple_cleaning_time": {
+        "name": "Flere rengjøringer"
+      },
+      "nation_matched": {
+        "name": "Regionlås",
+        "state": {
+          "unknown": "Deaktiver",
+          "matched": "Ikke låst",
+          "unmatched": "Låst",
+          "na": "Ikke tilgjengelig"
+        }
+      },
+      "obstacle_reason": {
+        "name": "Årsak til hindring",
+        "state": {
+          "blocked_by_virtual_wall": "Blokkert av virtuell vegg",
+          "blocked_by_door": "Blokkert av dør",
+          "blocked_by_threshold": "Blokkert av terskel",
+          "blocked_by_obstacle": "Blokkert av hindring",
+          "blocked_by_carpet": "Blokkert av teppe",
+          "blocked_by_detected_carpet": "Blokkert av detektert teppe",
+          "blocked_by_hidden_obstacle": "Blokkert av skjult hindring",
+          "blocked_by_dynamic_obstacle": "Blokkert av dynamisk hindring",
+          "passage_too_low": "For lav passasje",
+          "step_too_low": "For lavt trinn",
+          "failed_to_cross_threshold": "Kunne ikke krysse terskel"
+        }
+      },
+      "obstacle_type": {
+        "name": "Hindringstype",
+        "state": {
+          "unknown": "Ukjent",
+          "base": "Base",
+          "scale": "Vekt på badet",
+          "thread": "Ledningslignende gjenstander",
+          "wire": "Ledninger",
+          "toy": "Leketøy",
+          "shoes": "Sko",
+          "sock": "Sokk",
+          "fece": "Kjæledyr Avføring",
+          "trash_can": "Støvbeholdere",
+          "fabric": "Stoffer",
+          "power_strip": "Grenuttak",
+          "liquid_stain": "Væskeflekk",
+          "obstacle": "Hinder",
+          "pet": "Kjæledyr",
+          "cleaning_tools": "Rengjøringsutstyr",
+          "detected_stain": "Flekk",
+          "blocked_room": "Møbler der roboten lett kan sette seg fast",
+          "easy_to_stuck_furniture": "Møbler der roboten lett kan sette seg fast",
+          "uncleanable_stain": "Flekk",
+          "leg": "Bein",
+          "large_particles": "Store partikler",
+          "dried_stain": "Flekk",
+          "food_bowl": "Matskål",
+          "pet_bed": "Seng/hus for kjæledyr",
+          "cleaned_stain": "Flekk",
+          "skipped_uncleanable_stain": "Flekk",
+          "cleaned_dried_stain": "Flekk",
+          "cleaned_large_particles": "Store partikler",
+          "hair": "Ledningslignende gjenstander",
+          "paper": "Stoffer",
+          "cleaned_hair": "Ledningslignende gjenstander",
+          "sundry": "Diverse"
+        }
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "Intern skittenvannstank"
+      },
+      "onboard_dirty_water_tank_time_left": {
+        "name": "Gjenværende tid intern skittenvannstank"
+      },
+      "recovery_map_type": {
+        "name": "Karttype",
+        "state": {
+          "original": "Originalkart",
+          "edited": "Redigert kart",
+          "backup": "Sikkerhetskopi"
         }
       },
       "relocation_status": {
@@ -927,6 +1417,24 @@
           "failed": "Mislyktes",
           "success": "Vellykket"
         }
+      },
+      "remaining_battery": {
+        "name": "Gjenværende batteri"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "Rengjøring av rullemoppfilter"
+      },
+      "roller_mop_filter_dirty_time_left": {
+        "name": "Gjenværende tid for mopperullefilter"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "scale_inhibitor_left": {
+        "name": "Kalkhemmer"
+      },
+      "scale_inhibitor_time_left": {
+        "name": "Gjenværende tid for kalkhemmer"
       },
       "self_wash_base_status": {
         "name": "Status for selvvaskebase",
@@ -941,15 +1449,165 @@
           "adding_water": "Fyller vann"
         }
       },
-      "low_water_warning": {
-        "name": "Varsel om lavt vannivå",
+      "sensor_dirty_left": {
+        "name": "Sensorrengjøring"
+      },
+      "sensor_dirty_time_left": {
+        "name": "Gjenværende tid for sensorrengjøring"
+      },
+      "serial_number": {
+        "name": "Serienummer"
+      },
+      "side_brush_left": {
+        "name": "Sidebørste"
+      },
+      "side_brush_time_left": {
+        "name": "Gjenværende tid for sidebørste"
+      },
+      "silver_ion_left": {
+        "name": "Sølvioner"
+      },
+      "silver_ion_time_left": {
+        "name": "Gjenværende tid for sølvion"
+      },
+      "squeegee_left": {
+        "name": "Nal"
+      },
+      "squeegee_time_left": {
+        "name": "Gjenværende tid for nal"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "startup_method": {
+        "name": "Startet av",
         "state": {
-          "no_warning": "Ingen varsler",
-          "no_water_left": "Vannet i rentvannstanken er nesten brukt opp. Sjekk og fyll rentvannstanken omgående.",
-          "no_water_left_after_clean": "Moppeputen er rengjort. Det ble oppdaget at vannet i rentvannstanken er utilstrekkelig, vennligst fyll rentvannstanken og tøm brukt vann-tanken.",
-          "no_water_for_clean": "Lavt vannivå i rentvannstanken. Roboten har byttet til støvsugingsmodus.",
-          "low_water": "Nesten tom for vann. Vennligst fyll rentvannstanken.",
-          "tank_not_installed": "Rentvannstanken er ikke installert."
+          "button": "Knapp",
+          "app": "Applikasjon",
+          "scheduled": "Planlagt",
+          "voice": "Tale",
+          "second_cleaning": "Andre rengjøring",
+          "unknown": "Ukjent"
+        }
+      },
+      "state": {
+        "name": "Status",
+        "state": {
+          "unknown": "Ukjent",
+          "sweeping": "Feier",
+          "charging": "Lader",
+          "error": "Feil",
+          "idle": "Venter",
+          "paused": "Pauset",
+          "returning": "Returnerer til dokk",
+          "mopping": "Mopper",
+          "drying": "Tørker",
+          "washing": "Vasker",
+          "returning_to_wash": "Returnerer for å vaske",
+          "building": "Bygger kart",
+          "sweeping_and_mopping": "Feier og mopper",
+          "charging_completed": "Lading fullført",
+          "upgrading": "Oppgraderer",
+          "clean_summon": "Tilkalt for rengjøring",
+          "station_reset": "Nullstill stasjon",
+          "returning_install_mop": "Returnerer for å montere mopp",
+          "returning_remove_mop": "Returnerer for å fjerne mopp",
+          "water_check": "Sjekker vann",
+          "clean_add_water": "Rengjør og fyller vann",
+          "washing_paused": "Vask pauset",
+          "auto_emptying": "Tømmer automatisk",
+          "remote_control": "Fjernkontroll",
+          "smart_charging": "Smart lading",
+          "second_cleaning": "Andre rengjøring",
+          "human_following": "Følger menneske",
+          "spot_cleaning": "Spot-rengjøring",
+          "returning_auto_empty": "Returnerer for automatisk tømming",
+          "waiting_for_task": "Venter på oppgave",
+          "station_cleaning": "Rengjøring av stasjon",
+          "returning_to_drain": "Returnerer for å tømme",
+          "draining": "Tømmer",
+          "auto_water_draining": "Automatisk vanntømming",
+          "emptying": "Tømmer",
+          "dust_bag_drying": "Tørker støvpose",
+          "dust_bag_drying_paused": "Tørking av støvpose pauset",
+          "heading_to_extra_cleaning": "Går til ekstra rengjøring",
+          "extra_cleaning": "Ekstra rengjøring",
+          "finding_pet_paused": "Søk etter kjæledyr pauset",
+          "finding_pet": "Søker etter kjæledyr",
+          "shortcut": "Snarvei",
+          "monitoring": "Overvåker",
+          "monitoring_paused": "Overvåking pauset",
+          "initial_deep_cleaning": "Innledende dyp rengjøring",
+          "initial_deep_cleaning_paused": "Innledende dyp rengjøring pauset",
+          "sanitizing": "Sanitiserer",
+          "sanitizing_with_dry": "Sanitiserer med tørking",
+          "changing_mop": "Skifter mopp",
+          "changing_mop_paused": "Moppeskift pauset",
+          "floor_maintaining": "Gulvvedlikehold",
+          "floor_maintaining_paused": "Gulvvedlikehold pauset",
+          "remote_pickup": "Fjernhenting",
+          "arranging_items": "Arrangerer gjenstander",
+          "pet_guarding": "Husdyrvakt",
+          "pet_guarding_paused": "Husdyrvakt satt på pause",
+          "installing_mop": "Monterer mopp",
+          "uninstalling_mop": "Fjerner mopp",
+          "intelligent_recharging": "Intelligent gjenopplading",
+          "assisted_cleaning": "Assistert rengjøring",
+          "entering_dock": "Går i dock",
+          "leaving_dock": "Forlater dock",
+          "navigating_to_climber": "Navigerer till klatrer",
+          "docking_to_climber": "Docker till klatrer",
+          "climber_docked": "Klatrer docket",
+          "climber_navigating": "Klatrer navigerer",
+          "climbing_stairs": "Klatrer i trapper",
+          "climbing_stairs_completed": "Trappeklatring fullført",
+          "climber_at_dock": "Klatrer ved dock",
+          "climber_leaving_dock": "Klatrer forlater dock"
+        }
+      },
+      "station_drainage_status": {
+        "name": "Stasjonstømming-status",
+        "state": {
+          "unknown": "Ukjent",
+          "idle": "Venter",
+          "draining": "Tømmer"
+        }
+      },
+      "status": {
+        "name": "Status",
+        "state": {
+          "unknown": "Ukjent",
+          "idle": "Venter",
+          "paused": "Pauset",
+          "cleaning": "Rengjør",
+          "returning": "Returnerer til dokk",
+          "spot_cleaning": "Spot-rengjøring",
+          "follow_wall_cleaning": "Veggfølgende rengjøring",
+          "charging": "Lader",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "WiFi-oppsett",
+          "power_off": "Slå av",
+          "factory": "Fabrikk",
+          "error": "Feil",
+          "remote_control": "Fjernkontroll",
+          "sleeping": "Sover",
+          "self_test": "Selvtest",
+          "factory_test": "Fabrikktest",
+          "standby": "Standby",
+          "room_cleaning": "Rom-rengjøring",
+          "zone_cleaning": "Sone-rengjøring",
+          "fast_mapping": "Hurtigkartlegging",
+          "cruising_path": "Cruiser på sti",
+          "cruising_point": "Cruiser til punkt",
+          "summon_clean": "Tilkalt for rengjøring",
+          "shortcut": "Snarvei",
+          "person_follow": "Følger person",
+          "water_check": "Sjekker vann",
+          "pet_guarding": "Husdyrvakt",
+          "auto_arrangement": "Automatisk arrangering",
+          "smart_arrangement": "Smart arrangering",
+          "zoned_arrangement": "Sonebestemt arrangering"
         }
       },
       "stream_status": {
@@ -962,66 +1620,93 @@
           "recording": "Opptak"
         }
       },
-      "drainage_status": {
-        "name": "Tømmestatus",
+      "tank_filter_left": {
+        "name": "Tankfilter"
+      },
+      "tank_filter_time_left": {
+        "name": "Gjenværende tid for tankfilter"
+      },
+      "task_end_type": {
+        "name": "Avsluttet av",
         "state": {
-          "unknown": "Ukjent",
-          "idle": "Venter",
-          "draining": "Tømmer",
-          "draining_successful": "Tømming vellykket",
-          "draining_failed": "Tømming mislyktes"
+          "other": "Annet",
+          "manual_docking": "Manuell dokking",
+          "docking": "Dokking",
+          "failed_docking": "Dokking mislyktes",
+          "stop": "Stopp",
+          "unknown": "Ukjent"
         }
       },
-      "clean_water_tank_status": {
-        "name": "Rentvannstank-status",
+      "task_interrupt_reason": {
+        "name": "Årsak til avbrudd",
         "state": {
-          "unknown": "Ukjent",
-          "not_available": "Ikke tilgjengelig",
-          "not_installed": "Ikke installert",
-          "low_water": "Lavt vannivå",
-          "installed": "Installert"
+          "abnormal_docking": "Unormal dokking",
+          "base_station_powered_off": "Basestasjon slått av",
+          "brush_entangled_by_carpet": "Børste viklet inn i teppe",
+          "brush_entangled_by_object": "Børste viklet inn i objekt",
+          "brush_entangled_by_obstacle": "Børste viklet inn i hindring",
+          "cannot_find_base_station": "Finner ikke basestasjonen",
+          "cliff_sensor_error": "Klippesensorfeil",
+          "laser_distance_sensor_error": "Laseravstandssensorfeil",
+          "mop_pad_abnormally_removed": "Moppepute fjernet unormalt",
+          "mop_pad_fallen_off": "Moppepute falt av",
+          "mop_pad_fallen_off_by_obstacle": "Moppepute falt av pga. hindring",
+          "mop_pad_fallen_off_by_table": "Moppepute falt av pga. bord",
+          "mop_pad_fallen_off_crossing_obstacle": "Moppepute falt av ved kryssing av hindring",
+          "mop_pad_removed": "Moppepute fjernet",
+          "mop_pad_stuck": "Moppepute sitter fast",
+          "robot_fallen": "Robot har falt",
+          "robot_is_stuck_on_obstacle": "Robot sitter fast på hindring",
+          "robot_is_stuck_on_step": "Robot sitter fast på trinn",
+          "robot_lifted": "Robot løftet",
+          "task_completed": "Oppgave fullført",
+          "unknown": "Ukjent"
         }
       },
-      "dirty_water_tank_status": {
-        "name": "Skittenvannstank-status",
+      "task_status": {
+        "name": "Oppgavestatus",
         "state": {
           "unknown": "Ukjent",
-          "installed": "Installert",
-          "not_installed_or_full": "Ikke installert eller full"
-        }
-      },
-      "dust_bag_status": {
-        "name": "Støvpose-status",
-        "state": {
-          "unknown": "Ukjent",
-          "installed": "Installert",
-          "not_installed": "Ikke installert",
-          "check": "Sjekk"
-        }
-      },
-      "detergent_status": {
-        "name": "Vaskemiddel-status",
-        "state": {
-          "unknown": "Ukjent",
-          "installed": "Installert",
-          "disabled": "Deaktivert",
-          "low_detergent": "Lite vaskemiddel"
-        }
-      },
-      "hot_water_status": {
-        "name": "Varmtvann-status",
-        "state": {
-          "unknown": "Ukjent",
-          "disabled": "Deaktivert",
-          "enabled": "Aktivert"
-        }
-      },
-      "station_drainage_status": {
-        "name": "Stasjonstømming-status",
-        "state": {
-          "unknown": "Ukjent",
-          "idle": "Venter",
-          "draining": "Tømmer"
+          "completed": "Fullført",
+          "cleaning": "Rengjør",
+          "zone_cleaning": "Sone-rengjøring",
+          "room_cleaning": "Rom-rengjøring",
+          "spot_cleaning": "Arealrengjøring",
+          "fast_mapping": "Hurtigkartlegging",
+          "cleaning_paused": "Rengjøring pauset",
+          "room_cleaning_paused": "Rom-rengjøring pauset",
+          "zone_cleaning_paused": "Sone-rengjøring pauset",
+          "spot_cleaning_paused": "Spot-rengjøring pauset",
+          "map_cleaning_paused": "Kart-rengjøring pauset",
+          "docking_paused": "Dokking pauset",
+          "mopping_paused": "Mopping pauset",
+          "zone_mopping_paused": "Sone-mopping pauset",
+          "room_mopping_paused": "Rom-mopping pauset",
+          "zone_docking_paused": "Sone-dokking pauset",
+          "room_docking_paused": "Rom-dokking pauset",
+          "cruising_path": "Cruiser på sti",
+          "cruising_path_paused": "Cruising på sti pauset",
+          "cruising_point": "Cruiser til punkt",
+          "cruising_point_paused": "Cruising til punkt pauset",
+          "summon_clean_paused": "Tilkalt rengjøring pauset",
+          "returning_to_install_mop": "Returnerer for å montere mopp",
+          "returning_to_remove_mop": "Returnerer for å fjerne mopp",
+          "station_cleaning": "Rengjøring av stasjon",
+          "pet_finding": "Kjæledyrsøk",
+          "auto_cleaning_washing_paused": "Automatisk rengjøring/vask pauset",
+          "area_cleaning_washing_paused": "Arealrengjøring/vask pauset",
+          "custom_cleaning_washing_paused": "Tilpasset rengjøring/vask pauset",
+          "picking_up_item": "Plukker opp gjenstand",
+          "picking_up_item_paused": "Opphenting av gjenstand satt på pause",
+          "picking_up_item_success": "Gjenstand plukket opp",
+          "remote_pickup_initializing": "Fjernhenting initialiserer",
+          "remote_pickup_identifing": "Fjernhenting identifiserer",
+          "manual_remote_pickup": "Manuell fjernhentning",
+          "automatic_remote_pickup": "Automatisk fjernhentning",
+          "remote_pickup_in_progress": "Fjernhenting pågår",
+          "remote_pickup_paused": "Fjernhenting satt på pause",
+          "placing_item": "Plasserer gjenstand",
+          "placing_item_paused": "Plassering av gjenstand satt på pause"
         }
       },
       "task_type": {
@@ -1067,461 +1752,462 @@
           "steam_cleaning_paused": "Damprengjøring satt på pause"
         }
       },
-      "dust_bag_drying_status": {
-        "name": "Tørkestatus for støvpose",
-        "state": {
-          "idle": "Venter",
-          "drying": "Tørker",
-          "paused": "Pauset"
-        }
-      },
-      "nation_matched": {
-        "name": "Regionlås",
-        "state": {
-          "unknown": "Deaktiver",
-          "matched": "Ikke låst",
-          "unmatched": "Låst",
-          "na": "Ikke tilgjengelig"
-        }
-      },
-      "startup_method": {
-        "name": "Startet av",
-        "state": {
-          "button": "Knapp",
-          "app": "Applikasjon",
-          "scheduled": "Planlagt",
-          "voice": "Tale",
-          "second_cleaning": "Andre rengjøring",
-          "unknown": "Ukjent"
-        }
-      },
-      "cleaning_status": {
-        "name": "Rengjøring",
-        "state": {
-          "interrupted": "Avbrutt",
-          "completed": "Fullført",
-          "manually_ended": "Avsluttet manuelt",
-          "failed": "Mislyktes",
-          "unknown": "Ukjent"
-        }
-      },
-      "cleanup_method": {
-        "name": "Rengjøringsmetode",
-        "state": {
-          "other": "Annet",
-          "default": "Standard",
-          "customized": "Tilpasset",
-          "cleangenius": "CleanGenius",
-          "water_stain": "Vannflekk",
-          "unknown": "Ukjent"
-        }
-      },
-      "task_end_type": {
-        "name": "Avsluttet av",
-        "state": {
-          "other": "Annet",
-          "manual_docking": "Manuell dokking",
-          "docking": "Dokking",
-          "failed_docking": "Dokking mislyktes",
-          "stop": "Stopp",
-          "unknown": "Ukjent"
-        }
-      },
-      "task_interrupt_reason": {
-        "name": "Årsak til avbrudd",
-        "state": {
-          "abnormal_docking": "Unormal dokking",
-          "base_station_powered_off": "Basestasjon slått av",
-          "brush_entangled_by_carpet": "Børste viklet inn i teppe",
-          "brush_entangled_by_object": "Børste viklet inn i objekt",
-          "brush_entangled_by_obstacle": "Børste viklet inn i hindring",
-          "cannot_find_base_station": "Finner ikke basestasjonen",
-          "cliff_sensor_error": "Klippesensorfeil",
-          "laser_distance_sensor_error": "Laseravstandssensorfeil",
-          "mop_pad_abnormally_removed": "Moppepute fjernet unormalt",
-          "mop_pad_fallen_off": "Moppepute falt av",
-          "mop_pad_fallen_off_by_obstacle": "Moppepute falt av pga. hindring",
-          "mop_pad_fallen_off_by_table": "Moppepute falt av pga. bord",
-          "mop_pad_fallen_off_crossing_obstacle": "Moppepute falt av ved kryssing av hindring",
-          "mop_pad_removed": "Moppepute fjernet",
-          "mop_pad_stuck": "Moppepute sitter fast",
-          "robot_fallen": "Robot har falt",
-          "robot_is_stuck_on_obstacle": "Robot sitter fast på hindring",
-          "robot_is_stuck_on_step": "Robot sitter fast på trinn",
-          "robot_lifted": "Robot løftet",
-          "task_completed": "Oppgave fullført",
-          "unknown": "Ukjent"
-        }
-      },
-      "recovery_map_type": {
-        "name": "Karttype",
-        "state": {
-          "original": "Originalkart",
-          "edited": "Redigert kart",
-          "backup": "Sikkerhetskopi"
-        }
-      },
-      "obstacle_type": {
-        "name": "Hindringstype",
-        "state": {
-          "unknown": "Ukjent",
-          "base": "Base",
-          "scale": "Vekt",
-          "thread": "Tråd",
-          "wire": "Ledning",
-          "toy": "Leketøy",
-          "shoes": "Sko",
-          "sock": "Sokk",
-          "fece": "Avføring",
-          "trash_can": "Søppelbøtte",
-          "fabric": "Stoff",
-          "power_strip": "Grenuttak",
-          "liquid_stain": "Væskeflekk",
-          "obstacle": "Hindring",
-          "pet": "Kjæledyr",
-          "cleaning_tools": "Rengjøringsverktøy",
-          "detected_stain": "Flekk detektert",
-          "blocked_room": "Blokkert rom",
-          "easy_to_stuck_furniture": "Møbel man lett sitter fast i",
-          "uncleanable_stain": "Flekk som ikke kan rengjøres",
-          "leg": "Bein",
-          "large_particles": "Store partikler",
-          "dried_stain": "Tørket flekk",
-          "food_bowl": "Matskål",
-          "pet_bed": "Kjæledyrseng",
-          "cleaned_stain": "Flekk rengjort",
-          "skipped_uncleanable_stain": "Hoppet over flekk som ikke kan rengjøres",
-          "cleaned_dried_stain": "Rengjort tørket flekk",
-          "cleaned_large_particles": "Store partikler rengjort",
-          "hair": "Hår",
-          "paper": "Papier",
-          "cleaned_hair": "Rengjort hår",
-          "sundry": "Diverse"
-        }
-      },
-      "obstacle_reason": {
-        "name": "Årsak til hindring",
-        "state": {
-          "blocked_by_virtual_wall": "Blokkert av virtuell vegg",
-          "blocked_by_door": "Blokkert av dør",
-          "blocked_by_threshold": "Blokkert av terskel",
-          "blocked_by_obstacle": "Blokkert av hindring",
-          "blocked_by_carpet": "Blokkert av teppe",
-          "blocked_by_detected_carpet": "Blokkert av detektert teppe",
-          "blocked_by_hidden_obstacle": "Blokkert av skjult hindring",
-          "blocked_by_dynamic_obstacle": "Blokkert av dynamisk hindring",
-          "passage_too_low": "For lav passasje",
-          "step_too_low": "For lavt trinn",
-          "failed_to_cross_threshold": "Kunne ikke krysse terskel"
-        }
-      },
-      "remaining_battery": {
-        "name": "Gjenværende batteri"
-      },
-      "multiple_cleaning_time": {
-        "name": "Flere rengjøringer"
-      },
-      "bssid": {
-        "name": "BSSID"
-      },
-      "firmware_version": {
-        "name": "Fastvareversjon"
-      },
-      "ip_address": {
-        "name": "IP-adresse"
-      },
-      "mac_address": {
-        "name": "MAC-adresse"
-      },
-      "model": {
-        "name": "Modell"
-      },
-      "rssi": {
-        "name": "RSSI"
-      },
-      "serial_number": {
-        "name": "Serienummer"
-      },
-      "ssid": {
-        "name": "SSID"
-      },
       "timezone": {
         "name": "Tidssone"
+      },
+      "total_cleaned_area": {
+        "name": "Totalt rengjort område"
+      },
+      "total_cleaning_time": {
+        "name": "Total rengjøringstid"
       },
       "voice_packet_id": {
         "name": "Talepakke"
       },
-      "deodorizer_left": {
-        "name": "Luktfjerner"
-      },
-      "detergent_left": {
-        "name": "Vaskemiddel"
-      },
-      "dirty_water_channel_left": {
-        "name": "Tømmekanal for skittent vann"
-      },
-      "filter_left": {
-        "name": "Filterenhet"
-      },
-      "fluffing_roller_dirty_left": {
-        "name": "Rengjøring av renserull"
-      },
-      "main_brush_left": {
-        "name": "Hovedbørste"
-      },
-      "mop_pad_left": {
-        "name": "Moppepute"
-      },
-      "onboard_dirty_water_tank_left": {
-        "name": "Intern skittenvannstank"
-      },
-      "roller_mop_filter_dirty_left": {
-        "name": "Rengjøring av rullemoppfilter"
-      },
-      "scale_inhibitor_left": {
-        "name": "Kalkhemmer"
-      },
-      "sensor_dirty_left": {
-        "name": "Sensorrengjøring"
-      },
-      "side_brush_left": {
-        "name": "Sidebørste"
-      },
-      "silver_ion_left": {
-        "name": "Sølvioner"
-      },
-      "squeegee_left": {
-        "name": "Nal"
-      },
-      "tank_filter_left": {
-        "name": "Tankfilter"
-      },
       "water_outlet_filter_dirty_left": {
         "name": "Rengjøring av vannutløpsfilter"
       },
+      "water_outlet_filter_dirty_time_left": {
+        "name": "Gjenværende tid for vannutløpsfilter"
+      },
+      "water_tank": {
+        "name": "Vanntank",
+        "state": {
+          "unknown": "Ukjent",
+          "installed": "Installert",
+          "not_installed": "Ikke installert",
+          "mop_installed": "Mopp installert",
+          "in_station": "I stasjonen"
+        }
+      },
       "wheel_dirty_left": {
         "name": "Hjulrengjøring"
+      },
+      "wheel_dirty_time_left": {
+        "name": "Gjenværende tid for hjul"
       }
     },
-    "toggle": {
-      "customized_cleaning": {
-        "name": "Tilpasset rengjøring"
+    "switch": {
+      "active_suspension_crossing": {
+        "name": "Aktiv fjæringskryssing"
       },
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
+      "ai_fluid_detection": {
+        "name": "AI væskeregistrering"
       },
-      "deep_cleaning": {
-        "name": "Dyprengjøring"
+      "ai_furniture_detection": {
+        "name": "AI møbelregistrering"
       },
-      "auto_dust_collecting": {
-        "name": "Auto-tømming"
-      },
-      "hair_compression": {
-        "name": "Hår-komprimering"
-      },
-      "self_clean": {
-        "name": "Selvrens"
-      },
-      "deep_mop_washing": {
-        "name": "Dypmoppvask"
-      },
-      "hot_washing": {
-        "name": "Varmvask"
-      },
-      "auto_drying": {
-        "name": "Auto-tørking"
-      },
-      "silent_drying": {
-        "name": "Stille tørking"
-      },
-      "uv_sterilization": {
-        "name": "UV-sterilisering"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Tilpasset tepperengjøring"
-      },
-      "carpet_avoidance": {
-        "name": "Teppeunngåelse"
-      },
-      "carpet_preferences": {
-        "name": "Tilpassede preferanser"
-      },
-      "auto_change_mop": {
-        "name": "Auto-moppeskift"
-      },
-      "multi_floor_map": {
-        "name": "Fleretasjeskart"
-      },
-      "intelligent_recognition": {
-        "name": "Intelligent gjenkjenning"
-      },
-      "map_saving": {
-        "name": "Kartlagring"
-      },
-      "child_lock": {
-        "name": "Barnesikring"
-      },
-      "resume_cleaning": {
-        "name": "Gjenoppta rengjøring"
-      },
-      "obstacle_avoidance": {
-        "name": "Hindringsunngåelse"
-      },
-      "carpet_boost": {
-        "name": "Teppeforsterkning"
-      },
-      "carpet_recognition": {
-        "name": "Teppegjenkjenning"
-      },
-      "clean_carpets_first": {
-        "name": "Rengjør tepper først"
-      },
-      "close_roller_cover_on_carpet": {
-        "name": "Lukk rulledeksel på teppe"
-      },
-      "intensive_carpet_cleaning": {
-        "name": "Intensiv tepperengjøring"
-      },
-      "side_brush_carpet_rotate": {
-        "name": "Sidebørste roterer på teppe"
-      },
-      "lift_chassis_on_carpet": {
-        "name": "Løft sasis på teppe"
-      },
-      "auto_mount_mop": {
-        "name": "Auto-montering av mopp"
-      },
-      "mopping_with_detergent": {
-        "name": "Mopping med vaskemiddel"
-      },
-      "mop_washing_with_detergent": {
-        "name": "Moppevask med vaskemiddel"
-      },
-      "auto_add_detergent": {
-        "name": "Legg til vaskemiddel automatisk"
-      },
-      "smart_mop_washing": {
-        "name": "Smart moppevask"
-      },
-      "wider_corner_coverage": {
-        "name": "Bredere hjørnedekning"
-      },
-      "pressurized_cleaning": {
-        "name": "Trykkrengjøring"
-      },
-      "gap_cleaning_extension": {
-        "name": "Mellomrom-rengjøring"
-      },
-      "mopping_under_furnitures": {
-        "name": "Moppe under møbler"
-      },
-      "floor_direction_cleaning": {
-        "name": "Rengjøring i gulvretning"
-      },
-      "ring_light_always_on": {
-        "name": "Ringlys alltid på"
-      },
-      "collision_avoidance": {
-        "name": "Kollisjonsunngåelse"
-      },
-      "fill_light": {
-        "name": "Kameralys"
+      "ai_human_detection": {
+        "name": "AI persongjenkjenning"
       },
       "ai_obstacle_detection": {
         "name": "AI-hindringsdeteksjon"
       },
-      "ai_pet_detection": {
-        "name": "Kjæledyrdeteksjon"
-      },
-      "pet_focused_detection": {
-        "name": "Kjæledyrfokusert deteksjon"
-      },
-      "pet_focused_cleaning": {
-        "name": "Kjæledyrfokusert rengjøring"
+      "ai_obstacle_image_upload": {
+        "name": "Opplasting av AI-hinderbilder"
       },
       "ai_obstacle_picture": {
         "name": "Hindringsbilde"
       },
-      "obstacle_crossing": {
-        "name": "Forsere hindringer"
+      "ai_pet_avoidance": {
+        "name": "AI kjæledyrunngåelse"
       },
-      "active_suspension_crossing": {
-        "name": "Aktiv fjæringskryssing"
+      "ai_pet_detection": {
+        "name": "Kjæledyrdeteksjon"
       },
-      "dynamic_obstacle_cleaning": {
-        "name": "Rengjøring av dynamiske hindringer"
+      "auto_add_detergent": {
+        "name": "Legg til vaskemiddel automatisk"
       },
-      "large_particles_boost": {
-        "name": "Forsterkning for store partikler"
+      "auto_change_mop": {
+        "name": "Auto-moppeskift"
       },
-      "streaming_voice_prompt": {
-        "name": "Talemelding ved strømming"
+      "auto_charging": {
+        "name": "Automatisk lading"
       },
-      "voice_assistant": {
-        "name": "Taleassistent"
+      "auto_drying": {
+        "name": "Auto-tørking"
       },
-      "off_peak_charging": {
-        "name": "Lading utenom rushtid"
+      "auto_dust_collecting": {
+        "name": "Auto-tømming"
       },
-      "dnd_disable_resume_cleaning": {
-        "name": "Deaktiver gjenopptak av rengjøring"
+      "auto_mount_mop": {
+        "name": "Auto-montering av mopp"
+      },
+      "auto_water_refilling": {
+        "name": "Automatisk vannpåfylling"
+      },
+      "camera_light_brightness_auto": {
+        "name": "Automatisk lysstyrke for kameralys"
+      },
+      "carpet_avoidance": {
+        "name": "Teppeunngåelse"
+      },
+      "carpet_boost": {
+        "name": "Teppeforsterkning"
+      },
+      "carpet_preferences": {
+        "name": "Tilpassede preferanser"
+      },
+      "carpet_recognition": {
+        "name": "Teppegjenkjenning"
+      },
+      "child_lock": {
+        "name": "Barnesikring"
+      },
+      "clean_carpets_first": {
+        "name": "Rengjør tepper først"
+      },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "cleaning_sequence": {
+        "name": "Rengjøringsrekkefølge"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "Lukk rulledeksel på teppe"
+      },
+      "collision_avoidance": {
+        "name": "Kollisjonsunngåelse"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Tilpasset tepperengjøring"
+      },
+      "customized_cleaning": {
+        "name": "Tilpasset rengjøring"
+      },
+      "deep_cleaning": {
+        "name": "Dyprengjøring"
+      },
+      "deep_mop_washing": {
+        "name": "Dypmoppvask"
+      },
+      "dnd": {
+        "name": "DnD"
       },
       "dnd_disable_auto_empty": {
         "name": "Deaktiver auto-tømming"
       },
+      "dnd_disable_resume_cleaning": {
+        "name": "Deaktiver gjenopptak av rengjøring"
+      },
       "dnd_reduce_volume": {
         "name": "Reduser volum"
       },
-      "dnd": {
-        "name": "DnD"
+      "dust_bag_drying": {
+        "name": "Tørking av støvpose"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "Rengjøring av dynamiske hindringer"
+      },
+      "fill_light": {
+        "name": "Kameralys"
+      },
+      "floor_direction_cleaning": {
+        "name": "Rengjøring i gulvretning"
+      },
+      "fuzzy_obstacle_detection": {
+        "name": "Uklar hinderdeteksjon"
+      },
+      "gap_cleaning_extension": {
+        "name": "Mellomrom-rengjøring"
+      },
+      "hair_compression": {
+        "name": "Hår-komprimering"
+      },
+      "hot_washing": {
+        "name": "Varmvask"
+      },
+      "human_follow": {
+        "name": "Følg person"
+      },
+      "intelligent_recognition": {
+        "name": "Intelligent gjenkjenning"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "Intensiv tepperengjøring"
+      },
+      "large_particles_boost": {
+        "name": "Forsterkning for store partikler"
+      },
+      "lds_state": {
+        "name": "LDS-tilstand"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "Løft sasis på teppe"
+      },
+      "map_saving": {
+        "name": "Kartlagring"
+      },
+      "max_suction_power": {
+        "name": "Maksimal sugeeffekt"
+      },
+      "mop_extend": {
+        "name": "Forleng mopp"
+      },
+      "mop_washing_with_detergent": {
+        "name": "Moppevask med vaskemiddel"
+      },
+      "mopping_under_furnitures": {
+        "name": "Moppe under møbler"
+      },
+      "mopping_with_detergent": {
+        "name": "Mopping med vaskemiddel"
+      },
+      "multi_floor_map": {
+        "name": "Fleretasjeskart"
+      },
+      "obstacle_avoidance": {
+        "name": "Hindringsunngåelse"
+      },
+      "obstacle_crossing": {
+        "name": "Forsere hindringer"
+      },
+      "off_peak_charging": {
+        "name": "Lading utenom rushtid"
+      },
+      "pet_focused_cleaning": {
+        "name": "Kjæledyrfokusert rengjøring"
+      },
+      "pet_focused_detection": {
+        "name": "Kjæledyrfokusert deteksjon"
+      },
+      "pet_picture": {
+        "name": "Kjæledyrbilde"
+      },
+      "pressurized_cleaning": {
+        "name": "Trykkrengjøring"
+      },
+      "resume_cleaning": {
+        "name": "Gjenoppta rengjøring"
+      },
+      "ring_light_always_on": {
+        "name": "Ringlys alltid på"
+      },
+      "self_clean": {
+        "name": "Selvrens"
+      },
+      "self_clean_by_zone": {
+        "name": "Selvrensing etter sone"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "Sidebørste roterer på teppe"
+      },
+      "side_reach": {
+        "name": "Siderekkevidde"
+      },
+      "silent_drying": {
+        "name": "Stille tørking"
+      },
+      "smart_drying": {
+        "name": "Smart tørking"
+      },
+      "smart_mop_washing": {
+        "name": "Smart moppevask"
+      },
+      "stain_avoidance": {
+        "name": "Flekkunngåelse"
+      },
+      "streaming_voice_prompt": {
+        "name": "Talemelding ved strømming"
+      },
+      "tight_mopping": {
+        "name": "Tett mopping"
+      },
+      "ultra_clean_mode": {
+        "name": "Ultra-ren modus"
+      },
+      "uv_sterilization": {
+        "name": "UV-sterilisering"
+      },
+      "voice_assistant": {
+        "name": "Taleassistent"
+      },
+      "water_electrolysis": {
+        "name": "Vannelektrolyse"
+      },
+      "wider_corner_coverage": {
+        "name": "Bredere hjørnedekning"
+      }
+    },
+    "button": {
+      "backup_saved_map": {
+        "name": "Sikkerhetskopier lagret kart"
+      },
+      "base_station_cleaning": {
+        "name": "Rengjøring av basestasjon"
+      },
+      "base_station_self_repair": {
+        "name": "Selveparasjon av basestasjon"
+      },
+      "clear_warning": {
+        "name": "Fjern advarsel"
+      },
+      "empty_water_tank": {
+        "name": "Tøm vanntank"
+      },
+      "manual_drying": {
+        "name": "Manuell tørking"
+      },
+      "manual_dust_bag_drying": {
+        "name": "Manuell tørking av støvpose"
+      },
+      "reload_shortcuts": {
+        "name": "Last inn snarveier på nytt"
+      },
+      "reset_deodorizer": {
+        "name": "Tilbakestill luktfjerner"
+      },
+      "reset_detergent": {
+        "name": "Tilbakestill vaskemiddel"
+      },
+      "reset_dirty_water_channel": {
+        "name": "Tilbakestill skittenvannskanal"
+      },
+      "reset_filter": {
+        "name": "Tilbakestill filter"
+      },
+      "reset_fluffing_roller": {
+        "name": "Tilbakestill plysjvalse"
+      },
+      "reset_main_brush": {
+        "name": "Tilbakestill hovedbørste"
+      },
+      "reset_mop_pad": {
+        "name": "Tilbakestill moppepute"
+      },
+      "reset_onboard_dirty_water_tank": {
+        "name": "Tilbakestill intern skittenvannstank"
+      },
+      "reset_roller_mop_filter": {
+        "name": "Tilbakestill mopperullefilter"
+      },
+      "reset_scale_inhibitor": {
+        "name": "Tilbakestill kalkhemmer"
+      },
+      "reset_sensor": {
+        "name": "Tilbakestill sensorer"
+      },
+      "reset_side_brush": {
+        "name": "Tilbakestill sidebørste"
+      },
+      "reset_silver_ion": {
+        "name": "Tilbakestill sølvion"
+      },
+      "reset_squeegee": {
+        "name": "Tilbakestill nal"
+      },
+      "reset_tank_filter": {
+        "name": "Tilbakestill tankfilter"
+      },
+      "reset_water_outlet_filter": {
+        "name": "Tilbakestill vannutløpsfilter"
+      },
+      "reset_wheel": {
+        "name": "Tilbakestill hjul"
+      },
+      "self_clean": {
+        "name": "Selvrensing"
+      },
+      "shortcut": {
+        "name": "Snarvei {name}"
+      },
+      "start_auto_empty": {
+        "name": "Start automatisk tømming"
+      },
+      "start_fast_mapping": {
+        "name": "Start rask kartlegging"
+      },
+      "start_mapping": {
+        "name": "Start kartlegging"
+      },
+      "start_recleaning": {
+        "name": "Start ny rengjøring"
+      },
+      "water_tank_draining": {
+        "name": "Tømming av vanntank"
+      }
+    },
+    "camera": {
+      "map": {
+        "name": "Nåværende kart"
+      },
+      "map_data": {
+        "name": "Nåværende kartdata"
+      },
+      "saved_map": {
+        "name": "Lagret kart {name}"
+      },
+      "wifi_map": {
+        "name": "Lagret Wi-Fi-kart {name}"
+      }
+    },
+    "binary_sensor": {
+      "charging_state": {
+        "name": "Ladestatus",
+        "state": {
+          "on": "Lader",
+          "off": "Lader ikke"
+        }
+      },
+      "lds_status": {
+        "name": "LDS-status"
+      },
+      "roller_cover_status": {
+        "name": "Status for rulledeksel"
       }
     },
     "number": {
-      "wetness_level": {
-        "name": "Fuktighetsnivå"
-      },
       "auto_empty_area": {
         "name": "Auto-tømmingsområde"
+      },
+      "camera_light_brightness": {
+        "name": "Lysstyrke for kameralys"
       },
       "drying_time": {
         "name": "Tørketid"
       },
-      "self_clean_time": {
-        "name": "Selvrens-tid"
+      "mop_cleaning_remainder": {
+        "name": "Påminnelse om mopperengjøring"
       },
       "self_clean_area": {
         "name": "Selvrens-område"
       },
+      "self_clean_time": {
+        "name": "Selvrens-tid"
+      },
       "volume": {
         "name": "Volum"
+      },
+      "wetness_level": {
+        "name": "Fuktighetsnivå"
       }
     },
     "time": {
-      "dnd_start": {
-        "name": "DnD starttid"
-      },
       "dnd_end": {
         "name": "DnD sluttid"
       },
-      "off_peak_charging_start": {
-        "name": "Start rushtid-lading"
+      "dnd_start": {
+        "name": "DnD starttid"
       },
       "off_peak_charging_end": {
         "name": "Slutt rushtid-lading"
+      },
+      "off_peak_charging_start": {
+        "name": "Start rushtid-lading"
       },
       "schedule_time": {
         "name": "Starttid"
       }
     },
     "input": {
-      "schedule_repeats": {
-        "name": "Gjentakelse av oppgave"
-      },
       "dnd_repeats": {
         "name": "Gjentakelse"
       },
       "map_custom_name": {
         "name": "Kartnavn"
+      },
+      "schedule_repeats": {
+        "name": "Gjentakelse av oppgave"
       },
       "segment_custom_name": {
         "name": "Romnavn"
@@ -1567,8 +2253,9 @@
         "edit_carpet": "Rediger teppe",
         "empty": "Tøm",
         "enable": "Aktiver",
+        "enter_dvc_key": "Angi eksisterende nøkkel",
         "fast_mapping": "Hurtigkartlegging",
-        "get_dreame_vacuum_card": "Få Dreame Vacuum-kort",
+        "get_dvc_key": "Få DVC-nøkkel",
         "ignore": "Ignorer",
         "ignore_obstacle": "Ignorer hindring",
         "impassable_threshold": "Upasserbar terskel",
@@ -1656,6 +2343,8 @@
         "copy": "Kopier",
         "copy_all": "Kopier alle",
         "disable_haptic": "Deaktiver haptisk tilbakemelding",
+        "dvc_key": "DVC-nøkkel",
+        "dvc_key_title": "Angi DVC-nøkkel",
         "editable_objects": "Redigerbare objekter",
         "font_size": "Skriftstørrelse",
         "full_height": "Full høyde",
@@ -1826,6 +2515,7 @@
         "dock_in_restricted_area_detail": "Ladestasjonen er i et begrenset område. Hvis du fortsetter å lagre, kan det hende roboten ikke kan lade.",
         "drying_will_stopped": "Tørking av moppepute vil bli stoppet!",
         "dust_collection_not_performed": "Auto-tømming ble ikke utført\nRoboten vil ikke tømme støv i DnD-perioden.",
+        "dvc_key_description": "En nøkkel er gyldig for én enhet. Hvis dette er første gang du bruker denne nøkkelen, vil den nå bli aktivert for denne enheten.",
         "enable_auto_mount_mop": "Aktivere automatisk montering av mopp?",
         "enable_carpet_recognition": "Teppegjenkjenning vil bli aktivert!",
         "enable_customized_cleaning": "Aktivere tilpasset rengjøring?",
@@ -1836,6 +2526,7 @@
         "failed_to_load_card": "Kunne ikke laste inn kort",
         "ignore_obstacle": "Ignorer hindring?",
         "invalid_entity": "Ugyldig entitet",
+        "invalid_key": "Ugyldig nøkkel.",
         "map_backup": "Sikkerhetskopiering av kart pågår",
         "map_backup_failed": "Sikkerhetskopiering av kart feilet!",
         "map_backup_success": "Sikkerhetskopiering av kart fullført",
@@ -1934,6 +2625,7 @@
         "scheduled_task": "Plan",
         "scheduled_zone": "Plan: Sone",
         "segment_name_placeholder": "Rom %index%",
+        "segment_unavailable": "Rom %index% er utilgjengelig",
         "shortcut": "Snarvei",
         "shortcut_list": "Snarveier",
         "shortcut_map": "Snarveis-kart",
@@ -1946,6 +2638,51 @@
         "used_water_tank": "Skittenvannstank",
         "wall": "Vegger",
         "wifi_map": "WiFi-kart"
+      }
+    },
+    "notification": {
+      "state": {
+        "cleanup_completed": "Rengjøring fullført",
+        "dust_collection_not_performed": "Auto-tømming ble ikke utført\nRoboten vil ikke tømme støv i DnD-perioden.",
+        "resume_cleaning": "Modus for gjenopptatt rengjøring\nRoboten gjenopptar automatisk uferdige rengjøringsoppgaver etter at batteriet er ladet til 80 %.",
+        "resume_cleaning_not_performed": "Roboten er i Ikke forstyrr-perioden\nRoboten gjenopptar rengjøringen etter at Ikke forstyrr-perioden er over.",
+        "resume_cleaning_not_performed_with_time": "Roboten er i Ikke forstyrr-perioden\nRoboten gjenopptar rengjøringen etter at Ikke forstyrr-perioden er over.\n## Rengjøringen starter om {hour} time(r) og {minute} minutt(er)",
+        "replace_map": "Et nytt kart er generert\nDu må lagre eller forkaste kartet før du bruker det.",
+        "replace_multi_map": "Et nytt kart er generert\nAntallet kart over flere etasjer som kan lagres, har nådd øvre grense. Du må erstatte eller forkaste et kart før du bruker det.",
+        "drainage_completed": "Tømming fullført",
+        "drainage_failed": "Tømming mislyktes",
+        "main_brush_left": "Hovedbørsten må byttes\nHovedbørsten er slitt. Bytt den i tide og tilbakestill telleren.",
+        "main_brush_left_low": "Hovedbørsten må byttes snart\nHovedbørsten er nesten slitt. Bytt den i tide.",
+        "side_brush_left": "Sidebørsten må byttes\nSidebørsten er slitt. Bytt den og tilbakestill telleren.",
+        "side_brush_left_low": "Sidebørsten må byttes snart\nSidebørsten er nesten slitt. Bytt den så snart som mulig.",
+        "filter_left": "Filteret må byttes\nFilteret er slitt. Bytt det i tide og tilbakestill telleren.",
+        "filter_left_low": "Filteret må byttes snart\nFilteret er nesten slitt. Bytt det i tide.",
+        "sensor_dirty_left": "Sensorene må rengjøres\nRengjør sensorene og tilbakestill telleren",
+        "tank_filter_left": "Tankfilteret må byttes\nTankfilteret er slitt. Bytt det i tide og tilbakestill telleren.",
+        "tank_filter_left_low": "Tankfilteret må byttes snart\nTankfilteret er nesten slitt. Bytt det i tide.",
+        "mop_pad_left": "Moppepute slitt\nBytt moppeputen og tilbakestill telleren.",
+        "mop_pad_left_low": "Moppepute nesten slitt\nBytt moppeputen i tide.",
+        "silver_ion_left": "Sølvionsterilisator forringet\nBytt sølvionsterilisatoren og tilbakestill telleren.",
+        "silver_ion_left_low": "Sølvionsterilisator nær forringelse\nBytt sølvionsterilisatoren i tide.",
+        "detergent_left": "Vaskemiddelet er brukt opp\nBytt vaskemiddelpatronen og tilbakestill telleren.",
+        "detergent_left_low": "Vaskemiddelet er i ferd med å ta slutt\nVaskemiddelet er i ferd med å ta slutt, bytt det i tide.",
+        "squeegee_left": "Nal slitt\nBytt nalen og tilbakestill telleren.",
+        "squeegee_left_low": "Nal nesten slitt\nBytt nalen i tide.",
+        "onboard_dirty_water_tank_left": "Innebygd skittenvannstank trenger rengjøring\nRengjør den innebygde skittenvannstanken og tilbakestill telleren.",
+        "dirty_water_channel_dirty_left": "Skittenvannskanal trenger rengjøring\nRengjør skittenvannskanalen og tilbakestill telleren.",
+        "deodorizer_left": "Deodoriseringsmiddel for bruktvannstank er oppbrukt.\nDeodoriseringsmiddel for bruktvannstank er oppbrukt. Vennligst bytt det.",
+        "deodorizer_left_low": "Deodoriseringsmiddel for bruktvannstank begynner å bli tomt.\nDeodoriseringsmiddel for bruktvannstank begynner å bli tomt. Vennligst bytt det.",
+        "wheel_dirty_left": "Retningsuavhengig hjul trenger rengjøring\nRengjør det retningsuavhengige hjulet og tilbakestill telleren.",
+        "scale_inhibitor_left": "Kalkhemmer er oppbrukt\nBytt kalkhemmeren og tilbakestill telleren.",
+        "scale_inhibitor_left_low": "Kalkhemmer er i ferd med å ta slutt\nBytt kalkhemmeren i tide.",
+        "fluffing_roller_dirty_left": "Lofjernerrull trenger rengjøring\nRengjør lofjernerrullen og tilbakestill telleren.",
+        "roller_mop_filter_dirty_left": "Rullemoppefilter trenger rengjøring\nRengjør rullemoppefilteret og tilbakestill telleren.",
+        "water_outlet_filter_dirty_left": "Vannutløpsfilter trenger rengjøring\nRengjør vannutløpsfilteret og tilbakestill telleren.",
+        "no_water_left": "Vennligst fyll rentvannstanken.\nVannet i rentvannstanken er i ferd med å ta slutt. Sjekk og fyll rentvannstanken umiddelbart.",
+        "no_water_left_after_clean": "Vennligst fyll rentvannstanken.\nMoppeputen er rengjort. Oppdaget at vannet i rentvannstanken er utilstrekkelig, vennligst fyll rentvannstanken og tøm bruktvannstanken.",
+        "no_water_for_clean": "Lav vannstand i rentvannstanken.\nRoboten har byttet til støvsugingsmodus.",
+        "low_water": "I ferd med å gå tom for vann\nVennligst fyll rentvannstanken.",
+        "tank_not_installed": "Rentvannstanken er ikke installert.\nVennligst sjekk rentvannstanken"
       }
     }
   },
@@ -2180,38 +2917,6 @@
         }
       }
     },
-    "vacuum_merge_segments": {
-      "name": "Slå sammen rom",
-      "description": "Slår sammen flere rom til ett.",
-      "fields": {
-        "map_id": {
-          "name": "Kart-ID",
-          "description": "Kart-ID."
-        },
-        "segments": {
-          "name": "Rom",
-          "description": "Liste over rom-ID-er."
-        }
-      }
-    },
-    "vacuum_split_segments": {
-      "name": "Del opp rom",
-      "description": "Deler ett rom i to.",
-      "fields": {
-        "map_id": {
-          "name": "Kart-ID",
-          "description": "Kart-ID."
-        },
-        "segment": {
-          "name": "Rom",
-          "description": "ID-en til rommet som skal deles."
-        },
-        "line": {
-          "name": "Linje",
-          "description": "Koordinater for delelinjen."
-        }
-      }
-    },
     "vacuum_rename_segment": {
       "name": "Gi rommet nytt navn",
       "description": "Endrer navnet på det valgte rommet.",
@@ -2266,46 +2971,6 @@
         }
       }
     },
-    "vacuum_set_custom_carpet_cleaning": {
-      "name": "Angi tilpasset tepperengjøring",
-      "description": "Angi egne innstillinger for hvert teppe. (Kun på støttede enheter)",
-      "fields": {
-        "id": {
-          "name": "Teppe-ID",
-          "description": "ID for teppet."
-        },
-        "type": {
-          "name": "Objekttype",
-          "description": "Type teppeobjekt (0 = Auto, 1 = Manuell, 2 = Romteppe)."
-        },
-        "carpet_cleaning": {
-          "name": "Tepperengjøring",
-          "description": "Spesifikke innstillinger for dette teppet."
-        },
-        "carpet_preferences": {
-          "name": "Teppepreferanser",
-          "description": "Ytterligere innstillinger for dette teppet."
-        }
-      }
-    },
-    "vacuum_set_restricted_zone": {
-      "name": "Angi begrensede soner",
-      "description": "Definer virtuelle vegger, soner med adgangsforbud og soner uten mopping.",
-      "fields": {
-        "walls": {
-          "name": "Vegger",
-          "description": "Liste over virtuelle vegger."
-        },
-        "zones": {
-          "name": "Soner",
-          "description": "Liste over soner med adgangsforbud (no-go)."
-        },
-        "no_mops": {
-          "name": "Uten mopping",
-          "description": "Liste over soner uten mopping (no-mop)."
-        }
-      }
-    },
     "vacuum_reset_consumable": {
       "name": "Tilbakestill tilbehør",
       "description": "Tilbakestiller levetiden for tilbehørskomponenter.",
@@ -2340,40 +3005,6 @@
         }
       }
     },
-    "vacuum_set_carpet_area": {
-      "name": "Angi teppeområde",
-      "description": "Angi manuelt teppeområde eller ignorer automatisk teppeområde. (Kun på støttede enheter)",
-      "fields": {
-        "carpets": {
-          "name": "Tepper",
-          "description": "Manuelle teppeområder."
-        },
-        "deleted_carpets": {
-          "name": "Ignorerte tepper",
-          "description": "Liste over ID-er for automatiske tepper som skal ignoreres."
-        }
-      }
-    },
-    "vacuum_set_virtual_threshold": {
-      "name": "Angi virtuell terskel",
-      "description": "Opprett virtuelle linjer og terskler på kartet.",
-      "fields": {
-        "virtual_thresholds": {
-          "name": "Virtuelle terskler",
-          "description": "Liste over koordinater for virtuelle terskler."
-        }
-      }
-    },
-    "vacuum_set_predefined_points": {
-      "name": "Angi målpunkter",
-      "description": "Angi en liste over målpunkter på kartet. (Kun for roboter med frontkamera).",
-      "fields": {
-        "points": {
-          "name": "Målpunkter",
-          "description": "Liste over koordinater for punkter roboten skal gå til."
-        }
-      }
-    },
     "vacuum_set_obstacle_ignore": {
       "name": "Ignorer hindring",
       "description": "Velg hindringer som skal ignoreres av AI-deteksjonen. (Kun på støttede enheter).",
@@ -2389,48 +3020,6 @@
         "obstacle_ignored": {
           "name": "Ignorer hindring",
           "description": "Om hindringen skal ignoreres eller ikke."
-        }
-      }
-    },
-    "vacuum_set_router_position": {
-      "name": "Angi ruterposisjon",
-      "description": "Angi plasseringen av WiFi-ruteren på kartet. (Kun på støttede enheter).",
-      "fields": {
-        "x": {
-          "name": "X",
-          "description": "X-koordinat for ruteren."
-        },
-        "y": {
-          "name": "Y",
-          "description": "Y-koordinat for ruteren."
-        }
-      }
-    },
-    "select_select_previous": {
-      "name": "Velg forrige",
-      "description": "Velg forrige alternativ fra listen.",
-      "fields": {
-        "cycle": {
-          "name": "Sirkuler",
-          "description": "Om valget skal gå tilbake til slutten etter å ha nådd begynnelsen."
-        }
-      }
-    },
-    "select_select_first": {
-      "name": "Velg første",
-      "description": "Velg det første alternativet fra listen."
-    },
-    "select_select_last": {
-      "name": "Velg siste",
-      "description": "Velg det siste alternativet fra listen."
-    },
-    "select_select_next": {
-      "name": "Velg neste",
-      "description": "Velg neste alternativ fra listen.",
-      "fields": {
-        "cycle": {
-          "name": "Sirkuler",
-          "description": "Om valget skal gå tilbake til begynnelsen etter å ha nådd slutten."
         }
       }
     }

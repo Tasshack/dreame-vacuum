@@ -6,9 +6,10 @@ from collections.abc import Callable
 from functools import partial
 
 from homeassistant.core import callback
+from homeassistant.const import EVENT_CORE_CONFIG_UPDATE
 from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC
 from homeassistant.helpers import entity_registry
-from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers.entity import DeviceInfo, Entity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity import async_generate_entity_id
@@ -16,6 +17,7 @@ from homeassistant.helpers.entity import async_generate_entity_id
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .const import DOMAIN, LOGGER
 from .dreame.const import ATTR_VALUE
+from .dreame.types import SEGMENT_TYPE_CODE_TO_NAME
 from .dreame import (
     DreameVacuumDevice,
     DreameVacuumProperty,
@@ -27,8 +29,6 @@ from .dreame import (
     DeviceUpdateFailedException,
     InvalidActionException,
     InvalidValueException,
-    PROPERTY_TO_NAME,
-    ACTION_TO_NAME,
     PROPERTY_AVAILABILITY,
     ACTION_AVAILABILITY,
 )
@@ -105,6 +105,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
     """Defines a base Dreame Vacuum entity."""
 
     _attr_has_entity_name = True
+    _name_placeholder = hasattr(Entity, "_attr_translation_placeholders")
 
     def __init__(
         self,
@@ -114,19 +115,9 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
         if description is not None:
             if description.key is None:
                 if description.property_key is not None:
-                    name = PROPERTY_TO_NAME.get(description.property_key.name)
-                    if name:
-                        description.key = name[0]
-                        description.name = name[1]
-                    else:
-                        description.key = description.property_key.name.lower()
+                    description.key = description.property_key.name.lower()
                 elif description.action_key is not None:
-                    name = ACTION_TO_NAME.get(description.action_key)
-                    if name:
-                        description.key = name[0]
-                        description.name = name[1]
-                    else:
-                        description.key = description.action_key.name.lower()
+                    description.key = description.action_key.name.lower()
 
             if description.name is None and description.key is not None:
                 description.name = description.key.replace("_", " ").title()
@@ -139,7 +130,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
                 else:
                     prop = description.key.lower()
                 if hasattr(coordinator.device.status, prop):
-                    description.value_fn = lambda value, device: getattr(device.status, prop)
+                    description.value_fn = lambda value, entity: getattr(entity.device.status, prop)
 
             if description.available_fn is None:
                 if description.property_key is not None:
@@ -165,8 +156,6 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
             if self.entity_description.icon_fn is not None:
                 self._attr_icon = self.entity_description.icon_fn(self.native_value, self.device)
 
-            self._attr_name = self.entity_description.name
-
     def _generate_entity_id(self, format) -> None:
         if self.entity_description.key:
             self.entity_id = async_generate_entity_id(
@@ -177,6 +166,42 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
     def _handle_coordinator_update(self) -> None:
         self._set_id()
         self.async_write_ha_state()
+
+    def _localize_entity(self, domain: str, name: str, default: str) -> str:
+        return self._localize(f"entity.{domain}.{name}.name", default)
+
+    def _localize_entity_state(self, domain: str, name: str, key: str, default: str) -> str:
+        return self._localize(f"entity.{domain}.{name}.state.{key}", default)
+
+    def _localize_entity_component(self, name: str, default: str) -> str:
+        return self._localize(f"entity_component.frontend_title.state.{name}", default)
+
+    def _localize(self, path: str, default: str) -> str:
+        return self.coordinator.localize(path, default)
+
+    def _localize_segment_name(self, segment, segment_id) -> str:
+        if segment:
+            type_name = SEGMENT_TYPE_CODE_TO_NAME.get(segment.type) if segment.type else None
+            if type_name:
+                key = type_name.lower().replace(" ", "_")
+                name = self._localize_entity_state("select", "segment_name", key, type_name).title()
+                if segment.index:
+                    name = f"{name} {segment.index + 1}"
+                return name
+            if segment.custom_name:
+                return segment.custom_name
+            template = self._localize_entity_component("segment_name_placeholder", "Room {index}")
+            return template.replace("%index%", str(segment_id))
+        template = self._localize_entity_component("segment_unavailable", "Room {index} Unavailable")
+        return template.replace("%index%", str(segment_id))
+
+    def _localize_map_name(self, map_data) -> str:
+        if map_data is None:
+            return None
+        if map_data.custom_name:
+            return map_data.custom_name
+        template = self._localize_entity_component("map_name_placeholder", "Map %index%")
+        return template.replace("%index%", str(map_data.map_index))
 
     async def _try_command(self, mask_error, func, *args, **kwargs) -> bool:
         """Call a vacuum command handling error messages."""
@@ -194,12 +219,28 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
                 raise HomeAssistantError(str(exc)) from None
             return False
 
+    def _on_locale_changed(self):
+        self._set_id()
+        self.__dict__.pop("name", None)
+        self.async_write_ha_state()
+
+    async def async_added_to_hass(self) -> None:
+        await super().async_added_to_hass()
+
+        async def on_config_update(event) -> None:
+            if "language" not in event.data:
+                return
+            await self.coordinator.async_load_locale(self.hass)
+            self._on_locale_changed()
+
+        self.async_on_remove(self.hass.bus.async_listen(EVENT_CORE_CONFIG_UPDATE, on_config_update))
+
     @property
     def device_info(self) -> DeviceInfo:
         """Return device information about this Dreame Vacuum device."""
         if self.device.info:
             return DeviceInfo(
-                connections={(CONNECTION_NETWORK_MAC, self.device.mac)},
+                connections={(CONNECTION_NETWORK_MAC, self.device.info.mac_address or self.device.mac)},
                 identifiers={(DOMAIN, self.device.mac)},
                 name=self.device.name,
                 serial_number=self.device.status.serial_number if self.device.status else None,
@@ -226,7 +267,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
         if self.entity_description.property_key is not None:
             value = self.device.get_property(self.entity_description.property_key)
         if self.entity_description.value_fn is not None:
-            return self.entity_description.value_fn(value, self.device)
+            return self.entity_description.value_fn(value, self)
         return value
 
     @property

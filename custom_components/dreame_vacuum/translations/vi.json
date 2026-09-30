@@ -16,21 +16,22 @@
       "no_devices": "Không tìm thấy thiết bị được hỗ trợ trong tài khoản này tại quốc gia đã chọn.{devices}",
       "2fa_send_failed": "Gửi mã xác minh thất bại. Vui lòng thử lại.",
       "2fa_limit_reached": "Đã đạt giới hạn gửi mã xác minh hàng ngày. Vui lòng thử lại vào ngày mai.",
-      "2fa_cooldown_active": "Quá nhiều yêu cầu liên tiếp. Vui lòng đợi vài phút trước khi thử lại."
+      "2fa_cooldown_active": "Quá nhiều yêu cầu liên tiếp. Vui lòng đợi vài phút trước khi thử lại.",
+      "invalid_key": "Khóa không hợp lệ."
     },
     "step": {
       "user": {
         "data": {
           "configuration_type": "Loại cấu hình"
         },
-        "description": "Tính năng bản đồ yêu cầu kết nối đám mây và cung cấp cấu hình tự động. Nếu bạn không muốn sử dụng tính năng bản đồ, bạn có thể chọn cấu hình thủ công."
+        "description": "Chọn loại tài khoản tương ứng với ứng dụng bạn dùng để quản lý thiết bị."
       },
       "local": {
         "data": {
           "host": "Máy chủ (Host)",
           "token": "Mã Token"
         },
-        "description": "Bạn sẽ cần mã API Token 32 ký tự."
+        "description": "Kết nối cục bộ chỉ khả dụng cho các thiết bị có thể thêm vào ứng dụng Xiaomi Home. Mã API Token 32 ký tự cần thiết chỉ có thể lấy được thông qua đám mây Xiaomi Miio."
       },
       "mi": {
         "data": {
@@ -39,7 +40,7 @@
           "country": "Quốc gia máy chủ",
           "prefer_cloud": "Ưu tiên kết nối đám mây"
         },
-        "description": "Đăng nhập vào đám mây Xiaomi Miio."
+        "description": "Nhập thông tin đăng nhập bạn dùng để đăng nhập vào ứng dụng Xiaomi Home."
       },
       "2fa": {
         "data": {
@@ -59,7 +60,7 @@
           "password": "Mật khẩu",
           "country": "Quốc gia máy chủ"
         },
-        "description": "Đăng nhập vào đám mây Dreamehome."
+        "description": "Nhập thông tin đăng nhập bạn dùng để đăng nhập vào ứng dụng Dreamehome."
       },
       "mova": {
         "data": {
@@ -67,7 +68,7 @@
           "password": "Mật khẩu",
           "country": "Quốc gia máy chủ"
         },
-        "description": "Đăng nhập vào đám mây Movahome."
+        "description": "Nhập thông tin đăng nhập bạn dùng để đăng nhập vào ứng dụng MOVAhome."
       },
       "trouver": {
         "data": {
@@ -75,7 +76,7 @@
           "password": "Mật khẩu",
           "country": "Quốc gia máy chủ"
         },
-        "description": "Đăng nhập vào đám mây Trouver."
+        "description": "Nhập thông tin đăng nhập bạn dùng để đăng nhập vào ứng dụng TROUVER."
       },
       "devices": {
         "data": {
@@ -83,11 +84,11 @@
         },
         "description": "Vui lòng chọn thiết bị Dreame Vacuum bạn muốn thiết lập."
       },
-      "donation": {
+      "dvc": {
         "data": {
-          "donated": "Đã ủng hộ"
+          "dvc_key": "Khóa Dreame Vacuum Card"
         },
-        "description": "## Đừng quên ủng hộ dự án.{text}"
+        "description": "## Dreame Vacuum Card\r\n #### Giao diện Dreame Vacuum{text}\r\n\r\nNhập khóa cấp phép của bạn để kích hoạt Dreame Vacuum Card. Nếu bạn chưa có, bạn có thể lấy khóa **[tại đây]({url})**.\r\n\r\n*Lưu ý: mỗi khóa chỉ có hiệu lực cho một thiết bị.*"
       },
       "options": {
         "data": {
@@ -118,58 +119,278 @@
           "square": "Bản đồ hình vuông",
           "configuration_type": "Loại cấu hình",
           "prefer_cloud": "Ưu tiên kết nối đám mây",
-          "donated": "Đã ủng hộ"
+          "dvc_key": "Khóa Dreame Vacuum Card"
         }
       }
     },
     "error": {
-      "cloud_credentials_incomplete": "Thông tin đám mây không đầy đủ, vui lòng điền tên đăng nhập, mật khẩu và quốc gia"
+      "cloud_credentials_incomplete": "Thông tin đám mây không đầy đủ, vui lòng điền tên đăng nhập, mật khẩu và quốc gia",
+      "invalid_key": "Khóa không hợp lệ."
+    }
+  },
+  "selector": {
+    "map_objects": {
+      "options": {
+        "color": "Màu của phòng",
+        "icon": "Biểu tượng của phòng",
+        "name": "Tên phòng",
+        "name_background": "Nền tên phòng",
+        "order": "Thứ tự phòng",
+        "suction_level": "Lực hút của phòng",
+        "water_volume": "Lượng nước của phòng",
+        "cleaning_times": "Số lần dọn dẹp phòng",
+        "cleaning_mode": "Chế độ dọn dẹp phòng",
+        "mopping_mode": "Chế độ lau phòng",
+        "path": "Lộ trình",
+        "no_go": "Vùng cấm",
+        "no_mop": "Vùng cấm lau",
+        "virtual_wall": "Tường ảo",
+        "pathway": "Ngưỡng cửa ảo",
+        "active_area": "Khu vực hoạt động",
+        "active_point": "Điểm hoạt động",
+        "charger": "Biểu tượng đế sạc",
+        "robot": "Biểu tượng robot",
+        "cleaning_direction": "Hướng dọn dẹp",
+        "obstacle": "Vật cản AI",
+        "pet": "Thú cưng",
+        "carpet": "Khu vực thảm",
+        "material": "Chất liệu sàn",
+        "low_lying_area": "Khu vực trũng",
+        "furniture": "Nội thất",
+        "ramp": "Đường dốc",
+        "curtain": "Rèm",
+        "cruise_point": "Điểm tuần tra"
+      }
+    },
+    "notifications": {
+      "options": {
+        "cleanup_completed": "Đã hoàn tất dọn dẹp",
+        "consumable": "Vật tư tiêu hao",
+        "information": "Thông tin",
+        "warning": "Cảnh báo",
+        "error": "Lỗi"
+      }
+    },
+    "color_scheme": {
+      "options": {
+        "Dreame Dark": "Dreame tối",
+        "Dreame Light": "Dreame sáng",
+        "Grayscale": "Thang xám",
+        "Mijia Dark": "Mijia tối",
+        "Mijia Light": "Mijia sáng"
+      }
+    },
+    "icon_set": {
+      "options": {
+        "Dreame": "Dreame",
+        "Dreame Old": "Dreame cũ",
+        "Material": "Material",
+        "Mijia": "Mijia"
+      }
+    },
+    "configuration_type": {
+      "options": {
+        "dreame": "Dreamehome",
+        "mi": "Xiaomi Home",
+        "mova": "MOVAhome",
+        "trouver": "TROUVER",
+        "local": "Kết nối cục bộ"
+      }
+    },
+    "country": {
+      "options": {
+        "eu": "Châu Âu",
+        "cn": "Trung Quốc",
+        "us": "Hoa Kỳ",
+        "ru": "Nga",
+        "tw": "Đài Loan",
+        "sg": "Singapore",
+        "in": "Ấn Độ",
+        "kr": "Hàn Quốc",
+        "de": "Đức",
+        "i2": "Quốc tế",
+        "by": "Belarus"
+      }
     }
   },
   "entity": {
+    "vacuum": {
+      "dreame_vacuum": {
+        "state_attributes": {
+          "fan_speed": {
+            "name": "Lực hút",
+            "state": {
+              "Standard": "Tiêu chuẩn",
+              "Strong": "Mạnh",
+              "Turbo": "Turbo",
+              "Silent": "Yên tĩnh",
+              "Unknown": "Không rõ"
+            }
+          },
+          "status": {
+            "state": {
+              "Unknown": "Không rõ",
+              "Idle": "Đang chờ",
+              "Paused": "Đã tạm dừng",
+              "Cleaning": "Đang làm sạch",
+              "Returning": "Đang về đế sạc",
+              "Spot cleaning": "Làm sạch tại điểm",
+              "Follow wall cleaning": "Làm sạch dọc tường",
+              "Charging": "Đang sạc",
+              "Ota": "Cập nhật OTA",
+              "Fct": "FCT",
+              "Wifi set": "Thiết lập WiFi",
+              "Power off": "Tắt nguồn",
+              "Factory": "Xuất xưởng",
+              "Error": "Lỗi",
+              "Remote control": "Điều khiển từ xa",
+              "Sleeping": "Đang ngủ",
+              "Self test": "Tự kiểm tra",
+              "Factory test": "Kiểm tra xuất xưởng",
+              "Standby": "Chờ",
+              "Room cleaning": "Làm sạch phòng",
+              "Zone cleaning": "Làm sạch vùng",
+              "Fast mapping": "Lập bản đồ nhanh",
+              "Cruising path": "Đang đi theo lộ trình",
+              "Cruising point": "Đang đi đến điểm",
+              "Summon clean": "Triệu hồi làm sạch",
+              "Shortcut": "Phím tắt",
+              "Person follow": "Đi theo người",
+              "Water check": "Kiểm tra nước",
+              "Pet guarding": "Bảo vệ thú cưng",
+              "Auto arrangement": "Tự động sắp xếp",
+              "Smart arrangement": "Sắp xếp thông minh",
+              "Zoned arrangement": "Sắp xếp theo vùng"
+            }
+          }
+        },
+        "state": {
+          "Unknown": "Không rõ",
+          "Sweeping": "Đang quét",
+          "Charging": "Đang sạc",
+          "Error": "Lỗi",
+          "Idle": "Đang chờ",
+          "Paused": "Đã tạm dừng",
+          "Returning": "Đang về đế sạc",
+          "Mopping": "Đang lau",
+          "Drying": "Đang sấy",
+          "Washing": "Đang giặt",
+          "Returning to wash": "Đang về để giặt",
+          "Building": "Đang xây dựng",
+          "Sweeping and mopping": "Đang quét và lau",
+          "Charging completed": "Đã sạc đầy",
+          "Upgrading": "Đang nâng cấp",
+          "Clean summon": "Triệu hồi để làm sạch",
+          "Station reset": "Đặt lại trạm",
+          "Returning install mop": "Đang về để lắp giẻ lau",
+          "Returning remove mop": "Đang về để tháo giẻ lau",
+          "Water check": "Đang kiểm tra nước",
+          "Clean add water": "Đang làm sạch và thêm nước",
+          "Washing paused": "Tạm dừng giặt",
+          "Auto emptying": "Tự động đổ rác",
+          "Remote control": "Điều khiển từ xa",
+          "Smart charging": "Sạc thông minh",
+          "Second cleaning": "Làm sạch lần hai",
+          "Human following": "Đang đi theo người",
+          "Spot cleaning": "Làm sạch tại điểm",
+          "Returning auto empty": "Đang về để đổ rác",
+          "Waiting for task": "Đang chờ nhiệm vụ",
+          "Station cleaning": "Làm sạch trạm",
+          "Returning to drain": "Đang về để xả nước",
+          "Draining": "Đang xả nước",
+          "Auto water draining": "Tự động xả nước",
+          "Emptying": "Đang đổ rác",
+          "Dust bag drying": "Đang sấy túi bụi",
+          "Dust bag drying paused": "Tạm dừng sấy túi bụi",
+          "Heading to extra cleaning": "Đang đi làm sạch thêm",
+          "Extra cleaning": "Làm sạch thêm",
+          "Finding pet paused": "Tạm dừng tìm thú cưng",
+          "Finding pet": "Đang tìm thú cưng",
+          "Shortcut": "Phím tắt",
+          "Monitoring": "Đang theo dõi",
+          "Monitoring paused": "Tạm dừng theo dõi",
+          "Initial deep cleaning": "Làm sạch sâu ban đầu",
+          "Initial deep cleaning paused": "Tạm dừng làm sạch sâu ban đầu",
+          "Sanitizing": "Đang khử trùng",
+          "Sanitizing with dry": "Đang khử trùng và sấy khô",
+          "Changing mop": "Đang thay giẻ lau",
+          "Changing mop paused": "Tạm dừng thay giẻ lau",
+          "Floor maintaining": "Đang bảo trì sàn",
+          "Floor maintaining paused": "Tạm dừng bảo trì sàn",
+          "Remote pickup": "Nhặt đồ từ xa",
+          "Arranging items": "Đang sắp xếp đồ đạc",
+          "Pet guarding": "Bảo vệ thú cưng",
+          "Pet guarding paused": "Tạm dừng bảo vệ thú cưng",
+          "Installing mop": "Đang lắp giẻ lau",
+          "Uninstalling mop": "Đang tháo giẻ lau",
+          "Intelligent recharging": "Đang sạc thông minh",
+          "Assisted cleaning": "Làm sạch có hỗ trợ",
+          "Entering dock": "Đang vào đế sạc",
+          "Leaving dock": "Đang rời đế sạc",
+          "Navigating to climber": "Đang đi đến bộ leo bậc",
+          "Docking to climber": "Đang vào bộ leo bậc",
+          "Climber docked": "Đã vào bộ leo bậc",
+          "Climber navigating": "Bộ leo bậc đang di chuyển",
+          "Climbing stairs": "Đang leo cầu thang",
+          "Climbing stairs completed": "Đã leo cầu thang xong",
+          "Climber at dock": "Bộ leo bậc tại đế sạc",
+          "Climber leaving dock": "Bộ leo bậc đang rời đế sạc",
+          "cleaning": "Đang làm sạch",
+          "docked": "Ở đế sạc",
+          "error": "Lỗi",
+          "idle": "Đang chờ",
+          "paused": "Đã tạm dừng",
+          "returning": "Đang về đế sạc",
+          "unknown": "Không rõ"
+        }
+      }
+    },
     "select": {
-      "suction_level": {
-        "name": "Mức lực hút",
+      "auto_empty_frequency": {
+        "name": "Tần suất tự động đổ rác",
         "state": {
-          "quiet": "Yên tĩnh",
+          "1x": "Sau mỗi nhiệm vụ",
+          "2x": "Sau hai lần làm sạch",
+          "3x": "Sau ba lần làm sạch"
+        }
+      },
+      "auto_empty_mode": {
+        "name": "Chế độ tự động đổ rác",
+        "state": {
+          "off": "Tắt",
           "standard": "Tiêu chuẩn",
-          "strong": "Mạnh",
-          "turbo": "Turbo",
-          "full_power": "Tối đa"
+          "high_frequency": "Tần suất cao",
+          "low_frequency": "Tần suất thấp",
+          "custom_frequency": "Tần suất tùy chỉnh",
+          "intelligent": "Thông minh"
         }
       },
-      "water_volume": {
-        "name": "Lượng nước",
+      "auto_lds_coverage": {
+        "name": "Bao phủ LDS tự động",
         "state": {
-          "low": "Thấp",
-          "medium": "Trung bình",
-          "high": "Cao"
+          "off": "Tắt",
+          "security": "An ninh",
+          "extreme": "Tối đa"
         }
       },
-      "mop_pad_humidity": {
-        "name": "Độ ẩm giẻ lau",
+      "auto_recleaning": {
+        "name": "Tự động làm sạch lại",
         "state": {
-          "slightly_dry": "Hơi khô",
-          "moist": "Ẩm",
-          "wet": "Ướt"
+          "off": "Tắt",
+          "in_deep_mode": "Trong chế độ sâu",
+          "in_all_modes": "Trong tất cả các chế độ"
         }
       },
-      "cleaning_mode": {
-        "name": "Chế độ làm sạch",
+      "auto_rewashing": {
+        "name": "Tự động giặt lại",
         "state": {
-          "sweeping": "Quét",
-          "mopping": "Lau",
-          "sweeping_and_mopping": "Quét và Lau",
-          "mopping_after_sweeping": "Lau sau khi Quét"
+          "off": "Tắt",
+          "in_deep_mode": "Trong chế độ sâu",
+          "in_all_modes": "Trong tất cả các chế độ"
         }
       },
-      "carpet_sensitivity": {
-        "name": "Độ nhạy thảm",
-        "state": {
-          "low": "Thấp",
-          "medium": "Trung bình",
-          "high": "Cao"
-        }
+      "battery_charge_level": {
+        "name": "Mức sạc pin"
       },
       "carpet_cleaning": {
         "name": "Làm sạch thảm",
@@ -183,46 +404,104 @@
           "cross": "Băng qua"
         }
       },
-      "mop_wash_level": {
-        "name": "Chế độ giặt giẻ lau",
+      "carpet_sensitivity": {
+        "name": "Độ nhạy thảm",
         "state": {
-          "water_saving": "Tiết kiệm nước",
-          "daily": "Hàng ngày",
-          "deep": "Sâu",
-          "ultra_clean_mode": "Siêu sạch"
+          "low": "Thấp",
+          "medium": "Trung bình",
+          "high": "Cao"
         }
       },
-      "mopping_type": {
-        "name": "Loại lau",
+      "carpet_shape": {
+        "name": "Hình dạng",
         "state": {
-          "accurate": "Chính xác",
-          "daily": "Hàng ngày",
+          "square": "Hình vuông",
+          "round": "Hình tròn"
+        }
+      },
+      "carpet_type": {
+        "name": "Loại thảm",
+        "state": {
+          "medium_pile": "Lông dài đến vừa",
+          "low_pile": "Lông ngắn",
+          "floor_mat": "Thảm chùi chân",
+          "other": "Khác"
+        }
+      },
+      "cleangenius": {
+        "name": "CleanGenius",
+        "state": {
+          "off": "Tắt",
+          "routine_cleaning": "Làm sạch thông thường",
+          "deep_cleaning": "Làm sạch sâu"
+        }
+      },
+      "cleangenius_mode": {
+        "name": "Chế độ CleanGenius",
+        "state": {
+          "vacuum_and_mop": "Hút và Lau",
+          "mop_after_vacuum": "Lau sau khi Hút"
+        }
+      },
+      "cleaning_mode": {
+        "name": "Chế độ làm sạch",
+        "state": {
+          "sweeping": "Quét",
+          "mopping": "Lau",
+          "sweeping_and_mopping": "Quét và Lau",
+          "mopping_after_sweeping": "Lau sau khi Quét"
+        }
+      },
+      "cleaning_route": {
+        "name": "Lộ trình",
+        "state": {
+          "quick": "Nhanh",
+          "standard": "Tiêu chuẩn",
+          "intensive": "Chuyên sâu",
           "deep": "Sâu"
         }
       },
-      "wider_corner_coverage": {
-        "name": "Phạm vi bao phủ góc rộng hơn",
+      "cleaning_times": {
+        "name": "Số lần làm sạch",
         "state": {
-          "off": "Tắt",
-          "high_frequency": "Tần suất cao",
-          "low_frequency": "Tần suất thấp"
+          "1x": "Một lần",
+          "2x": "Hai lần",
+          "3x": "Ba lần"
         }
       },
-      "mop_pad_swing": {
-        "name": "Lắc giẻ lau",
+      "custom_mopping_route": {
+        "name": "Lộ trình lau tùy chỉnh",
         "state": {
           "off": "Tắt",
-          "auto": "Tự động",
-          "daily": "Hàng ngày",
-          "weekly": "Hàng tuần"
-        }
-      },
-      "mop_extend_frequency": {
-        "name": "Tần suất mở rộng giẻ lau",
-        "state": {
           "standard": "Tiêu chuẩn",
-          "intelligent": "Thông minh",
-          "high": "Cao"
+          "intensive": "Chuyên sâu",
+          "deep": "Sâu"
+        }
+      },
+      "drying_time": {
+        "name": "Thời gian sấy",
+        "state": {
+          "silent": "Yên tĩnh",
+          "1h": "Một giờ",
+          "2h": "Hai giờ",
+          "3h": "Ba giờ",
+          "4h": "Bốn giờ",
+          "5h": "Năm giờ",
+          "6h": "Sáu giờ",
+          "7h": "Bảy giờ",
+          "8h": "Tám giờ"
+        }
+      },
+      "edit_type": {
+        "name": "Loại chỉnh sửa",
+        "state": {
+          "door": "Chỉnh sửa cửa",
+          "split": "Chia phòng",
+          "merge": "Gộp phòng",
+          "visibility": "Hiển thị phòng",
+          "material": "Chất liệu sàn",
+          "type": "Tên phòng",
+          "wall": "Chỉnh sửa tường"
         }
       },
       "floor_material": {
@@ -236,31 +515,45 @@
           "carpet": "Thảm"
         }
       },
-      "voice_assistant_language": {
-        "name": "Ngôn ngữ trợ lý giọng nói",
+      "floor_material_direction": {
+        "name": "Hướng sàn",
         "state": {
-          "default": "Mặc định",
-          "english": "Tiếng Anh",
-          "german": "Tiếng Đức",
-          "chinese": "Tiếng Trung",
-          "russian": "Tiếng Nga",
-          "italian": "Tiếng Ý",
-          "french": "Tiếng Pháp",
-          "korean": "Tiếng Hàn"
+          "vertical": "Dọc",
+          "horizontal": "Ngang"
         }
       },
-      "mop_pressure": {
-        "name": "Áp lực lau",
+      "furniture_type": {
+        "name": "Loại nội thất",
         "state": {
-          "light": "Nhẹ",
-          "normal": "Bình thường"
-        }
-      },
-      "mop_temperature": {
-        "name": "Nhiệt độ giẻ lau",
-        "state": {
-          "normal": "Bình thường",
-          "warm": "Ấm"
+          "single_bed": "Giường đơn",
+          "double_bed": "Giường đôi",
+          "arm_chair": "Ghế bành",
+          "two_seat_sofa": "Sofa hai chỗ",
+          "three_seat_sofa": "Sofa ba chỗ",
+          "dining_table": "Bàn ghế ăn",
+          "nightstant": "Tủ đầu giường",
+          "coffee_table": "Bàn cà phê",
+          "toilet": "Bồn cầu",
+          "litter_box": "chậu xỉ",
+          "pet_bed": "Giường/nhà cho thú cưng",
+          "food_bowl": "Bát thực phẩm",
+          "pet_toilet": "Miếng lót cho thú cưng đái",
+          "refrigerator": "Tủ lạnh",
+          "washing_machine": "Máy giặt",
+          "enclosed_litter_box": "Hộp xỉ kín",
+          "air_conditioner": "Điều hòa",
+          "tv_cabinet": "Tủ TV",
+          "bookshelf": "Giá sách",
+          "shoe_cabinet": "Tủ giày",
+          "wardrobe": "Tủ quần áo",
+          "greenery": "Cây xanh",
+          "floor_mirror": "Gương sàn",
+          "l_shaped_sofa": "Ghế sofa chữ L",
+          "round_coffee_table": "Bàn cà phê tròn",
+          "table": "Bàn",
+          "arm_chair_narrow": "Ghế bành hẹp",
+          "three_seat_sofa_narrow": "Sofa ba chỗ hẹp",
+          "l_shaped_sofa_right": "Sofa chữ L bên phải"
         }
       },
       "low_lying_area_frequency": {
@@ -270,35 +563,15 @@
           "daily": "Hàng ngày"
         }
       },
-      "scraper_frequency": {
-        "name": "Tần suất cạo",
-        "state": {
-          "off": "Tắt",
-          "weekly": "Hàng tuần",
-          "daily": "Hàng ngày"
-        }
+      "map_rotation": {
+        "name": "Xoay bản đồ"
       },
-      "auto_lds_coverage": {
-        "name": "Bao phủ LDS tự động",
+      "map_type": {
+        "name": "Loại bản đồ",
         "state": {
-          "off": "Tắt",
-          "security": "An ninh",
-          "extreme": "Tối đa"
-        }
-      },
-      "order": {
-        "name": "Thứ tự",
-        "state": {
-          "not_set": "Chưa thiết lập"
-        }
-      },
-      "self_clean_frequency": {
-        "name": "Tần suất tự làm sạch",
-        "state": {
-          "by_area": "Theo diện tích",
-          "by_time": "Theo thời gian",
-          "by_room": "Theo phòng",
-          "intelligent": "Thông minh"
+          "cleaning": "Bản đồ làm sạch",
+          "history": "Chi tiết làm sạch",
+          "wifi": "Bản đồ Wi-Fi"
         }
       },
       "mop_clean_frequency": {
@@ -319,22 +592,185 @@
           "270sqf": "270 foot vuông"
         }
       },
-      "auto_empty_mode": {
-        "name": "Chế độ tự động đổ rác",
+      "mop_extend_frequency": {
+        "name": "Tần suất mở rộng giẻ lau",
+        "state": {
+          "standard": "Tiêu chuẩn",
+          "intelligent": "Thông minh",
+          "high": "Cao"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "Độ ẩm giẻ lau",
+        "state": {
+          "slightly_dry": "Hơi khô",
+          "moist": "Ẩm",
+          "wet": "Ướt"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "Lắc giẻ lau",
         "state": {
           "off": "Tắt",
-          "standard": "Tiêu chuẩn",
-          "high_frequency": "Tần suất cao",
-          "low_frequency": "Tần suất thấp",
-          "custom_frequency": "Tần suất tùy chỉnh",
+          "auto": "Tự động",
+          "daily": "Hàng ngày",
+          "weekly": "Hàng tuần"
+        }
+      },
+      "mop_pressure": {
+        "name": "Áp lực lau",
+        "state": {
+          "light": "Nhẹ",
+          "normal": "Bình thường"
+        }
+      },
+      "mop_temperature": {
+        "name": "Nhiệt độ giẻ lau",
+        "state": {
+          "normal": "Bình thường",
+          "warm": "Ấm"
+        }
+      },
+      "mop_type": {
+        "name": "Loại giẻ lau",
+        "state": {
+          "a": "Giẻ lau A",
+          "b": "Giẻ lau B",
+          "c": "Giẻ lau C"
+        }
+      },
+      "mop_wash_level": {
+        "name": "Chế độ giặt giẻ lau",
+        "state": {
+          "water_saving": "Tiết kiệm nước",
+          "daily": "Hàng ngày",
+          "deep": "Sâu",
+          "ultra_clean_mode": "Siêu sạch"
+        }
+      },
+      "mopping_pattern": {
+        "name": "Kiểu lau",
+        "state": {
+          "daily": "Lau hàng ngày",
+          "deep": "Lau sâu"
+        }
+      },
+      "mopping_type": {
+        "name": "Loại lau",
+        "state": {
+          "accurate": "Chính xác",
+          "daily": "Hàng ngày",
+          "deep": "Sâu"
+        }
+      },
+      "name": {
+        "name": "Tên phòng {index}",
+        "state_attributes": {
+          "room_id": {
+            "name": "Mã phòng"
+          },
+          "index": {
+            "name": "Chỉ mục"
+          },
+          "type": {
+            "name": "Loại phòng"
+          }
+        }
+      },
+      "object_type": {
+        "name": "Loại đối tượng",
+        "state": {
+          "predefined_point": "Điểm xác định trước",
+          "low_lying_area": "Vùng thấp",
+          "curtain": "Rèm cửa",
+          "threshold": "Ngưỡng cửa",
+          "furniture": "Nội thất",
+          "carpet": "Thảm",
+          "restricted": "Vùng hạn chế"
+        }
+      },
+      "order": {
+        "name": "Thứ tự",
+        "state": {
+          "not_set": "Chưa thiết lập"
+        }
+      },
+      "scraper_frequency": {
+        "name": "Tần suất cạo",
+        "state": {
+          "off": "Tắt",
+          "weekly": "Hàng tuần",
+          "daily": "Hàng ngày"
+        }
+      },
+      "segment_name": {
+        "name": "Tên phòng",
+        "state": {
+          "room": "Phòng",
+          "living_room": "Phòng khách",
+          "primary_bedroom": "Phòng Ngủ Chính",
+          "study": "Phòng làm việc",
+          "kitchen": "Phòng bếp",
+          "dining_hall": "Phòng ăn",
+          "bathroom": "Phòng tắm",
+          "balcony": "Ban công",
+          "corridor": "Hành lang",
+          "utility_room": "Phòng tiện ích",
+          "closet": "Phòng quần áo",
+          "meeting_room": "Phòng họp",
+          "office": "Văn phòng",
+          "fitness_area": "Khu vực tập thể dục",
+          "recreation_area": "Khu vui chơi",
+          "secondary_bedroom": "Phòng Ngủ Phụ"
+        }
+      },
+      "selected_map": {
+        "name": "Bản đồ đã chọn",
+        "state_attributes": {
+          "map_id": {
+            "name": "ID bản đồ"
+          },
+          "map_index": {
+            "name": "Chỉ mục bản đồ"
+          }
+        }
+      },
+      "self_clean_frequency": {
+        "name": "Tần suất tự làm sạch",
+        "state": {
+          "by_area": "Theo diện tích",
+          "by_time": "Theo thời gian",
+          "by_room": "Theo phòng",
           "intelligent": "Thông minh"
         }
       },
-      "floor_material_direction": {
-        "name": "Hướng sàn",
+      "suction_level": {
+        "name": "Mức lực hút",
         "state": {
-          "vertical": "Dọc",
-          "horizontal": "Ngang"
+          "quiet": "Yên tĩnh",
+          "standard": "Tiêu chuẩn",
+          "strong": "Mạnh",
+          "turbo": "Turbo",
+          "full_power": "Tối đa"
+        }
+      },
+      "task_repeats": {
+        "name": "Lặp lại nhiệm vụ",
+        "state": {
+          "once": "Một lần",
+          "daily": "Hàng ngày",
+          "workdays": "Ngày làm việc",
+          "weekends": "Cuối tuần"
+        }
+      },
+      "task_type": {
+        "name": "Loại nhiệm vụ",
+        "state": {
+          "go_to": "Đi đến điểm",
+          "segment": "Làm sạch phòng",
+          "all": "Làm sạch toàn bộ",
+          "zone": "Làm sạch vùng",
+          "spot": "Làm sạch tại điểm"
         }
       },
       "visibility": {
@@ -344,19 +780,17 @@
           "hidden": "Ẩn"
         }
       },
-      "cleangenius": {
-        "name": "Cleangenius",
+      "voice_assistant_language": {
+        "name": "Ngôn ngữ trợ lý giọng nói",
         "state": {
-          "off": "Tắt",
-          "routine_cleaning": "Làm sạch thông thường",
-          "deep_cleaning": "Làm sạch sâu"
-        }
-      },
-      "cleangenius_mode": {
-        "name": "Chế độ Cleangenius",
-        "state": {
-          "vacuum_and_mop": "Hút và Lau",
-          "mop_after_vacuum": "Lau sau khi Hút"
+          "default": "Mặc định",
+          "english": "Tiếng Anh",
+          "german": "Tiếng Đức",
+          "chinese": "Tiếng Trung",
+          "russian": "Tiếng Nga",
+          "italian": "Tiếng Ý",
+          "french": "Tiếng Pháp",
+          "korean": "Tiếng Hàn"
         }
       },
       "washing_mode": {
@@ -379,136 +813,12 @@
           "max": "Tối đa"
         }
       },
-      "auto_recleaning": {
-        "name": "Tự động làm sạch lại",
+      "water_volume": {
+        "name": "Lượng nước",
         "state": {
-          "off": "Tắt",
-          "in_deep_mode": "Trong chế độ sâu",
-          "in_all_modes": "Trong tất cả các chế độ"
-        }
-      },
-      "auto_rewashing": {
-        "name": "Tự động giặt lại",
-        "state": {
-          "off": "Tắt",
-          "in_deep_mode": "Trong chế độ sâu",
-          "in_all_modes": "Trong tất cả các chế độ"
-        }
-      },
-      "cleaning_route": {
-        "name": "Lộ trình",
-        "state": {
-          "quick": "Nhanh",
-          "standard": "Tiêu chuẩn",
-          "intensive": "Chuyên sâu",
-          "deep": "Sâu"
-        }
-      },
-      "custom_mopping_route": {
-        "name": "Lộ trình lau tùy chỉnh",
-        "state": {
-          "off": "Tắt",
-          "standard": "Tiêu chuẩn",
-          "intensive": "Chuyên sâu",
-          "deep": "Sâu"
-        }
-      },
-      "task_type": {
-        "name": "Loại nhiệm vụ",
-        "state": {
-          "go_to": "Đi đến điểm",
-          "segment": "Làm sạch phòng",
-          "all": "Làm sạch toàn bộ",
-          "zone": "Làm sạch vùng",
-          "spot": "Làm sạch tại điểm"
-        }
-      },
-      "cleaning_times": {
-        "name": "Số lần làm sạch",
-        "state": {
-          "x1": "Một lần",
-          "x2": "Hai lần",
-          "x3": "Ba lần"
-        }
-      },
-      "auto_empty_frequency": {
-        "name": "Tần suất tự động đổ rác",
-        "state": {
-          "x1": "Sau mỗi nhiệm vụ",
-          "x2": "Sau hai lần làm sạch",
-          "x3": "Sau ba lần làm sạch"
-        }
-      },
-      "drying_time": {
-        "name": "Thời gian sấy",
-        "state": {
-          "silent": "Yên tĩnh"
-        }
-      },
-      "battery_charge_level": {
-        "name": "Mức sạc pin"
-      },
-      "object_type": {
-        "name": "Loại đối tượng",
-        "state": {
-          "predefined_point": "Điểm xác định trước",
-          "low_lying_area": "Vùng thấp",
-          "curtain": "Rèm cửa",
-          "threshold": "Ngưỡng cửa",
-          "furniture": "Nội thất",
-          "carpet": "Thảm",
-          "restricted": "Vùng hạn chế"
-        }
-      },
-      "edit_type": {
-        "name": "Loại chỉnh sửa",
-        "state": {
-          "door": "Chỉnh sửa cửa",
-          "split": "Chia phòng",
-          "merge": "Gộp phòng",
-          "visibility": "Hiển thị phòng",
-          "material": "Chất liệu sàn",
-          "type": "Tên phòng",
-          "wall": "Chỉnh sửa tường"
-        }
-      },
-      "map_type": {
-        "name": "Loại bản đồ",
-        "state": {
-          "cleaning": "Bản đồ làm sạch",
-          "history": "Chi tiết làm sạch",
-          "wifi": "Bản đồ Wi-Fi"
-        }
-      },
-      "carpet_type": {
-        "name": "Loại thảm",
-        "state": {
-          "medium_pile": "Lông dài đến vừa",
-          "low_pile": "Lông ngắn",
-          "floor_mat": "Thảm chùi chân",
-          "other": "Khác"
-        }
-      },
-      "mop_type": {
-        "name": "Loại giẻ lau",
-        "state": {
-          "a": "Giẻ lau A",
-          "b": "Giẻ lau B",
-          "c": "Giẻ lau C"
-        }
-      },
-      "carpet_shape": {
-        "name": "Hình dạng",
-        "state": {
-          "square": "Hình vuông",
-          "round": "Hình tròn"
-        }
-      },
-      "mopping_pattern": {
-        "name": "Kiểu lau",
-        "state": {
-          "daily": "Lau hàng ngày",
-          "deep": "Lau sâu"
+          "low": "Thấp",
+          "medium": "Trung bình",
+          "high": "Cao"
         }
       },
       "wetness_level": {
@@ -519,248 +829,170 @@
           "wet": "Ướt"
         }
       },
-      "task_repeats": {
-        "name": "Lặp lại nhiệm vụ",
+      "wider_corner_coverage": {
+        "name": "Phạm vi bao phủ góc rộng hơn",
         "state": {
-          "once": "Một lần",
-          "daily": "Hàng ngày",
-          "workdays": "Ngày làm việc",
-          "weekends": "Cuối tuần"
-        }
-      },
-      "segment_name": {
-        "name": "Tên phòng",
-        "state": {
-          "room": "Phòng",
-          "living_room": "Phòng khách",
-          "primary_bedroom": "Phòng ngủ chính",
-          "study": "Phòng học",
-          "kitchen": "Phòng bếp",
-          "dining_hall": "Phòng ăn",
-          "bathroom": "Phòng tắm",
-          "balcony": "Ban công",
-          "corridor": "Hành lang",
-          "utility_room": "Phòng tiện ích",
-          "closet": "Phòng để đồ",
-          "meeting_room": "Phòng họp",
-          "office": "Văn phòng",
-          "fitness_area": "Khu tập thể dục",
-          "recreation_area": "Khu vui chơi",
-          "secondary_bedroom": "Phòng ngủ phụ"
-        }
-      },
-      "furniture_type": {
-        "name": "Loại nội thất",
-        "state": {
-          "single_bed": "Giường đơn",
-          "double_bed": "Giường đôi",
-          "arm_chair": "Ghế bành",
-          "two_seat_sofa": "Sofa hai chỗ",
-          "three_seat_sofa": "Sofa ba chỗ",
-          "dining_table": "Bàn ăn",
-          "nightstant": "Tủ đầu giường",
-          "coffee_table": "Bàn cà phê",
-          "toilet": "Bồn cầu",
-          "litter_box": "Khay vệ sinh",
-          "pet_bed": "Giường thú cưng",
-          "food_bowl": "Bát ăn",
-          "pet_toilet": "Nhà vệ sinh thú cưng",
-          "refrigerator": "Tủ lạnh",
-          "washing_machine": "Máy giặt",
-          "enclosed_litter_box": "Khay vệ sinh kín",
-          "air_conditioner": "Điều hòa",
-          "tv_cabinet": "Kệ TV",
-          "bookshelf": "Kệ sách",
-          "shoe_cabinet": "Tủ giày",
-          "wardrobe": "Tủ quần áo",
-          "greenery": "Cây xanh",
-          "floor_mirror": "Gương đứng",
-          "l_shaped_sofa": "Sofa chữ L",
-          "round_coffee_table": "Bàn cà phê tròn",
-          "table": "Bàn",
-          "arm_chair_narrow": "Ghế bành hẹp",
-          "three_seat_sofa_narrow": "Sofa ba chỗ hẹp",
-          "l_shaped_sofa_right": "Sofa chữ L bên phải"
+          "off": "Tắt",
+          "high_frequency": "Tần suất cao",
+          "low_frequency": "Tần suất thấp"
         }
       }
     },
     "sensor": {
-      "state": {
-        "name": "Trạng thái",
-        "state": {
-          "unknown": "Không rõ",
-          "sweeping": "Đang quét",
-          "charging": "Đang sạc",
-          "error": "Lỗi",
-          "idle": "Đang chờ",
-          "paused": "Đã tạm dừng",
-          "returning": "Đang về đế sạc",
-          "mopping": "Đang lau",
-          "drying": "Đang sấy",
-          "washing": "Đang giặt",
-          "returning_to_wash": "Đang về để giặt",
-          "building": "Đang xây dựng",
-          "sweeping_and_mopping": "Đang quét và lau",
-          "charging_completed": "Đã sạc đầy",
-          "upgrading": "Đang nâng cấp",
-          "clean_summon": "Triệu hồi để làm sạch",
-          "station_reset": "Đặt lại trạm",
-          "returning_install_mop": "Đang về để lắp giẻ lau",
-          "returning_remove_mop": "Đang về để tháo giẻ lau",
-          "water_check": "Đang kiểm tra nước",
-          "clean_add_water": "Đang làm sạch và thêm nước",
-          "washing_paused": "Tạm dừng giặt",
-          "auto_emptying": "Tự động đổ rác",
-          "remote_control": "Điều khiển từ xa",
-          "smart_charging": "Sạc thông minh",
-          "second_cleaning": "Làm sạch lần hai",
-          "human_following": "Đang đi theo người",
-          "spot_cleaning": "Làm sạch tại điểm",
-          "returning_auto_empty": "Đang về để đổ rác",
-          "waiting_for_task": "Đang chờ nhiệm vụ",
-          "station_cleaning": "Làm sạch trạm",
-          "returning_to_drain": "Đang về để xả nước",
-          "draining": "Đang xả nước",
-          "auto_water_draining": "Tự động xả nước",
-          "emptying": "Đang đổ rác",
-          "dust_bag_drying": "Đang sấy túi bụi",
-          "dust_bag_drying_paused": "Tạm dừng sấy túi bụi",
-          "heading_to_extra_cleaning": "Đang đi làm sạch thêm",
-          "extra_cleaning": "Làm sạch thêm",
-          "finding_pet_paused": "Tạm dừng tìm thú cưng",
-          "finding_pet": "Đang tìm thú cưng",
-          "shortcut": "Phím tắt",
-          "monitoring": "Đang theo dõi",
-          "monitoring_paused": "Tạm dừng theo dõi",
-          "initial_deep_cleaning": "Làm sạch sâu ban đầu",
-          "initial_deep_cleaning_paused": "Tạm dừng làm sạch sâu ban đầu",
-          "sanitizing": "Đang khử trùng",
-          "sanitizing_with_dry": "Đang khử trùng và sấy khô",
-          "changing_mop": "Đang thay giẻ lau",
-          "changing_mop_paused": "Tạm dừng thay giẻ lau",
-          "floor_maintaining": "Đang bảo trì sàn",
-          "floor_maintaining_paused": "Tạm dừng bảo trì sàn",
-          "remote_pickup": "Nhặt đồ từ xa",
-          "arranging_items": "Đang sắp xếp đồ đạc",
-          "pet_guarding": "Bảo vệ thú cưng",
-          "pet_guarding_paused": "Tạm dừng bảo vệ thú cưng",
-          "installing_mop": "Đang lắp giẻ lau",
-          "uninstalling_mop": "Đang tháo giẻ lau",
-          "intelligent_recharging": "Đang sạc thông minh",
-          "assisted_cleaning": "Làm sạch có hỗ trợ",
-          "entering_dock": "Đang vào đế sạc",
-          "leaving_dock": "Đang rời đế sạc",
-          "navigating_to_climber": "Đang đi đến bộ leo bậc",
-          "docking_to_climber": "Đang vào bộ leo bậc",
-          "climber_docked": "Đã vào bộ leo bậc",
-          "climber_navigating": "Bộ leo bậc đang di chuyển",
-          "climbing_stairs": "Đang leo cầu thang",
-          "climbing_stairs_completed": "Đã leo cầu thang xong",
-          "climber_at_dock": "Bộ leo bậc tại đế sạc",
-          "climber_leaving_dock": "Bộ leo bậc đang rời đế sạc"
-        }
-      },
-      "status": {
-        "name": "Trạng thái",
+      "auto_empty_status": {
+        "name": "Trạng thái tự đổ rác",
         "state": {
           "unknown": "Không rõ",
           "idle": "Đang chờ",
-          "paused": "Đã tạm dừng",
-          "cleaning": "Đang làm sạch",
-          "returning": "Đang về đế sạc",
-          "spot_cleaning": "Làm sạch tại điểm",
-          "follow_wall_cleaning": "Làm sạch dọc tường",
-          "charging": "Đang sạc",
-          "ota": "Cập nhật OTA",
-          "fct": "FCT",
-          "wifi_set": "Thiết lập WiFi",
-          "power_off": "Tắt nguồn",
-          "factory": "Xuất xưởng",
-          "error": "Lỗi",
-          "remote_control": "Điều khiển từ xa",
-          "sleeping": "Đang ngủ",
-          "self_test": "Tự kiểm tra",
-          "factory_test": "Kiểm tra xuất xưởng",
-          "standby": "Chờ",
-          "room_cleaning": "Làm sạch phòng",
-          "zone_cleaning": "Làm sạch vùng",
-          "fast_mapping": "Lập bản đồ nhanh",
-          "cruising_path": "Đang đi theo lộ trình",
-          "cruising_point": "Đang đi đến điểm",
-          "summon_clean": "Triệu hồi làm sạch",
-          "shortcut": "Phím tắt",
-          "person_follow": "Đi theo người",
-          "water_check": "Kiểm tra nước",
-          "pet_guarding": "Bảo vệ thú cưng",
-          "auto_arrangement": "Tự động sắp xếp",
-          "smart_arrangement": "Sắp xếp thông minh",
-          "zoned_arrangement": "Sắp xếp theo vùng"
+          "active": "Đang hoạt động",
+          "not_performed": "Không thực hiện"
         }
       },
-      "task_status": {
-        "name": "Trạng thái nhiệm vụ",
+      "battery_level": {
+        "name": "Mức pin"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "charging_status": {
+        "name": "Trạng thái sạc",
         "state": {
           "unknown": "Không rõ",
+          "charging": "Đang sạc",
+          "not_charging": "Không sạc",
+          "return_to_charge": "Trở về sạc",
+          "charging_completed": "Đã sạc đầy"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "Trạng thái bình nước sạch",
+        "state": {
+          "unknown": "Không rõ",
+          "not_available": "Không khả dụng",
+          "not_installed": "Chưa lắp",
+          "low_water": "Nước thấp",
+          "installed": "Đã lắp"
+        }
+      },
+      "cleaned_area": {
+        "name": "Diện tích đã dọn"
+      },
+      "cleaning_count": {
+        "name": "Số lần dọn dẹp"
+      },
+      "cleaning_history": {
+        "name": "Lịch sử dọn dẹp"
+      },
+      "cleaning_progress": {
+        "name": "Tiến độ dọn dẹp"
+      },
+      "cleaning_status": {
+        "name": "Làm sạch",
+        "state": {
+          "interrupted": "Bị gián đoạn",
           "completed": "Đã hoàn thành",
-          "cleaning": "Đang làm sạch",
-          "zone_cleaning": "Làm sạch vùng",
-          "room_cleaning": "Làm sạch phòng",
-          "spot_cleaning": "Làm sạch tại điểm",
-          "fast_mapping": "Lập bản đồ nhanh",
-          "cleaning_paused": "Tạm dừng làm sạch",
-          "room_cleaning_paused": "Tạm dừng làm sạch phòng",
-          "zone_cleaning_paused": "Tạm dừng làm sạch vùng",
-          "spot_cleaning_paused": "Tạm dừng làm sạch điểm",
-          "map_cleaning_paused": "Tạm dừng bản đồ làm sạch",
-          "docking_paused": "Tạm dừng vào đế sạc",
-          "mopping_paused": "Tạm dừng lau",
-          "zone_mopping_paused": "Tạm dừng lau vùng",
-          "room_mopping_paused": "Tạm dừng lau phòng",
-          "zone_docking_paused": "Tạm dừng vào đế sạc vùng",
-          "room_docking_paused": "Tạm dừng vào đế sạc phòng",
-          "cruising_path": "Đang đi theo lộ trình",
-          "cruising_path_paused": "Tạm dừng đi theo lộ trình",
-          "cruising_point": "Đang đi đến điểm",
-          "cruising_point_paused": "Tạm dừng đi đến điểm",
-          "summon_clean_paused": "Tạm dừng triệu hồi làm sạch",
-          "returning_to_install_mop": "Đang về để lắp giẻ lau",
-          "returning_to_remove_mop": "Đang về để tháo giẻ lau",
-          "station_cleaning": "Làm sạch trạm",
-          "pet_finding": "Tìm thú cưng",
-          "auto_cleaning_washing_paused": "Tạm dừng làm sạch/giặt tự động",
-          "area_cleaning_washing_paused": "Tạm dừng làm sạch/giặt khu vực",
-          "custom_cleaning_washing_paused": "Tạm dừng làm sạch/giặt tùy chỉnh",
-          "picking_up_item": "Đang nhặt đồ",
-          "picking_up_item_paused": "Tạm dừng nhặt đồ",
-          "picking_up_item_success": "Nhặt đồ thành công",
-          "remote_pickup_initializing": "Đang khởi tạo nhặt đồ từ xa",
-          "remote_pickup_identifing": "Đang xác định nhặt đồ từ xa",
-          "manual_remote_pickup": "Nhặt đồ từ xa thủ công",
-          "automatic_remote_pickup": "Nhặt đồ từ xa tự động",
-          "remote_pickup_in_progress": "Đang nhặt đồ từ xa",
-          "remote_pickup_paused": "Tạm dừng nhặt đồ từ xa",
-          "placing_item": "Đang đặt đồ",
-          "placing_item_paused": "Tạm dừng đặt đồ"
+          "manually_ended": "Kết thúc thủ công",
+          "failed": "Thất bại",
+          "unknown": "Không rõ"
         }
       },
-      "water_tank": {
-        "name": "Bình nước",
+      "cleaning_time": {
+        "name": "Thời gian dọn dẹp"
+      },
+      "cleanup_method": {
+        "name": "Phương pháp làm sạch",
+        "state": {
+          "other": "Khác",
+          "default": "Mặc định",
+          "customized": "Tùy chỉnh",
+          "cleangenius": "CleanGenius",
+          "water_stain": "Vết nước",
+          "unknown": "Không rõ"
+        }
+      },
+      "cruising_history": {
+        "name": "Lịch sử tuần tra"
+      },
+      "current_room": {
+        "name": "Phòng hiện tại",
+        "state_attributes": {
+          "room_id": {
+            "name": "Mã phòng"
+          },
+          "room_icon": {
+            "name": "Biểu tượng phòng"
+          },
+          "room_name": {
+            "name": "Tên phòng"
+          }
+        }
+      },
+      "deodorizer_left": {
+        "name": "Khử mùi"
+      },
+      "deodorizer_time_left": {
+        "name": "Thời gian còn lại khử mùi"
+      },
+      "detergent_left": {
+        "name": "Chất tẩy rửa"
+      },
+      "detergent_status": {
+        "name": "Trạng thái chất tẩy rửa",
+        "state": {
+          "unknown": "Không rõ",
+          "installed": "Đã lắp",
+          "disabled": "Đã tắt",
+          "low_detergent": "Chất tẩy rửa thấp"
+        }
+      },
+      "detergent_time_left": {
+        "name": "Thời gian còn lại nước lau sàn"
+      },
+      "dirty_water_channel_left": {
+        "name": "Kênh nước bẩn"
+      },
+      "dirty_water_tank_status": {
+        "name": "Trạng thái bình nước bẩn",
+        "state": {
+          "unknown": "Không rõ",
+          "installed": "Đã lắp",
+          "not_installed_or_full": "Chưa lắp hoặc đã đầy"
+        }
+      },
+      "drainage_status": {
+        "name": "Trạng thái xả nước",
+        "state": {
+          "unknown": "Không rõ",
+          "idle": "Đang chờ",
+          "draining": "Đang xả nước",
+          "draining_successful": "Xả nước thành công",
+          "draining_failed": "Xả nước thất bại"
+        }
+      },
+      "drying_left": {
+        "name": "Thời gian sấy còn lại"
+      },
+      "drying_progress": {
+        "name": "Tiến độ sấy"
+      },
+      "dust_bag_drying_left": {
+        "name": "Thời gian sấy túi bụi còn lại"
+      },
+      "dust_bag_drying_status": {
+        "name": "Trạng thái sấy túi bụi",
+        "state": {
+          "idle": "Đang chờ",
+          "drying": "Đang sấy",
+          "paused": "Đã tạm dừng"
+        }
+      },
+      "dust_bag_status": {
+        "name": "Trạng thái túi bụi",
         "state": {
           "unknown": "Không rõ",
           "installed": "Đã lắp",
           "not_installed": "Chưa lắp",
-          "mop_installed": "Đã lắp giẻ lau",
-          "in_station": "Trong trạm"
-        }
-      },
-      "mop_pad": {
-        "name": "Giẻ lau",
-        "state": {
-          "unknown": "Không rõ",
-          "installed": "Đã lắp",
-          "not_installed": "Chưa lắp",
-          "mop_installed": "Đã lắp giẻ lau",
-          "in_station": "Trong trạm"
+          "check": "Kiểm tra"
         }
       },
       "dust_collection": {
@@ -771,15 +1003,6 @@
           "available": "Khả dụng",
           "over_use": "Dùng quá mức",
           "never": "Không bao giờ"
-        }
-      },
-      "auto_empty_status": {
-        "name": "Trạng thái tự đổ rác",
-        "state": {
-          "unknown": "Không rõ",
-          "idle": "Đang chờ",
-          "active": "Đang hoạt động",
-          "not_performed": "Không thực hiện"
         }
       },
       "error": {
@@ -872,7 +1095,6 @@
           "return_to_charge_failed": "Trở về sạc thất bại.",
           "lds_failed_to_lift": "Nâng mô-đun LDS thất bại.",
           "robot_stuck": "LDS không thể nâng lên tại đây để định vị.",
-          "robot_stuck_repeat": "Di chuyển robot ra khu vực thoáng và tiếp tục nhiệm vụ.",
           "slippery_floor": "Sàn trơn. Vui lòng thử lại sau.",
           "check_mop_install": "Vui lòng kiểm tra xem giẻ lau đã được lắp đúng cách chưa.",
           "dirty_water_tank_full": "Mức nước bất thường trong bình nước bẩn của robot.",
@@ -906,16 +1128,284 @@
           "robotic_arm_stopped": "Cánh tay robot đã dừng.",
           "drainage_outlet_filter": "Bộ lọc xả nước của robot bị tắc.",
           "main_wheels_error": "Lỗi bánh xe chính."
+        },
+        "state_attributes": {
+          "description": {
+            "name": "Mô tả",
+            "state": {
+              "no_error": "Không lỗi",
+              "drop": "Bánh xe bị treo\nVui lòng định vị lại robot và khởi động lại.",
+              "cliff": "Lỗi cảm biến chống rơi\nVui lòng lau cảm biến vách đá và bắt đầu dọn dẹp cách xa cầu thang.",
+              "bumper": "Cảm biến va chạm bị kẹt\nHãy làm sạch và chạm nhẹ vào cảm biến va chạm.",
+              "gesture": "Robot bị nghiêng\nVui lòng di chuyển robot đến bề mặt bằng phẳng và bắt đầu lại.",
+              "bumper_repeat": "Cảm biến va chạm bị kẹt\nHãy làm sạch và chạm nhẹ vào cảm biến va chạm.",
+              "drop_repeat": "Bánh xe bị treo\nVui lòng định vị lại robot và khởi động lại.",
+              "optical_flow": "Lỗi cảm biến quang học\nHãy thử khởi động lại robot.",
+              "no_box": "Chưa lắp hộp bụi\nVui lòng lắp thùng chứa bụi và bộ lọc.",
+              "no_tank_box": "Chưa lắp bình nước\nHãy lắp đặt bể nước.",
+              "water_box_empty": "Bình nước hết\nHãy đổ đầy bình nước.",
+              "box_full": "Bộ lọc chưa khô hoặc bị tắc\nVui lòng kiểm tra xem bộ lọc đã khô hay cần được vệ sinh.",
+              "brush": "Chổi chính bị quấn\nVui lòng tháo bàn chải chính và làm sạch lông và vòng bi của nó.",
+              "side_brush": "Chổi cạnh bị quấn\nVui lòng tháo và làm sạch bàn chải bên.",
+              "fan": "Bộ lọc chưa khô hoặc bị tắc\nVui lòng kiểm tra xem bộ lọc đã khô hay cần được vệ sinh.",
+              "left_wheel_motor": "Robot bị kẹt, hoặc bánh trái bị vướng vật lạ\nKiểm tra xem có vật gì bị kẹt ở bánh xe chính không và khởi động robot ở vị trí mới.",
+              "right_wheel_motor": "Robot bị kẹt, hoặc bánh phải bị vướng vật lạ\nKiểm tra xem có vật gì bị kẹt ở bánh xe chính không và khởi động robot ở vị trí mới.",
+              "turn_suffocate": "Robot bị kẹt, hoặc không thể quay\nRobot có thể bị chặn hoặc bị kẹt.",
+              "forward_suffocate": "Robot bị kẹt, hoặc không thể tiến tới\nRobot có thể bị chặn hoặc bị kẹt.",
+              "charger_get": "Không tìm thấy đế sạc\nVui lòng kiểm tra xem dây nguồn đã được cắm đúng chưa.",
+              "battery_low": "Pin yếu\nMức pin quá thấp. Hãy sạc.",
+              "charge_fault": "Lỗi sạc\nVui lòng sử dụng vải khô để lau các điểm tiếp xúc sạc của robot và đế tự động trống.",
+              "battery_percentage": "Lỗi mức pin",
+              "heart": "Lỗi nội bộ\nHãy thử khởi động lại robot.",
+              "camera_occlusion": "Lỗi cảm biến định vị hình ảnh\nHãy làm sạch cảm biến định vị trực quan.",
+              "move": "Lỗi cảm biến di chuyển\nHãy thử khởi động lại robot.",
+              "flow_shielding": "Lỗi cảm biến quang học\nHãy lau sạch cảm biến quang học và khởi động lại.",
+              "infrared_shielding": "Lỗi che chắn hồng ngoại\nHãy thử khởi động lại robot.",
+              "charge_no_electric": "Đế sạc chưa cắm điện\nTrạm sạc không được bật nguồn. Vui lòng kiểm tra xem dây nguồn đã được cắm đúng chưa.",
+              "battery_fault": "Lỗi pin\nVui lòng đợi cho đến khi nhiệt độ pin trở lại bình thường.",
+              "fan_speed_error": "Lỗi cảm biến tốc độ quạt\nHãy thử khởi động lại robot.",
+              "left_wheell_speed": "Bánh trái có thể bị vật lạ làm kẹt\nKiểm tra xem có vật gì bị kẹt ở bánh xe chính không và khởi động robot ở vị trí mới.",
+              "right_wheell_speed": "Bánh phải có thể bị vật lạ làm kẹt\nKiểm tra xem có vật gì bị kẹt ở bánh xe chính không và khởi động robot ở vị trí mới.",
+              "bmi055_acce": "Lỗi gia tốc kế\nHãy thử khởi động lại robot.",
+              "bmi055_gyro": "Lỗi con quay hồi chuyển\nHãy thử khởi động lại robot.",
+              "xv7001": "Lỗi con quay hồi chuyển\nHãy thử khởi động lại robot.",
+              "left_magnet": "Lỗi cảm biến từ trái\nHãy thử khởi động lại robot.",
+              "right_magnet": "Lỗi cảm biến từ phải\nHãy thử khởi động lại robot.",
+              "flow_error": "Lỗi cảm biến lưu lượng\nHãy thử khởi động lại robot.",
+              "infrared_fault": "Lỗi hồng ngoại\nHãy thử khởi động lại robot.",
+              "camera_fault": "Lỗi camera\nHãy thử khởi động lại robot.",
+              "strong_magnet": "Phát hiện từ trường mạnh\nTừ trường mạnh được phát hiện. Hãy bắt đầu từ bức tường ảo.",
+              "water_pump": "Lỗi bơm nước\nHãy thử khởi động lại robot.",
+              "rtc": "Lỗi RTC\nHãy thử khởi động lại robot.",
+              "auto_key_trig": "Lỗi nội bộ\nHãy thử khởi động lại robot.",
+              "p3v3": "Lỗi nội bộ\nHãy thử khởi động lại robot.",
+              "camera_idle": "Lỗi nội bộ\nHãy thử khởi động lại robot.",
+              "blocked": "Lộ trình làm sạch bị chặn, đang về đế sạc.\nRobot có thể bị chặn hoặc bị kẹt.",
+              "lds_error": "Lỗi cảm biến khoảng cách laser\nVui lòng kiểm tra xem cảm biến khoảng cách laser có bị kẹt vật nào không",
+              "lds_bumper": "Lỗi đệm cảm biến khoảng cách laser\nVui lòng kiểm tra xem cản cảm biến khoảng cách laser có bị kẹt không",
+              "filter_blocked": "Bộ lọc chưa khô hoặc bị tắc\nHãy kiểm tra xem bộ lọc đã khô chưa hay cần vệ sinh",
+              "edge": "Lỗi cảm biến cạnh\nLỗi cảm biến cạnh. Vui lòng kiểm tra và làm sạch nó.",
+              "carpet": "Vui lòng khởi động robot ở khu vực không có thảm.\nMột tấm thảm được phát hiện bên dưới robot khi nó đang lau nhà. Vui lòng di chuyển robot đến nơi khác và khởi động lại nó.",
+              "laser": "Cảm biến tránh vật cản 3D đang gặp trục trặc.\nHãy thử làm sạch cảm biến tránh chướng ngại vật 3D.",
+              "ultrasonic": "Cảm biến siêu âm đang gặp trục trặc.\nVui lòng khởi động lại robot và thử lại.",
+              "no_go_zone": "Phát hiện vùng cấm (No-Go) hoặc tường ảo.\nVui lòng di chuyển robot ra khỏi khu vực và khởi động lại.",
+              "route": "Lộ trình làm sạch bị chặn.\nHãy đảm bảo rằng tất cả các cửa trong nhà đều mở và dọn sạch mọi chướng ngại vật dọc lối đi hoặc cố gắng xóa khu vực hạn chế trên lối đi.",
+              "restricted": "Phát hiện robot đang ở trong vùng hạn chế.\nVui lòng di chuyển robot ra khỏi khu vực này.",
+              "remove_mop": "Đã hoàn thành lau. Vui lòng tháo và vệ sinh giẻ lau kịp thời.",
+              "mop_removed": "Giẻ lau bị tuột ra trong quá trình làm sạch.\nCác miếng lau nhà sẽ bong ra, hãy lắp chúng lại trước khi tiếp tục làm việc.",
+              "mop_pad_stop_rotate": "Giẻ lau đã ngừng xoay.\nVui lòng kiểm tra miếng lau nhà.",
+              "bin_full": "Túi đựng bụi đã đầy hoặc ống dẫn khí bị tắc.\nHệ thống phát hiện túi thu gom bụi đã đầy hoặc ống dẫn khí bị tắc.",
+              "bin_open": "Nắp trên của đế tự động đổ rác chưa đóng, hoặc túi bụi chưa được lắp.\nHệ thống phát hiện nắp trên của đế tự động trống chưa được đóng hoặc túi thu bụi chưa được lắp.",
+              "water_tank": "Chưa lắp bình nước sạch.\nBình chứa nước sạch chưa được lắp đặt, vui lòng lắp đặt.",
+              "dirty_water_tank": "Bình nước bẩn đã đầy hoặc chưa được lắp.\nKiểm tra xem bình chứa nước bẩn đã đầy chưa và lắp bình chứa nước bẩn vào chưa.",
+              "water_tank_dry": "Mức nước thấp trong bình nước sạch, vui lòng bổ sung nước kịp thời.\nNếu không, robot sẽ không quay trở lại đế để làm sạch miếng lau nhà trong quá trình làm sạch.",
+              "dirty_water_tank_blocked": "Bình nước bẩn bị tắc.\nHãy thử khởi động lại robot.",
+              "dirty_water_tank_pump": "Lỗi bơm bình nước bẩn.\nHãy thử khởi động lại robot.",
+              "mop_pad": "Khay giặt giẻ lau chưa được lắp đúng cách.\nBảng giặt không được lắp đặt và robot không thể quay trở lại bệ tự rửa. Hãy đảm bảo rằng ván giặt đã được lắp đặt và các móc cài ở cả hai bên được gắn chặt.",
+              "wet_mop_pad": "Mức nước ở khay giặt giẻ lau bất thường, vui lòng vệ sinh khay kịp thời.\nMực nước của ván giặt bất thường. Hãy làm sạch nó kịp thời để tránh tắc nghẽn. Nếu vấn đề vẫn không thể giải quyết được, vui lòng liên hệ với bộ phận chăm sóc khách hàng.",
+              "clean_mop_pad": "Nhiệm vụ làm sạch đã hoàn tất, vui lòng vệ sinh khay giặt giẻ lau.\nHãy làm sạch tấm lau nhà kịp thời để tránh vết bẩn hoặc mùi hôi.",
+              "clean_tank_level": "Vui lòng kiểm tra và đổ đầy bình nước sạch.\nNước trong bể nước sạch sắp cạn.",
+              "station_disconnected": "Trạm đế chưa cắm điện\nVui lòng kiểm tra xem nguồn điện đã tắt hay công tắc nguồn trong nhà bạn có bật hay không và cắm lại cả hai đầu của nguồn điện trạm gốc.",
+              "dirty_tank_level": "Mức nước trong bình nước bẩn quá cao.\nVui lòng kiểm tra xem bình chứa nước đã sử dụng đã đầy chưa.",
+              "washboard_level": "Mức nước trong khay giặt quá cao.\nHãy vệ sinh bình chứa nước và ván giặt đã qua sử dụng kịp thời.",
+              "no_mop_in_station": "Giẻ lau không có trong trạm.\nVui lòng đặt nó vào trạm gốc hoặc cài đặt nó vào robot theo cách thủ công.",
+              "dust_bag_full": "Túi bụi đã đầy hoặc lỗ thông hơi bị tắc.\nNếu túi đầy thì thay túi mới. Hãy thường xuyên làm sạch các lỗ thông hơi tự động của thùng chứa bụi và trạm gốc.",
+              "self_test_failed": "Xả nước bất thường từ bình nước sạch của mô-đun nước trên và dưới.\nTự kiểm tra không thành công - không có nước trong bình chứa nước sạch của mô-đun nước trên và dưới.",
+              "mop_install_failed": "Lắp giẻ lau thất bại.\nKhông thể cài đặt miếng lau nhà. Vui lòng cài đặt thủ công.",
+              "low_battery_turn_off": "Pin yếu. Robot sẽ sớm tắt nguồn.",
+              "dirty_tank_not_installed": "Chưa lắp bình nước bẩn của robot.\nVui lòng đảm bảo rằng bình chứa nước đã qua sử dụng của robot được lắp đặt đúng cách và sau đó bắt đầu công việc.",
+              "robot_in_hidden_room": "Khu vực bị ẩn. Vui lòng di chuyển robot đến khu vực thích hợp và thử lại.\nKhu vực này đã bị ẩn. Để sử dụng lại, vui lòng đi tới bản đồ cụ thể và nhấp vào vùng màu xám để khôi phục vùng ẩn theo cách thủ công.",
+              "washboard_not_working": "Khay giặt ngừng hoạt động.\nVui lòng làm theo các bước khắc phục sự cố như sau:\n1. Kiểm tra xem ván giặt có bị rối không. Làm sạch trước khi sử dụng.\n2. Kiểm tra xem ván giặt đã được lắp đặt đúng cách chưa.\n3. Nếu sự cố vẫn tiếp diễn, vui lòng liên hệ với bộ phận dịch vụ khách hàng.",
+              "return_to_charge_failed": "Trở về sạc thất bại.\nVui lòng kiểm tra trạm cơ sở.\n1. Kiểm tra xem tấm mở rộng đoạn đường nối đã được lắp xuống trạm gốc chưa;\n2. Kiểm tra xem trạm gốc đã được bật nguồn chưa;\n3. Đảm bảo không có chướng ngại vật phía trước trạm gốc.",
+              "lds_failed_to_lift": "Nâng mô-đun LDS thất bại.\nVui lòng dọn sạch mọi mảnh vụn xung quanh LDS và di chuyển robot đến khu vực trống để tiếp tục nhiệm vụ.",
+              "robot_stuck": "LDS không thể nâng lên tại đây để định vị.\nDi chuyển robot đến khu vực trống và tiếp tục nhiệm vụ.",
+              "slippery_floor": "Sàn trơn. Vui lòng thử lại sau.\nSàn trơn. Robot không vượt qua được chướng ngại vật. Bạn có thể đợi robot thử lại hoặc dọn sạch nước xung quanh nó và tiếp tục nhiệm vụ.",
+              "check_mop_install": "Vui lòng kiểm tra xem giẻ lau đã được lắp đúng cách chưa.\nKiểm tra cây lau nhà Hướng dẫn lắp đặt",
+              "dirty_water_tank_full": "Mức nước bất thường trong bình nước bẩn của robot.\nBình chứa nước đã qua sử dụng của robot quá bẩn. Hãy loại bỏ và làm sạch nó kịp thời.",
+              "retractable_leg_stuck": "Vui lòng kiểm tra xem chân thu kéo có bị vướng không.\nChân có thể thu vào có thể bị rối.",
+              "internal_error": "Trục trặc do lỗi nội bộ. Thử khởi động lại robot.\nLỗi Nội Bộ",
+              "robot_stuck_on_tables": "Robot bị kẹt giữa bàn ghế\n1. Vui lòng di chuyển robot đến khu vực trống và bắt đầu lại nhiệm vụ.\n2. Nên sắp xếp bàn ghế gọn gàng để robot không bị mắc kẹt.\nRobot bị kẹt",
+              "robot_stuck_on_passage": "Robot bị kẹt trong lối đi hẹp\n1. Vui lòng di chuyển robot đến khu vực trống và bắt đầu lại nhiệm vụ.\n2. Nên đặt lối đi hẹp làm khu vực cấm đi lại để tránh robot bị kẹt.\nRobot bị kẹt",
+              "robot_stuck_on_threshold": "Robot bị kẹt tại bậc cửa/ngưỡng cửa\n1. Vui lòng di chuyển robot đến khu vực trống và bắt đầu lại nhiệm vụ.\n2. Nên đặt bước/ngưỡng làm ngưỡng không thể vượt qua để tránh robot bị kẹt.\nRobot bị kẹt",
+              "robot_stuck_on_low_lying_area": "Robot bị kẹt trong khu vực có khoảng không thấp\n1. Vui lòng di chuyển robot đến khu vực trống và bắt đầu lại nhiệm vụ.\n2. Nên đặt khu vực thấp làm khu vực cấm đi lại để tránh robot bị kẹt.\nRobot bị kẹt",
+              "robot_stuck_on_ramp": "Robot phát hiện dốc dễ rơi trên lộ trình.\nNên đặt ngưỡng có thể vượt qua nếu không có đường dốc dễ rơi trên đường.",
+              "robot_stuck_on_obstacle": "Robot phát hiện vật cản trên lộ trình.\nVui lòng loại bỏ chướng ngại vật khỏi đường đi và bắt đầu lại nhiệm vụ.",
+              "robot_stuck_on_pet": "Robot phát hiện người hoặc thú cưng trên lộ trình.\nHãy đảm bảo rằng không có người hoặc vật nuôi nào trên đường khi bắt đầu lại nhiệm vụ.",
+              "robot_stuck_on_slippery_surface": "Robot bị kẹt do trơn trượt.\nRobot bị kẹt do trượt. Hãy làm sạch bánh xe chính.",
+              "robot_stuck_on_carpet": "Robot bị trượt trên thảm\n1. Vui lòng di chuyển robot ra khỏi thảm và bắt đầu lại nhiệm vụ\n2. Nên đặt thảm ở vị trí cấm đi lại để tránh robot bị kẹt.\nRobot bị kẹt",
+              "drainage_failed": "Xả nước bất thường từ bình nước bẩn\nLỗi máy bơm nước thải. Vui lòng liên hệ với dịch vụ khách hàng.",
+              "mop_not_detected": "Không phát hiện giẻ lau.\nLau không được phát hiện. Hãy cài đặt và tiếp tục nhiệm vụ.",
+              "mop_holder_error": "Lỗi số lượng/vị trí giá đỡ giẻ lau trong đế sạc. Vui lòng lắp giá đỡ cây lau nhà hoặc điều chỉnh vị trí của nó để đảm bảo vệ sinh đúng cách.\nLỗi giữ cây lau nhà ở trạm.",
+              "dock_error": "Lỗi đế sạc.\nVui lòng kiểm tra trạm và thử các bước sau:\n1. Đảm bảo cửa sập được đóng hoàn toàn.\n2. Đảm bảo ba nhóm cây lau nhà được đặt trên cửa sập theo thứ tự đỏ-vàng-xanh. Nếu cây lau nhà hiện đang ở trên hộp vận chuyển hoặc ván giặt, hãy đặt chúng trở lại cửa sập theo thứ tự này và thử lại.\n3. Kiểm tra xem có mảnh vụn nào bên trong trạm không. Không đặt tay, robot hoặc các vật dụng khác vào ván giặt khi chuyển cây lau nhà.",
+              "wash_failed": "Giặt giẻ lau bẩn thất bại.\nVui lòng kiểm tra trạm và thử các bước sau:\n1. Vui lòng gắn cây lau nhà cần giặt vào robot theo cách thủ công.\n2. Vui lòng lắp các cây lau nhà bẩn khác vào cửa sập.\n3. Trong ứng dụng, hãy chuyển đến các chức năng của trạm, sau đó rửa, để khởi động lại tác vụ giặt cây lau nhà.",
+              "robot_stuck_on_curtain": "Robot bị trượt trong khu vực rèm cửa\n1. Vui lòng di chuyển robot ra khỏi khu vực rèm và bắt đầu lại nhiệm vụ.\n2. Robot không thể làm sạch khu vực rèm này. Nên loại bỏ nó.\nRobot bị kẹt",
+              "edge_mop_stop_rotate": "Giẻ lau cạnh đã ngừng xoay.\nCây lau nhà ngừng quay. Hãy làm theo các bước sau:\n1. Kiểm tra xem robot có nằm trên thảm không. Ma sát giữa mép cây lau nhà và thảm có thể khiến nó không quay được. Di chuyển robot đến khu vực không có thảm và tiếp tục làm sạch.\n2. Kiểm tra xem cây lau nhà có bị rối không. Nếu vậy, hãy loại bỏ chúng và tiếp tục làm sạch.",
+              "edge_mop_detached": "Giẻ lau cạnh bị tuột.\nCây lau nhà không được phát hiện. Vui lòng cài đặt nó trước khi tiếp tục quá trình dọn dẹp.",
+              "chassis_lift_malfunction": "Trục trặc nâng khung gầm.\nSự cố nâng khung gầm. Hãy khởi động lại nhiệm vụ. Nếu sự cố vẫn tiếp diễn, hãy liên hệ với dịch vụ khách hàng.",
+              "mop_cover_error": "Kiểm tra xem có mảnh vụn nào gần chổi lăn và nắp giẻ lau không. Làm sạch cây lau nhà dạng lăn để tránh vỏ bị kẹt. Sau đó, đặt robot nằm phẳng và tiếp tục nhiệm vụ. Nếu sự cố vẫn tiếp diễn, vui lòng liên hệ với bộ phận dịch vụ khách hàng.\nLỗi che cây lau nhà.",
+              "roller_mop_error": "Kiểm tra xem có mảnh vụn nào gần chổi lăn và nắp giẻ lau không. Làm sạch cây lau nhà dạng lăn để tránh bị kẹt. Sau đó, đặt robot nằm phẳng và tiếp tục nhiệm vụ. Nếu sự cố vẫn tiếp diễn, vui lòng liên hệ với bộ phận dịch vụ khách hàng.\nLỗi cây lau nhà.",
+              "onboard_water_tank_empty": "Mức nước thấp trong hộp nước sạch của robot.\nMực nước trong hộp nước sạch của robot thấp. Hãy nạp tiền kịp thời.",
+              "onboard_dirty_water_tank_full": "Hộp nước bẩn của robot đã đầy. Hãy làm trống nó nhanh chóng.\nVui lòng lấy hộp ra và làm trống nó. Ngoài ra, bạn có thể di chuyển robot đến trạm để lau cây lau nhà (điều này cũng sẽ làm cạn nước đã sử dụng).",
+              "mop_not_installed": "Chưa lắp giẻ lau.\nVui lòng xác nhận cây lau nhà dạng lăn đã được lắp đặt đúng cách trước khi bắt đầu hoặc tiếp tục công việc.",
+              "fluffing_roller_error": "Lỗi con lăn làm tơi.\n1. Lật robot với mặt dưới hướng lên trên. Nhấn nút nhả ở một bên của cây lau nhà để lấy nó ra, sau đó làm sạch mọi mảnh vụn xung quanh nó.\n2. Nhấn kẹp màu cam và lấy con lăn lông tơ ra. Làm sạch tóc hoặc mảnh vụn trên đó.\n3. Sau khi làm sạch, lắp trục lăn lông tơ và ấn chặt kẹp. Sau đó lắp con lăn lau nhà, đặt robot bằng phẳng và tiếp tục công việc.\nNếu sự cố vẫn tiếp diễn, vui lòng kiểm tra thêm chi tiết hoặc liên hệ với bộ phận dịch vụ khách hàng.",
+              "blocked_by_obstacle": "Robot bị chặn bởi vật cản.\nVui lòng kiểm tra xem có chướng ngại vật nào phía trước robot không và loại bỏ chúng.",
+              "robotic_arm_stopped": "Cánh tay robot đã dừng.\nVui lòng nhấn và giữ nút Trạm và nút Bật/Tắt cánh tay robot để thiết lập lại trước khi sử dụng lại.",
+              "drainage_outlet_filter": "Bộ lọc xả nước của robot bị tắc.\nHãy vệ sinh bộ lọc đầu ra nước thải của robot kịp thời để đảm bảo dòng nước chảy thông suốt.",
+              "main_wheels_error": "Lỗi bánh xe chính.\nPhát hiện sự bất thường của bánh xe. Công việc dọn dẹp đã bị tạm dừng. Bạn có thể thử tiếp tục làm sạch bằng nút trên robot hoặc thông qua ứng dụng. Nếu vấn đề vẫn tiếp diễn, vui lòng liên hệ với chúng tôi để được hỗ trợ.",
+              "unknown": "Lỗi không xác định"
+            }
+          }
         }
       },
-      "charging_status": {
-        "name": "Trạng thái sạc",
+      "filter_left": {
+        "name": "Bộ lọc"
+      },
+      "filter_time_left": {
+        "name": "Thời gian còn lại của bộ lọc"
+      },
+      "firmware_version": {
+        "name": "Phiên bản Firmware"
+      },
+      "first_cleaning_date": {
+        "name": "Ngày dọn dẹp đầu tiên"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "Làm sạch con lăn làm tơi"
+      },
+      "fluffing_roller_dirty_time_left": {
+        "name": "Thời gian còn lại con lăn nhung"
+      },
+      "hot_water_status": {
+        "name": "Trạng thái nước nóng",
         "state": {
           "unknown": "Không rõ",
-          "charging": "Đang sạc",
-          "not_charging": "Không sạc",
-          "return_to_charge": "Trở về sạc",
-          "charging_completed": "Đã sạc đầy"
+          "disabled": "Đã tắt",
+          "enabled": "Đã bật"
+        }
+      },
+      "ip_address": {
+        "name": "Địa chỉ IP"
+      },
+      "low_water_warning": {
+        "name": "Cảnh báo nước thấp",
+        "state": {
+          "no_warning": "Không có cảnh báo",
+          "no_water_left": "Nước trong bình nước sạch sắp hết. Vui lòng kiểm tra và đổ đầy bình nước sạch kịp thời.",
+          "no_water_left_after_clean": "Giẻ lau đã được làm sạch. Phát hiện nước trong bình nước sạch không đủ, vui lòng đổ đầy bình nước sạch và đổ bình nước bẩn.",
+          "no_water_for_clean": "Mức nước thấp trong bình nước sạch. Robot đã chuyển sang Chế độ Hút bụi.",
+          "low_water": "Sắp hết nước. Vui lòng đổ đầy bình nước sạch.",
+          "tank_not_installed": "Chưa lắp bình nước sạch."
+        }
+      },
+      "mac_address": {
+        "name": "Địa chỉ MAC"
+      },
+      "main_brush_left": {
+        "name": "Chổi chính"
+      },
+      "main_brush_time_left": {
+        "name": "Thời gian còn lại chổi chính"
+      },
+      "mapping_time": {
+        "name": "Thời gian lập bản đồ"
+      },
+      "model": {
+        "name": "Kiểu máy (Model)"
+      },
+      "mop_pad": {
+        "name": "Giẻ lau",
+        "state": {
+          "unknown": "Không rõ",
+          "installed": "Đã lắp",
+          "not_installed": "Chưa lắp",
+          "mop_installed": "Đã lắp giẻ lau",
+          "in_station": "Trong trạm"
+        }
+      },
+      "mop_pad_left": {
+        "name": "Giẻ lau"
+      },
+      "mop_pad_time_left": {
+        "name": "Thời gian còn lại giẻ lau"
+      },
+      "multiple_cleaning_time": {
+        "name": "Làm sạch nhiều lần"
+      },
+      "nation_matched": {
+        "name": "Khóa vùng",
+        "state": {
+          "unknown": "Đã tắt",
+          "matched": "Đã mở khóa",
+          "unmatched": "Đã khóa",
+          "na": "Không khả dụng"
+        }
+      },
+      "obstacle_reason": {
+        "name": "Lý do vật cản",
+        "state": {
+          "blocked_by_virtual_wall": "Bị chặn bởi tường ảo",
+          "blocked_by_door": "Bị chặn bởi cửa",
+          "blocked_by_threshold": "Bị chặn bởi ngưỡng cửa",
+          "blocked_by_obstacle": "Bị chặn bởi vật cản",
+          "blocked_by_carpet": "Bị chặn bởi thảm",
+          "blocked_by_detected_carpet": "Bị chặn bởi thảm đã phát hiện",
+          "blocked_by_hidden_obstacle": "Bị chặn bởi vật cản bị ẩn",
+          "blocked_by_dynamic_obstacle": "Bị chặn bởi vật cản động",
+          "passage_too_low": "Lối đi quá thấp",
+          "step_too_low": "Bậc cửa quá thấp",
+          "failed_to_cross_threshold": "Băng qua ngưỡng cửa thất bại"
+        }
+      },
+      "obstacle_type": {
+        "name": "Loại vật cản",
+        "state": {
+          "unknown": "Không rõ",
+          "base": "Đế",
+          "scale": "Cân",
+          "thread": "Vật dụng giống như dây",
+          "wire": "Dây",
+          "toy": "Đồ chơi",
+          "shoes": "Giày",
+          "sock": "Tất",
+          "fece": "Phân Thú Cưng",
+          "trash_can": "Khay chứa bụi",
+          "fabric": "Vải vóc",
+          "power_strip": "Ổ cắm điện",
+          "liquid_stain": "Vết bẩn lỏng",
+          "obstacle": "Chướng ngại vật",
+          "pet": "Vật nuôi",
+          "cleaning_tools": "Công cụ làm sạch",
+          "detected_stain": "Vết bẩn",
+          "blocked_room": "Đồ nội thất dễ làm rô-bốt mắc kẹt",
+          "easy_to_stuck_furniture": "Đồ nội thất dễ làm rô-bốt mắc kẹt",
+          "uncleanable_stain": "Vết bẩn",
+          "leg": "Chân gỗ",
+          "large_particles": "Các hạt lớn",
+          "dried_stain": "Vết bẩn",
+          "food_bowl": "Bát thực phẩm",
+          "pet_bed": "Giường/nhà cho thú cưng",
+          "cleaned_stain": "Vết bẩn",
+          "skipped_uncleanable_stain": "Vết bẩn",
+          "cleaned_dried_stain": "Vết bẩn",
+          "cleaned_large_particles": "Các hạt lớn",
+          "hair": "Vật dụng giống như dây",
+          "paper": "Vải Vóc",
+          "cleaned_hair": "Vật dụng giống như dây",
+          "sundry": "Đồ lặt vặt"
+        }
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "Bình nước bẩn trên máy"
+      },
+      "onboard_dirty_water_tank_time_left": {
+        "name": "Thời gian còn lại hộp nước bẩn tích hợp"
+      },
+      "recovery_map_type": {
+        "name": "Loại bản đồ",
+        "state": {
+          "original": "Bản đồ gốc",
+          "edited": "Bản đồ đã chỉnh sửa",
+          "backup": "Bản đồ sao lưu"
         }
       },
       "relocation_status": {
@@ -927,6 +1417,24 @@
           "failed": "Thất bại",
           "success": "Thành công"
         }
+      },
+      "remaining_battery": {
+        "name": "Pin còn lại"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "Làm sạch bộ lọc giẻ lau lăn"
+      },
+      "roller_mop_filter_dirty_time_left": {
+        "name": "Thời gian còn lại lọc con lăn giẻ"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "scale_inhibitor_left": {
+        "name": "Bộ ức chế đóng cặn"
+      },
+      "scale_inhibitor_time_left": {
+        "name": "Thời gian còn lại chống cặn"
       },
       "self_wash_base_status": {
         "name": "Trạng thái đế tự giặt",
@@ -941,15 +1449,165 @@
           "adding_water": "Đang thêm nước"
         }
       },
-      "low_water_warning": {
-        "name": "Cảnh báo nước thấp",
+      "sensor_dirty_left": {
+        "name": "Vệ sinh cảm biến"
+      },
+      "sensor_dirty_time_left": {
+        "name": "Thời gian còn lại vệ sinh cảm biến"
+      },
+      "serial_number": {
+        "name": "Số seri"
+      },
+      "side_brush_left": {
+        "name": "Chổi cạnh"
+      },
+      "side_brush_time_left": {
+        "name": "Thời gian còn lại chổi cạnh"
+      },
+      "silver_ion_left": {
+        "name": "Ion bạc"
+      },
+      "silver_ion_time_left": {
+        "name": "Thời gian còn lại ion bạc"
+      },
+      "squeegee_left": {
+        "name": "Cây gạt nước"
+      },
+      "squeegee_time_left": {
+        "name": "Thời gian còn lại thanh gạt"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "startup_method": {
+        "name": "Bắt đầu bởi",
         "state": {
-          "no_warning": "Không có cảnh báo",
-          "no_water_left": "Nước trong bình nước sạch sắp hết. Vui lòng kiểm tra và đổ đầy bình nước sạch kịp thời.",
-          "no_water_left_after_clean": "Giẻ lau đã được làm sạch. Phát hiện nước trong bình nước sạch không đủ, vui lòng đổ đầy bình nước sạch và đổ bình nước bẩn.",
-          "no_water_for_clean": "Mức nước thấp trong bình nước sạch. Robot đã chuyển sang Chế độ Hút bụi.",
-          "low_water": "Sắp hết nước. Vui lòng đổ đầy bình nước sạch.",
-          "tank_not_installed": "Chưa lắp bình nước sạch."
+          "button": "Nút bấm",
+          "app": "Ứng dụng",
+          "scheduled": "Lịch trình",
+          "voice": "Giọng nói",
+          "second_cleaning": "Làm sạch lần hai",
+          "unknown": "Không rõ"
+        }
+      },
+      "state": {
+        "name": "Trạng thái",
+        "state": {
+          "unknown": "Không rõ",
+          "sweeping": "Đang quét",
+          "charging": "Đang sạc",
+          "error": "Lỗi",
+          "idle": "Đang chờ",
+          "paused": "Đã tạm dừng",
+          "returning": "Đang về đế sạc",
+          "mopping": "Đang lau",
+          "drying": "Đang sấy",
+          "washing": "Đang giặt",
+          "returning_to_wash": "Đang về để giặt",
+          "building": "Đang xây dựng",
+          "sweeping_and_mopping": "Đang quét và lau",
+          "charging_completed": "Đã sạc đầy",
+          "upgrading": "Đang nâng cấp",
+          "clean_summon": "Triệu hồi để làm sạch",
+          "station_reset": "Đặt lại trạm",
+          "returning_install_mop": "Đang về để lắp giẻ lau",
+          "returning_remove_mop": "Đang về để tháo giẻ lau",
+          "water_check": "Đang kiểm tra nước",
+          "clean_add_water": "Đang làm sạch và thêm nước",
+          "washing_paused": "Tạm dừng giặt",
+          "auto_emptying": "Tự động đổ rác",
+          "remote_control": "Điều khiển từ xa",
+          "smart_charging": "Sạc thông minh",
+          "second_cleaning": "Làm sạch lần hai",
+          "human_following": "Đang đi theo người",
+          "spot_cleaning": "Làm sạch tại điểm",
+          "returning_auto_empty": "Đang về để đổ rác",
+          "waiting_for_task": "Đang chờ nhiệm vụ",
+          "station_cleaning": "Làm sạch trạm",
+          "returning_to_drain": "Đang về để xả nước",
+          "draining": "Đang xả nước",
+          "auto_water_draining": "Tự động xả nước",
+          "emptying": "Đang đổ rác",
+          "dust_bag_drying": "Đang sấy túi bụi",
+          "dust_bag_drying_paused": "Tạm dừng sấy túi bụi",
+          "heading_to_extra_cleaning": "Đang đi làm sạch thêm",
+          "extra_cleaning": "Làm sạch thêm",
+          "finding_pet_paused": "Tạm dừng tìm thú cưng",
+          "finding_pet": "Đang tìm thú cưng",
+          "shortcut": "Phím tắt",
+          "monitoring": "Đang theo dõi",
+          "monitoring_paused": "Tạm dừng theo dõi",
+          "initial_deep_cleaning": "Làm sạch sâu ban đầu",
+          "initial_deep_cleaning_paused": "Tạm dừng làm sạch sâu ban đầu",
+          "sanitizing": "Đang khử trùng",
+          "sanitizing_with_dry": "Đang khử trùng và sấy khô",
+          "changing_mop": "Đang thay giẻ lau",
+          "changing_mop_paused": "Tạm dừng thay giẻ lau",
+          "floor_maintaining": "Đang bảo trì sàn",
+          "floor_maintaining_paused": "Tạm dừng bảo trì sàn",
+          "remote_pickup": "Nhặt đồ từ xa",
+          "arranging_items": "Đang sắp xếp đồ đạc",
+          "pet_guarding": "Bảo vệ thú cưng",
+          "pet_guarding_paused": "Tạm dừng bảo vệ thú cưng",
+          "installing_mop": "Đang lắp giẻ lau",
+          "uninstalling_mop": "Đang tháo giẻ lau",
+          "intelligent_recharging": "Đang sạc thông minh",
+          "assisted_cleaning": "Làm sạch có hỗ trợ",
+          "entering_dock": "Đang vào đế sạc",
+          "leaving_dock": "Đang rời đế sạc",
+          "navigating_to_climber": "Đang đi đến bộ leo bậc",
+          "docking_to_climber": "Đang vào bộ leo bậc",
+          "climber_docked": "Đã vào bộ leo bậc",
+          "climber_navigating": "Bộ leo bậc đang di chuyển",
+          "climbing_stairs": "Đang leo cầu thang",
+          "climbing_stairs_completed": "Đã leo cầu thang xong",
+          "climber_at_dock": "Bộ leo bậc tại đế sạc",
+          "climber_leaving_dock": "Bộ leo bậc đang rời đế sạc"
+        }
+      },
+      "station_drainage_status": {
+        "name": "Trạng thái xả nước trạm",
+        "state": {
+          "unknown": "Không rõ",
+          "idle": "Đang chờ",
+          "draining": "Đang xả nước"
+        }
+      },
+      "status": {
+        "name": "Trạng thái",
+        "state": {
+          "unknown": "Không rõ",
+          "idle": "Đang chờ",
+          "paused": "Đã tạm dừng",
+          "cleaning": "Đang làm sạch",
+          "returning": "Đang về đế sạc",
+          "spot_cleaning": "Làm sạch tại điểm",
+          "follow_wall_cleaning": "Làm sạch dọc tường",
+          "charging": "Đang sạc",
+          "ota": "Cập nhật OTA",
+          "fct": "FCT",
+          "wifi_set": "Thiết lập WiFi",
+          "power_off": "Tắt nguồn",
+          "factory": "Xuất xưởng",
+          "error": "Lỗi",
+          "remote_control": "Điều khiển từ xa",
+          "sleeping": "Đang ngủ",
+          "self_test": "Tự kiểm tra",
+          "factory_test": "Kiểm tra xuất xưởng",
+          "standby": "Chờ",
+          "room_cleaning": "Làm sạch phòng",
+          "zone_cleaning": "Làm sạch vùng",
+          "fast_mapping": "Lập bản đồ nhanh",
+          "cruising_path": "Đang đi theo lộ trình",
+          "cruising_point": "Đang đi đến điểm",
+          "summon_clean": "Triệu hồi làm sạch",
+          "shortcut": "Phím tắt",
+          "person_follow": "Đi theo người",
+          "water_check": "Kiểm tra nước",
+          "pet_guarding": "Bảo vệ thú cưng",
+          "auto_arrangement": "Tự động sắp xếp",
+          "smart_arrangement": "Sắp xếp thông minh",
+          "zoned_arrangement": "Sắp xếp theo vùng"
         }
       },
       "stream_status": {
@@ -962,66 +1620,93 @@
           "recording": "Đang ghi âm"
         }
       },
-      "drainage_status": {
-        "name": "Trạng thái xả nước",
+      "tank_filter_left": {
+        "name": "Bộ lọc bình nước"
+      },
+      "tank_filter_time_left": {
+        "name": "Thời gian còn lại lọc bình nước"
+      },
+      "task_end_type": {
+        "name": "Kết thúc bởi",
         "state": {
-          "unknown": "Không rõ",
-          "idle": "Đang chờ",
-          "draining": "Đang xả nước",
-          "draining_successful": "Xả nước thành công",
-          "draining_failed": "Xả nước thất bại"
+          "other": "Khác",
+          "manual_docking": "Vào đế sạc thủ công",
+          "docking": "Vào đế sạc",
+          "failed_docking": "Vào đế sạc thất bại",
+          "stop": "Dừng",
+          "unknown": "Không rõ"
         }
       },
-      "clean_water_tank_status": {
-        "name": "Trạng thái bình nước sạch",
+      "task_interrupt_reason": {
+        "name": "Lý do gián đoạn",
         "state": {
-          "unknown": "Không rõ",
-          "not_available": "Không khả dụng",
-          "not_installed": "Chưa lắp",
-          "low_water": "Nước thấp",
-          "installed": "Đã lắp"
+          "abnormal_docking": "Vào đế sạc bất thường",
+          "base_station_powered_off": "Trạm đế mất điện",
+          "brush_entangled_by_carpet": "Chổi bị vướng thảm",
+          "brush_entangled_by_object": "Chổi bị vướng vật thể",
+          "brush_entangled_by_obstacle": "Chổi bị vướng vật cản",
+          "cannot_find_base_station": "Không tìm thấy trạm đế",
+          "cliff_sensor_error": "Lỗi cảm biến chống rơi",
+          "laser_distance_sensor_error": "Lỗi cảm biến khoảng cách laser",
+          "mop_pad_abnormally_removed": "Giẻ lau bị tháo bất thường",
+          "mop_pad_fallen_off": "Giẻ lau bị rơi",
+          "mop_pad_fallen_off_by_obstacle": "Giẻ lau bị rơi do vật cản",
+          "mop_pad_fallen_off_by_table": "Giẻ lau bị rơi do bàn",
+          "mop_pad_fallen_off_crossing_obstacle": "Giẻ lau bị rơi khi băng qua vật cản",
+          "mop_pad_removed": "Đã tháo giẻ lau",
+          "mop_pad_stuck": "Giẻ lau bị kẹt",
+          "robot_fallen": "Robot bị rơi",
+          "robot_is_stuck_on_obstacle": "Robot bị kẹt trên vật cản",
+          "robot_is_stuck_on_step": "Robot bị kẹt trên bậc cửa",
+          "robot_lifted": "Robot bị nhấc lên",
+          "task_completed": "Nhiệm vụ đã hoàn thành",
+          "unknown": "Không rõ"
         }
       },
-      "dirty_water_tank_status": {
-        "name": "Trạng thái bình nước bẩn",
+      "task_status": {
+        "name": "Trạng thái nhiệm vụ",
         "state": {
           "unknown": "Không rõ",
-          "installed": "Đã lắp",
-          "not_installed_or_full": "Chưa lắp hoặc đã đầy"
-        }
-      },
-      "dust_bag_status": {
-        "name": "Trạng thái túi bụi",
-        "state": {
-          "unknown": "Không rõ",
-          "installed": "Đã lắp",
-          "not_installed": "Chưa lắp",
-          "check": "Kiểm tra"
-        }
-      },
-      "detergent_status": {
-        "name": "Trạng thái chất tẩy rửa",
-        "state": {
-          "unknown": "Không rõ",
-          "installed": "Đã lắp",
-          "disabled": "Đã tắt",
-          "low_detergent": "Chất tẩy rửa thấp"
-        }
-      },
-      "hot_water_status": {
-        "name": "Trạng thái nước nóng",
-        "state": {
-          "unknown": "Không rõ",
-          "disabled": "Đã tắt",
-          "enabled": "Đã bật"
-        }
-      },
-      "station_drainage_status": {
-        "name": "Trạng thái xả nước trạm",
-        "state": {
-          "unknown": "Không rõ",
-          "idle": "Đang chờ",
-          "draining": "Đang xả nước"
+          "completed": "Đã hoàn thành",
+          "cleaning": "Đang làm sạch",
+          "zone_cleaning": "Làm sạch vùng",
+          "room_cleaning": "Làm sạch phòng",
+          "spot_cleaning": "Làm sạch tại điểm",
+          "fast_mapping": "Lập bản đồ nhanh",
+          "cleaning_paused": "Tạm dừng làm sạch",
+          "room_cleaning_paused": "Tạm dừng làm sạch phòng",
+          "zone_cleaning_paused": "Tạm dừng làm sạch vùng",
+          "spot_cleaning_paused": "Tạm dừng làm sạch điểm",
+          "map_cleaning_paused": "Tạm dừng bản đồ làm sạch",
+          "docking_paused": "Tạm dừng vào đế sạc",
+          "mopping_paused": "Tạm dừng lau",
+          "zone_mopping_paused": "Tạm dừng lau vùng",
+          "room_mopping_paused": "Tạm dừng lau phòng",
+          "zone_docking_paused": "Tạm dừng vào đế sạc vùng",
+          "room_docking_paused": "Tạm dừng vào đế sạc phòng",
+          "cruising_path": "Đang đi theo lộ trình",
+          "cruising_path_paused": "Tạm dừng đi theo lộ trình",
+          "cruising_point": "Đang đi đến điểm",
+          "cruising_point_paused": "Tạm dừng đi đến điểm",
+          "summon_clean_paused": "Tạm dừng triệu hồi làm sạch",
+          "returning_to_install_mop": "Đang về để lắp giẻ lau",
+          "returning_to_remove_mop": "Đang về để tháo giẻ lau",
+          "station_cleaning": "Làm sạch trạm",
+          "pet_finding": "Tìm thú cưng",
+          "auto_cleaning_washing_paused": "Tạm dừng làm sạch/giặt tự động",
+          "area_cleaning_washing_paused": "Tạm dừng làm sạch/giặt khu vực",
+          "custom_cleaning_washing_paused": "Tạm dừng làm sạch/giặt tùy chỉnh",
+          "picking_up_item": "Đang nhặt đồ",
+          "picking_up_item_paused": "Tạm dừng nhặt đồ",
+          "picking_up_item_success": "Nhặt đồ thành công",
+          "remote_pickup_initializing": "Đang khởi tạo nhặt đồ từ xa",
+          "remote_pickup_identifing": "Đang xác định nhặt đồ từ xa",
+          "manual_remote_pickup": "Nhặt đồ từ xa thủ công",
+          "automatic_remote_pickup": "Nhặt đồ từ xa tự động",
+          "remote_pickup_in_progress": "Đang nhặt đồ từ xa",
+          "remote_pickup_paused": "Tạm dừng nhặt đồ từ xa",
+          "placing_item": "Đang đặt đồ",
+          "placing_item_paused": "Tạm dừng đặt đồ"
         }
       },
       "task_type": {
@@ -1067,461 +1752,462 @@
           "steam_cleaning_paused": "Tạm dừng làm sạch bằng hơi nước"
         }
       },
-      "dust_bag_drying_status": {
-        "name": "Trạng thái sấy túi bụi",
-        "state": {
-          "idle": "Đang chờ",
-          "drying": "Đang sấy",
-          "paused": "Đã tạm dừng"
-        }
-      },
-      "nation_matched": {
-        "name": "Khóa vùng",
-        "state": {
-          "unknown": "Đã tắt",
-          "matched": "Đã mở khóa",
-          "unmatched": "Đã khóa",
-          "na": "Không khả dụng"
-        }
-      },
-      "startup_method": {
-        "name": "Bắt đầu bởi",
-        "state": {
-          "button": "Nút bấm",
-          "app": "Ứng dụng",
-          "scheduled": "Lịch trình",
-          "voice": "Giọng nói",
-          "second_cleaning": "Làm sạch lần hai",
-          "unknown": "Không rõ"
-        }
-      },
-      "cleaning_status": {
-        "name": "Làm sạch",
-        "state": {
-          "interrupted": "Bị gián đoạn",
-          "completed": "Đã hoàn thành",
-          "manually_ended": "Kết thúc thủ công",
-          "failed": "Thất bại",
-          "unknown": "Không rõ"
-        }
-      },
-      "cleanup_method": {
-        "name": "Phương pháp làm sạch",
-        "state": {
-          "other": "Khác",
-          "default": "Mặc định",
-          "customized": "Tùy chỉnh",
-          "cleangenius": "CleanGenius",
-          "water_stain": "Vết nước",
-          "unknown": "Không rõ"
-        }
-      },
-      "task_end_type": {
-        "name": "Kết thúc bởi",
-        "state": {
-          "other": "Khác",
-          "manual_docking": "Vào đế sạc thủ công",
-          "docking": "Vào đế sạc",
-          "failed_docking": "Vào đế sạc thất bại",
-          "stop": "Dừng",
-          "unknown": "Không rõ"
-        }
-      },
-      "task_interrupt_reason": {
-        "name": "Lý do gián đoạn",
-        "state": {
-          "abnormal_docking": "Vào đế sạc bất thường",
-          "base_station_powered_off": "Trạm đế mất điện",
-          "brush_entangled_by_carpet": "Chổi bị vướng thảm",
-          "brush_entangled_by_object": "Chổi bị vướng vật thể",
-          "brush_entangled_by_obstacle": "Chổi bị vướng vật cản",
-          "cannot_find_base_station": "Không tìm thấy trạm đế",
-          "cliff_sensor_error": "Lỗi cảm biến chống rơi",
-          "laser_distance_sensor_error": "Lỗi cảm biến khoảng cách laser",
-          "mop_pad_abnormally_removed": "Giẻ lau bị tháo bất thường",
-          "mop_pad_fallen_off": "Giẻ lau bị rơi",
-          "mop_pad_fallen_off_by_obstacle": "Giẻ lau bị rơi do vật cản",
-          "mop_pad_fallen_off_by_table": "Giẻ lau bị rơi do bàn",
-          "mop_pad_fallen_off_crossing_obstacle": "Giẻ lau bị rơi khi băng qua vật cản",
-          "mop_pad_removed": "Đã tháo giẻ lau",
-          "mop_pad_stuck": "Giẻ lau bị kẹt",
-          "robot_fallen": "Robot bị rơi",
-          "robot_is_stuck_on_obstacle": "Robot bị kẹt trên vật cản",
-          "robot_is_stuck_on_step": "Robot bị kẹt trên bậc cửa",
-          "robot_lifted": "Robot bị nhấc lên",
-          "task_completed": "Nhiệm vụ đã hoàn thành",
-          "unknown": "Không rõ"
-        }
-      },
-      "recovery_map_type": {
-        "name": "Loại bản đồ",
-        "state": {
-          "original": "Bản đồ gốc",
-          "edited": "Bản đồ đã chỉnh sửa",
-          "backup": "Bản đồ sao lưu"
-        }
-      },
-      "obstacle_type": {
-        "name": "Loại vật cản",
-        "state": {
-          "unknown": "Không rõ",
-          "base": "Đế",
-          "scale": "Cái cân",
-          "thread": "Sợi chỉ",
-          "wire": "Dây điện",
-          "toy": "Đồ chơi",
-          "shoes": "Giày dép",
-          "sock": "Tất",
-          "fece": "Chất thải thú cưng",
-          "trash_can": "Thùng rác",
-          "fabric": "Vải vóc",
-          "power_strip": "Ổ cắm điện",
-          "liquid_stain": "Vết bẩn lỏng",
-          "obstacle": "Vật cản",
-          "pet": "Thú cưng",
-          "cleaning_tools": "Dụng cụ làm sạch",
-          "detected_stain": "Phát hiện vết bẩn",
-          "blocked_room": "Phòng bị chặn",
-          "easy_to_stuck_furniture": "Nội thất dễ bị kẹt",
-          "uncleanable_stain": "Vết bẩn không thể làm sạch",
-          "leg": "Chân gỗ",
-          "large_particles": "Hạt lớn",
-          "dried_stain": "Vết bẩn đã khô",
-          "food_bowl": "Bát ăn",
-          "pet_bed": "Giường thú cưng",
-          "cleaned_stain": "Vết bẩn đã làm sạch",
-          "skipped_uncleanable_stain": "Đã bỏ qua vết bẩn không thể làm sạch",
-          "cleaned_dried_stain": "Vết bẩn khô đã làm sạch",
-          "cleaned_large_particles": "Hạt lớn đã làm sạch",
-          "hair": "Tóc/Lông",
-          "paper": "Giấy",
-          "cleaned_hair": "Đã dọn tóc/lông",
-          "sundry": "Đồ lặt vặt"
-        }
-      },
-      "obstacle_reason": {
-        "name": "Lý do vật cản",
-        "state": {
-          "blocked_by_virtual_wall": "Bị chặn bởi tường ảo",
-          "blocked_by_door": "Bị chặn bởi cửa",
-          "blocked_by_threshold": "Bị chặn bởi ngưỡng cửa",
-          "blocked_by_obstacle": "Bị chặn bởi vật cản",
-          "blocked_by_carpet": "Bị chặn bởi thảm",
-          "blocked_by_detected_carpet": "Bị chặn bởi thảm đã phát hiện",
-          "blocked_by_hidden_obstacle": "Bị chặn bởi vật cản bị ẩn",
-          "blocked_by_dynamic_obstacle": "Bị chặn bởi vật cản động",
-          "passage_too_low": "Lối đi quá thấp",
-          "step_too_low": "Bậc cửa quá thấp",
-          "failed_to_cross_threshold": "Băng qua ngưỡng cửa thất bại"
-        }
-      },
-      "remaining_battery": {
-        "name": "Pin còn lại"
-      },
-      "multiple_cleaning_time": {
-        "name": "Làm sạch nhiều lần"
-      },
-      "bssid": {
-        "name": "BSSID"
-      },
-      "firmware_version": {
-        "name": "Phiên bản Firmware"
-      },
-      "ip_address": {
-        "name": "Địa chỉ IP"
-      },
-      "mac_address": {
-        "name": "Địa chỉ MAC"
-      },
-      "model": {
-        "name": "Kiểu máy (Model)"
-      },
-      "rssi": {
-        "name": "RSSI"
-      },
-      "serial_number": {
-        "name": "Số seri"
-      },
-      "ssid": {
-        "name": "SSID"
-      },
       "timezone": {
         "name": "Múi giờ"
+      },
+      "total_cleaned_area": {
+        "name": "Tổng diện tích đã dọn"
+      },
+      "total_cleaning_time": {
+        "name": "Tổng thời gian dọn dẹp"
       },
       "voice_packet_id": {
         "name": "Gói giọng nói"
       },
-      "deodorizer_left": {
-        "name": "Khử mùi"
-      },
-      "detergent_left": {
-        "name": "Chất tẩy rửa"
-      },
-      "dirty_water_channel_left": {
-        "name": "Kênh nước bẩn"
-      },
-      "filter_left": {
-        "name": "Bộ lọc"
-      },
-      "fluffing_roller_dirty_left": {
-        "name": "Làm sạch con lăn làm tơi"
-      },
-      "main_brush_left": {
-        "name": "Chổi chính"
-      },
-      "mop_pad_left": {
-        "name": "Giẻ lau"
-      },
-      "onboard_dirty_water_tank_left": {
-        "name": "Bình nước bẩn trên máy"
-      },
-      "roller_mop_filter_dirty_left": {
-        "name": "Làm sạch bộ lọc giẻ lau lăn"
-      },
-      "scale_inhibitor_left": {
-        "name": "Bộ ức chế đóng cặn"
-      },
-      "sensor_dirty_left": {
-        "name": "Vệ sinh cảm biến"
-      },
-      "side_brush_left": {
-        "name": "Chổi cạnh"
-      },
-      "silver_ion_left": {
-        "name": "Ion bạc"
-      },
-      "squeegee_left": {
-        "name": "Cây gạt nước"
-      },
-      "tank_filter_left": {
-        "name": "Bộ lọc bình nước"
-      },
       "water_outlet_filter_dirty_left": {
         "name": "Vệ sinh bộ lọc đầu ra nước"
       },
+      "water_outlet_filter_dirty_time_left": {
+        "name": "Thời gian còn lại lọc cửa thoát nước"
+      },
+      "water_tank": {
+        "name": "Bình nước",
+        "state": {
+          "unknown": "Không rõ",
+          "installed": "Đã lắp",
+          "not_installed": "Chưa lắp",
+          "mop_installed": "Đã lắp giẻ lau",
+          "in_station": "Trong trạm"
+        }
+      },
       "wheel_dirty_left": {
         "name": "Vệ sinh bánh xe"
+      },
+      "wheel_dirty_time_left": {
+        "name": "Thời gian còn lại bánh xe"
       }
     },
-    "toggle": {
-      "customized_cleaning": {
-        "name": "Làm sạch tùy chỉnh"
+    "switch": {
+      "active_suspension_crossing": {
+        "name": "Vượt bằng hệ thống treo chủ động"
       },
-      "cleangenius_cleaning": {
-        "name": "Cleangenius"
+      "ai_fluid_detection": {
+        "name": "Nhận diện chất lỏng bằng AI"
       },
-      "deep_cleaning": {
-        "name": "Làm sạch sâu"
+      "ai_furniture_detection": {
+        "name": "Nhận diện đồ nội thất bằng AI"
       },
-      "auto_dust_collecting": {
-        "name": "Tự động đổ rác"
-      },
-      "hair_compression": {
-        "name": "Nén tóc"
-      },
-      "self_clean": {
-        "name": "Tự làm sạch"
-      },
-      "deep_mop_washing": {
-        "name": "Giặt giẻ lau sâu"
-      },
-      "hot_washing": {
-        "name": "Giặt nước nóng"
-      },
-      "auto_drying": {
-        "name": "Tự động sấy khô"
-      },
-      "silent_drying": {
-        "name": "Sấy khô yên tĩnh"
-      },
-      "uv_sterilization": {
-        "name": "Khử trùng bằng tia UV"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Làm sạch tùy chỉnh"
-      },
-      "carpet_avoidance": {
-        "name": "Tránh thảm"
-      },
-      "carpet_preferences": {
-        "name": "Sở thích tùy chỉnh"
-      },
-      "auto_change_mop": {
-        "name": "Tự động thay giẻ lau"
-      },
-      "multi_floor_map": {
-        "name": "Bản đồ nhiều tầng"
-      },
-      "intelligent_recognition": {
-        "name": "Nhận dạng thông minh"
-      },
-      "map_saving": {
-        "name": "Lưu bản đồ"
-      },
-      "child_lock": {
-        "name": "Khóa trẻ em"
-      },
-      "resume_cleaning": {
-        "name": "Tiếp tục làm sạch"
-      },
-      "obstacle_avoidance": {
-        "name": "Tránh vật cản"
-      },
-      "carpet_boost": {
-        "name": "Tăng lực hút trên thảm"
-      },
-      "carpet_recognition": {
-        "name": "Nhận dạng thảm"
-      },
-      "clean_carpets_first": {
-        "name": "Làm sạch thảm trước"
-      },
-      "close_roller_cover_on_carpet": {
-        "name": "Đóng nắp chổi lăn trên thảm"
-      },
-      "intensive_carpet_cleaning": {
-        "name": "Làm sạch thảm chuyên sâu"
-      },
-      "side_brush_carpet_rotate": {
-        "name": "Quay chổi cạnh trên thảm"
-      },
-      "lift_chassis_on_carpet": {
-        "name": "Nâng khung gầm trên thảm"
-      },
-      "auto_mount_mop": {
-        "name": "Tự động lắp giẻ lau"
-      },
-      "mopping_with_detergent": {
-        "name": "Lau với chất tẩy rửa"
-      },
-      "mop_washing_with_detergent": {
-        "name": "Giặt giẻ lau với chất tẩy rửa"
-      },
-      "auto_add_detergent": {
-        "name": "Tự động thêm chất tẩy rửa"
-      },
-      "smart_mop_washing": {
-        "name": "Giặt giẻ lau thông minh"
-      },
-      "wider_corner_coverage": {
-        "name": "Độ bao phủ góc rộng hơn"
-      },
-      "pressurized_cleaning": {
-        "name": "Làm sạch có áp lực"
-      },
-      "gap_cleaning_extension": {
-        "name": "Mở rộng làm sạch khe hở"
-      },
-      "mopping_under_furnitures": {
-        "name": "Lau dưới các đồ nội thất"
-      },
-      "floor_direction_cleaning": {
-        "name": "Làm sạch theo hướng sàn"
-      },
-      "ring_light_always_on": {
-        "name": "Đèn vòng luôn bật"
-      },
-      "collision_avoidance": {
-        "name": "Tránh va chạm"
-      },
-      "fill_light": {
-        "name": "Đèn camera"
+      "ai_human_detection": {
+        "name": "Nhận diện người bằng AI"
       },
       "ai_obstacle_detection": {
         "name": "Phát hiện vật cản bằng AI"
       },
-      "ai_pet_detection": {
-        "name": "Phát hiện thú cưng"
-      },
-      "pet_focused_detection": {
-        "name": "Phát hiện tập trung vào thú cưng"
-      },
-      "pet_focused_cleaning": {
-        "name": "Làm sạch tập trung vào thú cưng"
+      "ai_obstacle_image_upload": {
+        "name": "Tải ảnh chướng ngại vật AI"
       },
       "ai_obstacle_picture": {
         "name": "Hình ảnh vật cản"
       },
-      "obstacle_crossing": {
-        "name": "Vượt vật cản đồng bộ"
+      "ai_pet_avoidance": {
+        "name": "Tránh thú cưng bằng AI"
       },
-      "active_suspension_crossing": {
-        "name": "Vượt bằng hệ thống treo chủ động"
+      "ai_pet_detection": {
+        "name": "Phát hiện thú cưng"
       },
-      "dynamic_obstacle_cleaning": {
-        "name": "Làm sạch vật cản động"
+      "auto_add_detergent": {
+        "name": "Tự động thêm chất tẩy rửa"
       },
-      "large_particles_boost": {
-        "name": "Tăng cường cho hạt lớn"
+      "auto_change_mop": {
+        "name": "Tự động thay giẻ lau"
       },
-      "streaming_voice_prompt": {
-        "name": "Lời nhắc giọng nói khi truyền phát"
+      "auto_charging": {
+        "name": "Tự động sạc"
       },
-      "voice_assistant": {
-        "name": "Trợ lý giọng nói"
+      "auto_drying": {
+        "name": "Tự động sấy khô"
       },
-      "off_peak_charging": {
-        "name": "Sạc giờ thấp điểm"
+      "auto_dust_collecting": {
+        "name": "Tự động đổ rác"
       },
-      "dnd_disable_resume_cleaning": {
-        "name": "Tắt tiếp tục làm sạch"
+      "auto_mount_mop": {
+        "name": "Tự động lắp giẻ lau"
+      },
+      "auto_water_refilling": {
+        "name": "Tự động nạp nước"
+      },
+      "camera_light_brightness_auto": {
+        "name": "Độ sáng đèn camera tự động"
+      },
+      "carpet_avoidance": {
+        "name": "Tránh thảm"
+      },
+      "carpet_boost": {
+        "name": "Tăng lực hút trên thảm"
+      },
+      "carpet_preferences": {
+        "name": "Sở thích tùy chỉnh"
+      },
+      "carpet_recognition": {
+        "name": "Nhận dạng thảm"
+      },
+      "child_lock": {
+        "name": "Khóa trẻ em"
+      },
+      "clean_carpets_first": {
+        "name": "Làm sạch thảm trước"
+      },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "cleaning_sequence": {
+        "name": "Thứ tự dọn dẹp"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "Đóng nắp chổi lăn trên thảm"
+      },
+      "collision_avoidance": {
+        "name": "Tránh va chạm"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Làm sạch tùy chỉnh"
+      },
+      "customized_cleaning": {
+        "name": "Làm sạch tùy chỉnh"
+      },
+      "deep_cleaning": {
+        "name": "Làm sạch sâu"
+      },
+      "deep_mop_washing": {
+        "name": "Giặt giẻ lau sâu"
+      },
+      "dnd": {
+        "name": "Chế độ không làm phiền (DnD)"
       },
       "dnd_disable_auto_empty": {
         "name": "Tắt tự động đổ rác"
       },
+      "dnd_disable_resume_cleaning": {
+        "name": "Tắt tiếp tục làm sạch"
+      },
       "dnd_reduce_volume": {
         "name": "Giảm âm lượng"
       },
-      "dnd": {
-        "name": "Chế độ không làm phiền (DnD)"
+      "dust_bag_drying": {
+        "name": "Sấy túi đựng bụi"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "Làm sạch vật cản động"
+      },
+      "fill_light": {
+        "name": "Đèn camera"
+      },
+      "floor_direction_cleaning": {
+        "name": "Làm sạch theo hướng sàn"
+      },
+      "fuzzy_obstacle_detection": {
+        "name": "Phát hiện chướng ngại vật mờ"
+      },
+      "gap_cleaning_extension": {
+        "name": "Mở rộng làm sạch khe hở"
+      },
+      "hair_compression": {
+        "name": "Nén tóc"
+      },
+      "hot_washing": {
+        "name": "Giặt nước nóng"
+      },
+      "human_follow": {
+        "name": "Đi theo người"
+      },
+      "intelligent_recognition": {
+        "name": "Nhận dạng thông minh"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "Làm sạch thảm chuyên sâu"
+      },
+      "large_particles_boost": {
+        "name": "Tăng cường cho hạt lớn"
+      },
+      "lds_state": {
+        "name": "Trạng thái LDS"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "Nâng khung gầm trên thảm"
+      },
+      "map_saving": {
+        "name": "Lưu bản đồ"
+      },
+      "max_suction_power": {
+        "name": "Lực hút tối đa"
+      },
+      "mop_extend": {
+        "name": "Mở rộng giẻ lau"
+      },
+      "mop_washing_with_detergent": {
+        "name": "Giặt giẻ lau với chất tẩy rửa"
+      },
+      "mopping_under_furnitures": {
+        "name": "Lau dưới các đồ nội thất"
+      },
+      "mopping_with_detergent": {
+        "name": "Lau với chất tẩy rửa"
+      },
+      "multi_floor_map": {
+        "name": "Bản đồ nhiều tầng"
+      },
+      "obstacle_avoidance": {
+        "name": "Tránh vật cản"
+      },
+      "obstacle_crossing": {
+        "name": "Vượt vật cản đồng bộ"
+      },
+      "off_peak_charging": {
+        "name": "Sạc giờ thấp điểm"
+      },
+      "pet_focused_cleaning": {
+        "name": "Làm sạch tập trung vào thú cưng"
+      },
+      "pet_focused_detection": {
+        "name": "Phát hiện tập trung vào thú cưng"
+      },
+      "pet_picture": {
+        "name": "Ảnh thú cưng"
+      },
+      "pressurized_cleaning": {
+        "name": "Làm sạch có áp lực"
+      },
+      "resume_cleaning": {
+        "name": "Tiếp tục làm sạch"
+      },
+      "ring_light_always_on": {
+        "name": "Đèn vòng luôn bật"
+      },
+      "self_clean": {
+        "name": "Tự làm sạch"
+      },
+      "self_clean_by_zone": {
+        "name": "Tự giặt giẻ theo khu vực"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "Quay chổi cạnh trên thảm"
+      },
+      "side_reach": {
+        "name": "Mở rộng chổi cạnh"
+      },
+      "silent_drying": {
+        "name": "Sấy khô yên tĩnh"
+      },
+      "smart_drying": {
+        "name": "Sấy thông minh"
+      },
+      "smart_mop_washing": {
+        "name": "Giặt giẻ lau thông minh"
+      },
+      "stain_avoidance": {
+        "name": "Tránh vết bẩn"
+      },
+      "streaming_voice_prompt": {
+        "name": "Lời nhắc giọng nói khi truyền phát"
+      },
+      "tight_mopping": {
+        "name": "Lau sàn dày đặc"
+      },
+      "ultra_clean_mode": {
+        "name": "Chế độ siêu sạch"
+      },
+      "uv_sterilization": {
+        "name": "Khử trùng bằng tia UV"
+      },
+      "voice_assistant": {
+        "name": "Trợ lý giọng nói"
+      },
+      "water_electrolysis": {
+        "name": "Điện phân nước"
+      },
+      "wider_corner_coverage": {
+        "name": "Độ bao phủ góc rộng hơn"
+      }
+    },
+    "button": {
+      "backup_saved_map": {
+        "name": "Sao lưu bản đồ đã lưu"
+      },
+      "base_station_cleaning": {
+        "name": "Vệ sinh trạm sạc"
+      },
+      "base_station_self_repair": {
+        "name": "Tự sửa chữa trạm sạc"
+      },
+      "clear_warning": {
+        "name": "Xóa cảnh báo"
+      },
+      "empty_water_tank": {
+        "name": "Làm rỗng bình nước"
+      },
+      "manual_drying": {
+        "name": "Sấy thủ công"
+      },
+      "manual_dust_bag_drying": {
+        "name": "Sấy túi bụi thủ công"
+      },
+      "reload_shortcuts": {
+        "name": "Tải lại phím tắt"
+      },
+      "reset_deodorizer": {
+        "name": "Đặt lại khử mùi"
+      },
+      "reset_detergent": {
+        "name": "Đặt lại nước lau sàn"
+      },
+      "reset_dirty_water_channel": {
+        "name": "Đặt lại đường nước bẩn"
+      },
+      "reset_filter": {
+        "name": "Đặt lại bộ lọc"
+      },
+      "reset_fluffing_roller": {
+        "name": "Đặt lại con lăn nhung"
+      },
+      "reset_main_brush": {
+        "name": "Đặt lại chổi chính"
+      },
+      "reset_mop_pad": {
+        "name": "Đặt lại giẻ lau"
+      },
+      "reset_onboard_dirty_water_tank": {
+        "name": "Đặt lại hộp nước bẩn tích hợp"
+      },
+      "reset_roller_mop_filter": {
+        "name": "Đặt lại lọc con lăn giẻ"
+      },
+      "reset_scale_inhibitor": {
+        "name": "Đặt lại chống cặn"
+      },
+      "reset_sensor": {
+        "name": "Đặt lại cảm biến"
+      },
+      "reset_side_brush": {
+        "name": "Đặt lại chổi cạnh"
+      },
+      "reset_silver_ion": {
+        "name": "Đặt lại ion bạc"
+      },
+      "reset_squeegee": {
+        "name": "Đặt lại thanh gạt"
+      },
+      "reset_tank_filter": {
+        "name": "Đặt lại lọc bình nước"
+      },
+      "reset_water_outlet_filter": {
+        "name": "Đặt lại lọc cửa thoát nước"
+      },
+      "reset_wheel": {
+        "name": "Đặt lại bánh xe"
+      },
+      "self_clean": {
+        "name": "Tự làm sạch"
+      },
+      "shortcut": {
+        "name": "Phím tắt {name}"
+      },
+      "start_auto_empty": {
+        "name": "Bắt đầu tự động đổ bụi"
+      },
+      "start_fast_mapping": {
+        "name": "Bắt đầu lập bản đồ nhanh"
+      },
+      "start_mapping": {
+        "name": "Bắt đầu lập bản đồ"
+      },
+      "start_recleaning": {
+        "name": "Bắt đầu dọn dẹp lại"
+      },
+      "water_tank_draining": {
+        "name": "Xả nước bình chứa"
+      }
+    },
+    "camera": {
+      "map": {
+        "name": "Bản đồ hiện tại"
+      },
+      "map_data": {
+        "name": "Dữ liệu bản đồ hiện tại"
+      },
+      "saved_map": {
+        "name": "Bản đồ đã lưu {name}"
+      },
+      "wifi_map": {
+        "name": "Bản đồ Wi-Fi đã lưu {name}"
+      }
+    },
+    "binary_sensor": {
+      "charging_state": {
+        "name": "Trạng thái sạc",
+        "state": {
+          "on": "Đang sạc",
+          "off": "Không sạc"
+        }
+      },
+      "lds_status": {
+        "name": "Trạng thái LDS"
+      },
+      "roller_cover_status": {
+        "name": "Trạng thái nắp che con lăn"
       }
     },
     "number": {
-      "wetness_level": {
-        "name": "Độ ướt"
-      },
       "auto_empty_area": {
         "name": "Vùng tự động đổ rác"
+      },
+      "camera_light_brightness": {
+        "name": "Độ sáng đèn camera"
       },
       "drying_time": {
         "name": "Thời gian sấy"
       },
-      "self_clean_time": {
-        "name": "Thời gian tự làm sạch"
+      "mop_cleaning_remainder": {
+        "name": "Nhắc nhở giặt giẻ lau"
       },
       "self_clean_area": {
         "name": "Vùng tự làm sạch"
       },
+      "self_clean_time": {
+        "name": "Thời gian tự làm sạch"
+      },
       "volume": {
         "name": "Âm lượng"
+      },
+      "wetness_level": {
+        "name": "Độ ướt"
       }
     },
     "time": {
-      "dnd_start": {
-        "name": "Giờ bắt đầu DnD"
-      },
       "dnd_end": {
         "name": "Giờ kết thúc DnD"
       },
-      "off_peak_charging_start": {
-        "name": "Giờ bắt đầu thấp điểm"
+      "dnd_start": {
+        "name": "Giờ bắt đầu DnD"
       },
       "off_peak_charging_end": {
         "name": "Giờ kết thúc thấp điểm"
+      },
+      "off_peak_charging_start": {
+        "name": "Giờ bắt đầu thấp điểm"
       },
       "schedule_time": {
         "name": "Thời gian bắt đầu"
       }
     },
     "input": {
-      "schedule_repeats": {
-        "name": "Lặp lại"
-      },
       "dnd_repeats": {
         "name": "Lặp lại"
       },
       "map_custom_name": {
         "name": "Tên bản đồ"
+      },
+      "schedule_repeats": {
+        "name": "Lặp lại"
       },
       "segment_custom_name": {
         "name": "Tên phòng"
@@ -1567,8 +2253,9 @@
         "edit_carpet": "Chỉnh sửa thảm",
         "empty": "Đổ rác",
         "enable": "Bật",
+        "enter_dvc_key": "Nhập Khóa Hiện Có",
         "fast_mapping": "Lập bản đồ nhanh",
-        "get_dreame_vacuum_card": "Nhận Thẻ Dreame Vacuum",
+        "get_dvc_key": "Nhận Khóa DVC",
         "ignore": "Bỏ qua",
         "ignore_obstacle": "Bỏ qua vật cản",
         "impassable_threshold": "Ngưỡng không thể vượt",
@@ -1656,6 +2343,8 @@
         "copy": "Sao chép",
         "copy_all": "Sao chép tất cả",
         "disable_haptic": "Tắt phản hồi xúc giác",
+        "dvc_key": "Khóa DVC",
+        "dvc_key_title": "Nhập khóa DVC",
         "editable_objects": "Đối tượng có thể chỉnh sửa",
         "font_size": "Kích thước phông chữ",
         "full_height": "Chiều cao đầy đủ",
@@ -1805,7 +2494,7 @@
         "bag_drying_will_stopped": "Việc sấy túi túi bụi sẽ bị dừng!",
         "carpet_recognition_will_enabled": "Phải bật nhận dạng thảm để có thể cài đặt làm sạch thảm tùy chỉnh",
         "carpet_will_deleted": "Thảm sẽ bị xóa!",
-        "cleangenius_will_disabled": "Cleangenius sẽ bị tắt!",
+        "cleangenius_will_disabled": "CleanGenius sẽ bị tắt!",
         "cleaning_failure": "Nguyên nhân làm sạch thất bại",
         "create_map": "Tạo bản đồ mới?",
         "custom_carpet_settings_will_enabled": "Làm sạch thảm thủ công sẽ được bật!",
@@ -1818,7 +2507,7 @@
         "delete_shortcut": "Xóa phím tắt?",
         "deleted": "Đã xóa thành công",
         "device_unavailable": "Thiết bị không khả dụng",
-        "disable_cleangenius": "Tắt Cleangenius?",
+        "disable_cleangenius": "Tắt CleanGenius?",
         "dnd_confliction": "Xung đột nhiệm vụ DnD!",
         "dnd_confliction_detail": "Nhiệm vụ lịch trình được thiết lập trong thời gian Không làm phiền.",
         "dnd_will_deleted": "Nhiệm vụ DnD lúc %start% đến %end% sẽ bị xóa!",
@@ -1826,6 +2515,7 @@
         "dock_in_restricted_area_detail": "Đế sạc nằm trong vùng hạn chế. Nếu bạn tiếp tục lưu bản đồ, robot có thể không sạc lại được.",
         "drying_will_stopped": "Việc sấy khô giẻ lau sẽ bị dừng!",
         "dust_collection_not_performed": "Nhiệm vụ thu gom bụi (Tự động đổ rác) không được thực hiện\nRobot sẽ không thực hiện các nhiệm vụ tự động đổ rác trong giai đoạn DnD.",
+        "dvc_key_description": "Khóa chỉ có hiệu lực cho một thiết bị. Nếu đây là lần đầu tiên bạn sử dụng khóa này, nó sẽ được kích hoạt cho thiết bị này ngay bây giờ.",
         "enable_auto_mount_mop": "Bật tự động lắp giẻ lau?",
         "enable_carpet_recognition": "Nhận dạng thảm sẽ được bật!",
         "enable_customized_cleaning": "Bạn có muốn bật làm sạch tùy chỉnh không?",
@@ -1836,6 +2526,7 @@
         "failed_to_load_card": "Không tải được thẻ",
         "ignore_obstacle": "Bỏ qua vật cản?",
         "invalid_entity": "Thực thể không hợp lệ",
+        "invalid_key": "Khóa không hợp lệ.",
         "map_backup": "Đang sao lưu bản đồ",
         "map_backup_failed": "Sao lưu bản đồ thất bại!",
         "map_backup_success": "Sao lưu bản đồ hoàn tất",
@@ -1934,6 +2625,7 @@
         "scheduled_task": "Nhiệm vụ theo lịch trình",
         "scheduled_zone": "Làm sạch vùng theo lịch trình",
         "segment_name_placeholder": "Phòng %index%",
+        "segment_unavailable": "Phòng %index% không khả dụng",
         "shortcut": "Phím tắt",
         "shortcut_list": "Danh sách phím tắt",
         "shortcut_map": "Bản đồ phím tắt",
@@ -1946,6 +2638,51 @@
         "used_water_tank": "Bình nước bẩn",
         "wall": "Tường",
         "wifi_map": "Bản đồ WiFi"
+      }
+    },
+    "notification": {
+      "state": {
+        "cleanup_completed": "Đã hoàn tất dọn dẹp",
+        "dust_collection_not_performed": "Nhiệm vụ thu gom bụi (Tự động đổ rác) không được thực hiện\nRobot sẽ không thực hiện các nhiệm vụ tự động đổ rác trong giai đoạn DnD.",
+        "resume_cleaning": "Chế độ tiếp tục dọn dẹp\nRobot sẽ tự động tiếp tục các nhiệm vụ dọn dẹp chưa hoàn thành sau khi sạc pin đến 80%.",
+        "resume_cleaning_not_performed": "Robot đang trong khoảng thời gian Không làm phiền\nRobot sẽ tiếp tục dọn dẹp sau khi khoảng thời gian Không làm phiền kết thúc.",
+        "resume_cleaning_not_performed_with_time": "Robot đang trong khoảng thời gian Không làm phiền\nRobot sẽ tiếp tục dọn dẹp sau khi khoảng thời gian Không làm phiền kết thúc.\n## Việc dọn dẹp sẽ bắt đầu sau {hour} giờ {minute} phút",
+        "replace_map": "Đã tạo bản đồ mới\nBạn cần lưu hoặc hủy bản đồ trước khi sử dụng.",
+        "replace_multi_map": "Đã tạo bản đồ mới\nSố bản đồ nhiều tầng có thể lưu đã đạt giới hạn tối đa. Bạn cần thay thế hoặc hủy một bản đồ trước khi sử dụng.",
+        "drainage_completed": "Đã xả nước xong",
+        "drainage_failed": "Xả nước thất bại",
+        "main_brush_left": "Chổi chính cần được thay thế\nChổi chính đã bị mòn. Vui lòng thay thế kịp thời và đặt lại bộ đếm.",
+        "main_brush_left_low": "Chổi chính sẽ sớm cần được thay thế\nChổi chính gần như đã bị mòn. Vui lòng thay thế kịp thời.",
+        "side_brush_left": "Chổi bên cần được thay thế\nChổi bên đã bị mòn. Vui lòng thay thế và đặt lại bộ đếm.",
+        "side_brush_left_low": "Chổi bên sẽ sớm cần được thay thế\nChổi bên gần như đã bị mòn. Vui lòng thay thế càng sớm càng tốt.",
+        "filter_left": "Bộ lọc cần được thay thế\nBộ lọc đã bị mòn. Vui lòng thay thế kịp thời và đặt lại bộ đếm.",
+        "filter_left_low": "Bộ lọc sẽ sớm cần được thay thế\nBộ lọc gần như đã bị mòn. Vui lòng thay thế kịp thời.",
+        "sensor_dirty_left": "Cảm biến cần được làm sạch\nVui lòng làm sạch các cảm biến và đặt lại bộ đếm",
+        "tank_filter_left": "Bộ lọc bình chứa cần được thay thế\nBộ lọc bình chứa đã bị mòn. Vui lòng thay thế kịp thời và đặt lại bộ đếm.",
+        "tank_filter_left_low": "Bộ lọc bình chứa sẽ sớm cần được thay thế\nBộ lọc bình chứa gần như đã bị mòn. Vui lòng thay thế kịp thời.",
+        "mop_pad_left": "Miếng lau nhà đã bị mòn\nVui lòng thay miếng lau nhà và đặt lại bộ đếm.",
+        "mop_pad_left_low": "Miếng lau nhà gần như đã bị mòn\nVui lòng thay miếng lau nhà kịp thời.",
+        "silver_ion_left": "Máy tiệt trùng ion bạc bị xuống cấp\nVui lòng thay thế máy tiệt trùng ion bạc và đặt lại bộ đếm.",
+        "silver_ion_left_low": "Máy tiệt trùng ion bạc gần bị xuống cấp\nVui lòng thay thế máy tiệt trùng ion bạc kịp thời.",
+        "detergent_left": "Chất tẩy rửa đã cạn kiệt\nVui lòng thay hộp chất tẩy rửa và đặt lại bộ đếm.",
+        "detergent_left_low": "Chất tẩy rửa sắp cạn kiệt\nChất tẩy rửa sắp cạn kiệt, vui lòng thay thế kịp thời.",
+        "squeegee_left": "Cây lau kính đã bị mòn\nVui lòng thay cây lau kính và đặt lại bộ đếm.",
+        "squeegee_left_low": "Cây lau kính gần như đã bị mòn\nVui lòng thay cây lau kính kịp thời.",
+        "onboard_dirty_water_tank_left": "Bình chứa nước bẩn tích hợp cần được làm sạch\nVui lòng làm sạch bình chứa nước bẩn tích hợp và đặt lại bộ đếm.",
+        "dirty_water_channel_dirty_left": "Kênh nước bẩn cần được làm sạch\nVui lòng làm sạch kênh nước bẩn và đặt lại bộ đếm.",
+        "deodorizer_left": "Chất khử mùi của bình chứa nước đã qua sử dụng đã cạn kiệt.\nChất khử mùi của bình chứa nước đã qua sử dụng đã cạn kiệt. Vui lòng thay thế.",
+        "deodorizer_left_low": "Chất khử mùi của bình chứa nước đã qua sử dụng sắp cạn kiệt.\nChất khử mùi của bình chứa nước đã qua sử dụng sắp cạn kiệt. Vui lòng thay thế.",
+        "wheel_dirty_left": "Bánh xe đa hướng cần được làm sạch\nVui lòng làm sạch bánh xe đa hướng và đặt lại bộ đếm.",
+        "scale_inhibitor_left": "Chất ức chế cặn đã cạn kiệt\nVui lòng thay thế chất ức chế cặn và đặt lại bộ đếm.",
+        "scale_inhibitor_left_low": "Chất ức chế cặn sắp cạn kiệt\nVui lòng thay thế chất ức chế cặn kịp thời.",
+        "fluffing_roller_dirty_left": "Con lăn đánh bông cần được làm sạch\nVui lòng làm sạch con lăn đánh bông và đặt lại bộ đếm.",
+        "roller_mop_filter_dirty_left": "Bộ lọc cây lau nhà dạng con lăn cần được làm sạch\nVui lòng làm sạch bộ lọc cây lau nhà dạng con lăn và đặt lại bộ đếm.",
+        "water_outlet_filter_dirty_left": "Bộ lọc đầu ra nước cần được làm sạch\nVui lòng làm sạch bộ lọc đầu ra nước và đặt lại bộ đếm.",
+        "no_water_left": "Vui lòng đổ đầy bình chứa nước sạch.\nNước trong bình chứa nước sạch sắp cạn kiệt. Kiểm tra và đổ đầy bình chứa nước sạch ngay lập tức.",
+        "no_water_left_after_clean": "Vui lòng đổ đầy bình chứa nước sạch.\nMiếng lau nhà đã được làm sạch. Phát hiện thấy nước trong bình chứa nước sạch không đủ, vui lòng đổ đầy bình chứa nước sạch và làm rỗng bình chứa nước đã qua sử dụng.",
+        "no_water_for_clean": "Mực nước thấp trong bình chứa nước sạch.\nRobot đã chuyển sang Chế độ hút bụi.",
+        "low_water": "Sắp hết nước\nVui lòng đổ đầy bình chứa nước sạch.",
+        "tank_not_installed": "Bình chứa nước sạch chưa được cài đặt.\nVui lòng kiểm tra bình chứa nước sạch"
       }
     }
   },
@@ -2180,38 +2917,6 @@
         }
       }
     },
-    "vacuum_merge_segments": {
-      "name": "Gộp phân đoạn",
-      "description": "Gộp các phòng.",
-      "fields": {
-        "map_id": {
-          "name": "ID bản đồ",
-          "description": "ID của bản đồ."
-        },
-        "segments": {
-          "name": "Các phân đoạn",
-          "description": "ID của các phòng."
-        }
-      }
-    },
-    "vacuum_split_segments": {
-      "name": "Chia phân đoạn",
-      "description": "Chia các phòng.",
-      "fields": {
-        "map_id": {
-          "name": "ID bản đồ",
-          "description": "ID của bản đồ."
-        },
-        "segment": {
-          "name": "Phân đoạn",
-          "description": "ID của phòng."
-        },
-        "line": {
-          "name": "Đường chia",
-          "description": "Tọa độ của đường chia."
-        }
-      }
-    },
     "vacuum_rename_segment": {
       "name": "Đổi tên phân đoạn",
       "description": "Đổi tên một phân đoạn.",
@@ -2266,46 +2971,6 @@
         }
       }
     },
-    "vacuum_set_custom_carpet_cleaning": {
-      "name": "Cài đặt làm sạch thảm tùy chỉnh",
-      "description": "Thiết lập cài đặt làm sạch tùy chỉnh cho thảm. (Chỉ trên các thiết bị được hỗ trợ)",
-      "fields": {
-        "id": {
-          "name": "ID thảm",
-          "description": "ID của thảm."
-        },
-        "type": {
-          "name": "Loại đối tượng",
-          "description": "Loại đối tượng có ID tương ứng. (0 = Thảm phát hiện tự động, 1 = Thảm tạo thủ công, 2 = Thảm phòng (Nếu được hỗ trợ))"
-        },
-        "carpet_cleaning": {
-          "name": "Làm sạch thảm",
-          "description": "Cài đặt làm sạch thảm tùy chỉnh cho mỗi thảm."
-        },
-        "carpet_preferences": {
-          "name": "Cài đặt thảm",
-          "description": "Các thiết lập thảm tùy chỉnh cho mỗi thảm với một mảng các cài đặt được phép."
-        }
-      }
-    },
-    "vacuum_set_restricted_zone": {
-      "name": "Cài đặt vùng hạn chế",
-      "description": "Xác định tường ảo, vùng hạn chế và/hoặc vùng không lau.",
-      "fields": {
-        "walls": {
-          "name": "Tường",
-          "description": "Tường ảo."
-        },
-        "zones": {
-          "name": "Các vùng",
-          "description": "Các vùng cấm."
-        },
-        "no_mops": {
-          "name": "Vùng không lau",
-          "description": "Các vùng không lau."
-        }
-      }
-    },
     "vacuum_reset_consumable": {
       "name": "Đặt lại vật tiêu hao",
       "description": "Đặt lại một vật tiêu hao.",
@@ -2340,40 +3005,6 @@
         }
       }
     },
-    "vacuum_set_carpet_area": {
-      "name": "Cài đặt khu vực thảm",
-      "description": "Xác định các vùng thảm và thảm bị bỏ qua. (Chỉ trên các thiết bị được hỗ trợ)",
-      "fields": {
-        "carpets": {
-          "name": "Các thảm",
-          "description": "Các khu vực có thảm."
-        },
-        "deleted_carpets": {
-          "name": "Các thảm đã bỏ qua",
-          "description": "Các khu vực thảm bị bỏ qua để xóa các thảm được phát hiện tự động."
-        }
-      }
-    },
-    "vacuum_set_virtual_threshold": {
-      "name": "Cài đặt ngưỡng ảo",
-      "description": "Xác định các ngưỡng ảo.",
-      "fields": {
-        "virtual_thresholds": {
-          "name": "Các ngưỡng ảo",
-          "description": "Tọa độ đường ngưỡng ảo."
-        }
-      }
-    },
-    "vacuum_set_predefined_points": {
-      "name": "Cài đặt các điểm xác định trước",
-      "description": "Xác định các tọa độ đã định sẵn trên bản đồ hiện tại. (Chỉ hỗ trợ trên các máy hút bụi có camera)",
-      "fields": {
-        "points": {
-          "name": "Các điểm",
-          "description": "Danh sách các tọa độ cần lưu."
-        }
-      }
-    },
     "vacuum_set_obstacle_ignore": {
       "name": "Cài đặt bỏ qua vật cản",
       "description": "Đặt trạng thái bỏ qua cho một vật cản. (Chỉ hỗ trợ trên các máy hút bụi có tính năng phát hiện vật cản bằng AI)",
@@ -2389,48 +3020,6 @@
         "obstacle_ignored": {
           "name": "Đã bỏ qua vật cản",
           "description": "Vật cản có bị bỏ qua hay không."
-        }
-      }
-    },
-    "vacuum_set_router_position": {
-      "name": "Cài đặt vị trí bộ định tuyến",
-      "description": "Đặt vị trí bộ định tuyến trên bản đồ hiện tại. (Chỉ hỗ trợ trên các máy hút bụi có tính năng bản đồ WiFi)",
-      "fields": {
-        "x": {
-          "name": "X",
-          "description": "Tọa độ X của bộ định tuyến."
-        },
-        "y": {
-          "name": "Y",
-          "description": "Tọa độ Y của bộ định tuyến."
-        }
-      }
-    },
-    "select_select_previous": {
-      "name": "Chọn mục trước",
-      "description": "Chọn tùy chọn trước đó của một thực thể chọn (select entity).",
-      "fields": {
-        "cycle": {
-          "name": "Quay vòng",
-          "description": "Tùy chọn có nên quay vòng từ đầu đến cuối hay không."
-        }
-      }
-    },
-    "select_select_first": {
-      "name": "Chọn mục đầu tiên",
-      "description": "Chọn tùy chọn đầu tiên của một thực thể chọn (select entity)."
-    },
-    "select_select_last": {
-      "name": "Chọn mục cuối cùng",
-      "description": "Chọn tùy chọn cuối cùng của một thực thể chọn (select entity)."
-    },
-    "select_select_next": {
-      "name": "Chọn mục tiếp theo",
-      "description": "Chọn tùy chọn tiếp theo của một thực thể chọn (select entity).",
-      "fields": {
-        "cycle": {
-          "name": "Quay vòng",
-          "description": "Tùy chọn có nên quay vòng từ đầu đến cuối hay không."
         }
       }
     }

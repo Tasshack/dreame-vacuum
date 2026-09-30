@@ -16,21 +16,22 @@
       "no_devices": "Aucun appareil compatible n'a été trouvé sur ce compte pour le pays sélectionné.{devices}",
       "2fa_send_failed": "Échec de l'envoi du code de vérification. Veuillez réessayer.",
       "2fa_limit_reached": "La limite quotidienne d'envoi de codes de vérification a été atteinte. Veuillez réessayer demain.",
-      "2fa_cooldown_active": "Trop de requêtes consécutives. Veuillez patienter quelques minutes avant de réessayer."
+      "2fa_cooldown_active": "Trop de requêtes consécutives. Veuillez patienter quelques minutes avant de réessayer.",
+      "invalid_key": "Clé invalide."
     },
     "step": {
       "user": {
         "data": {
           "configuration_type": "Type de configuration"
         },
-        "description": "La fonctionnalité de cartographie nécessite une connexion au cloud et offre une configuration automatique. Si vous ne souhaitez pas utiliser la fonctionnalité de cartographie, vous pouvez sélectionner la configuration manuelle."
+        "description": "Sélectionnez le type de compte correspondant à l'application que vous utilisez pour gérer votre appareil."
       },
       "local": {
         "data": {
           "host": "Hôte",
           "token": "Jeton"
         },
-        "description": "Vous aurez besoin d'un jeton d'API de 32 caractères."
+        "description": "La connexion locale n'est disponible que pour les appareils pouvant être ajoutés à l'application Xiaomi Home. Le jeton d'API de 32 caractères requis ne peut être obtenu que via le cloud Xiaomi Miio."
       },
       "mi": {
         "data": {
@@ -39,7 +40,7 @@
           "country": "Pays du serveur",
           "prefer_cloud": "Privilégier la connexion cloud"
         },
-        "description": "Connexion à Xiaomi Miio cloud."
+        "description": "Saisissez les identifiants que vous utilisez pour vous connecter à l'application Xiaomi Home."
       },
       "2fa": {
         "data": {
@@ -59,7 +60,7 @@
           "password": "Mot de passe",
           "country": "Pays du serveur"
         },
-        "description": "Connexion à Dreamehome cloud."
+        "description": "Saisissez les identifiants que vous utilisez pour vous connecter à l'application Dreamehome."
       },
       "mova": {
         "data": {
@@ -67,7 +68,7 @@
           "password": "Mot de passe",
           "country": "Pays du serveur"
         },
-        "description": "Connexion à Movahome cloud."
+        "description": "Saisissez les identifiants que vous utilisez pour vous connecter à l'application MOVAhome."
       },
       "trouver": {
         "data": {
@@ -75,7 +76,7 @@
           "password": "Mot de passe",
           "country": "Pays du serveur"
         },
-        "description": "Connexion à Trouver cloud."
+        "description": "Saisissez les identifiants que vous utilisez pour vous connecter à l'application TROUVER."
       },
       "devices": {
         "data": {
@@ -83,11 +84,11 @@
         },
         "description": "Merci de sélectionner l'aspirateur Dreame que vous souhaitez configurer."
       },
-      "donation": {
+      "dvc": {
         "data": {
-          "donated": "J’ai fait un don"
+          "dvc_key": "Clé Dreame Vacuum Card"
         },
-        "description": "## N'oubliez pas de soutenir le projet.{text}"
+        "description": "## Dreame Vacuum Card\r\n #### Interface de Dreame Vacuum{text}\r\n\r\nEntrez votre clé de licence pour activer la Dreame Vacuum Card. Si vous n'en avez pas, vous pouvez l'obtenir **[ici]({url})**.\r\n\r\n*Remarque : chaque clé n'est valable que pour un seul appareil.*"
       },
       "options": {
         "data": {
@@ -118,58 +119,278 @@
           "square": "Carte carrée",
           "configuration_type": "Type de configuration",
           "prefer_cloud": "Privilégier la connexion cloud",
-          "donated": "J’ai fait un don"
+          "dvc_key": "Clé Dreame Vacuum Card"
         }
       }
     },
     "error": {
-      "cloud_credentials_incomplete": "Identifiants cloud incomplets, merci de renseigner le nom d'utilisateur, le mot de passe et le pays"
+      "cloud_credentials_incomplete": "Identifiants cloud incomplets, merci de renseigner le nom d'utilisateur, le mot de passe et le pays",
+      "invalid_key": "Clé invalide."
+    }
+  },
+  "selector": {
+    "map_objects": {
+      "options": {
+        "color": "Couleurs des pièces",
+        "icon": "Icônes des pièces",
+        "name": "Noms des pièces",
+        "name_background": "Fond du nom de la pièce",
+        "order": "Ordre des pièces",
+        "suction_level": "Puissance d'aspiration de la pièce",
+        "water_volume": "Débit d'eau de la pièce",
+        "cleaning_times": "Nombre de passages de la pièce",
+        "cleaning_mode": "Mode de nettoyage de la pièce",
+        "mopping_mode": "Mode de lavage de la pièce",
+        "path": "Trajet",
+        "no_go": "Zones interdites",
+        "no_mop": "Zones sans lavage",
+        "virtual_wall": "Murs virtuels",
+        "pathway": "Seuils virtuels",
+        "active_area": "Zones actives",
+        "active_point": "Points actifs",
+        "charger": "Icône de la base de charge",
+        "robot": "Icône du robot",
+        "cleaning_direction": "Sens de nettoyage",
+        "obstacle": "Obstacle IA",
+        "pet": "Animal de compagnie",
+        "carpet": "Zone de tapis",
+        "material": "Matériau du sol",
+        "low_lying_area": "Zones en contrebas",
+        "furniture": "Meubles",
+        "ramp": "Rampe",
+        "curtain": "Rideau",
+        "cruise_point": "Points de parcours"
+      }
+    },
+    "notifications": {
+      "options": {
+        "cleanup_completed": "Nettoyage terminé",
+        "consumable": "Consommable",
+        "information": "Information",
+        "warning": "Avertissement",
+        "error": "Erreur"
+      }
+    },
+    "color_scheme": {
+      "options": {
+        "Dreame Dark": "Dreame sombre",
+        "Dreame Light": "Dreame clair",
+        "Grayscale": "Gris",
+        "Mijia Dark": "Mijia sombre",
+        "Mijia Light": "Mijia clair"
+      }
+    },
+    "icon_set": {
+      "options": {
+        "Dreame": "Dreame",
+        "Dreame Old": "Dreame ancien",
+        "Material": "Material",
+        "Mijia": "Mijia"
+      }
+    },
+    "configuration_type": {
+      "options": {
+        "dreame": "Dreamehome",
+        "mi": "Xiaomi Home",
+        "mova": "MOVAhome",
+        "trouver": "TROUVER",
+        "local": "Connexion locale"
+      }
+    },
+    "country": {
+      "options": {
+        "eu": "Europe",
+        "cn": "Chine",
+        "us": "États-Unis",
+        "ru": "Russie",
+        "tw": "Taïwan",
+        "sg": "Singapour",
+        "in": "Inde",
+        "kr": "Corée du Sud",
+        "de": "Allemagne",
+        "i2": "International",
+        "by": "Biélorussie"
+      }
     }
   },
   "entity": {
+    "vacuum": {
+      "dreame_vacuum": {
+        "state_attributes": {
+          "fan_speed": {
+            "name": "Puissance d'aspiration",
+            "state": {
+              "Standard": "Classique",
+              "Strong": "Forte",
+              "Turbo": "Turbo",
+              "Silent": "Silencieux",
+              "Unknown": "Inconnu"
+            }
+          },
+          "status": {
+            "state": {
+              "Unknown": "Inconnu",
+              "Idle": "Inactif",
+              "Paused": "En pause",
+              "Cleaning": "Nettoyage",
+              "Returning": "Retour à la station",
+              "Spot cleaning": "Nettoyage localisé",
+              "Follow wall cleaning": "Nettoyage le long des murs",
+              "Charging": "En charge",
+              "Ota": "OTA",
+              "Fct": "FCT",
+              "Wifi set": "WiFi connecté",
+              "Power off": "Arrêt",
+              "Factory": "Usine",
+              "Error": "Erreur",
+              "Remote control": "Contrôle à distance",
+              "Sleeping": "En veille",
+              "Self test": "Auto-test",
+              "Factory test": "Test usine",
+              "Standby": "En veille",
+              "Room cleaning": "Nettoyage d'une pièce",
+              "Zone cleaning": "Nettoyage d'une zone",
+              "Fast mapping": "Cartographie rapide",
+              "Cruising path": "Croisière sur chemin",
+              "Cruising point": "Croisière vers un point",
+              "Summon clean": "Appeler pour nettoyer",
+              "Shortcut": "Raccourci",
+              "Person follow": "Suivre une personne",
+              "Water check": "Vérification de l'eau",
+              "Pet guarding": "Surveillance des animaux",
+              "Auto arrangement": "Rangement automatique",
+              "Smart arrangement": "Rangement intelligent",
+              "Zoned arrangement": "Rangement par zone"
+            }
+          }
+        },
+        "state": {
+          "Unknown": "Inconnu",
+          "Sweeping": "Balayage",
+          "Charging": "En charge",
+          "Error": "Erreur",
+          "Idle": "Inactif",
+          "Paused": "En pause",
+          "Returning": "Retour à la station",
+          "Mopping": "Lavage",
+          "Drying": "Séchage",
+          "Washing": "Nettoyage",
+          "Returning to wash": "Retour au nettoyage",
+          "Building": "Construction de la carte",
+          "Sweeping and mopping": "Balayage et lavage",
+          "Charging completed": "Charge terminée",
+          "Upgrading": "En cours de mise à jour",
+          "Clean summon": "Appel à nettoyer",
+          "Station reset": "Réinitialisation de la station",
+          "Returning install mop": "Retour à l'installation de la serpillière",
+          "Returning remove mop": "Retour pour enlever la serpillière",
+          "Water check": "Vérification de l'eau",
+          "Clean add water": "Nettoyer et ajouter de l'eau",
+          "Washing paused": "Lavage en pause",
+          "Auto emptying": "Vidage automatique",
+          "Remote control": "Contrôle à distance",
+          "Smart charging": "Chargement intelligent",
+          "Second cleaning": "Deuxième nettoyage",
+          "Human following": "Suivi humain",
+          "Spot cleaning": "Nettoyage des taches",
+          "Returning auto empty": "Retour à Vider automatiquement",
+          "Waiting for task": "En attente de tâche",
+          "Station cleaning": "Nettoyage de la station",
+          "Returning to drain": "Retour à l'égout",
+          "Draining": "Évacuation",
+          "Auto water draining": "Vidange automatique de l'eau",
+          "Emptying": "Vidange",
+          "Dust bag drying": "Séchage du sac à poussière",
+          "Dust bag drying paused": "Séchage du sac à poussière en pause",
+          "Heading to extra cleaning": "En route vers nettoyage extra",
+          "Extra cleaning": "Nettoyage supplémentaire",
+          "Finding pet paused": "Recherche d’animal en pause",
+          "Finding pet": "Recherche d’animal",
+          "Shortcut": "Raccourci",
+          "Monitoring": "Surveillance",
+          "Monitoring paused": "Surveillance en pause",
+          "Initial deep cleaning": "Nettoyage en profondeur initial",
+          "Initial deep cleaning paused": "Nettoyage en profondeur initial en pause",
+          "Sanitizing": "Assainissement",
+          "Sanitizing with dry": "Assainissement avec séchage",
+          "Changing mop": "Changement de serpillière",
+          "Changing mop paused": "Changement de serpillière en pause",
+          "Floor maintaining": "Entretien du sol",
+          "Floor maintaining paused": "Entretien du sol en pause",
+          "Remote pickup": "Ramassage à distance",
+          "Arranging items": "Rangement des objets",
+          "Pet guarding": "Surveillance des animaux",
+          "Pet guarding paused": "Surveillance des animaux en pause",
+          "Installing mop": "Installation de la serpillière",
+          "Uninstalling mop": "Désinstallation de la serpillière",
+          "Intelligent recharging": "Recharge intelligente",
+          "Assisted cleaning": "Nettoyage assisté",
+          "Entering dock": "Entrée dans la station",
+          "Leaving dock": "Sortie de la station",
+          "Navigating to climber": "Navigation vers le grimpeur",
+          "Docking to climber": "Arrimage au grimpeur",
+          "Climber docked": "Grimpeur arrimé",
+          "Climber navigating": "Grimpeur en navigation",
+          "Climbing stairs": "Montée des escaliers",
+          "Climbing stairs completed": "Montée des escaliers terminée",
+          "Climber at dock": "Grimpeur à la station",
+          "Climber leaving dock": "Le grimpeur quitte la station",
+          "cleaning": "Nettoyage",
+          "docked": "Sur la base",
+          "error": "Erreur",
+          "idle": "Inactif",
+          "paused": "En pause",
+          "returning": "Retour à la station",
+          "unknown": "Inconnu"
+        }
+      }
+    },
     "select": {
-      "suction_level": {
-        "name": "Niveau d'aspiration",
+      "auto_empty_frequency": {
+        "name": "Fréquence de vidage automatique",
         "state": {
-          "quiet": "Silencieuse",
-          "standard": "Classique",
-          "strong": "Forte",
-          "turbo": "Turbo",
-          "full_power": "Pleine puissance"
+          "1x": "Après chaque tâche",
+          "2x": "Après deux nettoyages",
+          "3x": "Après trois nettoyages"
         }
       },
-      "water_volume": {
-        "name": "Volume d'eau",
+      "auto_empty_mode": {
+        "name": "Mode de vidage automatique",
         "state": {
-          "low": "Bas",
-          "medium": "Moyen",
-          "high": "Haut"
+          "off": "Désactivé",
+          "standard": "Standard",
+          "high_frequency": "Haute fréquence",
+          "low_frequency": "Basse fréquence",
+          "custom_frequency": "Fréquence personnalisée",
+          "intelligent": "Intelligent"
         }
       },
-      "mop_pad_humidity": {
-        "name": "Humidité de la serpillière",
+      "auto_lds_coverage": {
+        "name": "Couverture LDS automatique",
         "state": {
-          "slightly_dry": "Légèrement sec",
-          "moist": "Humide",
-          "wet": "Mouillé"
+          "off": "Désactivé",
+          "security": "Sécurité",
+          "extreme": "Extrême"
         }
       },
-      "cleaning_mode": {
-        "name": "Mode de nettoyage",
+      "auto_recleaning": {
+        "name": "Re-nettoyage automatique",
         "state": {
-          "sweeping": "Balayage",
-          "mopping": "Serpillière",
-          "sweeping_and_mopping": "Balayage avec Serpillière",
-          "mopping_after_sweeping": "Serpillière après le Balayage"
+          "off": "Désactivé",
+          "in_deep_mode": "En mode profond",
+          "in_all_modes": "Dans tous les modes"
         }
       },
-      "carpet_sensitivity": {
-        "name": "Sensibilité au tapis",
+      "auto_rewashing": {
+        "name": "Re-lavage automatique",
         "state": {
-          "low": "Basse",
-          "medium": "Moyenne",
-          "high": "Haute"
+          "off": "Désactivé",
+          "in_deep_mode": "En mode profond",
+          "in_all_modes": "Dans tous les modes"
         }
+      },
+      "battery_charge_level": {
+        "name": "Niveau de charge de la batterie"
       },
       "carpet_cleaning": {
         "name": "Nettoyage de tapis",
@@ -183,46 +404,104 @@
           "cross": "Traverser"
         }
       },
-      "mop_wash_level": {
-        "name": "Niveau de lavage de la serpillière",
+      "carpet_sensitivity": {
+        "name": "Sensibilité au tapis",
         "state": {
-          "water_saving": "Économie d'eau",
-          "daily": "Quotidien",
-          "deep": "En profondeur",
-          "ultra_clean_mode": "Ultra propre"
+          "low": "Basse",
+          "medium": "Moyenne",
+          "high": "Haute"
         }
       },
-      "mopping_type": {
-        "name": "Type de passage de serpillière",
+      "carpet_shape": {
+        "name": "Forme",
         "state": {
-          "accurate": "Précise",
-          "daily": "Quotidien",
-          "deep": "En profondeur"
+          "square": "Carré",
+          "round": "Rond"
         }
       },
-      "wider_corner_coverage": {
-        "name": "Couverture des coins élargie",
+      "carpet_type": {
+        "name": "Type de tapis",
+        "state": {
+          "medium_pile": "Poils Moyens à Hauts",
+          "low_pile": "Poils-Ras",
+          "floor_mat": "Paillasson",
+          "other": "Autre"
+        }
+      },
+      "cleangenius": {
+        "name": "CleanGenius",
         "state": {
           "off": "Désactivé",
-          "high_frequency": "Haute fréquence",
-          "low_frequency": "Basse fréquence"
+          "routine_cleaning": "Nettoyage courant",
+          "deep_cleaning": "Nettoyage en profondeur"
         }
       },
-      "mop_pad_swing": {
-        "name": "Balançage de la serpillière",
+      "cleangenius_mode": {
+        "name": "Mode CleanGenius",
         "state": {
-          "off": "Désactivé",
-          "auto": "Automatique",
-          "daily": "Tous les jours",
-          "weekly": "Hebdomadaire"
+          "vacuum_and_mop": "Aspirateur et Serpillière",
+          "mop_after_vacuum": "Serpillière après Aspirateur"
         }
       },
-      "mop_extend_frequency": {
-        "name": "Fréquence d'extension de la serpillière",
+      "cleaning_mode": {
+        "name": "Mode de nettoyage",
         "state": {
+          "sweeping": "Balayage",
+          "mopping": "Serpillière",
+          "sweeping_and_mopping": "Balayage avec Serpillière",
+          "mopping_after_sweeping": "Serpillière après le Balayage"
+        }
+      },
+      "cleaning_route": {
+        "name": "Itinéraire",
+        "state": {
+          "quick": "Rapide",
           "standard": "Standard",
-          "intelligent": "Intelligent",
-          "high": "Haut"
+          "intensive": "Intensif",
+          "deep": "Profond"
+        }
+      },
+      "cleaning_times": {
+        "name": "Nombre de nettoyages",
+        "state": {
+          "1x": "Une fois",
+          "2x": "Deux fois",
+          "3x": "Trois fois"
+        }
+      },
+      "custom_mopping_route": {
+        "name": "Itinéraire de lavage personnalisé",
+        "state": {
+          "off": "Désactivé",
+          "standard": "Standard",
+          "intensive": "Intensif",
+          "deep": "Profond"
+        }
+      },
+      "drying_time": {
+        "name": "Temps de séchage",
+        "state": {
+          "silent": "Silencieux",
+          "1h": "Une heure",
+          "2h": "Deux heures",
+          "3h": "Trois heures",
+          "4h": "Quatre heures",
+          "5h": "Cinq heures",
+          "6h": "Six heures",
+          "7h": "Sept heures",
+          "8h": "Huit heures"
+        }
+      },
+      "edit_type": {
+        "name": "Type d'édition",
+        "state": {
+          "door": "Modifier les portes",
+          "split": "Diviser les pièces",
+          "merge": "Fusionner les pièces",
+          "visibility": "Visibilité de la pièce",
+          "material": "Matériau du sol",
+          "type": "Nom de la pièce",
+          "wall": "Modifier les murs"
         }
       },
       "floor_material": {
@@ -236,31 +515,45 @@
           "carpet": "Moquette"
         }
       },
-      "voice_assistant_language": {
-        "name": "Langue de l'assistant vocal",
+      "floor_material_direction": {
+        "name": "Direction du matériau du sol",
         "state": {
-          "default": "Défaut",
-          "english": "Anglais",
-          "german": "Allemand",
-          "chinese": "Chinois",
-          "russian": "Russe",
-          "italian": "Italien",
-          "french": "Français",
-          "korean": "Coréen"
+          "vertical": "Verticale",
+          "horizontal": "Horizontal"
         }
       },
-      "mop_pressure": {
-        "name": "Pression de la serpillière",
+      "furniture_type": {
+        "name": "Type de meuble",
         "state": {
-          "light": "Léger",
-          "normal": "Normal"
-        }
-      },
-      "mop_temperature": {
-        "name": "Température de la serpillière",
-        "state": {
-          "normal": "Normale",
-          "warm": "Chaud"
+          "single_bed": "Lit simple",
+          "double_bed": "Lit double",
+          "arm_chair": "Fauteuil",
+          "two_seat_sofa": "Canapé à deux places",
+          "three_seat_sofa": "Canapé à trois places",
+          "dining_table": "Table à manger et chaises",
+          "nightstant": "Table de nuit",
+          "coffee_table": "Table basse",
+          "toilet": "Toilettes",
+          "litter_box": "Bac à litière",
+          "pet_bed": "Niche/lit de l'animal de compagnie",
+          "food_bowl": "Bol de nourriture",
+          "pet_toilet": "Tapis absorbant",
+          "refrigerator": "Réfrigérateur",
+          "washing_machine": "Machine à laver",
+          "enclosed_litter_box": "Bac à litière fermé",
+          "air_conditioner": "Climatiseur",
+          "tv_cabinet": "Meuble TV",
+          "bookshelf": "Étagère",
+          "shoe_cabinet": "Meuble à chaussures",
+          "wardrobe": "Armoire",
+          "greenery": "Végétation",
+          "floor_mirror": "Miroir sur pied",
+          "l_shaped_sofa": "Canapé en L",
+          "round_coffee_table": "Table basse ronde",
+          "table": "Table",
+          "arm_chair_narrow": "Petit fauteuil",
+          "three_seat_sofa_narrow": "Petit Canapé Trois-Places",
+          "l_shaped_sofa_right": "Canapé d'angle à droite"
         }
       },
       "low_lying_area_frequency": {
@@ -270,35 +563,15 @@
           "daily": "Quotidien"
         }
       },
-      "scraper_frequency": {
-        "name": "Fréquence du racleur",
-        "state": {
-          "off": "Désactivé",
-          "weekly": "Hebdomadaire",
-          "daily": "Quotidien"
-        }
+      "map_rotation": {
+        "name": "Rotation de la carte"
       },
-      "auto_lds_coverage": {
-        "name": "Couverture LDS automatique",
+      "map_type": {
+        "name": "Type de carte",
         "state": {
-          "off": "Désactivé",
-          "security": "Sécurité",
-          "extreme": "Extrême"
-        }
-      },
-      "order": {
-        "name": "Ordre",
-        "state": {
-          "not_set": "Pas encore défini"
-        }
-      },
-      "self_clean_frequency": {
-        "name": "Fréquence d'autonettoyage",
-        "state": {
-          "by_area": "Par zone",
-          "by_time": "Par heure",
-          "by_room": "Par chambre",
-          "intelligent": "Intelligent"
+          "cleaning": "Carte de nettoyage",
+          "history": "Détails du nettoyage",
+          "wifi": "Carte Wi-Fi"
         }
       },
       "mop_clean_frequency": {
@@ -319,22 +592,185 @@
           "270sqf": "Deux cent soixante-dix pieds carrés"
         }
       },
-      "auto_empty_mode": {
-        "name": "Mode de vidage automatique",
+      "mop_extend_frequency": {
+        "name": "Fréquence d'extension de la serpillière",
+        "state": {
+          "standard": "Standard",
+          "intelligent": "Intelligent",
+          "high": "Haut"
+        }
+      },
+      "mop_pad_humidity": {
+        "name": "Humidité de la serpillière",
+        "state": {
+          "slightly_dry": "Légèrement sec",
+          "moist": "Humide",
+          "wet": "Mouillé"
+        }
+      },
+      "mop_pad_swing": {
+        "name": "Balançage de la serpillière",
         "state": {
           "off": "Désactivé",
-          "standard": "Standard",
-          "high_frequency": "Haute fréquence",
-          "low_frequency": "Basse fréquence",
-          "custom_frequency": "Fréquence personnalisée",
+          "auto": "Automatique",
+          "daily": "Tous les jours",
+          "weekly": "Hebdomadaire"
+        }
+      },
+      "mop_pressure": {
+        "name": "Pression de la serpillière",
+        "state": {
+          "light": "Léger",
+          "normal": "Normal"
+        }
+      },
+      "mop_temperature": {
+        "name": "Température de la serpillière",
+        "state": {
+          "normal": "Normale",
+          "warm": "Chaud"
+        }
+      },
+      "mop_type": {
+        "name": "Type de serpillière",
+        "state": {
+          "a": "Serpillière A",
+          "b": "Serpillière B",
+          "c": "Serpillière C"
+        }
+      },
+      "mop_wash_level": {
+        "name": "Niveau de lavage de la serpillière",
+        "state": {
+          "water_saving": "Économie d'eau",
+          "daily": "Quotidien",
+          "deep": "En profondeur",
+          "ultra_clean_mode": "Ultra propre"
+        }
+      },
+      "mopping_pattern": {
+        "name": "Mode de serpillière",
+        "state": {
+          "daily": "Nettoyage quotidien",
+          "deep": "Nettoyage approfondi"
+        }
+      },
+      "mopping_type": {
+        "name": "Type de passage de serpillière",
+        "state": {
+          "accurate": "Précise",
+          "daily": "Quotidien",
+          "deep": "En profondeur"
+        }
+      },
+      "name": {
+        "name": "Nom de la pièce {index}",
+        "state_attributes": {
+          "room_id": {
+            "name": "ID de la pièce"
+          },
+          "index": {
+            "name": "Indice"
+          },
+          "type": {
+            "name": "Type de chambre"
+          }
+        }
+      },
+      "object_type": {
+        "name": "Type d'objet",
+        "state": {
+          "predefined_point": "Point prédéfini",
+          "low_lying_area": "Zone-Basse",
+          "curtain": "Rideau",
+          "threshold": "Seuil",
+          "furniture": "Meubles",
+          "carpet": "Tapis",
+          "restricted": "Zone restreinte"
+        }
+      },
+      "order": {
+        "name": "Ordre",
+        "state": {
+          "not_set": "Pas encore défini"
+        }
+      },
+      "scraper_frequency": {
+        "name": "Fréquence du racleur",
+        "state": {
+          "off": "Désactivé",
+          "weekly": "Hebdomadaire",
+          "daily": "Quotidien"
+        }
+      },
+      "segment_name": {
+        "name": "Nom de la pièce",
+        "state": {
+          "room": "Pièce",
+          "living_room": "Séjour",
+          "primary_bedroom": "Chambre à coucher principale",
+          "study": "Bureau",
+          "kitchen": "Cuisine",
+          "dining_hall": "Salle à manger",
+          "bathroom": "Salle de bain",
+          "balcony": "Balcon",
+          "corridor": "Couloir",
+          "utility_room": "Buanderie",
+          "closet": "Placard",
+          "meeting_room": "Salle de réunion",
+          "office": "Bureau",
+          "fitness_area": "Espace fitness",
+          "recreation_area": "Espace loisirs",
+          "secondary_bedroom": "Chambre annexe"
+        }
+      },
+      "selected_map": {
+        "name": "Carte sélectionnée",
+        "state_attributes": {
+          "map_id": {
+            "name": "ID de la carte"
+          },
+          "map_index": {
+            "name": "Index de la carte"
+          }
+        }
+      },
+      "self_clean_frequency": {
+        "name": "Fréquence d'autonettoyage",
+        "state": {
+          "by_area": "Par zone",
+          "by_time": "Par heure",
+          "by_room": "Par chambre",
           "intelligent": "Intelligent"
         }
       },
-      "floor_material_direction": {
-        "name": "Direction du matériau du sol",
+      "suction_level": {
+        "name": "Niveau d'aspiration",
         "state": {
-          "vertical": "Verticale",
-          "horizontal": "Horizontal"
+          "quiet": "Silencieuse",
+          "standard": "Classique",
+          "strong": "Forte",
+          "turbo": "Turbo",
+          "full_power": "Pleine puissance"
+        }
+      },
+      "task_repeats": {
+        "name": "Répétitions des tâches",
+        "state": {
+          "once": "Une fois",
+          "daily": "Quotidiennement",
+          "workdays": "Jours ouvrables",
+          "weekends": "Week-ends"
+        }
+      },
+      "task_type": {
+        "name": "Type de tâche",
+        "state": {
+          "go_to": "Aller au Point",
+          "segment": "Nettoyage de pièce",
+          "all": "Nettoyage global",
+          "zone": "Nettoyage de zone",
+          "spot": "Nettoyage ponctuel"
         }
       },
       "visibility": {
@@ -344,19 +780,17 @@
           "hidden": "Caché"
         }
       },
-      "cleangenius": {
-        "name": "CleanGenius",
+      "voice_assistant_language": {
+        "name": "Langue de l'assistant vocal",
         "state": {
-          "off": "Désactivé",
-          "routine_cleaning": "Nettoyage courant",
-          "deep_cleaning": "Nettoyage en profondeur"
-        }
-      },
-      "cleangenius_mode": {
-        "name": "Mode CleanGenius",
-        "state": {
-          "vacuum_and_mop": "Aspirateur et Serpillière",
-          "mop_after_vacuum": "Serpillière après Aspirateur"
+          "default": "Défaut",
+          "english": "Anglais",
+          "german": "Allemand",
+          "chinese": "Chinois",
+          "russian": "Russe",
+          "italian": "Italien",
+          "french": "Français",
+          "korean": "Coréen"
         }
       },
       "washing_mode": {
@@ -379,136 +813,12 @@
           "max": "Maximum"
         }
       },
-      "auto_recleaning": {
-        "name": "Re-nettoyage automatique",
+      "water_volume": {
+        "name": "Volume d'eau",
         "state": {
-          "off": "Désactivé",
-          "in_deep_mode": "En mode profond",
-          "in_all_modes": "Dans tous les modes"
-        }
-      },
-      "auto_rewashing": {
-        "name": "Re-lavage automatique",
-        "state": {
-          "off": "Désactivé",
-          "in_deep_mode": "En mode profond",
-          "in_all_modes": "Dans tous les modes"
-        }
-      },
-      "cleaning_route": {
-        "name": "Itinéraire",
-        "state": {
-          "quick": "Rapide",
-          "standard": "Standard",
-          "intensive": "Intensif",
-          "deep": "Profond"
-        }
-      },
-      "custom_mopping_route": {
-        "name": "Itinéraire de lavage personnalisé",
-        "state": {
-          "off": "Désactivé",
-          "standard": "Standard",
-          "intensive": "Intensif",
-          "deep": "Profond"
-        }
-      },
-      "task_type": {
-        "name": "Type de tâche",
-        "state": {
-          "go_to": "Aller au Point",
-          "segment": "Nettoyage de pièce",
-          "all": "Nettoyage global",
-          "zone": "Nettoyage de zone",
-          "spot": "Nettoyage ponctuel"
-        }
-      },
-      "cleaning_times": {
-        "name": "Nombre de nettoyages",
-        "state": {
-          "x1": "Une fois",
-          "x2": "Deux fois",
-          "x3": "Trois fois"
-        }
-      },
-      "auto_empty_frequency": {
-        "name": "Fréquence de vidage automatique",
-        "state": {
-          "x1": "Après chaque tâche",
-          "x2": "Après deux nettoyages",
-          "x3": "Après trois nettoyages"
-        }
-      },
-      "drying_time": {
-        "name": "Temps de séchage",
-        "state": {
-          "silent": "Silencieux"
-        }
-      },
-      "battery_charge_level": {
-        "name": "Niveau de charge de la batterie"
-      },
-      "object_type": {
-        "name": "Type d'objet",
-        "state": {
-          "predefined_point": "Point prédéfini",
-          "low_lying_area": "Zone-Basse",
-          "curtain": "Rideau",
-          "threshold": "Seuil",
-          "furniture": "Meubles",
-          "carpet": "Tapis",
-          "restricted": "Zone restreinte"
-        }
-      },
-      "edit_type": {
-        "name": "Type d'édition",
-        "state": {
-          "door": "Modifier les portes",
-          "split": "Diviser les pièces",
-          "merge": "Fusionner les pièces",
-          "visibility": "Visibilité de la pièce",
-          "material": "Matériau du sol",
-          "type": "Nom de la pièce",
-          "wall": "Modifier les murs"
-        }
-      },
-      "map_type": {
-        "name": "Type de carte",
-        "state": {
-          "cleaning": "Carte de nettoyage",
-          "history": "Détails du nettoyage",
-          "wifi": "Carte Wi-Fi"
-        }
-      },
-      "carpet_type": {
-        "name": "Type de tapis",
-        "state": {
-          "medium_pile": "Poils Moyens à Hauts",
-          "low_pile": "Poils-Ras",
-          "floor_mat": "Paillasson",
-          "other": "Autre"
-        }
-      },
-      "mop_type": {
-        "name": "Type de serpillière",
-        "state": {
-          "a": "Serpillière A",
-          "b": "Serpillière B",
-          "c": "Serpillière C"
-        }
-      },
-      "carpet_shape": {
-        "name": "Forme",
-        "state": {
-          "square": "Carré",
-          "round": "Rond"
-        }
-      },
-      "mopping_pattern": {
-        "name": "Mode de serpillière",
-        "state": {
-          "daily": "Nettoyage quotidien",
-          "deep": "Nettoyage approfondi"
+          "low": "Bas",
+          "medium": "Moyen",
+          "high": "Haut"
         }
       },
       "wetness_level": {
@@ -519,248 +829,170 @@
           "wet": "Mouillé"
         }
       },
-      "task_repeats": {
-        "name": "Répétitions des tâches",
+      "wider_corner_coverage": {
+        "name": "Couverture des coins élargie",
         "state": {
-          "once": "Une fois",
-          "daily": "Quotidiennement",
-          "workdays": "Jours ouvrables",
-          "weekends": "Week-ends"
-        }
-      },
-      "segment_name": {
-        "name": "Nom de la pièce",
-        "state": {
-          "room": "Pièce",
-          "living_room": "Salon",
-          "primary_bedroom": "Chambre principale",
-          "study": "Bureau",
-          "kitchen": "Cuisine",
-          "dining_hall": "Salle à manger",
-          "bathroom": "Salle de bain",
-          "balcony": "Balcon",
-          "corridor": "Couloir",
-          "utility_room": "Buanderie",
-          "closet": "Placard",
-          "meeting_room": "Salle de réunion",
-          "office": "Bureau",
-          "fitness_area": "Espace fitness",
-          "recreation_area": "Espace loisirs",
-          "secondary_bedroom": "Chambre d'amis"
-        }
-      },
-      "furniture_type": {
-        "name": "Type de meuble",
-        "state": {
-          "single_bed": "Lit simple",
-          "double_bed": "Lit double",
-          "arm_chair": "Fauteuil",
-          "two_seat_sofa": "Canapé Deux-Places",
-          "three_seat_sofa": "Canapé Trois-Places",
-          "dining_table": "Table à manger",
-          "nightstant": "Table de chevet",
-          "coffee_table": "Table basse",
-          "toilet": "Toilettes",
-          "litter_box": "Bac à litière",
-          "pet_bed": "Panier pour animal",
-          "food_bowl": "Gamelle",
-          "pet_toilet": "Toilettes pour animal",
-          "refrigerator": "Réfrigérateur",
-          "washing_machine": "Lave-linge",
-          "enclosed_litter_box": "Maison de toilette",
-          "air_conditioner": "Climatiseur",
-          "tv_cabinet": "Meuble TV",
-          "bookshelf": "Bibliothèque",
-          "shoe_cabinet": "Meuble à chaussures",
-          "wardrobe": "Garde-robe",
-          "greenery": "Plantes",
-          "floor_mirror": "Psyché",
-          "l_shaped_sofa": "Canapé d'angle",
-          "round_coffee_table": "Table basse ronde",
-          "table": "Table",
-          "arm_chair_narrow": "Petit fauteuil",
-          "three_seat_sofa_narrow": "Petit Canapé Trois-Places",
-          "l_shaped_sofa_right": "Canapé d'angle à droite"
+          "off": "Désactivé",
+          "high_frequency": "Haute fréquence",
+          "low_frequency": "Basse fréquence"
         }
       }
     },
     "sensor": {
-      "state": {
-        "name": "État",
+      "auto_empty_status": {
+        "name": "Statut du vidage automatique",
         "state": {
           "unknown": "Inconnu",
-          "sweeping": "Balayage",
-          "charging": "En charge",
-          "error": "Erreur",
           "idle": "Inactif",
-          "paused": "En pause",
-          "returning": "Retour à la station",
-          "mopping": "Lavage",
-          "drying": "Séchage",
-          "washing": "Nettoyage",
-          "returning_to_wash": "Retour au nettoyage",
-          "building": "Construction de la carte",
-          "sweeping_and_mopping": "Balayage et lavage",
-          "charging_completed": "Charge terminée",
-          "upgrading": "En cours de mise à jour",
-          "clean_summon": "Appel à nettoyer",
-          "station_reset": "Réinitialisation de la station",
-          "returning_install_mop": "Retour à l'installation de la serpillière",
-          "returning_remove_mop": "Retour pour enlever la serpillière",
-          "water_check": "Vérification de l'eau",
-          "clean_add_water": "Nettoyer et ajouter de l'eau",
-          "washing_paused": "Lavage en pause",
-          "auto_emptying": "Vidage automatique",
-          "remote_control": "Contrôle à distance",
-          "smart_charging": "Chargement intelligent",
-          "second_cleaning": "Deuxième nettoyage",
-          "human_following": "Suivi humain",
-          "spot_cleaning": "Nettoyage des taches",
-          "returning_auto_empty": "Retour à Vider automatiquement",
-          "waiting_for_task": "En attente de tâche",
-          "station_cleaning": "Nettoyage de la station",
-          "returning_to_drain": "Retour à l'égout",
+          "active": "Actif",
+          "not_performed": "Non effectué"
+        }
+      },
+      "battery_level": {
+        "name": "Niveau de batterie"
+      },
+      "bssid": {
+        "name": "BSSID"
+      },
+      "charging_status": {
+        "name": "Statut de charge",
+        "state": {
+          "unknown": "Inconnu",
+          "charging": "En charge",
+          "not_charging": "Pas en charge",
+          "return_to_charge": "Retour à la station pour se recharger",
+          "charging_completed": "Charge terminée"
+        }
+      },
+      "clean_water_tank_status": {
+        "name": "Statut du réservoir d'eau propre",
+        "state": {
+          "unknown": "Inconnu",
+          "not_available": "Pas disponible",
+          "not_installed": "Non installé",
+          "low_water": "Basse eau",
+          "installed": "Installé"
+        }
+      },
+      "cleaned_area": {
+        "name": "Surface nettoyée"
+      },
+      "cleaning_count": {
+        "name": "Nombre de nettoyages"
+      },
+      "cleaning_history": {
+        "name": "Historique de nettoyage"
+      },
+      "cleaning_progress": {
+        "name": "Progression du nettoyage"
+      },
+      "cleaning_status": {
+        "name": "Nettoyage",
+        "state": {
+          "interrupted": "Interrompu",
+          "completed": "Terminé",
+          "manually_ended": "Terminé manuellement",
+          "failed": "Échoué",
+          "unknown": "Inconnu"
+        }
+      },
+      "cleaning_time": {
+        "name": "Temps de nettoyage"
+      },
+      "cleanup_method": {
+        "name": "Méthode de nettoyage",
+        "state": {
+          "other": "Autre",
+          "default": "Par défaut",
+          "customized": "Personnalisé",
+          "cleangenius": "CleanGenius",
+          "water_stain": "Tâche d'eau",
+          "unknown": "Inconnu"
+        }
+      },
+      "cruising_history": {
+        "name": "Historique de croisière"
+      },
+      "current_room": {
+        "name": "Pièce actuelle",
+        "state_attributes": {
+          "room_id": {
+            "name": "ID de la pièce"
+          },
+          "room_icon": {
+            "name": "Icône de la pièce"
+          },
+          "room_name": {
+            "name": "Nom de la pièce"
+          }
+        }
+      },
+      "deodorizer_left": {
+        "name": "Désodorisant"
+      },
+      "deodorizer_time_left": {
+        "name": "Temps restant désodorisant"
+      },
+      "detergent_left": {
+        "name": "Détergent"
+      },
+      "detergent_status": {
+        "name": "Statut du détergent",
+        "state": {
+          "unknown": "Inconnu",
+          "installed": "Installé",
+          "disabled": "Désactivé",
+          "low_detergent": "Détergent faible"
+        }
+      },
+      "detergent_time_left": {
+        "name": "Temps restant détergent"
+      },
+      "dirty_water_channel_left": {
+        "name": "Canal d'eau sale"
+      },
+      "dirty_water_tank_status": {
+        "name": "Statut du réservoir d'eau sale",
+        "state": {
+          "unknown": "Inconnu",
+          "installed": "Installé",
+          "not_installed_or_full": "Non installé ou complet"
+        }
+      },
+      "drainage_status": {
+        "name": "Statut du drainage",
+        "state": {
+          "unknown": "Inconnu",
+          "idle": "Inactif",
           "draining": "Évacuation",
-          "auto_water_draining": "Vidange automatique de l'eau",
-          "emptying": "Vidange",
-          "dust_bag_drying": "Séchage du sac à poussière",
-          "dust_bag_drying_paused": "Séchage du sac à poussière en pause",
-          "heading_to_extra_cleaning": "En route vers nettoyage extra",
-          "extra_cleaning": "Nettoyage supplémentaire",
-          "finding_pet_paused": "Recherche d’animal en pause",
-          "finding_pet": "Recherche d’animal",
-          "shortcut": "Raccourci",
-          "monitoring": "Surveillance",
-          "monitoring_paused": "Surveillance en pause",
-          "initial_deep_cleaning": "Nettoyage en profondeur initial",
-          "initial_deep_cleaning_paused": "Nettoyage en profondeur initial en pause",
-          "sanitizing": "Assainissement",
-          "sanitizing_with_dry": "Assainissement avec séchage",
-          "changing_mop": "Changement de serpillière",
-          "changing_mop_paused": "Changement de serpillière en pause",
-          "floor_maintaining": "Entretien du sol",
-          "floor_maintaining_paused": "Entretien du sol en pause",
-          "remote_pickup": "Ramassage à distance",
-          "arranging_items": "Rangement des objets",
-          "pet_guarding": "Surveillance des animaux",
-          "pet_guarding_paused": "Surveillance des animaux en pause",
-          "installing_mop": "Installation de la serpillière",
-          "uninstalling_mop": "Désinstallation de la serpillière",
-          "intelligent_recharging": "Recharge intelligente",
-          "assisted_cleaning": "Nettoyage assisté",
-          "entering_dock": "Entrée dans la station",
-          "leaving_dock": "Sortie de la station",
-          "navigating_to_climber": "Navigation vers le grimpeur",
-          "docking_to_climber": "Arrimage au grimpeur",
-          "climber_docked": "Grimpeur arrimé",
-          "climber_navigating": "Grimpeur en navigation",
-          "climbing_stairs": "Montée des escaliers",
-          "climbing_stairs_completed": "Montée des escaliers terminée",
-          "climber_at_dock": "Grimpeur à la station",
-          "climber_leaving_dock": "Le grimpeur quitte la station"
+          "draining_successful": "Vidange réussie",
+          "draining_failed": "La vidange a échoué"
         }
       },
-      "status": {
-        "name": "Statut",
+      "drying_left": {
+        "name": "Temps restant de séchage"
+      },
+      "drying_progress": {
+        "name": "Progression du séchage"
+      },
+      "dust_bag_drying_left": {
+        "name": "Temps restant séchage du sac à poussière"
+      },
+      "dust_bag_drying_status": {
+        "name": "Statut du séchage du sac à poussière",
         "state": {
-          "unknown": "Inconnu",
           "idle": "Inactif",
-          "paused": "En pause",
-          "cleaning": "Nettoyage",
-          "returning": "Retour à la station",
-          "spot_cleaning": "Nettoyage localisé",
-          "follow_wall_cleaning": "Nettoyage le long des murs",
-          "charging": "En charge",
-          "ota": "OTA",
-          "fct": "FCT",
-          "wifi_set": "WiFi connecté",
-          "power_off": "Arrêt",
-          "factory": "Usine",
-          "error": "Erreur",
-          "remote_control": "Contrôle à distance",
-          "sleeping": "En veille",
-          "self_test": "Auto-test",
-          "factory_test": "Test usine",
-          "standby": "En veille",
-          "room_cleaning": "Nettoyage d'une pièce",
-          "zone_cleaning": "Nettoyage d'une zone",
-          "fast_mapping": "Cartographie rapide",
-          "cruising_path": "Croisière sur chemin",
-          "cruising_point": "Croisière vers un point",
-          "summon_clean": "Appeler pour nettoyer",
-          "shortcut": "Raccourci",
-          "person_follow": "Suivre une personne",
-          "water_check": "Vérification de l'eau",
-          "pet_guarding": "Surveillance des animaux",
-          "auto_arrangement": "Rangement automatique",
-          "smart_arrangement": "Rangement intelligent",
-          "zoned_arrangement": "Rangement par zone"
+          "drying": "Séchage",
+          "paused": "En pause"
         }
       },
-      "task_status": {
-        "name": "Statut de la tâche",
+      "dust_bag_status": {
+        "name": "Statut du sac à poussière",
         "state": {
           "unknown": "Inconnu",
-          "completed": "Terminée",
-          "cleaning": "Nettoyage",
-          "zone_cleaning": "Nettoyage d'une zone",
-          "room_cleaning": "Nettoyage d'une pièce",
-          "spot_cleaning": "Nettoyage localisé",
-          "fast_mapping": "Cartographie rapide",
-          "cleaning_paused": "Nettoyage mis en pause",
-          "room_cleaning_paused": "Nettoyage de la pièce mis en pause",
-          "zone_cleaning_paused": "Nettoyage de la zone mis en pause",
-          "spot_cleaning_paused": "Nettoyage localisé mis en pause",
-          "map_cleaning_paused": "Nettoyage de la carte en pause",
-          "docking_paused": "Retour à la station mis en pause",
-          "mopping_paused": "Lavage mis en pause",
-          "zone_mopping_paused": "Lavage d'une zone mis en pause",
-          "room_mopping_paused": "Lavage d'une pièce mis en pause",
-          "zone_docking_paused": "Retour à la station mis en pause",
-          "room_docking_paused": "Retour à la station mis en pause",
-          "cruising_path": "Croisière sur chemin",
-          "cruising_path_paused": "Croisière sur chemin en pause",
-          "cruising_point": "Croisière vers un point",
-          "cruising_point_paused": "Croisière vers un point en pause",
-          "summon_clean_paused": "Appeler pour nettoyer en pause",
-          "returning_to_install_mop": "Retourner pour installer la serpillière",
-          "returning_to_remove_mop": "Retourner pour retirer la serpillière",
-          "station_cleaning": "Nettoyage de la station",
-          "pet_finding": "Constatation d'animaux",
-          "auto_cleaning_washing_paused": "Lavage de nettoyage automatique interrompu",
-          "area_cleaning_washing_paused": "Lavage de nettoyage de zone interrompu",
-          "custom_cleaning_washing_paused": "Lavage de nettoyage personnalisé pause",
-          "picking_up_item": "Ramassage de l'objet",
-          "picking_up_item_paused": "Ramassage de l'objet en pause",
-          "picking_up_item_success": "Objet ramassé avec succès",
-          "remote_pickup_initializing": "Initialisation du ramassage à distance",
-          "remote_pickup_identifing": "Identification du ramassage à distance",
-          "manual_remote_pickup": "Ramassage à distance manuel",
-          "automatic_remote_pickup": "Ramassage à distance automatique",
-          "remote_pickup_in_progress": "Ramassage à distance en cours",
-          "remote_pickup_paused": "Ramassage à distance en pause",
-          "placing_item": "Placement de l'objet",
-          "placing_item_paused": "Placement de l'objet en pause"
-        }
-      },
-      "water_tank": {
-        "name": "Réservoir d'eau",
-        "state": {
-          "unknown": "Inconnu",
-          "installed": "Installée",
-          "not_installed": "Non installée",
-          "mop_installed": "Serpillière installée",
-          "in_station": "En gare"
-        }
-      },
-      "mop_pad": {
-        "name": "Serpillière",
-        "state": {
-          "unknown": "Inconnu",
-          "installed": "Installée",
-          "not_installed": "Non installée",
-          "mop_installed": "Serpillière installée",
-          "in_station": "En gare"
+          "installed": "Installé",
+          "not_installed": "Non installé",
+          "check": "Vérifier"
         }
       },
       "dust_collection": {
@@ -771,15 +1003,6 @@
           "available": "Disponible",
           "over_use": "Utilisation excessive",
           "never": "Jamais"
-        }
-      },
-      "auto_empty_status": {
-        "name": "Statut du vidage automatique",
-        "state": {
-          "unknown": "Inconnu",
-          "idle": "Inactif",
-          "active": "Actif",
-          "not_performed": "Non effectué"
         }
       },
       "error": {
@@ -872,7 +1095,6 @@
           "return_to_charge_failed": "Échec du retour à la charge.",
           "lds_failed_to_lift": "Échec du levage du module LDS.",
           "robot_stuck": "Le LDS ne peut pas être levé ici pour le positionnement.",
-          "robot_stuck_repeat": "Déplacez le robot vers une zone dégagée et reprenez la tâche.",
           "slippery_floor": "Sol glissant. Veuillez réessayer plus tard.",
           "check_mop_install": "Veuillez vérifier si la serpillière est installée correctement.",
           "dirty_water_tank_full": "Niveau d'eau anormal dans le réservoir d'eau sale.",
@@ -906,16 +1128,284 @@
           "robotic_arm_stopped": "Bras robotisé arrêté.",
           "drainage_outlet_filter": "Le filtre de sortie des eaux usées du robot est bouché.",
           "main_wheels_error": "Erreur des roues principales."
+        },
+        "state_attributes": {
+          "description": {
+            "name": "Description",
+            "state": {
+              "no_error": "Sans erreur",
+              "drop": "Les roues sont suspendues\nVeuillez repositionner le robot et redémarrer.",
+              "cliff": "Erreur du capteur de chute\nVeuillez essuyer le capteur de falaise et commencer le nettoyage loin des escaliers.",
+              "bumper": "Le capteur de collision est coincé\nVeuillez nettoyer et tapoter doucement le capteur de collision.",
+              "gesture": "Le robot est penché\nVeuillez déplacer le robot sur une surface plane et recommencer.",
+              "bumper_repeat": "Le capteur de collision est coincé\nVeuillez nettoyer et tapoter doucement le capteur de collision.",
+              "drop_repeat": "Les roues sont suspendues\nVeuillez repositionner le robot et redémarrer.",
+              "optical_flow": "Erreur du capteur optique de débit\nVeuillez essayer de redémarrer le robot.",
+              "no_box": "Le bac à poussière n'est pas installé\nVeuillez installer le bac à poussière et le filtre.",
+              "no_tank_box": "Le réservoir d'eau n'est pas installé\nVeuillez installer le réservoir d'eau.",
+              "water_box_empty": "Le réservoir d'eau est vide\nVeuillez remplir le réservoir d'eau.",
+              "box_full": "Le filtre n'est pas sec ou est obstrué\nVeuillez vérifier si le filtre est sec ou doit être nettoyé.",
+              "brush": "La brosse principale est entravée\nVeuillez retirer la brosse principale et nettoyer ses poils et ses roulements.",
+              "side_brush": "La brosse latérale est entravée\nVeuillez retirer et nettoyer la brosse latérale.",
+              "fan": "Le filtre n'est pas sec ou est obstrué\nVeuillez vérifier si le filtre est sec ou doit être nettoyé.",
+              "left_wheel_motor": "Le robot est coincé ou sa roue gauche est bloquée\nVérifiez s'il y a un objet coincé dans les roues principales et démarrez le robot dans une nouvelle position.",
+              "right_wheel_motor": "Le robot est coincé ou sa roue droite est bloquée\nVérifiez s'il y a un objet coincé dans les roues principales et démarrez le robot dans une nouvelle position.",
+              "turn_suffocate": "Le robot est coincé ou ne peut pas tourner\nLe robot est peut-être bloqué ou coincé.",
+              "forward_suffocate": "Le robot est coincé ou ne peut pas avancer\nLe robot est peut-être bloqué ou coincé.",
+              "charger_get": "Impossible de localiser la station\nVeuillez vérifier si le cordon d'alimentation est correctement branché.",
+              "battery_low": "Batterie faible\nLe niveau de la batterie est trop faible. Veuillez facturer.",
+              "charge_fault": "Erreur de chargement\nVeuillez utiliser un chiffon sec pour essuyer les contacts de charge du robot et de la base à vidage automatique.",
+              "battery_percentage": "Erreur lors de la lecture du niveau de batterie",
+              "heart": "Erreur interne\nVeuillez essayer de redémarrer le robot.",
+              "camera_occlusion": "Erreur du capteur de positionnement visuel\nVeuillez nettoyer le capteur de positionnement visuel.",
+              "move": "Erreur du capteur de déplacement\nVeuillez essayer de redémarrer le robot.",
+              "flow_shielding": "Erreur du capteur optique\nVeuillez essuyer le capteur optique et redémarrer.",
+              "infrared_shielding": "Erreur de protection contre l'infrarouge\nVeuillez essayer de redémarrer le robot.",
+              "charge_no_electric": "La station n'est pas branchée ou allumée\nLa borne de recharge n'est pas sous tension. Veuillez vérifier si le cordon d'alimentation est correctement branché.",
+              "battery_fault": "Problème de batterie\nVeuillez attendre que la température de la batterie revienne à la normale.",
+              "fan_speed_error": "Erreur du capteur de vitesse d'aspiration\nVeuillez essayer de redémarrer le robot.",
+              "left_wheell_speed": "La roue gauche est probablement bloquée\nVérifiez s'il y a un objet coincé dans les roues principales et démarrez le robot dans une nouvelle position.",
+              "right_wheell_speed": "La roue droite est probablement bloquée\nVérifiez s'il y a un objet coincé dans les roues principales et démarrez le robot dans une nouvelle position.",
+              "bmi055_acce": "Erreur d'accéléromètre\nVeuillez essayer de redémarrer le robot.",
+              "bmi055_gyro": "Erreur de gyroscope\nVeuillez essayer de redémarrer le robot.",
+              "xv7001": "Erreur de gyroscope\nVeuillez essayer de redémarrer le robot.",
+              "left_magnet": "Erreur du capteur magnétique gauche\nVeuillez essayer de redémarrer le robot.",
+              "right_magnet": "Erreur du capteur magnétique droit\nVeuillez essayer de redémarrer le robot.",
+              "flow_error": "Erreur du capteur de débit\nVeuillez essayer de redémarrer le robot.",
+              "infrared_fault": "Erreur infrarouge\nVeuillez essayer de redémarrer le robot.",
+              "camera_fault": "Erreur de caméra\nVeuillez essayer de redémarrer le robot.",
+              "strong_magnet": "Champ magnétique important détecté\nChamp magnétique puissant détecté. Veuillez commencer loin du mur virtuel.",
+              "water_pump": "Erreur de pompe à eau\nVeuillez essayer de redémarrer le robot.",
+              "rtc": "Erreur RTC\nVeuillez essayer de redémarrer le robot.",
+              "auto_key_trig": "Erreur interne\nVeuillez essayer de redémarrer le robot.",
+              "p3v3": "Erreur interne\nVeuillez essayer de redémarrer le robot.",
+              "camera_idle": "Erreur interne\nVeuillez essayer de redémarrer le robot.",
+              "blocked": "L'itinéraire de nettoyage est obstrué, retour à la station.\nLe robot est peut-être bloqué ou coincé.",
+              "lds_error": "Erreur du capteur de distance laser\nVeuillez vérifier si le capteur de distance laser contient des objets coincés",
+              "lds_bumper": "Erreur du pare-choc du capteur de distance laser\nVeuillez vérifier si le pare-chocs du capteur de distance laser est coincé",
+              "filter_blocked": "Le filtre n'est pas sec ou est obstrué\nVeuillez vérifier si le filtre est sec ou doit être nettoyé",
+              "edge": "Erreur du capteur de bordure\nErreur du capteur de bord. Veuillez le vérifier et le nettoyer.",
+              "carpet": "Merci de mettre en marche le robot dans une zone sans tapis.\nUn tapis est détecté sous le robot lors du nettoyage. Veuillez déplacer le robot vers un autre endroit et redémarrez-le.",
+              "laser": "Le capteur d'évitement d'obstacles 3D ne fonctionne pas correctement.\nVeuillez essayer de nettoyer le capteur d'évitement d'obstacles 3D.",
+              "ultrasonic": "Le capteur ultrasonique ne fonctionne pas correctement.\nVeuillez redémarrer le robot et réessayer.",
+              "no_go_zone": "Zone interdite ou mur virtuel détecté.\nVeuillez éloigner le robot de la zone et redémarrer.",
+              "route": "L'itinéraire de nettoyage est obstrué.\nVeuillez vous assurer que toutes les portes de la maison sont ouvertes et dégager tout obstacle le long du chemin, ou essayez de supprimer la zone réglementée du chemin.",
+              "restricted": "L'aspirateur a été détecté dans une zone interdite.\nVeuillez déplacer le robot hors de cette zone.",
+              "remove_mop": "Lavage terminé. Veuillez retirer et nettoyer la serpillière.",
+              "mop_removed": "La serpillière s'est détachée pendant le nettoyage.\nLes tampons de vadrouille se détachent, installez-les avant de reprendre le travail.",
+              "mop_pad_stop_rotate": "La serpillière s'est arrêtée de tourner.\nVeuillez vérifier le tampon de vadrouille.",
+              "bin_full": "Le sac à poussière est plein ou le conduit est obstrué.\nLe système détecte que le sac de récupération de poussière est plein ou que le conduit d'air est obstrué.",
+              "bin_open": "Le capot supérieur de la station de vidange automatique n'est pas fermé, ou le sac à poussière n'est pas installé.\nLe système détecte que le couvercle supérieur de la base à vidage automatique n'est pas fermé ou que le sac de récupération de poussière n'est pas installé.",
+              "water_tank": "Le réservoir d'eau claire n'est pas installé.\nLe réservoir d'eau propre n'est pas installé, veuillez l'installer.",
+              "dirty_water_tank": "Le réservoir d'eau sale est plein n'est pas installé.\nVérifiez si le réservoir d'eau sale est plein et si le réservoir d'eau sale est installé.",
+              "water_tank_dry": "Niveau d'eau claire bas, merci de faire le plein.\nSinon, le robot ne reviendra pas à la base pour nettoyer le tampon de vadrouille pendant la tâche de nettoyage.",
+              "dirty_water_tank_blocked": "Réservoir d'eau sale obstrué.\nVeuillez essayer de redémarrer le robot.",
+              "dirty_water_tank_pump": "Erreur de la pompe du réservoir d'eau sale.\nVeuillez essayer de redémarrer le robot.",
+              "mop_pad": "Le dispositif de nettoyage de la serpillière n'est pas installée correctement.\nLa planche de lavage n'est pas installée et le robot ne peut pas retourner à la base d'auto-lavage. Veuillez vous assurer que la planche à laver est installée et que les fermoirs des deux côtés sont bien fixés.",
+              "wet_mop_pad": "Le niveau d'eau du dispositif de nettoyage de la serpillière est anormal, merci de nettoyer ce dernier.\nLe niveau d'eau de la planche à laver est anormal. Veuillez le nettoyer à temps pour éviter tout blocage. Si le problème ne peut toujours pas être résolu, veuillez contacter le service client.",
+              "clean_mop_pad": "Nettoyage terminé, merci de nettoyer le dispositif de nettoyage de la serpillière.\nVeuillez nettoyer la planche à laver à temps pour éviter les taches ou les odeurs.",
+              "clean_tank_level": "Contrôlez et remplissez le réservoir d'eau claire.\nL’eau du réservoir d’eau propre est sur le point d’être épuisée.",
+              "station_disconnected": "Station de base non allumée\nVeuillez vérifier si l'alimentation est coupée ou si l'interrupteur d'alimentation est allumé dans votre maison, et rebranchez les deux extrémités de l'alimentation électrique de la station de base.",
+              "dirty_tank_level": "Le niveau d'eau dans le réservoir d'eau sale est trop élevé.\nVeuillez vérifier si le réservoir d'eau usée est plein.",
+              "washboard_level": "Le niveau d'eau du dispositif de nettoyage de la serpillière est trop élevé.\nVeuillez nettoyer le réservoir d'eau usée et la planche à laver à temps.",
+              "no_mop_in_station": "Le tampon de la serpillière n'est pas dans la station.\nVeuillez le placer dans la station de base ou l'installer manuellement sur le robot.",
+              "dust_bag_full": "Le sac à poussière est plein ou les évents sont obstrués.\nSi le sac est plein, remplacez-le. Veuillez nettoyer régulièrement les évents de vidange automatique du bac à poussière et de la station de base.",
+              "self_test_failed": "Décharge d'eau anormale du réservoir d'eau propre des modules d'eau supérieur et inférieur.\nÉchec de l'auto-test : il n'y a pas d'eau dans le réservoir d'eau propre des modules d'eau supérieur et inférieur.",
+              "mop_install_failed": "L'installation du tampon de la serpillière a échoué.\nÉchec de l'installation des tampons de vadrouille. Veuillez installer manuellement.",
+              "low_battery_turn_off": "Batterie faible. ",
+              "dirty_tank_not_installed": "Le réservoir d'eau usée du robot n'est pas installé.\nVeuillez vous assurer que le réservoir d'eau usée du robot est correctement installé, puis démarrez la tâche.",
+              "robot_in_hidden_room": "Zone cachée. \nLa zone a été masquée. Pour le réutiliser, veuillez vous rendre sur la carte spécifique et cliquer sur la zone grise pour récupérer manuellement la zone cachée.",
+              "washboard_not_working": "La planche à laver cesse de fonctionner.\nVeuillez suivre les étapes de dépannage ci-dessous :\n1. Vérifiez si la planche à laver est emmêlée. Nettoyer avant utilisation.\n2. Vérifiez si la planche à laver est correctement installée.\n3. Si le problème persiste, veuillez contacter le service client.",
+              "return_to_charge_failed": "Échec du retour à la charge.\nVeuillez vérifier la station de base.\n1. Vérifiez si la plaque d'extension de la rampe est installée jusqu'à la station de base ;\n2. Vérifiez si la station de base est allumée ;\n3. Assurez-vous qu'il n'y a aucun obstacle devant la station de base.",
+              "lds_failed_to_lift": "Échec du levage du module LDS.\nVeuillez éliminer tous les débris autour du LDS et déplacer le robot vers une zone dégagée pour reprendre la tâche.",
+              "robot_stuck": "Le LDS ne peut pas être levé ici pour le positionnement.\nDéplacez le robot vers une zone dégagée et reprenez la tâche.",
+              "slippery_floor": "Sol glissant. Veuillez réessayer plus tard.\nSol glissant. Le robot n'a pas réussi à franchir les obstacles. Vous pouvez attendre que le robot réessaye ou vider l'eau autour de lui et reprendre la tâche.",
+              "check_mop_install": "Veuillez vérifier si la serpillière est installée correctement.\nInstructions d'installation de la vadrouille",
+              "dirty_water_tank_full": "Niveau d'eau anormal dans le réservoir d'eau sale.\nLe réservoir d'eau usée du robot est trop sale. Veuillez le retirer et le nettoyer à temps.",
+              "retractable_leg_stuck": "Veuillez vérifier si les pieds rétractables sont emmêlés.\nLes pieds rétractables peuvent s'emmêler.",
+              "internal_error": "Dysfonctionnement dû à une erreur interne. Essayez de redémarrer le robot.\nErreur interne",
+              "robot_stuck_on_tables": "Le robot est coincé entre des tables et des chaises\n1. Veuillez déplacer le robot vers une zone dégagée et redémarrer la tâche.\n2. Il est recommandé de disposer soigneusement les tables et les chaises pour éviter que le robot ne reste coincé.\nLe robot est bloqué",
+              "robot_stuck_on_passage": "Le robot est coincé dans un passage étroit\n1. Veuillez déplacer le robot vers une zone dégagée et redémarrer la tâche.\n2. Il est recommandé de définir le passage étroit comme zone interdite pour éviter que le robot ne reste coincé.\nLe robot est bloqué",
+              "robot_stuck_on_threshold": "Le robot est coincé sur une marche/seuil\n1. Veuillez déplacer le robot vers une zone dégagée et redémarrer la tâche.\n2. Il est recommandé de définir le pas/seuil comme seuil infranchissable pour éviter que le robot ne reste bloqué.\nLe robot est bloqué",
+              "robot_stuck_on_low_lying_area": "Le robot est coincé dans une zone basse\n1. Veuillez déplacer le robot vers une zone dégagée et redémarrer la tâche.\n2. Il est recommandé de définir la zone basse comme zone interdite pour éviter que le robot ne reste coincé.\nLe robot est bloqué",
+              "robot_stuck_on_ramp": "Le robot a détecté des rampes dangereuses sur le chemin.\nIl est recommandé de définir des seuils franchissables s'il n'y a pas de rampes faciles à chuter sur le chemin.",
+              "robot_stuck_on_obstacle": "Le robot a détecté des obstacles sur le chemin.\nVeuillez supprimer les obstacles du chemin et redémarrer la tâche.",
+              "robot_stuck_on_pet": "Le robot a détecté des personnes ou des animaux sur le chemin.\nVeuillez vous assurer qu'aucune personne ni aucun animal ne se trouve sur le chemin lorsque vous redémarrez la tâche.",
+              "robot_stuck_on_slippery_surface": "Le robot est coincé car il glisse.\nLe robot est bloqué à cause d'une glissade. Veuillez nettoyer les roues principales.",
+              "robot_stuck_on_carpet": "Le robot glisse sur le tapis\n1. Veuillez éloigner le robot du tapis et redémarrer la tâche\n2. Il est recommandé de définir le tapis comme zone interdite pour éviter que le robot ne reste coincé.\nLe robot est bloqué",
+              "drainage_failed": "Vidange anormale du réservoir d'eau sale\nErreur de pompe à eaux usées. Veuillez contacter le service client.",
+              "mop_not_detected": "Serpillière non détectée.\nVadrouille non détectée. Veuillez installer et continuer la tâche.",
+              "mop_holder_error": "Erreur de quantité/placement du support de serpillière dans la base. Veuillez installer le porte-balai ou ajuster son emplacement pour assurer un nettoyage correct.\nErreur porte-serpillière dans la station.",
+              "dock_error": "Erreur de la base.\nVeuillez vérifier la station et essayer les étapes suivantes :\n1. Assurez-vous que la trappe est complètement fermée.\n2. Assurez-vous que les trois groupes de vadrouilles sont placés sur la trappe dans l'ordre rouge-jaune-bleu. Si les serpillères se trouvent actuellement sur le support de transport ou sur la planche à laver, remettez-les sur la trappe dans cet ordre et réessayez.\n3. Vérifiez s'il y a des débris à l'intérieur de la station. Ne placez pas votre main, votre robot ou d'autres objets dans la planche à laver lorsque vous changez de vadrouille.",
+              "wash_failed": "Échec du lavage de la serpillière sale.\nVeuillez vérifier la station et essayer les étapes suivantes :\n1. Veuillez fixer manuellement la vadrouille à laver au robot.\n2. Veuillez installer d'autres vadrouilles sales sur la trappe.\n3. Dans l'application, accédez aux fonctions de la station, puis lavez, pour relancer la tâche de lavage à la vadrouille.",
+              "robot_stuck_on_curtain": "Le robot glisse dans la zone des rideaux\n1. Veuillez éloigner le robot de la zone du rideau et redémarrer la tâche.\n2. Le robot ne peut pas nettoyer cette zone du rideau. Il est recommandé de le supprimer.\nLe robot est bloqué",
+              "edge_mop_stop_rotate": "La serpillière latérale a cessé de tourner.\nLa vadrouille à bords a arrêté de tourner. Veuillez suivre ces étapes :\n1. Vérifiez si le robot est sur un tapis. La friction entre la vadrouille et le tapis peut l'empêcher de tourner. Déplacez le robot vers une zone sans tapis et reprenez le nettoyage.\n2. Vérifiez si la vadrouille est emmêlée. Si c'est le cas, retirez-les et reprenez le nettoyage.",
+              "edge_mop_detached": "La serpillière latérale s'est détachée.\nLa vadrouille de bord n'est pas détectée. Veuillez l'installer avant de reprendre le nettoyage.",
+              "chassis_lift_malfunction": "Dysfonctionnement du levage du châssis.\nDysfonctionnement du levage du châssis. Veuillez relancer la tâche. Si le problème persiste, contactez le service client.",
+              "mop_cover_error": "Vérifiez s'il y a des débris près du rouleau de serpillière et du couvercle. Nettoyez la vadrouille à rouleau pour éviter que le couvercle ne reste coincé. Après cela, placez le robot à plat et reprenez la tâche. Si le problème persiste, veuillez contacter le service client.\nErreur de couverture de vadrouille.",
+              "roller_mop_error": "Vérifiez s'il y a des débris près du rouleau de serpillière et du couvercle. Nettoyez la vadrouille à rouleau pour éviter qu'elle ne reste coincée. Après cela, placez le robot à plat et reprenez la tâche. Si le problème persiste, veuillez contacter le service client.\nErreur de vadrouille à rouleau.",
+              "onboard_water_tank_empty": "Niveau d'eau bas dans le réservoir d'eau propre du robot.\nNiveau d’eau faible dans la boîte à eau propre du robot. Veuillez remplir rapidement.",
+              "onboard_dirty_water_tank_full": "Le réservoir d'eau sale du robot est plein. Veuillez le vider rapidement.\nVeuillez sortir la boîte et la vider. Alternativement, vous pouvez déplacer le robot vers la station de lavage à la vadrouille (cela drainera également l'eau usée).",
+              "mop_not_installed": "Serpillière non installée.\nVeuillez confirmer que la vadrouille à rouleau est correctement installée avant de commencer ou de reprendre la tâche.",
+              "fluffing_roller_error": "Erreur du rouleau de duvet.\n1. Retournez le robot avec le bas vers le haut. Appuyez sur le bouton de déverrouillage d'un côté de la vadrouille à rouleau pour la retirer, puis nettoyez tous les débris qui l'entourent.\n2. Appuyez sur le clip orange et retirez le rouleau pelucheux. Nettoyez tous les cheveux ou débris dessus.\n3. Après le nettoyage, installez le rouleau pelucheux et appuyez fermement sur le clip. Installez ensuite la serpillère à rouleau, placez le robot à plat et reprenez la tâche.\nSi le problème persiste, veuillez vérifier plus de détails ou contacter le service client.",
+              "blocked_by_obstacle": "Robot bloqué par un obstacle.\nVeuillez vérifier s'il y a des obstacles devant le robot et retirez-les.",
+              "robotic_arm_stopped": "Bras robotisé arrêté.\nVeuillez appuyer et maintenir enfoncés le bouton Station et le bouton Marche/Arrêt du bras robotique pour réinitialiser avant de l'utiliser à nouveau.",
+              "drainage_outlet_filter": "Le filtre de sortie des eaux usées du robot est bouché.\nVeuillez nettoyer rapidement le filtre de sortie des eaux usées du robot pour garantir un débit d'eau fluide.",
+              "main_wheels_error": "Erreur des roues principales.\nAnomalie de roue détectée. La tâche de nettoyage a été suspendue. Vous pouvez tenter de reprendre le nettoyage à l'aide du bouton du robot ou via l'application. Si le problème persiste, veuillez nous contacter pour obtenir de l'aide.",
+              "unknown": "Erreur inconnue"
+            }
+          }
         }
       },
-      "charging_status": {
-        "name": "Statut de charge",
+      "filter_left": {
+        "name": "Filtre"
+      },
+      "filter_time_left": {
+        "name": "Temps restant du filtre"
+      },
+      "firmware_version": {
+        "name": "Version du firmware"
+      },
+      "first_cleaning_date": {
+        "name": "Date du premier nettoyage"
+      },
+      "fluffing_roller_dirty_left": {
+        "name": "Nettoyage rouleau peluche"
+      },
+      "fluffing_roller_dirty_time_left": {
+        "name": "Temps restant rouleau pelucheux"
+      },
+      "hot_water_status": {
+        "name": "Statut de l'eau chaude",
         "state": {
           "unknown": "Inconnu",
-          "charging": "En charge",
-          "not_charging": "Pas en charge",
-          "return_to_charge": "Retour à la station pour se recharger",
-          "charging_completed": "Charge terminée"
+          "disabled": "Désactivé",
+          "enabled": "Activé"
+        }
+      },
+      "ip_address": {
+        "name": "Adresse IP"
+      },
+      "low_water_warning": {
+        "name": "Avertissement niveau d'eau bas",
+        "state": {
+          "no_warning": "Pas d'avertissement",
+          "no_water_left": "L'eau du réservoir d'eau propre est sur le point d'être épuisée. ",
+          "no_water_left_after_clean": "Le tampon de la serpillière a été nettoyé. ",
+          "no_water_for_clean": "Niveau d'eau bas dans le réservoir d'eau propre. ",
+          "low_water": "Sur le point de manquer d'eau. ",
+          "tank_not_installed": "Le réservoir d'eau propre n'est pas installé."
+        }
+      },
+      "mac_address": {
+        "name": "Adresse MAC"
+      },
+      "main_brush_left": {
+        "name": "Brosse principale"
+      },
+      "main_brush_time_left": {
+        "name": "Temps restant brosse principale"
+      },
+      "mapping_time": {
+        "name": "Temps de cartographie"
+      },
+      "model": {
+        "name": "Modèle"
+      },
+      "mop_pad": {
+        "name": "Serpillière",
+        "state": {
+          "unknown": "Inconnu",
+          "installed": "Installée",
+          "not_installed": "Non installée",
+          "mop_installed": "Serpillière installée",
+          "in_station": "En gare"
+        }
+      },
+      "mop_pad_left": {
+        "name": "Serpillère"
+      },
+      "mop_pad_time_left": {
+        "name": "Temps restant serpillière"
+      },
+      "multiple_cleaning_time": {
+        "name": "Nettoyage multiple"
+      },
+      "nation_matched": {
+        "name": "Verrouillage de région",
+        "state": {
+          "unknown": "Désactivé",
+          "matched": "Déverrouillé",
+          "unmatched": "Verrouillé",
+          "na": "Non disponible"
+        }
+      },
+      "obstacle_reason": {
+        "name": "Raison de l'obstacle",
+        "state": {
+          "blocked_by_virtual_wall": "Bloqué par mur virtuel",
+          "blocked_by_door": "Bloqué par porte",
+          "blocked_by_threshold": "Bloqué par seuil",
+          "blocked_by_obstacle": "Bloqué par obstacle",
+          "blocked_by_carpet": "Bloqué par tapis",
+          "blocked_by_detected_carpet": "Bloqué par tapis détecté",
+          "blocked_by_hidden_obstacle": "Bloqué par obstacle caché",
+          "blocked_by_dynamic_obstacle": "Bloqué par obstacle dynamique",
+          "passage_too_low": "Passage trop bas",
+          "step_too_low": "Marche trop basse",
+          "failed_to_cross_threshold": "Échec franchissement seuil"
+        }
+      },
+      "obstacle_type": {
+        "name": "Type d'obstacle",
+        "state": {
+          "unknown": "Inconnu",
+          "base": "Base",
+          "scale": "Pèse-personne",
+          "thread": "Objets ressemblant à un câble",
+          "wire": "Fils électriques",
+          "toy": "Jouet",
+          "shoes": "Chaussures",
+          "sock": "Chaussette",
+          "fece": "Excréments d'animaux",
+          "trash_can": "Poubelles",
+          "fabric": "Textiles",
+          "power_strip": "Multiprise",
+          "liquid_stain": "Tâche liquide",
+          "obstacle": "Obstacle",
+          "pet": "Animal de compagnie",
+          "cleaning_tools": "Outils de nettoyage",
+          "detected_stain": "Tache",
+          "blocked_room": "Meuble susceptible de gêner le robot",
+          "easy_to_stuck_furniture": "Meuble susceptible de gêner le robot",
+          "uncleanable_stain": "Tache",
+          "leg": "Pied",
+          "large_particles": "Grosses particules",
+          "dried_stain": "Tache",
+          "food_bowl": "Bol de nourriture",
+          "pet_bed": "Niche/lit de l'animal de compagnie",
+          "cleaned_stain": "Tache",
+          "skipped_uncleanable_stain": "Tache",
+          "cleaned_dried_stain": "Tache",
+          "cleaned_large_particles": "Grosses particules",
+          "hair": "Objets ressemblant à un câble",
+          "paper": "Tissus",
+          "cleaned_hair": "Objets ressemblant à un câble",
+          "sundry": "Divers"
+        }
+      },
+      "onboard_dirty_water_tank_left": {
+        "name": "Réservoir d'eau sale embarqué"
+      },
+      "onboard_dirty_water_tank_time_left": {
+        "name": "Temps restant réservoir d'eau sale intégré"
+      },
+      "recovery_map_type": {
+        "name": "Type de carte",
+        "state": {
+          "original": "Carte originale",
+          "edited": "Carte éditée",
+          "backup": "Carte de sauvegarde"
         }
       },
       "relocation_status": {
@@ -927,6 +1417,24 @@
           "failed": "Échouée",
           "success": "Réussie"
         }
+      },
+      "remaining_battery": {
+        "name": "Batterie restante"
+      },
+      "roller_mop_filter_dirty_left": {
+        "name": "Nettoyage filtre rouleau"
+      },
+      "roller_mop_filter_dirty_time_left": {
+        "name": "Temps restant filtre rouleau serpillière"
+      },
+      "rssi": {
+        "name": "RSSI"
+      },
+      "scale_inhibitor_left": {
+        "name": "Inhibiteur de tartre"
+      },
+      "scale_inhibitor_time_left": {
+        "name": "Temps restant anticalcaire"
       },
       "self_wash_base_status": {
         "name": "Statut de la base d'autolavage",
@@ -941,15 +1449,165 @@
           "adding_water": "Ajout d'eau"
         }
       },
-      "low_water_warning": {
-        "name": "Avertissement niveau d'eau bas",
+      "sensor_dirty_left": {
+        "name": "Nettoyage capteurs"
+      },
+      "sensor_dirty_time_left": {
+        "name": "Temps restant nettoyage capteurs"
+      },
+      "serial_number": {
+        "name": "Numéro de série"
+      },
+      "side_brush_left": {
+        "name": "Brosse latérale"
+      },
+      "side_brush_time_left": {
+        "name": "Temps restant brosse latérale"
+      },
+      "silver_ion_left": {
+        "name": "Ion argent"
+      },
+      "silver_ion_time_left": {
+        "name": "Temps restant ions argent"
+      },
+      "squeegee_left": {
+        "name": "Raclette"
+      },
+      "squeegee_time_left": {
+        "name": "Temps restant raclette"
+      },
+      "ssid": {
+        "name": "SSID"
+      },
+      "startup_method": {
+        "name": "Lancé par",
         "state": {
-          "no_warning": "Pas d'avertissement",
-          "no_water_left": "L'eau du réservoir d'eau propre est sur le point d'être épuisée. ",
-          "no_water_left_after_clean": "Le tampon de la serpillière a été nettoyé. ",
-          "no_water_for_clean": "Niveau d'eau bas dans le réservoir d'eau propre. ",
-          "low_water": "Sur le point de manquer d'eau. ",
-          "tank_not_installed": "Le réservoir d'eau propre n'est pas installé."
+          "button": "Bouton",
+          "app": "Application",
+          "scheduled": "Programmé",
+          "voice": "Voix",
+          "second_cleaning": "Deuxième nettoyage",
+          "unknown": "Inconnu"
+        }
+      },
+      "state": {
+        "name": "État",
+        "state": {
+          "unknown": "Inconnu",
+          "sweeping": "Balayage",
+          "charging": "En charge",
+          "error": "Erreur",
+          "idle": "Inactif",
+          "paused": "En pause",
+          "returning": "Retour à la station",
+          "mopping": "Lavage",
+          "drying": "Séchage",
+          "washing": "Nettoyage",
+          "returning_to_wash": "Retour au nettoyage",
+          "building": "Construction de la carte",
+          "sweeping_and_mopping": "Balayage et lavage",
+          "charging_completed": "Charge terminée",
+          "upgrading": "En cours de mise à jour",
+          "clean_summon": "Appel à nettoyer",
+          "station_reset": "Réinitialisation de la station",
+          "returning_install_mop": "Retour à l'installation de la serpillière",
+          "returning_remove_mop": "Retour pour enlever la serpillière",
+          "water_check": "Vérification de l'eau",
+          "clean_add_water": "Nettoyer et ajouter de l'eau",
+          "washing_paused": "Lavage en pause",
+          "auto_emptying": "Vidage automatique",
+          "remote_control": "Contrôle à distance",
+          "smart_charging": "Chargement intelligent",
+          "second_cleaning": "Deuxième nettoyage",
+          "human_following": "Suivi humain",
+          "spot_cleaning": "Nettoyage des taches",
+          "returning_auto_empty": "Retour à Vider automatiquement",
+          "waiting_for_task": "En attente de tâche",
+          "station_cleaning": "Nettoyage de la station",
+          "returning_to_drain": "Retour à l'égout",
+          "draining": "Évacuation",
+          "auto_water_draining": "Vidange automatique de l'eau",
+          "emptying": "Vidange",
+          "dust_bag_drying": "Séchage du sac à poussière",
+          "dust_bag_drying_paused": "Séchage du sac à poussière en pause",
+          "heading_to_extra_cleaning": "En route vers nettoyage extra",
+          "extra_cleaning": "Nettoyage supplémentaire",
+          "finding_pet_paused": "Recherche d’animal en pause",
+          "finding_pet": "Recherche d’animal",
+          "shortcut": "Raccourci",
+          "monitoring": "Surveillance",
+          "monitoring_paused": "Surveillance en pause",
+          "initial_deep_cleaning": "Nettoyage en profondeur initial",
+          "initial_deep_cleaning_paused": "Nettoyage en profondeur initial en pause",
+          "sanitizing": "Assainissement",
+          "sanitizing_with_dry": "Assainissement avec séchage",
+          "changing_mop": "Changement de serpillière",
+          "changing_mop_paused": "Changement de serpillière en pause",
+          "floor_maintaining": "Entretien du sol",
+          "floor_maintaining_paused": "Entretien du sol en pause",
+          "remote_pickup": "Ramassage à distance",
+          "arranging_items": "Rangement des objets",
+          "pet_guarding": "Surveillance des animaux",
+          "pet_guarding_paused": "Surveillance des animaux en pause",
+          "installing_mop": "Installation de la serpillière",
+          "uninstalling_mop": "Désinstallation de la serpillière",
+          "intelligent_recharging": "Recharge intelligente",
+          "assisted_cleaning": "Nettoyage assisté",
+          "entering_dock": "Entrée dans la station",
+          "leaving_dock": "Sortie de la station",
+          "navigating_to_climber": "Navigation vers le grimpeur",
+          "docking_to_climber": "Arrimage au grimpeur",
+          "climber_docked": "Grimpeur arrimé",
+          "climber_navigating": "Grimpeur en navigation",
+          "climbing_stairs": "Montée des escaliers",
+          "climbing_stairs_completed": "Montée des escaliers terminée",
+          "climber_at_dock": "Grimpeur à la station",
+          "climber_leaving_dock": "Le grimpeur quitte la station"
+        }
+      },
+      "station_drainage_status": {
+        "name": "Statut du drainage de la station",
+        "state": {
+          "unknown": "Inconnu",
+          "idle": "Inactif",
+          "draining": "Évacuation"
+        }
+      },
+      "status": {
+        "name": "Statut",
+        "state": {
+          "unknown": "Inconnu",
+          "idle": "Inactif",
+          "paused": "En pause",
+          "cleaning": "Nettoyage",
+          "returning": "Retour à la station",
+          "spot_cleaning": "Nettoyage localisé",
+          "follow_wall_cleaning": "Nettoyage le long des murs",
+          "charging": "En charge",
+          "ota": "OTA",
+          "fct": "FCT",
+          "wifi_set": "WiFi connecté",
+          "power_off": "Arrêt",
+          "factory": "Usine",
+          "error": "Erreur",
+          "remote_control": "Contrôle à distance",
+          "sleeping": "En veille",
+          "self_test": "Auto-test",
+          "factory_test": "Test usine",
+          "standby": "En veille",
+          "room_cleaning": "Nettoyage d'une pièce",
+          "zone_cleaning": "Nettoyage d'une zone",
+          "fast_mapping": "Cartographie rapide",
+          "cruising_path": "Croisière sur chemin",
+          "cruising_point": "Croisière vers un point",
+          "summon_clean": "Appeler pour nettoyer",
+          "shortcut": "Raccourci",
+          "person_follow": "Suivre une personne",
+          "water_check": "Vérification de l'eau",
+          "pet_guarding": "Surveillance des animaux",
+          "auto_arrangement": "Rangement automatique",
+          "smart_arrangement": "Rangement intelligent",
+          "zoned_arrangement": "Rangement par zone"
         }
       },
       "stream_status": {
@@ -962,66 +1620,93 @@
           "recording": "Enregistrement"
         }
       },
-      "drainage_status": {
-        "name": "Statut du drainage",
+      "tank_filter_left": {
+        "name": "Filtre réservoir"
+      },
+      "tank_filter_time_left": {
+        "name": "Temps restant filtre du réservoir"
+      },
+      "task_end_type": {
+        "name": "Terminé par",
         "state": {
-          "unknown": "Inconnu",
-          "idle": "Inactif",
-          "draining": "Évacuation",
-          "draining_successful": "Vidange réussie",
-          "draining_failed": "La vidange a échoué"
+          "other": "Autre",
+          "manual_docking": "Amarrage manuel",
+          "docking": "Amarrage",
+          "failed_docking": "Échec de l'amarrage",
+          "stop": "Arrêter",
+          "unknown": "Inconnu"
         }
       },
-      "clean_water_tank_status": {
-        "name": "Statut du réservoir d'eau propre",
+      "task_interrupt_reason": {
+        "name": "Raison de l'interruption",
         "state": {
-          "unknown": "Inconnu",
-          "not_available": "Pas disponible",
-          "not_installed": "Non installé",
-          "low_water": "Basse eau",
-          "installed": "Installé"
+          "abnormal_docking": "Amarrage anormal",
+          "base_station_powered_off": "Station de base éteinte",
+          "brush_entangled_by_carpet": "Brosse emmêlée par le tapis",
+          "brush_entangled_by_object": "Brosse emmêlée par un objet",
+          "brush_entangled_by_obstacle": "Brosse emmêlée par un obstacle",
+          "cannot_find_base_station": "Base introuvable",
+          "cliff_sensor_error": "Erreur capteur de vide",
+          "laser_distance_sensor_error": "Erreur capteur laser",
+          "mop_pad_abnormally_removed": "Serpillère retirée anormalement",
+          "mop_pad_fallen_off": "Serpillère tombée",
+          "mop_pad_fallen_off_by_obstacle": "Serpillère tombée sur obstacle",
+          "mop_pad_fallen_off_by_table": "Serpillère tombée sur table",
+          "mop_pad_fallen_off_crossing_obstacle": "Serpillère tombée en franchissant",
+          "mop_pad_removed": "Serpillère retirée",
+          "mop_pad_stuck": "Serpillère coincée",
+          "robot_fallen": "Robot tombé",
+          "robot_is_stuck_on_obstacle": "Robot coincé sur obstacle",
+          "robot_is_stuck_on_step": "Robot coincé sur marche",
+          "robot_lifted": "Robot soulevé",
+          "task_completed": "Tâche terminée",
+          "unknown": "Inconnu"
         }
       },
-      "dirty_water_tank_status": {
-        "name": "Statut du réservoir d'eau sale",
+      "task_status": {
+        "name": "Statut de la tâche",
         "state": {
           "unknown": "Inconnu",
-          "installed": "Installé",
-          "not_installed_or_full": "Non installé ou complet"
-        }
-      },
-      "dust_bag_status": {
-        "name": "Statut du sac à poussière",
-        "state": {
-          "unknown": "Inconnu",
-          "installed": "Installé",
-          "not_installed": "Non installé",
-          "check": "Vérifier"
-        }
-      },
-      "detergent_status": {
-        "name": "Statut du détergent",
-        "state": {
-          "unknown": "Inconnu",
-          "installed": "Installé",
-          "disabled": "Désactivé",
-          "low_detergent": "Détergent faible"
-        }
-      },
-      "hot_water_status": {
-        "name": "Statut de l'eau chaude",
-        "state": {
-          "unknown": "Inconnu",
-          "disabled": "Désactivé",
-          "enabled": "Activé"
-        }
-      },
-      "station_drainage_status": {
-        "name": "Statut du drainage de la station",
-        "state": {
-          "unknown": "Inconnu",
-          "idle": "Inactif",
-          "draining": "Évacuation"
+          "completed": "Terminée",
+          "cleaning": "Nettoyage",
+          "zone_cleaning": "Nettoyage d'une zone",
+          "room_cleaning": "Nettoyage d'une pièce",
+          "spot_cleaning": "Nettoyage localisé",
+          "fast_mapping": "Cartographie rapide",
+          "cleaning_paused": "Nettoyage mis en pause",
+          "room_cleaning_paused": "Nettoyage de la pièce mis en pause",
+          "zone_cleaning_paused": "Nettoyage de la zone mis en pause",
+          "spot_cleaning_paused": "Nettoyage localisé mis en pause",
+          "map_cleaning_paused": "Nettoyage de la carte en pause",
+          "docking_paused": "Retour à la station mis en pause",
+          "mopping_paused": "Lavage mis en pause",
+          "zone_mopping_paused": "Lavage d'une zone mis en pause",
+          "room_mopping_paused": "Lavage d'une pièce mis en pause",
+          "zone_docking_paused": "Retour à la station mis en pause",
+          "room_docking_paused": "Retour à la station mis en pause",
+          "cruising_path": "Croisière sur chemin",
+          "cruising_path_paused": "Croisière sur chemin en pause",
+          "cruising_point": "Croisière vers un point",
+          "cruising_point_paused": "Croisière vers un point en pause",
+          "summon_clean_paused": "Appeler pour nettoyer en pause",
+          "returning_to_install_mop": "Retourner pour installer la serpillière",
+          "returning_to_remove_mop": "Retourner pour retirer la serpillière",
+          "station_cleaning": "Nettoyage de la station",
+          "pet_finding": "Constatation d'animaux",
+          "auto_cleaning_washing_paused": "Lavage de nettoyage automatique interrompu",
+          "area_cleaning_washing_paused": "Lavage de nettoyage de zone interrompu",
+          "custom_cleaning_washing_paused": "Lavage de nettoyage personnalisé pause",
+          "picking_up_item": "Ramassage de l'objet",
+          "picking_up_item_paused": "Ramassage de l'objet en pause",
+          "picking_up_item_success": "Objet ramassé avec succès",
+          "remote_pickup_initializing": "Initialisation du ramassage à distance",
+          "remote_pickup_identifing": "Identification du ramassage à distance",
+          "manual_remote_pickup": "Ramassage à distance manuel",
+          "automatic_remote_pickup": "Ramassage à distance automatique",
+          "remote_pickup_in_progress": "Ramassage à distance en cours",
+          "remote_pickup_paused": "Ramassage à distance en pause",
+          "placing_item": "Placement de l'objet",
+          "placing_item_paused": "Placement de l'objet en pause"
         }
       },
       "task_type": {
@@ -1067,461 +1752,462 @@
           "steam_cleaning_paused": "Nettoyage à la vapeur en pause"
         }
       },
-      "dust_bag_drying_status": {
-        "name": "Statut du séchage du sac à poussière",
-        "state": {
-          "idle": "Inactif",
-          "drying": "Séchage",
-          "paused": "En pause"
-        }
-      },
-      "nation_matched": {
-        "name": "Verrouillage de région",
-        "state": {
-          "unknown": "Désactivé",
-          "matched": "Déverrouillé",
-          "unmatched": "Verrouillé",
-          "na": "Non disponible"
-        }
-      },
-      "startup_method": {
-        "name": "Lancé par",
-        "state": {
-          "button": "Bouton",
-          "app": "Application",
-          "scheduled": "Programmé",
-          "voice": "Voix",
-          "second_cleaning": "Deuxième nettoyage",
-          "unknown": "Inconnu"
-        }
-      },
-      "cleaning_status": {
-        "name": "Nettoyage",
-        "state": {
-          "interrupted": "Interrompu",
-          "completed": "Terminé",
-          "manually_ended": "Terminé manuellement",
-          "failed": "Échoué",
-          "unknown": "Inconnu"
-        }
-      },
-      "cleanup_method": {
-        "name": "Méthode de nettoyage",
-        "state": {
-          "other": "Autre",
-          "default": "Par défaut",
-          "customized": "Personnalisé",
-          "cleangenius": "CleanGenius",
-          "water_stain": "Tâche d'eau",
-          "unknown": "Inconnu"
-        }
-      },
-      "task_end_type": {
-        "name": "Terminé par",
-        "state": {
-          "other": "Autre",
-          "manual_docking": "Amarrage manuel",
-          "docking": "Amarrage",
-          "failed_docking": "Échec de l'amarrage",
-          "stop": "Arrêter",
-          "unknown": "Inconnu"
-        }
-      },
-      "task_interrupt_reason": {
-        "name": "Raison de l'interruption",
-        "state": {
-          "abnormal_docking": "Amarrage anormal",
-          "base_station_powered_off": "Station de base éteinte",
-          "brush_entangled_by_carpet": "Brosse emmêlée par le tapis",
-          "brush_entangled_by_object": "Brosse emmêlée par un objet",
-          "brush_entangled_by_obstacle": "Brosse emmêlée par un obstacle",
-          "cannot_find_base_station": "Base introuvable",
-          "cliff_sensor_error": "Erreur capteur de vide",
-          "laser_distance_sensor_error": "Erreur capteur laser",
-          "mop_pad_abnormally_removed": "Serpillère retirée anormalement",
-          "mop_pad_fallen_off": "Serpillère tombée",
-          "mop_pad_fallen_off_by_obstacle": "Serpillère tombée sur obstacle",
-          "mop_pad_fallen_off_by_table": "Serpillère tombée sur table",
-          "mop_pad_fallen_off_crossing_obstacle": "Serpillère tombée en franchissant",
-          "mop_pad_removed": "Serpillère retirée",
-          "mop_pad_stuck": "Serpillère coincée",
-          "robot_fallen": "Robot tombé",
-          "robot_is_stuck_on_obstacle": "Robot coincé sur obstacle",
-          "robot_is_stuck_on_step": "Robot coincé sur marche",
-          "robot_lifted": "Robot soulevé",
-          "task_completed": "Tâche terminée",
-          "unknown": "Inconnu"
-        }
-      },
-      "recovery_map_type": {
-        "name": "Type de carte",
-        "state": {
-          "original": "Carte originale",
-          "edited": "Carte éditée",
-          "backup": "Carte de sauvegarde"
-        }
-      },
-      "obstacle_type": {
-        "name": "Type d'obstacle",
-        "state": {
-          "unknown": "Inconnu",
-          "base": "Base",
-          "scale": "Balance",
-          "thread": "Fil",
-          "wire": "Câble",
-          "toy": "Jouet",
-          "shoes": "Chaussures",
-          "sock": "Chaussette",
-          "fece": "Excrement",
-          "trash_can": "Poubelle",
-          "fabric": "Tissu",
-          "power_strip": "Multiprise",
-          "liquid_stain": "Tâche liquide",
-          "obstacle": "Obstacle",
-          "pet": "Animal",
-          "cleaning_tools": "Outils de nettoyage",
-          "detected_stain": "Tâche détectée",
-          "blocked_room": "Pièce bloquée",
-          "easy_to_stuck_furniture": "Meubles à risques",
-          "uncleanable_stain": "Tâche non nettoyable",
-          "leg": "Pied",
-          "large_particles": "Grandes particules",
-          "dried_stain": "Tâche séchée",
-          "food_bowl": "Gamelle",
-          "pet_bed": "Panier animal",
-          "cleaned_stain": "Tâche nettoyée",
-          "skipped_uncleanable_stain": "Tâche ignorée",
-          "cleaned_dried_stain": "Tâche séchée nettoyée",
-          "cleaned_large_particles": "Grandes particules nettoyées",
-          "hair": "Cheveux",
-          "paper": "Papier",
-          "cleaned_hair": "Cheveux nettoyés",
-          "sundry": "Divers"
-        }
-      },
-      "obstacle_reason": {
-        "name": "Raison de l'obstacle",
-        "state": {
-          "blocked_by_virtual_wall": "Bloqué par mur virtuel",
-          "blocked_by_door": "Bloqué par porte",
-          "blocked_by_threshold": "Bloqué par seuil",
-          "blocked_by_obstacle": "Bloqué par obstacle",
-          "blocked_by_carpet": "Bloqué par tapis",
-          "blocked_by_detected_carpet": "Bloqué par tapis détecté",
-          "blocked_by_hidden_obstacle": "Bloqué par obstacle caché",
-          "blocked_by_dynamic_obstacle": "Bloqué par obstacle dynamique",
-          "passage_too_low": "Passage trop bas",
-          "step_too_low": "Marche trop basse",
-          "failed_to_cross_threshold": "Échec franchissement seuil"
-        }
-      },
-      "remaining_battery": {
-        "name": "Batterie restante"
-      },
-      "multiple_cleaning_time": {
-        "name": "Nettoyage multiple"
-      },
-      "bssid": {
-        "name": "BSSID"
-      },
-      "firmware_version": {
-        "name": "Version du firmware"
-      },
-      "ip_address": {
-        "name": "Adresse IP"
-      },
-      "mac_address": {
-        "name": "Adresse MAC"
-      },
-      "model": {
-        "name": "Modèle"
-      },
-      "rssi": {
-        "name": "RSSI"
-      },
-      "serial_number": {
-        "name": "Numéro de série"
-      },
-      "ssid": {
-        "name": "SSID"
-      },
       "timezone": {
         "name": "Fuseau horaire"
+      },
+      "total_cleaned_area": {
+        "name": "Surface totale nettoyée"
+      },
+      "total_cleaning_time": {
+        "name": "Temps total de nettoyage"
       },
       "voice_packet_id": {
         "name": "Pack voix"
       },
-      "deodorizer_left": {
-        "name": "Désodorisant"
-      },
-      "detergent_left": {
-        "name": "Détergent"
-      },
-      "dirty_water_channel_left": {
-        "name": "Canal d'eau sale"
-      },
-      "filter_left": {
-        "name": "Filtre"
-      },
-      "fluffing_roller_dirty_left": {
-        "name": "Nettoyage rouleau peluche"
-      },
-      "main_brush_left": {
-        "name": "Brosse principale"
-      },
-      "mop_pad_left": {
-        "name": "Serpillère"
-      },
-      "onboard_dirty_water_tank_left": {
-        "name": "Réservoir d'eau sale embarqué"
-      },
-      "roller_mop_filter_dirty_left": {
-        "name": "Nettoyage filtre rouleau"
-      },
-      "scale_inhibitor_left": {
-        "name": "Inhibiteur de tartre"
-      },
-      "sensor_dirty_left": {
-        "name": "Nettoyage capteurs"
-      },
-      "side_brush_left": {
-        "name": "Brosse latérale"
-      },
-      "silver_ion_left": {
-        "name": "Ion argent"
-      },
-      "squeegee_left": {
-        "name": "Raclette"
-      },
-      "tank_filter_left": {
-        "name": "Filtre réservoir"
-      },
       "water_outlet_filter_dirty_left": {
         "name": "Nettoyage filtre sortie d'eau"
       },
+      "water_outlet_filter_dirty_time_left": {
+        "name": "Temps restant filtre sortie d'eau"
+      },
+      "water_tank": {
+        "name": "Réservoir d'eau",
+        "state": {
+          "unknown": "Inconnu",
+          "installed": "Installée",
+          "not_installed": "Non installée",
+          "mop_installed": "Serpillière installée",
+          "in_station": "En gare"
+        }
+      },
       "wheel_dirty_left": {
         "name": "Nettoyage roues"
+      },
+      "wheel_dirty_time_left": {
+        "name": "Temps restant roues"
       }
     },
-    "toggle": {
-      "customized_cleaning": {
-        "name": "Nettoyage personnalisé"
+    "switch": {
+      "active_suspension_crossing": {
+        "name": "Franchissement par suspension active"
       },
-      "cleangenius_cleaning": {
-        "name": "CleanGenius"
+      "ai_fluid_detection": {
+        "name": "Détection des liquides par IA"
       },
-      "deep_cleaning": {
-        "name": "Nettoyage approfondi"
+      "ai_furniture_detection": {
+        "name": "Détection des meubles par IA"
       },
-      "auto_dust_collecting": {
-        "name": "Vidage automatique"
-      },
-      "hair_compression": {
-        "name": "Compression des cheveux"
-      },
-      "self_clean": {
-        "name": "Auto-nettoyage"
-      },
-      "deep_mop_washing": {
-        "name": "Lavage approfondi de la serpillière"
-      },
-      "hot_washing": {
-        "name": "Lavage à l'eau chaude"
-      },
-      "auto_drying": {
-        "name": "Séchage automatique"
-      },
-      "silent_drying": {
-        "name": "Séchage silencieux"
-      },
-      "uv_sterilization": {
-        "name": "Stérilisation UV"
-      },
-      "customized_carpet_cleaning": {
-        "name": "Nettoyage personnalisé"
-      },
-      "carpet_avoidance": {
-        "name": "Évitement des tapis"
-      },
-      "carpet_preferences": {
-        "name": "Préférences personnalisées"
-      },
-      "auto_change_mop": {
-        "name": "Changement automatique de serpillière"
-      },
-      "multi_floor_map": {
-        "name": "Carte multi-étages"
-      },
-      "intelligent_recognition": {
-        "name": "Reconnaissance intelligente"
-      },
-      "map_saving": {
-        "name": "Enregistrement de la carte"
-      },
-      "child_lock": {
-        "name": "Sécurité enfant"
-      },
-      "resume_cleaning": {
-        "name": "Reprise du nettoyage"
-      },
-      "obstacle_avoidance": {
-        "name": "Évitement d'obstacles"
-      },
-      "carpet_boost": {
-        "name": "Booster tapis"
-      },
-      "carpet_recognition": {
-        "name": "Reconnaissance des tapis"
-      },
-      "clean_carpets_first": {
-        "name": "Nettoyer les tapis en premier"
-      },
-      "close_roller_cover_on_carpet": {
-        "name": "Fermer le couvercle du rouleau sur le tapis"
-      },
-      "intensive_carpet_cleaning": {
-        "name": "Nettoyage intensif des tapis"
-      },
-      "side_brush_carpet_rotate": {
-        "name": "Rotation de la brosse latérale sur le tapis"
-      },
-      "lift_chassis_on_carpet": {
-        "name": "Soulever le châssis sur le tapis"
-      },
-      "auto_mount_mop": {
-        "name": "Montage automatique de la serpillière"
-      },
-      "mopping_with_detergent": {
-        "name": "Lavage avec détergent"
-      },
-      "mop_washing_with_detergent": {
-        "name": "Lavage de la serpillière avec détergent"
-      },
-      "auto_add_detergent": {
-        "name": "Ajout automatique de détergent"
-      },
-      "smart_mop_washing": {
-        "name": "Lavage intelligent de la serpillière"
-      },
-      "wider_corner_coverage": {
-        "name": "Couverture plus large des coins"
-      },
-      "pressurized_cleaning": {
-        "name": "Nettoyage sous pression"
-      },
-      "gap_cleaning_extension": {
-        "name": "Extension de nettoyage des espaces"
-      },
-      "mopping_under_furnitures": {
-        "name": "Passage sous les meubles"
-      },
-      "floor_direction_cleaning": {
-        "name": "Nettoyage dans l'ordre des pièces"
-      },
-      "ring_light_always_on": {
-        "name": "Anneau lumineux toujours allumé"
-      },
-      "collision_avoidance": {
-        "name": "Évitement de collision"
-      },
-      "fill_light": {
-        "name": "Lumière de caméra"
+      "ai_human_detection": {
+        "name": "Détection humaine par IA"
       },
       "ai_obstacle_detection": {
         "name": "Détection d'obstacles par IA"
       },
-      "ai_pet_detection": {
-        "name": "Détection d'animaux"
-      },
-      "pet_focused_detection": {
-        "name": "Détection ciblée des animaux"
-      },
-      "pet_focused_cleaning": {
-        "name": "Nettoyage ciblé des animaux"
+      "ai_obstacle_image_upload": {
+        "name": "Téléversement des photos d'obstacles par IA"
       },
       "ai_obstacle_picture": {
         "name": "Photos d'obstacles"
       },
-      "obstacle_crossing": {
-        "name": "Franchissement d'obstacles synchronisé"
+      "ai_pet_avoidance": {
+        "name": "Évitement des animaux par IA"
       },
-      "active_suspension_crossing": {
-        "name": "Franchissement par suspension active"
+      "ai_pet_detection": {
+        "name": "Détection d'animaux"
       },
-      "dynamic_obstacle_cleaning": {
-        "name": "Nettoyage dynamique d'obstacles"
+      "auto_add_detergent": {
+        "name": "Ajout automatique de détergent"
       },
-      "large_particles_boost": {
-        "name": "Booster grandes particules"
+      "auto_change_mop": {
+        "name": "Changement automatique de serpillière"
       },
-      "streaming_voice_prompt": {
-        "name": "Invite vocale en continu"
+      "auto_charging": {
+        "name": "Recharge automatique"
       },
-      "voice_assistant": {
-        "name": "Assistant vocal"
+      "auto_drying": {
+        "name": "Séchage automatique"
       },
-      "off_peak_charging": {
-        "name": "Charge en heures creuses"
+      "auto_dust_collecting": {
+        "name": "Vidage automatique"
       },
-      "dnd_disable_resume_cleaning": {
-        "name": "Désactiver la reprise du nettoyage"
+      "auto_mount_mop": {
+        "name": "Montage automatique de la serpillière"
+      },
+      "auto_water_refilling": {
+        "name": "Remplissage automatique de l'eau"
+      },
+      "camera_light_brightness_auto": {
+        "name": "Luminosité auto de la lumière de la caméra"
+      },
+      "carpet_avoidance": {
+        "name": "Évitement des tapis"
+      },
+      "carpet_boost": {
+        "name": "Booster tapis"
+      },
+      "carpet_preferences": {
+        "name": "Préférences personnalisées"
+      },
+      "carpet_recognition": {
+        "name": "Reconnaissance des tapis"
+      },
+      "child_lock": {
+        "name": "Sécurité enfant"
+      },
+      "clean_carpets_first": {
+        "name": "Nettoyer les tapis en premier"
+      },
+      "cleangenius_cleaning": {
+        "name": "CleanGenius"
+      },
+      "cleaning_sequence": {
+        "name": "Ordre de nettoyage"
+      },
+      "close_roller_cover_on_carpet": {
+        "name": "Fermer le couvercle du rouleau sur le tapis"
+      },
+      "collision_avoidance": {
+        "name": "Évitement de collision"
+      },
+      "customized_carpet_cleaning": {
+        "name": "Nettoyage personnalisé"
+      },
+      "customized_cleaning": {
+        "name": "Nettoyage personnalisé"
+      },
+      "deep_cleaning": {
+        "name": "Nettoyage approfondi"
+      },
+      "deep_mop_washing": {
+        "name": "Lavage approfondi de la serpillière"
+      },
+      "dnd": {
+        "name": "DnD"
       },
       "dnd_disable_auto_empty": {
         "name": "Désactiver le vidage automatique"
       },
+      "dnd_disable_resume_cleaning": {
+        "name": "Désactiver la reprise du nettoyage"
+      },
       "dnd_reduce_volume": {
         "name": "Réduire le volume"
       },
-      "dnd": {
-        "name": "DnD"
+      "dust_bag_drying": {
+        "name": "Séchage du sac à poussière"
+      },
+      "dynamic_obstacle_cleaning": {
+        "name": "Nettoyage dynamique d'obstacles"
+      },
+      "fill_light": {
+        "name": "Lumière de caméra"
+      },
+      "floor_direction_cleaning": {
+        "name": "Nettoyage dans l'ordre des pièces"
+      },
+      "fuzzy_obstacle_detection": {
+        "name": "Détection floue des obstacles"
+      },
+      "gap_cleaning_extension": {
+        "name": "Extension de nettoyage des espaces"
+      },
+      "hair_compression": {
+        "name": "Compression des cheveux"
+      },
+      "hot_washing": {
+        "name": "Lavage à l'eau chaude"
+      },
+      "human_follow": {
+        "name": "Suivi d'humain"
+      },
+      "intelligent_recognition": {
+        "name": "Reconnaissance intelligente"
+      },
+      "intensive_carpet_cleaning": {
+        "name": "Nettoyage intensif des tapis"
+      },
+      "large_particles_boost": {
+        "name": "Booster grandes particules"
+      },
+      "lds_state": {
+        "name": "État du LDS"
+      },
+      "lift_chassis_on_carpet": {
+        "name": "Soulever le châssis sur le tapis"
+      },
+      "map_saving": {
+        "name": "Enregistrement de la carte"
+      },
+      "max_suction_power": {
+        "name": "Puissance d'aspiration maximale"
+      },
+      "mop_extend": {
+        "name": "Extension de la serpillière"
+      },
+      "mop_washing_with_detergent": {
+        "name": "Lavage de la serpillière avec détergent"
+      },
+      "mopping_under_furnitures": {
+        "name": "Passage sous les meubles"
+      },
+      "mopping_with_detergent": {
+        "name": "Lavage avec détergent"
+      },
+      "multi_floor_map": {
+        "name": "Carte multi-étages"
+      },
+      "obstacle_avoidance": {
+        "name": "Évitement d'obstacles"
+      },
+      "obstacle_crossing": {
+        "name": "Franchissement d'obstacles synchronisé"
+      },
+      "off_peak_charging": {
+        "name": "Charge en heures creuses"
+      },
+      "pet_focused_cleaning": {
+        "name": "Nettoyage ciblé des animaux"
+      },
+      "pet_focused_detection": {
+        "name": "Détection ciblée des animaux"
+      },
+      "pet_picture": {
+        "name": "Photo d'animal"
+      },
+      "pressurized_cleaning": {
+        "name": "Nettoyage sous pression"
+      },
+      "resume_cleaning": {
+        "name": "Reprise du nettoyage"
+      },
+      "ring_light_always_on": {
+        "name": "Anneau lumineux toujours allumé"
+      },
+      "self_clean": {
+        "name": "Auto-nettoyage"
+      },
+      "self_clean_by_zone": {
+        "name": "Auto-nettoyage par zone"
+      },
+      "side_brush_carpet_rotate": {
+        "name": "Rotation de la brosse latérale sur le tapis"
+      },
+      "side_reach": {
+        "name": "Portée latérale"
+      },
+      "silent_drying": {
+        "name": "Séchage silencieux"
+      },
+      "smart_drying": {
+        "name": "Séchage intelligent"
+      },
+      "smart_mop_washing": {
+        "name": "Lavage intelligent de la serpillière"
+      },
+      "stain_avoidance": {
+        "name": "Évitement des taches"
+      },
+      "streaming_voice_prompt": {
+        "name": "Invite vocale en continu"
+      },
+      "tight_mopping": {
+        "name": "Lavage dense"
+      },
+      "ultra_clean_mode": {
+        "name": "Mode ultra propre"
+      },
+      "uv_sterilization": {
+        "name": "Stérilisation UV"
+      },
+      "voice_assistant": {
+        "name": "Assistant vocal"
+      },
+      "water_electrolysis": {
+        "name": "Électrolyse de l'eau"
+      },
+      "wider_corner_coverage": {
+        "name": "Couverture plus large des coins"
+      }
+    },
+    "button": {
+      "backup_saved_map": {
+        "name": "Sauvegarder la carte enregistrée"
+      },
+      "base_station_cleaning": {
+        "name": "Nettoyage de la station de base"
+      },
+      "base_station_self_repair": {
+        "name": "Auto-réparation de la station de base"
+      },
+      "clear_warning": {
+        "name": "Effacer l'avertissement"
+      },
+      "empty_water_tank": {
+        "name": "Vider le réservoir d'eau"
+      },
+      "manual_drying": {
+        "name": "Séchage manuel"
+      },
+      "manual_dust_bag_drying": {
+        "name": "Séchage manuel du sac à poussière"
+      },
+      "reload_shortcuts": {
+        "name": "Recharger les raccourcis"
+      },
+      "reset_deodorizer": {
+        "name": "Réinitialiser le désodorisant"
+      },
+      "reset_detergent": {
+        "name": "Réinitialiser le détergent"
+      },
+      "reset_dirty_water_channel": {
+        "name": "Réinitialiser le conduit d'eau sale"
+      },
+      "reset_filter": {
+        "name": "Réinitialiser le filtre"
+      },
+      "reset_fluffing_roller": {
+        "name": "Réinitialiser le rouleau pelucheux"
+      },
+      "reset_main_brush": {
+        "name": "Réinitialiser la brosse principale"
+      },
+      "reset_mop_pad": {
+        "name": "Réinitialiser la serpillière"
+      },
+      "reset_onboard_dirty_water_tank": {
+        "name": "Réinitialiser le réservoir d'eau sale intégré"
+      },
+      "reset_roller_mop_filter": {
+        "name": "Réinitialiser le filtre rouleau serpillière"
+      },
+      "reset_scale_inhibitor": {
+        "name": "Réinitialiser l'anticalcaire"
+      },
+      "reset_sensor": {
+        "name": "Réinitialiser le capteur"
+      },
+      "reset_side_brush": {
+        "name": "Réinitialiser la brosse latérale"
+      },
+      "reset_silver_ion": {
+        "name": "Réinitialiser les ions argent"
+      },
+      "reset_squeegee": {
+        "name": "Réinitialiser la raclette"
+      },
+      "reset_tank_filter": {
+        "name": "Réinitialiser le filtre du réservoir"
+      },
+      "reset_water_outlet_filter": {
+        "name": "Réinitialiser le filtre de sortie d'eau"
+      },
+      "reset_wheel": {
+        "name": "Réinitialiser les roues"
+      },
+      "self_clean": {
+        "name": "Auto-nettoyage"
+      },
+      "shortcut": {
+        "name": "Raccourci {name}"
+      },
+      "start_auto_empty": {
+        "name": "Démarrer le vidage automatique"
+      },
+      "start_fast_mapping": {
+        "name": "Démarrer la cartographie rapide"
+      },
+      "start_mapping": {
+        "name": "Démarrer la cartographie"
+      },
+      "start_recleaning": {
+        "name": "Démarrer un nouveau nettoyage"
+      },
+      "water_tank_draining": {
+        "name": "Vidange du réservoir d'eau"
+      }
+    },
+    "camera": {
+      "map": {
+        "name": "Carte actuelle"
+      },
+      "map_data": {
+        "name": "Données de la carte actuelle"
+      },
+      "saved_map": {
+        "name": "Carte enregistrée {name}"
+      },
+      "wifi_map": {
+        "name": "Carte WiFi enregistrée {name}"
+      }
+    },
+    "binary_sensor": {
+      "charging_state": {
+        "name": "État de charge",
+        "state": {
+          "on": "En charge",
+          "off": "Pas en charge"
+        }
+      },
+      "lds_status": {
+        "name": "État du LDS"
+      },
+      "roller_cover_status": {
+        "name": "État du couvercle de rouleau"
       }
     },
     "number": {
-      "wetness_level": {
-        "name": "Humidité"
-      },
       "auto_empty_area": {
         "name": "Zone de vidage automatique"
+      },
+      "camera_light_brightness": {
+        "name": "Luminosité de la lumière de la caméra"
       },
       "drying_time": {
         "name": "Temps de séchage"
       },
-      "self_clean_time": {
-        "name": "Temps d'auto-nettoyage"
+      "mop_cleaning_remainder": {
+        "name": "Rappel de nettoyage de la serpillière"
       },
       "self_clean_area": {
         "name": "Zone d'auto-nettoyage"
       },
+      "self_clean_time": {
+        "name": "Temps d'auto-nettoyage"
+      },
       "volume": {
         "name": "Volume"
+      },
+      "wetness_level": {
+        "name": "Humidité"
       }
     },
     "time": {
-      "dnd_start": {
-        "name": "Heure de début DnD"
-      },
       "dnd_end": {
         "name": "Heure de fin DnD"
       },
-      "off_peak_charging_start": {
-        "name": "Heure de début (heures creuses)"
+      "dnd_start": {
+        "name": "Heure de début DnD"
       },
       "off_peak_charging_end": {
         "name": "Heure de fin (heures creuses)"
+      },
+      "off_peak_charging_start": {
+        "name": "Heure de début (heures creuses)"
       },
       "schedule_time": {
         "name": "Heure de début"
       }
     },
     "input": {
-      "schedule_repeats": {
-        "name": "Répétitions"
-      },
       "dnd_repeats": {
         "name": "Répétitions"
       },
       "map_custom_name": {
         "name": "Nom de la carte"
+      },
+      "schedule_repeats": {
+        "name": "Répétitions"
       },
       "segment_custom_name": {
         "name": "Nom de la pièce"
@@ -1567,8 +2253,9 @@
         "edit_carpet": "Modifier tapis",
         "empty": "Vider",
         "enable": "Activer",
+        "enter_dvc_key": "Saisir une clé existante",
         "fast_mapping": "Cartograp. rapide",
-        "get_dreame_vacuum_card": "Obtenir la carte Dreame Vacuum",
+        "get_dvc_key": "Obtenir une clé DVC",
         "ignore": "Ignorer",
         "ignore_obstacle": "Ignorer l’obstacle",
         "impassable_threshold": "Seuil infranchissable",
@@ -1656,6 +2343,8 @@
         "copy": "Copier",
         "copy_all": "Tout copier",
         "disable_haptic": "Désac. retour haptique",
+        "dvc_key": "Clé DVC",
+        "dvc_key_title": "Saisissez la clé DVC",
         "editable_objects": "Objets modifiables",
         "font_size": "Taille police",
         "full_height": "Pleine hauteur",
@@ -1826,6 +2515,7 @@
         "dock_in_restricted_area_detail": "Base en zone interdite. Robot risque de ne pas pouvoir se recharger.",
         "drying_will_stopped": "Séchage serpillière arrêté !",
         "dust_collection_not_performed": "Tâche de collecte de poussière (Vidage automatique) non effectuée\nLe robot n'effectuera pas de vidage automatique pendant la période Ne Pas Déranger.",
+        "dvc_key_description": "Une clé est valable pour un seul appareil. Si c'est la première fois que vous utilisez cette clé, elle sera activée pour cet appareil maintenant.",
         "enable_auto_mount_mop": "Activer montage serpillière ?",
         "enable_carpet_recognition": "Détection tapis sera activée !",
         "enable_customized_cleaning": "Activer nettoyage personnalisé ?",
@@ -1836,6 +2526,7 @@
         "failed_to_load_card": "Échec du chargement de la carte",
         "ignore_obstacle": "Ignorer obstacle ?",
         "invalid_entity": "Entité invalide",
+        "invalid_key": "Clé invalide.",
         "map_backup": "Sauvegarde de la carte en cours",
         "map_backup_failed": "Échec de la sauvegarde de la carte !",
         "map_backup_success": "Sauvegarde de la carte terminée",
@@ -1934,6 +2625,7 @@
         "scheduled_task": "Tâche planifiée",
         "scheduled_zone": "Nettoyage zone prévu",
         "segment_name_placeholder": "Pièce %index%",
+        "segment_unavailable": "Pièce %index% indisponible",
         "shortcut": "Raccourci",
         "shortcut_list": "Raccourcis",
         "shortcut_map": "Carte raccourci",
@@ -1946,6 +2638,51 @@
         "used_water_tank": "Réservoir eau sale",
         "wall": "Murs",
         "wifi_map": "Carte Wi-Fi"
+      }
+    },
+    "notification": {
+      "state": {
+        "cleanup_completed": "Nettoyage terminé",
+        "dust_collection_not_performed": "Tâche de collecte de poussière (Vidage automatique) non effectuée\nLe robot n'effectuera pas de vidage automatique pendant la période Ne Pas Déranger.",
+        "resume_cleaning": "Mode reprise du nettoyage\nLe robot reprendra automatiquement les tâches de nettoyage inachevées après avoir chargé sa batterie à 80 %.",
+        "resume_cleaning_not_performed": "Le robot est en période Ne pas déranger\nLe robot reprendra le nettoyage à la fin de la période Ne pas déranger.",
+        "resume_cleaning_not_performed_with_time": "Le robot est en période Ne pas déranger\nLe robot reprendra le nettoyage à la fin de la période Ne pas déranger.\n## Le nettoyage commencera dans {hour} heure(s) et {minute} minute(s)",
+        "replace_map": "Une nouvelle carte a été générée\nVous devez enregistrer ou supprimer la carte avant de l'utiliser.",
+        "replace_multi_map": "Une nouvelle carte a été générée\nLe nombre maximal de cartes multi-étages pouvant être enregistrées est atteint. Vous devez remplacer ou supprimer une carte avant de l'utiliser.",
+        "drainage_completed": "Vidange terminée",
+        "drainage_failed": "Échec de la vidange",
+        "main_brush_left": "La brosse principale doit être remplacée\nLa brosse principale est usée. Veuillez la remplacer à temps et réinitialiser le compteur.",
+        "main_brush_left_low": "La brosse principale devra bientôt être remplacée\nLa brosse principale est presque usée. Veuillez la remplacer à temps.",
+        "side_brush_left": "La brosse latérale doit être remplacée\nLa brosse latérale est usée. Veuillez la remplacer et réinitialiser le compteur.",
+        "side_brush_left_low": "La brosse latérale devra bientôt être remplacée\nLa brosse latérale est presque usée. Veuillez la remplacer dès que possible.",
+        "filter_left": "Le filtre doit être remplacé\nLe filtre est usé. Veuillez le remplacer à temps et réinitialiser le compteur.",
+        "filter_left_low": "Le filtre devra bientôt être remplacé\nLe filtre est presque usé. Veuillez le remplacer à temps.",
+        "sensor_dirty_left": "Les capteurs doivent être nettoyés\nVeuillez nettoyer les capteurs et réinitialiser le compteur",
+        "tank_filter_left": "Le filtre du réservoir doit être remplacé\nLe filtre du réservoir est usé. Veuillez le remplacer à temps et réinitialiser le compteur.",
+        "tank_filter_left_low": "Le filtre du réservoir devra bientôt être remplacé\nLe filtre du réservoir est presque usé. Veuillez le remplacer à temps.",
+        "mop_pad_left": "Serpillère usée\nVeuillez remplacer la serpillère et réinitialiser le compteur.",
+        "mop_pad_left_low": "Serpillère presque usée\nVeuillez remplacer la serpillère à temps.",
+        "silver_ion_left": "Stérilisateur à ions d'argent détérioré\nVeuillez remplacer le stérilisateur à ions d'argent et réinitialiser le compteur.",
+        "silver_ion_left_low": "Stérilisateur à ions d'argent sur le point de se détériorer\nVeuillez remplacer le stérilisateur à ions d'argent à temps.",
+        "detergent_left": "Le détergent est épuisé\nVeuillez remplacer la cartouche de détergent et réinitialiser le compteur.",
+        "detergent_left_low": "Le détergent est sur le point de s'épuiser\nLe détergent est sur le point de s'épuiser, veuillez le remplacer à temps.",
+        "squeegee_left": "Raclette usée\nVeuillez remplacer la raclette et réinitialiser le compteur.",
+        "squeegee_left_low": "Raclette presque usée\nVeuillez remplacer la raclette à temps.",
+        "onboard_dirty_water_tank_left": "Le réservoir d'eau sale intégré doit être nettoyé\nVeuillez nettoyer le réservoir d'eau sale intégré et réinitialiser le compteur.",
+        "dirty_water_channel_dirty_left": "Le canal d'eau sale doit être nettoyé\nVeuillez nettoyer le canal d'eau sale et réinitialiser le compteur.",
+        "deodorizer_left": "Le désodorisant du réservoir d'eau usée est épuisé.\nLe désodorisant du réservoir d'eau usée est épuisé. Veuillez le remplacer.",
+        "deodorizer_left_low": "Le désodorisant du réservoir d'eau usée est presque épuisé.\nLe désodorisant du réservoir d'eau usée est presque épuisé. Veuillez le remplacer.",
+        "wheel_dirty_left": "La roue omnidirectionnelle doit être nettoyée\nVeuillez nettoyer la roue omnidirectionnelle et réinitialiser le compteur.",
+        "scale_inhibitor_left": "L'inhibiteur de tartre est épuisé\nVeuillez remplacer l'inhibiteur de tartre et réinitialiser le compteur.",
+        "scale_inhibitor_left_low": "L'inhibiteur de tartre est presque épuisé\nVeuillez remplacer l'inhibiteur de tartre à temps.",
+        "fluffing_roller_dirty_left": "Le rouleau de peluchage doit être nettoyé\nVeuillez nettoyer le rouleau de peluchage et réinitialiser le compteur.",
+        "roller_mop_filter_dirty_left": "Le filtre de la serpillère à rouleau doit être nettoyé\nVeuillez nettoyer le filtre de la serpillère à rouleau et réinitialiser le compteur.",
+        "water_outlet_filter_dirty_left": "Le filtre de sortie d'eau doit être nettoyé\nVeuillez nettoyer le filtre de sortie d'eau et réinitialiser le compteur.",
+        "no_water_left": "Veuillez remplir le réservoir d'eau propre.\nL'eau du réservoir d'eau propre est sur le point de s'épuiser. Vérifiez et remplissez rapidement le réservoir d'eau propre.",
+        "no_water_left_after_clean": "Veuillez remplir le réservoir d'eau propre.\nLa serpillère a été nettoyée. Il a été détecté que l'eau dans le réservoir d'eau propre est insuffisante, veuillez remplir le réservoir d'eau propre et vider le réservoir d'eau sale.",
+        "no_water_for_clean": "Niveau d'eau bas dans le réservoir d'eau propre.\nLe robot est passé en mode aspiration.",
+        "low_water": "Sur le point de manquer d'eau\nVeuillez remplir le réservoir d'eau propre.",
+        "tank_not_installed": "Le réservoir d'eau propre n'est pas installé.\nVeuillez vérifier le réservoir d'eau propre"
       }
     }
   },
@@ -2180,38 +2917,6 @@
         }
       }
     },
-    "vacuum_merge_segments": {
-      "name": "Fusionner des segments",
-      "description": "Fusionner les pièces.",
-      "fields": {
-        "map_id": {
-          "name": "ID de carte",
-          "description": "ID de la carte."
-        },
-        "segments": {
-          "name": "Pièces",
-          "description": "ID des chambres."
-        }
-      }
-    },
-    "vacuum_split_segments": {
-      "name": "Pièces divisés",
-      "description": "Chambres divisées.",
-      "fields": {
-        "map_id": {
-          "name": "ID de carte",
-          "description": "ID de la carte."
-        },
-        "segment": {
-          "name": "Segment",
-          "description": "ID de la pièce."
-        },
-        "line": {
-          "name": "Doubler",
-          "description": "Coordonnées de ligne divisée."
-        }
-      }
-    },
     "vacuum_rename_segment": {
       "name": "Renommer le segment",
       "description": "Renommez un segment.",
@@ -2266,46 +2971,6 @@
         }
       }
     },
-    "vacuum_set_custom_carpet_cleaning": {
-      "name": "Définir le nettoyage personnalisé du tapis",
-      "description": "Définit les paramètres de nettoyage personnalisés pour les tapis. (Uniquement sur les appareils compatibles)",
-      "fields": {
-        "id": {
-          "name": "ID du tapis",
-          "description": "ID des tapis."
-        },
-        "type": {
-          "name": "Type d'objet",
-          "description": "Type de l'objet avec l'ID. (0 = Tapis détecté automatiquement, 1 = Tapis créé manuellement, 2 = Tapis de chambre (si pris en charge))"
-        },
-        "carpet_cleaning": {
-          "name": "Nettoyage du tapis",
-          "description": "Paramètre de nettoyage personnalisé du tapis pour chaque tapis."
-        },
-        "carpet_preferences": {
-          "name": "Paramètres du tapis",
-          "description": "Paramètre de réglage personnalisé du tapis pour chaque tapis avec un tableau de paramètres activés."
-        }
-      }
-    },
-    "vacuum_set_restricted_zone": {
-      "name": "Définir une zone restreinte",
-      "description": "Définissez des murs virtuels, des zones restreintes et/ou des zones sans serpillière.",
-      "fields": {
-        "walls": {
-          "name": "Des murs",
-          "description": "Murs virtuels."
-        },
-        "zones": {
-          "name": "Zones",
-          "description": "Zones interdites."
-        },
-        "no_mops": {
-          "name": "Pas de serpillière",
-          "description": "Aucune zone de serpillière."
-        }
-      }
-    },
     "vacuum_reset_consumable": {
       "name": "Réinitialiser le consommable",
       "description": "Réinitialisez un consommable.",
@@ -2340,40 +3005,6 @@
         }
       }
     },
-    "vacuum_set_carpet_area": {
-      "name": "Définir la zone de tapis",
-      "description": "Définir les tapis et les tapis ignorés. ",
-      "fields": {
-        "carpets": {
-          "name": "Les tapis",
-          "description": "Zones de moquette."
-        },
-        "deleted_carpets": {
-          "name": "Tapis ignorés",
-          "description": "Zones de tapis ignorées pour supprimer les tapis détectés automatiquement."
-        }
-      }
-    },
-    "vacuum_set_virtual_threshold": {
-      "name": "Définir le chemin",
-      "description": "Définir des parcours.",
-      "fields": {
-        "virtual_thresholds": {
-          "name": "Voies",
-          "description": "Coordonnées de la ligne de chemin."
-        }
-      }
-    },
-    "vacuum_set_predefined_points": {
-      "name": "Définir des points prédéfinis",
-      "description": "Définissez des coordonnées prédéfinies sur la carte actuelle. ",
-      "fields": {
-        "points": {
-          "name": "Points",
-          "description": "Liste des coordonnées à sauvegarder."
-        }
-      }
-    },
     "vacuum_set_obstacle_ignore": {
       "name": "Définir l'obstacle à ignorer",
       "description": "Définir le statut d'ignorance d'un obstacle. ",
@@ -2389,48 +3020,6 @@
         "obstacle_ignored": {
           "name": "Obstacle ignoré",
           "description": "L'obstacle est ignoré ou non."
-        }
-      }
-    },
-    "vacuum_set_router_position": {
-      "name": "Définir la position du routeur",
-      "description": "Définissez la position du routeur sur la carte actuelle. ",
-      "fields": {
-        "x": {
-          "name": "X",
-          "description": "Coordonnée X du routeur."
-        },
-        "y": {
-          "name": "Y",
-          "description": "Coordonnée Y du routeur."
-        }
-      }
-    },
-    "select_select_previous": {
-      "name": "Sélectionnez Précédent",
-      "description": "Sélectionnez les options précédentes d'une entité sélectionnée.",
-      "fields": {
-        "cycle": {
-          "name": "Cycle",
-          "description": "Si l’option doit passer du premier au dernier."
-        }
-      }
-    },
-    "select_select_first": {
-      "name": "Sélectionnez d'abord",
-      "description": "Sélectionnez la première option d'une entité sélectionnée."
-    },
-    "select_select_last": {
-      "name": "Sélectionner le dernier",
-      "description": "Sélectionnez la dernière option d'une entité sélectionnée."
-    },
-    "select_select_next": {
-      "name": "Sélectionnez Suivant",
-      "description": "Sélectionnez les options suivantes d'une entité sélectionnée.",
-      "fields": {
-        "cycle": {
-          "name": "Cycle",
-          "description": "Si l’option doit passer du premier au dernier."
         }
       }
     }

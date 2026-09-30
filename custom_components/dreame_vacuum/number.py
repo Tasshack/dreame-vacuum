@@ -24,8 +24,12 @@ from homeassistant.helpers import entity_registry
 from .const import DOMAIN, UNIT_MINUTES, UNIT_HOURS, UNIT_AREA, UNIT_PERCENT
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
-from .entity import DreameVacuumEntity, DreameVacuumEntityDescription, remove_entities
-from .dreame import DreameVacuumAction, DreameVacuumProperty
+from .entity import (
+    DreameVacuumEntity,
+    DreameVacuumEntityDescription,
+    remove_entities,
+)
+from .dreame import DreameVacuumProperty
 
 
 def WETNESS_LEVEL_TO_ICON(wetness, max):
@@ -48,7 +52,7 @@ class DreameVacuumNumberEntityDescription(DreameVacuumEntityDescription, NumberE
     min_value_fn: Callable[[object], int] = None
     segment_icon_fn: Callable[[str, object, object], str] = None
     segment_available_fn: Callable[[object, object], bool] = None
-    segment_list_fn: Callable[[object], bool] = None
+    current_segments_only: bool = True
 
 
 NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
@@ -70,6 +74,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         property_key=DreameVacuumProperty.MOP_CLEANING_REMAINDER,
         icon="mdi:alarm-check",
         mode=NumberMode.BOX,
+        device_class="duration",
         native_unit_of_measurement=UNIT_MINUTES,
         native_min_value=0,
         native_max_value=180,
@@ -86,6 +91,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
             else "mdi:checkbox-blank-off-outline"
         ),
         mode=NumberMode.SLIDER,
+        device_class="area",
         native_unit_of_measurement=UNIT_AREA,
         exists_fn=lambda description, device: device.capability.self_wash_base
         and not device.capability.mop_clean_frequency,
@@ -93,24 +99,25 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         max_value_fn=lambda device: device.status.self_clean_area_max,
         native_step=1,
         entity_category=None,
-        value_fn=lambda value, device: (
+        value_fn=lambda value, entity: (
             (
-                device.status.self_clean_area_min
-                if device.status.self_clean_value < device.status.self_clean_area_min
+                entity.device.status.self_clean_area_min
+                if entity.device.status.self_clean_value < entity.device.status.self_clean_area_min
                 else (
-                    device.status.self_clean_area_max
-                    if device.status.self_clean_value > device.status.self_clean_area_max
-                    else device.status.self_clean_value
+                    entity.device.status.self_clean_area_max
+                    if entity.device.status.self_clean_value > entity.device.status.self_clean_area_max
+                    else entity.device.status.self_clean_value
                 )
             )
-            if device.status.self_clean_value and device.status.self_clean_value > 0
-            else device.status.self_clean_area_default
+            if entity.device.status.self_clean_value and entity.device.status.self_clean_value > 0
+            else entity.device.status.self_clean_area_default
         ),
     ),
     DreameVacuumNumberEntityDescription(
         key="self_clean_time",
         icon="mdi:table-clock",
         mode=NumberMode.SLIDER,
+        device_class="duration",
         native_unit_of_measurement=UNIT_MINUTES,
         exists_fn=lambda description, device: device.capability.self_clean_frequency
         and not device.capability.mop_clean_frequency,
@@ -118,18 +125,18 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         max_value_fn=lambda device: device.status.self_clean_time_max,
         native_step=5,
         entity_category=None,
-        value_fn=lambda value, device: (
+        value_fn=lambda value, entity: (
             (
-                device.status.self_clean_time_min
-                if device.status.self_clean_value < device.status.self_clean_time_min
+                entity.device.status.self_clean_time_min
+                if entity.device.status.self_clean_value < entity.device.status.self_clean_time_min
                 else (
-                    device.status.self_clean_time_max
-                    if device.status.self_clean_value > device.status.self_clean_time_max
-                    else device.status.self_clean_value
+                    entity.device.status.self_clean_time_max
+                    if entity.device.status.self_clean_value > entity.device.status.self_clean_time_max
+                    else entity.device.status.self_clean_value
                 )
             )
-            if device.status.self_clean_value and device.status.self_clean_value > 0
-            else device.status.self_clean_time_default
+            if entity.device.status.self_clean_value and entity.device.status.self_clean_value > 0
+            else entity.device.status.self_clean_time_default
         ),
     ),
     DreameVacuumNumberEntityDescription(
@@ -160,11 +167,12 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         max_value_fn=lambda device: 15 if device.capability.mop_clean_frequency else 32,
         native_step=1,
         exists_fn=lambda description, device: device.capability.wetness_level,
-        value_fn=lambda value, device: device.status.wetness_level,
+        value_fn=lambda value, entity: entity.device.status.wetness_level,
     ),
     DreameVacuumNumberEntityDescription(
         property_key=DreameVacuumProperty.DRYING_TIME,
         icon="mdi:sun-clock",
+        device_class="duration",
         native_unit_of_measurement=UNIT_HOURS,
         mode=NumberMode.SLIDER,
         native_min_value=2,
@@ -184,6 +192,7 @@ NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         exists_fn=lambda description, device: device.capability.auto_empty_area
         and device.capability.auto_empty_mode
         and DreameVacuumEntityDescription().exists_fn(description, device),
+        device_class="area",
         native_unit_of_measurement=UNIT_AREA,
     ),
 )
@@ -212,9 +221,8 @@ SEGMENT_NUMBERS: tuple[DreameVacuumNumberEntityDescription, ...] = (
         native_min_value=1,
         native_max_value=32,
         native_step=1,
-        value_fn=lambda device, segment: segment.wetness_level,
+        value_fn=lambda value, entity: entity.segment.wetness_level,
         exists_fn=lambda description, device: device.capability.wetness_level,
-        segment_list_fn=lambda device: device.status.current_segments,
     ),
 )
 
@@ -245,43 +253,102 @@ def async_update_segment_numbers(
     current: dict[str, list[DreameVacuumSegmentNumberEntity]],
     async_add_entities,
 ) -> None:
+    if coordinator.device and coordinator.device.status.map_list is None:
+        return
+
+    visible_new_ids = set()
     new_ids = []
     if coordinator.device and coordinator.device.status.map_list:
         for k, v in coordinator.device.status.map_data_list.items():
             for j, s in v.segments.items():
                 if j not in new_ids:
                     new_ids.append(j)
+                if s.visibility != False and not s.unmapped:
+                    visible_new_ids.add(j)
 
     new_ids = set(new_ids)
-    current_ids = set(current)
+    current_ids = set(k for k in current if k != "init")
 
-    for segment_id in current_ids - new_ids:
-        async_remove_segment_numbers(segment_id, coordinator, current)
+    async_remove_segment_numbers(coordinator, current, new_ids, visible_new_ids)
 
     new_entities = []
+    
     for segment_id in new_ids - current_ids:
-        current[segment_id] = [
-            DreameVacuumSegmentNumberEntity(coordinator, description, segment_id)
-            for description in SEGMENT_NUMBERS
-            if description.exists_fn(description, coordinator.device)
-        ]
-        new_entities = new_entities + current[segment_id]
+        entities = []
+        for description in SEGMENT_NUMBERS:
+            if description.exists_fn(description, coordinator.device):
+                if segment_id not in visible_new_ids and description.current_segments_only:
+                    continue
+                entities.append(DreameVacuumSegmentNumberEntity(coordinator, description, segment_id))
+        
+        if entities:
+            current[segment_id] = entities
+            new_entities.extend(entities)
+
+    for segment_id in current_ids & visible_new_ids:
+        entities = current[segment_id]
+        existing_keys = {e.entity_description.key for e in entities}
+        for description in SEGMENT_NUMBERS:
+            if description.key not in existing_keys and description.exists_fn(description, coordinator.device):
+                entity = DreameVacuumSegmentNumberEntity(coordinator, description, segment_id)
+                entities.append(entity)
+                new_entities.append(entity)
 
     if new_entities:
         async_add_entities(new_entities)
 
 
 def async_remove_segment_numbers(
-    segment_id: str,
     coordinator: DreameVacuumDataUpdateCoordinator,
-    current: dict[str, DreameVacuumSegmentNumberEntity],
+    current: dict[str, list[DreameVacuumSegmentNumberEntity]],
+    new_ids: set,
+    visible_new_ids: set,
 ) -> None:
     registry = entity_registry.async_get(coordinator.hass)
-    entities = current[segment_id]
-    for entity in entities:
-        if entity.entity_id in registry.entities:
-            registry.async_remove(entity.entity_id)
-    del current[segment_id]
+    
+    current_ids = set(k for k in current if k != "init")
+    
+    for segment_id in current_ids - new_ids:
+        entities = current[segment_id]
+        for entity in entities:
+            if entity.entity_id in registry.entities:
+                registry.async_remove(entity.entity_id)
+        del current[segment_id]
+
+    for segment_id in current_ids & new_ids:
+        if segment_id not in visible_new_ids:
+            entities = current[segment_id]
+            entities_to_remove = []
+            for entity in entities:
+                description = entity.entity_description
+                if description.current_segments_only:
+                    entities_to_remove.append(entity)
+                    
+            for entity in entities_to_remove:
+                if entity.entity_id in registry.entities:
+                    registry.async_remove(entity.entity_id)
+                entities.remove(entity)
+
+    if "init" in current:
+        return
+
+    visible_only_keys = {
+        d.key for d in SEGMENT_NUMBERS if d.current_segments_only
+    }
+
+    entry_id = coordinator._entry.entry_id if hasattr(coordinator, "_entry") else coordinator.config_entry.entry_id
+    for entry in entity_registry.async_entries_for_config_entry(registry, entry_id):
+        if entry.domain == "number" and f"{coordinator.device.mac}_room_" in entry.unique_id:
+            try:
+                parts = entry.unique_id.split("_room_")[-1].split("_")
+                segment_id = int(parts[0])
+                key = "_".join(parts[1:])
+                if segment_id not in new_ids or (segment_id not in visible_new_ids and key in visible_only_keys):
+                    registry.async_remove(entry.entity_id)
+            except ValueError:
+                pass
+                
+    current["init"] = []
 
 
 class DreameVacuumNumberEntity(DreameVacuumEntity, NumberEntity):
@@ -363,8 +430,10 @@ class DreameVacuumSegmentNumberEntity(DreameVacuumEntity, NumberEntity):
         self.segment_id = segment_id
         self.segment = None
         self.segments = None
-        if coordinator.device:
-            self.segments = copy.deepcopy(description.segment_list_fn(coordinator.device))
+        if description.current_segments_only:
+            self.segments = copy.deepcopy(coordinator.device.status.current_segments)
+        else:
+            self.segments = copy.deepcopy(coordinator.device.status.segments)
             if segment_id in self.segments:
                 self.segment = self.segments[segment_id]
 
@@ -387,18 +456,19 @@ class DreameVacuumSegmentNumberEntity(DreameVacuumEntity, NumberEntity):
         )
         self._attr_native_value = None
         if self.segment:
-            self._attr_native_value = description.value_fn(coordinator.device, self.segment)
+            self._attr_native_value = description.value_fn(None, self)
 
     def _set_id(self) -> None:
         """Set name, unique id and icon of the entity"""
         if self.entity_description.name == "":
-            name = f"room_{self.segment_id}_{self.entity_description.key}"
-        elif self.segment:
-            name = f"{self.entity_description.key}_{self.segment.name}"
+            if self._name_placeholder:
+                self._attr_translation_placeholders = {"index": str(self.segment_id)}
+                self.__dict__.pop("name", None)
+            else:
+                name = f"room_{self.segment_id}_{self.entity_description.key}"
+                self._attr_name = name.replace("_", " ").title()
         else:
-            name = f"{self.entity_description.key}_room_unavailable"
-
-        self._attr_name = name.replace("_", " ").title()
+            self._attr_name = f"{self._localize_entity("number", self.entity_description.key, self.entity_description.key.replace("_", " ").title())} {self._localize_segment_name(self.segment, self.segment_id)}"
 
         if self.entity_description.segment_icon_fn is not None:
             self._attr_icon = self.entity_description.segment_icon_fn(
@@ -411,7 +481,7 @@ class DreameVacuumSegmentNumberEntity(DreameVacuumEntity, NumberEntity):
 
     @callback
     def _handle_coordinator_update(self) -> None:
-        device_segments = self._device_segments
+        device_segments = self.segment_list
         if self.segments != device_segments:
             self.segments = copy.deepcopy(device_segments)
             if self.segments and self.segment_id in self.segments:
@@ -421,7 +491,7 @@ class DreameVacuumSegmentNumberEntity(DreameVacuumEntity, NumberEntity):
                         self.entity_description.native_min_value = self.entity_description.min_value_fn(self.device)
                     if self.entity_description.max_value_fn:
                         self.entity_description.native_max_value = self.entity_description.max_value_fn(self.device)
-                    self._attr_native_value = self.entity_description.value_fn(self.device, self.segment)
+                    self._attr_native_value = self.entity_description.value_fn(None, self)
                     self._set_id()
             elif self.segment:
                 self.segment = None
@@ -430,8 +500,11 @@ class DreameVacuumSegmentNumberEntity(DreameVacuumEntity, NumberEntity):
         self.async_write_ha_state()
 
     @property
-    def _device_segments(self):
-        return self.entity_description.segment_list_fn(self.device)
+    def segment_list(self) -> dict:
+        """Return the segment list for the number."""
+        if not self.entity_description.current_segments_only:
+            return self.device.status.segments
+        return self.device.status.current_segments
 
     async def async_set_native_value(self, value: int) -> None:
         """Set the Dreame Vacuum number value."""

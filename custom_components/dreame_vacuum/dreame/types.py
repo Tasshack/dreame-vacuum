@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 import json
 import time
+from threading import Thread, Event, Lock
 from typing import Any, Dict, Final, List, Optional
 from enum import IntEnum, Enum
 from dataclasses import dataclass, field, asdict
@@ -169,6 +170,7 @@ ATTR_MAP_INDEX: Final = "map_index"
 ATTR_ROOM_ID: Final = "room_id"
 ATTR_FURNITURE_ID: Final = "furniture_id"
 ATTR_ROOM_ICON: Final = "room_icon"
+ATTR_ROOM_NAME: Final = "room_name"
 ATTR_UNIQUE_ID: Final = "unique_id"
 ATTR_FLOOR_MATERIAL: Final = "floor_material"
 ATTR_FLOOR_MATERIAL_DIRECTION: Final = "floor_material_direction"
@@ -1116,7 +1118,7 @@ class DreameVacuumProperty(IntEnum):
     NATION_MATCHED = 23
     RELOCATION_STATUS = 24
     OBSTACLE_AVOIDANCE = 25
-    AI_DETECTION = 26
+    AI_OBSTACLE_DETECTION = 26
     CLEANING_MODE = 27
     UPLOAD_MAP = 28
     SELF_WASH_BASE_STATUS = 29
@@ -1159,306 +1161,307 @@ class DreameVacuumProperty(IntEnum):
     BACK_CLEAN_MODE = 66
     CLEANING_PROGRESS = 67
     DRYING_PROGRESS = 68
-    DEVICE_CAPABILITY = 69
-    ONBOARD_WETNESS_LEVEL = 70
-    DND = 71
-    DND_START = 72
-    DND_END = 73
-    DND_TASK = 74
-    MAP_DATA = 75
-    FRAME_INFO = 76
-    OBJECT_NAME = 77
-    MAP_EXTEND_DATA = 78
-    ROBOT_TIME = 79
-    RESULT_CODE = 80
-    MULTI_FLOOR_MAP = 81
-    MAP_LIST = 82
-    RECOVERY_MAP_LIST = 83
-    MAP_RECOVERY = 84
-    MAP_RECOVERY_STATUS = 85
-    OLD_MAP_DATA = 86
-    MAP_BACKUP_STATUS = 87
-    WIFI_MAP = 88
-    RESTORE_MAP_FROM_DATA = 89
-    VOLUME = 90
-    VOICE_PACKET_ID = 91
-    VOICE_CHANGE_STATUS = 92
-    VOICE_CHANGE = 93
-    VOICE_ASSISTANT = 94
-    EMPTY_STAMP = 95
-    CURRENT_CITY = 96
-    VOICE_TEST = 97
-    VOICE_ASSISTANT_LANGUAGE = 98
-    LISTEN_LANGUAGE_TYPE = 99
-    BAIDU_LOG = 100
-    RESPONSE_WORD = 101
-    DREAME_GPT = 102
-    LISTEN_LANGUAGE = 103
-    LISTEN_LANGUAGE_STATUS = 104
-    DEV_VOICE_CONTROL = 105
-    FULL_DUPLEX_SOUND = 106
-    DISABLE_VOICE_WAKE_UP = 107
-    CUSTOM_WAKE_UP = 108
-    CUSTOM_WAKE_UP_WORD = 109
-    CUSTOM_WAKE_UP_WORD_STATUS = 110
-    COMBINE_WAKE_UP_WORD_COMMAND = 111
-    TIMEZONE = 112
-    SCHEDULE = 113
-    SCHEDULE_ID = 114
-    SCHEDULE_CANCEL_REASON = 115
-    CRUISE_SCHEDULE = 116
-    PET_CRUISE_SCHEDULE = 117
-    MAIN_BRUSH_TIME_LEFT = 118
-    MAIN_BRUSH_LEFT = 119
-    SIDE_BRUSH_TIME_LEFT = 120
-    SIDE_BRUSH_LEFT = 121
-    FILTER_LEFT = 122
-    FILTER_TIME_LEFT = 123
-    FIRST_CLEANING_DATE = 124
-    TOTAL_CLEANING_TIME = 125
-    CLEANING_COUNT = 126
-    TOTAL_CLEANED_AREA = 127
-    TOTAL_RUNTIME = 128
-    TOTAL_CRUISE_TIME = 129
-    MAP_SAVING = 130
-    KEEP_ALIVE = 131
-    GET_PUBLIC_KEY = 132
-    MATTER_NETWORK_STARTUP = 133
-    COUNTRY_CODE = 134
-    MAINS_POWER_FREQUENCY = 135
-    AUTO_DUST_COLLECTING = 136
-    AUTO_EMPTY_FREQUENCY = 137
-    DUST_COLLECTION = 138
-    AUTO_EMPTY_STATUS = 139
-    SENSOR_DIRTY_LEFT = 140
-    SENSOR_DIRTY_TIME_LEFT = 141
-    TANK_FILTER_LEFT = 142
-    TANK_FILTER_TIME_LEFT = 143
-    MOP_PAD_LEFT = 144
-    MOP_PAD_TIME_LEFT = 145
-    SILVER_ION_TIME_LEFT = 146
-    SILVER_ION_LEFT = 147
-    SILVER_ION_ADD = 148
-    DETERGENT_LEFT = 149
-    DETERGENT_TIME_LEFT = 150
-    SQUEEGEE_LEFT = 151
-    SQUEEGEE_TIME_LEFT = 152
-    DIRTY_WATER_CHANNEL_DIRTY_TIME_LEFT = 153
-    DIRTY_WATER_CHANNEL_DIRTY_LEFT = 154
-    ONBOARD_DIRTY_WATER_TANK_TIME_LEFT = 155
-    ONBOARD_DIRTY_WATER_TANK_LEFT = 156
-    CLEAN_WATER_TANK_STATUS = 157
-    DIRTY_WATER_TANK_STATUS = 158
-    DUST_BAG_STATUS = 159
-    DETERGENT_STATUS = 160
-    STATION_DRAINAGE_STATUS = 161
-    LDS_STATUS = 162
-    AI_MAP_OPTIMIZATION_STATUS = 163
-    SECOND_CLEANING_STATUS = 164
-    WATER_TANK_STATUS = 165
-    ADD_CLEANING_AREA_STATUS = 166
-    ADD_CLEANING_AREA_RESULT = 167
-    FIRST_CONNECT_WIFI = 168
-    HAND_DUST_STATUS = 169
-    HAND_DUST_CONNECT_STATUS = 170
-    HOT_WATER_STATUS = 171
-    THRESHOLD_CONFIRMATION_STATUS = 172
-    DUST_BAG_DRYING_LEFT = 173
-    DUST_BAG_DRYING_STATUS = 174
-    DUST_BOX_STATUS = 175
-    ROLLER_COVER = 176
-    CABIN_DOOR_DRYING_LEFT_TIME = 177
-    ROBOT_ARM_COVER_STATUS = 178
-    MOP_TRANSPORT_CARRIER_RESET = 179
-    MOP_TRANSPORT_CARRIER_STATUS = 180
-    ROLLER_COVER_STATUS = 181
-    WASHBOARD_CLEANING_STATUS = 182
-    MECHANICAL_FOOT_STATUS = 183
-    ROBOT_ARM_AVAILABLE = 184
-    STATION_OTA_STATUS = 185
-    CLIMBER_PAIR_STATUS = 186
-    INTELLIGENT_SUPERCHARGING_STATUS = 187
-    INTELLIGENT_SUPERCHARGING_LEVEL = 188
-    PRESSURIZED_ROLLER_STATUS = 189
-    WETNESS_LEVEL = 190
-    CLEAN_CARPETS_FIRST = 191
-    AUTO_LDS_COVERAGE = 192
-    LDS_STATE = 193
-    CLEANGENIUS_MODE = 194
-    QUICK_WASH_MODE = 195
-    HAS_CHILDREN = 196
-    WATER_TEMPERATURE = 197
-    CLEAN_EFFICIENCY = 198
-    IMPACT_INJECTION_PUMP = 199
-    OBSTACLE_VIDEOS = 200
-    DND_DISABLE_RESUME_CLEANING = 201
-    DND_DISABLE_AUTO_EMPTY = 202
-    DND_REDUCE_VOLUME = 203
-    HAND_VACUUM_AUTO_DUSTING = 204
-    DYNAMIC_OBSTACLE_CLEANING = 205
-    HUMAN_NOISE_REDUCTION = 206
-    PET_CARE = 207
-    LOWER_HATCH_CONTROL = 208
-    SMART_MOP_WASHING = 209
-    BLOCK_HEALTH_CHECKS = 210
-    MOP_AFTER_VACUUM = 211
-    SMALL_AREA_FAST_CLEAN = 212
-    SHIELD_ULTRASONIC_SIGNALS = 213
-    SILENT_DRYING = 214
-    HAIR_COMPRESSION = 215
-    SIDE_BRUSH_CARPET_ROTATE = 216
-    ERP_LOW_POWER = 217
-    SHIELD_WASHBOARD_IN_PLACE = 218
-    SELF_CLEANING_PROBLEM = 219
-    WASHING_TEST = 220
-    WIFI_PERFORMANCE_TEST = 221
-    EMERGENCY_INFORMATION_UPLOAD = 222
-    FEEDBACK_SWITCH = 223
-    CARPET_AI_SEGMENT = 224
-    OBSTACLE_CROSSING = 225
-    VISUAL_RESUME = 226
-    FAN_ABNORMAL_NOISE = 227
-    LARGE_MEMORY_RESET = 228
-    BOW_BEFORE_EDGE = 229
-    VOLTAGE = 230
-    DETERGENT_A = 231
-    DETERGENT_B = 232
-    MOP_TEMPERATURE = 233
-    BATTERY_CHARGE_LEVEL = 234
-    DUST_BAG_DRYING = 235
-    SWEEP_DISTANCE = 236
-    LOW_LYING_AREA_FREQUENCY = 237
-    MOPPING_WITH_DETERGENT = 238
-    PRESSURIZED_CLEANING = 239
-    SCRAPER_FREQUENCY = 240
-    REALTIME_PARTICLE_DETECT = 241
-    IGNORE_STAIRS = 242
-    LIFT_CHASSIS_ON_CARPET = 243
-    RING_LIGHT_ALWAYS_ON = 244
-    AUTO_CHANGE_MOP = 245
-    POWER_SAVING = 246
-    WHEEL_LIFT_BOOST_MOPPING = 247
-    CABIN_DOOR_DRYING_TIME = 248
-    CABIN_DOOR_SILENT_DRYING = 249
-    CABIN_DOOR_DRYING = 250
-    CLOSE_ROLLER_COVER_ON_CARPET = 251
-    ROBOT_ARM_STATUS = 252
-    AUXILIARY_CLEANING = 253
-    AUTO_ARRANGEMENT = 254
-    ROBOT_ARM_OVERWEIGHT_PROTECTION = 255
-    ROBOT_ARM_ARRANGEMENT_MODE = 256
-    FLOOR_MAINTAINING = 257
-    DETERGENT_C = 258
-    ROBOT_ARM_OBJECT_STATUS = 259
-    ROBOT_ARM_CAMERA_STATUS = 260
-    STORE_MODE = 261
-    ROBOT_ARM_MODE = 262
-    INTEGRATED_POWER = 263
-    NARROW_WALL_CLEANING = 264
-    INTELLIGENT_STAIN_CLEANING = 265
-    ACTIVE_SUSPENSION_CROSSING = 266
-    SHIELD_ROLLER_ACTIVE = 267
-    MOP_PRESSURE = 268
-    PET_AI_MODEL = 269
-    LOWER_LDS_WHILE_DOCKING = 270
-    RL_NAVIGATION_MESSAGE = 271
-    DUST_LIGHT = 272
-    QUICK_MOP_SWITCHING = 273
-    BLOCK_AGENCY_ALARM = 274
-    EXHIBITION_MODE = 275
-    AUTO_EMPTY_AREA = 276
-    MINIMAL_VOICE_PROMPTS = 277
-    CLEARANCE_LEG_OBSTACLE_CROSSING = 278
-    OMNIDIRECTIONAL_WHELL_LIFTING = 279
-    ONLY_IDENTIFY_CLEANING_OBSTACLES = 280
-    MOP_SCRUBBING_SPEED = 281
-    ACTIVE_LIGHT_ENHANCED_DETECTION = 282
-    SHIELDED_MEMBRANE_SENSOR = 283
-    MOP_HIGH_SPEED_ROTATION = 284
-    STAIN_RECOGNITION = 285
-    DYNAMIC_EDGE_EXTENSION = 286
-    OFFLINE_DEMO_MODE = 287
-    INTELLIGENT_SUPERCHARGING = 288
-    STEAM_CLEANING_MODE = 289
-    BATTERY_ABNORMAL = 290
-    STAIN_RECOGNITION_SENSITIVITY = 291
-    STAIR_CLEANING = 292
-    EXTENDED_SAFETY_REGULATION = 293
-    GROUND_DETECTION = 294
-    DRIVE_WHEEL_MOS_SHORT = 295
-    DRIVE_WHEEL_EXTENDED_SAFETY_REGULATION = 296
-    DEODORIZER_TIME_LEFT = 297
-    DEODORIZER_LEFT = 298
-    WHEEL_DIRTY_TIME_LEFT = 299
-    WHEEL_DIRTY_LEFT = 300
-    SCALE_INHIBITOR_TIME_LEFT = 301
-    SCALE_INHIBITOR_LEFT = 302
-    FLUFFING_ROLLER_DIRTY_LEFT = 303
-    FLUFFING_ROLLER_DIRTY_TIME_LEFT = 304
-    ROLLER_MOP_FILTER_DIRTY_TIME_LEFT = 305
-    ROLLER_MOP_FILTER_DIRTY_LEFT = 306
-    BLOCK_EXCEPTION_LIST = 307
-    MAP_FLOOR_MATCHING = 308
-    CLIMBER_ERROR_CODE = 309
-    MULTI_FLOOR_CLEANING = 310
-    WATER_OUTLET_FILTER_DIRTY_TIME_LEFT = 311
-    WATER_OUTLET_FILTER_DIRTY_LEFT = 312
-    TRACK_CLEANING_TIME_LEFT = 313
-    TRACK_CLEANING_LEFT = 314
-    WASHBOARD_CLEANING_TIME_LEFT = 315
-    WASHBOARD_CLEANING_LEFT = 316
-    FILTER_CLEANING_TIME_LEFT = 317
-    FILTER_CLEANING_LEFT = 318
-    CLIMBER_OTA_PARAMETER = 319
-    CLIMBER_OTA_PROGRESS = 320
-    CLIMBER_OTA_STATUS = 321
-    CLIMBER_SYSTEM_INFORMATION = 322
-    CLIMBER_CONNECTION_STATUS = 323
-    FACTORY_TEST_STATUS = 324
-    FACTORY_TEST_RESULT = 325
-    SELF_TEST_STATUS = 326
-    LSD_TEST_STATUS = 327
-    DEBUG_SWITCH = 328
-    SERIAL = 329
-    CALIBRATION_STATUS = 330
-    VERSION = 331
-    PERFORMANCE_SWITCH = 332
-    AI_TEST_STATUS = 333
-    PUBLIC_KEY = 334
-    AUTO_PAIR = 335
-    MCU_VERSION = 336
-    MOP_TEST_STATUS = 337
-    SYSTEM_GUARD_MONITORING = 338
-    TCP_DUMP = 339
-    ENABLE_SYSTEM_GUARD = 340
-    MATTER_QR_CODE = 341
-    DISABLE_DTOF_VERIFICATION = 342
-    DISABLE_DTOF_LEFT_BACK_TOF = 343
-    DEMO_MODE_CONFIGURATION = 344
-    PLATFORM_NETWORK = 345
-    DISABLE_PROJECTOR = 346
-    STREAM_STATUS = 347
-    STREAM_AUDIO = 348
-    STREAM_RECORD = 349
-    TAKE_PHOTO = 350
-    STREAM_KEEP_ALIVE = 351
-    STREAM_FAULT = 352
-    CAMERA_LIGHT_BRIGHTNESS = 353
-    CAMERA_LIGHT = 354
-    STREAM_VENDOR = 355
-    STREAM_PROPERTY = 356
-    STREAM_CRUISE_POINT = 357
-    STREAM_TASK = 358
-    STEAM_HUMAN_FOLLOW = 359
-    OBSTACLE_VIDEO_STATUS = 360
-    OBSTACLE_VIDEO_DATA = 361
-    STREAM_UPLOAD = 362
-    STREAM_CODE = 363
-    STREAM_SET_CODE = 364
-    STREAM_VERIFY_CODE = 365
-    STREAM_RESET_CODE = 366
-    ACCESS_ENABLE_STATUS = 367
-    STREAM_SPACE = 368
+    CLEANING_PROGRESS_INFO = 69
+    DEVICE_CAPABILITY = 70
+    ONBOARD_WETNESS_LEVEL = 71
+    DND = 72
+    DND_START = 73
+    DND_END = 74
+    DND_TASK = 75
+    MAP_DATA = 76
+    FRAME_INFO = 77
+    OBJECT_NAME = 78
+    MAP_EXTEND_DATA = 79
+    ROBOT_TIME = 80
+    RESULT_CODE = 81
+    MULTI_FLOOR_MAP = 82
+    MAP_LIST = 83
+    RECOVERY_MAP_LIST = 84
+    MAP_RECOVERY = 85
+    MAP_RECOVERY_STATUS = 86
+    OLD_MAP_DATA = 87
+    MAP_BACKUP_STATUS = 88
+    WIFI_MAP = 89
+    RESTORE_MAP_FROM_DATA = 90
+    VOLUME = 91
+    VOICE_PACKET_ID = 92
+    VOICE_CHANGE_STATUS = 93
+    VOICE_CHANGE = 94
+    VOICE_ASSISTANT = 95
+    EMPTY_STAMP = 96
+    CURRENT_CITY = 97
+    VOICE_TEST = 98
+    VOICE_ASSISTANT_LANGUAGE = 99
+    LISTEN_LANGUAGE_TYPE = 100
+    BAIDU_LOG = 101
+    RESPONSE_WORD = 102
+    DREAME_GPT = 103
+    LISTEN_LANGUAGE = 104
+    LISTEN_LANGUAGE_STATUS = 105
+    DEV_VOICE_CONTROL = 106
+    FULL_DUPLEX_SOUND = 107
+    DISABLE_VOICE_WAKE_UP = 108
+    CUSTOM_WAKE_UP = 109
+    CUSTOM_WAKE_UP_WORD = 110
+    CUSTOM_WAKE_UP_WORD_STATUS = 111
+    COMBINE_WAKE_UP_WORD_COMMAND = 112
+    TIMEZONE = 113
+    SCHEDULE = 114
+    SCHEDULE_ID = 115
+    SCHEDULE_CANCEL_REASON = 116
+    CRUISE_SCHEDULE = 117
+    PET_CRUISE_SCHEDULE = 118
+    MAIN_BRUSH_TIME_LEFT = 119
+    MAIN_BRUSH_LEFT = 120
+    SIDE_BRUSH_TIME_LEFT = 121
+    SIDE_BRUSH_LEFT = 122
+    FILTER_LEFT = 123
+    FILTER_TIME_LEFT = 124
+    FIRST_CLEANING_DATE = 125
+    TOTAL_CLEANING_TIME = 126
+    CLEANING_COUNT = 127
+    TOTAL_CLEANED_AREA = 128
+    TOTAL_RUNTIME = 129
+    TOTAL_CRUISE_TIME = 130
+    MAP_SAVING = 131
+    KEEP_ALIVE = 132
+    GET_PUBLIC_KEY = 133
+    MATTER_NETWORK_STARTUP = 134
+    COUNTRY_CODE = 135
+    MAINS_POWER_FREQUENCY = 136
+    AUTO_DUST_COLLECTING = 137
+    AUTO_EMPTY_FREQUENCY = 138
+    DUST_COLLECTION = 139
+    AUTO_EMPTY_STATUS = 140
+    SENSOR_DIRTY_LEFT = 141
+    SENSOR_DIRTY_TIME_LEFT = 142
+    TANK_FILTER_LEFT = 143
+    TANK_FILTER_TIME_LEFT = 144
+    MOP_PAD_LEFT = 145
+    MOP_PAD_TIME_LEFT = 146
+    SILVER_ION_TIME_LEFT = 147
+    SILVER_ION_LEFT = 148
+    SILVER_ION_ADD = 149
+    DETERGENT_LEFT = 150
+    DETERGENT_TIME_LEFT = 151
+    SQUEEGEE_LEFT = 152
+    SQUEEGEE_TIME_LEFT = 153
+    DIRTY_WATER_CHANNEL_DIRTY_TIME_LEFT = 154
+    DIRTY_WATER_CHANNEL_DIRTY_LEFT = 155
+    ONBOARD_DIRTY_WATER_TANK_TIME_LEFT = 156
+    ONBOARD_DIRTY_WATER_TANK_LEFT = 157
+    CLEAN_WATER_TANK_STATUS = 158
+    DIRTY_WATER_TANK_STATUS = 159
+    DUST_BAG_STATUS = 160
+    DETERGENT_STATUS = 161
+    STATION_DRAINAGE_STATUS = 162
+    LDS_STATUS = 163
+    AI_MAP_OPTIMIZATION_STATUS = 164
+    SECOND_CLEANING_STATUS = 165
+    WATER_TANK_STATUS = 166
+    ADD_CLEANING_AREA_STATUS = 167
+    ADD_CLEANING_AREA_RESULT = 168
+    FIRST_CONNECT_WIFI = 169
+    HAND_DUST_STATUS = 170
+    HAND_DUST_CONNECT_STATUS = 171
+    HOT_WATER_STATUS = 172
+    THRESHOLD_CONFIRMATION_STATUS = 173
+    DUST_BAG_DRYING_LEFT = 174
+    DUST_BAG_DRYING_STATUS = 175
+    DUST_BOX_STATUS = 176
+    ROLLER_COVER = 177
+    CABIN_DOOR_DRYING_LEFT_TIME = 178
+    ROBOT_ARM_COVER_STATUS = 179
+    MOP_TRANSPORT_CARRIER_RESET = 180
+    MOP_TRANSPORT_CARRIER_STATUS = 181
+    ROLLER_COVER_STATUS = 182
+    WASHBOARD_CLEANING_STATUS = 183
+    MECHANICAL_FOOT_STATUS = 184
+    ROBOT_ARM_AVAILABLE = 185
+    STATION_OTA_STATUS = 186
+    CLIMBER_PAIR_STATUS = 187
+    INTELLIGENT_SUPERCHARGING_STATUS = 188
+    INTELLIGENT_SUPERCHARGING_LEVEL = 189
+    PRESSURIZED_ROLLER_STATUS = 190
+    WETNESS_LEVEL = 191
+    CLEAN_CARPETS_FIRST = 192
+    AUTO_LDS_COVERAGE = 193
+    LDS_STATE = 194
+    CLEANGENIUS_MODE = 195
+    QUICK_WASH_MODE = 196
+    HAS_CHILDREN = 197
+    WATER_TEMPERATURE = 198
+    CLEAN_EFFICIENCY = 199
+    IMPACT_INJECTION_PUMP = 200
+    OBSTACLE_VIDEOS = 201
+    DND_DISABLE_RESUME_CLEANING = 202
+    DND_DISABLE_AUTO_EMPTY = 203
+    DND_REDUCE_VOLUME = 204
+    HAND_VACUUM_AUTO_DUSTING = 205
+    DYNAMIC_OBSTACLE_CLEANING = 206
+    HUMAN_NOISE_REDUCTION = 207
+    PET_CARE = 208
+    LOWER_HATCH_CONTROL = 209
+    SMART_MOP_WASHING = 210
+    BLOCK_HEALTH_CHECKS = 211
+    MOP_AFTER_VACUUM = 212
+    SMALL_AREA_FAST_CLEAN = 213
+    SHIELD_ULTRASONIC_SIGNALS = 214
+    SILENT_DRYING = 215
+    HAIR_COMPRESSION = 216
+    SIDE_BRUSH_CARPET_ROTATE = 217
+    ERP_LOW_POWER = 218
+    SHIELD_WASHBOARD_IN_PLACE = 219
+    SELF_CLEANING_PROBLEM = 220
+    WASHING_TEST = 221
+    WIFI_PERFORMANCE_TEST = 222
+    EMERGENCY_INFORMATION_UPLOAD = 223
+    FEEDBACK_SWITCH = 224
+    CARPET_AI_SEGMENT = 225
+    OBSTACLE_CROSSING = 226
+    VISUAL_RESUME = 227
+    FAN_ABNORMAL_NOISE = 228
+    LARGE_MEMORY_RESET = 229
+    BOW_BEFORE_EDGE = 230
+    VOLTAGE = 231
+    DETERGENT_A = 232
+    DETERGENT_B = 233
+    MOP_TEMPERATURE = 234
+    BATTERY_CHARGE_LEVEL = 235
+    DUST_BAG_DRYING = 236
+    SWEEP_DISTANCE = 237
+    LOW_LYING_AREA_FREQUENCY = 238
+    MOPPING_WITH_DETERGENT = 239
+    PRESSURIZED_CLEANING = 240
+    SCRAPER_FREQUENCY = 241
+    REALTIME_PARTICLE_DETECT = 242
+    IGNORE_STAIRS = 243
+    LIFT_CHASSIS_ON_CARPET = 244
+    RING_LIGHT_ALWAYS_ON = 245
+    AUTO_CHANGE_MOP = 246
+    POWER_SAVING = 247
+    WHEEL_LIFT_BOOST_MOPPING = 248
+    CABIN_DOOR_DRYING_TIME = 249
+    CABIN_DOOR_SILENT_DRYING = 250
+    CABIN_DOOR_DRYING = 251
+    CLOSE_ROLLER_COVER_ON_CARPET = 252
+    ROBOT_ARM_STATUS = 253
+    AUXILIARY_CLEANING = 254
+    AUTO_ARRANGEMENT = 255
+    ROBOT_ARM_OVERWEIGHT_PROTECTION = 256
+    ROBOT_ARM_ARRANGEMENT_MODE = 257
+    FLOOR_MAINTAINING = 258
+    DETERGENT_C = 259
+    ROBOT_ARM_OBJECT_STATUS = 260
+    ROBOT_ARM_CAMERA_STATUS = 261
+    STORE_MODE = 262
+    ROBOT_ARM_MODE = 263
+    INTEGRATED_POWER = 264
+    NARROW_WALL_CLEANING = 265
+    INTELLIGENT_STAIN_CLEANING = 266
+    ACTIVE_SUSPENSION_CROSSING = 267
+    SHIELD_ROLLER_ACTIVE = 268
+    MOP_PRESSURE = 269
+    PET_AI_MODEL = 270
+    LOWER_LDS_WHILE_DOCKING = 271
+    RL_NAVIGATION_MESSAGE = 272
+    DUST_LIGHT = 273
+    QUICK_MOP_SWITCHING = 274
+    BLOCK_AGENCY_ALARM = 275
+    EXHIBITION_MODE = 276
+    AUTO_EMPTY_AREA = 277
+    MINIMAL_VOICE_PROMPTS = 278
+    CLEARANCE_LEG_OBSTACLE_CROSSING = 279
+    OMNIDIRECTIONAL_WHELL_LIFTING = 280
+    ONLY_IDENTIFY_CLEANING_OBSTACLES = 281
+    MOP_SCRUBBING_SPEED = 282
+    ACTIVE_LIGHT_ENHANCED_DETECTION = 283
+    SHIELDED_MEMBRANE_SENSOR = 284
+    MOP_HIGH_SPEED_ROTATION = 285
+    STAIN_RECOGNITION = 286
+    DYNAMIC_EDGE_EXTENSION = 287
+    OFFLINE_DEMO_MODE = 288
+    INTELLIGENT_SUPERCHARGING = 289
+    STEAM_CLEANING_MODE = 290
+    BATTERY_ABNORMAL = 291
+    STAIN_RECOGNITION_SENSITIVITY = 292
+    STAIR_CLEANING = 293
+    EXTENDED_SAFETY_REGULATION = 294
+    GROUND_DETECTION = 295
+    DRIVE_WHEEL_MOS_SHORT = 296
+    DRIVE_WHEEL_EXTENDED_SAFETY_REGULATION = 297
+    DEODORIZER_TIME_LEFT = 298
+    DEODORIZER_LEFT = 299
+    WHEEL_DIRTY_TIME_LEFT = 300
+    WHEEL_DIRTY_LEFT = 301
+    SCALE_INHIBITOR_TIME_LEFT = 302
+    SCALE_INHIBITOR_LEFT = 303
+    FLUFFING_ROLLER_DIRTY_LEFT = 304
+    FLUFFING_ROLLER_DIRTY_TIME_LEFT = 305
+    ROLLER_MOP_FILTER_DIRTY_TIME_LEFT = 306
+    ROLLER_MOP_FILTER_DIRTY_LEFT = 307
+    BLOCK_EXCEPTION_LIST = 308
+    MAP_FLOOR_MATCHING = 309
+    CLIMBER_ERROR_CODE = 310
+    MULTI_FLOOR_CLEANING = 311
+    WATER_OUTLET_FILTER_DIRTY_TIME_LEFT = 312
+    WATER_OUTLET_FILTER_DIRTY_LEFT = 313
+    TRACK_CLEANING_TIME_LEFT = 314
+    TRACK_CLEANING_LEFT = 315
+    WASHBOARD_CLEANING_TIME_LEFT = 316
+    WASHBOARD_CLEANING_LEFT = 317
+    FILTER_CLEANING_TIME_LEFT = 318
+    FILTER_CLEANING_LEFT = 319
+    CLIMBER_OTA_PARAMETER = 320
+    CLIMBER_OTA_PROGRESS = 321
+    CLIMBER_OTA_STATUS = 322
+    CLIMBER_SYSTEM_INFORMATION = 323
+    CLIMBER_CONNECTION_STATUS = 324
+    FACTORY_TEST_STATUS = 325
+    FACTORY_TEST_RESULT = 326
+    SELF_TEST_STATUS = 327
+    LSD_TEST_STATUS = 328
+    DEBUG_SWITCH = 329
+    SERIAL = 330
+    CALIBRATION_STATUS = 331
+    VERSION = 332
+    PERFORMANCE_SWITCH = 333
+    AI_TEST_STATUS = 334
+    PUBLIC_KEY = 335
+    AUTO_PAIR = 336
+    MCU_VERSION = 337
+    MOP_TEST_STATUS = 338
+    SYSTEM_GUARD_MONITORING = 339
+    TCP_DUMP = 340
+    ENABLE_SYSTEM_GUARD = 341
+    MATTER_QR_CODE = 342
+    DISABLE_DTOF_VERIFICATION = 343
+    DISABLE_DTOF_LEFT_BACK_TOF = 344
+    DEMO_MODE_CONFIGURATION = 345
+    PLATFORM_NETWORK = 346
+    DISABLE_PROJECTOR = 347
+    STREAM_STATUS = 348
+    STREAM_AUDIO = 349
+    STREAM_RECORD = 350
+    TAKE_PHOTO = 351
+    STREAM_KEEP_ALIVE = 352
+    STREAM_FAULT = 353
+    CAMERA_LIGHT_BRIGHTNESS = 354
+    CAMERA_LIGHT = 355
+    STREAM_VENDOR = 356
+    STREAM_PROPERTY = 357
+    STREAM_CRUISE_POINT = 358
+    STREAM_TASK = 359
+    STEAM_HUMAN_FOLLOW = 360
+    OBSTACLE_VIDEO_STATUS = 361
+    OBSTACLE_VIDEO_DATA = 362
+    STREAM_UPLOAD = 363
+    STREAM_CODE = 364
+    STREAM_SET_CODE = 365
+    STREAM_VERIFY_CODE = 366
+    STREAM_RESET_CODE = 367
+    ACCESS_ENABLE_STATUS = 368
+    STREAM_SPACE = 369
 
 
 class DreameVacuumAutoSwitchProperty(str, Enum):
@@ -1606,7 +1609,7 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.NATION_MATCHED: {siid: 4, piid: 19},
     DreameVacuumProperty.RELOCATION_STATUS: {siid: 4, piid: 20},
     DreameVacuumProperty.OBSTACLE_AVOIDANCE: {siid: 4, piid: 21},
-    DreameVacuumProperty.AI_DETECTION: {siid: 4, piid: 22},
+    DreameVacuumProperty.AI_OBSTACLE_DETECTION: {siid: 4, piid: 22},
     DreameVacuumProperty.CLEANING_MODE: {siid: 4, piid: 23},
     DreameVacuumProperty.UPLOAD_MAP: {siid: 4, piid: 24},
     DreameVacuumProperty.SELF_WASH_BASE_STATUS: {siid: 4, piid: 25},
@@ -1649,6 +1652,7 @@ DreameVacuumPropertyMapping = {
     DreameVacuumProperty.BACK_CLEAN_MODE: {siid: 4, piid: 62},
     DreameVacuumProperty.CLEANING_PROGRESS: {siid: 4, piid: 63},
     DreameVacuumProperty.DRYING_PROGRESS: {siid: 4, piid: 64},
+    DreameVacuumProperty.CLEANING_PROGRESS_INFO: {siid: 4, piid: 66},
     DreameVacuumProperty.DEVICE_CAPABILITY: {siid: 4, piid: 83},
     # DreameVacuumProperty.COMBINED_DATA: {siid: 4, piid: 99},
     DreameVacuumProperty.ONBOARD_WETNESS_LEVEL: {siid: 4, piid: 105},
@@ -2422,7 +2426,7 @@ DISCARDED_PROPERTIES: Final = [
     DreameVacuumProperty.SELF_WASH_BASE_STATUS,
     DreameVacuumProperty.AUTO_SWITCH_SETTINGS,
     DreameVacuumProperty.CAMERA_LIGHT_BRIGHTNESS,
-    DreameVacuumProperty.AI_DETECTION,
+    DreameVacuumProperty.AI_OBSTACLE_DETECTION,
     DreameVacuumProperty.SHORTCUTS,
     DreameVacuumProperty.MAP_BACKUP_STATUS,
     DreameVacuumProperty.MAP_RECOVERY_STATUS,
@@ -2476,7 +2480,7 @@ READ_WRITE_PROPERTIES: Final = [
     DreameVacuumProperty.CARPET_BOOST,
     DreameVacuumProperty.MOP_CLEANING_REMAINDER,
     DreameVacuumProperty.OBSTACLE_AVOIDANCE,
-    DreameVacuumProperty.AI_DETECTION,
+    DreameVacuumProperty.AI_OBSTACLE_DETECTION,
     DreameVacuumProperty.DRYING_TIME,
     DreameVacuumProperty.AUTO_ADD_DETERGENT,
     DreameVacuumProperty.CARPET_CLEANING,
@@ -2637,8 +2641,8 @@ class ObstacleType(IntEnum):
     SKIPPED_UNCLEANABLE_STAIN = 215
     CLEANED_DRIED_STAIN = 216
     CLEANED_LARGE_PARTICLES = 217
-    HAIR = (225,)
-    PAPER = (226,)
+    HAIR = 225
+    PAPER = 226
     CLEANED_HAIR = 228
     SUNDRY = 229
 
@@ -2922,6 +2926,7 @@ class DreameVacuumDeviceCapability:
         self.hot_washing = False
         self.mop_pad_swing = False
         self.mop_pad_swing_plus = False
+        self.mop_extend = False
         self.smart_drying = False
         self.off_peak_charging = False
         self.max_suction_power = False
@@ -3079,6 +3084,8 @@ class DreameVacuumDeviceCapability:
         self.curtains = False
         self.unsupported_cleaning_progress = False
         self.intelligent_recognition = False
+        self.keep_alive = False
+        self.sweep_with_mop = False
         self._loaded = False
         self._custom_cleaning_mode = False
         self._capability = None
@@ -3106,7 +3113,7 @@ class DreameVacuumDeviceCapability:
         self.multi_floor_map = bool(
             self._device.get_property(DreameVacuumProperty.MULTI_FLOOR_MAP) is not None and self.lidar_navigation
         )
-        self.ai_detection = bool(self._device.get_property(DreameVacuumProperty.AI_DETECTION) is not None)
+        self.ai_detection = bool(self._device.get_property(DreameVacuumProperty.AI_OBSTACLE_DETECTION) is not None)
         self.self_wash_base = bool(self._device.get_property(DreameVacuumProperty.SELF_WASH_BASE_STATUS) is not None)
         self.auto_empty_base = bool(self._device.get_property(DreameVacuumProperty.DUST_COLLECTION) is not None)
         self.customized_cleaning = bool(
@@ -3185,6 +3192,11 @@ class DreameVacuumDeviceCapability:
             self.water_tank_draining = False
 
         self.mop_pad_swing = bool(self.mop_pad_swing or self.mop_pad_swing_plus)
+        self.mop_extend = bool(
+            self.mop_pad_swing
+            and self._device.get_property(DreameVacuumAutoSwitchProperty.MOP_EXTEND_FREQUENCY) is not None
+            and self._device.get_property(DreameVacuumAutoSwitchProperty.MOP_EXTEND_FREQUENCY) >= 0
+        )
         self.mop_pad_unmounting = bool(
             self.self_wash_base
             and self.mop_pad_unmounting
@@ -3214,6 +3226,9 @@ class DreameVacuumDeviceCapability:
         if not self.cleaning_route:
             self.segment_slow_clean_route = False
         self.custom_mopping_route = self.mopping_settings and not self.cleaning_route
+        self.camera_streaming = self.camera_streaming or (
+            self.obstacles and self._device.get_property(DreameVacuumProperty.STREAM_PROPERTY) is not None
+        )
         self.disable_sensor_cleaning = (
             self.disable_sensor_cleaning
             or not self.lidar_navigation
@@ -3257,6 +3272,8 @@ class DreameVacuumDeviceCapability:
             self.mop_clean_frequency = True
             self.self_clean_frequency = False
             self.floor_material = "d110" in self._device.info.model
+            self.no_detergent = "c102gl" in self._device.info.model
+            self.detergent = self.detergent and not self.no_detergent
             self.off_peak_charging = False
             self.camera_streaming = False
             self.furnitures_v2 = False
@@ -3287,6 +3304,21 @@ class DreameVacuumDeviceCapability:
                 )
             ):
                 self.furnitures_v3 = True
+
+        self.keep_alive = self._device.get_property(DreameVacuumProperty.KEEP_ALIVE) is not None and (
+            self._device.get_property(DreameVacuumProperty.CLEAN_WATER_TANK_STATUS) is not None
+            or self._device.get_property(DreameVacuumProperty.DIRTY_WATER_TANK_STATUS) is not None
+            or self.washless_base
+        )
+
+        self.sweep_with_mop = (
+            (
+                (device[1] == 1 and not self.mijia)
+                or (self.gen5 and self.washless_base and self.wetness_level and not self.mopping_after_sweeping)
+            )
+            and not self.mop_pad_lifting
+            and not self.self_wash_base
+        )
 
         self.list = [
             key
@@ -3337,14 +3369,6 @@ class DreameVacuumDeviceCapability:
             (self._device.status.current_map and self._device.status.current_map.predefined_points is not None)
             or self._device.get_property(DreameVacuumProperty.CRUISE_SCHEDULE) is not None
             or self._device.status.fill_light is not None
-        )
-
-    def mop_extend(self) -> bool:
-        return (
-            self.auto_switch_settings
-            and self.mop_pad_swing
-            and self._device.mop_extend_frequency is not None
-            and self._device.mop_extend_frequency.value >= 0
         )
 
     @property
@@ -3598,7 +3622,7 @@ class Segment(Zone):
         index: int = 0,
         type: int = 0,
         icon: str = None,
-        neighbors: List[int] = [],
+        neighbors: List[int] = None,
         cleaning_times: int = None,
         suction_level: int = None,
         water_volume: int = None,
@@ -3607,6 +3631,8 @@ class Segment(Zone):
         order: int = None,
     ) -> None:
         super().__init__(x0, y0, x1, y1)
+        if neighbors is None:
+            neighbors = []
         self.coords = [x0, y0, x1, y1]
         self.id = id
         self.unique_id = None
@@ -3639,10 +3665,8 @@ class Segment(Zone):
         self.cleanset_type = CleansetType.NONE
         self.carpet_cleaning = None
         self.carpet_preferences = None
-        self.area = None
+        self.area = abs(x1 - x0) * abs(y1 - y0) if x1 != None and x0 != None and y1 != None and y0 != None else None
         self.set_name()
-        if x1 != None and x0 != None and y1 != None and y0 != None:
-            self.area = abs(x1 - x0) * abs(y1 - y0)
 
     @property
     def mop_pad_humidity(self) -> int:
@@ -3945,7 +3969,7 @@ class Area:
     def check_size(self, size) -> bool:
         return self.x2 - self.x0 == size and self.y2 - self.y1 == size
 
-    def check_point(self, x, y, size) -> bool:        
+    def check_point(self, x, y, size) -> bool:
         x_coords = [self.x0, self.x1, self.x2, self.x3]
         y_coords = [self.y0, self.y1, self.y2, self.y3]
 
@@ -5361,3 +5385,79 @@ class MapRendererData:
     dirty: bool = False
     resources: MapRendererResources = None
     version: int = 1
+
+
+class RestartableTimer:
+    def __init__(self) -> None:
+        self._lock = Lock()
+        self._event = Event()
+        self._thread: Thread = None
+        self._deadline: float = None
+        self._function = None
+        self._args: tuple = ()
+        self._generation: int = 0
+        self._stopped: bool = False
+
+    def start(self, delay: float, function, args: tuple = None) -> None:
+        with self._lock:
+            if self._stopped:
+                return
+            self._deadline = time.monotonic() + delay
+            self._function = function
+            self._args = args or ()
+            self._generation += 1
+            if self._thread is None or not self._thread.is_alive():
+                self._thread = Thread(target=self._run, daemon=True)
+                self._thread.start()
+        self._event.set()
+
+    def cancel(self) -> None:
+        with self._lock:
+            self._deadline = None
+            self._function = None
+            self._args = ()
+            self._generation += 1
+        self._event.set()
+
+    def stop(self) -> None:
+        with self._lock:
+            self._stopped = True
+            self._deadline = None
+            self._function = None
+            self._args = ()
+            self._generation += 1
+        self._event.set()
+
+    def _run(self) -> None:
+        while True:
+            with self._lock:
+                if self._stopped:
+                    return
+                deadline = self._deadline
+                generation = self._generation
+
+            if deadline is None:
+                self._event.wait()
+                self._event.clear()
+                continue
+
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                woken = self._event.wait(remaining)
+                self._event.clear()
+                if woken:
+                    continue
+
+            with self._lock:
+                if self._stopped or self._generation != generation or self._deadline is None:
+                    continue
+                function = self._function
+                args = self._args
+                self._deadline = None
+                self._function = None
+                self._args = ()
+
+            try:
+                function(*args)
+            except:
+                pass

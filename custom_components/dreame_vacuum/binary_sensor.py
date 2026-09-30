@@ -37,13 +37,13 @@ BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
             if device.status.charging
             else "mdi:power-plug-off" if not device.status.docked else "mdi:power-plug"
         ),
-        value_fn=lambda value, device: device.status.charging,
+        value_fn=lambda value, entity: entity.device.status.charging,
     ),
     DreameVacuumBinarySensorEntityDescription(
         property_key=DreameVacuumProperty.ROLLER_COVER_STATUS,
         icon_fn=lambda value, device: "mdi:circle-off-outline" if bool(value) else "mdi:circle-outline",
         device_class=BinarySensorDeviceClass.DOOR,
-        value_fn=lambda value, device: not bool(value),
+        value_fn=lambda value, entity: not bool(value),
         exists_fn=lambda description, device: bool(device.capability.roller_cover),
     ),
     DreameVacuumBinarySensorEntityDescription(
@@ -52,7 +52,7 @@ BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
         property_key=DreameVacuumProperty.LDS_STATE,
         icon_fn=lambda value, device: "mdi:upload-circle" if bool(value) else "mdi:download-circle",
         device_class=BinarySensorDeviceClass.OPENING,
-        value_fn=lambda value, device: bool(value),
+        value_fn=lambda value, entity: bool(value),
         exists_fn=lambda description, device: bool(device.capability.auto_lds_lifting),
     ),
 )
@@ -65,7 +65,7 @@ async def async_setup_entry(
 ) -> None:
     """Set up Dreame Vacuum Binary Sensor based on a config entry."""
     coordinator: DreameVacuumDataUpdateCoordinator = hass.data[DOMAIN][entry.entry_id]
-    
+
     remove_entities(hass, entry, coordinator, "binary_sensor", BINARY_SENSORS)
     async_add_entities(
         DreameVacuumBinarySensorEntity(coordinator, description)
@@ -93,5 +93,5 @@ class DreameVacuumBinarySensorEntity(DreameVacuumEntity, BinarySensorEntity):
         if self.entity_description.property_key is not None:
             value = self.device.get_property(self.entity_description.property_key)
         if self.entity_description.value_fn is not None:
-            return bool(self.entity_description.value_fn(value, self.device))
+            return bool(self.entity_description.value_fn(value, self))
         return bool(value)

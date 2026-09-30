@@ -17,8 +17,9 @@ from homeassistant.const import (
     CONF_USERNAME,
 )
 from homeassistant.core import callback
-from homeassistant.data_entry_flow import FlowResult, AbortFlow
+from homeassistant.data_entry_flow import FlowResult, AbortFlow, UnknownFlow
 from homeassistant.helpers.device_registry import format_mac
+from homeassistant.helpers.selector import SelectSelector, SelectSelectorConfig
 from homeassistant.config_entries import (
     ConfigEntry,
     ConfigFlow,
@@ -26,7 +27,6 @@ from homeassistant.config_entries import (
 )
 
 from .dreame import DreameVacuumProtocol, MAP_COLOR_SCHEME_LIST, MAP_ICON_SET_LIST, DEVICE_INFO, VERSION
-
 from .const import (
     DOMAIN,
     CONF_NOTIFY,
@@ -42,13 +42,12 @@ from .const import (
     CONF_PREFER_CLOUD,
     CONF_LOW_RESOLUTION,
     CONF_SQUARE,
-    CONF_DONATED,
     CONF_VERSION,
-    NOTIFICATION,
+    CONF_DVC_KEY,
+    DVC,
     MAP_OBJECTS,
-    SPONSOR,
+    NOTIFICATION,
 )
-
 
 ACCOUNT_TYPE_DREAME = "dreame"
 ACCOUNT_TYPE_MOVA = "mova"
@@ -56,13 +55,13 @@ ACCOUNT_TYPE_MI = "mi"
 ACCOUNT_TYPE_TROUVER = "trouver"
 ACCOUNT_TYPE_LOCAL = "local"
 
-ACCOUNT_TYPE: Final = {
-    "Dreamehome Account": ACCOUNT_TYPE_DREAME,
-    "Xiaomi Home Account": ACCOUNT_TYPE_MI,
-    "Movahome Account": ACCOUNT_TYPE_MOVA,
-    "Trouver Account": ACCOUNT_TYPE_TROUVER,
-    "Manual Connection (Without map)": ACCOUNT_TYPE_LOCAL,
-}
+ACCOUNT_TYPES = [
+    ACCOUNT_TYPE_DREAME,
+    ACCOUNT_TYPE_MI,
+    ACCOUNT_TYPE_MOVA,
+    ACCOUNT_TYPE_TROUVER,
+    ACCOUNT_TYPE_LOCAL,
+]
 
 
 class DreameVacuumOptionsFlowHandler(OptionsFlow):
@@ -76,30 +75,50 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
         """Manage Dreame Vacuum options."""
         errors = {}
         if user_input is not None:
-            return self.async_create_entry(title="", data={**self._config_entry.options, **user_input})
+            key = (user_input.get(CONF_DVC_KEY) or "").strip().lower()
+            user_input[CONF_DVC_KEY] = key
+            if key and not re.fullmatch(r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}", key):
+                errors["base"] = "invalid_key"
+
+            if not errors:
+                return self.async_create_entry(title="", data={**self._config_entry.options, **user_input})
 
         notify = self._config_entry.options[CONF_NOTIFY]
         if isinstance(notify, bool):
             if notify is True:
-                notify = list(NOTIFICATION.keys())
+                notify = NOTIFICATION
             else:
                 notify = []
 
-        data_schema = vol.Schema({vol.Required(CONF_NOTIFY, default=notify): cv.multi_select(NOTIFICATION)})
+        data_schema = vol.Schema(
+            {
+                vol.Required(CONF_NOTIFY, default=notify): SelectSelector(SelectSelectorConfig(options=NOTIFICATION, multiple=True, translation_key='notifications')),
+                vol.Optional(
+                    CONF_DVC_KEY,
+                    default=(
+                        user_input.get(CONF_DVC_KEY, "")
+                        if user_input
+                        else self._config_entry.options.get(CONF_DVC_KEY, "")
+                    ),
+                ): str,
+            }
+        )
         if self._config_entry.data[CONF_USERNAME]:
             data_schema = data_schema.extend(
                 {
-                    vol.Required(CONF_COLOR_SCHEME, default=self._config_entry.options[CONF_COLOR_SCHEME]): vol.In(
-                        list(MAP_COLOR_SCHEME_LIST.keys())
+                    vol.Required(CONF_COLOR_SCHEME, default=self._config_entry.options[CONF_COLOR_SCHEME]): SelectSelector(
+                        SelectSelectorConfig(options=list(MAP_COLOR_SCHEME_LIST.keys()), translation_key="color_scheme")
                     ),
                     vol.Required(
                         CONF_ICON_SET,
                         default=self._config_entry.options.get(CONF_ICON_SET, next(iter(MAP_ICON_SET_LIST))),
-                    ): vol.In(list(MAP_ICON_SET_LIST.keys())),
+                    ): SelectSelector(
+                        SelectSelectorConfig(options=list(MAP_ICON_SET_LIST.keys()), translation_key="icon_set")
+                    ),
                     vol.Required(
                         CONF_HIDDEN_MAP_OBJECTS,
                         default=self._config_entry.options.get(CONF_HIDDEN_MAP_OBJECTS, []),
-                    ): cv.multi_select(MAP_OBJECTS),
+                    ): SelectSelector(SelectSelectorConfig(options=MAP_OBJECTS, multiple=True, translation_key='map_objects')),
                     vol.Required(CONF_SQUARE, default=self._config_entry.options.get(CONF_SQUARE, False)): bool,
                     vol.Required(
                         CONF_LOW_RESOLUTION,
@@ -116,15 +135,6 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
                         ): bool,
                     }
                 )
-
-            data_schema = data_schema.extend(
-                {
-                    vol.Required(
-                        CONF_DONATED,
-                        default=self._config_entry.options.get(CONF_DONATED, False),
-                    ): bool
-                }
-            )
 
         return self.async_show_form(
             step_id="init",
@@ -169,20 +179,35 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         """Get the options flow for this handler."""
         return DreameVacuumOptionsFlowHandler(config_entry)
 
+    @callback
+    def async_remove(self) -> None:
+        """Disconnect the protocol when the flow is aborted or removed."""
+        if self.protocol is not None:
+            try:
+                self.protocol.disconnect()
+            except:
+                pass
+            self.protocol = None
+
     async def async_step_user(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Handle a flow initialized by the user."""
-        if self._async_in_progress():
-            return self.async_abort(reason="already_in_progress")
-
-        account_type = list(ACCOUNT_TYPE.keys())
+        for flow in self._async_in_progress(include_uninitialized=True):
+            try:
+                self.hass.config_entries.flow.async_abort(flow["flow_id"])
+            except UnknownFlow:
+                pass
 
         if user_input is not None:
-            self.account_type = ACCOUNT_TYPE[user_input.get(CONF_TYPE, account_type[0])]
+            self.account_type = user_input.get(CONF_TYPE, ACCOUNT_TYPES[0])
             return await self.async_step_login()
 
         return self.async_show_form(
             step_id="user",
-            data_schema=vol.Schema({vol.Required(CONF_TYPE, default=account_type[0]): vol.In(account_type)}),
+            data_schema=vol.Schema({
+                vol.Required(CONF_TYPE, default=ACCOUNT_TYPES[0]): SelectSelector(
+                    SelectSelectorConfig(options=ACCOUNT_TYPES, translation_key="configuration_type")
+                )
+            }),
             errors={},
         )
 
@@ -358,7 +383,11 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 if self.protocol.cloud.captcha_img is not None:
                     return await self.async_step_captcha()
                 elif self.protocol.cloud.verification_url is not None:
-                    return await self.async_step_2fa()
+                    result = await self.hass.async_add_executor_job(self.protocol.cloud.send_2fa_code)
+                    if result:
+                        return await self.async_step_2fa()
+                    else:
+                        errors["base"] = self.protocol.cloud.login_error or "2fa_send_failed"
                 elif self.protocol.cloud.logged_in is False:
                     errors["base"] = self.protocol.cloud.login_error or "login_error"
                 elif self.protocol.cloud.logged_in:
@@ -424,7 +453,12 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             if result:
                 if not self.protocol.cloud.logged_in:
                     if self.protocol.cloud.verification_url is not None:
-                        return await self.async_step_2fa()
+                        result_2fa = await self.hass.async_add_executor_job(self.protocol.cloud.send_2fa_code)
+                        if result_2fa:
+                            return await self.async_step_2fa()
+                        return await self.async_step_mi(
+                            user_input=None, error=self.protocol.cloud.login_error or "2fa_send_failed"
+                        )
                     return await self.async_step_mi(user_input=None, error="login_error")
                 return await self.async_step_devices()
             else:
@@ -508,6 +542,8 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         error: str | None = None,
     ) -> FlowResult:
         """Configure a dreame vacuum device through the Mova Cloud."""
+        if errors is None:
+            errors = {}
 
         return await self.async_step_dreame(user_input, errors, error)
 
@@ -518,6 +554,8 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         error: str | None = None,
     ) -> FlowResult:
         """Configure a dreame vacuum device through the Trouver Cloud."""
+        if errors is None:
+            errors = {}
 
         return await self.async_step_dreame(user_input, errors, error)
 
@@ -582,12 +620,12 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 CONF_PREFER_CLOUD: self.prefer_cloud,
             }
 
-            return await self.async_step_donation()
+            return await self.async_step_dvc()
 
         data_schema = vol.Schema(
             {
                 vol.Required(CONF_NAME, default=self.name): str,
-                vol.Required(CONF_NOTIFY, default=list(NOTIFICATION.keys())): cv.multi_select(NOTIFICATION),
+                vol.Required(CONF_NOTIFY, default=NOTIFICATION): SelectSelector(SelectSelectorConfig(options=NOTIFICATION, multiple=True, translation_key='notifications')),
             }
         )
 
@@ -609,11 +647,13 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         if self.account_type != ACCOUNT_TYPE_LOCAL:
             data_schema = data_schema.extend(
                 {
-                    vol.Required(CONF_COLOR_SCHEME, default=default_color_scheme): vol.In(
-                        list(MAP_COLOR_SCHEME_LIST.keys())
+                    vol.Required(CONF_COLOR_SCHEME, default=default_color_scheme): SelectSelector(
+                        SelectSelectorConfig(options=list(MAP_COLOR_SCHEME_LIST.keys()), translation_key="color_scheme")
                     ),
-                    vol.Required(CONF_ICON_SET, default=default_icon_set): vol.In(list(MAP_ICON_SET_LIST.keys())),
-                    vol.Required(CONF_HIDDEN_MAP_OBJECTS, default=hidden_map_objects): cv.multi_select(MAP_OBJECTS),
+                    vol.Required(CONF_ICON_SET, default=default_icon_set): SelectSelector(
+                        SelectSelectorConfig(options=list(MAP_ICON_SET_LIST.keys()), translation_key="icon_set")
+                    ),
+                    vol.Required(CONF_HIDDEN_MAP_OBJECTS, default=hidden_map_objects): SelectSelector(SelectSelectorConfig(options=MAP_OBJECTS, multiple=True, translation_key='map_objects')),
                     vol.Required(CONF_SQUARE, default=False): bool,
                     vol.Required(CONF_LOW_RESOLUTION, default=False): bool,
                 }
@@ -621,9 +661,22 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(step_id="options", data_schema=data_schema, errors={})
 
-    async def async_step_donation(self, user_input: dict[str, Any] | None = None) -> FlowResult:
+    async def async_step_dvc(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         if user_input is not None:
-            self.options = self.options | {CONF_DONATED: user_input.get(CONF_DONATED, False), CONF_VERSION: VERSION}
+            key = (user_input.get(CONF_DVC_KEY) or "").strip().lower()
+            errors = {}
+
+            if key and not re.fullmatch(r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}", key):
+                errors["base"] = "invalid_key"
+
+            if errors:
+                return self.async_show_form(
+                    step_id="dvc",
+                    data_schema=vol.Schema({vol.Optional(CONF_DVC_KEY, default=key): str}),
+                    errors=errors,
+                )
+
+            self.options = self.options | {CONF_DVC_KEY: key, CONF_VERSION: VERSION}
 
             return self.async_create_entry(
                 title=self.name,
@@ -643,16 +696,12 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             )
 
         return self.async_show_form(
-            step_id="donation",
-            data_schema=vol.Schema(
-                {
-                    vol.Optional(
-                        CONF_DONATED,
-                        default=False,
-                    ): bool
-                }
-            ),
-            description_placeholders={"text": SPONSOR},
+            step_id="dvc",
+            data_schema=vol.Schema({vol.Optional(CONF_DVC_KEY): str}),
+            description_placeholders={
+                "text": f'<center><a href="https://dvc.tasshack.com"><img src="data:image/png;base64,{DVC}"/></a></center>',
+                "url": "https://dvc.tasshack.com/get-dvc#get",
+            },
             errors={},
         )
 
@@ -717,8 +766,8 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 {
                     vol.Required(CONF_USERNAME, default=self.username): str,
                     vol.Required(CONF_PASSWORD, default=self.password): str,
-                    vol.Required(CONF_COUNTRY, default=("de" if self.country == "eu" else self.country)): vol.In(
-                        ["de", "cn", "us", "ru", "tw", "sg", "in", "i2"]
+                    vol.Required(CONF_COUNTRY, default=("de" if self.country == "eu" else self.country)): SelectSelector(
+                        SelectSelectorConfig(options=["de", "cn", "us", "ru", "tw", "sg", "in", "i2"], translation_key="country")
                     ),
                     vol.Optional(CONF_PREFER_CLOUD, default=self.prefer_cloud): bool,
                 }
@@ -737,6 +786,8 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             {
                 vol.Required(CONF_USERNAME, default=self.username): str,
                 vol.Required(CONF_PASSWORD, default=self.password): str,
-                vol.Required(CONF_COUNTRY, default=self.country): vol.In(country_list),
+                vol.Required(CONF_COUNTRY, default=self.country): SelectSelector(
+                    SelectSelectorConfig(options=country_list, translation_key="country")
+                ),
             }
         )

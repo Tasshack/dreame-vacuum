@@ -8,7 +8,7 @@
   "dependencies": [
     "http"
   ],
-  "documentation": "https://github.com/Tasshack/dreame-vacuum/tree/dev?tab=readme-ov-file#features",
+  "documentation": "https://dreame-vacuum.tasshack.com/configuration",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Tasshack/dreame-vacuum/issues",
   "requirements": [
@@ -20,5 +20,5 @@
     "mini-racer",
     "paho-mqtt"
   ],
-  "version": "v2.0.0b25"
+  "version": "v2.0.0"
 }

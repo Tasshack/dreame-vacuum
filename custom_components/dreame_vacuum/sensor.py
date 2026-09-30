@@ -24,7 +24,6 @@ from .const import (
     UNIT_HOURS,
     UNIT_PERCENT,
     UNIT_AREA,
-    UNIT_TIMES,
     UNIT_DAYS,
 )
 from .dreame import (
@@ -33,11 +32,10 @@ from .dreame import (
     DreameVacuumStreamStatus,
 )
 from .dreame.const import ATTR_VALUE
-from .dreame.types import ATTR_ROOM_ID, ATTR_ROOM_ICON
+from .dreame.types import ATTR_ROOM_ID, ATTR_ROOM_ICON, ATTR_ROOM_NAME
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription, remove_entities
-
 
 STREAM_STATUS_TO_ICON = {
     DreameVacuumStreamStatus.IDLE: "mdi:webcam",
@@ -166,7 +164,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         attrs_fn=lambda device: {
             ATTR_VALUE: device.status.error,
             "faults": device.status.faults,
-            "description": device.status.error_description[0],
+            "description": device.status.error_name,
         },
     ),
     DreameVacuumSensorEntityDescription(
@@ -482,7 +480,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:calendar-start",
         device_class=SensorDeviceClass.TIMESTAMP,
         entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda value, device: datetime.fromtimestamp(value).replace(
+        value_fn=lambda value, entity: datetime.fromtimestamp(value).replace(
             tzinfo=datetime.now().astimezone().tzinfo
         ),
     ),
@@ -498,7 +496,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         property_key=DreameVacuumProperty.CLEANING_COUNT,
         icon="mdi:counter",
         state_class=SensorStateClass.TOTAL_INCREASING,
-        native_unit_of_measurement=UNIT_TIMES,
+        native_unit_of_measurement="x",
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
     DreameVacuumSensorEntityDescription(
@@ -535,6 +533,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         property_key=DreameVacuumProperty.DETERGENT_STATUS,
         icon="mdi:chart-bubble",
         exists_fn=lambda description, device: device.capability.self_wash_base
+        and not device.capability.no_detergent
         and DreameVacuumEntityDescription().exists_fn(description, device),
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
@@ -562,18 +561,21 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     DreameVacuumSensorEntityDescription(
         key="current_room",
         icon="mdi:home-map-marker",
-        value_fn=lambda value, device: device.status.current_room.name,
+        value_fn=lambda value, entity: entity._localize_segment_name(
+            entity.device.status.current_room, entity.device.status.current_room.id
+        ),
         exists_fn=lambda description, device: device.capability.map and device.capability.lidar_navigation,
         attrs_fn=lambda device: {
             ATTR_ROOM_ID: device.status.current_room.id,
             ATTR_ROOM_ICON: device.status.current_room.icon,
+            ATTR_ROOM_NAME: device.status.current_room.name,
         },
     ),
     DreameVacuumSensorEntityDescription(
         key="cleaning_history",
         icon="mdi:clipboard-text-clock",
         device_class=SensorDeviceClass.TIMESTAMP,
-        value_fn=lambda value, device: device.status.last_cleaning_time,
+        value_fn=lambda value, entity: entity.device.status.last_cleaning_time,
         exists_fn=lambda description, device: device.capability.map,
         attrs_fn=lambda device: device.status.cleaning_history,
         entity_category=EntityCategory.DIAGNOSTIC,
@@ -582,7 +584,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         key="cruising_history",
         icon="mdi:map-marker-path",
         device_class=SensorDeviceClass.TIMESTAMP,
-        value_fn=lambda value, device: device.status.last_cruising_time,
+        value_fn=lambda value, entity: entity.device.status.last_cruising_time,
         exists_fn=lambda description, device: device.capability.map and device.capability.cruising,
         attrs_fn=lambda device: device.status.cruising_history,
         entity_category=EntityCategory.DIAGNOSTIC,
@@ -608,7 +610,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:water-percent",
         device_class=SensorDeviceClass.DURATION,
         native_unit_of_measurement=UNIT_MINUTES,
-        value_fn=lambda value, device: device.status.drying_left_time,
+        value_fn=lambda value, entity: entity.device.status.drying_left_time,
         entity_category=None,
         exists_fn=lambda description, device: device.capability.self_wash_base
         and DreameVacuumEntityDescription().exists_fn(description, device),
@@ -618,7 +620,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:water-percent",
         device_class=SensorDeviceClass.DURATION,
         native_unit_of_measurement=UNIT_MINUTES,
-        value_fn=lambda value, device: int(value / 60) if value > 60 else 1,
+        value_fn=lambda value, entity: int(value / 60) if value > 60 else 1,
         entity_category=None,
         exists_fn=lambda description, device: device.capability.dust_bag_drying
         or device.capability.manual_dust_bag_drying,
@@ -626,7 +628,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     DreameVacuumSensorEntityDescription(
         key="firmware_version",
         icon="mdi:chip",
-        value_fn=lambda value, device: device.info.version,
+        value_fn=lambda value, entity: entity.device.info.version,
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
 )
@@ -663,6 +665,6 @@ class DreameVacuumSensorEntity(DreameVacuumEntity, SensorEntity):
             else:
                 prop = f"{description.key.lower()}_name"
             if hasattr(coordinator.device.status, prop):
-                description.value_fn = lambda value, device: getattr(device.status, prop)
+                description.value_fn = lambda value, entity: getattr(entity.device.status, prop)
         super().__init__(coordinator, description)
         self._generate_entity_id(ENTITY_ID_FORMAT)

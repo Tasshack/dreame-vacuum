@@ -295,7 +295,9 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         key="backup_saved_map",
         icon="mdi:cloud-upload",
         entity_category=EntityCategory.DIAGNOSTIC,
-        available_fn=lambda device: not device.status.started and not device.status.map_backup_status and device.status.has_saved_map,
+        available_fn=lambda device: not device.status.started
+        and not device.status.map_backup_status
+        and device.status.has_saved_map,
         action_fn=lambda device: device.backup_map(),
         exists_fn=lambda description, device: device.capability.backup_map and device.capability.map,
     ),
@@ -331,15 +333,17 @@ def async_update_buttons(
 ) -> None:
     new_entities = []
     if coordinator.device.capability.shortcuts:
+        if not isinstance(coordinator.device.status.shortcuts, dict):
+            return
+
         if coordinator.device.status.shortcuts:
             new_ids = set([k for k, v in coordinator.device.status.shortcuts.items()])
         else:
             new_ids = set([])
 
-        current_ids = set(current_shortcut)
+        current_ids = set(k for k in current_shortcut if k != "init")
 
-        for shortcut_id in current_ids - new_ids:
-            async_remove_buttons(shortcut_id, coordinator, current_shortcut)
+        async_remove_buttons(coordinator, current_shortcut, new_ids)
 
         for shortcut_id in new_ids - current_ids:
             current_shortcut[shortcut_id] = [
@@ -363,16 +367,43 @@ def async_update_buttons(
 
 
 def async_remove_buttons(
-    id: str,
     coordinator: DreameVacuumDataUpdateCoordinator,
-    current: dict[str, DreameVacuumButtonEntity],
+    current: dict[str, list[DreameVacuumShortcutButtonEntity]],
+    new_ids: set,
 ) -> None:
     registry = entity_registry.async_get(coordinator.hass)
-    entities = current[id]
-    for entity in entities:
-        if entity.entity_id in registry.entities:
-            registry.async_remove(entity.entity_id)
-    del current[id]
+    
+    current_ids = set(k for k in current if k != "init")
+    for id in current_ids - new_ids:
+        entities = current[id]
+        for entity in entities:
+            if entity.entity_id in registry.entities:
+                registry.async_remove(entity.entity_id)
+        del current[id]
+
+    if "init" in current:
+        return
+
+    mapped_new_ids = set()
+    for sid in new_ids:
+        mapped_id = sid
+        if mapped_id == 25:
+            mapped_id = 0
+        elif mapped_id >= 32:
+            mapped_id = mapped_id - 31
+        mapped_new_ids.add(mapped_id)
+
+    entry_id = coordinator._entry.entry_id if hasattr(coordinator, "_entry") else coordinator.config_entry.entry_id
+    for entry in entity_registry.async_entries_for_config_entry(registry, entry_id):
+        if entry.domain == "button" and f"{coordinator.device.mac}_shortcut_" in entry.unique_id:
+            try:
+                mapped_id = int(entry.unique_id.split("_shortcut_")[-1])
+                if mapped_id not in mapped_new_ids:
+                    registry.async_remove(entry.entity_id)
+            except ValueError:
+                pass
+                
+    current["init"] = []
 
 
 class DreameVacuumButtonEntity(DreameVacuumEntity, ButtonEntity):
@@ -438,14 +469,19 @@ class DreameVacuumShortcutButtonEntity(DreameVacuumEntity, ButtonEntity):
         """Set name of the entity"""
         key = "shortcut"
         if self.shortcut:
-            name = self.shortcut.name
-            if name.lower().startswith(key):
-                name = name[8:]
-            name = f"{key}_{name}"
+            value = self.shortcut.name
+            if value.lower().startswith(key):
+                value = value[8:]
+            name = f"{key}_{value}"
         else:
-            name = f"{key}_{self.id}"
+            value = str(self.id)
+            name = f"{key}_{value}"
 
-        self._attr_name = name.replace("_", " ").title()
+        if self._name_placeholder:
+            self._attr_translation_placeholders = {"name": value.replace("_", " ").title()}
+            self.__dict__.pop("name", None)
+        else:
+            self._attr_name = name.replace("_", " ").title()
 
     @callback
     def _handle_coordinator_update(self) -> None:

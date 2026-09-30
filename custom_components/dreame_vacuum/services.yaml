@@ -322,50 +322,6 @@ vacuum_backup_map:
         number:
           mode: box
 
-vacuum_merge_segments:
-  target:
-    entity:
-      integration: dreame_vacuum
-      domain: vacuum
-  fields:
-    map_id:
-      example: "14"
-      required: false
-      selector:
-        number:
-          mode: box
-    segments:
-      example: "[3,2]"
-      required: true
-      selector:
-        object:
-
-vacuum_split_segments:
-  target:
-    entity:
-      integration: dreame_vacuum
-      domain: vacuum
-  fields:
-    map_id:
-      example: "14"
-      required: false
-      selector:
-        number:
-          mode: box
-    segment:
-      example: "3"
-      required: true
-      selector:
-        number:
-          min: 1
-          max: 60
-          mode: box
-    line:
-      example: "[819,-263,4424,2105]"
-      required: true
-      selector:
-        object:
-
 vacuum_rename_segment:
   target:
     entity:
@@ -436,68 +392,15 @@ vacuum_set_custom_cleaning:
         object:
     mop_temperature:
       example: "[0,0,1,0,1]"
-      required: true
+      required: false
       selector:
         object:
     mop_pressure:
       example: "[2,0,0,2,0]"
-      required: true
-      selector:
-        object:
-        
-vacuum_set_custom_carpet_cleaning:
-  target:
-    entity:
-      integration: dreame_vacuum
-      domain: vacuum
-  fields:
-    id:
-      example: "[1,2] or 3" 
-      required: true
-      selector:
-        object:
-    type:
-      example: "[0,1] or 1" 
-      required: true
-      selector:
-        number:
-          min: 0
-          max: 1
-    carpet_cleaning:
-      example: "[0,3] or 5" 
-      required: false
-      selector:
-        number:
-          min: 0
-          max: 6
-    carpet_preferences:
-      example: "['carpet_boost'] or 'clean_carpets_first' or '-1' or []" 
       required: false
       selector:
         object:
         
-vacuum_set_restricted_zone:
-  target:
-    entity:
-      integration: dreame_vacuum
-      domain: vacuum
-  fields:
-    walls:
-      example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
-      required: false
-      selector:
-        object:
-    zones:
-      example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
-      required: false
-      selector:
-        object:
-    no_mops:
-      example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
-      required: false
-      selector:
-        object:
-
 vacuum_reset_consumable:
   target:
     entity:
@@ -558,47 +461,6 @@ vacuum_delete_shortcut:
         number:
           mode: box
 
-vacuum_set_carpet_area:
-  target:
-    entity:
-      integration: dreame_vacuum
-      domain: vacuum
-  fields:
-    carpets:
-      example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
-      required: false
-      selector:
-        object:
-    deleted_carpets:
-      example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
-      required: false
-      selector:
-        object:    
-
-vacuum_set_virtual_threshold:
-  target:
-    entity:
-      integration: dreame_vacuum
-      domain: vacuum
-  fields:
-    virtual_thresholds:
-      example: "[[819,-263,4424,2105],[-2001,-3050,-542,515]]"
-      required: false
-      selector:
-        object:
-
-vacuum_set_predefined_points:
-  target:
-    entity:
-      integration: dreame_vacuum
-      domain: vacuum
-  fields:
-    points:
-      example: "[819,-263] or [[819,-263],[900,-463]]" 
-      required: false
-      selector:
-        object:
-
 vacuum_set_obstacle_ignore:
   target:
     entity:
@@ -623,55 +485,3 @@ vacuum_set_obstacle_ignore:
       selector:
         boolean:
 
-vacuum_set_router_position:
-  target:
-    entity:
-      integration: dreame_vacuum
-      domain: vacuum
-  fields:
-    x:
-      example: 819
-      required: true
-      selector:
-        number:
-          mode: box
-    y:
-      example: -263
-      required: true
-      selector:
-        number:
-          mode: box
-
-select_select_previous:
-  target:
-    entity:
-      integration: dreame_vacuum
-      domain: select
-  fields:
-    cycle:
-      default: true
-      selector:
-        boolean:
-
-select_select_first:
-  target:
-    entity:
-      integration: dreame_vacuum
-      domain: select
-
-select_select_last:
-  target:
-    entity:
-      integration: dreame_vacuum
-      domain: select
-
-select_select_next:
-  target:
-    entity:
-      integration: dreame_vacuum
-      domain: select
-  fields:
-    cycle:
-      default: true
-      selector:
-        boolean:
