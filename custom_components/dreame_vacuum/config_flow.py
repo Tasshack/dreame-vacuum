@@ -283,10 +283,12 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
     async def async_step_local(
         self,
         user_input: dict[str, Any] | None = None,
-        errors: dict[str, Any] | None = {},
+        errors: dict[str, Any] | None = None,
         error: str | None = None,
     ) -> FlowResult:
         """Handle the initial step."""
+        if errors is None:
+            errors = {}
         if user_input is not None:
             self._async_abort_entries_match(user_input)
 
@@ -322,9 +324,11 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         return await self.async_step_local(error=error)
 
     async def async_step_mi(
-        self, user_input: dict[str, Any] | None = None, errors: dict[str, Any] | None = {}, error: str | None = None
+        self, user_input: dict[str, Any] | None = None, errors: dict[str, Any] | None = None, error: str | None = None
     ) -> FlowResult:
         """Configure a dreame vacuum device through the Miio Cloud."""
+        if errors is None:
+            errors = {}
 
         description_placeholders = {}
         if user_input is not None:
@@ -379,7 +383,9 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
-    async def async_step_2fa(self, user_input: dict[str, Any] | None = None, errors: dict[str, Any] | None = {}):
+    async def async_step_2fa(self, user_input: dict[str, Any] | None = None, errors: dict[str, Any] | None = None):
+        if errors is None:
+            errors = {}
         if self.protocol.cloud.verification_url is None and not self.protocol.cloud.logged_in:
             return await self.async_step_mi()
 
@@ -406,7 +412,9 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
-    async def async_step_captcha(self, user_input: dict[str, Any] | None = None, errors: dict[str, Any] | None = {}):
+    async def async_step_captcha(self, user_input: dict[str, Any] | None = None, errors: dict[str, Any] | None = None):
+        if errors is None:
+            errors = {}
         if self.protocol.cloud.captcha_img is None and not self.protocol.cloud.logged_in:
             return await self.async_step_mi()
 
@@ -438,10 +446,12 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
     async def async_step_dreame(
         self,
         user_input: dict[str, Any] | None = None,
-        errors: dict[str, Any] | None = {},
+        errors: dict[str, Any] | None = None,
         error: str | None = None,
     ) -> FlowResult:
         """Configure a dreame vacuum device through the Dreame Cloud."""
+        if errors is None:
+            errors = {}
 
         description_placeholders = {}
         if user_input is not None:
@@ -494,7 +504,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
     async def async_step_mova(
         self,
         user_input: dict[str, Any] | None = None,
-        errors: dict[str, Any] | None = {},
+        errors: dict[str, Any] | None = None,
         error: str | None = None,
     ) -> FlowResult:
         """Configure a dreame vacuum device through the Mova Cloud."""
@@ -504,7 +514,7 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
     async def async_step_trouver(
         self,
         user_input: dict[str, Any] | None = None,
-        errors: dict[str, Any] | None = {},
+        errors: dict[str, Any] | None = None,
         error: str | None = None,
     ) -> FlowResult:
         """Configure a dreame vacuum device through the Trouver Cloud."""

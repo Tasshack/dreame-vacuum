@@ -482,19 +482,19 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             notifications = self.hass.data.get(persistent_notification.DOMAIN)
             if self._has_warning:
                 if f"{DOMAIN}_{self._device.mac}_{NOTIFICATION_ID_WARNING}" not in notifications:
-                    if NOTIFICATION_ID_WARNING in self._notify:
+                    if self._notify is True or (isinstance(self._notify, list) and NOTIFICATION_ID_WARNING in self._notify):
                         self._device.clear_warning()
                     self._has_warning = self._device.status.has_warning
 
             if self._low_water:
                 if f"{DOMAIN}_{self._device.mac}_{NOTIFICATION_ID_LOW_WATER}" not in notifications:
-                    if NOTIFICATION_ID_WARNING in self._notify:
+                    if self._notify is True or (isinstance(self._notify, list) and NOTIFICATION_ID_WARNING in self._notify):
                         self._device.clear_warning()
                     self._low_water = self._device.status.low_water
 
             if self._drainage_status:
                 if f"{DOMAIN}_{self._device.mac}_{NOTIFICATION_ID_DRAINAGE_STATUS}" not in notifications:
-                    if NOTIFICATION_ID_WARNING in self._notify:
+                    if self._notify is True or (isinstance(self._notify, list) and NOTIFICATION_ID_WARNING in self._notify):
                         self._device.clear_warning()
                     self._drainage_status = self._device.status.draining_complete
 
