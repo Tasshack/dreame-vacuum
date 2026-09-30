@@ -49,6 +49,17 @@ from .const import (
     NOTIFICATION,
 )
 
+COLOR_SCHEME_KEYS = {name.lower().replace(" ", "_"): name for name in MAP_COLOR_SCHEME_LIST}
+ICON_SET_KEYS = {name.lower().replace(" ", "_"): name for name in MAP_ICON_SET_LIST}
+
+
+def _key_of(keys: dict[str, str], name: str | None) -> str:
+    for key, value in keys.items():
+        if value == name:
+            return key
+    return next(iter(keys))
+
+
 ACCOUNT_TYPE_DREAME = "dreame"
 ACCOUNT_TYPE_MOVA = "mova"
 ACCOUNT_TYPE_MI = "mi"
@@ -80,6 +91,11 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
             if key and not re.fullmatch(r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}", key):
                 errors["base"] = "invalid_key"
 
+            if CONF_COLOR_SCHEME in user_input:
+                user_input[CONF_COLOR_SCHEME] = COLOR_SCHEME_KEYS[user_input[CONF_COLOR_SCHEME]]
+            if CONF_ICON_SET in user_input:
+                user_input[CONF_ICON_SET] = ICON_SET_KEYS[user_input[CONF_ICON_SET]]
+
             if not errors:
                 return self.async_create_entry(title="", data={**self._config_entry.options, **user_input})
 
@@ -106,14 +122,17 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
         if self._config_entry.data[CONF_USERNAME]:
             data_schema = data_schema.extend(
                 {
-                    vol.Required(CONF_COLOR_SCHEME, default=self._config_entry.options[CONF_COLOR_SCHEME]): SelectSelector(
-                        SelectSelectorConfig(options=list(MAP_COLOR_SCHEME_LIST.keys()), translation_key="color_scheme")
+                    vol.Required(
+                        CONF_COLOR_SCHEME,
+                        default=_key_of(COLOR_SCHEME_KEYS, self._config_entry.options[CONF_COLOR_SCHEME]),
+                    ): SelectSelector(
+                        SelectSelectorConfig(options=list(COLOR_SCHEME_KEYS), translation_key="color_scheme")
                     ),
                     vol.Required(
                         CONF_ICON_SET,
-                        default=self._config_entry.options.get(CONF_ICON_SET, next(iter(MAP_ICON_SET_LIST))),
+                        default=_key_of(ICON_SET_KEYS, self._config_entry.options.get(CONF_ICON_SET)),
                     ): SelectSelector(
-                        SelectSelectorConfig(options=list(MAP_ICON_SET_LIST.keys()), translation_key="icon_set")
+                        SelectSelectorConfig(options=list(ICON_SET_KEYS), translation_key="icon_set")
                     ),
                     vol.Required(
                         CONF_HIDDEN_MAP_OBJECTS,
@@ -612,8 +631,8 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             self.name = user_input[CONF_NAME]
             self.options = {
                 CONF_NOTIFY: user_input[CONF_NOTIFY],
-                CONF_COLOR_SCHEME: user_input.get(CONF_COLOR_SCHEME),
-                CONF_ICON_SET: user_input.get(CONF_ICON_SET),
+                CONF_COLOR_SCHEME: COLOR_SCHEME_KEYS.get(user_input.get(CONF_COLOR_SCHEME)),
+                CONF_ICON_SET: ICON_SET_KEYS.get(user_input.get(CONF_ICON_SET)),
                 CONF_HIDDEN_MAP_OBJECTS: user_input.get(CONF_HIDDEN_MAP_OBJECTS),
                 CONF_SQUARE: user_input.get(CONF_SQUARE),
                 CONF_LOW_RESOLUTION: user_input.get(CONF_LOW_RESOLUTION),
@@ -632,13 +651,13 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
         self.load_devices()
         hidden_map_objects = []
         if self.models[self.model] == 1:
-            default_color_scheme = "Mijia Light"
-            default_icon_set = "Mijia"
+            default_color_scheme = "mijia_light"
+            default_icon_set = "mijia"
             hidden_map_objects.append("name_background")
             hidden_map_objects.append("icon")
         else:
-            default_color_scheme = "Dreame Light"
-            default_icon_set = "Dreame"
+            default_color_scheme = "dreame_light"
+            default_icon_set = "dreame"
             model = re.sub(r"[^0-9]", "", self.model)
             if (not (model.isnumeric() and int(model) >= 2215)) or self.models[self.model] == 3:
                 hidden_map_objects.append("name_background")
@@ -648,10 +667,10 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
             data_schema = data_schema.extend(
                 {
                     vol.Required(CONF_COLOR_SCHEME, default=default_color_scheme): SelectSelector(
-                        SelectSelectorConfig(options=list(MAP_COLOR_SCHEME_LIST.keys()), translation_key="color_scheme")
+                        SelectSelectorConfig(options=list(COLOR_SCHEME_KEYS), translation_key="color_scheme")
                     ),
                     vol.Required(CONF_ICON_SET, default=default_icon_set): SelectSelector(
-                        SelectSelectorConfig(options=list(MAP_ICON_SET_LIST.keys()), translation_key="icon_set")
+                        SelectSelectorConfig(options=list(ICON_SET_KEYS), translation_key="icon_set")
                     ),
                     vol.Required(CONF_HIDDEN_MAP_OBJECTS, default=hidden_map_objects): SelectSelector(SelectSelectorConfig(options=MAP_OBJECTS, multiple=True, translation_key='map_objects')),
                     vol.Required(CONF_SQUARE, default=False): bool,

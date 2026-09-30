@@ -972,7 +972,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                             host = self._host.split(":")
                             if self._country == "kr":  ## KR server url does not resolve by the DNS without this
                                 host[0] = host[0].replace("10100", "10000")
-                            key = f"{self._strings[47]}{self._s(self._did, self._strings[90])}"
+                            key = f"{self._strings[47]}{self._s(self._did, self._strings[90] + self._vs)}"
                             if paho.mqtt.__version__[0] > "1":
                                 self._client = self.DreameClient(
                                     paho.mqtt.client.CallbackAPIVersion.VERSION1,

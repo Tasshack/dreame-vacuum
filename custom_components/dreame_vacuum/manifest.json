@@ -5,6 +5,9 @@
     "@tasshack"
   ],
   "config_flow": true,
+  "after_dependencies": [
+    "lovelace"
+  ],
   "dependencies": [
     "http"
   ],
@@ -12,9 +15,7 @@
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/Tasshack/dreame-vacuum/issues",
   "requirements": [
-    "pillow",
     "numpy",
-    "requests",
     "pycryptodome",
     "python-miio",
     "mini-racer",

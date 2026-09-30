@@ -246,7 +246,7 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 if dnd_remaining:
                     hour = math.floor(dnd_remaining / 3600)
                     minute = math.floor((dnd_remaining - hour * 3600) / 60)
-                    notification = f"### {self._localize_notification('resume_cleaning_not_performed_with_time').format(hour=hour, minute=minute)}"
+                    notification = f"### {self._localize_notification('resume_cleaning_not_performed_with_time').replace('%hour%', str(hour)).replace('%minute%', str(minute))}"
 
             self._create_persistent_notification(notification, NOTIFICATION_ID_CLEANING_PAUSED)
             

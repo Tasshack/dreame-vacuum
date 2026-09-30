@@ -10647,7 +10647,7 @@ class DreameVacuumDeviceStatus:
                 elif property is DreameVacuumProperty.LOW_WATER_WARNING:
                     value = self.low_water_warning_name.replace("_", " ").capitalize()
                 elif property is DreameVacuumProperty.STATUS:
-                    value = self.status_name.replace("_", " ").capitalize()
+                    value = self.status_name
                 elif property is DreameVacuumProperty.AUTO_EMPTY_STATUS:
                     value = self.auto_empty_status_name.replace("_", " ").capitalize()
                 elif property is DreameVacuumProperty.MAP_RECOVERY_STATUS:

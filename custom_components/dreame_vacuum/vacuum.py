@@ -1022,8 +1022,8 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             and not self.device.status.scheduled_clean
         ):
             self._attr_supported_features = self._attr_supported_features | VacuumEntityFeature.FAN_SPEED
-            self._attr_fan_speed = self.device.status.suction_level.name.capitalize()
-            self._attr_fan_speed_list = [level.name.capitalize() for level in DreameVacuumSuctionLevel if level != DreameVacuumSuctionLevel.UNKNOWN]
+            self._attr_fan_speed = self.device.status.suction_level.name.lower().replace("quiet", "silent")
+            self._attr_fan_speed_list = [level.name.lower().replace("quiet", "silent") for level in DreameVacuumSuctionLevel if level != DreameVacuumSuctionLevel.UNKNOWN]
         else:
             self._attr_fan_speed = None
             self._attr_fan_speed_list = []
