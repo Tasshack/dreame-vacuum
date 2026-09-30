@@ -178,7 +178,7 @@
           "adaptation": "自动适应",
           "remove_mop": "移除拖布",
           "adaptation_without_route": "自动适应无路径",
-          "vacuum_and_mop": "清扫与拖",
+          "vacuum_and_mop": "扫拖",
           "ignore": "忽略地毯",
           "cross": "穿越"
         }
@@ -345,7 +345,7 @@
         }
       },
       "cleangenius": {
-        "name": "CleanGenius",
+        "name": "智能托管",
         "state": {
           "off": "关闭",
           "routine_cleaning": "日常清洁",
@@ -353,10 +353,10 @@
         }
       },
       "cleangenius_mode": {
-        "name": "CleanGenius 模式",
+        "name": "智能托管模式",
         "state": {
-          "vacuum_and_mop": "真空和拖把",
-          "mop_after_vacuum": "真空后的拖把"
+          "vacuum_and_mop": "扫拖",
+          "mop_after_vacuum": "先扫后拖"
         }
       },
       "washing_mode": {
@@ -1111,7 +1111,7 @@
           "other": "其他",
           "default": "默认",
           "customized": "定制",
-          "cleangenius": "CleanGenius",
+          "cleangenius": "智能托管",
           "water_stain": "水渍",
           "unknown": "未知"
         }
@@ -1308,7 +1308,7 @@
         "name": "定制清洁"
       },
       "cleangenius_cleaning": {
-        "name": "CleanGenius"
+        "name": "智能托管"
       },
       "deep_cleaning": {
         "name": "精细清洁"
@@ -1805,7 +1805,7 @@
         "bag_drying_will_stopped": "尘袋烘干将停止！",
         "carpet_recognition_will_enabled": "启用定制地毯清扫前必须先开启地毯识别",
         "carpet_will_deleted": "地毯将被删除！",
-        "cleangenius_will_disabled": "CleanGenius 将被禁用！",
+        "cleangenius_will_disabled": "智能托管将被禁用！",
         "cleaning_failure": "清扫失败原因",
         "create_map": "创建新地图？",
         "custom_carpet_settings_will_enabled": "地毯定制清扫将开启！",
@@ -1818,7 +1818,7 @@
         "delete_shortcut": "确认删除快捷指令？",
         "deleted": "删除成功",
         "device_unavailable": "设备不可用",
-        "disable_cleangenius": "禁用 CleanGenius？",
+        "disable_cleangenius": "禁用智能托管？",
         "dnd_confliction": "勿扰任务冲突！",
         "dnd_confliction_detail": "预约清扫时间在勿扰时间段内。",
         "dnd_will_deleted": "自 %start% 至 %end% 的勿扰任务将被删除！",
