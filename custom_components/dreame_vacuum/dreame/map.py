@@ -5764,6 +5764,8 @@ class DreameVacuumMapDecoder:
 
             if map_data.low_lying_areas is not None:
                 if map_data.version == 3:
+                    if current_map_data.low_lying_areas is None:
+                        current_map_data.low_lying_areas = []
                     for area in map_data.low_lying_areas:
                         index = next(
                             (i for i, item in enumerate(current_map_data.low_lying_areas) if area.id == item.id),
@@ -5869,6 +5871,9 @@ class DreameVacuumMapDecoder:
 
                 current_map_data.combined_dimensions = None
                 current_map_data.combined_pixel_type = None
+
+                if current_map_data.segments is None:
+                    current_map_data.segments = {}
 
                 # Get new segment coords
                 segments = DreameVacuumMapDecoder.get_segments(current_map_data)
@@ -6177,7 +6182,7 @@ class DreameVacuumMapDecoder:
                                     break
 
                             if startI != -1 and endI != -1:
-                                x = (endI - startI) + startI
+                                x = int((endI - startI) / 2) + startI
                     else:
                         center_x = DreameVacuumMapDecoder._get_segment_center(map_data, segment.id, y, False)
                         if center_x is not None:
@@ -6241,7 +6246,7 @@ class DreameVacuumMapDecoder:
         if map_data.segments and obstacles:
             for k, obstacle in obstacles.items():
                 if obstacle.type == ObstacleType.BLOCKED_ROOM:
-                    if obstacle.segment_id in map_data.segments.items():
+                    if obstacle.segment_id in map_data.segments:
                         segment = map_data.segments[obstacle.segment_id]
                         obstacles[k].x = segment.x
                         obstacles[k].y = segment.y
@@ -6250,7 +6255,7 @@ class DreameVacuumMapDecoder:
                 else:
                     segment = DreameVacuumMapDecoder._find_px_type(obstacle.x, obstacle.y, map_data, 200)
 
-                    if segment not in map_data.segments.items():
+                    if segment not in map_data.segments:
                         for v in map_data.segments.values():
                             if not v.unmapped and v.check_point(
                                 obstacle.x,

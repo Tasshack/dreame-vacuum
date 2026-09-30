@@ -22,6 +22,7 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
+from homeassistant.helpers import entity_registry as er
 from homeassistant.helpers.entity import generate_entity_id
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
@@ -456,7 +457,10 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                     self._drainage_status = self._device.status.draining_complete
 
     def _fire_event(self, event_id, data) -> None:
-        event_data = {ATTR_ENTITY_ID: generate_entity_id("vacuum.{}", self._device.name, hass=self.hass)}
+        entity_id = er.async_get(self.hass).async_get_entity_id("vacuum", DOMAIN, f"{self._device.mac}_{DOMAIN}")
+        if entity_id is None:
+            entity_id = generate_entity_id("vacuum.{}", self._device.name, hass=self.hass)
+        event_data = {ATTR_ENTITY_ID: entity_id}
         if data:
             event_data.update(data)
         self.hass.bus.fire(f"{DOMAIN}_{event_id}", event_data)
