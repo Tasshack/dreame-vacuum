@@ -7877,8 +7877,9 @@ class DreameVacuumMapRenderer:
         y = y1 - y0
         count = size - 1 if size else math.floor(math.sqrt(x * x + y * y) / spacing)
         points = []
-        for i in range(count + 1):
-            points.append((x0 + x * (i / count), y0 + y * (i / count)))
+        if count > 0:
+            for i in range(count + 1):
+                points.append((x0 + x * (i / count), y0 + y * (i / count)))
         return points
 
     @staticmethod
