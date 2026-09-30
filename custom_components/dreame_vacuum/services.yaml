@@ -485,3 +485,372 @@ vacuum_set_obstacle_ignore:
       selector:
         boolean:
 
+vacuum_set_restricted_zone:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    walls:
+      example: "[[819,-263,4424,-263]]"
+      required: false
+      selector:
+        object:
+    zones:
+      example: "[[819,-263,4424,2105]]"
+      required: false
+      selector:
+        object:
+    no_mops:
+      example: "[[-2001,-3050,-542,515]]"
+      required: false
+      selector:
+        object:
+
+vacuum_set_carpet_area:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    carpets:
+      example: "[[819,-263,4424,2105]]"
+      required: false
+      selector:
+        object:
+    deleted_carpets:
+      example: "[[-2001,-3050,-542,515]]"
+      required: false
+      selector:
+        object:
+
+vacuum_set_carpet_type:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    id:
+      example: "[1,2] or 1"
+      required: true
+      selector:
+        object:
+    object_type:
+      example: "[1,0] or 1"
+      required: true
+      selector:
+        object:
+    carpet_type:
+      example: "[5,6] or 7"
+      required: false
+      selector:
+        object:
+
+vacuum_set_virtual_threshold:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    virtual_thresholds:
+      example: "[[819,-263,1219,-263]]"
+      required: false
+      selector:
+        object:
+
+vacuum_set_threshold:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    passable_thresholds:
+      example: "[[819,-263,1219,-263]]"
+      required: false
+      selector:
+        object:
+    impassable_thresholds:
+      example: "[[-2001,-3050,-1601,-3050]]"
+      required: false
+      selector:
+        object:
+    ramps:
+      example: "[[819,-263,1219,137,0]]"
+      required: false
+      selector:
+        object:
+
+vacuum_set_predefined_points:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    points:
+      example: "[[819,-263],[900,-463]]"
+      required: false
+      selector:
+        object:
+
+vacuum_merge_segments:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    map_id:
+      example: 14
+      required: false
+      selector:
+        number:
+          mode: box
+    segments:
+      example: "[3,2]"
+      required: true
+      selector:
+        object:
+
+vacuum_split_segments:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    map_id:
+      example: 14
+      required: false
+      selector:
+        number:
+          mode: box
+    segment:
+      example: 3
+      required: true
+      selector:
+        number:
+          mode: box
+    line:
+      example: "[819,-263,4424,2105]"
+      required: true
+      selector:
+        object:
+
+vacuum_set_custom_carpet_cleaning:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    id:
+      example: "[1,2] or 1"
+      required: true
+      selector:
+        object:
+    object_type:
+      example: "[1,0] or 1"
+      required: true
+      selector:
+        object:
+    carpet_cleaning:
+      example: "[1,2] or 2"
+      required: false
+      selector:
+        object:
+    carpet_preferences:
+      example: "[\"clean_carpets_first\",\"carpet_boost\"] or [[\"carpet_boost\"],[\"intensive_carpet_cleaning\"]]"
+      required: false
+      selector:
+        object:
+
+vacuum_set_segment_type:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    type:
+      example: "{\"3\": [1, 0, null], \"5\": [0, 0, \"Playroom\"]}"
+      required: true
+      selector:
+        object:
+    map_id:
+      example: 14
+      required: false
+      selector:
+        number:
+          mode: box
+
+vacuum_set_hidden_segments:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    segments:
+      example: "[3,5] or []"
+      required: false
+      selector:
+        object:
+    map_id:
+      example: 14
+      required: false
+      selector:
+        number:
+          mode: box
+
+vacuum_set_floor_material:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    material:
+      example: "{\"3\": [1, 0], \"5\": [2, 0]}"
+      required: true
+      selector:
+        object:
+    map_id:
+      example: 14
+      required: false
+      selector:
+        number:
+          mode: box
+
+vacuum_set_low_lying_area:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    area:
+      example: "[[819,-263,4424,2105]]"
+      required: false
+      selector:
+        object:
+
+vacuum_set_furniture:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    furnitures:
+      example: "[[-1,2,3,2000,1600,819,-263,0,0.0,0,0]]"
+      required: false
+      selector:
+        object:
+
+vacuum_set_curtain:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    curtains:
+      example: "[[819,-263,4424,-263]]"
+      required: false
+      selector:
+        object:
+
+vacuum_set_mop_type:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    mop_type:
+      example: "{\"3\": \"A\", \"5\": \"B\"}"
+      required: true
+      selector:
+        object:
+    map_id:
+      example: 14
+      required: false
+      selector:
+        number:
+          mode: box
+
+vacuum_set_router_position:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    x:
+      example: 819
+      required: true
+      selector:
+        number:
+          mode: box
+    y:
+      example: -263
+      required: true
+      selector:
+        number:
+          mode: box
+
+vacuum_set_walls:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    walls:
+      example: "{\"3\": [[819,-263,4424,-263,819,-263,4424,-263,0,0,0]]}"
+      required: false
+      selector:
+        object:
+    doors:
+      example: "[[819,-263,1619,-263,819,-263,1619,-263,0,1,0]]"
+      required: false
+      selector:
+        object:
+    map_id:
+      example: 14
+      required: false
+      selector:
+        number:
+          mode: box
+
+vacuum_set_property:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    key:
+      example: "suction_level"
+      required: true
+      selector:
+        text:
+    value:
+      example: 2
+      required: false
+      selector:
+        object:
+    params:
+      example: "[1,2]"
+      required: false
+      selector:
+        object:
+
+vacuum_call_action:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    key:
+      example: "locate"
+      required: true
+      selector:
+        text:
+    value:
+      required: false
+      selector:
+        text:
+
+update:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: camera

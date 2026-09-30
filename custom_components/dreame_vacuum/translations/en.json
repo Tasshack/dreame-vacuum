@@ -2951,6 +2951,302 @@
           "description": "Obstacle is ignored or not."
         }
       }
+    },
+    "vacuum_set_restricted_zone": {
+      "name": "Set Restricted Zone",
+      "description": "Set virtual walls, no-go zones and no-mop zones on the current map. Existing ones are replaced with the given lists.",
+      "fields": {
+        "walls": {
+          "name": "Walls",
+          "description": "List of virtual wall lines as [x0, y0, x1, y1]."
+        },
+        "zones": {
+          "name": "No-Go Zones",
+          "description": "List of no-go zone rectangles as [x0, y0, x1, y1]."
+        },
+        "no_mops": {
+          "name": "No-Mop Zones",
+          "description": "List of no-mop zone rectangles as [x0, y0, x1, y1]."
+        }
+      }
+    },
+    "vacuum_set_carpet_area": {
+      "name": "Set Carpet Area",
+      "description": "Create, update or delete carpet areas on the current saved map. (Only on supported devices)",
+      "fields": {
+        "carpets": {
+          "name": "Carpets",
+          "description": "List of carpet rectangles as [x0, y0, x1, y1] with optional carpet ID and additional carpet attributes."
+        },
+        "deleted_carpets": {
+          "name": "Deleted Carpets",
+          "description": "List of automatically detected carpet rectangles to be ignored as [x0, y0, x1, y1] with optional carpet ID."
+        }
+      }
+    },
+    "vacuum_set_carpet_type": {
+      "name": "Set Carpet Type",
+      "description": "Set the type of carpets on the current map. (Only on supported devices)",
+      "fields": {
+        "id": {
+          "name": "ID",
+          "description": "Carpet ID or list of carpet IDs."
+        },
+        "object_type": {
+          "name": "Object Type",
+          "description": "Carpet object type for each carpet (0 = Automatically Detected Carpet, 1 = Manually Created Carpet, 2 = Room Carpet)."
+        },
+        "carpet_type": {
+          "name": "Carpet Type",
+          "description": "Carpet type for each carpet (5 to 8, default is 7)."
+        }
+      }
+    },
+    "vacuum_set_virtual_threshold": {
+      "name": "Set Virtual Threshold",
+      "description": "Set virtual thresholds on the current saved map. Existing ones are replaced with the given list. (Only on supported devices)",
+      "fields": {
+        "virtual_thresholds": {
+          "name": "Virtual Thresholds",
+          "description": "List of virtual threshold lines as [x0, y0, x1, y1]."
+        }
+      }
+    },
+    "vacuum_set_threshold": {
+      "name": "Set Threshold",
+      "description": "Set passable thresholds, impassable thresholds and ramps on the current saved map. Existing ones are replaced with the given lists. (Only on supported devices)",
+      "fields": {
+        "passable_thresholds": {
+          "name": "Passable Thresholds",
+          "description": "List of passable threshold lines as [x0, y0, x1, y1]."
+        },
+        "impassable_thresholds": {
+          "name": "Impassable Thresholds",
+          "description": "List of impassable threshold lines as [x0, y0, x1, y1]."
+        },
+        "ramps": {
+          "name": "Ramps",
+          "description": "List of ramps, each as a list of five integers."
+        }
+      }
+    },
+    "vacuum_set_predefined_points": {
+      "name": "Set Predefined Points",
+      "description": "Set predefined points on the current saved map. Up to 20 points are used. (Only supported on vacuums with cruising feature)",
+      "fields": {
+        "points": {
+          "name": "Points",
+          "description": "List of point coordinates as [x, y]."
+        }
+      }
+    },
+    "vacuum_merge_segments": {
+      "name": "Merge Segments",
+      "description": "Merge two rooms on a map.",
+      "fields": {
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map. Selected map is used if not set."
+        },
+        "segments": {
+          "name": "Segments",
+          "description": "IDs of the two rooms to be merged."
+        }
+      }
+    },
+    "vacuum_split_segments": {
+      "name": "Split Segments",
+      "description": "Split a room on a map with a line.",
+      "fields": {
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map. Selected map is used if not set."
+        },
+        "segment": {
+          "name": "Segment",
+          "description": "ID of the room to be split."
+        },
+        "line": {
+          "name": "Line",
+          "description": "Split line coordinates as [x0, y0, x1, y1]."
+        }
+      }
+    },
+    "vacuum_set_custom_carpet_cleaning": {
+      "name": "Set Custom Carpet Cleaning",
+      "description": "Set customized cleaning settings of carpets on the current map. (Only on supported devices)",
+      "fields": {
+        "id": {
+          "name": "ID",
+          "description": "Carpet ID or list of carpet IDs."
+        },
+        "object_type": {
+          "name": "Object Type",
+          "description": "Carpet object type for each carpet (0 = Automatically Detected Carpet, 1 = Manually Created Carpet, 2 = Room Carpet)."
+        },
+        "carpet_cleaning": {
+          "name": "Carpet Cleaning",
+          "description": "Carpet cleaning setting for each carpet (1 = Avoidance, 2 = Adaptation, 3 = Remove Mop, 4 = Adaptation Without Route, 5 = Vacuum And Mop, 6 = Ignore, 7 = Cross, 0 = Not Set)."
+        },
+        "carpet_preferences": {
+          "name": "Carpet Preferences",
+          "description": "Enabled carpet preferences (clean_carpets_first, carpet_boost, intensive_carpet_cleaning, side_brush_carpet_rotate, lift_chassis_on_carpet), or a list of them for each carpet."
+        }
+      }
+    },
+    "vacuum_set_segment_type": {
+      "name": "Set Segment Type",
+      "description": "Set type and name of rooms on a map.",
+      "fields": {
+        "type": {
+          "name": "Type",
+          "description": "Room ID to [room type, room index, custom name] mapping. Custom name is only used when room type is 0."
+        },
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map. Selected map is used if not set."
+        }
+      }
+    },
+    "vacuum_set_hidden_segments": {
+      "name": "Set Hidden Segments",
+      "description": "Set hidden rooms on a map. (Only on supported devices)",
+      "fields": {
+        "segments": {
+          "name": "Segments",
+          "description": "IDs of the rooms to be hidden. Empty list shows all rooms."
+        },
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map. Selected map is used if not set."
+        }
+      }
+    },
+    "vacuum_set_floor_material": {
+      "name": "Set Floor Material",
+      "description": "Set floor material of rooms on a map.",
+      "fields": {
+        "material": {
+          "name": "Material",
+          "description": "Room ID to [floor material, floor direction] mapping. Rooms that are not listed are reset."
+        },
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map. Selected map is used if not set."
+        }
+      }
+    },
+    "vacuum_set_low_lying_area": {
+      "name": "Set Low Lying Area",
+      "description": "Set low lying areas on the current saved map. (Not supported yet)",
+      "fields": {
+        "area": {
+          "name": "Area",
+          "description": "List of low lying area rectangles as [x0, y0, x1, y1]."
+        }
+      }
+    },
+    "vacuum_set_furniture": {
+      "name": "Set Furniture",
+      "description": "Set furnitures on the current saved map. Existing ones are replaced with the given list. (Only on supported devices)",
+      "fields": {
+        "furnitures": {
+          "name": "Furnitures",
+          "description": "List of furnitures as [id, type, room ID, width, height, x, y, ...] (11 values per furniture). Use -1 as ID for new furnitures."
+        }
+      }
+    },
+    "vacuum_set_curtain": {
+      "name": "Set Curtain",
+      "description": "Set curtains on the current saved map. Existing ones are replaced with the given list. (Only on supported devices)",
+      "fields": {
+        "curtains": {
+          "name": "Curtains",
+          "description": "List of curtain lines as [x0, y0, x1, y1]."
+        }
+      }
+    },
+    "vacuum_set_mop_type": {
+      "name": "Set Mop Type",
+      "description": "Set mop type of rooms on a map. (Only supported on vacuums with auto mop changing feature)",
+      "fields": {
+        "mop_type": {
+          "name": "Mop Type",
+          "description": "Room ID to mop type (A, B or C) mapping."
+        },
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map. Selected map is used if not set."
+        }
+      }
+    },
+    "vacuum_set_router_position": {
+      "name": "Set Router Position",
+      "description": "Set position of the WiFi router on the current map. (Only supported on vacuums with WiFi map feature)",
+      "fields": {
+        "x": {
+          "name": "X",
+          "description": "X Coordinate of the router."
+        },
+        "y": {
+          "name": "Y",
+          "description": "Y Coordinate of the router."
+        }
+      }
+    },
+    "vacuum_set_walls": {
+      "name": "Set Walls",
+      "description": "Update walls and doors on a saved map. (Only on supported devices)",
+      "fields": {
+        "walls": {
+          "name": "Walls",
+          "description": "Room ID to list of walls mapping. Each wall has 11 values and the number of walls per room must stay the same."
+        },
+        "doors": {
+          "name": "Doors",
+          "description": "List of doors, each with 11 values. The number of doors must stay the same."
+        },
+        "map_id": {
+          "name": "Map ID",
+          "description": "ID of the map. Selected map is used if not set."
+        }
+      }
+    },
+    "vacuum_set_property": {
+      "name": "Set Property",
+      "description": "Set value of a device property.",
+      "fields": {
+        "key": {
+          "name": "Key",
+          "description": "Name of the property."
+        },
+        "value": {
+          "name": "Value",
+          "description": "New value of the property."
+        },
+        "params": {
+          "name": "Params",
+          "description": "Additional parameters."
+        }
+      }
+    },
+    "vacuum_call_action": {
+      "name": "Call Action",
+      "description": "Call a device action.",
+      "fields": {
+        "key": {
+          "name": "Key",
+          "description": "Name of the action."
+        },
+        "value": {
+          "name": "Value",
+          "description": "Parameters of the action."
+        }
+      }
+    },
+    "update": {
+      "name": "Update",
+      "description": "Refresh the map image of a map camera."
     }
   }
 }
