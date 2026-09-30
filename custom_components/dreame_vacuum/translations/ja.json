@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "繰り返し",
           "description": "各部屋の清掃回数。"
+        },
+        "mop_temperature": {
+          "name": "モップ温度",
+          "description": "各部屋のモップ温度（対応デバイスのみ）。"
+        },
+        "mop_pressure": {
+          "name": "モップ圧力",
+          "description": "各部屋のモップ圧力（対応デバイスのみ）。"
         }
       }
     },

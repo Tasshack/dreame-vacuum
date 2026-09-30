@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Repeticiones",
           "description": "Veces de limpieza para cada habitación."
+        },
+        "mop_temperature": {
+          "name": "Temperatura de la fregona",
+          "description": "Temperatura de la fregona para cada habitación (en dispositivos compatibles)."
+        },
+        "mop_pressure": {
+          "name": "Presión de la fregona",
+          "description": "Presión de la fregona para cada habitación (en dispositivos compatibles)."
         }
       }
     },

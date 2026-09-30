@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Wiederholungen",
           "description": "Reinigungszeiten für jeden Raum."
+        },
+        "mop_temperature": {
+          "name": "Mopp-Temperatur",
+          "description": "Mopp-Temperatur für jeden Raum (bei unterstützten Geräten)."
+        },
+        "mop_pressure": {
+          "name": "Mopp-Anpressdruck",
+          "description": "Mopp-Anpressdruck für jeden Raum (bei unterstützten Geräten)."
         }
       }
     },

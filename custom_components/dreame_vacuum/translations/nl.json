@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Herhalingen",
           "description": "Aantal schoonmaakbeurten voor elke ruimte."
+        },
+        "mop_temperature": {
+          "name": "Moptemperatuur",
+          "description": "Moptemperatuur voor elke kamer (op ondersteunde apparaten)."
+        },
+        "mop_pressure": {
+          "name": "Mopdruk",
+          "description": "Mopdruk voor elke kamer (op ondersteunde apparaten)."
         }
       }
     },

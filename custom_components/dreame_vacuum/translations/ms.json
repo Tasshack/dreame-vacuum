@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Ulangan",
           "description": "Kekerapan pembersihan bagi setiap bilik."
+        },
+        "mop_temperature": {
+          "name": "Suhu mop",
+          "description": "Suhu mop untuk setiap bilik (pada peranti yang disokong)."
+        },
+        "mop_pressure": {
+          "name": "Tekanan mop",
+          "description": "Tekanan mop untuk setiap bilik (pada peranti yang disokong)."
         }
       }
     },

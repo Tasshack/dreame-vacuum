@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Répétitions",
           "description": "Horaires de ménage pour chaque pièce."
+        },
+        "mop_temperature": {
+          "name": "Température de la serpillière",
+          "description": "Température de la serpillière pour chaque pièce (sur les appareils compatibles)."
+        },
+        "mop_pressure": {
+          "name": "Pression de la serpillière",
+          "description": "Pression de la serpillière pour chaque pièce (sur les appareils compatibles)."
         }
       }
     },

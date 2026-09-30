@@ -2890,6 +2890,14 @@
         "repeats": {
           "name": "Repetições",
           "description": "Número de repetições de limpeza para cada divisão."
+        },
+        "mop_temperature": {
+          "name": "Temperatura do mop",
+          "description": "Temperatura do mop para cada cômodo (em dispositivos compatíveis)."
+        },
+        "mop_pressure": {
+          "name": "Pressão do mop",
+          "description": "Pressão do mop para cada cômodo (em dispositivos compatíveis)."
         }
       }
     },

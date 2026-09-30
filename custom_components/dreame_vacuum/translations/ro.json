@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Repetări",
           "description": "Numărul de curățări pentru fiecare cameră."
+        },
+        "mop_temperature": {
+          "name": "Temperatura mopului",
+          "description": "Temperatura mopului pentru fiecare cameră (pe dispozitivele compatibile)."
+        },
+        "mop_pressure": {
+          "name": "Presiunea mopului",
+          "description": "Presiunea mopului pentru fiecare cameră (pe dispozitivele compatibile)."
         }
       }
     },

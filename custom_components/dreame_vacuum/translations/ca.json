@@ -2890,6 +2890,14 @@
         "repeats": {
           "name": "Repeticions",
           "description": "Temps de neteja per habitació."
+        },
+        "mop_temperature": {
+          "name": "Temperatura de la fregona",
+          "description": "Temperatura de la fregona per a cada estança (en dispositius compatibles)."
+        },
+        "mop_pressure": {
+          "name": "Pressió de la fregona",
+          "description": "Pressió de la fregona per a cada estança (en dispositius compatibles)."
         }
       }
     },

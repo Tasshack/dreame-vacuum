@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Toistot",
           "description": "Puhdistuskertojen (Määrän) määritttäminen jokaiselle huoneelle."
+        },
+        "mop_temperature": {
+          "name": "Moppauksen lämpötila",
+          "description": "Moppauksen lämpötila kullekin huoneelle (tuetuilla laitteilla)."
+        },
+        "mop_pressure": {
+          "name": "Moppauksen paine",
+          "description": "Moppauksen paine kullekin huoneelle (tuetuilla laitteilla)."
         }
       }
     },

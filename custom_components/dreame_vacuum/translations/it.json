@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Ripetizioni",
           "description": "Numero di passaggi di pulizia da compiere in ciascun ambiente."
+        },
+        "mop_temperature": {
+          "name": "Temperatura del mocio",
+          "description": "Temperatura del mocio per ogni stanza (sui dispositivi supportati)."
+        },
+        "mop_pressure": {
+          "name": "Pressione del mocio",
+          "description": "Pressione del mocio per ogni stanza (sui dispositivi supportati)."
         }
       }
     },

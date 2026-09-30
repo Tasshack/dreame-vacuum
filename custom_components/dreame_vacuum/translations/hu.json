@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Ismétlések",
           "description": "A takarítási menetszám minden egyes helyiséghez."
+        },
+        "mop_temperature": {
+          "name": "Felmosó hőmérséklete",
+          "description": "A felmosó hőmérséklete szobánként (támogatott eszközökön)."
+        },
+        "mop_pressure": {
+          "name": "Felmosó nyomása",
+          "description": "A felmosó nyomása szobánként (támogatott eszközökön)."
         }
       }
     },

@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Tekrarlar",
           "description": "Her oda için temizlik sayısı."
+        },
+        "mop_temperature": {
+          "name": "Paspas sıcaklığı",
+          "description": "Her oda için paspas sıcaklığı (desteklenen cihazlarda)."
+        },
+        "mop_pressure": {
+          "name": "Paspas basıncı",
+          "description": "Her oda için paspas basıncı (desteklenen cihazlarda)."
         }
       }
     },

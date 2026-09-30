@@ -2890,6 +2890,14 @@
         "repeats": {
           "name": "Kordused",
           "description": "Puhastuskordade arv iga tubai jaoks."
+        },
+        "mop_temperature": {
+          "name": "Mopi temperatuur",
+          "description": "Mopi temperatuur iga ruumi jaoks (toetatud seadmetel)."
+        },
+        "mop_pressure": {
+          "name": "Mopi surve",
+          "description": "Mopi surve iga ruumi jaoks (toetatud seadmetel)."
         }
       }
     },

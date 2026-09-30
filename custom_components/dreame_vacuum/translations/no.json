@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Gjentakelser",
           "description": "Antall ganger dette rommet skal rengjøres."
+        },
+        "mop_temperature": {
+          "name": "Moppetemperatur",
+          "description": "Moppetemperatur for hvert rom (på støttede enheter)."
+        },
+        "mop_pressure": {
+          "name": "Moppetrykk",
+          "description": "Moppetrykk for hvert rom (på støttede enheter)."
         }
       }
     },

@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Powtarza",
           "description": "Godziny sprzątania każdego pokoju."
+        },
+        "mop_temperature": {
+          "name": "Temperatura mopa",
+          "description": "Temperatura mopa dla każdego pomieszczenia (na obsługiwanych urządzeniach)."
+        },
+        "mop_pressure": {
+          "name": "Docisk mopa",
+          "description": "Docisk mopa dla każdego pomieszczenia (na obsługiwanych urządzeniach)."
         }
       }
     },

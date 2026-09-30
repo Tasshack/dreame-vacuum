@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Ponovitve",
           "description": "Število čiščenj za vsako sobo."
+        },
+        "mop_temperature": {
+          "name": "Temperatura krpe",
+          "description": "Temperatura krpe za vsak prostor (na podprtih napravah)."
+        },
+        "mop_pressure": {
+          "name": "Pritisk krpe",
+          "description": "Pritisk krpe za vsak prostor (na podprtih napravah)."
         }
       }
     },

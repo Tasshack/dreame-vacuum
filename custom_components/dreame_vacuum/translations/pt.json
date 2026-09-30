@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Repetições",
           "description": "Número de repetições de limpeza para cada sala."
+        },
+        "mop_temperature": {
+          "name": "Temperatura do esfregão",
+          "description": "Temperatura do esfregão para cada divisão (em dispositivos compatíveis)."
+        },
+        "mop_pressure": {
+          "name": "Pressão do esfregão",
+          "description": "Pressão do esfregão para cada divisão (em dispositivos compatíveis)."
         }
       }
     },

@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Lặp lại",
           "description": "Số lần làm sạch cho mỗi phòng."
+        },
+        "mop_temperature": {
+          "name": "Nhiệt độ giẻ lau",
+          "description": "Nhiệt độ giẻ lau cho từng phòng (trên thiết bị được hỗ trợ)."
+        },
+        "mop_pressure": {
+          "name": "Áp lực giẻ lau",
+          "description": "Áp lực giẻ lau cho từng phòng (trên thiết bị được hỗ trợ)."
         }
       }
     },

@@ -2890,6 +2890,14 @@
         "repeats": {
           "name": "Ponavlja se",
           "description": "Vrijeme čišćenja za svaku obitelj."
+        },
+        "mop_temperature": {
+          "name": "Temperatura krpe",
+          "description": "Temperatura krpe za svaku sobu (na podržanim uređajima)."
+        },
+        "mop_pressure": {
+          "name": "Pritisak krpe",
+          "description": "Pritisak krpe za svaku sobu (na podržanim uređajima)."
         }
       }
     },

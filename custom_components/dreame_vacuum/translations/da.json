@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Gentagelser",
           "description": "Antal rengøringsgange for hvert rum."
+        },
+        "mop_temperature": {
+          "name": "Moppens temperatur",
+          "description": "Moppens temperatur for hvert rum (på understøttede enheder)."
+        },
+        "mop_pressure": {
+          "name": "Moppens tryk",
+          "description": "Moppens tryk for hvert rum (på understøttede enheder)."
         }
       }
     },

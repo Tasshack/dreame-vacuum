@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Repeats",
           "description": "Cleaning times for each room."
+        },
+        "mop_temperature": {
+          "name": "Mop Temperature",
+          "description": "Mop temperature for each room (On supported devices)."
+        },
+        "mop_pressure": {
+          "name": "Mop Pressure",
+          "description": "Mop pressure for each room (On supported devices)."
         }
       }
     },

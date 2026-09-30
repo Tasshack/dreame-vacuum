@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Atkārtojumi",
           "description": "Tīrīšanas reižu skaits katrai istabai."
+        },
+        "mop_temperature": {
+          "name": "Mopa temperatūra",
+          "description": "Mopa temperatūra katrai telpai (atbalstītajās ierīcēs)."
+        },
+        "mop_pressure": {
+          "name": "Mopa spiediens",
+          "description": "Mopa spiediens katrai telpai (atbalstītajās ierīcēs)."
         }
       }
     },

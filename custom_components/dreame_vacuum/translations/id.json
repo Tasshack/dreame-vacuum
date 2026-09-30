@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Pengulangan",
           "description": "Jumlah pengulangan pembersihan untuk ruangan tersebut."
+        },
+        "mop_temperature": {
+          "name": "Suhu pel",
+          "description": "Suhu pel untuk setiap ruangan (pada perangkat yang didukung)."
+        },
+        "mop_pressure": {
+          "name": "Tekanan pel",
+          "description": "Tekanan pel untuk setiap ruangan (pada perangkat yang didukung)."
         }
       }
     },

@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Pasikartojimai",
           "description": "Valymo kartai kiekvienam kambariui."
+        },
+        "mop_temperature": {
+          "name": "Šluostės temperatūra",
+          "description": "Šluostės temperatūra kiekvienam kambariui (palaikomuose įrenginiuose)."
+        },
+        "mop_pressure": {
+          "name": "Šluostės slėgis",
+          "description": "Šluostės slėgis kiekvienam kambariui (palaikomuose įrenginiuose)."
         }
       }
     },

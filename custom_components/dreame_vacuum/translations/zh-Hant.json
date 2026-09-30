@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "重複次數",
           "description": "各房間的清潔遍數"
+        },
+        "mop_temperature": {
+          "name": "拖布溫度",
+          "description": "每個房間的拖布溫度（僅支援的裝置）。"
+        },
+        "mop_pressure": {
+          "name": "拖布壓力",
+          "description": "每個房間的拖布壓力（僅支援的裝置）。"
         }
       }
     },

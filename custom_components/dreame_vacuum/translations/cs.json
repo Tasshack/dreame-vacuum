@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Opakování",
           "description": "Počet úklidů pro každou místnost."
+        },
+        "mop_temperature": {
+          "name": "Teplota mopu",
+          "description": "Teplota mopu pro každou místnost (u podporovaných zařízení)."
+        },
+        "mop_pressure": {
+          "name": "Přítlak mopu",
+          "description": "Přítlak mopu pro každou místnost (u podporovaných zařízení)."
         }
       }
     },

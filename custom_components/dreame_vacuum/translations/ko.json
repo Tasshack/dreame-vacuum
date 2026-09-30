@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "반복 청소 횟수",
           "description": "해당 방을 몇 번 청소할지 설정합니다."
+        },
+        "mop_temperature": {
+          "name": "걸레 온도",
+          "description": "각 방의 걸레 온도 (지원되는 기기에서만)."
+        },
+        "mop_pressure": {
+          "name": "걸레 압력",
+          "description": "각 방의 걸레 압력 (지원되는 기기에서만)."
         }
       }
     },

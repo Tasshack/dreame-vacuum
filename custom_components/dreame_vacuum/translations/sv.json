@@ -2889,6 +2889,14 @@
         "repeats": {
           "name": "Upprepningar",
           "description": "Antal städningar för varje rum."
+        },
+        "mop_temperature": {
+          "name": "Moppens temperatur",
+          "description": "Moppens temperatur för varje rum (på enheter som stöds)."
+        },
+        "mop_pressure": {
+          "name": "Moppens tryck",
+          "description": "Moppens tryck för varje rum (på enheter som stöds)."
         }
       }
     },

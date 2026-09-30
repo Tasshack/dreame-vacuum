@@ -1,13 +1,13 @@
 {
   "domain": "dreame_vacuum",
   "name": "Dreame Vacuum",
+  "after_dependencies": [
+    "lovelace"
+  ],
   "codeowners": [
     "@tasshack"
   ],
   "config_flow": true,
-  "after_dependencies": [
-    "lovelace"
-  ],
   "dependencies": [
     "http"
   ],
