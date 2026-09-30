@@ -5,6 +5,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.components.frontend import DATA_EXTRA_MODULE_URL
+import logging
 import warnings
 from pathlib import Path
 from .const import DOMAIN
@@ -34,10 +35,40 @@ PLATFORMS = (
 )
 
 
+_LOGGER = logging.getLogger(__name__)
+
+
+async def _teardown_coordinator(coordinator) -> None:
+    """Stop the device of a coordinator that is never going to be used.
+
+    A failed first refresh (cloud discovery failure, auth failure, or setup
+    cancellation after Home Assistant's setup timeout) otherwise leaves the
+    device running with its worker threads, timers and cloud connections.
+    Home Assistant retries setup every ~30 s, so every retry used to leak the
+    previous attempt's resources until Home Assistant ran out of memory
+    (see https://github.com/Tasshack/dreame-vacuum/issues/1762).
+    """
+    device = getattr(coordinator, "_device", None)
+    if device is None:
+        return
+    device.listen(None)
+    device.listen_error(None)
+    try:
+        device.disconnect()
+    except Exception:
+        _LOGGER.exception("Error while disconnecting device after failed setup")
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Dreame Vacuum from a config entry."""
     coordinator = DreameVacuumDataUpdateCoordinator(hass, entry=entry)
-    await coordinator.async_config_entry_first_refresh()
+    # Cleanup must cover BaseException: Home Assistant cancels slow setups with
+    # CancelledError, which does not derive from Exception.
+    try:
+        await coordinator.async_config_entry_first_refresh()
+    except BaseException:
+        await _teardown_coordinator(coordinator)
+        raise
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
 
