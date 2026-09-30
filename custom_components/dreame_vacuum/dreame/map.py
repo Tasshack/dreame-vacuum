@@ -2,6 +2,7 @@ from __future__ import annotations
 import io
 import math
 import time
+import threading
 import base64
 import json
 import zlib
@@ -12468,6 +12469,7 @@ class DreameVacuumMapRenderer:
 class DreameVacuumMapOptimizer:
     def __init__(self) -> None:
         self._js_optimizer = None
+        self._lock = threading.Lock()
 
     def _clean_wall(self, data, width, height):
         for j in range(1, height - 1):
@@ -13796,6 +13798,11 @@ class DreameVacuumMapOptimizer:
             map_data.optimized_dimensions = MapImageDimensions(top, left, height, width, map_data.dimensions.grid_size)
 
     def optimize(self, map_data, saved_map_data=None, js_optimizer=True):
+        # Called from the map manager and Home Assistant executor threads, the JS optimizer is not thread safe
+        with self._lock:
+            return self._optimize(map_data, saved_map_data, js_optimizer)
+
+    def _optimize(self, map_data, saved_map_data=None, js_optimizer=True):
         if map_data.need_optimization:
             if map_data.saved_map:
                 map_data.need_optimization = False
