@@ -495,16 +495,14 @@ class DreameMapVacuumMapManager:
             return
 
         frame_id = self._current_frame_id
-        map_data_queue = copy.deepcopy(self._map_data_queue)
-        for k, v in map_data_queue.items():
+        for k in list(self._map_data_queue.keys()):
             if k != self._latest_map_id:
                 del self._map_data_queue[k]
 
         if self._latest_map_id not in self._map_data_queue or not self._map_data_queue[self._latest_map_id]:
             return
 
-        map_data_queue = copy.deepcopy(self._map_data_queue[self._latest_map_id])
-        for k, v in map_data_queue.items():
+        for k in list(self._map_data_queue[self._latest_map_id].keys()):
             if k <= frame_id:
                 del self._map_data_queue[self._latest_map_id][k]
 
@@ -5829,6 +5827,12 @@ class DreameVacuumMapDecoder:
                 left_offset = int((new_dimensions.left - left) / grid_size)
                 top_offset = int((new_dimensions.top - top) / grid_size)
 
+                # Track carpet pixel changes with a set, list lookups are O(n) for every changed pixel
+                carpet_set = (
+                    set(current_map_data.carpet_pixels) if current_map_data.carpet_pixels is not None else None
+                )
+                added_carpet_pixels = []
+
                 new_segments = []
                 # Copy new image to buffer at calculated offset
                 for y in range(new_dimensions.height):
@@ -5852,15 +5856,21 @@ class DreameVacuumMapDecoder:
                                 DreameVacuumMapDecoder._get_pixel_type(current_map_data, int(new_value))
                             )
 
-                            if carpet and current_map_data.carpet_pixels is None:
-                                current_map_data.carpet_pixels = []
+                            if carpet and carpet_set is None:
+                                carpet_set = set()
 
-                            if current_map_data.carpet_pixels is not None:
+                            if carpet_set is not None:
                                 coord = (left_offset + x, top_offset + y)
-                                if not carpet and coord in current_map_data.carpet_pixels:
-                                    current_map_data.carpet_pixels.remove(coord)
-                                elif carpet and coord not in current_map_data.carpet_pixels:
-                                    current_map_data.carpet_pixels.append(coord)
+                                if not carpet and coord in carpet_set:
+                                    carpet_set.discard(coord)
+                                elif carpet and coord not in carpet_set:
+                                    carpet_set.add(coord)
+                                    added_carpet_pixels.append(coord)
+
+                if carpet_set is not None:
+                    current_map_data.carpet_pixels = [
+                        coord for coord in (current_map_data.carpet_pixels or []) if coord in carpet_set
+                    ] + added_carpet_pixels
 
                 # Update size and buffer
                 current_map_data.data = bytes(data)
@@ -7370,6 +7380,7 @@ class DreameVacuumMapRenderer:
         self._wifi_icon = None
         self._font_file = None
         self._light_font_file = None
+        self._font_cache = {}
         self._default_map_image = None
         self._obstacle_bottom_left_icon = None
         self._obstacle_top_left_icon = None
@@ -7437,6 +7448,17 @@ class DreameVacuumMapRenderer:
                 Image.open(BytesIO(base64.b64decode(icon))).convert("RGBA")
                 for icon in MAP_ICON_CUSTOM_MOPPING_ROUTE_DREAME
             ]
+
+    def _get_font(self, light: bool, size: int) -> ImageFont.FreeTypeFont:
+        # Parsing the font file is expensive, reuse loaded fonts for the same size
+        key = (light, size)
+        font = self._font_cache.get(key)
+        if font is None:
+            if len(self._font_cache) >= 32:
+                self._font_cache.clear()
+            font = ImageFont.truetype(BytesIO(self._light_font_file if light else self._font_file), size)
+            self._font_cache[key] = font
+        return font
 
     @staticmethod
     def _to_buffer(image) -> bytes:
@@ -9402,10 +9424,10 @@ class DreameVacuumMapRenderer:
                 if self._light_font_file is None:
                     self._light_font_file = zlib.decompress(base64.b64decode(MAP_FONT_LIGHT), zlib.MAX_WBITS | 32)
 
-                text_font = ImageFont.truetype(BytesIO(self._light_font_file), text_size)
+                text_font = self._get_font(True, text_size)
                 if map_data.history_map:
-                    value_font = ImageFont.truetype(BytesIO(self._light_font_file), int(text_size * 1.8))
-                    name_font = ImageFont.truetype(BytesIO(self._light_font_file), int(text_size * 0.8))
+                    value_font = self._get_font(True, int(text_size * 1.8))
+                    name_font = self._get_font(True, int(text_size * 0.8))
                 left, top, width, height = text_draw.textbbox((0, 0), header_text, font=text_font)
                 max_width = image_width * 0.9
                 if width > max_width:
@@ -11231,13 +11253,13 @@ class DreameVacuumMapRenderer:
                 self._font_file = zlib.decompress(base64.b64decode(MAP_FONT), zlib.MAX_WBITS | 32)
 
             if render_font and self._font_file:
-                text_font = ImageFont.truetype(
-                    BytesIO(self._font_file),
+                text_font = self._get_font(
+                    False,
                     int((size * 1.9)) if segment.index or icon is None else int((size * 1.7)),
                 )
 
             if active and cleaning_sequence[segment.id] and self.config.order and sequence:
-                order_font = ImageFont.truetype(BytesIO(self._font_file), int((size * 2.1)))
+                order_font = self._get_font(False, int((size * 2.1)))
 
             p = Point(segment.x, segment.y).to_img(dimensions)
             x = p.x
@@ -11939,7 +11961,7 @@ class DreameVacuumMapRenderer:
             if self._font_file is None:
                 self._font_file = zlib.decompress(base64.b64decode(MAP_FONT), zlib.MAX_WBITS | 32)
 
-            font = ImageFont.truetype(BytesIO(self._font_file), int((bg_size * 1.5 * scale)))
+            font = self._get_font(False, int((bg_size * 1.5 * scale)))
 
             text = str(index)
             left, top, tw, th = text_box_draw.textbbox((0, 0), text, font)
