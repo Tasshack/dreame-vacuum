@@ -628,11 +628,11 @@
         "name": "Raumname",
         "state": {
           "room": "Raum",
-          "living_room": "Wohnraum",
-          "primary_bedroom": "Schlafraum",
-          "study": "Arbeitsraum",
+          "living_room": "Wohnzimmer",
+          "primary_bedroom": "Schlafzimmer",
+          "study": "Arbeitszimmer",
           "kitchen": "Küche",
-          "dining_hall": "Essraum",
+          "dining_hall": "Esszimmer",
           "bathroom": "Bad",
           "balcony": "Balkon",
           "corridor": "Flur",
@@ -642,7 +642,7 @@
           "office": "Büro",
           "fitness_area": "Fitnessbereich",
           "recreation_area": "Erholungsbereich",
-          "secondary_bedroom": "Nebenraum"
+          "secondary_bedroom": "Nebenzimmer"
         }
       },
       "selected_map": {
