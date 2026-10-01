@@ -602,6 +602,7 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._connected = False
         self._client_connected = False
         self._client_connecting = False
+        self._client_established = False
         self._client = None
         self._message_callback = None
         self._connected_callback = None
@@ -914,6 +915,7 @@ class DreameVacuumDreameHomeCloudProtocol:
         self._client_connecting = False
         self._reconnect_timer_cancel()
         if rc == 0:
+            self._client_established = True
             if not self._client_connected:
                 self._client_connected = True
                 _LOGGER.info("Connected to the device client")
@@ -1015,8 +1017,10 @@ class DreameVacuumDreameHomeCloudProtocol:
                             self._client.loop_start()
                         except Exception as ex:
                             _LOGGER.error("Connecting to the device client failed: %s", ex)
-                            # Drop the half initialized client so the next connect attempt creates a new one
-                            self._client = None
+                            # Drop the client so the next connect attempt creates a new one, only if the client was
+                            # connected before. A first connect that fails (e.g. blocked port) is not retried here.
+                            if self._client_established:
+                                self._client = None
                     elif not self._client_connected:
                         self._set_client_key()
                 self._connected = True
@@ -1557,6 +1561,10 @@ class DreameVacuumMiHomeCloudProtocol:
                 return
             try:
                 response = self._api_call(item[1], item[2], item[3])
+                if not self.check_login(response):
+                    self._logged_in = False
+                    self._auth_failed = True
+                    response = None
             except Exception as ex:
                 _LOGGER.warning("Async api call %s failed: %s", item[1], ex)
                 response = None
@@ -1577,7 +1585,7 @@ class DreameVacuumMiHomeCloudProtocol:
             f"{self.get_api_url()}/{url}", {"data": json.dumps(params, separators=(",", ":"))}, retry_count, timeout
         )
 
-        if self._check_login(response) is False:
+        if not self.check_login(response):
             self._logged_in = False
             self._auth_failed = True
             response = None
@@ -1612,10 +1620,6 @@ class DreameVacuumMiHomeCloudProtocol:
         return f"{str(self._uid)}/{str(self._did)}/0"
 
     def check_login(self, response=None) -> bool:
-        return self._check_login(response) is not False
-
-    def _check_login(self, response=None) -> bool | None:
-        """Return False if the session is invalid, True if it is valid and None if it could not be determined."""
         try:
             if response is None:
                 url = f"{self.get_api_url()}/v2/message/v2/check_new_msg"
@@ -1661,11 +1665,9 @@ class DreameVacuumMiHomeCloudProtocol:
                         http_response = None
 
                 if http_response is None:
-                    return None
-                if http_response.status_code in (401, 403):
-                    return False
+                    return True
                 if http_response.status_code != 200:
-                    return None
+                    return False
 
                 decoded = self.decrypt_rc4(self.signed_nonce(fields["_nonce"]), http_response.text)
                 response = json.loads(decoded) if decoded else None
@@ -1682,9 +1684,9 @@ class DreameVacuumMiHomeCloudProtocol:
                 ):
                     return False
                 return True
-        except Exception as ex:
-            _LOGGER.debug("Check login failed: %s", ex)
-        return None
+        except:
+            pass
+        return False
 
     def login_step_1(self) -> bool:
         try:
@@ -1709,10 +1711,7 @@ class DreameVacuumMiHomeCloudProtocol:
                         if pass_token:
                             self._pass_token = pass_token
                     return True
-                if response.status_code in (401, 403):
-                    self._auth_failed = True
-                else:
-                    _LOGGER.warning("Login failed with status: %s", response.status_code)
+                self._auth_failed = True
         except:
             pass
         return False
@@ -1806,10 +1805,8 @@ class DreameVacuumMiHomeCloudProtocol:
                     if self._pass_token:
                         self._auth_key = f"{self._auth_key} {self._pass_token}"
                     return True
-                elif response.status_code == 200 or response.status_code in (401, 403):
-                    self._auth_failed = True
                 else:
-                    _LOGGER.warning("Login failed with status: %s", response.status_code)
+                    self._auth_failed = True
         except:
             pass
         return False
@@ -1829,7 +1826,7 @@ class DreameVacuumMiHomeCloudProtocol:
                 session.cookies.set("userId", str(self._userId), domain=domain)
 
         self._location = None
-        logged_in = (self._ssecurity and self._check_login() is True) or (
+        logged_in = (self._ssecurity and self.check_login()) or (
             self.login_step_1() and (self._location or self.login_step_2()) and self.login_step_3()
         )
 
