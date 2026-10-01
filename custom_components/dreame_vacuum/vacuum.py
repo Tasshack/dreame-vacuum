@@ -1230,7 +1230,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         carpet_type=None,
     ) -> None:
         """Set carpet type"""
-        if id != "" and id is not None and type != "" and type is not None:
+        if id != "" and id is not None and object_type != "" and object_type is not None:
             await self._try_command(
                 "Unable to call set_carpet_type: %s",
                 self.device.set_carpet_type,
@@ -1475,7 +1475,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         carpet_preferences=None,
     ) -> None:
         """Set custom carpet cleaning"""
-        if id != "" and id is not None and type != "" and type is not None:
+        if id != "" and id is not None and object_type != "" and object_type is not None:
             await self._try_command(
                 "Unable to call set_custom_carpet_cleaning: %s",
                 self.device.set_custom_carpet_cleaning,
@@ -1523,7 +1523,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
 
     async def async_set_low_lying_area(
         self,
-        area,
+        area=None,
     ) -> None:
         """Set low lying area"""
         if area != "" and area is not None:
@@ -1531,7 +1531,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
 
     async def async_set_furniture(
         self,
-        furnitures,
+        furnitures=None,
     ) -> None:
         """Set furnitures"""
         if furnitures != "" and furnitures is not None:
@@ -1539,7 +1539,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
 
     async def async_set_curtain(
         self,
-        curtains,
+        curtains=None,
     ) -> None:
         """Set curtains"""
         if curtains != "" and curtains is not None:
@@ -1619,7 +1619,7 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                 y,
             )
 
-    async def async_set_walls(self, walls, doors, map_id=None) -> None:
+    async def async_set_walls(self, walls=None, doors=None, map_id=None) -> None:
         """Set walls and doors"""
         if (walls is not None and walls != "") or (doors is not None and doors != ""):
             await self._try_command("Unable to call set_walls: %s", self.device.set_walls, walls, doors, map_id)
