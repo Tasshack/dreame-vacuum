@@ -11229,21 +11229,19 @@ class DreameVacuumMapRenderer:
             if segment.type == 0 or self.config.name or icon is None:
                 segment_name = segment.name
                 if self._segment_names:
-                    if segment.type == 0:
-                        if segment.custom_name is not None:
-                            segment_name = segment.custom_name
-                        else:
-                            segment_name = self._segment_names[0].replace("%index%", str(segment.id))
-                    elif segment.type in self._segment_names:
+                    if segment.custom_name:
+                        segment_name = segment.custom_name
+                    elif segment.type != 0 and segment.type in self._segment_names:
                         segment_name = self._segment_names[segment.type]
-
-                if segment.index:
-                    segment_name = f"{segment_name} {segment.index + 1}"
+                        if segment.index > 0:
+                            segment_name = f"{segment_name} {segment.index + 1}"
+                    else:
+                        segment_name = self._segment_names[0].replace("%index%", str(segment.id))
 
                 text = (
                     segment_name
                     if (self._robot_type != RobotType.VSLAM or icon is not None)
-                    or (segment.custom_name is not None and segment.type == 0)
+                    or segment.custom_name is not None
                     or self.icon_set == 2
                     else segment.letter
                 )

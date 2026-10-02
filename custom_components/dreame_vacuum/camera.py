@@ -615,6 +615,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         self._proxy_images = {}
         self._render_lock = asyncio.Lock()
         self._proxy_render_lock = asyncio.Lock()
+        self._render_task = None
         self.map_index = map_index
         self._state = STATE_UNAVAILABLE
         if self.map_index == 0 and not self.map_data_json:
@@ -719,23 +720,26 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     async def async_camera_image(self, width: int | None = None, height: int | None = None) -> bytes | None:
         if self._should_poll is True:
             self._should_poll = False
-            now = time.time()
-            if now - self._last_map_request >= self.frame_interval:
-                self._last_map_request = now
-                if self.map_index == 0 and self.device:
-                    self.device.update_map()
-                self.update()
-                if (
-                    self._last_updated and self._last_rendered != self._last_updated and self._renderer.render_complete
-                ) or (self._default_map != False and self._state != STATE_UNAVAILABLE):
-                    self._default_map = False
-                    await self._update_image(
-                        self._map_data,
-                        self.device.status.robot_status,
-                        self.device.status.station_status,
-                    )
-                    self._last_rendered = self._last_updated
-            self._should_poll = True
+            try:
+                now = time.time()
+                if now - self._last_map_request >= self.frame_interval:
+                    self._last_map_request = now
+                    if self.map_index == 0 and self.device:
+                        self.device.update_map()
+                    self.update()
+                    if (
+                        self._last_updated
+                        and self._last_rendered != self._last_updated
+                        and self._renderer.render_complete
+                    ) or (self._default_map != False and self._state != STATE_UNAVAILABLE):
+                        self._default_map = False
+                        if self._render_task is None or self._render_task.done():
+                            self._render_task = self.coordinator.hass.async_create_task(
+                                self._render_frame(self._last_updated)
+                            )
+                        await asyncio.shield(self._render_task)
+            finally:
+                self._should_poll = True
         return self._image
 
     async def handle_async_still_stream(self, request: web.Request, interval: float) -> web.StreamResponse:
@@ -1015,6 +1019,14 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
 
     def _render_map(self, map_data, robot_status, station_status) -> bytes:
         return self._renderer.render_map(self.device.get_map_for_render(map_data), robot_status, station_status)
+
+    async def _render_frame(self, last_updated) -> None:
+        await self._update_image(
+            self._map_data,
+            self.device.status.robot_status,
+            self.device.status.station_status,
+        )
+        self._last_rendered = last_updated
 
     async def _update_image(self, map_data, robot_status, station_status) -> None:
         try:

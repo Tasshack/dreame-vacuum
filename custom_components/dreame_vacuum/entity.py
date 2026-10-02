@@ -181,6 +181,8 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
 
     def _localize_segment_name(self, segment, segment_id) -> str:
         if segment:
+            if segment.custom_name:
+                return segment.custom_name
             type_name = SEGMENT_TYPE_CODE_TO_NAME.get(segment.type) if segment.type else None
             if type_name:
                 key = type_name.lower().replace(" ", "_")
@@ -188,8 +190,6 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
                 if segment.index:
                     name = f"{name} {segment.index + 1}"
                 return name
-            if segment.custom_name:
-                return segment.custom_name
             template = self._localize_entity_component("segment_name_placeholder", "Room {index}")
             return template.replace("%index%", str(segment_id))
         template = self._localize_entity_component("segment_unavailable", "Room {index} Unavailable")

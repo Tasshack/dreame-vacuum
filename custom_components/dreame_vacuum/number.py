@@ -434,8 +434,8 @@ class DreameVacuumSegmentNumberEntity(DreameVacuumEntity, NumberEntity):
             self.segments = copy.deepcopy(coordinator.device.status.current_segments)
         else:
             self.segments = copy.deepcopy(coordinator.device.status.segments)
-            if segment_id in self.segments:
-                self.segment = self.segments[segment_id]
+        if segment_id in self.segments:
+            self.segment = self.segments[segment_id]
 
         if description.set_fn is None and (description.property_key is not None or description.key is not None):
             if description.property_key is not None:

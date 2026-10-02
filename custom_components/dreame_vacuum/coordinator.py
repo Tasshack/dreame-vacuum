@@ -179,26 +179,26 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
             DreameVacuumProperty.SELF_WASH_BASE_STATUS,
         )
 
-        for consumable, notification_id, property in (
-            (CONSUMABLE_MAIN_BRUSH, NOTIFICATION_ID_REPLACE_MAIN_BRUSH, DreameVacuumProperty.MAIN_BRUSH_LEFT),
-            (CONSUMABLE_SIDE_BRUSH, NOTIFICATION_ID_REPLACE_SIDE_BRUSH, DreameVacuumProperty.SIDE_BRUSH_LEFT),
-            (CONSUMABLE_FILTER, NOTIFICATION_ID_REPLACE_FILTER, DreameVacuumProperty.FILTER_LEFT),
-            (CONSUMABLE_TANK_FILTER, NOTIFICATION_ID_REPLACE_TANK_FILTER, DreameVacuumProperty.TANK_FILTER_LEFT),
-            (CONSUMABLE_SENSOR, NOTIFICATION_ID_CLEAN_SENSOR, DreameVacuumProperty.SENSOR_DIRTY_LEFT),
-            (CONSUMABLE_MOP_PAD, NOTIFICATION_ID_REPLACE_MOP, DreameVacuumProperty.MOP_PAD_LEFT),
-            (CONSUMABLE_SQUEEGEE, NOTIFICATION_ID_REPLACE_SQUEEGEE, DreameVacuumProperty.SQUEEGEE_LEFT),
-            (CONSUMABLE_ONBOARD_DIRTY_WATER_TANK, NOTIFICATION_ID_CLEAN_ONBOARD_DIRTY_WATER_TANK, DreameVacuumProperty.ONBOARD_DIRTY_WATER_TANK_LEFT),
-            (CONSUMABLE_DIRTY_WATER_CHANNEL, NOTIFICATION_ID_CLEAN_DIRTY_WATER_CHANNEL, DreameVacuumProperty.DIRTY_WATER_CHANNEL_DIRTY_LEFT),
-            (CONSUMABLE_SILVER_ION, NOTIFICATION_ID_SILVER_ION, DreameVacuumProperty.SILVER_ION_LEFT),
-            (CONSUMABLE_DETERGENT, NOTIFICATION_ID_REPLACE_DETERGENT, DreameVacuumProperty.DETERGENT_LEFT),
-            (CONSUMABLE_DEODORIZER, NOTIFICATION_ID_REPLACE_DEODORIZER, DreameVacuumProperty.DEODORIZER_LEFT),
-            (CONSUMABLE_WHEEL, NOTIFICATION_ID_CLEAN_WHEEL, DreameVacuumProperty.WHEEL_DIRTY_LEFT),
-            (CONSUMABLE_SCALE_INHIBITOR, NOTIFICATION_ID_REPLACE_SCALE_INHIBITOR, DreameVacuumProperty.SCALE_INHIBITOR_LEFT),
-            (CONSUMABLE_FLUFFING_ROLLER, NOTIFICATION_ID_CLEAN_FLUFFING_ROLLER, DreameVacuumProperty.FLUFFING_ROLLER_DIRTY_LEFT),
-            (CONSUMABLE_ROLLER_MOP_FILTER, NOTIFICATION_ID_CLEAN_ROLLER_MOP_FILTER, DreameVacuumProperty.ROLLER_MOP_FILTER_DIRTY_LEFT),
-            (CONSUMABLE_WATER_OUTLET_FILTER, NOTIFICATION_ID_CLEAN_WATER_OUTLET_FILTER, DreameVacuumProperty.WATER_OUTLET_FILTER_DIRTY_LEFT),
+        for consumable, notification_id, property, life in (
+            (CONSUMABLE_MAIN_BRUSH, NOTIFICATION_ID_REPLACE_MAIN_BRUSH, DreameVacuumProperty.MAIN_BRUSH_LEFT, "main_brush_life"),
+            (CONSUMABLE_SIDE_BRUSH, NOTIFICATION_ID_REPLACE_SIDE_BRUSH, DreameVacuumProperty.SIDE_BRUSH_LEFT, "side_brush_life"),
+            (CONSUMABLE_FILTER, NOTIFICATION_ID_REPLACE_FILTER, DreameVacuumProperty.FILTER_LEFT, "filter_life"),
+            (CONSUMABLE_TANK_FILTER, NOTIFICATION_ID_REPLACE_TANK_FILTER, DreameVacuumProperty.TANK_FILTER_LEFT, "tank_filter_life"),
+            (CONSUMABLE_SENSOR, NOTIFICATION_ID_CLEAN_SENSOR, DreameVacuumProperty.SENSOR_DIRTY_LEFT, "sensor_dirty_life"),
+            (CONSUMABLE_MOP_PAD, NOTIFICATION_ID_REPLACE_MOP, DreameVacuumProperty.MOP_PAD_LEFT, "mop_life"),
+            (CONSUMABLE_SQUEEGEE, NOTIFICATION_ID_REPLACE_SQUEEGEE, DreameVacuumProperty.SQUEEGEE_LEFT, "squeegee_life"),
+            (CONSUMABLE_ONBOARD_DIRTY_WATER_TANK, NOTIFICATION_ID_CLEAN_ONBOARD_DIRTY_WATER_TANK, DreameVacuumProperty.ONBOARD_DIRTY_WATER_TANK_LEFT, "onboard_dirty_water_tank_life"),
+            (CONSUMABLE_DIRTY_WATER_CHANNEL, NOTIFICATION_ID_CLEAN_DIRTY_WATER_CHANNEL, DreameVacuumProperty.DIRTY_WATER_CHANNEL_DIRTY_LEFT, "dirty_water_channel_dirty_life"),
+            (CONSUMABLE_SILVER_ION, NOTIFICATION_ID_SILVER_ION, DreameVacuumProperty.SILVER_ION_LEFT, "silver_ion_life"),
+            (CONSUMABLE_DETERGENT, NOTIFICATION_ID_REPLACE_DETERGENT, DreameVacuumProperty.DETERGENT_LEFT, "detergent_life"),
+            (CONSUMABLE_DEODORIZER, NOTIFICATION_ID_REPLACE_DEODORIZER, DreameVacuumProperty.DEODORIZER_LEFT, "deodorizer_life"),
+            (CONSUMABLE_WHEEL, NOTIFICATION_ID_CLEAN_WHEEL, DreameVacuumProperty.WHEEL_DIRTY_LEFT, "wheel_dirty_life"),
+            (CONSUMABLE_SCALE_INHIBITOR, NOTIFICATION_ID_REPLACE_SCALE_INHIBITOR, DreameVacuumProperty.SCALE_INHIBITOR_LEFT, "scale_inhibitor_life"),
+            (CONSUMABLE_FLUFFING_ROLLER, NOTIFICATION_ID_CLEAN_FLUFFING_ROLLER, DreameVacuumProperty.FLUFFING_ROLLER_DIRTY_LEFT, "fluffing_roller_dirty_life"),
+            (CONSUMABLE_ROLLER_MOP_FILTER, NOTIFICATION_ID_CLEAN_ROLLER_MOP_FILTER, DreameVacuumProperty.ROLLER_MOP_FILTER_DIRTY_LEFT, "roller_mop_filter_dirty_life"),
+            (CONSUMABLE_WATER_OUTLET_FILTER, NOTIFICATION_ID_CLEAN_WATER_OUTLET_FILTER, DreameVacuumProperty.WATER_OUTLET_FILTER_DIRTY_LEFT, "water_outlet_filter_dirty_life"),
         ):
-            self._device.listen(functools.partial(self._check_consumable, consumable, notification_id, property), property)
+            self._device.listen(functools.partial(self._check_consumable, consumable, notification_id, property, life), property)
 
         self._device.listen(self.set_updated_data)
         self._device.listen_error(self.set_update_error)
@@ -365,8 +365,8 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
     def _self_wash_base_status_changed(self, previous_self_wash_base_status=None) -> None:
         self._washing = self._device.status.washing
 
-    def _check_consumable(self, consumable, notification_id, property, previous_value=None):
-        value = self._device.get_property(property)
+    def _check_consumable(self, consumable, notification_id, property, life, previous_value=None):
+        value = getattr(self._device.status, life)
         if value is not None:
             if value >= 0 and value <= 5:
                 key = property.name.lower()

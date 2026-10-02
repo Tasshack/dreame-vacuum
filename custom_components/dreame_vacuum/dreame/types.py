@@ -2296,12 +2296,17 @@ ACTION_AVAILABILITY: Final = {
     DreameVacuumAction.RESET_MAIN_BRUSH.name: lambda device: bool(device.status.main_brush_life < 100),
     DreameVacuumAction.RESET_SIDE_BRUSH.name: lambda device: bool(device.status.side_brush_life < 100),
     DreameVacuumAction.RESET_FILTER.name: lambda device: bool(device.status.filter_life < 100),
-    DreameVacuumAction.RESET_SENSOR.name: lambda device: bool(device.status.sensor_dirty_life < 100),
+    DreameVacuumAction.RESET_SENSOR.name: lambda device: device.status.sensor_dirty_life is not None
+    and bool(device.status.sensor_dirty_life < 100),
     DreameVacuumAction.RESET_TANK_FILTER.name: lambda device: bool(device.status.tank_filter_life < 100),
-    DreameVacuumAction.RESET_MOP_PAD.name: lambda device: bool(device.status.mop_life < 100),
-    DreameVacuumAction.RESET_SILVER_ION.name: lambda device: bool(device.status.silver_ion_life < 100),
-    DreameVacuumAction.RESET_DETERGENT.name: lambda device: bool(device.status.detergent_life < 100),
-    DreameVacuumAction.RESET_SQUEEGEE.name: lambda device: bool(device.status.squeegee_life < 100),
+    DreameVacuumAction.RESET_MOP_PAD.name: lambda device: device.status.mop_life is not None
+    and bool(device.status.mop_life < 100),
+    DreameVacuumAction.RESET_SILVER_ION.name: lambda device: device.status.silver_ion_life is not None
+    and bool(device.status.silver_ion_life < 100),
+    DreameVacuumAction.RESET_DETERGENT.name: lambda device: device.status.detergent_life is not None
+    and bool(device.status.detergent_life < 100),
+    DreameVacuumAction.RESET_SQUEEGEE.name: lambda device: device.status.squeegee_life is not None
+    and bool(device.status.squeegee_life < 100),
     DreameVacuumAction.RESET_ONBOARD_DIRTY_WATER_TANK.name: lambda device: bool(
         device.status.onboard_dirty_water_tank_life is not None and device.status.onboard_dirty_water_tank_life < 100
     ),
@@ -3703,12 +3708,12 @@ class Segment(Zone):
                 self.y1 = math.floor(top + (self.coords[3] * grid_size) + grid_size)
 
     def set_name(self) -> None:
-        if self.type != 0 and SEGMENT_TYPE_CODE_TO_NAME.get(self.type):
+        if self.custom_name:
+            self.name = self.custom_name
+        elif self.type != 0 and SEGMENT_TYPE_CODE_TO_NAME.get(self.type):
             self.name = SEGMENT_TYPE_CODE_TO_NAME[self.type]
             if self.index > 0:
                 self.name = f"{self.name} {self.index + 1}"
-        elif self.custom_name is not None:
-            self.name = self.custom_name
         else:
             self.name = f"Room {self.id}"
         self.icon = SEGMENT_TYPE_CODE_TO_HA_ICON.get(self.type, "mdi:home-outline")

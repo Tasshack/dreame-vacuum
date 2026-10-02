@@ -780,19 +780,19 @@ class DreameVacuumDreameHomeCloudProtocol:
 
     def _base_headers(self, content_type) -> Dict[str, str]:
         s = self._strings
-        meta = f"{s[59]}{self._vid}"
-        if self._mt:
-            meta += (
-                f"{s[71]}{self._s(self._username, 'c')[:8]}"
-                f"{s[72]}{self._s(self._username, 'w')[:8]}"
-                f"{s[73]}{self._vs}"
-            )
-        headers = {
-            s[42].lower(): self._ua,
-            s[58]: meta,
-            s[88]: "gzip",
-        }
-        if self._region and self._lang and self._ccode:
+        kr = self._country == "kr" and self._account_type == "dreame"
+        headers = {s[42].lower(): self._ua}
+        if not kr:
+            meta = f"{s[59]}{self._vid}"
+            if self._mt:
+                meta += (
+                    f"{s[71]}{self._s(self._username, 'c')[:8]}"
+                    f"{s[72]}{self._s(self._username, 'w')[:8]}"
+                    f"{s[73]}{self._vs}"
+                )
+            headers[s[58]] = meta
+        headers[s[88]] = "gzip"
+        if self._region and self._lang and self._ccode and not kr:
             data = pad(f"{self._region}|{self._lang}|{self._ccode}".encode("utf-8"), 16)
             headers[s[60]] = base64.b64encode(AES.new(self._cid, AES.MODE_ECB).encrypt(data)).decode()
         headers[s[44]] = self._ti if self._ti else s[5]
@@ -1017,8 +1017,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                             self._client.loop_start()
                         except Exception as ex:
                             _LOGGER.error("Connecting to the device client failed: %s", ex)
-                            # Drop the client so the next connect attempt creates a new one, only if the client was
-                            # connected before. A first connect that fails (e.g. blocked port) is not retried here.
+                            # Retry with a new client only if MQTT connected before, never on the first connect
                             if self._client_established:
                                 self._client = None
                     elif not self._client_connected:
@@ -1130,7 +1129,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                         device["customName"] if device["customName"] else device["deviceInfo"]["displayName"]
                     )
                     devices.append(device)
-                    if (mac is not None and device.get("mac") == mac) or (
+                    if (mac is not None and str(device.get("mac")).lower() == str(mac).lower()) or (
                         device_id is not None and device.get("did") == device_id
                     ):
                         devices = [device]
@@ -1212,8 +1211,8 @@ class DreameVacuumDreameHomeCloudProtocol:
         if devices is not None:
             found = list(
                 filter(
-                    lambda d: str(d["mac"]) == mac,
-                    devices[self._strings[34]][self._strings[36]],
+                    lambda d: str(d["mac"]).lower() == str(mac).lower(),
+                    devices[self._strings[29]][self._strings[31]],
                 )
             )
             if len(found) > 0:
@@ -2225,7 +2224,7 @@ class DreameVacuumMiHomeCloudProtocol:
     def get_info(self, mac: str) -> Tuple[Optional[str], Optional[str]]:
         devices = self.get_devices()
         if devices:
-            found = list(filter(lambda d: str(d["mac"]) == mac, devices))
+            found = list(filter(lambda d: str(d["mac"]).lower() == str(mac).lower(), devices))
 
             if len(found) > 0:
                 self._uid = found[0]["uid"]
@@ -2250,7 +2249,7 @@ class DreameVacuumMiHomeCloudProtocol:
                 if model in models:
                     devices.append(device)
                     if (
-                        (mac is not None and device.get("mac") == mac)
+                        (mac is not None and str(device.get("mac")).lower() == str(mac).lower())
                         or (device_id is not None and device.get("did") == device_id)
                         or (host is not None and device.get("localip") == host)
                     ):

@@ -1,11 +1,8 @@
+<center>
 <div align="center">
 
 <hr>
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://dreame-vacuum.tasshack.com/dark/logo.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://dreame-vacuum.tasshack.com/light/logo.png">
-  <img alt="Dreame Vacuum" src="https://dreame-vacuum.tasshack.com/light/logo.png" height=62>
-</picture>
+<img alt="Dreame Vacuum" src="https://dreame-vacuum.tasshack.com/logo.svg" width=400>
 <hr>
 
 <img src="https://dreame-vacuum.tasshack.com/dvc.png" width=480 />
@@ -18,6 +15,7 @@ Complete app replacement with **Home Assistant** for **Dreame** robot vacuums.
 [![Community Forum](https://img.shields.io/static/v1.svg?label=Community&message=Forum&color=18bcf2&logo=HomeAssistant&logoColor=white&style=for-the-badge)](https://community.home-assistant.io/t/custom-component-dreame-vacuum/473026)
 
 </div>
+</center>
 
 <hr>
 
