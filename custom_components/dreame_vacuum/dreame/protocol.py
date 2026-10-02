@@ -902,12 +902,12 @@ class DreameVacuumDreameHomeCloudProtocol:
                 self._client_thread = None
                 return
             try:
-                if item[1] != None:
+                if item[1] is not None:
                     item[0](item[1])
                 else:
                     item[0]()
-            except:
-                pass
+            except Exception:
+                _LOGGER.warning("Device client callback failed", exc_info=True)
             self._client_queue.task_done()
 
     @staticmethod
@@ -2588,11 +2588,12 @@ class DreameVacuumProtocol:
                 raise DeviceException("Unable to login to device over cloud") from None
 
             def cloud_callback(response):
+                # Pass failures to the callback as None like the local device protocol does
                 if response is None:
                     if method == "get_properties" or method == "set_properties":
                         self._connected = False
-                    raise DeviceException("Unable to discover the device over cloud") from None
-                self._connected = True
+                else:
+                    self._connected = True
                 if callback:
                     callback(response)
 
