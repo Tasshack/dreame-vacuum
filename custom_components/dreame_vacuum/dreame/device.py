@@ -6,6 +6,7 @@ import re
 import copy
 import zlib
 import base64
+import requests
 from datetime import datetime
 from random import randrange
 from typing import Any, Optional
@@ -4236,6 +4237,35 @@ class DreameVacuumDevice:
             str(off_peak_charging_end),
         )
 
+    def _get_language_voice_pack(self, lang_id: str) -> dict[str, Any] | None:
+        """Return the voice pack entry ({id, download, md5sum, size}) for a listen
+        language from the model's soundpackage.json catalog, or None if not found.
+        This is the same catalog the app uses to hand the robot a download link."""
+        model = self.info.model if self.info else None
+        if not model:
+            return None
+        country = (getattr(self._protocol.cloud, "_country", None) if self._protocol.cloud else None) or "eu"
+        host = {
+            "cn": "cnbj2.fds.api.xiaomi.com",
+            "de": "awsde0.fds.api.xiaomi.com",
+            "eu": "awsde0.fds.api.xiaomi.com",
+            "ru": "ksyru0-eco.fds.api.xiaomi.com",
+            "us": "awsusor0.fds.api.xiaomi.com",
+            "sg": "awssgp0.fds.api.xiaomi.com",
+        }.get(country.lower(), "cnbj2.fds.api.xiaomi.com")
+        url = f"https://{host}/dreame-product/{model}/voices/soundpackage.json?{int(time.time() * 1000)}"
+        catalog = requests.get(url, timeout=8).json()
+        voices = catalog.get("voices") or (catalog.get("data") or {}).get("voices") or []
+        for voice in voices:
+            if (
+                str(voice.get("id", "")).upper() == lang_id.upper()
+                and voice.get("listen")
+                and voice.get("download")
+                and voice.get("md5sum")
+            ):
+                return voice
+        return None
+
     def set_voice_assistant_language(self, voice_assistant_language: str) -> bool:
         if (
             self.get_property(DreameVacuumProperty.VOICE_ASSISTANT_LANGUAGE) is None
@@ -4244,10 +4274,37 @@ class DreameVacuumDevice:
             or voice_assistant_language.upper() not in DreameVacuumVoiceAssistantLanguage.__members__
         ):
             raise InvalidActionException(f"Voice assistant language ({voice_assistant_language}) is not supported")
-        return self.set_property(
-            DreameVacuumProperty.VOICE_ASSISTANT_LANGUAGE,
-            DreameVacuumVoiceAssistantLanguage[voice_assistant_language.upper()],
-        )
+
+        language = DreameVacuumVoiceAssistantLanguage[voice_assistant_language.upper()]
+
+        # Devices that report the listen-language switch status also need the voice pack
+        # installed, or the robot reverts the language. Only verified on the X50 (r50485).
+        if (
+            self.get_property(DreameVacuumProperty.LISTEN_LANGUAGE_STATUS) is None
+            and self.get_property(DreameVacuumProperty.LISTEN_LANGUAGE) is None
+        ):
+            return self.set_property(DreameVacuumProperty.VOICE_ASSISTANT_LANGUAGE, language)
+
+        # Fetch the pack first (read-only) and bail if it's missing, before changing anything.
+        try:
+            pack = self._get_language_voice_pack(language.value)
+        except Exception as ex:
+            _LOGGER.warning("Could not fetch voice pack for language %s: %s", language.name, ex)
+            pack = None
+
+        if not pack:
+            _LOGGER.warning("No voice pack found for language %s", language.name)
+            return False
+
+        if not self.set_properties(
+            {
+                DreameVacuumProperty.VOICE_ASSISTANT: 1,
+                DreameVacuumProperty.VOICE_ASSISTANT_LANGUAGE: language,
+            }
+        ):
+            return False
+
+        return self.install_voice_pack(pack["id"], pack["download"], pack["md5sum"], int(pack.get("size") or 0)) is not None
 
     def set_washing_mode(self, washing_mode: int) -> bool:
         if self.capability.smart_mop_washing:
