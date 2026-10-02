@@ -1438,25 +1438,41 @@ class DreameVacuumDreameHomeCloudProtocol:
             retry_count = 0
         result = None
         while retries < retry_count + 1:
+            if retries:
+                # Back off before retrying so transient cloud errors are not hammered
+                sleep(min(0.5 * 2 ** (retries - 1), 2))
             try:
                 headers = self._auth_headers(self._strings[46])
                 result = self._http("POST", url, headers, data, timeout)
-                break
             except TimeoutError:
                 retries = retries + 1
                 if self._connected:
                     _LOGGER.warning(f"Error while executing request: Read timed out. (timeout={timeout})")
+                continue
             except Exception as ex:
                 retries = retries + 1
                 if self._connected:
                     _LOGGER.warning("Error while executing request: %s", str(ex))
+                continue
+
+            # Retry server side and rate limit errors
+            if (result[0] == 429 or result[0] >= 500) and retries < retry_count:
+                retries = retries + 1
+                _LOGGER.debug("Execute api call failed with status %s, retrying", result[0])
+                continue
+            break
 
         if result is not None:
             status, content = result
             if status == 200:
-                self._fail_count = 0
-                self._connected = True
-                return json.loads(content)
+                try:
+                    response = json.loads(content)
+                except ValueError:
+                    _LOGGER.warning("Execute api call failed with invalid response: %s", content[:200])
+                else:
+                    self._fail_count = 0
+                    self._connected = True
+                    return response
             elif status == 401:
                 if self._auth_failure(content.decode("utf-8", "replace")) == 2:
                     self._logged_in = False
