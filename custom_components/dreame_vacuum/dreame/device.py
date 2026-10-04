@@ -8812,7 +8812,19 @@ class DreameVacuumDeviceStatus:
     def scheduled_clean(self) -> bool:
         if self.started:
             value = self._get_property(DreameVacuumProperty.SCHEDULED_CLEAN)
-            return bool(value == 1 or value == 2 or value == 4)
+            # 4 is also reported for a manual mopping after sweeping run, which still accepts
+            # setting changes, so it counts as a schedule only without a reported manual task.
+            return bool(
+                value == 1
+                or value == 2
+                or (
+                    value == 4
+                    and not (
+                        self._capability.task_type
+                        and self.task_type in (DreameVacuumTaskType.STANDARD, DreameVacuumTaskType.STANDARD_PAUSED)
+                    )
+                )
+            )
         return False
 
     @property
@@ -10856,7 +10868,7 @@ class DreameVacuumDeviceStatus:
                 elif property is DreameVacuumProperty.CUSTOMIZED_CLEANING:
                     value = bool(value and not self.zone_cleaning and not self.spot_cleaning and self.has_saved_map)
                 elif property is DreameVacuumProperty.SCHEDULED_CLEAN:
-                    value = bool(value == 1 or value == 2 or value == 4)
+                    value = self.scheduled_clean
                 elif property is DreameVacuumProperty.AUTO_DUST_COLLECTING:
                     if self._capability.auto_empty_mode:
                         attributes[ATTR_AUTO_EMPTY_MODE] = self.auto_empty_mode_name.replace("_", " ").capitalize()
