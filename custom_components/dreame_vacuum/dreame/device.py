@@ -8003,21 +8003,32 @@ class DreameVacuumDeviceStatus:
         """Return task status as string for translation."""
         return TASK_STATUS_CODE_TO_NAME.get(self.task_status, STATE_UNKNOWN)
 
+    @staticmethod
+    def _water_tank_from_value(value: int | None) -> DreameVacuumWaterTank:
+        """Map a raw WATER_TANK value to the enum. Static so callers never recurse via mop_in_station."""
+        # Some firmwares report 2 and 3 instead of the enum values
+        if value == 3:
+            return DreameVacuumWaterTank.INSTALLED
+        if value == 2:
+            return DreameVacuumWaterTank.MOP_INSTALLED
+        if value is not None and value in DreameVacuumWaterTank._value2member_map_:
+            return DreameVacuumWaterTank(value)
+        return DreameVacuumWaterTank.UNKNOWN
+
     @property
     def water_tank(self) -> DreameVacuumWaterTank:
         """Return water tank of the device."""
         value = self._get_property(DreameVacuumProperty.WATER_TANK)
         if value is not None:
-            if value == 3:
-                return DreameVacuumWaterTank.INSTALLED
+            tank = self._water_tank_from_value(value)
+            if tank not in (DreameVacuumWaterTank.UNKNOWN, DreameVacuumWaterTank.NOT_INSTALLED):
+                return tank
+            # Only reachable when nothing is installed on the robot, so a mop pad
+            # waiting in the station is not masked by an installed tank value
             if self.mop_in_station:
                 return DreameVacuumWaterTank.IN_STATION
-            if value == 2:
-                return DreameVacuumWaterTank.MOP_INSTALLED
-
-            if value in DreameVacuumWaterTank._value2member_map_:
-                return DreameVacuumWaterTank(value)
-        if value is not None:
+            if tank is not DreameVacuumWaterTank.UNKNOWN:
+                return tank
             _LOGGER.debug("WATER_TANK not supported: %s", value)
         return DreameVacuumWaterTank.UNKNOWN
 
@@ -8870,7 +8881,10 @@ class DreameVacuumDeviceStatus:
     def water_tank_or_mop_installed(self) -> bool:
         """Returns true when water tank or additional mop is installed to the device."""
         tank = self._get_property(DreameVacuumProperty.WATER_TANK)
-        installed = tank == DreameVacuumWaterTank.INSTALLED.value or tank == DreameVacuumWaterTank.MOP_INSTALLED.value
+        installed = self._water_tank_from_value(tank) in (
+            DreameVacuumWaterTank.INSTALLED,
+            DreameVacuumWaterTank.MOP_INSTALLED,
+        )
         if self._capability.mop_pad_unmounting:
             value = self._get_property(DreameVacuumProperty.MOP_PAD_INSTALLED)
             if value is not None:
