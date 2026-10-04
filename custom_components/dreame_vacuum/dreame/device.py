@@ -8879,11 +8879,16 @@ class DreameVacuumDeviceStatus:
 
     @property
     def mop_pad_installed(self) -> bool:
-        """Returns true when mop is installed on vacuums with mop pad unmounting feature."""
+        """Returns true when mop pad is attached to the device."""
         if self._capability.mop_pad_unmounting:
             value = self._get_property(DreameVacuumProperty.MOP_PAD_INSTALLED)
             return self.water_tank_or_mop_installed if value is None else bool(value == 0)
-        return self.water_tank_or_mop_installed
+        # Without mop pad unmounting the pad is physically attached, so it counts as
+        # installed even when no water tank is reported. MOP_PAD_INSTALLED is deliberately
+        # ignored: some older firmwares report it permanently as 1.
+        # ponytail: true also for mopless models, PROPERTY_AVAILABILITY keeps gating
+        # CleanGenius on water_tank_or_mop_installed.
+        return True
 
     @property
     def located(self) -> bool:

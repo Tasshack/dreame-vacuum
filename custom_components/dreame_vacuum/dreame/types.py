@@ -2128,19 +2128,23 @@ PROPERTY_AVAILABILITY: Final = {
     and not device.status.fast_mapping
     and not device.status.cleangenius_cleaning,
     DreameVacuumAutoSwitchProperty.STAIN_AVOIDANCE.name: lambda device: device.status.ai_fluid_detection,
+    # mop_pad_installed is true for pads that can never be detached, so both
+    # CleanGenius entries check the water tank or mop separately
     DreameVacuumAutoSwitchProperty.CLEANGENIUS.name: lambda device: not device.status.started
     and not device.status.fast_mapping
     and not device.status.cruising
     and not device.status.spot_cleaning
     and not device.status.zone_cleaning
-    and device.status.mop_pad_installed,
+    and device.status.mop_pad_installed
+    and device.status.water_tank_or_mop_installed,
     DreameVacuumProperty.CLEANGENIUS_MODE.name: lambda device: not device.status.started
     and device.status.cleangenius_cleaning
     and not device.status.fast_mapping
     and not device.status.cruising
     and not device.status.spot_cleaning
     and not device.status.zone_cleaning
-    and device.status.mop_pad_installed,
+    and device.status.mop_pad_installed
+    and device.status.water_tank_or_mop_installed,
     DreameVacuumAutoSwitchProperty.FLOOR_DIRECTION_CLEANING.name: lambda device: device.status.floor_direction_cleaning_available,
     DreameVacuumAutoSwitchProperty.MOPPING_TYPE.name: lambda device: not device.status.started
     and not device.status.fast_mapping,
