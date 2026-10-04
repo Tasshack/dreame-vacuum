@@ -1084,7 +1084,7 @@ class DreameVacuumDevice:
                 self._map_property_changed(0)
 
     def _water_tank_changed(self, previous_water_tank: Any = None) -> None:
-        """Update cleaning mode on device when water tank status is changed."""
+        """Restrict cleaning mode options and store the mode when water tank or mop pad is removed."""
         # App does not allow you to update cleaning mode when water tank or mop pad is not installed.
         if self.get_property(DreameVacuumProperty.CLEANING_MODE) is not None:
             new_list = CLEANING_MODE_CODE_TO_NAME.copy()
@@ -1103,19 +1103,17 @@ class DreameVacuumDevice:
                         new_list.pop(DreameVacuumCleaningMode.SWEEPING_AND_MOPPING)
                         if DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING in new_list:
                             new_list.pop(DreameVacuumCleaningMode.MOPPING_AFTER_SWEEPING)
-                        if self.status.cleaning_mode is not DreameVacuumCleaningMode.SWEEPING:
-                            # Store current cleaning mode for future use when water tank is reinstalled
+                        if (
+                            self.status.cleaning_mode is not DreameVacuumCleaningMode.SWEEPING
+                            and self._ready
+                            and not self.status.scheduled_clean
+                            and not self.status.shortcut_task
+                            and not self.status.cleangenius_cleaning
+                        ):
+                            # Store current cleaning mode for future use when water tank is reinstalled.
+                            # Not written to the device: the app only restricts the options and shows
+                            # sweeping, so writing here loses the mode on a brief MOP_PAD_INSTALLED flicker (#1849)
                             self._previous_cleaning_mode = self.status.cleaning_mode
-                            if (
-                                self._ready
-                                and not self.status.scheduled_clean
-                                and not self.status.shortcut_task
-                                and not self.status.cleangenius_cleaning
-                            ):
-                                try:
-                                    self._update_cleaning_mode(DreameVacuumCleaningMode.SWEEPING.value)
-                                except:
-                                    pass
                     elif not self.capability.mop_pad_lifting:
                         ## Older Mijia devices allows setting cleaning mode to Sweeping while water tank is installed
                         if not self.capability.sweep_with_mop:
