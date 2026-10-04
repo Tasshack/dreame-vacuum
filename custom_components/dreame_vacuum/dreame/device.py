@@ -382,6 +382,8 @@ class DreameVacuumDevice:
                     DreameVacuumProperty.VOICE_CHANGE,
                     DreameVacuumProperty.VOICE_CHANGE_STATUS,
                     DreameVacuumProperty.MAP_RECOVERY,
+                    # Very large response, times out the whole batch it is requested in
+                    DreameVacuumProperty.CLEANING_PROGRESS_INFO,
                     DreameVacuumProperty.CLEANING_START_TIME,
                     DreameVacuumProperty.CLEAN_LOG_FILE_NAME,
                     DreameVacuumProperty.CLEANING_PROPERTIES,
