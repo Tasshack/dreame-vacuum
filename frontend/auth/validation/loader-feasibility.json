@@ -1,0 +1,119 @@
+{
+  "assessed_on": "2026-10-09",
+  "public_commit": "9857362d37fa6a1788a0ce2eb6e1290b3ec7d6fb",
+  "scope": "Offline feasibility, not installed or rendered card validation",
+  "actual_method_scenarios": 13,
+  "licensed_payload_fetched_or_executed": false,
+  "live_configuration_changed": false,
+  "public_decompressed_loader_sha256": "55a3f879b780831e98408253a074b35d6a194c2989cc4d4d86f31abf8bb19ec1",
+  "candidate_helper_sha256": "f0018a672897a1cdfc293186476b7e7aca6e3454963635690c2f908cc00f09b2",
+  "note": "Exploratory probes used adapted copies of installed methods with synthetic dependencies. The probes are separate from the 74 runnable tests in this proposal. No rebuilt module or licensed card rendering was tested. No proprietary loader source is included here.",
+  "results": {
+    "wrapper": {
+      "purpose": "Offline feasibility of bounded coordinator wiring into original installed hass setter and _load methods; not production integration or actual card rendering.",
+      "patchCounts": {
+        "saved authentication failure in hass setter": 1,
+        "raw bearer bootstrap replaced by coordinator": 1,
+        "preserve typed failure through bootstrap catch": 1,
+        "shared initialization promise rejection cleanup": 1,
+        "preview promise rejection handler": 1,
+        "outer load failure handler": 1
+      },
+      "originalMethods": {
+        "hassSha256": "ae21f699ddb8ad4088338be8613ec17f37ca69869bf3d8d0b3a4c32526469059",
+        "loadSha256": "2890c9c6605277db8776906d7c66c40a4801fab4cc42e475f027589a68059c06"
+      },
+      "unchangedCryptoPayloadSha256": "320663099e4eda4698b3e5c4af22bf1cfc2a9900ba7c39c29f509fe90da4b528",
+      "globalFetchUnchanged": true,
+      "unhandledRejections": 0,
+      "results": [
+        {
+          "name": "two different devices, ordinary await branch",
+          "deniedRequestsBeforeStop": 2,
+          "refreshes": 1,
+          "requestsAfterExternalToken": 4,
+          "repeatedUpdates": 20,
+          "licensedBranchExecuted": false
+        },
+        {
+          "name": "two instances of same device, ordinary await branch",
+          "deniedRequestsBeforeStop": 2,
+          "refreshes": 1,
+          "requestsAfterExternalToken": 3,
+          "repeatedUpdates": 20,
+          "licensedBranchExecuted": false
+        },
+        {
+          "name": "two different devices, existing preview pending during rejection",
+          "deniedRequestsBeforeStop": 2,
+          "refreshes": 1,
+          "requestsAfterExternalToken": 4,
+          "repeatedUpdates": 20,
+          "licensedBranchExecuted": false
+        },
+        {
+          "name": "readiness failure resumes on reconnect and preserves 202 branch",
+          "disconnectedRequests": 0,
+          "requestsAfterReconnect": 2,
+          "refreshes": 0,
+          "licensedBranchExecuted": false
+        },
+        {
+          "name": "unchanged resource fingerprint guard still rejects mismatched URL",
+          "requests": 0,
+          "refreshes": 0,
+          "licensedBranchExecuted": false
+        }
+      ],
+      "limitations": [
+        "Synthetic HA/session/HTTP/DOM/custom-element registry",
+        "Original methods extracted from inspected installed loader; constructor/render helpers stubbed",
+        "Status responses stop before licensed payload branch",
+        "Actual payload execution and real browser/tablet validation remain untested",
+        "Activation handler not included in this probe",
+        "Source substitutions are version-specific scratch proof, not a maintained build pipeline"
+      ]
+    },
+    "activation": {
+      "passed": 8,
+      "failed": 0,
+      "syntheticOnly": true,
+      "actualMethod": "_renderKeyDialog",
+      "helper": "frontend/auth/guarded-get.mjs",
+      "results": [
+        {
+          "name": "Expired credentials refresh before exactly one normalized activation request, preserving successful reload",
+          "passed": true
+        },
+        {
+          "name": "Activation 401 is never refreshed/replayed, preserves the key and unlocks the existing dialog",
+          "passed": true
+        },
+        {
+          "name": "Activation uses the same blocked session as bootstrap",
+          "passed": true
+        },
+        {
+          "name": "Not-ready authentication sends nothing and permits a valid key after reconnect",
+          "passed": true
+        },
+        {
+          "name": "Refresh failure sends nothing, retains the key and releases dialog controls",
+          "passed": true
+        },
+        {
+          "name": "Synthetic HTTP 400 preserves the existing non-success response handling",
+          "passed": true
+        },
+        {
+          "name": "HTTP 202 retains original entity-not-ready behaviour without poisoning the key",
+          "passed": true
+        },
+        {
+          "name": "Unclassified transport failures keep the existing handler behaviour",
+          "passed": true
+        }
+      ]
+    }
+  }
+}

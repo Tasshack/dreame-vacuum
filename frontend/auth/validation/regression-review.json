@@ -1,0 +1,206 @@
+{
+  "date": "2026-10-09",
+  "timezone": "Australia/Brisbane",
+  "scope": "Our proposed authentication coordinator and the behaviour its introduction affects.",
+  "network_requests": 0,
+  "live_changes": false,
+  "test_command": "node --test --test-reporter=spec --experimental-test-coverage *.test.mjs",
+  "node_version": "v24.15.0",
+  "suite": {
+    "tests": 74,
+    "passed": 74,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "files": {
+    "auth-reproducer.test.mjs": 37,
+    "concurrency-regressions.test.mjs": 15,
+    "response-regressions.test.mjs": 22
+  },
+  "previous_suite_cases": 57,
+  "additional_cases": 17,
+  "coordinator_coverage": {
+    "lines_percent": 98.55,
+    "branches_percent": 97.67,
+    "functions_percent": 96.88
+  },
+  "final_tests_against_previous_helper": {
+    "tests": 74,
+    "passed": 71,
+    "failed": 3,
+    "exit_code": 1,
+    "failures": [
+      "not ok 47 - a rejected bootstrap token just renewed inside HA (same token) blocks queued and later cards without another refresh",
+      "not ok 48 - a transport copying headers conservatively latches a rejected same-token internal renewal",
+      "not ok 49 - successful internal expiry renewal with an unchanged token restores one later recovery opportunity"
+    ]
+  },
+  "targeted_regressions": [
+    {
+      "mutation": "ignore-internal-renewal",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 46 - a rejected bootstrap token just renewed inside HA (distinct token) blocks queued and later cards without another refresh",
+        "not ok 47 - a rejected bootstrap token just renewed inside HA (same token) blocks queued and later cards without another refresh",
+        "not ok 48 - a transport copying headers conservatively latches a rejected same-token internal renewal"
+      ]
+    },
+    {
+      "mutation": "miss-metadata-only-fallback-renewal",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 48 - a transport copying headers conservatively latches a rejected same-token internal renewal"
+      ]
+    },
+    {
+      "mutation": "miss-renewal-with-unchanged-bearer",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 47 - a rejected bootstrap token just renewed inside HA (same token) blocks queued and later cards without another refresh",
+        "not ok 49 - successful internal expiry renewal with an unchanged token restores one later recovery opportunity"
+      ]
+    },
+    {
+      "mutation": "same-bearer-renewal-keeps-spent-generation",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 49 - successful internal expiry renewal with an unchanged token restores one later recovery opportunity"
+      ]
+    },
+    {
+      "mutation": "attribute-late-data-replacement-to-dispatch",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 50 - same-token Auth data replacement after dispatch does not mark the pending request freshly renewed"
+      ]
+    },
+    {
+      "mutation": "end-manual-episode-too-early",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 51 - a manual retry joining after one route completes shares the episode still pending on another route"
+      ]
+    },
+    {
+      "mutation": "reuse-another-robot-payload",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 9 - different robots and duplicate consumers keep independent payloads and headers without caching success",
+        "not ok 49 - successful internal expiry renewal with an unchanged token restores one later recovery opportunity",
+        "not ok 56 - partial response fanout failure rejects every consumer, cancels allocated branches and releases the queue"
+      ]
+    },
+    {
+      "mutation": "failed-activation-clears-denial",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 69 - activation HTTP 403 preserves the existing bootstrap denial",
+        "not ok 70 - activation HTTP 500 preserves the existing bootstrap denial"
+      ]
+    },
+    {
+      "mutation": "activation-clears-other-routes",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 72 - successful activation clears only its own route's cached 403"
+      ]
+    },
+    {
+      "mutation": "manual-retry-clears-other-routes",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 71 - explicit retry clears only its own route's cached 403"
+      ]
+    },
+    {
+      "mutation": "healthy-route-clears-denials",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 71 - explicit retry clears only its own route's cached 403",
+        "not ok 72 - successful activation clears only its own route's cached 403",
+        "not ok 73 - loading a healthy route does not evict another route's cached denial"
+      ]
+    },
+    {
+      "mutation": "wait-for-cancellation-before-recovery",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 59 - pending 401 cancellation does not block recovery or the next queued route"
+      ]
+    },
+    {
+      "mutation": "drop-partial-fanout-cleanup",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 56 - partial response fanout failure rejects every consumer, cancels allocated branches and releases the queue"
+      ]
+    },
+    {
+      "mutation": "ignore-manual-recovery-readiness",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 22 - saved errors let both failed wrappers resume after another client deliberately recovers with the same token"
+      ]
+    },
+    {
+      "mutation": "ignore-replacement-auth-readiness",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 23 - a saved wrapper error accepts a replacement Auth with the same token once it is connected"
+      ]
+    },
+    {
+      "mutation": "one-global-request-queue",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 52 - a separate Auth session completes while another session's same-route request is still pending"
+      ]
+    },
+    {
+      "mutation": "refresh-on-nonauthentication-status",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 10 - candidate preserves card-specific HTTP 202 and 500 status/body handling",
+        "not ok 57 - licence activation returns the original native response without an unused clone",
+        "not ok 70 - activation HTTP 500 preserves the existing bootstrap denial"
+      ]
+    },
+    {
+      "mutation": "ignore-cancellation-rejection",
+      "exit_code": 1,
+      "detected": true,
+      "failures": [
+        "not ok 3 - response-regressions.test.mjs"
+      ]
+    }
+  ],
+  "mutation_scope": "Selected deliberate faults from the review and renewal correction; not exhaustive mutation testing.",
+  "implementation_correction": "Observe pinned HA Auth.data replacement at Authorization assignment to recognise same-bearer internal renewal without confusing later external renewal.",
+  "independent_review": "No actionable issue in the renewal correction or concurrency tests; five additional probes passed, including copied-header fallback.",
+  "limits": [
+    "Synthetic Auth and HTTP authority",
+    "Pinned fetchWithAuth fixture unchanged",
+    "No original card source integration",
+    "No browser, WebView or tablet acceptance"
+  ],
+  "record_type": "Historical offline test-review results for this unchanged coordinator and test suite",
+  "coordinator_sha256": "f0018a672897a1cdfc293186476b7e7aca6e3454963635690c2f908cc00f09b2"
+}
