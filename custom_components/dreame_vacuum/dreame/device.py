@@ -9287,7 +9287,7 @@ class DreameVacuumDeviceStatus:
             and status is not DreameVacuumStatus.PARTIAL_CLEANING
             and status is not DreameVacuumStatus.REMOTE_CONTROL
             and status is not DreameVacuumStatus.SUMMON_CLEAN
-            and self.task_status is not DreameVacuumTaskStatus.CLEAN_SUMMON
+            and self.task_status is not DreameVacuumTaskStatus.SUMMON_CLEAN_PAUSED
             and task_type is not DreameVacuumTaskType.SUMMON
             and task_type is not DreameVacuumTaskType.SUMMON_PAUSED
             and not self.cruising
