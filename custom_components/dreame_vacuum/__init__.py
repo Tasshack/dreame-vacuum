@@ -58,24 +58,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     coordinator = DreameVacuumDataUpdateCoordinator(hass, entry=entry)
 
-    try:        
-        await coordinator.async_load_locale(hass)
-        await coordinator.async_config_entry_first_refresh()
-    except BaseException:
-        if coordinator._unsub_dispatcher:
-            coordinator._unsub_dispatcher()
-            coordinator._unsub_dispatcher = None
-
-        if coordinator._device is not None:
-            coordinator._device.listen(None)
-            coordinator._device.listen_error(None)
-            try:
-                await hass.async_add_executor_job(coordinator._device.disconnect)
-            except Exception:
-                pass
-            finally:
-                coordinator._device = None
-        raise
+    await coordinator.async_config_entry_first_refresh()
 
     hass.data.setdefault(DOMAIN, {})[entry.entry_id] = coordinator
 

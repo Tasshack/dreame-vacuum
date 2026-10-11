@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "กำลังทำความสะอาด",
+          "docked": "อยู่ที่แท่นชาร์จ",
+          "error": "ข้อผิดพลาด",
+          "idle": "ว่าง",
+          "paused": "หยุดชั่วคราว",
+          "returning": "กำลังกลับแท่นชาร์จ"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "ระดับแรงดูด",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "คำเตือนน้ำต่ำ",
         "state": {
+          "unknown": "ไม่ทราบ",
           "no_warning": "ไม่มีคำเตือน",
           "no_water_left": "น้ำในถังน้ำสะอาดใกล้จะหมด โปรดตรวจสอบและเติมน้ำสะอาดให้ทันที",
           "no_water_left_after_clean": "ทำความสะอาดแผ่นถูแล้ว ตรวจพบว่าน้ำในถังน้ำสะอาดไม่เพียงพอ โปรดเติมน้ำสะอาดและเทถังน้ำเสียทิ้ง",
@@ -1297,8 +1306,8 @@
           "pet": "สัตว์เลี้ยง",
           "cleaning_tools": "เครื่องมือทำความสะอาด",
           "detected_stain": "คราบ",
-          "blocked_room": "เฟอร์นิเจอร์มีแนวโน้มที่จะทำให้หุ่นยนต์ติด",
-          "easy_to_stuck_furniture": "เฟอร์นิเจอร์มีแนวโน้มที่จะทำให้หุ่นยนต์ติด",
+          "blocked_room": "ห้องที่ถูกละเลย",
+          "easy_to_stuck_furniture": "เฟอร์นิเจอร์ที่ทำให้ติด",
           "uncleanable_stain": "คราบ",
           "leg": "ขา",
           "large_particles": "อนุภาคฝุ่นขนาดใหญ่",
@@ -1513,7 +1522,7 @@
           "error": "ข้อผิดพลาด",
           "remote_control": "ควบคุมระยะไกล",
           "sleeping": "พักหลับ",
-          "self_test": "ทดสอบตัวเอง",
+          "self_repair": "ทดสอบตัวเอง",
           "factory_test": "ทดสอบจากโรงงาน",
           "standby": "สแตนด์บาย",
           "room_cleaning": "ทำความสะอาดแบบห้อง",
@@ -1634,6 +1643,8 @@
         "name": "ประเภทงาน",
         "state": {
           "standard": "ทำความสะอาดมาตรฐาน",
+          "unknown": "ไม่ทราบ",
+          "idle": "ว่าง",
           "standard_paused": "ทำความสะอาดมาตรฐานหยุดชั่วคราว",
           "custom": "ทำความสะอาดที่กำหนดเอง",
           "custom_paused": "ทำความสะอาดที่กำหนดเองหยุดชั่วคราว",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "สถานะฝาครอบลูกกลิ้ง"
+      },
+      "problem": {
+        "name": "ปัญหา",
+        "state_attributes": {
+          "type": {
+            "name": "ประเภท",
+            "state": {
+              "error": "ข้อผิดพลาด",
+              "warning": "คำเตือน",
+              "low_water": "น้ำต่ำ",
+              "dock": "แท่นชาร์จ"
+            }
+          },
+          "code": {
+            "name": "รหัส"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "การบำรุงรักษา",
+        "state_attributes": {
+          "items": {
+            "name": "รายการ"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "สิ่งกีดขวางถูกละเว้นหรือไม่"
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "ไม่สามารถเรียกการทำงานได้: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "หุ่นยนต์อยู่ที่พิกัดที่เลือกแล้ว"
+    },
+    "authentication_failed": {
+      "message": "การยืนยันตัวตนล้มเหลว โปรดยืนยันตัวตนอีกครั้ง"
+    },
+    "cloud_login_failed": {
+      "message": "ไม่สามารถเข้าสู่ระบบอุปกรณ์ผ่านคลาวด์ได้"
+    },
+    "cloud_required": {
+      "message": "{feature} ต้องใช้การเชื่อมต่อคลาวด์"
+    },
+    "cloud_unreachable": {
+      "message": "ไม่สามารถค้นหาอุปกรณ์ผ่านคลาวด์ได้"
+    },
+    "command_failed": {
+      "message": "คำสั่งล้มเหลวหรือไม่สามารถส่งไปยังอุปกรณ์ได้"
+    },
+    "coordinate_outside_map": {
+      "message": "พิกัด ({x}, {y}) ไม่อยู่ภายในแผนที่"
+    },
+    "coordinate_required": {
+      "message": "ต้องมีพิกัดที่ถูกต้องหรือที่บันทึกไว้อย่างน้อยหนึ่งพิกัด"
+    },
+    "device_disconnected": {
+      "message": "อุปกรณ์ถูกตัดการเชื่อมต่อ"
+    },
+    "device_unavailable": {
+      "message": "อุปกรณ์ไม่พร้อมใช้งานหรือไม่สามารถเข้าถึงได้"
+    },
+    "entity_unavailable": {
+      "message": "เอนทิตีไม่พร้อมใช้งาน"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "โปรดตรวจสอบว่าไม่ได้ติดตั้งแผ่นถูพื้นก่อนการทำแผนที่แบบเร็ว"
+    },
+    "follow_path_requires_camera": {
+      "message": "การเดินตามเส้นทางใช้ได้เฉพาะกับการสตรีมกล้องสดเท่านั้น"
+    },
+    "invalid_action": {
+      "message": "การทำงานหรือคำสั่งไม่ถูกต้อง: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "พิกัดไม่ถูกต้อง: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "ตัวเลือกไม่ถูกต้องสำหรับ {parameter}: {value} ตัวเลือกที่ถูกต้อง: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "แผนที่กู้คืนไม่ถูกต้อง {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "ค่าไม่ถูกต้องสำหรับ {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "แบตเตอรี่เหลือน้อยเกินไป โปรดชาร์จเครื่องดูดฝุ่นก่อน"
+    },
+    "map_backup_in_progress": {
+      "message": "กำลังสำรองข้อมูลแผนที่อยู่แล้ว"
+    },
+    "map_recovery_failed": {
+      "message": "การกู้คืนแผนที่ล้มเหลว: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "กำลังกู้คืนแผนที่อยู่แล้ว"
+    },
+    "map_select_failed": {
+      "message": "เลือกแผนที่ไม่สำเร็จ"
+    },
+    "max_rooms_reached": {
+      "message": "ถึงจำนวนห้องสูงสุดแล้ว"
+    },
+    "missing_parameter": {
+      "message": "ขาดพารามิเตอร์ที่จำเป็น: {parameter}"
+    },
+    "not_found": {
+      "message": "ไม่พบ {item}: {id}"
+    },
+    "not_supported": {
+      "message": "อุปกรณ์นี้ไม่รองรับ {feature}"
+    },
+    "property_not_updated": {
+      "message": "ไม่ได้อัปเดตคุณสมบัติ {parameter}: {value}"
+    },
+    "start_failed": {
+      "message": "เริ่ม {operation} ไม่สำเร็จ"
+    },
+    "unavailable": {
+      "message": "{action} ไม่พร้อมใช้งาน"
+    },
+    "unavailable_on_current_map": {
+      "message": "การทำงานนี้ไม่พร้อมใช้งานบนแผนที่ปัจจุบัน"
+    },
+    "unavailable_while_cruising": {
+      "message": "การทำงานนี้ไม่พร้อมใช้งานขณะลาดตระเวน"
+    },
+    "unavailable_while_draining": {
+      "message": "การทำงานนี้ไม่พร้อมใช้งานขณะระบายน้ำหรือซ่อมแซม/ทดสอบตัวเอง"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "การทำงานนี้ไม่พร้อมใช้งานขณะทำแผนที่แบบเร็ว"
+    },
+    "unavailable_while_running": {
+      "message": "การทำงานนี้ไม่พร้อมใช้งานขณะเครื่องดูดฝุ่นกำลังทำงาน"
+    },
+    "unavailable_while_self_wash": {
+      "message": "การทำงานนี้ไม่พร้อมใช้งานขณะฐานล้างตัวเองกำลังทำงาน"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "การทำงานนี้ไม่พร้อมใช้งานขณะเปิดใช้งานการทำความสะอาดแบบกำหนดเอง"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "การทำงานนี้ไม่พร้อมใช้งานระหว่างการทำความสะอาดตามกำหนดเวลาหรืองานทางลัด"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "การทำงานนี้ไม่พร้อมใช้งานขณะมีแผนที่ชั่วคราว"
+    },
+    "unavailable_without_map": {
+      "message": "การทำงานนี้ไม่พร้อมใช้งานหากไม่รองรับแผนที่"
+    },
+    "unknown_action": {
+      "message": "ไม่รู้จักการทำงาน: {action}"
+    },
+    "update_failed": {
+      "message": "อัปเดตอุปกรณ์ไม่สำเร็จ: {error}"
+    },
+    "zone_too_small": {
+      "message": "โซน {zone} เล็กกว่าขนาดโซนขั้นต่ำ ({width}, {height})"
     }
   }
 }

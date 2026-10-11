@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Čistí",
+          "docked": "V doku",
+          "error": "Chyba",
+          "idle": "Nečinný",
+          "paused": "Pozastavený",
+          "returning": "Návrat do doku"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Sací výkon",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Upozornenie na nedostatok vody",
         "state": {
+          "unknown": "Neznámy",
           "no_warning": "Žiadne upozornenie",
           "no_water_left": "Voda v nádrži na čistú vodu sa čoskoro spotrebuje. Skontrolujte a doplňte ju včas.",
           "no_water_left_after_clean": "Podložka mopu bola vyčistená. Zistený nedostatok vody v nádrži na čistú vodu, doplňte ju a vyprázdnite nádrž na použitú vodu.",
@@ -1297,8 +1306,8 @@
           "pet": "Domáce zviera",
           "cleaning_tools": "Nástroje na čistenie",
           "detected_stain": "Škrvny",
-          "blocked_room": "Nábytok náchylný na zaseknutie robota",
-          "easy_to_stuck_furniture": "Nábytok náchylný na zaseknutie robota",
+          "blocked_room": "Zanedbaná miestnosť",
+          "easy_to_stuck_furniture": "Nábytok s rizikom zaseknutia",
           "uncleanable_stain": "Škrvny",
           "leg": "Noha",
           "large_particles": "Veľké častice",
@@ -1513,7 +1522,7 @@
           "error": "Chyba",
           "remote_control": "Diaľkové ovládanie",
           "sleeping": "Režim spánku",
-          "self_test": "Vlastný test",
+          "self_repair": "Vlastný test",
           "factory_test": "Továrenský test",
           "standby": "Pohotovostný režim",
           "room_cleaning": "Čistenie miestnosti",
@@ -1634,6 +1643,8 @@
         "name": "Typ úlohy",
         "state": {
           "standard": "Štandardné čistenie",
+          "unknown": "Neznámy",
+          "idle": "Nečinný",
           "standard_paused": "Štandardné čistenie pozastavené",
           "custom": "Vlastné čistenie",
           "custom_paused": "Vlastné čistenie pozastavené",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Stav krytu valca"
+      },
+      "problem": {
+        "name": "Problém",
+        "state_attributes": {
+          "type": {
+            "name": "Typ",
+            "state": {
+              "error": "Chyba",
+              "warning": "Varovanie",
+              "low_water": "Málo vody",
+              "dock": "Stanica"
+            }
+          },
+          "code": {
+            "name": "Kód"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Údržba",
+        "state_attributes": {
+          "items": {
+            "name": "Položky"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Či je prekážka ignorovaná alebo nie."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Akciu sa nepodarilo zavolať: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robot už je na vybranej súradnici"
+    },
+    "authentication_failed": {
+      "message": "Overenie zlyhalo, overte sa prosím znova"
+    },
+    "cloud_login_failed": {
+      "message": "Nepodarilo sa prihlásiť k zariadeniu cez cloud"
+    },
+    "cloud_required": {
+      "message": "{feature} vyžaduje pripojenie k cloudu"
+    },
+    "cloud_unreachable": {
+      "message": "Zariadenie sa nepodarilo nájsť cez cloud"
+    },
+    "command_failed": {
+      "message": "Príkaz zlyhal alebo ho nebolo možné odoslať do zariadenia"
+    },
+    "coordinate_outside_map": {
+      "message": "Súradnica ({x}, {y}) nie je vo vnútri mapy"
+    },
+    "coordinate_required": {
+      "message": "Vyžaduje sa aspoň jedna platná alebo uložená súradnica"
+    },
+    "device_disconnected": {
+      "message": "Zariadenie je odpojené"
+    },
+    "device_unavailable": {
+      "message": "Zariadenie nie je dostupné alebo nie je dosiahnuteľné"
+    },
+    "entity_unavailable": {
+      "message": "Entita nie je dostupná"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Pred rýchlym mapovaním sa uistite, že mop nie je nasadený"
+    },
+    "follow_path_requires_camera": {
+      "message": "Sledovanie cesty funguje iba s živým prenosom z kamery"
+    },
+    "invalid_action": {
+      "message": "Neplatná akcia alebo príkaz: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Neplatné súradnice: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Neplatná voľba pre {parameter}: {value}. Platné voľby: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Neplatná mapa na obnovenie {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Neplatná hodnota pre {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Batéria je príliš slabá, najprv nabite vysávač"
+    },
+    "map_backup_in_progress": {
+      "message": "Zálohovanie mapy už prebieha"
+    },
+    "map_recovery_failed": {
+      "message": "Obnovenie mapy zlyhalo: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Obnovenie mapy už prebieha"
+    },
+    "map_select_failed": {
+      "message": "Výber mapy zlyhal"
+    },
+    "max_rooms_reached": {
+      "message": "Bol dosiahnutý maximálny počet miestností"
+    },
+    "missing_parameter": {
+      "message": "Chýba povinný parameter: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} sa nenašlo: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} toto zariadenie nepodporuje"
+    },
+    "property_not_updated": {
+      "message": "Vlastnosť {parameter} nebola aktualizovaná: {value}"
+    },
+    "start_failed": {
+      "message": "Spustenie {operation} zlyhalo"
+    },
+    "unavailable": {
+      "message": "{action} nie je dostupné"
+    },
+    "unavailable_on_current_map": {
+      "message": "Táto akcia nie je dostupná na aktuálnej mape"
+    },
+    "unavailable_while_cruising": {
+      "message": "Táto akcia nie je dostupná počas obhliadky"
+    },
+    "unavailable_while_draining": {
+      "message": "Táto akcia nie je dostupná počas vypúšťania alebo samoopravy/testovania"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Táto akcia nie je dostupná počas rýchleho mapovania"
+    },
+    "unavailable_while_running": {
+      "message": "Táto akcia nie je dostupná, kým vysávač pracuje"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Táto akcia nie je dostupná, kým pracuje stanica na samočistenie"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Táto akcia nie je dostupná, kým je zapnuté prispôsobené čistenie"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Táto akcia nie je dostupná počas plánovaného upratovania alebo úlohy zástupcu"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Táto akcia nie je dostupná, kým existuje dočasná mapa"
+    },
+    "unavailable_without_map": {
+      "message": "Táto akcia nie je dostupná bez podpory máp"
+    },
+    "unknown_action": {
+      "message": "Neznáma akcia: {action}"
+    },
+    "update_failed": {
+      "message": "Aktualizácia zariadenia zlyhala: {error}"
+    },
+    "zone_too_small": {
+      "message": "Zóna {zone} je menšia ako minimálna veľkosť zóny ({width}, {height})"
     }
   }
 }

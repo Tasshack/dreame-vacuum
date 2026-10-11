@@ -13,13 +13,17 @@ from homeassistant.components.binary_sensor import (
 from homeassistant.config_entries import ConfigEntry
 
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import DOMAIN
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription, remove_entities
-from .dreame import DreameVacuumProperty
+from .dreame import ATTR_TYPE, ATTR_CODE, ATTR_ITEMS, DreameVacuumProperty
+
+
+PROBLEM_DEVICE_CLASS = getattr(BinarySensorDeviceClass, "PROBLEM", None)
 
 
 @dataclass
@@ -54,6 +58,25 @@ BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
         device_class=BinarySensorDeviceClass.OPENING,
         value_fn=lambda value, entity: bool(value),
         exists_fn=lambda description, device: bool(device.capability.auto_lds_lifting),
+    ),
+    DreameVacuumBinarySensorEntityDescription(
+        key="problem",
+        icon_fn=lambda value, device: "mdi:alert-circle-outline" if value else "mdi:check-circle-outline",
+        device_class=PROBLEM_DEVICE_CLASS,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda value, entity: entity.device.status.problem,
+        attrs_fn=lambda entity: {
+            ATTR_TYPE: entity.device.status.problem_type,
+            ATTR_CODE: entity.device.status.problem_code,
+        },
+    ),
+    DreameVacuumBinarySensorEntityDescription(
+        key="maintenance",
+        icon_fn=lambda value, device: "mdi:wrench-clock" if value else "mdi:wrench-check",
+        device_class=PROBLEM_DEVICE_CLASS,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        value_fn=lambda value, entity: bool(entity.coordinator.maintenance_items),
+        attrs_fn=lambda entity: {ATTR_ITEMS: entity.coordinator.maintenance_items},
     ),
 )
 

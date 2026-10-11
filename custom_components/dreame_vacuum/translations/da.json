@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Gør rent",
+          "docked": "I dock",
+          "error": "Fejl",
+          "idle": "Inaktiv",
+          "paused": "På pause",
+          "returning": "Vender tilbage til dock"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Sugestyrke",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Advarsel for lavt vand",
         "state": {
+          "unknown": "Ukendt",
           "no_warning": "Ingen advarsler",
           "no_water_left": "Vandet i rentvandstanken er ved at være brugt op. Tjek og fyld rentvandstanken snarest.",
           "no_water_left_after_clean": "Moppe er blevet renset. Registreret at vandet i rentvandstanken er utilstrækkeligt, fyld venligst rentvandstanken og tøm tanken for snavset vand.",
@@ -1297,8 +1306,8 @@
           "pet": "Kæledyr",
           "cleaning_tools": "Rengøringstilbehør",
           "detected_stain": "Plet",
-          "blocked_room": "Møbler tilbøjelige til at få robotten til at sætte sig fast",
-          "easy_to_stuck_furniture": "Møbler tilbøjelige til at få robotten til at sætte sig fast",
+          "blocked_room": "Forsømt rum",
+          "easy_to_stuck_furniture": "Fastklemmende møbler",
           "uncleanable_stain": "Plet",
           "leg": "Ben",
           "large_particles": "Store partikler",
@@ -1513,7 +1522,7 @@
           "error": "Fejl",
           "remote_control": "Fjernbetjening",
           "sleeping": "Sover",
-          "self_test": "Selvtest",
+          "self_repair": "Selvtest",
           "factory_test": "Fabrikstest",
           "standby": "Standby",
           "room_cleaning": "Rengør rum",
@@ -1634,6 +1643,8 @@
         "name": "Opgavetype",
         "state": {
           "standard": "Standardrengøring",
+          "unknown": "Ukendt",
+          "idle": "Inaktiv",
           "standard_paused": "Standardrengøring pauset",
           "custom": "Brugerdefineret rengøring",
           "custom_paused": "Brugerdefineret rengøring pauset",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Status for rulledæksel"
+      },
+      "problem": {
+        "name": "Problem",
+        "state_attributes": {
+          "type": {
+            "name": "Type",
+            "state": {
+              "error": "Fejl",
+              "warning": "Advarsel",
+              "low_water": "Lavt vand",
+              "dock": "Station"
+            }
+          },
+          "code": {
+            "name": "Kode"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Vedligeholdelse",
+        "state_attributes": {
+          "items": {
+            "name": "Elementer"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Forhindring ignoreres eller ej."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Kunne ikke kalde handlingen: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robotten er allerede på den valgte koordinat"
+    },
+    "authentication_failed": {
+      "message": "Godkendelse mislykkedes, godkend venligst igen"
+    },
+    "cloud_login_failed": {
+      "message": "Kunne ikke logge ind på enheden via skyen"
+    },
+    "cloud_required": {
+      "message": "{feature} kræver en skyforbindelse"
+    },
+    "cloud_unreachable": {
+      "message": "Kunne ikke finde enheden via skyen"
+    },
+    "command_failed": {
+      "message": "Kommandoen mislykkedes eller kunne ikke sendes til enheden"
+    },
+    "coordinate_outside_map": {
+      "message": "Koordinaten ({x}, {y}) er ikke inden for kortet"
+    },
+    "coordinate_required": {
+      "message": "Mindst én gyldig eller gemt koordinat er påkrævet"
+    },
+    "device_disconnected": {
+      "message": "Enheden er afbrudt"
+    },
+    "device_unavailable": {
+      "message": "Enheden er ikke tilgængelig eller kan ikke nås"
+    },
+    "entity_unavailable": {
+      "message": "Entiteten er ikke tilgængelig"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Sørg for, at moppen ikke er monteret før hurtig kortlægning"
+    },
+    "follow_path_requires_camera": {
+      "message": "Følg sti virker kun med live kamerastreaming"
+    },
+    "invalid_action": {
+      "message": "Ugyldig handling eller kommando: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Ugyldige koordinater: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Ugyldig mulighed for {parameter}: {value}. Gyldige muligheder: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Ugyldigt gendannelseskort {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Ugyldig værdi for {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Batteriet er for lavt, oplad støvsugeren først"
+    },
+    "map_backup_in_progress": {
+      "message": "En kortsikkerhedskopiering er allerede i gang"
+    },
+    "map_recovery_failed": {
+      "message": "Kortgendannelse mislykkedes: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "En kortgendannelse er allerede i gang"
+    },
+    "map_select_failed": {
+      "message": "Kunne ikke vælge kortet"
+    },
+    "max_rooms_reached": {
+      "message": "Det maksimale antal rum er nået"
+    },
+    "missing_parameter": {
+      "message": "En påkrævet parameter mangler: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} blev ikke fundet: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} understøttes ikke på denne enhed"
+    },
+    "property_not_updated": {
+      "message": "Egenskaben {parameter} blev ikke opdateret: {value}"
+    },
+    "start_failed": {
+      "message": "Kunne ikke starte {operation}"
+    },
+    "unavailable": {
+      "message": "{action} er ikke tilgængelig"
+    },
+    "unavailable_on_current_map": {
+      "message": "Denne handling er ikke tilgængelig på det aktuelle kort"
+    },
+    "unavailable_while_cruising": {
+      "message": "Denne handling er ikke tilgængelig under patrulje"
+    },
+    "unavailable_while_draining": {
+      "message": "Denne handling er ikke tilgængelig under tømning eller selvreparation/test"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Denne handling er ikke tilgængelig under hurtig kortlægning"
+    },
+    "unavailable_while_running": {
+      "message": "Denne handling er ikke tilgængelig, mens støvsugeren kører"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Denne handling er ikke tilgængelig, mens selvvaskestationen kører"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Denne handling er ikke tilgængelig, mens tilpasset rengøring er aktiveret"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Denne handling er ikke tilgængelig under en planlagt rengøring eller genvejsopgave"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Denne handling er ikke tilgængelig, mens der findes et midlertidigt kort"
+    },
+    "unavailable_without_map": {
+      "message": "Denne handling er ikke tilgængelig uden kortunderstøttelse"
+    },
+    "unknown_action": {
+      "message": "Ukendt handling: {action}"
+    },
+    "update_failed": {
+      "message": "Kunne ikke opdatere enheden: {error}"
+    },
+    "zone_too_small": {
+      "message": "Zone {zone} er mindre end den mindste zonestørrelse ({width}, {height})"
     }
   }
 }

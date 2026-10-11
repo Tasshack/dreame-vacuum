@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Notiek uzkopšana",
+          "docked": "Pie doka",
+          "error": "Kļūda",
+          "idle": "Dīkstāvē",
+          "paused": "Pauzēts",
+          "returning": "Atgriešanās dokā"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Sūkšanas jauda",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Brīdinājums par zemu ūdens līmeni",
         "state": {
+          "unknown": "Nezināms",
           "no_warning": "Nav brīdinājuma",
           "no_water_left": "Ūdens tīrā ūdens tvertnē drīz beigsies. Savlaicīgi pārbaudiet un piepildiet tīrā ūdens tvertni.",
           "no_water_left_after_clean": "Kartes paliktņi ir iztīrīti. Konstatēts, ka ūdens līmenis tīrā ūdens tvertnē ir nepietiekams, lūdzu, piepildiet tīrā ūdens tvertni un iztukšojiet izmantotā ūdens tvertni.",
@@ -1297,8 +1306,8 @@
           "pet": "Mājdzīvnieks",
           "cleaning_tools": "Tīrīšanas rīki",
           "detected_stain": "Traipi",
-          "blocked_room": "Mēbeles, kas var izraisīt robota iestrēgšanu",
-          "easy_to_stuck_furniture": "Mēbeles, kas var izraisīt robota iestrēgšanu",
+          "blocked_room": "Aizmirsta istaba",
+          "easy_to_stuck_furniture": "Mēbeles ar iestrēgšanas risku",
           "uncleanable_stain": "Traipi",
           "leg": "Kāja",
           "large_particles": "Lieli gabali",
@@ -1513,7 +1522,7 @@
           "error": "Kļūda",
           "remote_control": "Tālvadība",
           "sleeping": "Guļ",
-          "self_test": "Pašpārbaude",
+          "self_repair": "Pašpārbaude",
           "factory_test": "Rūpnīcas pārbaude",
           "standby": "Gaidstāve",
           "room_cleaning": "Istabas tīrīšana",
@@ -1634,6 +1643,8 @@
         "name": "Uzdevuma veids",
         "state": {
           "standard": "Standarta tīrīšana",
+          "unknown": "Nezināms",
+          "idle": "Dīkstāvē",
           "standard_paused": "Standarta tīrīšana pauzēta",
           "custom": "Pielāgota tīrīšana",
           "custom_paused": "Pielāgota tīrīšana pauzēta",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Veltņa vāka statuss"
+      },
+      "problem": {
+        "name": "Problēma",
+        "state_attributes": {
+          "type": {
+            "name": "Veids",
+            "state": {
+              "error": "Kļūda",
+              "warning": "Brīdinājums",
+              "low_water": "Zems ūdens līmenis",
+              "dock": "Stacija"
+            }
+          },
+          "code": {
+            "name": "Kods"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Apkope",
+        "state_attributes": {
+          "items": {
+            "name": "Vienumi"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Vai šķērslis tiek ignorēts."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Neizdevās izsaukt darbību: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robots jau atrodas izvēlētajā koordinātē"
+    },
+    "authentication_failed": {
+      "message": "Autentifikācija neizdevās, lūdzu, autentificējieties vēlreiz"
+    },
+    "cloud_login_failed": {
+      "message": "Neizdevās pieteikties ierīcē, izmantojot mākoni"
+    },
+    "cloud_required": {
+      "message": "{feature} nepieciešams savienojums ar mākoni"
+    },
+    "cloud_unreachable": {
+      "message": "Neizdevās atrast ierīci, izmantojot mākoni"
+    },
+    "command_failed": {
+      "message": "Komanda neizdevās vai to nevarēja nosūtīt ierīcei"
+    },
+    "coordinate_outside_map": {
+      "message": "Koordināte ({x}, {y}) neatrodas kartes iekšpusē"
+    },
+    "coordinate_required": {
+      "message": "Nepieciešama vismaz viena derīga vai saglabāta koordināte"
+    },
+    "device_disconnected": {
+      "message": "Ierīce ir atvienota"
+    },
+    "device_unavailable": {
+      "message": "Ierīce nav pieejama vai tai nevar piekļūt"
+    },
+    "entity_unavailable": {
+      "message": "Entitāte nav pieejama"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Pirms ātrās kartēšanas pārliecinieties, ka mopa nav uzstādīta"
+    },
+    "follow_path_requires_camera": {
+      "message": "Ceļa sekošana darbojas tikai ar kameras tiešraides straumēšanu"
+    },
+    "invalid_action": {
+      "message": "Nederīga darbība vai komanda: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Nederīgas koordinātes: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Nederīga opcija parametram {parameter}: {value}. Derīgās opcijas: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Nederīga atkopšanas karte {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Nederīga vērtība parametram {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Akumulators ir pārāk izlādējies, vispirms uzlādējiet putekļsūcēju"
+    },
+    "map_backup_in_progress": {
+      "message": "Kartes dublēšana jau notiek"
+    },
+    "map_recovery_failed": {
+      "message": "Kartes atkopšana neizdevās: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Kartes atkopšana jau notiek"
+    },
+    "map_select_failed": {
+      "message": "Neizdevās atlasīt karti"
+    },
+    "max_rooms_reached": {
+      "message": "Sasniegts maksimālais istabu skaits"
+    },
+    "missing_parameter": {
+      "message": "Trūkst obligāta parametra: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} nav atrasts: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} šajā ierīcē netiek atbalstīts"
+    },
+    "property_not_updated": {
+      "message": "Rekvizīts {parameter} netika atjaunināts: {value}"
+    },
+    "start_failed": {
+      "message": "Neizdevās sākt {operation}"
+    },
+    "unavailable": {
+      "message": "{action} nav pieejams"
+    },
+    "unavailable_on_current_map": {
+      "message": "Šī darbība nav pieejama pašreizējā kartē"
+    },
+    "unavailable_while_cruising": {
+      "message": "Šī darbība nav pieejama patrulēšanas laikā"
+    },
+    "unavailable_while_draining": {
+      "message": "Šī darbība nav pieejama iztukšošanas vai pašlabošanas/testēšanas laikā"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Šī darbība nav pieejama ātrās kartēšanas laikā"
+    },
+    "unavailable_while_running": {
+      "message": "Šī darbība nav pieejama, kamēr putekļsūcējs darbojas"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Šī darbība nav pieejama, kamēr darbojas pašmazgāšanas bāze"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Šī darbība nav pieejama, kamēr ir iespējota pielāgotā tīrīšana"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Šī darbība nav pieejama ieplānotas tīrīšanas vai saīsnes uzdevuma laikā"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Šī darbība nav pieejama, kamēr ir pagaidu karte"
+    },
+    "unavailable_without_map": {
+      "message": "Šī darbība nav pieejama bez kartes atbalsta"
+    },
+    "unknown_action": {
+      "message": "Nezināma darbība: {action}"
+    },
+    "update_failed": {
+      "message": "Neizdevās atjaunināt ierīci: {error}"
+    },
+    "zone_too_small": {
+      "message": "Zona {zone} ir mazāka par minimālo zonas izmēru ({width}, {height})"
     }
   }
 }

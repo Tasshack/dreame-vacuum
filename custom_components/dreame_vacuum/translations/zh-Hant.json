@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "清掃中",
+          "docked": "充電中",
+          "error": "錯誤",
+          "idle": "待命",
+          "paused": "已暫停",
+          "returning": "返回充電"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "吸力",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "缺水提醒",
         "state": {
+          "unknown": "未知",
           "no_warning": "水量正常",
           "no_water_left": "清水箱即將耗盡，請及時檢查並補充清水",
           "no_water_left_after_clean": "拖布已清潔，偵測到清水不足，請補充清水並清空污水箱",
@@ -1297,7 +1306,7 @@
           "pet": "寵物",
           "cleaning_tools": "清潔工具",
           "detected_stain": "汙漬",
-          "blocked_room": "易受困家具",
+          "blocked_room": "漏掃房間",
           "easy_to_stuck_furniture": "易受困家具",
           "uncleanable_stain": "汙漬",
           "leg": "家具腳",
@@ -1513,7 +1522,7 @@
           "error": "錯誤",
           "remote_control": "遙控模式",
           "sleeping": "休眠中",
-          "self_test": "自檢中",
+          "self_repair": "自檢中",
           "factory_test": "出廠測試",
           "standby": "就緒",
           "room_cleaning": "房間清潔",
@@ -1634,6 +1643,8 @@
         "name": "任務類型",
         "state": {
           "standard": "標準清潔",
+          "unknown": "未知",
+          "idle": "待機",
           "standard_paused": "標準清潔暫停",
           "custom": "自訂清潔",
           "custom_paused": "自訂清潔暫停",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "主刷罩狀態"
+      },
+      "problem": {
+        "name": "問題",
+        "state_attributes": {
+          "type": {
+            "name": "類型",
+            "state": {
+              "error": "故障",
+              "warning": "警告",
+              "low_water": "水量低",
+              "dock": "基站"
+            }
+          },
+          "code": {
+            "name": "代碼"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "維護",
+        "state_attributes": {
+          "items": {
+            "name": "項目"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "是否要忽略障礙物。"
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "無法呼叫動作：{action}"
+    },
+    "already_at_coordinate": {
+      "message": "機器人已在所選座標處"
+    },
+    "authentication_failed": {
+      "message": "驗證失敗，請重新驗證"
+    },
+    "cloud_login_failed": {
+      "message": "無法透過雲端登入裝置"
+    },
+    "cloud_required": {
+      "message": "{feature} 需要雲端連線"
+    },
+    "cloud_unreachable": {
+      "message": "無法透過雲端探索裝置"
+    },
+    "command_failed": {
+      "message": "指令失敗或無法傳送至裝置"
+    },
+    "coordinate_outside_map": {
+      "message": "座標 ({x}, {y}) 不在地圖範圍內"
+    },
+    "coordinate_required": {
+      "message": "至少需要一個有效或已儲存的座標"
+    },
+    "device_disconnected": {
+      "message": "裝置已中斷連線"
+    },
+    "device_unavailable": {
+      "message": "裝置無法使用或無法連線"
+    },
+    "entity_unavailable": {
+      "message": "實體無法使用"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "快速建圖前請確認未安裝拖布"
+    },
+    "follow_path_requires_camera": {
+      "message": "跟隨路徑僅能搭配即時攝影機串流使用"
+    },
+    "invalid_action": {
+      "message": "無效的動作或指令：{action}"
+    },
+    "invalid_coordinates": {
+      "message": "無效的座標：{coordinates}"
+    },
+    "invalid_option": {
+      "message": "{parameter} 的選項無效：{value}。有效選項：{options}"
+    },
+    "invalid_recovery_map": {
+      "message": "無效的復原地圖 {parameter}：{value}"
+    },
+    "invalid_value": {
+      "message": "{parameter} 的值無效：{value}"
+    },
+    "low_battery": {
+      "message": "電量過低，請先為掃地機充電"
+    },
+    "map_backup_in_progress": {
+      "message": "地圖備份正在進行中"
+    },
+    "map_recovery_failed": {
+      "message": "地圖復原失敗：{error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "地圖復原正在進行中"
+    },
+    "map_select_failed": {
+      "message": "選擇地圖失敗"
+    },
+    "max_rooms_reached": {
+      "message": "已達房間數量上限"
+    },
+    "missing_parameter": {
+      "message": "缺少必要的參數：{parameter}"
+    },
+    "not_found": {
+      "message": "找不到{item}：{id}"
+    },
+    "not_supported": {
+      "message": "此裝置不支援 {feature}"
+    },
+    "property_not_updated": {
+      "message": "屬性 {parameter} 未更新：{value}"
+    },
+    "start_failed": {
+      "message": "啟動 {operation} 失敗"
+    },
+    "unavailable": {
+      "message": "{action} 無法使用"
+    },
+    "unavailable_on_current_map": {
+      "message": "此動作在目前地圖上無法使用"
+    },
+    "unavailable_while_cruising": {
+      "message": "巡航期間此動作無法使用"
+    },
+    "unavailable_while_draining": {
+      "message": "排水或自我檢修/測試期間此動作無法使用"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "快速建圖期間此動作無法使用"
+    },
+    "unavailable_while_running": {
+      "message": "掃地機運作期間此動作無法使用"
+    },
+    "unavailable_while_self_wash": {
+      "message": "自清洗基座運作期間此動作無法使用"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "啟用自訂清掃時此動作無法使用"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "排程清掃或捷徑任務期間此動作無法使用"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "存在暫時地圖時此動作無法使用"
+    },
+    "unavailable_without_map": {
+      "message": "不支援地圖時此動作無法使用"
+    },
+    "unknown_action": {
+      "message": "未知的動作：{action}"
+    },
+    "update_failed": {
+      "message": "更新裝置失敗：{error}"
+    },
+    "zone_too_small": {
+      "message": "區域 {zone} 小於最小區域尺寸 ({width}, {height})"
     }
   }
 }

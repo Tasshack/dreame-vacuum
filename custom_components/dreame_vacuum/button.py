@@ -19,13 +19,11 @@ from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory, async_generate_entity_id
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers import entity_registry
-from homeassistant.exceptions import HomeAssistantError
-
 from .const import DOMAIN
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription, remove_entities
-from .dreame import DreameVacuumAction
+from .dreame import DreameVacuumAction, EntityUnavailableException
 
 
 @dataclass
@@ -421,7 +419,7 @@ class DreameVacuumButtonEntity(DreameVacuumEntity, ButtonEntity):
     async def async_press(self, **kwargs: Any) -> None:
         """Press the button."""
         if not self.available:
-            raise HomeAssistantError("Entity unavailable")
+            self._raise_error(EntityUnavailableException())
 
         if self.entity_description.action_fn is not None:
             await self._try_command(
@@ -477,11 +475,14 @@ class DreameVacuumShortcutButtonEntity(DreameVacuumEntity, ButtonEntity):
             value = str(self.id)
             name = f"{key}_{value}"
 
+        value = value.replace("_", " ").title()
         if self._name_placeholder:
-            self._attr_translation_placeholders = {"name": value.replace("_", " ").title()}
+            self._attr_translation_placeholders = {"name": value}
             self.__dict__.pop("name", None)
         else:
-            self._attr_name = name.replace("_", " ").title()
+            self._attr_name = self._localized_name(
+                "button", key, name.replace("_", " ").title(), name=value
+            )
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -505,7 +506,7 @@ class DreameVacuumShortcutButtonEntity(DreameVacuumEntity, ButtonEntity):
     async def async_press(self, **kwargs: Any) -> None:
         """Press the button."""
         if not self.available:
-            raise HomeAssistantError("Entity unavailable")
+            self._raise_error(EntityUnavailableException())
 
         await self._try_command(
             "Unable to call %s",

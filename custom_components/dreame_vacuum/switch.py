@@ -16,13 +16,12 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.exceptions import HomeAssistantError
-
 from .const import DOMAIN
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription, remove_entities
 from .dreame import (
+    EntityUnavailableException,
     DreameVacuumProperty,
     DreameVacuumAutoSwitchProperty,
     DreameVacuumStrAIProperty,
@@ -602,7 +601,7 @@ class DreameVacuumSwitchEntity(DreameVacuumEntity, SwitchEntity):
     async def async_set_state(self, state) -> None:
         """Turn on or off the Dreame Vacuum sync receive switch."""
         if not self.available:
-            raise HomeAssistantError("Entity unavailable")
+            self._raise_error(EntityUnavailableException())
 
         value = int(state)
         if self.entity_description.format_fn is not None:

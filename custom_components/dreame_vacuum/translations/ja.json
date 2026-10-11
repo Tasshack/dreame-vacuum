@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "クリーニング",
+          "docked": "ドック入り",
+          "error": "エラー",
+          "idle": "待機中",
+          "paused": "一時停止",
+          "returning": "ドックに戻る"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "吸引力",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "低水位の警告",
         "state": {
+          "unknown": "不明",
           "no_warning": "警告なし",
           "no_water_left": "浄水タンクの水がもうすぐなくなります。早めに水を入れてください。",
           "no_water_left_after_clean": "モップパッドの洗浄が完了しました。浄水タンクの水が不足しています。浄水タンクに水を入れて、汚水タンクを空にしてください。",
@@ -1297,8 +1306,8 @@
           "pet": "ペット",
           "cleaning_tools": "クリーニングツール",
           "detected_stain": "汚れ",
-          "blocked_room": "ロボット掃除機の障害になりやすい家具",
-          "easy_to_stuck_furniture": "ロボット掃除機の障害になりやすい家具",
+          "blocked_room": "未清掃の部屋",
+          "easy_to_stuck_furniture": "引っかかりやすい家具",
           "uncleanable_stain": "汚れ",
           "leg": "脚",
           "large_particles": "大きな粒子",
@@ -1513,7 +1522,7 @@
           "error": "エラー",
           "remote_control": "リモートコントロール",
           "sleeping": "スリープ",
-          "self_test": "セルフテスト",
+          "self_repair": "セルフテスト",
           "factory_test": "工場テスト",
           "standby": "スタンバイ",
           "room_cleaning": "部屋単位清掃",
@@ -1634,6 +1643,8 @@
         "name": "タスクタイプ",
         "state": {
           "standard": "標準清掃",
+          "unknown": "不明",
+          "idle": "待機中",
           "standard_paused": "標準清掃一時停止",
           "custom": "カスタム清掃",
           "custom_paused": "カスタム清掃一時停止",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "ローラーカバーの状態"
+      },
+      "problem": {
+        "name": "問題",
+        "state_attributes": {
+          "type": {
+            "name": "種類",
+            "state": {
+              "error": "エラー",
+              "warning": "警告",
+              "low_water": "水が少ない",
+              "dock": "ステーション"
+            }
+          },
+          "code": {
+            "name": "コード"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "メンテナンス",
+        "state_attributes": {
+          "items": {
+            "name": "項目"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "障害物を無視するかどうか。"
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "アクションを呼び出せません: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "ロボットはすでに選択された座標にいます"
+    },
+    "authentication_failed": {
+      "message": "認証に失敗しました。再認証してください"
+    },
+    "cloud_login_failed": {
+      "message": "クラウド経由でデバイスにログインできません"
+    },
+    "cloud_required": {
+      "message": "{feature} にはクラウド接続が必要です"
+    },
+    "cloud_unreachable": {
+      "message": "クラウド経由でデバイスを検出できません"
+    },
+    "command_failed": {
+      "message": "コマンドが失敗したか、デバイスに送信できませんでした"
+    },
+    "coordinate_outside_map": {
+      "message": "座標 ({x}, {y}) はマップの範囲内にありません"
+    },
+    "coordinate_required": {
+      "message": "有効な座標または保存済みの座標が少なくとも1つ必要です"
+    },
+    "device_disconnected": {
+      "message": "デバイスが切断されています"
+    },
+    "device_unavailable": {
+      "message": "デバイスが利用できないか、接続できません"
+    },
+    "entity_unavailable": {
+      "message": "エンティティが利用できません"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "高速マッピングの前にモップパッドが取り付けられていないことを確認してください"
+    },
+    "follow_path_requires_camera": {
+      "message": "パス追従はライブカメラのストリーミングでのみ動作します"
+    },
+    "invalid_action": {
+      "message": "無効なアクションまたはコマンド: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "無効な座標: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "{parameter} の無効なオプション: {value}。有効なオプション: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "無効なリカバリーマップ {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "{parameter} の無効な値: {value}"
+    },
+    "low_battery": {
+      "message": "バッテリー残量が少なすぎます。先に掃除機を充電してください"
+    },
+    "map_backup_in_progress": {
+      "message": "マップのバックアップはすでに進行中です"
+    },
+    "map_recovery_failed": {
+      "message": "マップの復元に失敗しました: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "マップの復元はすでに進行中です"
+    },
+    "map_select_failed": {
+      "message": "マップの選択に失敗しました"
+    },
+    "max_rooms_reached": {
+      "message": "部屋の最大数に達しました"
+    },
+    "missing_parameter": {
+      "message": "必須パラメーターがありません: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} が見つかりません: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} はこのデバイスではサポートされていません"
+    },
+    "property_not_updated": {
+      "message": "プロパティ {parameter} が更新されませんでした: {value}"
+    },
+    "start_failed": {
+      "message": "{operation} を開始できませんでした"
+    },
+    "unavailable": {
+      "message": "{action} は利用できません"
+    },
+    "unavailable_on_current_map": {
+      "message": "このアクションは現在のマップでは利用できません"
+    },
+    "unavailable_while_cruising": {
+      "message": "このアクションは巡回中は利用できません"
+    },
+    "unavailable_while_draining": {
+      "message": "このアクションは排水中またはセルフ修復/テスト中は利用できません"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "このアクションは高速マッピング中は利用できません"
+    },
+    "unavailable_while_running": {
+      "message": "このアクションは掃除機の稼働中は利用できません"
+    },
+    "unavailable_while_self_wash": {
+      "message": "このアクションはセルフ洗浄ベースの稼働中は利用できません"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "このアクションはカスタマイズ清掃が有効な間は利用できません"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "このアクションはスケジュール清掃またはショートカットタスクの実行中は利用できません"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "このアクションは一時マップがある間は利用できません"
+    },
+    "unavailable_without_map": {
+      "message": "このアクションはマップ非対応では利用できません"
+    },
+    "unknown_action": {
+      "message": "不明なアクション: {action}"
+    },
+    "update_failed": {
+      "message": "デバイスの更新に失敗しました: {error}"
+    },
+    "zone_too_small": {
+      "message": "ゾーン {zone} は最小ゾーンサイズ ({width}, {height}) より小さいです"
     }
   }
 }

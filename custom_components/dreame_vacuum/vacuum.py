@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import time
 import voluptuous as vol
 from typing import Final
 
@@ -14,7 +13,6 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.entity import async_generate_entity_id
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import config_validation as cv, entity_platform
-from homeassistant.exceptions import HomeAssistantError
 from homeassistant.components.vacuum import (
     StateVacuumEntity,
     VacuumEntityFeature,
@@ -22,8 +20,7 @@ from homeassistant.components.vacuum import (
 )
 from .recorder import VACUUM_UNRECORDED_ATTRIBUTES
 
-from .dreame.const import (
-    STATE_UNKNOWN,
+from .dreame import (
     STATE_CLEANING,
     STATE_DOCKED,
     STATE_ERROR,
@@ -35,9 +32,12 @@ from .dreame.const import (
     ATTR_MAPS,
     ATTR_ID,
     ATTR_NAME,
-    ATTR_RECOVERY_MAP,
+    DreameVacuumState,
+    DreameVacuumSuctionLevel,
+    DreameVacuumAction,
+    InvalidActionException,
+    UnavailableException,
 )
-from .dreame import DreameVacuumState, DreameVacuumSuctionLevel, DreameVacuumAction, InvalidActionException
 from .const import (
     DOMAIN,
     CONSUMABLE_MAIN_BRUSH,
@@ -123,7 +123,6 @@ STATE_CODE_TO_STATE: Final = {
     DreameVacuumState.SANITIZING: STATE_DOCKED,
     DreameVacuumState.SANITIZING_WITH_DRY: STATE_DOCKED,
 }
-
 
 
 CONSUMABLE_RESET_ACTION = {
@@ -677,8 +676,8 @@ async def async_setup_entry(
         {
             vol.Required("segment_id"): cv.ensure_list,
             vol.Required("suction_level"): cv.ensure_list,
-            vol.Required("water_volume"): cv.ensure_list,
             vol.Required("repeats"): cv.ensure_list,
+            vol.Optional("water_volume"): cv.ensure_list,
             vol.Optional("cleaning_mode"): cv.ensure_list,
             vol.Optional("custom_mopping_route"): cv.ensure_list,
             vol.Optional("cleaning_route"): cv.ensure_list,
@@ -1019,11 +1018,15 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
                     and not (self.device.status.zone_cleaning or self.device.status.spot_cleaning)
                 )
             )
-            and not self.device.status.scheduled_clean
+            and not self.device.status.suction_unavailable
         ):
             self._attr_supported_features = self._attr_supported_features | VacuumEntityFeature.FAN_SPEED
             self._attr_fan_speed = self.device.status.suction_level.name.lower().replace("quiet", "silent")
-            self._attr_fan_speed_list = [level.name.lower().replace("quiet", "silent") for level in DreameVacuumSuctionLevel if level != DreameVacuumSuctionLevel.UNKNOWN]
+            self._attr_fan_speed_list = [
+                level.name.lower().replace("quiet", "silent")
+                for level in DreameVacuumSuctionLevel
+                if level != DreameVacuumSuctionLevel.UNKNOWN
+            ]
         else:
             self._attr_fan_speed = None
             self._attr_fan_speed_list = []
@@ -1280,20 +1283,20 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     async def async_set_fan_speed(self, fan_speed, **kwargs) -> None:
         """Set fan speed."""
         if self.device.status.cruising:
-            raise InvalidActionException("Cannot set fan speed when cruising")
+            self._raise_error(UnavailableException(key="unavailable_while_cruising"))
 
         if self.device.status.started and (
             self.device.status.customized_cleaning
             and not (self.device.status.zone_cleaning or self.device.status.spot_cleaning)
         ):
-            raise InvalidActionException("Cannot set fan speed when customized cleaning is enabled")
+            self._raise_error(UnavailableException(key="unavailable_with_customized_cleaning"))
 
         if isinstance(fan_speed, str) and fan_speed.isnumeric():
             fan_speed = int(fan_speed)
 
         if isinstance(fan_speed, int):
             if fan_speed not in DreameVacuumSuctionLevel._value2member_map_:
-                raise HomeAssistantError("Invalid fan speed")
+                self._raise_error(InvalidActionException(key="invalid_value", parameter="fan_speed", value=fan_speed))
         else:
             fan_speed = fan_speed.lower()
             fan_speeds = {
@@ -1305,10 +1308,14 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             if fan_speed in fan_speeds:
                 fan_speed = fan_speeds[fan_speed]
             else:
-                raise HomeAssistantError(
-                    "Fan speed not recognized. Valid options: %s",
-                    self.fan_speed_list,
-                ) from None
+                self._raise_error(
+                    InvalidActionException(
+                        key="invalid_option",
+                        parameter="fan_speed",
+                        value=fan_speed,
+                        options=", ".join(self.fan_speed_list),
+                    )
+                )
 
         await self._try_command("Unable to set fan speed: %s", self.device.set_suction_level, fan_speed)
 
@@ -1389,14 +1396,13 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
 
     async def async_rename_segment(self, segment_id, segment_name="") -> None:
         """Rename a segment"""
-        if segment_name != "":
-            await self._try_command(
-                "Unable to call set_segment_name: %s",
-                self.device.set_segment_name,
-                segment_id,
-                0,
-                segment_name,
-            )
+        await self._try_command(
+            "Unable to call set_segment_name: %s",
+            self.device.set_segment_name,
+            segment_id,
+            0,
+            segment_name,
+        )
 
     async def async_merge_segments(self, map_id=None, segments=None) -> None:
         """Merge segments"""
@@ -1432,8 +1438,8 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         self,
         segment_id,
         suction_level,
-        water_volume,
         repeats,
+        water_volume=None,
         cleaning_mode=None,
         custom_mopping_route=None,
         cleaning_route=None,
@@ -1447,8 +1453,6 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             and segment_id is not None
             and suction_level != ""
             and suction_level is not None
-            and water_volume != ""
-            and water_volume is not None
             and repeats != ""
             and repeats is not None
         ):

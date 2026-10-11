@@ -19,7 +19,6 @@ from homeassistant.const import STATE_UNKNOWN, STATE_UNAVAILABLE
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory, async_generate_entity_id
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import entity_registry
 
 from .const import DOMAIN, UNIT_AREA
@@ -31,9 +30,14 @@ from .entity import (
     remove_entities,
 )
 
-from .dreame.const import ATTR_VALUE, STATE_NOT_SET
-from .dreame.types import ATTR_MAP_INDEX, ATTR_MAP_ID, SEGMENT_TYPE_CODE_TO_NAME
 from .dreame import (
+    ATTR_VALUE,
+    STATE_NOT_SET,
+    ATTR_MAP_INDEX,
+    ATTR_MAP_ID,
+    SEGMENT_TYPE_CODE_TO_NAME,
+    EntityUnavailableException,
+    InvalidActionException,
     DreameVacuumProperty,
     DreameVacuumAutoSwitchProperty,
     DreameVacuumSuctionLevel,
@@ -43,7 +47,6 @@ from .dreame import (
     DreameVacuumCarpetSensitivity,
     DreameVacuumCarpetCleaning,
     DreameVacuumMopWashLevel,
-    DreameVacuumMopCleanFrequency,
     DreameVacuumMoppingType,
     DreameVacuumWiderCornerCoverage,
     DreameVacuumMopPadSwing,
@@ -186,7 +189,7 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         )
         and not device.status.cleangenius_cleaning
         and not device.status.fast_mapping
-        and not device.status.scheduled_clean
+        and not device.status.suction_unavailable
         and not device.status.cruising
         and not (
             device.status.max_suction_power
@@ -503,12 +506,12 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             (k for k, v in entity.device.status.map_data_list.items() if entity._localize_map_name(v) == value),
             None,
         ),
-        attrs_fn=lambda device: (
+        attrs_fn=lambda entity: (
             {
-                ATTR_MAP_ID: device.status.selected_map.map_id,
-                ATTR_MAP_INDEX: device.status.selected_map.map_index,
+                ATTR_MAP_ID: entity.device.status.selected_map.map_id,
+                ATTR_MAP_INDEX: entity.device.status.selected_map.map_index,
             }
-            if device.status.selected_map
+            if entity.device.status.selected_map
             else None
         ),
     ),
@@ -526,7 +529,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             and device.status.customized_cleaning
             and not (device.status.zone_cleaning or device.status.spot_cleaning)
             and not device.status.fast_mapping
-            and not device.status.scheduled_clean
+            and not device.status.suction_unavailable
             and not device.status.cruising
             and segment.cleaning_mode is not DreameVacuumCleaningMode.MOPPING.value
             and not device.status.cleangenius_cleaning
@@ -660,7 +663,7 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             and device.status.customized_cleaning
             and not (device.status.zone_cleaning or device.status.spot_cleaning)
             and not device.status.fast_mapping
-            and not device.status.scheduled_clean
+            and not device.status.started
             and not device.status.cruising
             and (
                 segment.cleaning_mode is DreameVacuumCleaningMode.MOPPING.value
@@ -965,9 +968,7 @@ def async_remove_segment_selects(
     if "init" in current:
         return
 
-    visible_only_keys = {
-        d.key for d in SEGMENT_SELECTS if d.current_segments_only
-    }
+    visible_only_keys = {d.key for d in SEGMENT_SELECTS if d.current_segments_only}
 
     entry_id = coordinator._entry.entry_id if hasattr(coordinator, "_entry") else coordinator.config_entry.entry_id
     for entry in entity_registry.async_entries_for_config_entry(registry, entry_id):
@@ -1078,11 +1079,17 @@ class DreameVacuumSelectEntity(DreameVacuumEntity, SelectEntity):
     async def async_select_option(self, option: str) -> None:
         """Change the selected option."""
         if not self.available:
-            raise HomeAssistantError("Entity unavailable")
+            self._raise_error(EntityUnavailableException())
 
         if option not in self._attr_options:
-            raise HomeAssistantError(
-                f"Invalid option for {self.entity_description.name} {option}. Valid options: {self._attr_options}"
+            self._raise_error(
+                InvalidActionException(
+                    key="invalid_option",
+                    source="entity",
+                    parameter=self.entity_description.key,
+                    value=option,
+                    options=", ".join(self._attr_options),
+                )
             )
 
         value = option
@@ -1090,8 +1097,14 @@ class DreameVacuumSelectEntity(DreameVacuumEntity, SelectEntity):
             value = self.entity_description.value_int_fn(option, self)
 
         if value is None:
-            raise HomeAssistantError(
-                f"Invalid option for {self.entity_description.name} {option}. Valid options: {self._attr_options}"
+            self._raise_error(
+                InvalidActionException(
+                    key="invalid_option",
+                    source="entity",
+                    parameter=self.entity_description.key,
+                    value=option,
+                    options=", ".join(self._attr_options),
+                )
             )
 
         if not isinstance(value, int) and (
@@ -1163,7 +1176,8 @@ class DreameVacuumSegmentSelectEntity(DreameVacuumEntity, SelectEntity):
         )
         self._attr_options = []
         self._attr_current_option = "unavailable"
-        if not self.available:
+        self._options_available = self.available
+        if not self._options_available:
             self._attr_options = [STATE_UNAVAILABLE]
         elif self.segment:
             if description.name == "":
@@ -1179,8 +1193,12 @@ class DreameVacuumSegmentSelectEntity(DreameVacuumEntity, SelectEntity):
                 self._attr_translation_placeholders = {"index": str(self.segment_id)}
                 self.__dict__.pop("name", None)
             else:
-                name = f"room_{self.segment_id}_{self.entity_description.key}"
-                self._attr_name = name.replace("_", " ").title()
+                self._attr_name = self._localized_name(
+                    "select",
+                    self.entity_description.key,
+                    f"room_{self.segment_id}_{self.entity_description.key}".replace("_", " ").title(),
+                    index=self.segment_id,
+                )
         else:
             self._attr_name = f"{self._localize_entity("select", self.entity_description.key, self.entity_description.key.replace("_", " ").title())} {self._localize_segment_name(self.segment, self.segment_id)}"
 
@@ -1211,24 +1229,34 @@ class DreameVacuumSegmentSelectEntity(DreameVacuumEntity, SelectEntity):
 
     @callback
     def _handle_coordinator_update(self) -> None:
+        changed = False
         device_segments = self.segment_list
         if self.segments != device_segments:
+            changed = True
             self.segments = copy.deepcopy(device_segments)
             if self.segments and self.segment_id in self.segments:
                 if self.segment != self.segments[self.segment_id]:
                     self.segment = self.segments[self.segment_id]
-                    self._attr_current_option = self.native_value
                     self._set_id()
-                if not self.available:
-                    self._attr_options = [STATE_UNAVAILABLE]
-                elif self.entity_description.name == "":
+            elif self.segment:
+                self.segment = None
+                self._set_id()
+
+        available = self.available
+        if available != self._options_available:
+            self._options_available = available
+            changed = True
+
+        if changed:
+            if not self.segment or not available:
+                self._attr_options = [STATE_UNAVAILABLE]
+                self._attr_current_option = STATE_UNAVAILABLE
+            else:
+                if self.entity_description.name == "":
                     self._attr_options = list(self._segment_name_list)
                 elif self.entity_description.options is not None:
                     self._attr_options = self.entity_description.options(self)
-            elif self.segment:
-                self.segment = None
-                self._attr_options = [STATE_UNAVAILABLE]
-                self._set_id()
+                self._attr_current_option = self.native_value
 
         self.async_write_ha_state()
 
@@ -1294,18 +1322,21 @@ class DreameVacuumSegmentSelectEntity(DreameVacuumEntity, SelectEntity):
     async def async_select_option(self, option: str) -> None:
         """Set the Dreame Vacuum Segment Select value."""
         if not self.available:
-            raise HomeAssistantError("Entity unavailable")
+            self._raise_error(EntityUnavailableException())
 
         value = option
         if self.entity_description.value_int_fn is not None:
             value = self.entity_description.value_int_fn(value, self)
 
         if value is None:
-            raise HomeAssistantError(
-                "(%s) Invalid option (%s). Valid options: %s",
-                self.entity_description.name,
-                option,
-                self._attr_options,
+            self._raise_error(
+                InvalidActionException(
+                    key="invalid_option",
+                    source="entity",
+                    parameter=self.entity_description.key,
+                    value=option,
+                    options=", ".join(self._attr_options),
+                )
             )
 
         if not isinstance(value, int) and (

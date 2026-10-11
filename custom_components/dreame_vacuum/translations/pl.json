@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "sprzątanie",
+          "docked": "zadokowany",
+          "error": "Błąd",
+          "idle": "brak aktywności",
+          "paused": "wstrzymano",
+          "returning": "wraca do stacji dokującej"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Siła ssania",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Ostrzeżenie o niskim poziomie wody",
         "state": {
+          "unknown": "Nieznany",
           "no_warning": "Bez ostrzeżenia",
           "no_water_left": "Woda w zbiorniku czystej wody wkrótce się zużyje. ",
           "no_water_left_after_clean": "Podkładka mopa została wyczyszczona. ",
@@ -1297,8 +1306,8 @@
           "pet": "Zwierzę domowe",
           "cleaning_tools": "Narzędzia do czyszczenia",
           "detected_stain": "Plama",
-          "blocked_room": "Mebel, który może często blokować robota",
-          "easy_to_stuck_furniture": "Mebel, który może często blokować robota",
+          "blocked_room": "Pominięte pomieszczenie",
+          "easy_to_stuck_furniture": "Mebel blokujący robota",
           "uncleanable_stain": "Plama",
           "leg": "Noga",
           "large_particles": "Duże cząstki",
@@ -1513,7 +1522,7 @@
           "error": "Błąd",
           "remote_control": "Zdalne sterowanie",
           "sleeping": "Uśpiony",
-          "self_test": "Autotest",
+          "self_repair": "Autotest",
           "factory_test": "Test fabryczny",
           "standby": "Gotowość",
           "room_cleaning": "Sprzątanie pokoju",
@@ -1634,6 +1643,8 @@
         "name": "Typ zadania",
         "state": {
           "standard": "Standardowe sprzątanie",
+          "unknown": "Nieznany",
+          "idle": "Bezczynny",
           "standard_paused": "Standardowe czyszczenie wstrzymane",
           "custom": "Sprzątanie na zamówienie",
           "custom_paused": "Czyszczenie niestandardowe zostało wstrzymane",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Stan pokrywy wałka"
+      },
+      "problem": {
+        "name": "Problem",
+        "state_attributes": {
+          "type": {
+            "name": "Typ",
+            "state": {
+              "error": "Błąd",
+              "warning": "Ostrzeżenie",
+              "low_water": "Niska woda",
+              "dock": "Stacja"
+            }
+          },
+          "code": {
+            "name": "Kod"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Konserwacja",
+        "state_attributes": {
+          "items": {
+            "name": "Elementy"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Przeszkoda jest ignorowana lub nie."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Nie można wywołać akcji: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robot znajduje się już na wybranej współrzędnej"
+    },
+    "authentication_failed": {
+      "message": "Uwierzytelnianie nie powiodło się, uwierzytelnij się ponownie"
+    },
+    "cloud_login_failed": {
+      "message": "Nie można zalogować się do urządzenia przez chmurę"
+    },
+    "cloud_required": {
+      "message": "{feature} wymaga połączenia z chmurą"
+    },
+    "cloud_unreachable": {
+      "message": "Nie można wykryć urządzenia przez chmurę"
+    },
+    "command_failed": {
+      "message": "Polecenie nie powiodło się lub nie udało się go wysłać do urządzenia"
+    },
+    "coordinate_outside_map": {
+      "message": "Współrzędna ({x}, {y}) nie znajduje się na mapie"
+    },
+    "coordinate_required": {
+      "message": "Wymagana jest co najmniej jedna prawidłowa lub zapisana współrzędna"
+    },
+    "device_disconnected": {
+      "message": "Urządzenie jest rozłączone"
+    },
+    "device_unavailable": {
+      "message": "Urządzenie jest niedostępne lub nieosiągalne"
+    },
+    "entity_unavailable": {
+      "message": "Encja jest niedostępna"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Przed szybkim mapowaniem upewnij się, że mop nie jest zamontowany"
+    },
+    "follow_path_requires_camera": {
+      "message": "Podążanie ścieżką działa tylko z transmisją na żywo z kamery"
+    },
+    "invalid_action": {
+      "message": "Nieprawidłowa akcja lub polecenie: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Nieprawidłowe współrzędne: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Nieprawidłowa opcja dla {parameter}: {value}. Prawidłowe opcje: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Nieprawidłowa mapa odzyskiwania {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Nieprawidłowa wartość dla {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Bateria jest zbyt słaba, najpierw naładuj odkurzacz"
+    },
+    "map_backup_in_progress": {
+      "message": "Kopia zapasowa mapy jest już w toku"
+    },
+    "map_recovery_failed": {
+      "message": "Odzyskiwanie mapy nie powiodło się: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Odzyskiwanie mapy jest już w toku"
+    },
+    "map_select_failed": {
+      "message": "Nie udało się wybrać mapy"
+    },
+    "max_rooms_reached": {
+      "message": "Osiągnięto maksymalną liczbę pomieszczeń"
+    },
+    "missing_parameter": {
+      "message": "Brak wymaganego parametru: {parameter}"
+    },
+    "not_found": {
+      "message": "Nie znaleziono: {item} ({id})"
+    },
+    "not_supported": {
+      "message": "{feature} nie jest obsługiwane na tym urządzeniu"
+    },
+    "property_not_updated": {
+      "message": "Właściwość {parameter} nie została zaktualizowana: {value}"
+    },
+    "start_failed": {
+      "message": "Nie udało się uruchomić: {operation}"
+    },
+    "unavailable": {
+      "message": "{action} jest niedostępne"
+    },
+    "unavailable_on_current_map": {
+      "message": "Ta akcja jest niedostępna na bieżącej mapie"
+    },
+    "unavailable_while_cruising": {
+      "message": "Ta akcja jest niedostępna podczas patrolu"
+    },
+    "unavailable_while_draining": {
+      "message": "Ta akcja jest niedostępna podczas opróżniania lub samonaprawy/testu"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Ta akcja jest niedostępna podczas szybkiego mapowania"
+    },
+    "unavailable_while_running": {
+      "message": "Ta akcja jest niedostępna, gdy odkurzacz pracuje"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Ta akcja jest niedostępna, gdy stacja samoczyszcząca pracuje"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Ta akcja jest niedostępna, gdy włączone jest sprzątanie niestandardowe"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Ta akcja jest niedostępna podczas zaplanowanego sprzątania lub zadania skrótu"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Ta akcja jest niedostępna, gdy istnieje mapa tymczasowa"
+    },
+    "unavailable_without_map": {
+      "message": "Ta akcja jest niedostępna bez obsługi map"
+    },
+    "unknown_action": {
+      "message": "Nieznana akcja: {action}"
+    },
+    "update_failed": {
+      "message": "Aktualizacja urządzenia nie powiodła się: {error}"
+    },
+    "zone_too_small": {
+      "message": "Strefa {zone} jest mniejsza niż minimalny rozmiar strefy ({width}, {height})"
     }
   }
 }

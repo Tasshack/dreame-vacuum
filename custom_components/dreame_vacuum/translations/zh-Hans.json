@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "正在清扫",
+          "docked": "已停靠",
+          "error": "错误",
+          "idle": "空闲",
+          "paused": "已暂停",
+          "returning": "正在返回基座"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "吸力",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "缺水提醒",
         "state": {
+          "unknown": "未知",
           "no_warning": "无警告",
           "no_water_left": "清水箱水量即将用完，请立即检查并加满清水箱",
           "no_water_left_after_clean": "拖布已清洗，侦测到清水箱水量不足，请加满清水箱并清空脏水箱",
@@ -1297,7 +1306,7 @@
           "pet": "宠物",
           "cleaning_tools": "清洁工具",
           "detected_stain": "污渍",
-          "blocked_room": "易卡困家具",
+          "blocked_room": "漏扫房间",
           "easy_to_stuck_furniture": "易卡困家具",
           "uncleanable_stain": "污渍",
           "leg": "家具脚",
@@ -1513,7 +1522,7 @@
           "error": "错误",
           "remote_control": "远程遥控",
           "sleeping": "休眠中",
-          "self_test": "自我检测",
+          "self_repair": "自我检测",
           "factory_test": "工程测试",
           "standby": "待机中",
           "room_cleaning": "房间清洁中",
@@ -1634,6 +1643,8 @@
         "name": "任务类型",
         "state": {
           "standard": "标准清洁",
+          "unknown": "未知",
+          "idle": "待机中",
           "standard_paused": "标准清洁暂停",
           "custom": "自定义清洁",
           "custom_paused": "自定义清洁暂停",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "主刷罩状态"
+      },
+      "problem": {
+        "name": "问题",
+        "state_attributes": {
+          "type": {
+            "name": "类型",
+            "state": {
+              "error": "故障",
+              "warning": "警告",
+              "low_water": "枯水",
+              "dock": "基站"
+            }
+          },
+          "code": {
+            "name": "代码"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "维护",
+        "state_attributes": {
+          "items": {
+            "name": "项目"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "是否要忽略障碍物。"
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "无法调用操作：{action}"
+    },
+    "already_at_coordinate": {
+      "message": "机器人已在所选坐标处"
+    },
+    "authentication_failed": {
+      "message": "身份验证失败，请重新验证"
+    },
+    "cloud_login_failed": {
+      "message": "无法通过云登录设备"
+    },
+    "cloud_required": {
+      "message": "{feature} 需要云连接"
+    },
+    "cloud_unreachable": {
+      "message": "无法通过云发现设备"
+    },
+    "command_failed": {
+      "message": "命令失败或无法发送到设备"
+    },
+    "coordinate_outside_map": {
+      "message": "坐标 ({x}, {y}) 不在地图范围内"
+    },
+    "coordinate_required": {
+      "message": "至少需要一个有效或已保存的坐标"
+    },
+    "device_disconnected": {
+      "message": "设备已断开连接"
+    },
+    "device_unavailable": {
+      "message": "设备不可用或无法访问"
+    },
+    "entity_unavailable": {
+      "message": "实体不可用"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "快速建图前请确保未安装拖布"
+    },
+    "follow_path_requires_camera": {
+      "message": "跟随路径仅在摄像头实时流下可用"
+    },
+    "invalid_action": {
+      "message": "无效的操作或命令：{action}"
+    },
+    "invalid_coordinates": {
+      "message": "无效的坐标：{coordinates}"
+    },
+    "invalid_option": {
+      "message": "{parameter} 的选项无效：{value}。有效选项：{options}"
+    },
+    "invalid_recovery_map": {
+      "message": "无效的恢复地图 {parameter}：{value}"
+    },
+    "invalid_value": {
+      "message": "{parameter} 的值无效：{value}"
+    },
+    "low_battery": {
+      "message": "电量过低，请先为扫地机充电"
+    },
+    "map_backup_in_progress": {
+      "message": "地图备份正在进行中"
+    },
+    "map_recovery_failed": {
+      "message": "地图恢复失败：{error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "地图恢复正在进行中"
+    },
+    "map_select_failed": {
+      "message": "选择地图失败"
+    },
+    "max_rooms_reached": {
+      "message": "已达到房间数量上限"
+    },
+    "missing_parameter": {
+      "message": "缺少必需的参数：{parameter}"
+    },
+    "not_found": {
+      "message": "未找到{item}：{id}"
+    },
+    "not_supported": {
+      "message": "此设备不支持 {feature}"
+    },
+    "property_not_updated": {
+      "message": "属性 {parameter} 未更新：{value}"
+    },
+    "start_failed": {
+      "message": "启动 {operation} 失败"
+    },
+    "unavailable": {
+      "message": "{action} 不可用"
+    },
+    "unavailable_on_current_map": {
+      "message": "此操作在当前地图上不可用"
+    },
+    "unavailable_while_cruising": {
+      "message": "巡航期间此操作不可用"
+    },
+    "unavailable_while_draining": {
+      "message": "排水或自检/自修复期间此操作不可用"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "快速建图期间此操作不可用"
+    },
+    "unavailable_while_running": {
+      "message": "扫地机运行期间此操作不可用"
+    },
+    "unavailable_while_self_wash": {
+      "message": "自清洁基站运行期间此操作不可用"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "启用自定义清扫时此操作不可用"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "定时清扫或快捷指令任务期间此操作不可用"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "存在临时地图时此操作不可用"
+    },
+    "unavailable_without_map": {
+      "message": "不支持地图时此操作不可用"
+    },
+    "unknown_action": {
+      "message": "未知的操作：{action}"
+    },
+    "update_failed": {
+      "message": "更新设备失败：{error}"
+    },
+    "zone_too_small": {
+      "message": "区域 {zone} 小于最小区域尺寸 ({width}, {height})"
     }
   }
 }

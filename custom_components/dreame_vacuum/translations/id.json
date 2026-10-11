@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Membersihkan",
+          "docked": "Berlabuh",
+          "error": "Kesalahan",
+          "idle": "Siaga",
+          "paused": "Dijeda",
+          "returning": "Kembali ke dok"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Daya isap",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Peringatan Air Rendah",
         "state": {
+          "unknown": "Tidak diketahui",
           "no_warning": "Tidak ada peringatan",
           "no_water_left": "Air kotor di tangki sudah penuh, harap segera periksa agar dapat segera dikosongkan.",
           "no_water_left_after_clean": "Pembersihan selesai. Tangki air kotor terdeteksi penuh, harap segera isi tangki air bersih dan kosongkan tangki air kotor.",
@@ -1297,8 +1306,8 @@
           "pet": "Hewan peliharaan",
           "cleaning_tools": "Alat pembersih",
           "detected_stain": "Noda",
-          "blocked_room": "Perabotan rentan membuat robot tersangkut",
-          "easy_to_stuck_furniture": "Perabotan rentan membuat robot tersangkut",
+          "blocked_room": "Ruangan Terabaikan",
+          "easy_to_stuck_furniture": "Perabot rawan tersangkut",
           "uncleanable_stain": "Noda",
           "leg": "Kaki",
           "large_particles": "Partikel Besar",
@@ -1513,7 +1522,7 @@
           "error": "Kesalahan",
           "remote_control": "Pengendali jarak jauh",
           "sleeping": "Tidur",
-          "self_test": "Tes mandiri",
+          "self_repair": "Tes mandiri",
           "factory_test": "Tes pabrik",
           "standby": "Siaga",
           "room_cleaning": "Pembersihan ruangan",
@@ -1634,6 +1643,8 @@
         "name": "Tipe Tugas",
         "state": {
           "standard": "Pembersihan standar",
+          "unknown": "Tidak diketahui",
+          "idle": "Diam",
           "standard_paused": "Pembersihan standar dijeda",
           "custom": "Pembersihan kustom",
           "custom_paused": "Pembersihan kustom dijeda",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Status penutup rol"
+      },
+      "problem": {
+        "name": "Masalah",
+        "state_attributes": {
+          "type": {
+            "name": "Jenis",
+            "state": {
+              "error": "Kesalahan",
+              "warning": "Peringatan",
+              "low_water": "Air rendah",
+              "dock": "Stasiun"
+            }
+          },
+          "code": {
+            "name": "Kode"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Pemeliharaan",
+        "state_attributes": {
+          "items": {
+            "name": "Item"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Apakah rintangan tersebut harus diabaikan."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Tidak dapat memanggil aksi: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robot sudah berada di koordinat yang dipilih"
+    },
+    "authentication_failed": {
+      "message": "Autentikasi gagal, silakan autentikasi ulang"
+    },
+    "cloud_login_failed": {
+      "message": "Tidak dapat masuk ke perangkat melalui cloud"
+    },
+    "cloud_required": {
+      "message": "{feature} memerlukan koneksi cloud"
+    },
+    "cloud_unreachable": {
+      "message": "Tidak dapat menemukan perangkat melalui cloud"
+    },
+    "command_failed": {
+      "message": "Perintah gagal atau tidak dapat dikirim ke perangkat"
+    },
+    "coordinate_outside_map": {
+      "message": "Koordinat ({x}, {y}) tidak berada di dalam peta"
+    },
+    "coordinate_required": {
+      "message": "Diperlukan setidaknya satu koordinat yang valid atau tersimpan"
+    },
+    "device_disconnected": {
+      "message": "Perangkat terputus"
+    },
+    "device_unavailable": {
+      "message": "Perangkat tidak tersedia atau tidak dapat dijangkau"
+    },
+    "entity_unavailable": {
+      "message": "Entitas tidak tersedia"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Pastikan pad pel tidak terpasang sebelum pemetaan cepat"
+    },
+    "follow_path_requires_camera": {
+      "message": "Ikuti jalur hanya berfungsi dengan streaming kamera langsung"
+    },
+    "invalid_action": {
+      "message": "Aksi atau perintah tidak valid: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Koordinat tidak valid: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Opsi tidak valid untuk {parameter}: {value}. Opsi yang valid: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Peta pemulihan tidak valid {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Nilai tidak valid untuk {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Baterai terlalu rendah, isi daya penyedot debu terlebih dahulu"
+    },
+    "map_backup_in_progress": {
+      "message": "Pencadangan peta sedang berlangsung"
+    },
+    "map_recovery_failed": {
+      "message": "Pemulihan peta gagal: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Pemulihan peta sedang berlangsung"
+    },
+    "map_select_failed": {
+      "message": "Gagal memilih peta"
+    },
+    "max_rooms_reached": {
+      "message": "Jumlah ruangan maksimum telah tercapai"
+    },
+    "missing_parameter": {
+      "message": "Parameter wajib tidak ada: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} tidak ditemukan: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} tidak didukung di perangkat ini"
+    },
+    "property_not_updated": {
+      "message": "Properti {parameter} tidak diperbarui: {value}"
+    },
+    "start_failed": {
+      "message": "Gagal memulai {operation}"
+    },
+    "unavailable": {
+      "message": "{action} tidak tersedia"
+    },
+    "unavailable_on_current_map": {
+      "message": "Aksi ini tidak tersedia pada peta saat ini"
+    },
+    "unavailable_while_cruising": {
+      "message": "Aksi ini tidak tersedia saat patroli"
+    },
+    "unavailable_while_draining": {
+      "message": "Aksi ini tidak tersedia saat pengurasan atau perbaikan mandiri/pengujian"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Aksi ini tidak tersedia saat pemetaan cepat"
+    },
+    "unavailable_while_running": {
+      "message": "Aksi ini tidak tersedia saat penyedot debu sedang berjalan"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Aksi ini tidak tersedia saat stasiun cuci mandiri sedang berjalan"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Aksi ini tidak tersedia saat pembersihan kustom diaktifkan"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Aksi ini tidak tersedia saat pembersihan terjadwal atau tugas pintasan"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Aksi ini tidak tersedia saat ada peta sementara"
+    },
+    "unavailable_without_map": {
+      "message": "Aksi ini tidak tersedia tanpa dukungan peta"
+    },
+    "unknown_action": {
+      "message": "Aksi tidak dikenal: {action}"
+    },
+    "update_failed": {
+      "message": "Gagal memperbarui perangkat: {error}"
+    },
+    "zone_too_small": {
+      "message": "Zona {zone} lebih kecil dari ukuran zona minimum ({width}, {height})"
     }
   }
 }

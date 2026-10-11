@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Уборка",
+          "docked": "У док-станции",
+          "error": "Ошибка",
+          "idle": "Бездействие",
+          "paused": "Пауза",
+          "returning": "Возвращается к док-станции"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Мощность всасывания",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Предупреждение о низком уровне воды",
         "state": {
+          "unknown": "Неизвестно",
           "no_warning": "Нет предупреждений",
           "no_water_left": "Вода в резервуаре для чистой воды подходит к концу",
           "no_water_left_after_clean": "Швабра была очищена, однако уровень чистой воды низкий",
@@ -1297,8 +1306,8 @@
           "pet": "Домашнее животное",
           "cleaning_tools": "Средства для уборки",
           "detected_stain": "Пятно",
-          "blocked_room": "Мебель, рядом с которой робот может застрять.",
-          "easy_to_stuck_furniture": "Мебель, рядом с которой робот может застрять.",
+          "blocked_room": "Пропущенная комната",
+          "easy_to_stuck_furniture": "Мебель с риском застревания",
           "uncleanable_stain": "Пятно",
           "leg": "Ножка",
           "large_particles": "Крупные частицы",
@@ -1513,7 +1522,7 @@
           "error": "Ошибка",
           "remote_control": "Удаленное управление",
           "sleeping": "Спит",
-          "self_test": "Самопроверка",
+          "self_repair": "Самопроверка",
           "factory_test": "Заводское тестирование",
           "standby": "Ожидание",
           "room_cleaning": "Уборка комнаты",
@@ -1634,6 +1643,8 @@
         "name": "Тип задачи",
         "state": {
           "standard": "Стандартная уборка",
+          "unknown": "Неизвестно",
+          "idle": "Бездействует",
           "standard_paused": "Стандартная уборка приостановлена",
           "custom": "Пользовательская уборка",
           "custom_paused": "Пользовательская уборка приостановлена",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Статус крышки ролика"
+      },
+      "problem": {
+        "name": "Проблема",
+        "state_attributes": {
+          "type": {
+            "name": "Тип",
+            "state": {
+              "error": "Ошибка",
+              "warning": "Предупреждение",
+              "low_water": "Низкий уровень воды",
+              "dock": "Станция"
+            }
+          },
+          "code": {
+            "name": "Код"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Обслуживание",
+        "state_attributes": {
+          "items": {
+            "name": "Элементы"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Препятствие игнорируется или нет."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Не удалось вызвать действие: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Робот уже находится в выбранной точке"
+    },
+    "authentication_failed": {
+      "message": "Ошибка аутентификации, пройдите аутентификацию повторно"
+    },
+    "cloud_login_failed": {
+      "message": "Не удалось войти в устройство через облако"
+    },
+    "cloud_required": {
+      "message": "{feature} требует подключения к облаку"
+    },
+    "cloud_unreachable": {
+      "message": "Не удалось обнаружить устройство через облако"
+    },
+    "command_failed": {
+      "message": "Команда не выполнена или не может быть отправлена на устройство"
+    },
+    "coordinate_outside_map": {
+      "message": "Координата ({x}, {y}) находится за пределами карты"
+    },
+    "coordinate_required": {
+      "message": "Требуется хотя бы одна допустимая или сохранённая координата"
+    },
+    "device_disconnected": {
+      "message": "Устройство отключено"
+    },
+    "device_unavailable": {
+      "message": "Устройство недоступно или не отвечает"
+    },
+    "entity_unavailable": {
+      "message": "Сущность недоступна"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Перед быстрым картографированием убедитесь, что насадка для мытья пола не установлена"
+    },
+    "follow_path_requires_camera": {
+      "message": "Движение по маршруту работает только с трансляцией с камеры в реальном времени"
+    },
+    "invalid_action": {
+      "message": "Недопустимое действие или команда: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Недопустимые координаты: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Недопустимый вариант для {parameter}: {value}. Допустимые варианты: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Недопустимая карта восстановления {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Недопустимое значение для {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Заряд аккумулятора слишком низкий, сначала зарядите пылесос"
+    },
+    "map_backup_in_progress": {
+      "message": "Резервное копирование карты уже выполняется"
+    },
+    "map_recovery_failed": {
+      "message": "Не удалось восстановить карту: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Восстановление карты уже выполняется"
+    },
+    "map_select_failed": {
+      "message": "Не удалось выбрать карту"
+    },
+    "max_rooms_reached": {
+      "message": "Достигнуто максимальное количество комнат"
+    },
+    "missing_parameter": {
+      "message": "Отсутствует обязательный параметр: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} не найден: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} не поддерживается на этом устройстве"
+    },
+    "property_not_updated": {
+      "message": "Свойство {parameter} не обновлено: {value}"
+    },
+    "start_failed": {
+      "message": "Не удалось запустить {operation}"
+    },
+    "unavailable": {
+      "message": "{action} недоступно"
+    },
+    "unavailable_on_current_map": {
+      "message": "Это действие недоступно на текущей карте"
+    },
+    "unavailable_while_cruising": {
+      "message": "Это действие недоступно во время патрулирования"
+    },
+    "unavailable_while_draining": {
+      "message": "Это действие недоступно во время слива воды или самовосстановления/тестирования"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Это действие недоступно во время быстрого картографирования"
+    },
+    "unavailable_while_running": {
+      "message": "Это действие недоступно, пока пылесос работает"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Это действие недоступно, пока работает станция самоочистки"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Это действие недоступно, пока включена индивидуальная уборка"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Это действие недоступно во время уборки по расписанию или задачи быстрого запуска"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Это действие недоступно, пока существует временная карта"
+    },
+    "unavailable_without_map": {
+      "message": "Это действие недоступно без поддержки карт"
+    },
+    "unknown_action": {
+      "message": "Неизвестное действие: {action}"
+    },
+    "update_failed": {
+      "message": "Не удалось обновить устройство: {error}"
+    },
+    "zone_too_small": {
+      "message": "Зона {zone} меньше минимального размера зоны ({width}, {height})"
     }
   }
 }

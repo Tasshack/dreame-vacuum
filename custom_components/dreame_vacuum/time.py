@@ -15,7 +15,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.exceptions import HomeAssistantError
+from .dreame import EntityUnavailableException, InvalidActionException, UnavailableException
 
 from .const import DOMAIN
 
@@ -117,10 +117,14 @@ class DreameVacuumTimeEntity(DreameVacuumEntity, TimeEntity):
     async def async_set_value(self, value: time) -> None:
         """Set the Dreame Vacuum time value."""
         if not self.available:
-            raise HomeAssistantError("Entity unavailable")
+            self._raise_error(EntityUnavailableException())
 
         if value is None:
-            raise HomeAssistantError("Invalid value")
+            self._raise_error(
+                InvalidActionException(
+                    key="invalid_value", source="entity", parameter=self.entity_description.key, value=value
+                )
+            )
 
         value = str(value)[0:-3]
         if self.entity_description.set_fn is not None:
@@ -133,7 +137,7 @@ class DreameVacuumTimeEntity(DreameVacuumEntity, TimeEntity):
                 value,
             )
         else:
-            raise HomeAssistantError("Not implemented")
+            self._raise_error(UnavailableException(source="entity", action=self.entity_description.key))
 
     @property
     def native_value(self):

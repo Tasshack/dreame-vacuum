@@ -372,6 +372,32 @@ async def setup(o) -> None:
             return
         ld = o.data.get(Ld)
         if not ld or getattr(ld, "resource_mode", getattr(ld, "mode", None)) != Ms:
+            ## Fallback for Lovelace YAML mode: the card is loaded through a WebSocket gated loader. 
+            ## This solves the possibility of an old version staying in the browser cache (index.html) after an update.
+            try:
+                from homeassistant.components import websocket_api as Wa
+                from homeassistant.components.frontend import add_extra_js_url as Ae
+                from homeassistant.core import callback as Cb
+
+                @Cb
+                @Wa.websocket_command({"type": f"{Dn}/v"})
+                def w1(h, c, m) -> None:
+                    c.send_result(m["id"], vh)
+
+                Wa.async_register_command(o, w1)
+                Ae(
+                    o,
+                    "data:text/javascript;base64,"
+                    + b6.b64encode(
+                        (
+                            f'(function f(t){{var c=window.hassConnection;c?c.then(({{conn}})=>conn.sendMessagePromise({{type:"{Dn}/v"}}))'
+                            f'.then(v=>import(location.origin+"/{Dn}/frontend.js?v="+v)).catch(()=>{{}})'
+                            f':Date.now()<t&&setTimeout(f,0,t)}})(Date.now()+3e4)'
+                        ).encode()
+                    ).decode(),
+                )
+            except Exception:
+                Lg.warning("Could not register the frontend card.")
             return
         try:
             rs = ld.resources

@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Reinigt",
+          "docked": "Angedockt",
+          "error": "Fehler",
+          "idle": "Leerlauf",
+          "paused": "Pausiert",
+          "returning": "Rückkehr zur Ladestation"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Saugkraft",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Warnung bei niedrigem Wasserstand",
         "state": {
+          "unknown": "Unbekannt",
           "no_warning": "Keine Warnung",
           "no_water_left": "Der Wischmopp wird gereinigt. Das Wasser im Reinwassertank ist nicht ausreichend. Füllen Sie bitte den Reinwassertank und leeren Sie den Schmutzwassertank",
           "no_water_left_after_clean": "Wischpad wurde gereinigt.",
@@ -1297,8 +1306,8 @@
           "pet": "Haustier",
           "cleaning_tools": "Reinigungswerkzeuge",
           "detected_stain": "Fleck",
-          "blocked_room": "Möbel, die den Roboter festhalten können",
-          "easy_to_stuck_furniture": "Möbel, die den Roboter festhalten können",
+          "blocked_room": "Vernachlässigter Raum",
+          "easy_to_stuck_furniture": "Festhaltende Möbel",
           "uncleanable_stain": "Fleck",
           "leg": "Bein",
           "large_particles": "Große Partikel",
@@ -1513,7 +1522,7 @@
           "error": "Fehler",
           "remote_control": "Ferngesteuert",
           "sleeping": "Schlafend",
-          "self_test": "Selbsttest",
+          "self_repair": "Selbsttest",
           "factory_test": "Werkstest",
           "standby": "Bereitschaft",
           "room_cleaning": "Raumreinigung",
@@ -1634,6 +1643,8 @@
         "name": "Aufgabentyp",
         "state": {
           "standard": "Standardreinigung",
+          "unknown": "Unbekannt",
+          "idle": "Inaktiv",
           "standard_paused": "Standardreinigung angehalten",
           "custom": "Benutzerdefinierte Reinigung",
           "custom_paused": "Benutzerdefinierte Reinigung angehalten",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Rollenabdeckung"
+      },
+      "problem": {
+        "name": "Problem",
+        "state_attributes": {
+          "type": {
+            "name": "Typ",
+            "state": {
+              "error": "Fehler",
+              "warning": "Warnung",
+              "low_water": "Niedriges Wasser",
+              "dock": "Station"
+            }
+          },
+          "code": {
+            "name": "Code"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Wartung",
+        "state_attributes": {
+          "items": {
+            "name": "Elemente"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Ob das Hindernis ignoriert wird oder nicht."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Aktion konnte nicht aufgerufen werden: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Der Roboter befindet sich bereits auf der ausgewählten Koordinate"
+    },
+    "authentication_failed": {
+      "message": "Authentifizierung fehlgeschlagen, bitte erneut authentifizieren"
+    },
+    "cloud_login_failed": {
+      "message": "Anmeldung beim Gerät über die Cloud nicht möglich"
+    },
+    "cloud_required": {
+      "message": "{feature} erfordert eine Cloud-Verbindung"
+    },
+    "cloud_unreachable": {
+      "message": "Das Gerät konnte über die Cloud nicht gefunden werden"
+    },
+    "command_failed": {
+      "message": "Der Befehl ist fehlgeschlagen oder konnte nicht an das Gerät gesendet werden"
+    },
+    "coordinate_outside_map": {
+      "message": "Die Koordinate ({x}, {y}) liegt nicht innerhalb der Karte"
+    },
+    "coordinate_required": {
+      "message": "Mindestens eine gültige oder gespeicherte Koordinate ist erforderlich"
+    },
+    "device_disconnected": {
+      "message": "Das Gerät ist getrennt"
+    },
+    "device_unavailable": {
+      "message": "Das Gerät ist nicht verfügbar oder nicht erreichbar"
+    },
+    "entity_unavailable": {
+      "message": "Die Entität ist nicht verfügbar"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Bitte stellen Sie sicher, dass das Wischpad vor der Schnellkartierung nicht angebracht ist"
+    },
+    "follow_path_requires_camera": {
+      "message": "Pfad folgen funktioniert nur mit Live-Kamerastreaming"
+    },
+    "invalid_action": {
+      "message": "Ungültige Aktion oder ungültiger Befehl: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Ungültige Koordinaten: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Ungültige Option für {parameter}: {value}. Gültige Optionen: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Ungültige Wiederherstellungskarte {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Ungültiger Wert für {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Der Akku ist zu schwach, laden Sie den Staubsauger zuerst auf"
+    },
+    "map_backup_in_progress": {
+      "message": "Eine Kartensicherung läuft bereits"
+    },
+    "map_recovery_failed": {
+      "message": "Kartenwiederherstellung fehlgeschlagen: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Eine Kartenwiederherstellung läuft bereits"
+    },
+    "map_select_failed": {
+      "message": "Die Karte konnte nicht ausgewählt werden"
+    },
+    "max_rooms_reached": {
+      "message": "Die maximale Raumanzahl ist erreicht"
+    },
+    "missing_parameter": {
+      "message": "Ein erforderlicher Parameter fehlt: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} nicht gefunden: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} wird von diesem Gerät nicht unterstützt"
+    },
+    "property_not_updated": {
+      "message": "Eigenschaft {parameter} nicht aktualisiert: {value}"
+    },
+    "start_failed": {
+      "message": "{operation} konnte nicht gestartet werden"
+    },
+    "unavailable": {
+      "message": "{action} ist nicht verfügbar"
+    },
+    "unavailable_on_current_map": {
+      "message": "Diese Aktion ist auf der aktuellen Karte nicht verfügbar"
+    },
+    "unavailable_while_cruising": {
+      "message": "Diese Aktion ist während der Patrouillenfahrt nicht verfügbar"
+    },
+    "unavailable_while_draining": {
+      "message": "Diese Aktion ist während des Entleerens oder der Selbstreparatur/des Selbsttests nicht verfügbar"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Diese Aktion ist während der Schnellkartierung nicht verfügbar"
+    },
+    "unavailable_while_running": {
+      "message": "Diese Aktion ist nicht verfügbar, solange der Staubsauger läuft"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Diese Aktion ist nicht verfügbar, solange die Selbstreinigungsstation läuft"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Diese Aktion ist nicht verfügbar, solange die individuelle Reinigung aktiviert ist"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Diese Aktion ist während einer geplanten Reinigung oder Verknüpfungsaufgabe nicht verfügbar"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Diese Aktion ist nicht verfügbar, solange eine temporäre Karte vorhanden ist"
+    },
+    "unavailable_without_map": {
+      "message": "Diese Aktion ist ohne Kartenunterstützung nicht verfügbar"
+    },
+    "unknown_action": {
+      "message": "Unbekannte Aktion: {action}"
+    },
+    "update_failed": {
+      "message": "Aktualisierung des Geräts fehlgeschlagen: {error}"
+    },
+    "zone_too_small": {
+      "message": "Zone {zone} ist kleiner als die Mindestzonengröße ({width}, {height})"
     }
   }
 }

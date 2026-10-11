@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Temizleniyor",
+          "docked": "Şarj istasyonunda",
+          "error": "Hata",
+          "idle": "Boşta",
+          "paused": "Durduruldu",
+          "returning": "Şarj istasyonuna dönüyor"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Fan Hızı",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Düşük Su Uyarısı",
         "state": {
+          "unknown": "Bilinmiyor",
           "no_warning": "Uyarı yok",
           "no_water_left": "Temiz su tankındaki su bitmek üzere. Lütfen tankı doldurun.",
           "no_water_left_after_clean": "Mop pedi temizlendi. Temiz su tankındaki su yetersiz, lütfen doldurun ve kirli su tankını boşaltın.",
@@ -1297,8 +1306,8 @@
           "pet": "Evcil Hayvan",
           "cleaning_tools": "Temizlik araçları",
           "detected_stain": "Leke",
-          "blocked_room": "Robotun takılma olasılığı olan mobilya",
-          "easy_to_stuck_furniture": "Robotun takılma olasılığı olan mobilya",
+          "blocked_room": "Atlanan Oda",
+          "easy_to_stuck_furniture": "Takılma Riskli Mobilya",
           "uncleanable_stain": "Leke",
           "leg": "Mobilya ayağı",
           "large_particles": "Büyük Parçacıklar",
@@ -1513,7 +1522,7 @@
           "error": "Hata",
           "remote_control": "Uzaktan kontrol",
           "sleeping": "Uyuyor",
-          "self_test": "Kendi kendine test",
+          "self_repair": "Kendi kendine test",
           "factory_test": "Fabrika testi",
           "standby": "Beklemede",
           "room_cleaning": "Oda temizliği",
@@ -1634,6 +1643,8 @@
         "name": "Görev Türü",
         "state": {
           "standard": "Standart temizlik",
+          "unknown": "Bilinmiyor",
+          "idle": "Boşta",
           "standard_paused": "Standart temizlik duraklatıldı",
           "custom": "Özel temizlik",
           "custom_paused": "Özel temizlik duraklatıldı",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Rulo Kapağı Durumu"
+      },
+      "problem": {
+        "name": "Sorun",
+        "state_attributes": {
+          "type": {
+            "name": "Tür",
+            "state": {
+              "error": "Hata",
+              "warning": "Uyarı",
+              "low_water": "Düşük su",
+              "dock": "İstasyon"
+            }
+          },
+          "code": {
+            "name": "Kod"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Bakım",
+        "state_attributes": {
+          "items": {
+            "name": "Öğeler"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Engelin yoksayılıp yoksayılmadığı."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Eylem çağrılamadı: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robot zaten seçilen koordinatta"
+    },
+    "authentication_failed": {
+      "message": "Kimlik doğrulama başarısız, lütfen yeniden kimlik doğrulayın"
+    },
+    "cloud_login_failed": {
+      "message": "Bulut üzerinden cihazda oturum açılamadı"
+    },
+    "cloud_required": {
+      "message": "{feature} için bulut bağlantısı gerekir"
+    },
+    "cloud_unreachable": {
+      "message": "Cihaz bulut üzerinden bulunamadı"
+    },
+    "command_failed": {
+      "message": "Komut başarısız oldu veya cihaza gönderilemedi"
+    },
+    "coordinate_outside_map": {
+      "message": "({x}, {y}) koordinatı harita içinde değil"
+    },
+    "coordinate_required": {
+      "message": "En az bir geçerli veya kayıtlı koordinat gerekli"
+    },
+    "device_disconnected": {
+      "message": "Cihazın bağlantısı kesildi"
+    },
+    "device_unavailable": {
+      "message": "Cihaz kullanılamıyor veya erişilemiyor"
+    },
+    "entity_unavailable": {
+      "message": "Varlık kullanılamıyor"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Lütfen hızlı haritalamadan önce paspas bezinin takılı olmadığından emin olun"
+    },
+    "follow_path_requires_camera": {
+      "message": "Yolu takip etme yalnızca canlı kamera yayınıyla çalışır"
+    },
+    "invalid_action": {
+      "message": "Geçersiz eylem veya komut: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Geçersiz koordinatlar: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "{parameter} için geçersiz seçenek: {value}. Geçerli seçenekler: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Geçersiz kurtarma haritası {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "{parameter} için geçersiz değer: {value}"
+    },
+    "low_battery": {
+      "message": "Pil çok düşük, önce süpürgeyi şarj edin"
+    },
+    "map_backup_in_progress": {
+      "message": "Harita yedeklemesi zaten devam ediyor"
+    },
+    "map_recovery_failed": {
+      "message": "Harita kurtarma başarısız oldu: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Harita kurtarma zaten devam ediyor"
+    },
+    "map_select_failed": {
+      "message": "Harita seçilemedi"
+    },
+    "max_rooms_reached": {
+      "message": "Maksimum oda sayısına ulaşıldı"
+    },
+    "missing_parameter": {
+      "message": "Gerekli bir parametre eksik: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} bulunamadı: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} bu cihazda desteklenmiyor"
+    },
+    "property_not_updated": {
+      "message": "{parameter} özelliği güncellenmedi: {value}"
+    },
+    "start_failed": {
+      "message": "{operation} başlatılamadı"
+    },
+    "unavailable": {
+      "message": "{action} kullanılamıyor"
+    },
+    "unavailable_on_current_map": {
+      "message": "Bu eylem geçerli haritada kullanılamıyor"
+    },
+    "unavailable_while_cruising": {
+      "message": "Bu eylem devriye sırasında kullanılamıyor"
+    },
+    "unavailable_while_draining": {
+      "message": "Bu eylem boşaltma veya kendi kendini onarma/test sırasında kullanılamıyor"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Bu eylem hızlı haritalama sırasında kullanılamıyor"
+    },
+    "unavailable_while_running": {
+      "message": "Bu eylem süpürge çalışırken kullanılamıyor"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Bu eylem kendi kendini yıkama istasyonu çalışırken kullanılamıyor"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Bu eylem özelleştirilmiş temizlik etkinken kullanılamıyor"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Bu eylem planlı temizlik veya kısayol görevi sırasında kullanılamıyor"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Bu eylem geçici bir harita varken kullanılamıyor"
+    },
+    "unavailable_without_map": {
+      "message": "Bu eylem harita desteği olmadan kullanılamıyor"
+    },
+    "unknown_action": {
+      "message": "Bilinmeyen eylem: {action}"
+    },
+    "update_failed": {
+      "message": "Cihaz güncellenemedi: {error}"
+    },
+    "zone_too_small": {
+      "message": "{zone} bölgesi minimum bölge boyutundan ({width}, {height}) küçük"
     }
   }
 }

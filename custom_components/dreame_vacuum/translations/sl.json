@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Čisti",
+          "docked": "Na postaji",
+          "error": "Napaka",
+          "idle": "Mirovanje",
+          "paused": "Premor",
+          "returning": "Vrača se na postajo"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Moč sesanja",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Opozorilo za malo vode",
         "state": {
+          "unknown": "Neznano",
           "no_warning": "Brez opozorila",
           "no_water_left": "Voda v rezervoarju za čisto vodo bo kmalu porabljena. Preverite in pravočasno napolnite rezervoar za čisto vodo.",
           "no_water_left_after_clean": "Mop pad je očiščen. Zaznano je, da je voda v rezervoarju za čisto vodo nezadostna, prosimo, napolnite rezervoar za čisto vodo in izpraznite rezervoar za umazano vodo.",
@@ -1297,8 +1306,8 @@
           "pet": "Ljubljenčki",
           "cleaning_tools": "Orodja za čiščenje",
           "detected_stain": "Madeži",
-          "blocked_room": "Pohištvo, kjer se lahko robot zatakne",
-          "easy_to_stuck_furniture": "Pohištvo, kjer se lahko robot zatakne",
+          "blocked_room": "Zanemarjena soba",
+          "easy_to_stuck_furniture": "Pohištvo, kjer se zatakne",
           "uncleanable_stain": "Madeži",
           "leg": "Noga",
           "large_particles": "Veliki delci",
@@ -1513,7 +1522,7 @@
           "error": "Napaka",
           "remote_control": "Daljinsko upravljanje",
           "sleeping": "Spanje",
-          "self_test": "Samopreizkus",
+          "self_repair": "Samopreizkus",
           "factory_test": "Tovarniški preizkus",
           "standby": "Pripravljenost",
           "room_cleaning": "Čiščenje sobe",
@@ -1634,6 +1643,8 @@
         "name": "Vrsta opravila",
         "state": {
           "standard": "Standardno čiščenje",
+          "unknown": "Neznano",
+          "idle": "V mirovanju",
           "standard_paused": "Standardno čiščenje zaustavljeno",
           "custom": "Prilagojeno čiščenje",
           "custom_paused": "Prilagojeno čiščenje zaustavljeno",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Stanje pokrova valja"
+      },
+      "problem": {
+        "name": "Težava",
+        "state_attributes": {
+          "type": {
+            "name": "Vrsta",
+            "state": {
+              "error": "Napaka",
+              "warning": "Opozorilo",
+              "low_water": "Nizka voda",
+              "dock": "Postaja"
+            }
+          },
+          "code": {
+            "name": "Koda"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Vzdrževanje",
+        "state_attributes": {
+          "items": {
+            "name": "Elementi"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Ali je ovira ignorirana ali ne."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Dejanja ni bilo mogoče poklicati: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robot je že na izbrani koordinati"
+    },
+    "authentication_failed": {
+      "message": "Preverjanje pristnosti ni uspelo, prosimo, preverite pristnost znova"
+    },
+    "cloud_login_failed": {
+      "message": "Prijava v napravo prek oblaka ni uspela"
+    },
+    "cloud_required": {
+      "message": "{feature} zahteva povezavo z oblakom"
+    },
+    "cloud_unreachable": {
+      "message": "Naprave ni bilo mogoče odkriti prek oblaka"
+    },
+    "command_failed": {
+      "message": "Ukaz ni uspel ali ga ni bilo mogoče poslati napravi"
+    },
+    "coordinate_outside_map": {
+      "message": "Koordinata ({x}, {y}) ni znotraj zemljevida"
+    },
+    "coordinate_required": {
+      "message": "Potrebna je vsaj ena veljavna ali shranjena koordinata"
+    },
+    "device_disconnected": {
+      "message": "Naprava je odklopljena"
+    },
+    "device_unavailable": {
+      "message": "Naprava ni na voljo ali ni dosegljiva"
+    },
+    "entity_unavailable": {
+      "message": "Entiteta ni na voljo"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Pred hitrim kartiranjem poskrbite, da krpa za brisanje ni nameščena"
+    },
+    "follow_path_requires_camera": {
+      "message": "Sledenje poti deluje samo s pretakanjem kamere v živo"
+    },
+    "invalid_action": {
+      "message": "Neveljavno dejanje ali ukaz: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Neveljavne koordinate: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Neveljavna možnost za {parameter}: {value}. Veljavne možnosti: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Neveljaven zemljevid za obnovitev {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Neveljavna vrednost za {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Baterija je prešibka, najprej napolnite sesalnik"
+    },
+    "map_backup_in_progress": {
+      "message": "Varnostno kopiranje zemljevida že poteka"
+    },
+    "map_recovery_failed": {
+      "message": "Obnovitev zemljevida ni uspela: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Obnovitev zemljevida že poteka"
+    },
+    "map_select_failed": {
+      "message": "Izbira zemljevida ni uspela"
+    },
+    "max_rooms_reached": {
+      "message": "Doseženo je največje število prostorov"
+    },
+    "missing_parameter": {
+      "message": "Manjka obvezen parameter: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} ni bilo mogoče najti: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} ta naprava ne podpira"
+    },
+    "property_not_updated": {
+      "message": "Lastnost {parameter} ni bila posodobljena: {value}"
+    },
+    "start_failed": {
+      "message": "Zagon {operation} ni uspel"
+    },
+    "unavailable": {
+      "message": "{action} ni na voljo"
+    },
+    "unavailable_on_current_map": {
+      "message": "To dejanje ni na voljo na trenutnem zemljevidu"
+    },
+    "unavailable_while_cruising": {
+      "message": "To dejanje ni na voljo med patruljiranjem"
+    },
+    "unavailable_while_draining": {
+      "message": "To dejanje ni na voljo med praznjenjem ali samopopravilom/testiranjem"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "To dejanje ni na voljo med hitrim kartiranjem"
+    },
+    "unavailable_while_running": {
+      "message": "To dejanje ni na voljo, medtem ko sesalnik deluje"
+    },
+    "unavailable_while_self_wash": {
+      "message": "To dejanje ni na voljo, medtem ko postaja za samočiščenje deluje"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "To dejanje ni na voljo, medtem ko je vklopljeno prilagojeno čiščenje"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "To dejanje ni na voljo med načrtovanim čiščenjem ali opravilom bližnjice"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "To dejanje ni na voljo, medtem ko obstaja začasni zemljevid"
+    },
+    "unavailable_without_map": {
+      "message": "To dejanje ni na voljo brez podpore za zemljevide"
+    },
+    "unknown_action": {
+      "message": "Neznano dejanje: {action}"
+    },
+    "update_failed": {
+      "message": "Posodobitev naprave ni uspela: {error}"
+    },
+    "zone_too_small": {
+      "message": "Območje {zone} je manjše od najmanjše velikosti območja ({width}, {height})"
     }
   }
 }

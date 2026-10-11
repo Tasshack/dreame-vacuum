@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "ينظف",
+          "docked": "في المحطة",
+          "error": "خطأ",
+          "idle": "قيد الانتظار",
+          "paused": "متوقف مؤقتاً",
+          "returning": "يعود لمحطة الشحن"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "مستوى الشفط",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "تحذير انخفاض مستوى الماء",
         "state": {
+          "unknown": "غير معروف",
           "no_warning": "لا يوجد تحذير",
           "no_water_left": "الماء في خزان الماء النظيف على وشك النفاد. يرجى التحقق من خزان الماء النظيف وتعبئته في أسرع وقت.",
           "no_water_left_after_clean": "تم تنظيف وسادة الممسحة. اكتشف الروبوت أن الماء في خزان الماء النظيف غير كافٍ، يرجى تعبئة خزان الماء النظيف وإفراغ خزان الماء المتسخ.",
@@ -1297,8 +1306,8 @@
           "pet": "حيوان أليف",
           "cleaning_tools": "أدوات التنظيف",
           "detected_stain": "البقع",
-          "blocked_room": "الروبوت عرضة لأن يعلق بسبب الأثاث",
-          "easy_to_stuck_furniture": "الروبوت عرضة لأن يعلق بسبب الأثاث",
+          "blocked_room": "غرفة مهملة",
+          "easy_to_stuck_furniture": "أثاث يعلق فيه الروبوت",
           "uncleanable_stain": "البقع",
           "leg": "ساق",
           "large_particles": "الجسيمات الكبيرة",
@@ -1513,7 +1522,7 @@
           "error": "خطأ",
           "remote_control": "تحكم عن بُعد",
           "sleeping": "وضع السكون",
-          "self_test": "اختبار ذاتي",
+          "self_repair": "اختبار ذاتي",
           "factory_test": "اختبار المصنع",
           "standby": "استعداد",
           "room_cleaning": "تنظيف الغرفة",
@@ -1634,6 +1643,8 @@
         "name": "نوع المهمة",
         "state": {
           "standard": "تنظيف قياسي",
+          "unknown": "غير معروف",
+          "idle": "قيد الانتظار",
           "standard_paused": "إيقاف التنظيف القياسي مؤقتاً",
           "custom": "تنظيف مخصص",
           "custom_paused": "إيقاف التنظيف المخصص مؤقتاً",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "حالة غطاء الأسطوانة"
+      },
+      "problem": {
+        "name": "مشكلة",
+        "state_attributes": {
+          "type": {
+            "name": "النوع",
+            "state": {
+              "error": "الخطأ",
+              "warning": "تحذير",
+              "low_water": "مستوى ماء منخفض",
+              "dock": "المحطة"
+            }
+          },
+          "code": {
+            "name": "الرمز"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "الصيانة",
+        "state_attributes": {
+          "items": {
+            "name": "العناصر"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "ما إذا كان يجب تجاهل العائق أم لا."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "تعذر استدعاء الإجراء: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "الروبوت موجود بالفعل في الإحداثية المحددة"
+    },
+    "authentication_failed": {
+      "message": "فشلت المصادقة، يرجى إعادة المصادقة"
+    },
+    "cloud_login_failed": {
+      "message": "تعذر تسجيل الدخول إلى الجهاز عبر السحابة"
+    },
+    "cloud_required": {
+      "message": "{feature} يتطلب اتصالاً بالسحابة"
+    },
+    "cloud_unreachable": {
+      "message": "تعذر اكتشاف الجهاز عبر السحابة"
+    },
+    "command_failed": {
+      "message": "فشل الأمر أو تعذر إرساله إلى الجهاز"
+    },
+    "coordinate_outside_map": {
+      "message": "الإحداثية ({x}, {y}) ليست داخل الخريطة"
+    },
+    "coordinate_required": {
+      "message": "مطلوب إحداثية واحدة صالحة أو محفوظة على الأقل"
+    },
+    "device_disconnected": {
+      "message": "الجهاز غير متصل"
+    },
+    "device_unavailable": {
+      "message": "الجهاز غير متاح أو لا يمكن الوصول إليه"
+    },
+    "entity_unavailable": {
+      "message": "الكيان غير متاح"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "يرجى التأكد من عدم تركيب قطعة المسح قبل الرسم السريع للخريطة"
+    },
+    "follow_path_requires_camera": {
+      "message": "يعمل تتبع المسار فقط مع البث المباشر للكاميرا"
+    },
+    "invalid_action": {
+      "message": "إجراء أو أمر غير صالح: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "إحداثيات غير صالحة: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "خيار غير صالح لـ {parameter}: {value}. الخيارات الصالحة: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "خريطة استعادة غير صالحة {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "قيمة غير صالحة لـ {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "البطارية منخفضة جداً، اشحن المكنسة أولاً"
+    },
+    "map_backup_in_progress": {
+      "message": "هناك نسخ احتياطي للخريطة قيد التنفيذ بالفعل"
+    },
+    "map_recovery_failed": {
+      "message": "فشلت استعادة الخريطة: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "هناك استعادة للخريطة قيد التنفيذ بالفعل"
+    },
+    "map_select_failed": {
+      "message": "فشل اختيار الخريطة"
+    },
+    "max_rooms_reached": {
+      "message": "تم الوصول إلى الحد الأقصى لعدد الغرف"
+    },
+    "missing_parameter": {
+      "message": "معامل مطلوب مفقود: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} غير موجود: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} غير مدعوم على هذا الجهاز"
+    },
+    "property_not_updated": {
+      "message": "لم يتم تحديث الخاصية {parameter}: {value}"
+    },
+    "start_failed": {
+      "message": "فشل بدء {operation}"
+    },
+    "unavailable": {
+      "message": "{action} غير متاح"
+    },
+    "unavailable_on_current_map": {
+      "message": "هذا الإجراء غير متاح على الخريطة الحالية"
+    },
+    "unavailable_while_cruising": {
+      "message": "هذا الإجراء غير متاح أثناء الجولة"
+    },
+    "unavailable_while_draining": {
+      "message": "هذا الإجراء غير متاح أثناء التصريف أو الإصلاح/الاختبار الذاتي"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "هذا الإجراء غير متاح أثناء الرسم السريع للخريطة"
+    },
+    "unavailable_while_running": {
+      "message": "هذا الإجراء غير متاح أثناء عمل المكنسة"
+    },
+    "unavailable_while_self_wash": {
+      "message": "هذا الإجراء غير متاح أثناء عمل قاعدة الغسيل الذاتي"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "هذا الإجراء غير متاح أثناء تفعيل التنظيف المخصص"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "هذا الإجراء غير متاح أثناء مهمة تنظيف مجدولة أو اختصار"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "هذا الإجراء غير متاح أثناء وجود خريطة مؤقتة"
+    },
+    "unavailable_without_map": {
+      "message": "هذا الإجراء غير متاح بدون دعم الخريطة"
+    },
+    "unknown_action": {
+      "message": "إجراء غير معروف: {action}"
+    },
+    "update_failed": {
+      "message": "فشل تحديث الجهاز: {error}"
+    },
+    "zone_too_small": {
+      "message": "المنطقة {zone} أصغر من الحد الأدنى لحجم المنطقة ({width}, {height})"
     }
   }
 }

@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Puhastamine",
+          "docked": "Dokitud",
+          "error": "Viga",
+          "idle": "Ootel",
+          "paused": "Peatatud",
+          "returning": "Pöördun tagasi laadimisjaama"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Imemisvõimsus",
@@ -1177,7 +1185,6 @@
             }
           }
         }
-
       },
       "filter_left": {
         "name": "Filter"
@@ -1211,6 +1218,7 @@
       "low_water_warning": {
         "name": "Madala veetaseme hoiatus",
         "state": {
+          "unknown": "Tundmatu",
           "no_warning": "Hoiatust pole",
           "no_water_left": "Vesi puhtaveepaagis on otsakorral. Palun kontrolli ja täida puhtaveepaak kohe.",
           "no_water_left_after_clean": "Mopipadi on pestud. Tuvastatud on vähene vesi puhtaveepaagis, palun täida puhtaveepaak ja tühjenda mustaveepaak.",
@@ -1298,7 +1306,7 @@
           "pet": "Lemmikloom",
           "cleaning_tools": "Puhastuvahendid",
           "detected_stain": "Tuvastatud plekk",
-          "blocked_room": "Blokeeritud tuba",
+          "blocked_room": "Vahele jäänud tuba",
           "easy_to_stuck_furniture": "Kergelt takelduv mööbel",
           "uncleanable_stain": "Puhastamatu plekk",
           "leg": "Jalg",
@@ -1514,7 +1522,7 @@
           "error": "Viga",
           "remote_control": "Kaugjuhtimine",
           "sleeping": "Unerežiim",
-          "self_test": "Enesetest",
+          "self_repair": "Enesetest",
           "factory_test": "Tehasetest",
           "standby": "Ooterežiim",
           "room_cleaning": "Tubai puhastamine",
@@ -1635,6 +1643,8 @@
         "name": "Ülesande tüüp",
         "state": {
           "standard": "Standardne puhastus",
+          "unknown": "Tundmatu",
+          "idle": "Ootel",
           "standard_paused": "Standardne puhastus peatatud",
           "custom": "Kohandatud puhastus",
           "custom_paused": "Kohandatud puhastus peatatud",
@@ -2076,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Rullikatte olek"
+      },
+      "problem": {
+        "name": "Probleem",
+        "state_attributes": {
+          "type": {
+            "name": "Tüüp",
+            "state": {
+              "error": "Viga",
+              "warning": "Hoiatus",
+              "low_water": "Madal veetase",
+              "dock": "Dokk"
+            }
+          },
+          "code": {
+            "name": "Kood"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Hooldus",
+        "state_attributes": {
+          "items": {
+            "name": "Üksused"
+          }
+        }
       }
     },
     "number": {
@@ -2952,6 +2987,140 @@
           "description": "Takistust eiratakse või mitte."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Toimingu kutsumine ebaõnnestus: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robot on juba valitud koordinaadil"
+    },
+    "authentication_failed": {
+      "message": "Autentimine ebaõnnestus, autendi uuesti"
+    },
+    "cloud_login_failed": {
+      "message": "Seadmesse sisselogimine pilve kaudu ebaõnnestus"
+    },
+    "cloud_required": {
+      "message": "{feature} nõuab pilveühendust"
+    },
+    "cloud_unreachable": {
+      "message": "Seadet ei õnnestunud pilve kaudu leida"
+    },
+    "command_failed": {
+      "message": "Käsk ebaõnnestus või seda ei õnnestunud seadmesse saata"
+    },
+    "coordinate_outside_map": {
+      "message": "Koordinaat ({x}, {y}) ei asu kaardi sees"
+    },
+    "coordinate_required": {
+      "message": "Vaja on vähemalt ühte kehtivat või salvestatud koordinaati"
+    },
+    "device_disconnected": {
+      "message": "Seade on lahti ühendatud"
+    },
+    "device_unavailable": {
+      "message": "Seade pole saadaval või pole kättesaadav"
+    },
+    "entity_unavailable": {
+      "message": "Olem pole saadaval"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Veendu enne kiirkaardistamist, et mopp ei oleks paigaldatud"
+    },
+    "follow_path_requires_camera": {
+      "message": "Raja järgimine töötab ainult kaamera otseülekandega"
+    },
+    "invalid_action": {
+      "message": "Kehtetu toiming või käsk: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Kehtetud koordinaadid: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Kehtetu valik parameetrile {parameter}: {value}. Kehtivad valikud: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Kehtetu taastekaart {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Kehtetu väärtus parameetrile {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Aku on liiga tühi, lae tolmuimejat esmalt"
+    },
+    "map_backup_in_progress": {
+      "message": "Kaardi varundamine juba käib"
+    },
+    "map_recovery_failed": {
+      "message": "Kaardi taastamine ebaõnnestus: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Kaardi taastamine juba käib"
+    },
+    "map_select_failed": {
+      "message": "Kaardi valimine ebaõnnestus"
+    },
+    "max_rooms_reached": {
+      "message": "Ruumide maksimaalne arv on täis"
+    },
+    "missing_parameter": {
+      "message": "Nõutav parameeter puudub: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} ei leitud: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} ei ole selles seadmes toetatud"
+    },
+    "property_not_updated": {
+      "message": "Atribuuti {parameter} ei uuendatud: {value}"
+    },
+    "start_failed": {
+      "message": "{operation} käivitamine ebaõnnestus"
+    },
+    "unavailable": {
+      "message": "{action} pole saadaval"
+    },
+    "unavailable_on_current_map": {
+      "message": "See toiming pole praegusel kaardil saadaval"
+    },
+    "unavailable_while_cruising": {
+      "message": "See toiming pole patrullimise ajal saadaval"
+    },
+    "unavailable_while_draining": {
+      "message": "See toiming pole tühjendamise või iseparanduse/testimise ajal saadaval"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "See toiming pole kiirkaardistamise ajal saadaval"
+    },
+    "unavailable_while_running": {
+      "message": "See toiming pole saadaval, kui tolmuimeja töötab"
+    },
+    "unavailable_while_self_wash": {
+      "message": "See toiming pole saadaval, kui isepesujaam töötab"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "See toiming pole saadaval, kui kohandatud puhastus on lubatud"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "See toiming pole saadaval ajastatud puhastuse või kiirkäsu ülesande ajal"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "See toiming pole saadaval, kui olemas on ajutine kaart"
+    },
+    "unavailable_without_map": {
+      "message": "See toiming pole saadaval ilma kaardi toeta"
+    },
+    "unknown_action": {
+      "message": "Tundmatu toiming: {action}"
+    },
+    "update_failed": {
+      "message": "Seadme uuendamine ebaõnnestus: {error}"
+    },
+    "zone_too_small": {
+      "message": "Tsoon {zone} on väiksem kui minimaalne tsooni suurus ({width}, {height})"
     }
   }
 }

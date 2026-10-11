@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "सफाई",
+          "docked": "डॉक पर",
+          "error": "त्रुटि",
+          "idle": "निष्क्रिय",
+          "paused": "रोका गया",
+          "returning": "डॉक पर लौट रहा है"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "सक्शन स्तर",
@@ -1177,7 +1185,6 @@
             }
           }
         }
-
       },
       "filter_left": {
         "name": "फ़िल्टर"
@@ -1211,6 +1218,7 @@
       "low_water_warning": {
         "name": "कम पानी की चेतावनी",
         "state": {
+          "unknown": "अज्ञात",
           "no_warning": "कोई चेतावनी नहीं",
           "no_water_left": "साफ पानी के टैंक में पानी खत्म होने वाला है। साफ पानी के टैंक की जांच करें और उसे तुरंत भरें।",
           "no_water_left_after_clean": "मॉप पैड साफ़ कर दिया गया है। पता चला है कि साफ पानी के टैंक में पानी अपर्याप्त है, कृपया साफ पानी का टैंक भरें और इस्तेमाल किए गए पानी का टैंक खाली करें।",
@@ -1298,7 +1306,7 @@
           "pet": "पालतू जानवर",
           "cleaning_tools": "सफाई उपकरण",
           "detected_stain": "पता चला दाग",
-          "blocked_room": "अवरुद्ध कमरा",
+          "blocked_room": "उपेक्षित कमरा",
           "easy_to_stuck_furniture": "आसानी से फंसने वाला फर्नीचर",
           "uncleanable_stain": "साफ न होने वाला दाग",
           "leg": "पैर",
@@ -1514,7 +1522,7 @@
           "error": "त्रुटि",
           "remote_control": "रिमोट कंट्रोल",
           "sleeping": "सो रहा है",
-          "self_test": "स्व-परीक्षण",
+          "self_repair": "स्व-परीक्षण",
           "factory_test": "फैक्टरी परीक्षण",
           "standby": "स्टैंडबाय",
           "room_cleaning": "कमरे की सफाई",
@@ -1635,6 +1643,8 @@
         "name": "कार्य का प्रकार",
         "state": {
           "standard": "मानक सफाई",
+          "unknown": "अज्ञात",
+          "idle": "निष्क्रिय",
           "standard_paused": "मानक सफाई रोकी गई",
           "custom": "कस्टम सफाई",
           "custom_paused": "कस्टम सफाई रोकी गई",
@@ -2076,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "रोलर कवर स्थिति"
+      },
+      "problem": {
+        "name": "समस्या",
+        "state_attributes": {
+          "type": {
+            "name": "प्रकार",
+            "state": {
+              "error": "त्रुटि",
+              "warning": "चेतावनी",
+              "low_water": "कम पानी",
+              "dock": "स्टेशन"
+            }
+          },
+          "code": {
+            "name": "कोड"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "रखरखाव",
+        "state_attributes": {
+          "items": {
+            "name": "आइटम"
+          }
+        }
       }
     },
     "number": {
@@ -2952,6 +2987,140 @@
           "description": "बाधा को अनदेखा किया गया है या नहीं।"
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "कार्रवाई को कॉल नहीं किया जा सका: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "रोबोट पहले से चुने गए निर्देशांक पर है"
+    },
+    "authentication_failed": {
+      "message": "प्रमाणीकरण विफल रहा, कृपया पुनः प्रमाणित करें"
+    },
+    "cloud_login_failed": {
+      "message": "क्लाउड के माध्यम से डिवाइस में लॉग इन नहीं किया जा सका"
+    },
+    "cloud_required": {
+      "message": "{feature} के लिए क्लाउड कनेक्शन आवश्यक है"
+    },
+    "cloud_unreachable": {
+      "message": "क्लाउड के माध्यम से डिवाइस की खोज नहीं की जा सकी"
+    },
+    "command_failed": {
+      "message": "कमांड विफल रहा या डिवाइस को भेजा नहीं जा सका"
+    },
+    "coordinate_outside_map": {
+      "message": "निर्देशांक ({x}, {y}) मैप के अंदर नहीं है"
+    },
+    "coordinate_required": {
+      "message": "कम से कम एक मान्य या सहेजा गया निर्देशांक आवश्यक है"
+    },
+    "device_disconnected": {
+      "message": "डिवाइस डिस्कनेक्ट है"
+    },
+    "device_unavailable": {
+      "message": "डिवाइस उपलब्ध नहीं है या उस तक पहुँचा नहीं जा सकता"
+    },
+    "entity_unavailable": {
+      "message": "एंटिटी उपलब्ध नहीं है"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "कृपया तेज़ मैपिंग से पहले सुनिश्चित करें कि मॉप पैड लगा हुआ नहीं है"
+    },
+    "follow_path_requires_camera": {
+      "message": "पाथ फ़ॉलो केवल लाइव कैमरा स्ट्रीमिंग के साथ काम करता है"
+    },
+    "invalid_action": {
+      "message": "अमान्य कार्रवाई या कमांड: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "अमान्य निर्देशांक: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "{parameter} के लिए अमान्य विकल्प: {value}। मान्य विकल्प: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "अमान्य रिकवरी मैप {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "{parameter} के लिए अमान्य मान: {value}"
+    },
+    "low_battery": {
+      "message": "बैटरी बहुत कम है, पहले वैक्यूम को चार्ज करें"
+    },
+    "map_backup_in_progress": {
+      "message": "मैप बैकअप पहले से चल रहा है"
+    },
+    "map_recovery_failed": {
+      "message": "मैप रिकवरी विफल रही: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "मैप रिकवरी पहले से चल रही है"
+    },
+    "map_select_failed": {
+      "message": "मैप चुनने में विफल"
+    },
+    "max_rooms_reached": {
+      "message": "कमरों की अधिकतम संख्या पूरी हो चुकी है"
+    },
+    "missing_parameter": {
+      "message": "एक आवश्यक पैरामीटर गायब है: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} नहीं मिला: {id}"
+    },
+    "not_supported": {
+      "message": "इस डिवाइस पर {feature} समर्थित नहीं है"
+    },
+    "property_not_updated": {
+      "message": "प्रॉपर्टी {parameter} अपडेट नहीं हुई: {value}"
+    },
+    "start_failed": {
+      "message": "{operation} शुरू करने में विफल"
+    },
+    "unavailable": {
+      "message": "{action} उपलब्ध नहीं है"
+    },
+    "unavailable_on_current_map": {
+      "message": "यह कार्रवाई वर्तमान मैप पर उपलब्ध नहीं है"
+    },
+    "unavailable_while_cruising": {
+      "message": "गश्त के दौरान यह कार्रवाई उपलब्ध नहीं है"
+    },
+    "unavailable_while_draining": {
+      "message": "पानी निकालने या स्वयं मरम्मत/परीक्षण के दौरान यह कार्रवाई उपलब्ध नहीं है"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "तेज़ मैपिंग के दौरान यह कार्रवाई उपलब्ध नहीं है"
+    },
+    "unavailable_while_running": {
+      "message": "वैक्यूम चलने के दौरान यह कार्रवाई उपलब्ध नहीं है"
+    },
+    "unavailable_while_self_wash": {
+      "message": "सेल्फ-वॉश बेस चलने के दौरान यह कार्रवाई उपलब्ध नहीं है"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "कस्टमाइज़्ड क्लीनिंग चालू होने पर यह कार्रवाई उपलब्ध नहीं है"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "निर्धारित सफ़ाई या शॉर्टकट कार्य के दौरान यह कार्रवाई उपलब्ध नहीं है"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "अस्थायी मैप मौजूद होने पर यह कार्रवाई उपलब्ध नहीं है"
+    },
+    "unavailable_without_map": {
+      "message": "मैप सपोर्ट के बिना यह कार्रवाई उपलब्ध नहीं है"
+    },
+    "unknown_action": {
+      "message": "अज्ञात कार्रवाई: {action}"
+    },
+    "update_failed": {
+      "message": "डिवाइस अपडेट करने में विफल: {error}"
+    },
+    "zone_too_small": {
+      "message": "ज़ोन {zone} न्यूनतम ज़ोन आकार ({width}, {height}) से छोटा है"
     }
   }
 }

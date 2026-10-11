@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Καθαρίζει",
+          "docked": "Στη βάση",
+          "error": "Σφάλμα",
+          "idle": "Σε αδράνεια",
+          "paused": "Σε παύση",
+          "returning": "Επιστροφή στη βάση"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Ισχύς αναρρόφησης",
@@ -1177,7 +1185,6 @@
             }
           }
         }
-
       },
       "filter_left": {
         "name": "Φίλτρο"
@@ -1211,6 +1218,7 @@
       "low_water_warning": {
         "name": "Προειδοποίηση χαμηλής στάθμης νερού",
         "state": {
+          "unknown": "Άγνωστο",
           "no_warning": "Χωρίς ειδοποίηση",
           "no_water_left": "Το νερό στη δεξαμενή καθαρού νερού τελειώνει. Ελέγξτε και γεμίστε εγκαίρως.",
           "no_water_left_after_clean": "Η σφουγγαρίστρα καθαρίστηκε. Εντοπίστηκε ανεπαρκές νερό στη δεξαμενή καθαρού νερού, γεμίστε τη και αδειάστε τη δεξαμενή βρώμικου νερού.",
@@ -1298,7 +1306,7 @@
           "pet": "Κατοικίδιο",
           "cleaning_tools": "Εργαλεία καθαρισμού",
           "detected_stain": "Ανιχνευμένος λεκές",
-          "blocked_room": "Μπλοκαρισμένο δωμάτιο",
+          "blocked_room": "Παραμελημένο δωμάτιο",
           "easy_to_stuck_furniture": "Έπιπλο που κολλάει εύκολα",
           "uncleanable_stain": "Μη καθαρίσιμος λεκές",
           "leg": "Πόδι",
@@ -1514,7 +1522,7 @@
           "error": "Σφάλμα",
           "remote_control": "Απομακρυσμένος έλεγχος",
           "sleeping": "Αναμονή",
-          "self_test": "Αυτοέλεγχος",
+          "self_repair": "Αυτοέλεγχος",
           "factory_test": "Εργοστασιακό τεστ",
           "standby": "Εφεδρεία",
           "room_cleaning": "Καθαρισμός δωματίου",
@@ -1635,6 +1643,8 @@
         "name": "Τύπος εργασίας",
         "state": {
           "standard": "Κανονικός καθαρισμός",
+          "unknown": "Άγνωστο",
+          "idle": "Αδρανές",
           "standard_paused": "Κανονικός καθαρισμός σε παύση",
           "custom": "Προσαρμοσμένος καθαρισμός",
           "custom_paused": "Προσαρμοσμένος καθαρισμός σε παύση",
@@ -2076,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Κατάσταση καλύμματος κυλίνδρου"
+      },
+      "problem": {
+        "name": "Πρόβλημα",
+        "state_attributes": {
+          "type": {
+            "name": "Τύπος",
+            "state": {
+              "error": "Σφάλμα",
+              "warning": "Προειδοποίηση",
+              "low_water": "Χαμηλή στάθμη νερού",
+              "dock": "Σταθμός"
+            }
+          },
+          "code": {
+            "name": "Κωδικός"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Συντήρηση",
+        "state_attributes": {
+          "items": {
+            "name": "Στοιχεία"
+          }
+        }
       }
     },
     "number": {
@@ -2952,6 +2987,140 @@
           "description": "Αν το εμπόδιο αγνοείται ή όχι."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Αδυναμία κλήσης της ενέργειας: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Το ρομπότ βρίσκεται ήδη στην επιλεγμένη συντεταγμένη"
+    },
+    "authentication_failed": {
+      "message": "Η ταυτοποίηση απέτυχε, παρακαλώ ταυτοποιηθείτε ξανά"
+    },
+    "cloud_login_failed": {
+      "message": "Αδυναμία σύνδεσης στη συσκευή μέσω cloud"
+    },
+    "cloud_required": {
+      "message": "Το {feature} απαιτεί σύνδεση cloud"
+    },
+    "cloud_unreachable": {
+      "message": "Αδυναμία εντοπισμού της συσκευής μέσω cloud"
+    },
+    "command_failed": {
+      "message": "Η εντολή απέτυχε ή δεν μπόρεσε να σταλεί στη συσκευή"
+    },
+    "coordinate_outside_map": {
+      "message": "Η συντεταγμένη ({x}, {y}) δεν βρίσκεται μέσα στον χάρτη"
+    },
+    "coordinate_required": {
+      "message": "Απαιτείται τουλάχιστον μία έγκυρη ή αποθηκευμένη συντεταγμένη"
+    },
+    "device_disconnected": {
+      "message": "Η συσκευή είναι αποσυνδεδεμένη"
+    },
+    "device_unavailable": {
+      "message": "Η συσκευή δεν είναι διαθέσιμη ή δεν είναι προσβάσιμη"
+    },
+    "entity_unavailable": {
+      "message": "Η οντότητα δεν είναι διαθέσιμη"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Βεβαιωθείτε ότι το πανί σφουγγαρίσματος δεν είναι τοποθετημένο πριν από τη γρήγορη χαρτογράφηση"
+    },
+    "follow_path_requires_camera": {
+      "message": "Η ακολούθηση διαδρομής λειτουργεί μόνο με ζωντανή μετάδοση κάμερας"
+    },
+    "invalid_action": {
+      "message": "Μη έγκυρη ενέργεια ή εντολή: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Μη έγκυρες συντεταγμένες: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Μη έγκυρη επιλογή για {parameter}: {value}. Έγκυρες επιλογές: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Μη έγκυρος χάρτης ανάκτησης {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Μη έγκυρη τιμή για {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Η μπαταρία είναι πολύ χαμηλή, φορτίστε πρώτα την ηλεκτρική σκούπα"
+    },
+    "map_backup_in_progress": {
+      "message": "Ένα αντίγραφο ασφαλείας χάρτη βρίσκεται ήδη σε εξέλιξη"
+    },
+    "map_recovery_failed": {
+      "message": "Η ανάκτηση χάρτη απέτυχε: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Μια ανάκτηση χάρτη βρίσκεται ήδη σε εξέλιξη"
+    },
+    "map_select_failed": {
+      "message": "Αποτυχία επιλογής του χάρτη"
+    },
+    "max_rooms_reached": {
+      "message": "Έχει συμπληρωθεί ο μέγιστος αριθμός δωματίων"
+    },
+    "missing_parameter": {
+      "message": "Λείπει μια απαιτούμενη παράμετρος: {parameter}"
+    },
+    "not_found": {
+      "message": "Δεν βρέθηκε το {item}: {id}"
+    },
+    "not_supported": {
+      "message": "Το {feature} δεν υποστηρίζεται σε αυτήν τη συσκευή"
+    },
+    "property_not_updated": {
+      "message": "Η ιδιότητα {parameter} δεν ενημερώθηκε: {value}"
+    },
+    "start_failed": {
+      "message": "Αποτυχία εκκίνησης του {operation}"
+    },
+    "unavailable": {
+      "message": "Το {action} δεν είναι διαθέσιμο"
+    },
+    "unavailable_on_current_map": {
+      "message": "Αυτή η ενέργεια δεν είναι διαθέσιμη στον τρέχοντα χάρτη"
+    },
+    "unavailable_while_cruising": {
+      "message": "Αυτή η ενέργεια δεν είναι διαθέσιμη κατά την περιπολία"
+    },
+    "unavailable_while_draining": {
+      "message": "Αυτή η ενέργεια δεν είναι διαθέσιμη κατά την αποστράγγιση ή την αυτοεπισκευή/δοκιμή"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Αυτή η ενέργεια δεν είναι διαθέσιμη κατά τη γρήγορη χαρτογράφηση"
+    },
+    "unavailable_while_running": {
+      "message": "Αυτή η ενέργεια δεν είναι διαθέσιμη ενώ η σκούπα λειτουργεί"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Αυτή η ενέργεια δεν είναι διαθέσιμη ενώ λειτουργεί η βάση αυτοπλύσης"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Αυτή η ενέργεια δεν είναι διαθέσιμη ενώ είναι ενεργός ο προσαρμοσμένος καθαρισμός"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Αυτή η ενέργεια δεν είναι διαθέσιμη κατά τη διάρκεια προγραμματισμένου καθαρισμού ή εργασίας συντόμευσης"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Αυτή η ενέργεια δεν είναι διαθέσιμη ενώ υπάρχει προσωρινός χάρτης"
+    },
+    "unavailable_without_map": {
+      "message": "Αυτή η ενέργεια δεν είναι διαθέσιμη χωρίς υποστήριξη χάρτη"
+    },
+    "unknown_action": {
+      "message": "Άγνωστη ενέργεια: {action}"
+    },
+    "update_failed": {
+      "message": "Αποτυχία ενημέρωσης της συσκευής: {error}"
+    },
+    "zone_too_small": {
+      "message": "Η ζώνη {zone} είναι μικρότερη από το ελάχιστο μέγεθος ζώνης ({width}, {height})"
     }
   }
 }

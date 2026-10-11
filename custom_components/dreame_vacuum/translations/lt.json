@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Valymas",
+          "docked": "Stotelėje",
+          "error": "Klaida",
+          "idle": "Nedaroma nieko",
+          "paused": "Pristabdyta",
+          "returning": "Grįžta į stotelę"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Siurbimo galia",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Įspėjimas dėl mažo vandens kiekio",
         "state": {
+          "unknown": "Nežinoma",
           "no_warning": "Nėra įspėjimo",
           "no_water_left": "Vanduo švaraus vandens bake netrukus baigsis. Patikrinkite ir nedelsdami pripildykite švaraus vandens baką.",
           "no_water_left_after_clean": "Šluostė išplauta. Aptikta, kad švaraus vandens bake nepakanka vandens, pripildykite švaraus vandens baką ir ištuštinkite panaudoto vandens baką.",
@@ -1297,8 +1306,8 @@
           "pet": "Augintinis",
           "cleaning_tools": "Valymo įrankiai",
           "detected_stain": "Dėmės",
-          "blocked_room": "Robotas linkęs įstrigti tarp baldų",
-          "easy_to_stuck_furniture": "Robotas linkęs įstrigti tarp baldų",
+          "blocked_room": "Apleistas kambarys",
+          "easy_to_stuck_furniture": "Baldai su įstrigimo rizika",
           "uncleanable_stain": "Dėmės",
           "leg": "Koja",
           "large_particles": "Didelės dalelės",
@@ -1513,7 +1522,7 @@
           "error": "Klaida",
           "remote_control": "Nuotolinis valdymas",
           "sleeping": "Miega",
-          "self_test": "Savikontrolė",
+          "self_repair": "Savikontrolė",
           "factory_test": "Gamyklos testas",
           "standby": "Budėjimo režimas",
           "room_cleaning": "Kambario valymas",
@@ -1634,6 +1643,8 @@
         "name": "Užduoties tipas",
         "state": {
           "standard": "Standartinis valymas",
+          "unknown": "Nežinoma",
+          "idle": "Laukia",
           "standard_paused": "Standartinis valymas pristabdytas",
           "custom": "Pasirinktinis valymas",
           "custom_paused": "Pasirinktinis valymas pristabdytas",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Velenėlio dangtelio būsena"
+      },
+      "problem": {
+        "name": "Problema",
+        "state_attributes": {
+          "type": {
+            "name": "Tipas",
+            "state": {
+              "error": "Klaida",
+              "warning": "Įspėjimas",
+              "low_water": "Mažai vandens",
+              "dock": "Stotis"
+            }
+          },
+          "code": {
+            "name": "Kodas"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Priežiūra",
+        "state_attributes": {
+          "items": {
+            "name": "Elementai"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Kliūtis ignoruojama ar ne."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Nepavyko iškviesti veiksmo: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robotas jau yra pasirinktoje koordinatėje"
+    },
+    "authentication_failed": {
+      "message": "Autentifikavimas nepavyko, autentifikuokitės iš naujo"
+    },
+    "cloud_login_failed": {
+      "message": "Nepavyko prisijungti prie įrenginio per debesį"
+    },
+    "cloud_required": {
+      "message": "{feature} reikalingas ryšys su debesimi"
+    },
+    "cloud_unreachable": {
+      "message": "Nepavyko aptikti įrenginio per debesį"
+    },
+    "command_failed": {
+      "message": "Komanda nepavyko arba jos nepavyko išsiųsti įrenginiui"
+    },
+    "coordinate_outside_map": {
+      "message": "Koordinatė ({x}, {y}) nėra žemėlapio viduje"
+    },
+    "coordinate_required": {
+      "message": "Reikalinga bent viena tinkama arba išsaugota koordinatė"
+    },
+    "device_disconnected": {
+      "message": "Įrenginys atjungtas"
+    },
+    "device_unavailable": {
+      "message": "Įrenginys nepasiekiamas arba nepavyksta su juo susisiekti"
+    },
+    "entity_unavailable": {
+      "message": "Objektas nepasiekiamas"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Prieš greitą žemėlapio sudarymą įsitikinkite, kad šluostė neįdėta"
+    },
+    "follow_path_requires_camera": {
+      "message": "Kelio sekimas veikia tik su tiesiogine kameros transliacija"
+    },
+    "invalid_action": {
+      "message": "Netinkamas veiksmas arba komanda: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Netinkamos koordinatės: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Netinkama parinktis parametrui {parameter}: {value}. Tinkamos parinktys: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Netinkamas atkūrimo žemėlapis {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Netinkama parametro {parameter} reikšmė: {value}"
+    },
+    "low_battery": {
+      "message": "Baterija per silpna, pirmiausia įkraukite siurblį"
+    },
+    "map_backup_in_progress": {
+      "message": "Žemėlapio atsarginė kopija jau kuriama"
+    },
+    "map_recovery_failed": {
+      "message": "Žemėlapio atkūrimas nepavyko: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Žemėlapio atkūrimas jau vyksta"
+    },
+    "map_select_failed": {
+      "message": "Nepavyko pasirinkti žemėlapio"
+    },
+    "max_rooms_reached": {
+      "message": "Pasiektas maksimalus kambarių skaičius"
+    },
+    "missing_parameter": {
+      "message": "Trūksta privalomo parametro: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} nerasta: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} šiame įrenginyje nepalaikoma"
+    },
+    "property_not_updated": {
+      "message": "Savybė {parameter} neatnaujinta: {value}"
+    },
+    "start_failed": {
+      "message": "Nepavyko paleisti {operation}"
+    },
+    "unavailable": {
+      "message": "{action} nepasiekiama"
+    },
+    "unavailable_on_current_map": {
+      "message": "Šis veiksmas nepasiekiamas dabartiniame žemėlapyje"
+    },
+    "unavailable_while_cruising": {
+      "message": "Šis veiksmas nepasiekiamas patruliavimo metu"
+    },
+    "unavailable_while_draining": {
+      "message": "Šis veiksmas nepasiekiamas išleidžiant vandenį arba savaiminio taisymo/testavimo metu"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Šis veiksmas nepasiekiamas greito žemėlapio sudarymo metu"
+    },
+    "unavailable_while_running": {
+      "message": "Šis veiksmas nepasiekiamas, kol siurblys veikia"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Šis veiksmas nepasiekiamas, kol veikia savaiminio plovimo stotelė"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Šis veiksmas nepasiekiamas, kol įjungtas pritaikytas valymas"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Šis veiksmas nepasiekiamas planuoto valymo arba spartaus klavišo užduoties metu"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Šis veiksmas nepasiekiamas, kol yra laikinas žemėlapis"
+    },
+    "unavailable_without_map": {
+      "message": "Šis veiksmas nepasiekiamas be žemėlapio palaikymo"
+    },
+    "unknown_action": {
+      "message": "Nežinomas veiksmas: {action}"
+    },
+    "update_failed": {
+      "message": "Nepavyko atnaujinti įrenginio: {error}"
+    },
+    "zone_too_small": {
+      "message": "Zona {zone} mažesnė už mažiausią zonos dydį ({width}, {height})"
     }
   }
 }

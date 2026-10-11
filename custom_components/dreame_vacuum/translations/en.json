@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Cleaning",
+          "docked": "Docked",
+          "error": "Error",
+          "idle": "Idle",
+          "paused": "Paused",
+          "returning": "Returning to dock"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Fan Speed",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Low Water Warning",
         "state": {
+          "unknown": "Unknown",
           "no_warning": "No warning",
           "no_water_left": "The water in the clean water tank is about to be used up. Check and fill the clean water tank promptly.",
           "no_water_left_after_clean": "Mop pad has been cleaned. Detected that the water in the clean water tank is insufficient, please fill the clean water tank and empty the used water tank.",
@@ -1297,14 +1306,14 @@
           "pet": "Pet",
           "cleaning_tools": "Cleaning Tools",
           "detected_stain": "Stains",
-          "blocked_room": "Furniture prone to trapping the robot",
-          "easy_to_stuck_furniture": "Furniture prone to trapping the robot",
+          "blocked_room": "Neglected Room",
+          "easy_to_stuck_furniture": "Stuck-Prone Furniture",
           "uncleanable_stain": "Stains",
           "leg": "Leg",
           "large_particles": "Large Particles",
           "dried_stain": "Stains",
           "food_bowl": "Food Bowl",
-          "pet_bed": "Pet Bed",
+          "pet_bed": "Pet Bed",          
           "cleaned_stain": "Stains",
           "skipped_uncleanable_stain": "Stains",
           "cleaned_dried_stain": "Stains",
@@ -1513,7 +1522,7 @@
           "error": "Error",
           "remote_control": "Remote control",
           "sleeping": "Sleeping",
-          "self_test": "Self test",
+          "self_repair": "Self test",
           "factory_test": "Factory test",
           "standby": "Standby",
           "room_cleaning": "Room cleaning",
@@ -1634,6 +1643,8 @@
         "name": "Task Type",
         "state": {
           "standard": "Standard cleaning",
+          "unknown": "Unknown",
+          "idle": "Idle",
           "standard_paused": "Standard cleaning paused",
           "custom": "Custom cleaning",
           "custom_paused": "Custom cleaning paused",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Roller Cover Status"
+      },
+      "problem": {
+        "name": "Problem",
+        "state_attributes": {
+          "type": {
+            "name": "Type",
+            "state": {
+              "error": "Error",
+              "warning": "Warning",
+              "low_water": "Low water",
+              "dock": "Station"
+            }
+          },
+          "code": {
+            "name": "Code"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Maintenance",
+        "state_attributes": {
+          "items": {
+            "name": "Items"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Obstacle is ignored or not."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Unable to call the action: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "The robot is already on the selected coordinate"
+    },
+    "authentication_failed": {
+      "message": "Authentication failed, please re-authenticate"
+    },
+    "cloud_login_failed": {
+      "message": "Unable to log in to the device over the cloud"
+    },
+    "cloud_required": {
+      "message": "{feature} requires a cloud connection"
+    },
+    "cloud_unreachable": {
+      "message": "Unable to discover the device over the cloud"
+    },
+    "command_failed": {
+      "message": "The command failed or could not be sent to the device"
+    },
+    "coordinate_outside_map": {
+      "message": "Coordinate ({x}, {y}) is not inside the map"
+    },
+    "coordinate_required": {
+      "message": "At least one valid or saved coordinate is required"
+    },
+    "device_disconnected": {
+      "message": "The device is disconnected"
+    },
+    "device_unavailable": {
+      "message": "The device is not available or cannot be reached"
+    },
+    "entity_unavailable": {
+      "message": "Entity is unavailable"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Please make sure the mop pad is not installed before fast mapping"
+    },
+    "follow_path_requires_camera": {
+      "message": "Follow path only works with live camera streaming"
+    },
+    "invalid_action": {
+      "message": "Invalid action or command: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Invalid coordinates: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Invalid option for {parameter}: {value}. Valid options: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Invalid recovery map {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Invalid value for {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "The battery is too low, charge the vacuum first"
+    },
+    "map_backup_in_progress": {
+      "message": "A map backup is already in progress"
+    },
+    "map_recovery_failed": {
+      "message": "Map recovery failed: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "A map recovery is already in progress"
+    },
+    "map_select_failed": {
+      "message": "Failed to select the map"
+    },
+    "max_rooms_reached": {
+      "message": "The maximum room count has been reached"
+    },
+    "missing_parameter": {
+      "message": "A required parameter is missing: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} not found: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} is not supported on this device"
+    },
+    "property_not_updated": {
+      "message": "Property {parameter} not updated: {value}"
+    },
+    "start_failed": {
+      "message": "Failed to start {operation}"
+    },
+    "unavailable": {
+      "message": "{action} is unavailable"
+    },
+    "unavailable_on_current_map": {
+      "message": "This action is unavailable on the current map"
+    },
+    "unavailable_while_cruising": {
+      "message": "This action is unavailable while cruising"
+    },
+    "unavailable_while_draining": {
+      "message": "This action is unavailable while draining or self repairing/testing"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "This action is unavailable while fast mapping"
+    },
+    "unavailable_while_running": {
+      "message": "This action is unavailable while the vacuum is running"
+    },
+    "unavailable_while_self_wash": {
+      "message": "This action is unavailable while the self-wash base is running"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "This action is unavailable while customized cleaning is enabled"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "This action is unavailable during a scheduled cleaning or shortcut task"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "This action is unavailable while a temporary map is present"
+    },
+    "unavailable_without_map": {
+      "message": "This action is unavailable without map support"
+    },
+    "unknown_action": {
+      "message": "Unknown action: {action}"
+    },
+    "update_failed": {
+      "message": "Failed to update the device: {error}"
+    },
+    "zone_too_small": {
+      "message": "Zone {zone} is smaller than the minimum zone size ({width}, {height})"
     }
   }
 }

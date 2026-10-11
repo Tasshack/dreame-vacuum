@@ -18,7 +18,6 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory, async_generate_entity_id
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import entity_registry
 
 from .const import DOMAIN, UNIT_MINUTES, UNIT_HOURS, UNIT_AREA, UNIT_PERCENT
@@ -29,7 +28,7 @@ from .entity import (
     DreameVacuumEntityDescription,
     remove_entities,
 )
-from .dreame import DreameVacuumProperty
+from .dreame import DreameVacuumProperty, EntityUnavailableException, InvalidActionException
 
 
 def WETNESS_LEVEL_TO_ICON(wetness, max):
@@ -390,14 +389,18 @@ class DreameVacuumNumberEntity(DreameVacuumEntity, NumberEntity):
     async def async_set_native_value(self, value: float) -> None:
         """Set the Dreame Vacuum number value."""
         if not self.available:
-            raise HomeAssistantError("Entity unavailable")
+            self._raise_error(EntityUnavailableException())
 
         value = int(value)
         if self.entity_description.format_fn is not None:
             value = self.entity_description.format_fn(value, self.device)
 
         if value is None:
-            raise HomeAssistantError("Invalid value")
+            self._raise_error(
+                InvalidActionException(
+                    key="invalid_value", source="entity", parameter=self.entity_description.key, value=value
+                )
+            )
 
         result = False
 
@@ -465,8 +468,12 @@ class DreameVacuumSegmentNumberEntity(DreameVacuumEntity, NumberEntity):
                 self._attr_translation_placeholders = {"index": str(self.segment_id)}
                 self.__dict__.pop("name", None)
             else:
-                name = f"room_{self.segment_id}_{self.entity_description.key}"
-                self._attr_name = name.replace("_", " ").title()
+                self._attr_name = self._localized_name(
+                    "number",
+                    self.entity_description.key,
+                    f"room_{self.segment_id}_{self.entity_description.key}".replace("_", " ").title(),
+                    index=self.segment_id,
+                )
         else:
             self._attr_name = f"{self._localize_entity("number", self.entity_description.key, self.entity_description.key.replace("_", " ").title())} {self._localize_segment_name(self.segment, self.segment_id)}"
 
@@ -509,7 +516,7 @@ class DreameVacuumSegmentNumberEntity(DreameVacuumEntity, NumberEntity):
     async def async_set_native_value(self, value: int) -> None:
         """Set the Dreame Vacuum number value."""
         if not self.available:
-            raise HomeAssistantError("Entity unavailable")
+            self._raise_error(EntityUnavailableException())
 
         await self._try_command(
             "Unable to call %s",

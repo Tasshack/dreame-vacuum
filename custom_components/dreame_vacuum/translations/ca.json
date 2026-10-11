@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Netejant",
+          "docked": "Aparcat/ada",
+          "error": "Error",
+          "idle": "Inactiu",
+          "paused": "Pausat/ada",
+          "returning": "Retornant a la base"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Nivell de succió",
@@ -1177,7 +1185,6 @@
             }
           }
         }
-
       },
       "filter_left": {
         "name": "Filtre"
@@ -1211,6 +1218,7 @@
       "low_water_warning": {
         "name": "Avís d'aigua baixa",
         "state": {
+          "unknown": "Desconeguda",
           "no_warning": "Sense advertències",
           "no_water_left": "L'aigua del dipòsit d'aigua neta està a punt d'acabar-se. Comprova i omple el dipòsit d'aigua neta ràpidament.",
           "no_water_left_after_clean": "La mopa s'ha rentat. S'ha detectat que l'aigua del dipòsit d'aigua neta és insuficient, si us plau, ompliu el dipòsit d'aigua neta i buideu el dipòsit d'aigua bruta.",
@@ -1298,7 +1306,7 @@
           "pet": "Mascota",
           "cleaning_tools": "Eines de neteja",
           "detected_stain": "Taca detectada",
-          "blocked_room": "Habitació bloquejada",
+          "blocked_room": "Habitació desatesa",
           "easy_to_stuck_furniture": "Mobles propensos a encallar",
           "uncleanable_stain": "Taca no netejable",
           "leg": "Cama",
@@ -1514,7 +1522,7 @@
           "error": "Error",
           "remote_control": "Control remot",
           "sleeping": "Dormint",
-          "self_test": "Autotest",
+          "self_repair": "Autotest",
           "factory_test": "Test de fàbrica",
           "standby": "En espera",
           "room_cleaning": "Neteja d'habitació",
@@ -1635,6 +1643,8 @@
         "name": "Tipus de tasca",
         "state": {
           "standard": "Neteja estàndard",
+          "unknown": "Desconeguda",
+          "idle": "Inactiu",
           "standard_paused": "Neteja estàndard en pausa",
           "custom": "Neteja personalitzada",
           "custom_paused": "Neteja personalitzada en pausa",
@@ -2076,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Estat de la coberta del corró"
+      },
+      "problem": {
+        "name": "Problema",
+        "state_attributes": {
+          "type": {
+            "name": "Tipus",
+            "state": {
+              "error": "Error",
+              "warning": "Advertència",
+              "low_water": "Aigua baixa",
+              "dock": "Estació"
+            }
+          },
+          "code": {
+            "name": "Codi"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Manteniment",
+        "state_attributes": {
+          "items": {
+            "name": "Elements"
+          }
+        }
       }
     },
     "number": {
@@ -2952,6 +2987,140 @@
           "description": "L'obstacle s'ignora o no."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "No s'ha pogut cridar l'acció: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "El robot ja és a la coordenada seleccionada"
+    },
+    "authentication_failed": {
+      "message": "L'autenticació ha fallat, torna a autenticar-te"
+    },
+    "cloud_login_failed": {
+      "message": "No s'ha pogut iniciar la sessió al dispositiu a través del núvol"
+    },
+    "cloud_required": {
+      "message": "{feature} requereix una connexió al núvol"
+    },
+    "cloud_unreachable": {
+      "message": "No s'ha pogut descobrir el dispositiu a través del núvol"
+    },
+    "command_failed": {
+      "message": "L'ordre ha fallat o no s'ha pogut enviar al dispositiu"
+    },
+    "coordinate_outside_map": {
+      "message": "La coordenada ({x}, {y}) no és dins del mapa"
+    },
+    "coordinate_required": {
+      "message": "Cal almenys una coordenada vàlida o desada"
+    },
+    "device_disconnected": {
+      "message": "El dispositiu està desconnectat"
+    },
+    "device_unavailable": {
+      "message": "El dispositiu no està disponible o no es pot assolir"
+    },
+    "entity_unavailable": {
+      "message": "L'entitat no està disponible"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Assegura't que la mopa no estigui instal·lada abans del mapatge ràpid"
+    },
+    "follow_path_requires_camera": {
+      "message": "Seguir el camí només funciona amb la transmissió en directe de la càmera"
+    },
+    "invalid_action": {
+      "message": "Acció o ordre no vàlida: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Coordenades no vàlides: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Opció no vàlida per a {parameter}: {value}. Opcions vàlides: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Mapa de recuperació no vàlid {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Valor no vàlid per a {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "La bateria està massa baixa, carrega primer l'aspiradora"
+    },
+    "map_backup_in_progress": {
+      "message": "Ja hi ha una còpia de seguretat del mapa en curs"
+    },
+    "map_recovery_failed": {
+      "message": "La recuperació del mapa ha fallat: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Ja hi ha una recuperació del mapa en curs"
+    },
+    "map_select_failed": {
+      "message": "No s'ha pogut seleccionar el mapa"
+    },
+    "max_rooms_reached": {
+      "message": "S'ha assolit el nombre màxim d'habitacions"
+    },
+    "missing_parameter": {
+      "message": "Falta un paràmetre obligatori: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} no trobat: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} no és compatible amb aquest dispositiu"
+    },
+    "property_not_updated": {
+      "message": "La propietat {parameter} no s'ha actualitzat: {value}"
+    },
+    "start_failed": {
+      "message": "No s'ha pogut iniciar {operation}"
+    },
+    "unavailable": {
+      "message": "{action} no està disponible"
+    },
+    "unavailable_on_current_map": {
+      "message": "Aquesta acció no està disponible al mapa actual"
+    },
+    "unavailable_while_cruising": {
+      "message": "Aquesta acció no està disponible durant la ronda"
+    },
+    "unavailable_while_draining": {
+      "message": "Aquesta acció no està disponible durant el buidatge o l'autoreparació/prova"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Aquesta acció no està disponible durant el mapatge ràpid"
+    },
+    "unavailable_while_running": {
+      "message": "Aquesta acció no està disponible mentre l'aspiradora està en funcionament"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Aquesta acció no està disponible mentre la base d'autorentat està en funcionament"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Aquesta acció no està disponible mentre la neteja personalitzada està activada"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Aquesta acció no està disponible durant una neteja programada o una tasca de drecera"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Aquesta acció no està disponible mentre hi ha un mapa temporal"
+    },
+    "unavailable_without_map": {
+      "message": "Aquesta acció no està disponible sense compatibilitat amb mapes"
+    },
+    "unknown_action": {
+      "message": "Acció desconeguda: {action}"
+    },
+    "update_failed": {
+      "message": "No s'ha pogut actualitzar el dispositiu: {error}"
+    },
+    "zone_too_small": {
+      "message": "La zona {zone} és més petita que la mida mínima de zona ({width}, {height})"
     }
   }
 }

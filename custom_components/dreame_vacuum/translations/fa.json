@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "در حال تمیزکاری",
+          "docked": "در داک",
+          "error": "خطا",
+          "idle": "بی‌کار",
+          "paused": "متوقف شده",
+          "returning": "بازگشت به داک"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "قدرت مکش",
@@ -1177,7 +1185,6 @@
             }
           }
         }
-
       },
       "filter_left": {
         "name": "فیلتر"
@@ -1211,6 +1218,7 @@
       "low_water_warning": {
         "name": "هشدار کمبود آب",
         "state": {
+          "unknown": "نامشخص",
           "no_warning": "بدون هشدار",
           "no_water_left": "آب مخزن تمیز رو به اتمام است. لطفاً فوراً آن را پر کنید.",
           "no_water_left_after_clean": "طی شسته شد. آب مخزن تمیز کافی نیست، لطفاً آن را پر و مخزن کثیف را خالی کنید.",
@@ -1298,7 +1306,7 @@
           "pet": "حیوان خانگی",
           "cleaning_tools": "ابزار نظافت",
           "detected_stain": "لکه تشخیص‌داده‌شده",
-          "blocked_room": "اتاق مسدود شده",
+          "blocked_room": "اتاق نادیده گرفته شده",
           "easy_to_stuck_furniture": "مبلمان با خطر گیر کردن بالا",
           "uncleanable_stain": "لکه غیرقابل تمیزکاری",
           "leg": "پایه میز/صندلی",
@@ -1514,7 +1522,7 @@
           "error": "خطا",
           "remote_control": "کنترل از راه دور",
           "sleeping": "خواب",
-          "self_test": "خودآزمایی",
+          "self_repair": "خودآزمایی",
           "factory_test": "آزمایش کارخانه",
           "standby": "آماده‌به‌کار",
           "room_cleaning": "تمیز کردن اتاق",
@@ -1635,6 +1643,8 @@
         "name": "نوع وظیفه",
         "state": {
           "standard": "تمیزکاری استاندارد",
+          "unknown": "نامشخص",
+          "idle": "بی‌کار",
           "standard_paused": "توقف تمیزکاری استاندارد",
           "custom": "تمیزکاری سفارشی",
           "custom_paused": "توقف تمیزکاری سفارشی",
@@ -2076,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "وضعیت پوشش غلتک"
+      },
+      "problem": {
+        "name": "مشکل",
+        "state_attributes": {
+          "type": {
+            "name": "نوع",
+            "state": {
+              "error": "خطا",
+              "warning": "هشدار",
+              "low_water": "آب کم",
+              "dock": "ایستگاه"
+            }
+          },
+          "code": {
+            "name": "کد"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "نگهداری",
+        "state_attributes": {
+          "items": {
+            "name": "موارد"
+          }
+        }
       }
     },
     "number": {
@@ -2952,6 +2987,140 @@
           "description": "مشخص می‌کند مانع نادیده گرفته شود یا خیر."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "فراخوانی عملیات ممکن نیست: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "ربات از قبل در مختصات انتخاب‌شده قرار دارد"
+    },
+    "authentication_failed": {
+      "message": "احراز هویت ناموفق بود، لطفاً دوباره احراز هویت کنید"
+    },
+    "cloud_login_failed": {
+      "message": "ورود به دستگاه از طریق ابر ممکن نیست"
+    },
+    "cloud_required": {
+      "message": "{feature} به اتصال ابری نیاز دارد"
+    },
+    "cloud_unreachable": {
+      "message": "کشف دستگاه از طریق ابر ممکن نیست"
+    },
+    "command_failed": {
+      "message": "دستور ناموفق بود یا نتوانست به دستگاه ارسال شود"
+    },
+    "coordinate_outside_map": {
+      "message": "مختصات ({x}, {y}) داخل نقشه نیست"
+    },
+    "coordinate_required": {
+      "message": "حداقل یک مختصات معتبر یا ذخیره‌شده لازم است"
+    },
+    "device_disconnected": {
+      "message": "دستگاه قطع شده است"
+    },
+    "device_unavailable": {
+      "message": "دستگاه در دسترس نیست یا قابل دسترسی نیست"
+    },
+    "entity_unavailable": {
+      "message": "موجودیت در دسترس نیست"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "لطفاً پیش از نقشه‌برداری سریع مطمئن شوید پد موپ نصب نشده است"
+    },
+    "follow_path_requires_camera": {
+      "message": "دنبال کردن مسیر فقط با پخش زنده دوربین کار می‌کند"
+    },
+    "invalid_action": {
+      "message": "عملیات یا فرمان نامعتبر: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "مختصات نامعتبر: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "گزینه نامعتبر برای {parameter}: {value}. گزینه‌های معتبر: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "نقشه بازیابی نامعتبر {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "مقدار نامعتبر برای {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "باتری بیش از حد ضعیف است، ابتدا جاروبرقی را شارژ کنید"
+    },
+    "map_backup_in_progress": {
+      "message": "پشتیبان‌گیری از نقشه از قبل در حال انجام است"
+    },
+    "map_recovery_failed": {
+      "message": "بازیابی نقشه ناموفق بود: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "بازیابی نقشه از قبل در حال انجام است"
+    },
+    "map_select_failed": {
+      "message": "انتخاب نقشه ناموفق بود"
+    },
+    "max_rooms_reached": {
+      "message": "حداکثر تعداد اتاق‌ها به پایان رسیده است"
+    },
+    "missing_parameter": {
+      "message": "یک پارامتر ضروری وجود ندارد: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} پیدا نشد: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} در این دستگاه پشتیبانی نمی‌شود"
+    },
+    "property_not_updated": {
+      "message": "ویژگی {parameter} به‌روزرسانی نشد: {value}"
+    },
+    "start_failed": {
+      "message": "شروع {operation} ناموفق بود"
+    },
+    "unavailable": {
+      "message": "{action} در دسترس نیست"
+    },
+    "unavailable_on_current_map": {
+      "message": "این عملیات در نقشه فعلی در دسترس نیست"
+    },
+    "unavailable_while_cruising": {
+      "message": "این عملیات در حین گشت‌زنی در دسترس نیست"
+    },
+    "unavailable_while_draining": {
+      "message": "این عملیات در حین تخلیه یا خودتعمیری/آزمایش در دسترس نیست"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "این عملیات در حین نقشه‌برداری سریع در دسترس نیست"
+    },
+    "unavailable_while_running": {
+      "message": "این عملیات در حین کار جاروبرقی در دسترس نیست"
+    },
+    "unavailable_while_self_wash": {
+      "message": "این عملیات در حین کار پایه خودشست‌وشو در دسترس نیست"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "این عملیات در حالی که نظافت سفارشی فعال است در دسترس نیست"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "این عملیات در حین نظافت زمان‌بندی‌شده یا وظیفه میان‌بر در دسترس نیست"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "این عملیات در حالی که نقشه موقت وجود دارد در دسترس نیست"
+    },
+    "unavailable_without_map": {
+      "message": "این عملیات بدون پشتیبانی از نقشه در دسترس نیست"
+    },
+    "unknown_action": {
+      "message": "عملیات ناشناخته: {action}"
+    },
+    "update_failed": {
+      "message": "به‌روزرسانی دستگاه ناموفق بود: {error}"
+    },
+    "zone_too_small": {
+      "message": "ناحیه {zone} کوچک‌تر از حداقل اندازه ناحیه است ({width}, {height})"
     }
   }
 }

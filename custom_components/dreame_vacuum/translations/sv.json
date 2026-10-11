@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Städar",
+          "docked": "Dockad",
+          "error": "Fel",
+          "idle": "Inaktiv",
+          "paused": "Pausad",
+          "returning": "Återvänder till docka"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Sugeffekt",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Varning för låg vattennivå",
         "state": {
+          "unknown": "Okänd",
           "no_warning": "Inga varningar",
           "no_water_left": "Vattnet i renvattentank är på väg att ta slut. Fyll på vatten snarast.",
           "no_water_left_after_clean": "Moppdukar har blivit rengjorda. Vattnet i renvattentank var inte tillräckligt. Fyll på vatten och töm smutsvattentank.",
@@ -1297,8 +1306,8 @@
           "pet": "Husdjur",
           "cleaning_tools": "Rengöringsverktyg",
           "detected_stain": "Fläck",
-          "blocked_room": "Möbler som roboten är benägen att fastna i",
-          "easy_to_stuck_furniture": "Möbler som roboten är benägen att fastna i",
+          "blocked_room": "Försummat rum",
+          "easy_to_stuck_furniture": "Fastklämmande möbler",
           "uncleanable_stain": "Fläck",
           "leg": "Ben",
           "large_particles": "Stora partiklar",
@@ -1513,7 +1522,7 @@
           "error": "Fel",
           "remote_control": "Fjärrstyrning",
           "sleeping": "Sover",
-          "self_test": "Självtest",
+          "self_repair": "Självtest",
           "factory_test": "Fabrikstest",
           "standby": "Standby",
           "room_cleaning": "Rumsrengöring",
@@ -1634,6 +1643,8 @@
         "name": "Typ av uppgift",
         "state": {
           "standard": "Standardstädning",
+          "unknown": "Okänd",
+          "idle": "Vilar",
           "standard_paused": "Standardstädning pausad",
           "custom": "Specialstädning",
           "custom_paused": "Specialstädning pausad",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Status för rullskydd"
+      },
+      "problem": {
+        "name": "Problem",
+        "state_attributes": {
+          "type": {
+            "name": "Typ",
+            "state": {
+              "error": "Fel",
+              "warning": "Varning",
+              "low_water": "Låg vatten",
+              "dock": "Station"
+            }
+          },
+          "code": {
+            "name": "Kod"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Underhåll",
+        "state_attributes": {
+          "items": {
+            "name": "Objekt"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Hinder ignorerad eller ej."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Det gick inte att anropa åtgärden: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Roboten är redan på den valda koordinaten"
+    },
+    "authentication_failed": {
+      "message": "Autentiseringen misslyckades, autentisera igen"
+    },
+    "cloud_login_failed": {
+      "message": "Det gick inte att logga in på enheten via molnet"
+    },
+    "cloud_required": {
+      "message": "{feature} kräver en molnanslutning"
+    },
+    "cloud_unreachable": {
+      "message": "Det gick inte att hitta enheten via molnet"
+    },
+    "command_failed": {
+      "message": "Kommandot misslyckades eller kunde inte skickas till enheten"
+    },
+    "coordinate_outside_map": {
+      "message": "Koordinaten ({x}, {y}) är inte inom kartan"
+    },
+    "coordinate_required": {
+      "message": "Minst en giltig eller sparad koordinat krävs"
+    },
+    "device_disconnected": {
+      "message": "Enheten är frånkopplad"
+    },
+    "device_unavailable": {
+      "message": "Enheten är inte tillgänglig eller kan inte nås"
+    },
+    "entity_unavailable": {
+      "message": "Entiteten är inte tillgänglig"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Se till att moppen inte är monterad före snabbkartläggning"
+    },
+    "follow_path_requires_camera": {
+      "message": "Följ sökväg fungerar bara med direktuppspelning från kameran"
+    },
+    "invalid_action": {
+      "message": "Ogiltig åtgärd eller kommando: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Ogiltiga koordinater: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Ogiltigt alternativ för {parameter}: {value}. Giltiga alternativ: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Ogiltig återställningskarta {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Ogiltigt värde för {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Batteriet är för lågt, ladda dammsugaren först"
+    },
+    "map_backup_in_progress": {
+      "message": "En kartsäkerhetskopiering pågår redan"
+    },
+    "map_recovery_failed": {
+      "message": "Kartåterställningen misslyckades: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "En kartåterställning pågår redan"
+    },
+    "map_select_failed": {
+      "message": "Det gick inte att välja kartan"
+    },
+    "max_rooms_reached": {
+      "message": "Det maximala antalet rum har uppnåtts"
+    },
+    "missing_parameter": {
+      "message": "En obligatorisk parameter saknas: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} hittades inte: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} stöds inte på den här enheten"
+    },
+    "property_not_updated": {
+      "message": "Egenskapen {parameter} uppdaterades inte: {value}"
+    },
+    "start_failed": {
+      "message": "Det gick inte att starta {operation}"
+    },
+    "unavailable": {
+      "message": "{action} är inte tillgänglig"
+    },
+    "unavailable_on_current_map": {
+      "message": "Den här åtgärden är inte tillgänglig på den aktuella kartan"
+    },
+    "unavailable_while_cruising": {
+      "message": "Den här åtgärden är inte tillgänglig under patrullering"
+    },
+    "unavailable_while_draining": {
+      "message": "Den här åtgärden är inte tillgänglig under tömning eller självreparation/test"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Den här åtgärden är inte tillgänglig under snabbkartläggning"
+    },
+    "unavailable_while_running": {
+      "message": "Den här åtgärden är inte tillgänglig medan dammsugaren körs"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Den här åtgärden är inte tillgänglig medan självtvättsstationen körs"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Den här åtgärden är inte tillgänglig medan anpassad rengöring är aktiverad"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Den här åtgärden är inte tillgänglig under en schemalagd rengöring eller genvägsuppgift"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Den här åtgärden är inte tillgänglig medan en tillfällig karta finns"
+    },
+    "unavailable_without_map": {
+      "message": "Den här åtgärden är inte tillgänglig utan kartstöd"
+    },
+    "unknown_action": {
+      "message": "Okänd åtgärd: {action}"
+    },
+    "update_failed": {
+      "message": "Det gick inte att uppdatera enheten: {error}"
+    },
+    "zone_too_small": {
+      "message": "Zon {zone} är mindre än den minsta zonstorleken ({width}, {height})"
     }
   }
 }

@@ -42,7 +42,8 @@ from .const import (
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription
-from .dreame.const import (
+from .dreame import (
+    DeviceException,
     STATE_UNKNOWN,
     STATUS_CODE_TO_NAME,
     ATTR_CALIBRATION,
@@ -56,8 +57,6 @@ from .dreame.const import (
     ATTR_MAP_ID,
     ATTR_SAVED_MAP_ID,
     ATTR_COLOR_SCHEME,
-)
-from .dreame.types import (
     MAP_ICON_SET_LIST,
     ATTR_TYPE,
     ATTR_OBSTACLES,
@@ -638,7 +637,9 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             )
         else:
             if not self._name_placeholder:
-                self._attr_name = f"Current {'Wifi ' if self.wifi_map else ''}{description.name}"
+                self._attr_name = self._localized_name(
+                    "camera", description.key, f"Current {description.key.replace('_', ' ').title()}"
+                )
             self._attr_unique_id = f"{self.device.mac}_map_{'wifi_' if self.wifi_map else ''}{description.key}"
             self.entity_id = async_generate_entity_id(
                 ENTITY_ID_FORMAT,
@@ -658,18 +659,27 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         ## TODO: Invalidate renderer cache
         self.async_write_ha_state()
 
+    async def _try_call(self, func, *args, **kwargs):
+        try:
+            return await self.hass.async_add_executor_job(partial(func, *args, **kwargs))
+        except DeviceException as exc:
+            self._raise_error(exc)
+
     def _set_map_name(self, wifi_map) -> None:
         name = (
             f"{self.map_index}"
             if self._map_name is None
             else f"{self._map_name.replace('_', ' ').replace('-', ' ').title()}"
         )
+        key = "wifi_map" if wifi_map else "saved_map"
         if self._name_placeholder:
-            self._attr_translation_key = "wifi_map" if wifi_map else "saved_map"
+            self._attr_translation_key = key
             self._attr_translation_placeholders = {"name": name}
             self.__dict__.pop("name", None)
         else:
-            self._attr_name = f"Saved {'Wifi ' if wifi_map else ''}Map {name}"
+            self._attr_name = self._localized_name(
+                "camera", key, f"Saved {'Wifi ' if wifi_map else ''}Map {name}", name=name
+            )
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -834,7 +844,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
 
     async def obstacle_image(self, index, box=False, crop=False, color=None):
         if self.map_index == 0:
-            response, obstacle = await self.hass.async_add_executor_job(self.device.obstacle_image, index)
+            response, obstacle = await self._try_call(self.device.obstacle_image, index)
             if response and obstacle:
                 return (
                     await self._get_proxy_obstacle_image(
@@ -851,7 +861,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
 
     async def obstacle_history_image(self, index, history_index, cruising, box=False, crop=False, color=None):
         if self.map_index == 0:
-            response, obstacle = await self.hass.async_add_executor_job(
+            response, obstacle = await self._try_call(
                 self.device.obstacle_history_image, index, history_index, cruising
             )
             if response and obstacle:
@@ -871,16 +881,14 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
 
     async def history_map_image(self, index, info_text, cruising, data, cleaning_map, wifi_map, include_resources):
         if self.map_index == 0:
-            map_data = await self.hass.async_add_executor_job(self.device.history_map, index, cruising)
+            map_data = await self._try_call(self.device.history_map, index, cruising)
             if map_data:
                 if not cleaning_map and wifi_map:
                     if not map_data.wifi_map_data:
                         return None
-                    map_data = await self.hass.async_add_executor_job(
-                        self.device.get_map_for_render, map_data.wifi_map_data
-                    )
+                    map_data = await self._try_call(self.device.get_map_for_render, map_data.wifi_map_data)
                 elif cruising or not cleaning_map or map_data.cleaning_map_data is None:
-                    map_data = await self.hass.async_add_executor_job(self.device.get_map_for_render, map_data)
+                    map_data = await self._try_call(self.device.get_map_for_render, map_data)
                 else:
                     map_data = map_data.cleaning_map_data
 
@@ -907,7 +915,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             else:
                 map_id = self._map_id
             if map_id:
-                return await self.hass.async_add_executor_job(self.device.recovery_map_file, map_id, index)
+                return await self._try_call(self.device.recovery_map_file, map_id, index)
         return (None, None, None)
 
     async def recovery_map(self, index, info_text, data, include_resources):
@@ -915,17 +923,17 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             if self.map_index == 0:
                 selected_map = self.device.status.selected_map
                 map_data = (
-                    await self.hass.async_add_executor_job(self.device.recovery_map, selected_map.map_id, index)
+                    await self._try_call(self.device.recovery_map, selected_map.map_id, index)
                     if selected_map
                     else None
                 )
             else:
-                map_data = await self.hass.async_add_executor_job(self.device.recovery_map, self._map_id, index)
+                map_data = await self._try_call(self.device.recovery_map, self._map_id, index)
             if map_data:
                 if data:
                     return await self.hass.async_add_executor_job(self._map_data_json, map_data, include_resources)
                 else:
-                    map_data = await self.hass.async_add_executor_job(self.device.get_map_for_render, map_data)
+                    map_data = await self._try_call(self.device.get_map_for_render, map_data)
                     return await self._get_proxy_image(index, map_data, info_text, "recovery")
 
     async def wifi_map_data(self, data, include_resources):
@@ -939,7 +947,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                             self._map_data_json, map_data, include_resources
                         )
                     else:
-                        map_data = await self.hass.async_add_executor_job(self.device.get_map_for_render, map_data)
+                        map_data = await self._try_call(self.device.get_map_for_render, map_data)
                         return await self._get_proxy_image(
                             map_data.map_index if self.map_index == 0 else self.map_index,
                             map_data,
@@ -992,13 +1000,9 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 map_list = data.recovery_map_list
                 if map_list:
                     if file:
-                        return await self.hass.async_add_executor_job(
-                            self.device.recovery_map_file, data.map_id, recovery_index
-                        )
+                        return await self._try_call(self.device.recovery_map_file, data.map_id, recovery_index)
                     else:
-                        data = await self.hass.async_add_executor_job(
-                            self.device.recovery_map, data.map_id, recovery_index
-                        )
+                        data = await self._try_call(self.device.recovery_map, data.map_id, recovery_index)
                         if data:
                             return (
                                 await self.hass.async_add_executor_job(self._map_data_json, data, include_resources),
@@ -1114,7 +1118,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     def _segment_names(self) -> dict[int, str]:
         return {
             type_code: (
-                self._localize_entity_component("segment_name_placeholder", "Room {index}")
+                self._localize_entity_component("segment_name_placeholder", "Room %index%")
                 if type_code == 0
                 else self._localize_entity_state("select", "segment_name", name.lower().replace(" ", "_"), name)
             )

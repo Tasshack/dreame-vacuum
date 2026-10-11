@@ -2,10 +2,10 @@
 <div align="center">
 
 <hr>
-<img alt="Dreame Vacuum" src="https://dreame-vacuum.tasshack.com/logo.svg" width=400>
+<a href="https://dreame-vacuum.tasshack.com/"><img alt="Dreame Vacuum" src="https://dreame-vacuum.tasshack.com/logo.svg" width=400></a>
 <hr>
 
-<img src="https://dreame-vacuum.tasshack.com/dvc.png" width=480 />
+<a href="https://dreame-vacuum.tasshack.com/"><img alt="Dreame Vacuum" src="https://dreame-vacuum.tasshack.com/dvc.png" width=480 /></a>
 
 Complete app replacement with **Home Assistant** for **Dreame** robot vacuums.
 

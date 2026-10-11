@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Limpiando",
+          "docked": "En la base",
+          "error": "Error",
+          "idle": "Inactivo",
+          "paused": "En pausa",
+          "returning": "Volviendo a la base"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Nivel de succión",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Aviso de poco agua",
         "state": {
+          "unknown": "Desconocido",
           "no_warning": "Sin advertencias",
           "no_water_left": "El agua en el tanque de agua limpia está a punto de agotarse. Verifique y llene el tanque de agua limpia prontamente.",
           "no_water_left_after_clean": "La almohadilla de la mopa ha sido limpiada. Detectado que el agua en el tanque de agua limpia es insuficiente, por favor llene el tanque de agua limpia y vacíe el tanque de agua usada.",
@@ -1297,8 +1306,8 @@
           "pet": "Mascota",
           "cleaning_tools": "Herramientas de limpieza",
           "detected_stain": "Mancha",
-          "blocked_room": "Muebles propensos a atascar el robot",
-          "easy_to_stuck_furniture": "Muebles propensos a atascar el robot",
+          "blocked_room": "Habitación desatendida",
+          "easy_to_stuck_furniture": "Muebles con riesgo de atasco",
           "uncleanable_stain": "Mancha",
           "leg": "Pata",
           "large_particles": "Partículas grandes",
@@ -1513,7 +1522,7 @@
           "error": "Error",
           "remote_control": "Controlando de format remota",
           "sleeping": "Durmiendo",
-          "self_test": "Autoverificando",
+          "self_repair": "Autoverificando",
           "factory_test": "Testeando de fábrica",
           "standby": "En espera",
           "room_cleaning": "Limpiando habitación",
@@ -1634,6 +1643,8 @@
         "name": "Tipo de tarea",
         "state": {
           "standard": "Limpieza estándar",
+          "unknown": "Desconocido",
+          "idle": "Inactivo",
           "standard_paused": "Limpieza estándar pausada",
           "custom": "Limpieza personalizada",
           "custom_paused": "Limpieza personalizada pausada",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Estado de la cubierta del rodillo"
+      },
+      "problem": {
+        "name": "Problema",
+        "state_attributes": {
+          "type": {
+            "name": "Tipo",
+            "state": {
+              "error": "Error",
+              "warning": "Advertencia",
+              "low_water": "Agua baja",
+              "dock": "Estación"
+            }
+          },
+          "code": {
+            "name": "Código"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Mantenimiento",
+        "state_attributes": {
+          "items": {
+            "name": "Elementos"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Si el obstáculo es ignorado o no."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "No se pudo llamar a la acción: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "El robot ya está en la coordenada seleccionada"
+    },
+    "authentication_failed": {
+      "message": "Error de autenticación, vuelve a autenticarte"
+    },
+    "cloud_login_failed": {
+      "message": "No se pudo iniciar sesión en el dispositivo a través de la nube"
+    },
+    "cloud_required": {
+      "message": "{feature} requiere una conexión a la nube"
+    },
+    "cloud_unreachable": {
+      "message": "No se pudo descubrir el dispositivo a través de la nube"
+    },
+    "command_failed": {
+      "message": "El comando falló o no se pudo enviar al dispositivo"
+    },
+    "coordinate_outside_map": {
+      "message": "La coordenada ({x}, {y}) no está dentro del mapa"
+    },
+    "coordinate_required": {
+      "message": "Se requiere al menos una coordenada válida o guardada"
+    },
+    "device_disconnected": {
+      "message": "El dispositivo está desconectado"
+    },
+    "device_unavailable": {
+      "message": "El dispositivo no está disponible o no se puede alcanzar"
+    },
+    "entity_unavailable": {
+      "message": "La entidad no está disponible"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Asegúrate de que la mopa no esté instalada antes del mapeo rápido"
+    },
+    "follow_path_requires_camera": {
+      "message": "Seguir ruta solo funciona con la transmisión en vivo de la cámara"
+    },
+    "invalid_action": {
+      "message": "Acción o comando no válido: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Coordenadas no válidas: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Opción no válida para {parameter}: {value}. Opciones válidas: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Mapa de recuperación no válido {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Valor no válido para {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "La batería está demasiado baja, carga primero el aspirador"
+    },
+    "map_backup_in_progress": {
+      "message": "Ya hay una copia de seguridad del mapa en curso"
+    },
+    "map_recovery_failed": {
+      "message": "Error al recuperar el mapa: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Ya hay una recuperación del mapa en curso"
+    },
+    "map_select_failed": {
+      "message": "No se pudo seleccionar el mapa"
+    },
+    "max_rooms_reached": {
+      "message": "Se ha alcanzado el número máximo de habitaciones"
+    },
+    "missing_parameter": {
+      "message": "Falta un parámetro obligatorio: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} no encontrado: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} no es compatible con este dispositivo"
+    },
+    "property_not_updated": {
+      "message": "La propiedad {parameter} no se actualizó: {value}"
+    },
+    "start_failed": {
+      "message": "No se pudo iniciar {operation}"
+    },
+    "unavailable": {
+      "message": "{action} no está disponible"
+    },
+    "unavailable_on_current_map": {
+      "message": "Esta acción no está disponible en el mapa actual"
+    },
+    "unavailable_while_cruising": {
+      "message": "Esta acción no está disponible durante la ronda"
+    },
+    "unavailable_while_draining": {
+      "message": "Esta acción no está disponible durante el vaciado o la autorreparación/prueba"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Esta acción no está disponible durante el mapeo rápido"
+    },
+    "unavailable_while_running": {
+      "message": "Esta acción no está disponible mientras el aspirador está en funcionamiento"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Esta acción no está disponible mientras la base de autolavado está en funcionamiento"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Esta acción no está disponible mientras la limpieza personalizada está activada"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Esta acción no está disponible durante una limpieza programada o una tarea de acceso directo"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Esta acción no está disponible mientras hay un mapa temporal"
+    },
+    "unavailable_without_map": {
+      "message": "Esta acción no está disponible sin compatibilidad con mapas"
+    },
+    "unknown_action": {
+      "message": "Acción desconocida: {action}"
+    },
+    "update_failed": {
+      "message": "Error al actualizar el dispositivo: {error}"
+    },
+    "zone_too_small": {
+      "message": "La zona {zone} es más pequeña que el tamaño mínimo de zona ({width}, {height})"
     }
   }
 }

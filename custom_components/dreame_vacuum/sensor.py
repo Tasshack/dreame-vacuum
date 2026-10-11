@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from homeassistant.components.sensor import (
     ENTITY_ID_FORMAT,
@@ -27,13 +27,14 @@ from .const import (
     UNIT_DAYS,
 )
 from .dreame import (
+    ATTR_VALUE,
+    ATTR_ROOM_ID,
+    ATTR_ROOM_ICON,
+    ATTR_ROOM_NAME,
     DreameVacuumProperty,
     DreameVacuumRelocationStatus,
     DreameVacuumStreamStatus,
 )
-from .dreame.const import ATTR_VALUE
-from .dreame.types import ATTR_ROOM_ID, ATTR_ROOM_ICON, ATTR_ROOM_NAME
-
 from .coordinator import DreameVacuumDataUpdateCoordinator
 from .entity import DreameVacuumEntity, DreameVacuumEntityDescription, remove_entities
 
@@ -161,10 +162,20 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
             if device.status.has_error
             else "mdi:alert-outline" if device.status.has_warning else "mdi:check-circle-outline"
         ),
-        attrs_fn=lambda device: {
-            ATTR_VALUE: device.status.error,
-            "faults": device.status.faults,
-            "description": device.status.error_name,
+        attrs_fn=lambda entity: {
+            ATTR_VALUE: entity.device.status.error,
+            "faults": entity.device.status.faults,
+            "description": (
+                description.split("\n", 1)[1]
+                if "\n"
+                in (
+                    description := entity.coordinator.localize(
+                        f"entity.sensor.error.state_attributes.description.state.{entity.device.status.error_name}",
+                        entity.device.status.error_name,
+                    )
+                )
+                else description
+            ),
         },
     ),
     DreameVacuumSensorEntityDescription(
@@ -316,7 +327,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.SQUEEGEE_TIME_LEFT,
         icon="mdi:squeegee",
-        native_unit_of_measurement=UNIT_DAYS,
+        native_unit_of_measurement=UNIT_HOURS,
         device_class=SensorDeviceClass.DURATION,
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
@@ -336,7 +347,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.ONBOARD_DIRTY_WATER_TANK_TIME_LEFT,
         icon="mdi:train-car-tank",
-        native_unit_of_measurement=UNIT_DAYS,
+        native_unit_of_measurement=UNIT_HOURS,
         device_class=SensorDeviceClass.DURATION,
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
@@ -353,7 +364,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.DIRTY_WATER_CHANNEL_DIRTY_TIME_LEFT,
         icon="mdi:cup",
-        native_unit_of_measurement=UNIT_DAYS,
+        native_unit_of_measurement=UNIT_HOURS,
         device_class=SensorDeviceClass.DURATION,
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
@@ -513,12 +524,14 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         icon="mdi:beer",
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: device.capability.self_wash_base
+        and device.capability.dock_status
         and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.DIRTY_WATER_TANK_STATUS,
         icon="mdi:glass-mug",
         exists_fn=lambda description, device: device.capability.self_wash_base
+        and device.capability.dock_status
         and DreameVacuumEntityDescription().exists_fn(description, device),
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
@@ -526,6 +539,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         property_key=DreameVacuumProperty.DUST_BAG_STATUS,
         icon="mdi:delete-circle-outline",
         exists_fn=lambda description, device: device.capability.auto_empty_base
+        and device.capability.dock_status
         and DreameVacuumEntityDescription().exists_fn(description, device),
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
@@ -533,6 +547,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         property_key=DreameVacuumProperty.DETERGENT_STATUS,
         icon="mdi:chart-bubble",
         exists_fn=lambda description, device: device.capability.self_wash_base
+        and device.capability.dock_status
         and not device.capability.no_detergent
         and DreameVacuumEntityDescription().exists_fn(description, device),
         entity_category=EntityCategory.DIAGNOSTIC,
@@ -565,10 +580,10 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
             entity.device.status.current_room, entity.device.status.current_room.id
         ),
         exists_fn=lambda description, device: device.capability.map and device.capability.lidar_navigation,
-        attrs_fn=lambda device: {
-            ATTR_ROOM_ID: device.status.current_room.id,
-            ATTR_ROOM_ICON: device.status.current_room.icon,
-            ATTR_ROOM_NAME: device.status.current_room.name,
+        attrs_fn=lambda entity: {
+            ATTR_ROOM_ID: entity.device.status.current_room.id,
+            ATTR_ROOM_ICON: entity.device.status.current_room.icon,
+            ATTR_ROOM_NAME: entity.device.status.current_room.name,
         },
     ),
     DreameVacuumSensorEntityDescription(
@@ -577,7 +592,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.TIMESTAMP,
         value_fn=lambda value, entity: entity.device.status.last_cleaning_time,
         exists_fn=lambda description, device: device.capability.map,
-        attrs_fn=lambda device: device.status.cleaning_history,
+        attrs_fn=lambda entity: entity.device.status.cleaning_history,
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
     DreameVacuumSensorEntityDescription(
@@ -586,7 +601,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.TIMESTAMP,
         value_fn=lambda value, entity: entity.device.status.last_cruising_time,
         exists_fn=lambda description, device: device.capability.map and device.capability.cruising,
-        attrs_fn=lambda device: device.status.cruising_history,
+        attrs_fn=lambda entity: entity.device.status.cruising_history,
         entity_category=EntityCategory.DIAGNOSTIC,
     ),
     DreameVacuumSensorEntityDescription(

@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Curățare",
+          "docked": "Andocat",
+          "error": "Eroare",
+          "idle": "Inactiv",
+          "paused": "În pauză",
+          "returning": "În curs de întoarcere la doc"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Putere de aspirare",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Avertizare nivel scăzut apă",
         "state": {
+          "unknown": "Necunoscut",
           "no_warning": "Nicio avertizare",
           "no_water_left": "Apa din rezervorul de apă curată este pe cale să se termine. Verificați și umpleți rezervorul de apă curată prompt.",
           "no_water_left_after_clean": "Mopul a fost curățat. S-a detectat că apa din rezervorul de apă curată este insuficientă, vă rugăm să umpleți rezervorul de apă curată și să goliți rezervorul de apă uzată.",
@@ -1297,8 +1306,8 @@
           "pet": "Animal de companie",
           "cleaning_tools": "Instrumente de curățare",
           "detected_stain": "Pete",
-          "blocked_room": "Mobilier predispus la blocarea robotului",
-          "easy_to_stuck_furniture": "Mobilier predispus la blocarea robotului",
+          "blocked_room": "Cameră neglijată",
+          "easy_to_stuck_furniture": "Mobilier cu risc de blocare",
           "uncleanable_stain": "Pete",
           "leg": "Picior",
           "large_particles": "Particule mari",
@@ -1513,7 +1522,7 @@
           "error": "Eroare",
           "remote_control": "Control de la distanță",
           "sleeping": "Dormire",
-          "self_test": "Autotestare",
+          "self_repair": "Autotestare",
           "factory_test": "Testare din fabrică",
           "standby": "În așteptare",
           "room_cleaning": "Curățare cameră",
@@ -1634,6 +1643,8 @@
         "name": "Tip sarcină",
         "state": {
           "standard": "Curățare standard",
+          "unknown": "Necunoscut",
+          "idle": "Inactiv",
           "standard_paused": "Curățare standard în pauză",
           "custom": "Curățare personalizată",
           "custom_paused": "Curățare personalizată în pauză",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Stare capac rolă"
+      },
+      "problem": {
+        "name": "Problemă",
+        "state_attributes": {
+          "type": {
+            "name": "Tip",
+            "state": {
+              "error": "Eroare",
+              "warning": "Avertisment",
+              "low_water": "Nivel scăzut al apei",
+              "dock": "Stație"
+            }
+          },
+          "code": {
+            "name": "Cod"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Întreținere",
+        "state_attributes": {
+          "items": {
+            "name": "Elemente"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Obstacolul este ignorat sau nu."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Nu s-a putut apela acțiunea: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robotul se află deja la coordonata selectată"
+    },
+    "authentication_failed": {
+      "message": "Autentificarea a eșuat, vă rugăm să vă autentificați din nou"
+    },
+    "cloud_login_failed": {
+      "message": "Nu s-a putut face autentificarea la dispozitiv prin cloud"
+    },
+    "cloud_required": {
+      "message": "{feature} necesită o conexiune la cloud"
+    },
+    "cloud_unreachable": {
+      "message": "Nu s-a putut descoperi dispozitivul prin cloud"
+    },
+    "command_failed": {
+      "message": "Comanda a eșuat sau nu a putut fi trimisă către dispozitiv"
+    },
+    "coordinate_outside_map": {
+      "message": "Coordonata ({x}, {y}) nu se află în interiorul hărții"
+    },
+    "coordinate_required": {
+      "message": "Este necesară cel puțin o coordonată validă sau salvată"
+    },
+    "device_disconnected": {
+      "message": "Dispozitivul este deconectat"
+    },
+    "device_unavailable": {
+      "message": "Dispozitivul nu este disponibil sau nu poate fi contactat"
+    },
+    "entity_unavailable": {
+      "message": "Entitatea nu este disponibilă"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Asigurați-vă că mopul nu este instalat înainte de cartografierea rapidă"
+    },
+    "follow_path_requires_camera": {
+      "message": "Urmărirea traseului funcționează doar cu transmisia live a camerei"
+    },
+    "invalid_action": {
+      "message": "Acțiune sau comandă nevalidă: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Coordonate nevalide: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Opțiune nevalidă pentru {parameter}: {value}. Opțiuni valide: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Hartă de recuperare nevalidă {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Valoare nevalidă pentru {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Bateria este prea descărcată, încărcați mai întâi aspiratorul"
+    },
+    "map_backup_in_progress": {
+      "message": "O copie de rezervă a hărții este deja în curs"
+    },
+    "map_recovery_failed": {
+      "message": "Recuperarea hărții a eșuat: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "O recuperare a hărții este deja în curs"
+    },
+    "map_select_failed": {
+      "message": "Selectarea hărții a eșuat"
+    },
+    "max_rooms_reached": {
+      "message": "Numărul maxim de camere a fost atins"
+    },
+    "missing_parameter": {
+      "message": "Lipsește un parametru obligatoriu: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} nu a fost găsit: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} nu este acceptat pe acest dispozitiv"
+    },
+    "property_not_updated": {
+      "message": "Proprietatea {parameter} nu a fost actualizată: {value}"
+    },
+    "start_failed": {
+      "message": "Pornirea {operation} a eșuat"
+    },
+    "unavailable": {
+      "message": "{action} nu este disponibil"
+    },
+    "unavailable_on_current_map": {
+      "message": "Această acțiune nu este disponibilă pe harta curentă"
+    },
+    "unavailable_while_cruising": {
+      "message": "Această acțiune nu este disponibilă în timpul patrulării"
+    },
+    "unavailable_while_draining": {
+      "message": "Această acțiune nu este disponibilă în timpul golirii sau al autoreparării/testării"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Această acțiune nu este disponibilă în timpul cartografierii rapide"
+    },
+    "unavailable_while_running": {
+      "message": "Această acțiune nu este disponibilă cât timp aspiratorul funcționează"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Această acțiune nu este disponibilă cât timp stația de autocurățare funcționează"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Această acțiune nu este disponibilă cât timp curățarea personalizată este activată"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Această acțiune nu este disponibilă în timpul unei curățări programate sau al unei sarcini de comandă rapidă"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Această acțiune nu este disponibilă cât timp există o hartă temporară"
+    },
+    "unavailable_without_map": {
+      "message": "Această acțiune nu este disponibilă fără suport pentru hărți"
+    },
+    "unknown_action": {
+      "message": "Acțiune necunoscută: {action}"
+    },
+    "update_failed": {
+      "message": "Actualizarea dispozitivului a eșuat: {error}"
+    },
+    "zone_too_small": {
+      "message": "Zona {zone} este mai mică decât dimensiunea minimă a zonei ({width}, {height})"
     }
   }
 }

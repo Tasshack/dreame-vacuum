@@ -4,12 +4,25 @@ from __future__ import annotations
 
 from homeassistant.core import callback
 
-from .dreame import DreameVacuumProperty, DreameVacuumAutoSwitchProperty, DreameVacuumAIProperty
-from .dreame.const import (
+from .dreame import (
+    DreameVacuumProperty,
+    DreameVacuumAutoSwitchProperty,
+    DreameVacuumAIProperty,
+    ATTR_ROBOT_POSITION,
+    ATTR_ROOM_ICON,
+    ATTR_ROTATION,
+    ATTR_UPDATED,
+    ATTR_FRAME_ID,
+    ATTR_TIMING_CLEAN,
+    ATTR_STARTUP_METHOD,
+    ATTR_CURRENT_MOP_TYPE,
     ATTR_ROOMS,
     ATTR_MAPS,
     ATTR_MAP_COUNT,
     ATTR_CURRENT_SEGMENT,
+    ATTR_SKIPPED_SEGMENTS,
+    ATTR_COMPLETED_SEGMENTS,
+    ATTR_SKIP_AREA_AVAILABLE,
     ATTR_SELECTED_MAP,
     ATTR_SELECTED_MAP_ID,
     ATTR_SELECTED_MAP_INDEX,
@@ -76,14 +89,6 @@ from .dreame.const import (
     ATTR_FAULTS,
     ATTR_HAS_ERROR,
     ATTR_SHORTCUT_TASK,
-)
-
-from .dreame.types import (
-    ATTR_ROBOT_POSITION,
-    ATTR_ROOM_ICON,
-    ATTR_ROTATION,
-    ATTR_UPDATED,
-    ATTR_FRAME_ID,
 )
 
 CAMERA_UNRECORDED_ATTRIBUTES = {
@@ -111,6 +116,9 @@ CAMERA_UNRECORDED_ATTRIBUTES = {
 
 VACUUM_UNRECORDED_ATTRIBUTES = {
     ATTR_CURRENT_SEGMENT,
+    ATTR_SKIPPED_SEGMENTS,
+    ATTR_COMPLETED_SEGMENTS,
+    ATTR_SKIP_AREA_AVAILABLE,
     ATTR_SELECTED_MAP,
     ATTR_SELECTED_MAP_ID,
     ATTR_SELECTED_MAP_INDEX,
@@ -170,6 +178,9 @@ VACUUM_UNRECORDED_ATTRIBUTES = {
     ATTR_HAS_ERROR,
     ATTR_MAPS,
     ATTR_MAP_COUNT,
+    ATTR_TIMING_CLEAN,
+    ATTR_STARTUP_METHOD,
+    ATTR_CURRENT_MOP_TYPE,
     "fan_speed_list",
     "fan_speed",
     "battery_level",
@@ -313,6 +324,7 @@ VACUUM_UNRECORDED_ATTRIBUTES = {
     DreameVacuumProperty.DYNAMIC_OBSTACLE_CLEANING.name.lower(),
     DreameVacuumProperty.PRESSURIZED_CLEANING.name.lower(),
     DreameVacuumProperty.AUTO_EMPTY_AREA.name.lower(),
+    DreameVacuumProperty.TASK_TYPE.name.lower(),
     DreameVacuumAIProperty.AI_OBSTACLE_DETECTION.name.lower(),
     DreameVacuumAIProperty.AI_PET_DETECTION.name.lower(),
     DreameVacuumAIProperty.AI_OBSTACLE_PICTURE.name.lower(),

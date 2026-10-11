@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Membersih",
+          "docked": "Di dok",
+          "error": "Ralat",
+          "idle": "Melahu",
+          "paused": "Dijeda",
+          "returning": "Kembali ke dok"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Kuasa sedutan",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Amaran Air Rendah",
         "state": {
+          "unknown": "Tidak diketahui",
           "no_warning": "Tiada amaran",
           "no_water_left": "Air dalam tangki air bersih hampir habis. Periksa dan isikan tangki air bersih dengan segera.",
           "no_water_left_after_clean": "Pad mop telah dicuci. Dikesan bahawa air dalam tangki air bersih tidak mencukupi, sila isi tangki air bersih dan kosongkan tangki air terpakai.",
@@ -1297,8 +1306,8 @@
           "pet": "Haiwan kesayangan",
           "cleaning_tools": "Alat membersih",
           "detected_stain": "Kesan kotoran",
-          "blocked_room": "Perabot cenderung untuk menyebabkan robot tersekat",
-          "easy_to_stuck_furniture": "Perabot cenderung untuk menyebabkan robot tersekat",
+          "blocked_room": "Bilik terabai",
+          "easy_to_stuck_furniture": "Perabot mudah tersekat",
           "uncleanable_stain": "Kesan kotoran",
           "leg": "Kaki",
           "large_particles": "Partikel Besar",
@@ -1513,7 +1522,7 @@
           "error": "Ralat",
           "remote_control": "Kawalan jauh",
           "sleeping": "Tidur",
-          "self_test": "Ujian kendiri",
+          "self_repair": "Ujian kendiri",
           "factory_test": "Ujian kilang",
           "standby": "Sedia",
           "room_cleaning": "Pembersihan bilik",
@@ -1634,6 +1643,8 @@
         "name": "Jenis Tugas",
         "state": {
           "standard": "Pembersihan standard",
+          "unknown": "Tidak diketahui",
+          "idle": "Melahu",
           "standard_paused": "Pembersihan standard dijeda",
           "custom": "Pembersihan tersuai",
           "custom_paused": "Pembersihan tersuai dijeda",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Status penutup penggelek"
+      },
+      "problem": {
+        "name": "Masalah",
+        "state_attributes": {
+          "type": {
+            "name": "Jenis",
+            "state": {
+              "error": "Ralat",
+              "warning": "Amaran",
+              "low_water": "Air rendah",
+              "dock": "Stesen"
+            }
+          },
+          "code": {
+            "name": "Kod"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Penyelenggaraan",
+        "state_attributes": {
+          "items": {
+            "name": "Item"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Halangan diabaikan atau tidak."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Tidak dapat memanggil tindakan: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robot sudah berada pada koordinat yang dipilih"
+    },
+    "authentication_failed": {
+      "message": "Pengesahan gagal, sila sahkan semula"
+    },
+    "cloud_login_failed": {
+      "message": "Tidak dapat log masuk ke peranti melalui awan"
+    },
+    "cloud_required": {
+      "message": "{feature} memerlukan sambungan awan"
+    },
+    "cloud_unreachable": {
+      "message": "Tidak dapat menemui peranti melalui awan"
+    },
+    "command_failed": {
+      "message": "Arahan gagal atau tidak dapat dihantar ke peranti"
+    },
+    "coordinate_outside_map": {
+      "message": "Koordinat ({x}, {y}) tidak berada di dalam peta"
+    },
+    "coordinate_required": {
+      "message": "Sekurang-kurangnya satu koordinat yang sah atau tersimpan diperlukan"
+    },
+    "device_disconnected": {
+      "message": "Peranti terputus sambungan"
+    },
+    "device_unavailable": {
+      "message": "Peranti tidak tersedia atau tidak dapat dicapai"
+    },
+    "entity_unavailable": {
+      "message": "Entiti tidak tersedia"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Sila pastikan pad mop tidak dipasang sebelum pemetaan pantas"
+    },
+    "follow_path_requires_camera": {
+      "message": "Ikut laluan hanya berfungsi dengan penstriman kamera langsung"
+    },
+    "invalid_action": {
+      "message": "Tindakan atau arahan tidak sah: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Koordinat tidak sah: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Pilihan tidak sah untuk {parameter}: {value}. Pilihan yang sah: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Peta pemulihan tidak sah {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Nilai tidak sah untuk {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Bateri terlalu rendah, cas pembersih hampagas dahulu"
+    },
+    "map_backup_in_progress": {
+      "message": "Sandaran peta sedang dijalankan"
+    },
+    "map_recovery_failed": {
+      "message": "Pemulihan peta gagal: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Pemulihan peta sedang dijalankan"
+    },
+    "map_select_failed": {
+      "message": "Gagal memilih peta"
+    },
+    "max_rooms_reached": {
+      "message": "Bilangan bilik maksimum telah dicapai"
+    },
+    "missing_parameter": {
+      "message": "Parameter yang diperlukan tiada: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} tidak ditemui: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} tidak disokong pada peranti ini"
+    },
+    "property_not_updated": {
+      "message": "Sifat {parameter} tidak dikemas kini: {value}"
+    },
+    "start_failed": {
+      "message": "Gagal memulakan {operation}"
+    },
+    "unavailable": {
+      "message": "{action} tidak tersedia"
+    },
+    "unavailable_on_current_map": {
+      "message": "Tindakan ini tidak tersedia pada peta semasa"
+    },
+    "unavailable_while_cruising": {
+      "message": "Tindakan ini tidak tersedia semasa rondaan"
+    },
+    "unavailable_while_draining": {
+      "message": "Tindakan ini tidak tersedia semasa pengaliran keluar atau pembaikan kendiri/ujian"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Tindakan ini tidak tersedia semasa pemetaan pantas"
+    },
+    "unavailable_while_running": {
+      "message": "Tindakan ini tidak tersedia semasa pembersih hampagas sedang berjalan"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Tindakan ini tidak tersedia semasa pangkalan basuh kendiri sedang berjalan"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Tindakan ini tidak tersedia semasa pembersihan tersuai didayakan"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Tindakan ini tidak tersedia semasa pembersihan berjadual atau tugas pintasan"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Tindakan ini tidak tersedia semasa peta sementara wujud"
+    },
+    "unavailable_without_map": {
+      "message": "Tindakan ini tidak tersedia tanpa sokongan peta"
+    },
+    "unknown_action": {
+      "message": "Tindakan tidak diketahui: {action}"
+    },
+    "update_failed": {
+      "message": "Gagal mengemas kini peranti: {error}"
+    },
+    "zone_too_small": {
+      "message": "Zon {zone} lebih kecil daripada saiz zon minimum ({width}, {height})"
     }
   }
 }

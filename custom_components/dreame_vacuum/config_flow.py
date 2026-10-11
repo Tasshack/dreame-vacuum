@@ -1,13 +1,12 @@
 """Config flow for Dreame Vacuum."""
 
 from __future__ import annotations
-from typing import Any, Final
+from typing import Any
 import re
 import zlib
 import base64
 import json
 import voluptuous as vol
-import homeassistant.helpers.config_validation as cv
 from collections.abc import Mapping
 from homeassistant.const import (
     CONF_NAME,
@@ -26,6 +25,7 @@ from homeassistant.config_entries import (
     OptionsFlow,
 )
 
+from . import frontend
 from .dreame import DreameVacuumProtocol, MAP_COLOR_SCHEME_LIST, MAP_ICON_SET_LIST, DEVICE_INFO, VERSION
 from .const import (
     DOMAIN,
@@ -44,7 +44,6 @@ from .const import (
     CONF_SQUARE,
     CONF_VERSION,
     CONF_DVC_KEY,
-    DVC,
     MAP_OBJECTS,
     NOTIFICATION,
 )
@@ -85,11 +84,15 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         """Manage Dreame Vacuum options."""
         errors = {}
+        dvc = frontend is not None or bool(self._config_entry.options.get(CONF_DVC_KEY))
         if user_input is not None:
-            key = (user_input.get(CONF_DVC_KEY) or "").strip().lower()
-            user_input[CONF_DVC_KEY] = key
-            if key and not re.fullmatch(r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}", key):
-                errors["base"] = "invalid_key"
+            if dvc:
+                key = (user_input.get(CONF_DVC_KEY) or "").strip().lower()
+                user_input[CONF_DVC_KEY] = key
+                if key and not re.fullmatch(
+                    r"[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}", key
+                ):
+                    errors["base"] = "invalid_key"
 
             if CONF_COLOR_SCHEME in user_input:
                 user_input[CONF_COLOR_SCHEME] = COLOR_SCHEME_KEYS[user_input[CONF_COLOR_SCHEME]]
@@ -109,16 +112,21 @@ class DreameVacuumOptionsFlowHandler(OptionsFlow):
         data_schema = vol.Schema(
             {
                 vol.Required(CONF_NOTIFY, default=notify): SelectSelector(SelectSelectorConfig(options=NOTIFICATION, multiple=True, translation_key='notifications')),
-                vol.Optional(
-                    CONF_DVC_KEY,
-                    default=(
-                        user_input.get(CONF_DVC_KEY, "")
-                        if user_input
-                        else self._config_entry.options.get(CONF_DVC_KEY, "")
-                    ),
-                ): str,
             }
         )
+        if dvc:
+            data_schema = data_schema.extend(
+                {
+                    vol.Optional(
+                        CONF_DVC_KEY,
+                        default=(
+                            user_input.get(CONF_DVC_KEY, "")
+                            if user_input
+                            else self._config_entry.options.get(CONF_DVC_KEY, "")
+                        ),
+                    ): str,
+                }
+            )
         if self._config_entry.data[CONF_USERNAME]:
             data_schema = data_schema.extend(
                 {
@@ -639,6 +647,8 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 CONF_PREFER_CLOUD: self.prefer_cloud,
             }
 
+            if frontend is None:
+                return await self.async_step_dvc({})
             return await self.async_step_dvc()
 
         data_schema = vol.Schema(
@@ -713,6 +723,8 @@ class DreameVacuumFlowHandler(ConfigFlow, domain=DOMAIN):
                 },
                 options=self.options,
             )
+
+        from .const import DVC
 
         return self.async_show_form(
             step_id="dvc",

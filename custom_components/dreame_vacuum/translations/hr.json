@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Čišćenje",
+          "docked": "Na postaji",
+          "error": "Greška",
+          "idle": "U mirovanju",
+          "paused": "Pauzirano",
+          "returning": "Povratak na postaju"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Snaga usisavanja",
@@ -1177,7 +1185,6 @@
             }
           }
         }
-
       },
       "filter_left": {
         "name": "Filtarski element"
@@ -1211,6 +1218,7 @@
       "low_water_warning": {
         "name": "Upozorenje na nisku razinu vode",
         "state": {
+          "unknown": "Nepoznato",
           "no_warning": "Nema upozorenja",
           "no_water_left": "Voda u spremniku čiste vode će se uskoro potrošiti. Provjerite i napunite spremnik.",
           "no_water_left_after_clean": "Krpa je očišćena. Otkriveno je da je voda u spremniku nedostatna, molimo napunite spremnik čiste vode i ispraznite prljavu vodu.",
@@ -1298,8 +1306,8 @@
           "pet": "Kućni ljubimac",
           "cleaning_tools": "Alati za čišćenje",
           "detected_stain": "Otkrivena mrlja",
-          "blocked_room": "Blokirana soba",
-          "easy_to_stuck_furniture": "Namještaj gdje se lako zaglavi",
+          "blocked_room": "Zanemarena soba",
+          "easy_to_stuck_furniture": "Namještaj gdje se zaglavi",
           "uncleanable_stain": "Mrlja koja se ne može očistiti",
           "leg": "Noga stolice/stola",
           "large_particles": "Velike čestice",
@@ -1514,7 +1522,7 @@
           "error": "Greška",
           "remote_control": "Daljinski upravljač",
           "sleeping": "Spavanje",
-          "self_test": "Samotestiranje",
+          "self_repair": "Samotestiranje",
           "factory_test": "Tvornički test",
           "standby": "U pripravnosti",
           "room_cleaning": "Čišćenje sobe",
@@ -1635,6 +1643,8 @@
         "name": "Vrsta zadatka",
         "state": {
           "standard": "Standardno čišćenje",
+          "unknown": "Nepoznato",
+          "idle": "U mirovanju",
           "standard_paused": "Standardno čišćenje pauzirano",
           "custom": "Prilagođeno čišćenje",
           "custom_paused": "Prilagođeno čišćenje pauzirano",
@@ -2076,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Status poklopca valjka"
+      },
+      "problem": {
+        "name": "Problem",
+        "state_attributes": {
+          "type": {
+            "name": "Vrsta",
+            "state": {
+              "error": "Greška",
+              "warning": "Upozorenje",
+              "low_water": "Malo vode",
+              "dock": "Postaja"
+            }
+          },
+          "code": {
+            "name": "Kod"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Održavanje",
+        "state_attributes": {
+          "items": {
+            "name": "Elementi"
+          }
+        }
       }
     },
     "number": {
@@ -2952,6 +2987,140 @@
           "description": "Zanemarena prepreka ili ne."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Nije moguće pozvati radnju: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robot je već na odabranoj koordinati"
+    },
+    "authentication_failed": {
+      "message": "Autentifikacija nije uspjela, autentificirajte se ponovno"
+    },
+    "cloud_login_failed": {
+      "message": "Nije moguće prijaviti se na uređaj putem oblaka"
+    },
+    "cloud_required": {
+      "message": "{feature} zahtijeva vezu s oblakom"
+    },
+    "cloud_unreachable": {
+      "message": "Nije moguće pronaći uređaj putem oblaka"
+    },
+    "command_failed": {
+      "message": "Naredba nije uspjela ili se nije mogla poslati uređaju"
+    },
+    "coordinate_outside_map": {
+      "message": "Koordinata ({x}, {y}) nije unutar karte"
+    },
+    "coordinate_required": {
+      "message": "Potrebna je barem jedna valjana ili spremljena koordinata"
+    },
+    "device_disconnected": {
+      "message": "Uređaj je isključen"
+    },
+    "device_unavailable": {
+      "message": "Uređaj nije dostupan ili nije moguće doći do njega"
+    },
+    "entity_unavailable": {
+      "message": "Entitet nije dostupan"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Provjerite da mop nije postavljen prije brzog mapiranja"
+    },
+    "follow_path_requires_camera": {
+      "message": "Praćenje putanje radi samo uz prijenos uživo s kamere"
+    },
+    "invalid_action": {
+      "message": "Neispravna radnja ili naredba: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Neispravne koordinate: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Neispravna opcija za {parameter}: {value}. Valjane opcije: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Neispravna karta za oporavak {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Neispravna vrijednost za {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Baterija je preslaba, prvo napunite usisavač"
+    },
+    "map_backup_in_progress": {
+      "message": "Sigurnosna kopija karte već je u tijeku"
+    },
+    "map_recovery_failed": {
+      "message": "Oporavak karte nije uspio: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Oporavak karte već je u tijeku"
+    },
+    "map_select_failed": {
+      "message": "Odabir karte nije uspio"
+    },
+    "max_rooms_reached": {
+      "message": "Dosegnut je maksimalan broj soba"
+    },
+    "missing_parameter": {
+      "message": "Nedostaje obavezan parametar: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} nije pronađen: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} nije podržano na ovom uređaju"
+    },
+    "property_not_updated": {
+      "message": "Svojstvo {parameter} nije ažurirano: {value}"
+    },
+    "start_failed": {
+      "message": "Pokretanje {operation} nije uspjelo"
+    },
+    "unavailable": {
+      "message": "{action} nije dostupno"
+    },
+    "unavailable_on_current_map": {
+      "message": "Ova radnja nije dostupna na trenutnoj karti"
+    },
+    "unavailable_while_cruising": {
+      "message": "Ova radnja nije dostupna tijekom obilaska"
+    },
+    "unavailable_while_draining": {
+      "message": "Ova radnja nije dostupna tijekom pražnjenja ili samopopravka/testiranja"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Ova radnja nije dostupna tijekom brzog mapiranja"
+    },
+    "unavailable_while_running": {
+      "message": "Ova radnja nije dostupna dok usisavač radi"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Ova radnja nije dostupna dok stanica za samopranje radi"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Ova radnja nije dostupna dok je uključeno prilagođeno čišćenje"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Ova radnja nije dostupna tijekom planiranog čišćenja ili zadatka prečaca"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Ova radnja nije dostupna dok postoji privremena karta"
+    },
+    "unavailable_without_map": {
+      "message": "Ova radnja nije dostupna bez podrške za karte"
+    },
+    "unknown_action": {
+      "message": "Nepoznata radnja: {action}"
+    },
+    "update_failed": {
+      "message": "Ažuriranje uređaja nije uspjelo: {error}"
+    },
+    "zone_too_small": {
+      "message": "Zona {zone} manja je od minimalne veličine zone ({width}, {height})"
     }
   }
 }

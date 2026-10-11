@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "מנקה",
+          "docked": "בתחנת עגינה",
+          "error": "שגיאה",
+          "idle": "מצב סרק",
+          "paused": "מושהה",
+          "returning": "חוזר לתחנת עגינה"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "עוצמת שאיבה",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "אזהרת מים נמוכה",
         "state": {
+          "unknown": "לא ידוע",
           "no_warning": "אין אזהרה",
           "no_water_left": "המים במכל המים הנקיים עומדים להיגמר. בדקו ומלאו את מכל המים הנקיים בהקדם.",
           "no_water_left_after_clean": "משטח הניגוב נוקה. זוהה שאין מספיק מים במכל המים הנקיים, אנא מלאו את מכל המים הנקיים ורוקנו את מכל המים המשומשים.",
@@ -1297,8 +1306,8 @@
           "pet": "חיית מחמד",
           "cleaning_tools": "כלי ניקוי",
           "detected_stain": "כתם",
-          "blocked_room": "ריהוט שנוטה לתקוע את הרובוט",
-          "easy_to_stuck_furniture": "ריהוט שנוטה לתקוע את הרובוט",
+          "blocked_room": "חדר שלא נוקה",
+          "easy_to_stuck_furniture": "ריהוט שתוקע את הרובוט",
           "uncleanable_stain": "כתם",
           "leg": "רגל שולחן/כיסא",
           "large_particles": "חלקיקים גדולים",
@@ -1513,7 +1522,7 @@
           "error": "שגיאה",
           "remote_control": "שלט רחוק",
           "sleeping": "ישן",
-          "self_test": "בדיקה עצמית",
+          "self_repair": "בדיקה עצמית",
           "factory_test": "בדיקת יצרן",
           "standby": "במצב המתנה",
           "room_cleaning": "ניקוי חדר",
@@ -1634,6 +1643,8 @@
         "name": "סוג משימה",
         "state": {
           "standard": "ניקוי רגיל",
+          "unknown": "לא ידוע",
+          "idle": "בהמתנה",
           "standard_paused": "ניקוי רגיל הושהה",
           "custom": "ניקוי מותאם אישית",
           "custom_paused": "ניקוי מותאם אישית הושהה",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "מצב מכסה רולר"
+      },
+      "problem": {
+        "name": "תקלה",
+        "state_attributes": {
+          "type": {
+            "name": "סוג",
+            "state": {
+              "error": "שגיאה",
+              "warning": "אזהרה",
+              "low_water": "מים מועטים",
+              "dock": "תחנה"
+            }
+          },
+          "code": {
+            "name": "קוד"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "תחזוקה",
+        "state_attributes": {
+          "items": {
+            "name": "פריטים"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "האם להתעלם מהמכשול הספציפי או לא."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "לא ניתן לקרוא לפעולה: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "הרובוט כבר נמצא בקואורדינטה שנבחרה"
+    },
+    "authentication_failed": {
+      "message": "האימות נכשל, אנא בצע אימות מחדש"
+    },
+    "cloud_login_failed": {
+      "message": "לא ניתן להתחבר למכשיר דרך הענן"
+    },
+    "cloud_required": {
+      "message": "{feature} דורש חיבור לענן"
+    },
+    "cloud_unreachable": {
+      "message": "לא ניתן לאתר את המכשיר דרך הענן"
+    },
+    "command_failed": {
+      "message": "הפקודה נכשלה או שלא ניתן היה לשלוח אותה למכשיר"
+    },
+    "coordinate_outside_map": {
+      "message": "הקואורדינטה ({x}, {y}) אינה בתוך המפה"
+    },
+    "coordinate_required": {
+      "message": "נדרשת לפחות קואורדינטה תקפה או שמורה אחת"
+    },
+    "device_disconnected": {
+      "message": "המכשיר מנותק"
+    },
+    "device_unavailable": {
+      "message": "המכשיר אינו זמין או שאי אפשר להגיע אליו"
+    },
+    "entity_unavailable": {
+      "message": "הישות אינה זמינה"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "אנא ודא שרפידת הניגוב אינה מותקנת לפני מיפוי מהיר"
+    },
+    "follow_path_requires_camera": {
+      "message": "מעקב אחר נתיב עובד רק עם שידור חי מהמצלמה"
+    },
+    "invalid_action": {
+      "message": "פעולה או פקודה לא חוקית: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "קואורדינטות לא חוקיות: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "אפשרות לא חוקית עבור {parameter}: {value}. אפשרויות חוקיות: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "מפת שחזור לא חוקית {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "ערך לא חוקי עבור {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "הסוללה חלשה מדי, טען את השואב תחילה"
+    },
+    "map_backup_in_progress": {
+      "message": "גיבוי מפה כבר מתבצע"
+    },
+    "map_recovery_failed": {
+      "message": "שחזור המפה נכשל: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "שחזור מפה כבר מתבצע"
+    },
+    "map_select_failed": {
+      "message": "בחירת המפה נכשלה"
+    },
+    "max_rooms_reached": {
+      "message": "הגעת למספר החדרים המרבי"
+    },
+    "missing_parameter": {
+      "message": "חסר פרמטר נדרש: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} לא נמצא: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} אינו נתמך במכשיר זה"
+    },
+    "property_not_updated": {
+      "message": "המאפיין {parameter} לא עודכן: {value}"
+    },
+    "start_failed": {
+      "message": "הפעלת {operation} נכשלה"
+    },
+    "unavailable": {
+      "message": "{action} אינו זמין"
+    },
+    "unavailable_on_current_map": {
+      "message": "פעולה זו אינה זמינה במפה הנוכחית"
+    },
+    "unavailable_while_cruising": {
+      "message": "פעולה זו אינה זמינה בזמן סיור"
+    },
+    "unavailable_while_draining": {
+      "message": "פעולה זו אינה זמינה בזמן ריקון או תיקון עצמי/בדיקה"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "פעולה זו אינה זמינה בזמן מיפוי מהיר"
+    },
+    "unavailable_while_running": {
+      "message": "פעולה זו אינה זמינה בזמן שהשואב פועל"
+    },
+    "unavailable_while_self_wash": {
+      "message": "פעולה זו אינה זמינה בזמן שתחנת הניקוי העצמי פועלת"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "פעולה זו אינה זמינה בזמן שניקוי מותאם אישית מופעל"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "פעולה זו אינה זמינה במהלך ניקוי מתוזמן או משימת קיצור דרך"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "פעולה זו אינה זמינה בזמן שקיימת מפה זמנית"
+    },
+    "unavailable_without_map": {
+      "message": "פעולה זו אינה זמינה ללא תמיכה במפה"
+    },
+    "unknown_action": {
+      "message": "פעולה לא מוכרת: {action}"
+    },
+    "update_failed": {
+      "message": "עדכון המכשיר נכשל: {error}"
+    },
+    "zone_too_small": {
+      "message": "האזור {zone} קטן מגודל האזור המינימלי ({width}, {height})"
     }
   }
 }

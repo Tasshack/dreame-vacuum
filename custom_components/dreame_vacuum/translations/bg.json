@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Почистване",
+          "docked": "На док станцията",
+          "error": "Грешка",
+          "idle": "Празен ход",
+          "paused": "На пауза",
+          "returning": "Завръщане към док станцията"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Смукателна мощност",
@@ -1177,7 +1185,6 @@
             }
           }
         }
-
       },
       "filter_left": {
         "name": "Филтър"
@@ -1211,6 +1218,7 @@
       "low_water_warning": {
         "name": "Предупреждение за малко вода",
         "state": {
+          "unknown": "Неизвестен",
           "no_warning": "Няма предупреждение",
           "no_water_left": "Водата в резервоара за чиста вода е на път да свърши. Проверете и напълнете резервоара за чиста вода своевременно.",
           "no_water_left_after_clean": "Подложката за моп е почистена. Открито е, че водата в резервоара за чиста вода е недостатъчна, моля, напълнете резервоара за чиста вода и изпразнете резервоара за мръсна вода.",
@@ -1298,8 +1306,8 @@
           "pet": "Домашен любимец",
           "cleaning_tools": "Инструменти за почистване",
           "detected_stain": "Засечено петно",
-          "blocked_room": "Блокирана стая",
-          "easy_to_stuck_furniture": "Мебели, в които лесно се засяда",
+          "blocked_room": "Пропусната стая",
+          "easy_to_stuck_furniture": "Мебели с риск от засядане",
           "uncleanable_stain": "Непочистваемо петно",
           "leg": "Крак",
           "large_particles": "Големи частици",
@@ -1514,7 +1522,7 @@
           "error": "Грешка",
           "remote_control": "Дистанционно управление",
           "sleeping": "Спи",
-          "self_test": "Самопроверка",
+          "self_repair": "Самопроверка",
           "factory_test": "Фабричен тест",
           "standby": "В готовност",
           "room_cleaning": "Почистване на стая",
@@ -1635,6 +1643,8 @@
         "name": "Тип задача",
         "state": {
           "standard": "Стандартно почистване",
+          "unknown": "Неизвестен",
+          "idle": "В покой",
           "standard_paused": "Стандартното почистване е на пауза",
           "custom": "Персонализирано почистване",
           "custom_paused": "Персонализираното почистване е на пауза",
@@ -2076,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Състояние на капака на ролера"
+      },
+      "problem": {
+        "name": "Проблем",
+        "state_attributes": {
+          "type": {
+            "name": "Тип",
+            "state": {
+              "error": "Грешка",
+              "warning": "Предупреждение",
+              "low_water": "Малко вода",
+              "dock": "Станция"
+            }
+          },
+          "code": {
+            "name": "Код"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Поддръжка",
+        "state_attributes": {
+          "items": {
+            "name": "Елементи"
+          }
+        }
       }
     },
     "number": {
@@ -2952,6 +2987,140 @@
           "description": "Препятствието се игнорира или не."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Неуспешно извикване на действието: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Роботът вече е на избраната координата"
+    },
+    "authentication_failed": {
+      "message": "Неуспешно удостоверяване, моля удостоверете се отново"
+    },
+    "cloud_login_failed": {
+      "message": "Неуспешен вход в устройството през облака"
+    },
+    "cloud_required": {
+      "message": "{feature} изисква връзка с облака"
+    },
+    "cloud_unreachable": {
+      "message": "Устройството не може да бъде открито през облака"
+    },
+    "command_failed": {
+      "message": "Командата е неуспешна или не може да бъде изпратена до устройството"
+    },
+    "coordinate_outside_map": {
+      "message": "Координатата ({x}, {y}) не е в рамките на картата"
+    },
+    "coordinate_required": {
+      "message": "Необходима е поне една валидна или запазена координата"
+    },
+    "device_disconnected": {
+      "message": "Устройството е изключено от връзка"
+    },
+    "device_unavailable": {
+      "message": "Устройството не е налично или не може да бъде достигнато"
+    },
+    "entity_unavailable": {
+      "message": "Обектът не е наличен"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Моля, уверете се, че моп подложката не е поставена преди бързото картографиране"
+    },
+    "follow_path_requires_camera": {
+      "message": "Следването на път работи само с поточно предаване на живо от камерата"
+    },
+    "invalid_action": {
+      "message": "Невалидно действие или команда: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Невалидни координати: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Невалидна опция за {parameter}: {value}. Валидни опции: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Невалидна карта за възстановяване {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Невалидна стойност за {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Батерията е твърде слаба, първо заредете прахосмукачката"
+    },
+    "map_backup_in_progress": {
+      "message": "Архивирането на карта вече е в ход"
+    },
+    "map_recovery_failed": {
+      "message": "Възстановяването на картата е неуспешно: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Възстановяването на карта вече е в ход"
+    },
+    "map_select_failed": {
+      "message": "Неуспешен избор на картата"
+    },
+    "max_rooms_reached": {
+      "message": "Достигнат е максималният брой стаи"
+    },
+    "missing_parameter": {
+      "message": "Липсва задължителен параметър: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} не е намерен: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} не се поддържа от това устройство"
+    },
+    "property_not_updated": {
+      "message": "Свойството {parameter} не е обновено: {value}"
+    },
+    "start_failed": {
+      "message": "Неуспешно стартиране на {operation}"
+    },
+    "unavailable": {
+      "message": "{action} не е налично"
+    },
+    "unavailable_on_current_map": {
+      "message": "Това действие не е налично на текущата карта"
+    },
+    "unavailable_while_cruising": {
+      "message": "Това действие не е налично по време на обхождане"
+    },
+    "unavailable_while_draining": {
+      "message": "Това действие не е налично по време на източване или самоподдръжка/тестване"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Това действие не е налично по време на бързо картографиране"
+    },
+    "unavailable_while_running": {
+      "message": "Това действие не е налично, докато прахосмукачката работи"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Това действие не е налично, докато станцията за самопочистване работи"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Това действие не е налично, докато е включено персонализираното почистване"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Това действие не е налично по време на планирано почистване или задача от пряк път"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Това действие не е налично, докато има временна карта"
+    },
+    "unavailable_without_map": {
+      "message": "Това действие не е налично без поддръжка на карта"
+    },
+    "unknown_action": {
+      "message": "Неизвестно действие: {action}"
+    },
+    "update_failed": {
+      "message": "Неуспешно обновяване на устройството: {error}"
+    },
+    "zone_too_small": {
+      "message": "Зоната {zone} е по-малка от минималния размер на зона ({width}, {height})"
     }
   }
 }

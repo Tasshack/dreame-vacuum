@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Đang làm sạch",
+          "docked": "Đã về bệ sạc",
+          "error": "Lỗi",
+          "idle": "Nhàn rỗi",
+          "paused": "Đã tạm dừng",
+          "returning": "Đang trở lại bệ sạc"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Lực hút",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Cảnh báo nước thấp",
         "state": {
+          "unknown": "Không rõ",
           "no_warning": "Không có cảnh báo",
           "no_water_left": "Nước trong bình nước sạch sắp hết. Vui lòng kiểm tra và đổ đầy bình nước sạch kịp thời.",
           "no_water_left_after_clean": "Giẻ lau đã được làm sạch. Phát hiện nước trong bình nước sạch không đủ, vui lòng đổ đầy bình nước sạch và đổ bình nước bẩn.",
@@ -1297,8 +1306,8 @@
           "pet": "Vật nuôi",
           "cleaning_tools": "Công cụ làm sạch",
           "detected_stain": "Vết bẩn",
-          "blocked_room": "Đồ nội thất dễ làm rô-bốt mắc kẹt",
-          "easy_to_stuck_furniture": "Đồ nội thất dễ làm rô-bốt mắc kẹt",
+          "blocked_room": "Phòng bị bỏ quên",
+          "easy_to_stuck_furniture": "Nội thất dễ mắc kẹt",
           "uncleanable_stain": "Vết bẩn",
           "leg": "Chân gỗ",
           "large_particles": "Các hạt lớn",
@@ -1513,7 +1522,7 @@
           "error": "Lỗi",
           "remote_control": "Điều khiển từ xa",
           "sleeping": "Đang ngủ",
-          "self_test": "Tự kiểm tra",
+          "self_repair": "Tự kiểm tra",
           "factory_test": "Kiểm tra xuất xưởng",
           "standby": "Chờ",
           "room_cleaning": "Làm sạch phòng",
@@ -1634,6 +1643,8 @@
         "name": "Loại nhiệm vụ",
         "state": {
           "standard": "Làm sạch tiêu chuẩn",
+          "unknown": "Không rõ",
+          "idle": "Đang chờ",
           "standard_paused": "Tạm dừng làm sạch tiêu chuẩn",
           "custom": "Làm sạch tùy chỉnh",
           "custom_paused": "Tạm dừng làm sạch tùy chỉnh",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Trạng thái nắp che con lăn"
+      },
+      "problem": {
+        "name": "Sự cố",
+        "state_attributes": {
+          "type": {
+            "name": "Loại",
+            "state": {
+              "error": "Lỗi",
+              "warning": "Cảnh báo",
+              "low_water": "Nước thấp",
+              "dock": "Trạm"
+            }
+          },
+          "code": {
+            "name": "Mã"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Bảo trì",
+        "state_attributes": {
+          "items": {
+            "name": "Hạng mục"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Vật cản có bị bỏ qua hay không."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Không thể gọi hành động: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robot đã ở tại tọa độ được chọn"
+    },
+    "authentication_failed": {
+      "message": "Xác thực thất bại, vui lòng xác thực lại"
+    },
+    "cloud_login_failed": {
+      "message": "Không thể đăng nhập vào thiết bị qua đám mây"
+    },
+    "cloud_required": {
+      "message": "{feature} yêu cầu kết nối đám mây"
+    },
+    "cloud_unreachable": {
+      "message": "Không thể tìm thấy thiết bị qua đám mây"
+    },
+    "command_failed": {
+      "message": "Lệnh thất bại hoặc không thể gửi đến thiết bị"
+    },
+    "coordinate_outside_map": {
+      "message": "Tọa độ ({x}, {y}) không nằm trong bản đồ"
+    },
+    "coordinate_required": {
+      "message": "Cần ít nhất một tọa độ hợp lệ hoặc đã lưu"
+    },
+    "device_disconnected": {
+      "message": "Thiết bị đã bị ngắt kết nối"
+    },
+    "device_unavailable": {
+      "message": "Thiết bị không khả dụng hoặc không thể kết nối"
+    },
+    "entity_unavailable": {
+      "message": "Thực thể không khả dụng"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Vui lòng đảm bảo miếng lau chưa được lắp trước khi lập bản đồ nhanh"
+    },
+    "follow_path_requires_camera": {
+      "message": "Đi theo đường dẫn chỉ hoạt động với truyền phát camera trực tiếp"
+    },
+    "invalid_action": {
+      "message": "Hành động hoặc lệnh không hợp lệ: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Tọa độ không hợp lệ: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Tùy chọn không hợp lệ cho {parameter}: {value}. Các tùy chọn hợp lệ: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Bản đồ khôi phục không hợp lệ {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Giá trị không hợp lệ cho {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Pin quá yếu, hãy sạc robot hút bụi trước"
+    },
+    "map_backup_in_progress": {
+      "message": "Một bản sao lưu bản đồ đang được thực hiện"
+    },
+    "map_recovery_failed": {
+      "message": "Khôi phục bản đồ thất bại: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Một quá trình khôi phục bản đồ đang được thực hiện"
+    },
+    "map_select_failed": {
+      "message": "Chọn bản đồ thất bại"
+    },
+    "max_rooms_reached": {
+      "message": "Đã đạt số phòng tối đa"
+    },
+    "missing_parameter": {
+      "message": "Thiếu tham số bắt buộc: {parameter}"
+    },
+    "not_found": {
+      "message": "Không tìm thấy {item}: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} không được hỗ trợ trên thiết bị này"
+    },
+    "property_not_updated": {
+      "message": "Thuộc tính {parameter} chưa được cập nhật: {value}"
+    },
+    "start_failed": {
+      "message": "Không thể bắt đầu {operation}"
+    },
+    "unavailable": {
+      "message": "{action} không khả dụng"
+    },
+    "unavailable_on_current_map": {
+      "message": "Hành động này không khả dụng trên bản đồ hiện tại"
+    },
+    "unavailable_while_cruising": {
+      "message": "Hành động này không khả dụng khi đang tuần tra"
+    },
+    "unavailable_while_draining": {
+      "message": "Hành động này không khả dụng khi đang xả nước hoặc tự sửa chữa/kiểm tra"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Hành động này không khả dụng khi đang lập bản đồ nhanh"
+    },
+    "unavailable_while_running": {
+      "message": "Hành động này không khả dụng khi robot hút bụi đang chạy"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Hành động này không khả dụng khi đế tự giặt đang chạy"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Hành động này không khả dụng khi chế độ làm sạch tùy chỉnh đang bật"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Hành động này không khả dụng trong khi làm sạch theo lịch hoặc tác vụ lối tắt"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Hành động này không khả dụng khi có bản đồ tạm thời"
+    },
+    "unavailable_without_map": {
+      "message": "Hành động này không khả dụng khi không hỗ trợ bản đồ"
+    },
+    "unknown_action": {
+      "message": "Hành động không xác định: {action}"
+    },
+    "update_failed": {
+      "message": "Cập nhật thiết bị thất bại: {error}"
+    },
+    "zone_too_small": {
+      "message": "Vùng {zone} nhỏ hơn kích thước vùng tối thiểu ({width}, {height})"
     }
   }
 }

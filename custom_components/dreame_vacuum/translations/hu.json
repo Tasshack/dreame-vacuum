@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Takarítás",
+          "docked": "Dokkolva",
+          "error": "Hiba",
+          "idle": "Tétlen",
+          "paused": "Szünetel",
+          "returning": "Dokkolás folyamatban"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Szívóerő",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Alacsony vízszint figyelmeztetés",
         "state": {
+          "unknown": "Ismeretlen",
           "no_warning": "Nincs figyelmeztetés",
           "no_water_left": "A tiszta víztartályban lévő víz hamarosan elfogy. Ellenőrizze és töltse fel időben a tiszta víztartályt.",
           "no_water_left_after_clean": "A felmosóbetét tisztítva. Észleltük, hogy a tiszta víztartályban lévő víz nem elegendő, kérjük, töltse fel a tiszta víztartályt és ürítse ki a szennyezett víztartályt.",
@@ -1297,8 +1306,8 @@
           "pet": "Kisállat",
           "cleaning_tools": "Tisztító eszközök",
           "detected_stain": "Foltok",
-          "blocked_room": "A robot hajlamos a bútoroknál elakadni.",
-          "easy_to_stuck_furniture": "A robot hajlamos a bútoroknál elakadni.",
+          "blocked_room": "Kihagyott helyiség",
+          "easy_to_stuck_furniture": "Elakadást okozó bútor",
           "uncleanable_stain": "Foltok",
           "leg": "Láb",
           "large_particles": "Nagy szemcséjű kosz",
@@ -1513,7 +1522,7 @@
           "error": "Hiba",
           "remote_control": "Távirányítás",
           "sleeping": "Alvás",
-          "self_test": "Önteszt",
+          "self_repair": "Önteszt",
           "factory_test": "Gyári teszt",
           "standby": "Készenléti állapot",
           "room_cleaning": "Helyiség takarítás",
@@ -1634,6 +1643,8 @@
         "name": "Feladat típusa",
         "state": {
           "standard": "Normál takarítás",
+          "unknown": "Ismeretlen",
+          "idle": "Tétlen",
           "standard_paused": "Normál takarítás szüneteltetve",
           "custom": "Egyéni takarítás",
           "custom_paused": "Egyéni takarítás szüneteltetve",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Hengerburkolat állapota"
+      },
+      "problem": {
+        "name": "Probléma",
+        "state_attributes": {
+          "type": {
+            "name": "Típus",
+            "state": {
+              "error": "Hiba",
+              "warning": "Figyelmeztetés",
+              "low_water": "Alacsony víz",
+              "dock": "Állomás"
+            }
+          },
+          "code": {
+            "name": "Kód"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Karbantartás",
+        "state_attributes": {
+          "items": {
+            "name": "Elemek"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Az akadály figyelmen kívül van-e hagyva."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "A művelet meghívása sikertelen: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "A robot már a kiválasztott koordinátán van"
+    },
+    "authentication_failed": {
+      "message": "A hitelesítés sikertelen, kérjük, hitelesítsen újra"
+    },
+    "cloud_login_failed": {
+      "message": "Nem sikerült bejelentkezni az eszközre a felhőn keresztül"
+    },
+    "cloud_required": {
+      "message": "Felhőkapcsolat szükséges ehhez: {feature}"
+    },
+    "cloud_unreachable": {
+      "message": "Az eszköz nem található meg a felhőn keresztül"
+    },
+    "command_failed": {
+      "message": "A parancs sikertelen volt, vagy nem sikerült elküldeni az eszköznek"
+    },
+    "coordinate_outside_map": {
+      "message": "A koordináta ({x}, {y}) nem a térképen belül van"
+    },
+    "coordinate_required": {
+      "message": "Legalább egy érvényes vagy mentett koordináta szükséges"
+    },
+    "device_disconnected": {
+      "message": "Az eszköz le van választva"
+    },
+    "device_unavailable": {
+      "message": "Az eszköz nem érhető el"
+    },
+    "entity_unavailable": {
+      "message": "Az entitás nem érhető el"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Gyors térképezés előtt győződjön meg arról, hogy a felmosópárna nincs felszerelve"
+    },
+    "follow_path_requires_camera": {
+      "message": "Az útvonal követése csak élő kameraközvetítéssel működik"
+    },
+    "invalid_action": {
+      "message": "Érvénytelen művelet vagy parancs: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Érvénytelen koordináták: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Érvénytelen beállítás ({parameter}): {value}. Érvényes beállítások: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Érvénytelen helyreállítási térkép {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Érvénytelen érték ({parameter}): {value}"
+    },
+    "low_battery": {
+      "message": "Az akkumulátor túl lemerült, először töltse fel a porszívót"
+    },
+    "map_backup_in_progress": {
+      "message": "Térképmentés már folyamatban van"
+    },
+    "map_recovery_failed": {
+      "message": "A térkép helyreállítása sikertelen: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Térkép-helyreállítás már folyamatban van"
+    },
+    "map_select_failed": {
+      "message": "A térkép kiválasztása sikertelen"
+    },
+    "max_rooms_reached": {
+      "message": "Elérte a szobák maximális számát"
+    },
+    "missing_parameter": {
+      "message": "Hiányzik egy kötelező paraméter: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} nem található: {id}"
+    },
+    "not_supported": {
+      "message": "Ez az eszköz nem támogatja ezt: {feature}"
+    },
+    "property_not_updated": {
+      "message": "A tulajdonság nem frissült ({parameter}): {value}"
+    },
+    "start_failed": {
+      "message": "Sikertelen indítás: {operation}"
+    },
+    "unavailable": {
+      "message": "Nem érhető el: {action}"
+    },
+    "unavailable_on_current_map": {
+      "message": "Ez a művelet nem érhető el az aktuális térképen"
+    },
+    "unavailable_while_cruising": {
+      "message": "Ez a művelet nem érhető el őrjárat közben"
+    },
+    "unavailable_while_draining": {
+      "message": "Ez a művelet nem érhető el ürítés vagy önjavítás/teszt közben"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Ez a művelet nem érhető el gyors térképezés közben"
+    },
+    "unavailable_while_running": {
+      "message": "Ez a művelet nem érhető el, amíg a porszívó működik"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Ez a művelet nem érhető el, amíg az önmosó állomás működik"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Ez a művelet nem érhető el, amíg az egyéni takarítás engedélyezve van"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Ez a művelet nem érhető el ütemezett takarítás vagy parancsikon feladat közben"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Ez a művelet nem érhető el, amíg ideiglenes térkép van jelen"
+    },
+    "unavailable_without_map": {
+      "message": "Ez a művelet nem érhető el térképtámogatás nélkül"
+    },
+    "unknown_action": {
+      "message": "Ismeretlen művelet: {action}"
+    },
+    "update_failed": {
+      "message": "Az eszköz frissítése sikertelen: {error}"
+    },
+    "zone_too_small": {
+      "message": "Zóna {zone} kisebb, mint a minimális zónaméret ({width}, {height})"
     }
   }
 }

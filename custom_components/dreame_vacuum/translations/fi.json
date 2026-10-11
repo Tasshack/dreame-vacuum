@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Siivoaa",
+          "docked": "Telakoituna",
+          "error": "Virhe",
+          "idle": "Toimeton",
+          "paused": "Pysäytetty",
+          "returning": "Palaamassa telakkaan"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Imuteho",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Vähäisen veden varoitus",
         "state": {
+          "unknown": "Tuntematon",
           "no_warning": "Ei varoitusta",
           "no_water_left": "Puhdasvesisäiliön vesi on loppumassa. Tarkista ja täytä puhdasvesisäiliö nopeasti.",
           "no_water_left_after_clean": "Moppi on puhdistettu. Havaittiin, että puhdasvesisäiliön vesi on riittämätön. Täytä puhdasvesi ja tyhjennä likavesisäiliö.",
@@ -1297,8 +1306,8 @@
           "pet": "Lemmikki",
           "cleaning_tools": "Siivoustyökalut",
           "detected_stain": "Tahrat",
-          "blocked_room": "Huonekalut altistavat robotin juuttumiselle",
-          "easy_to_stuck_furniture": "Huonekalut altistavat robotin juuttumiselle",
+          "blocked_room": "Laiminlyöty huone",
+          "easy_to_stuck_furniture": "Juuttumisherkkä huonekalu",
           "uncleanable_stain": "Tahrat",
           "leg": "Jalka",
           "large_particles": "Suuret hiukkaset",
@@ -1513,7 +1522,7 @@
           "error": "Virhe",
           "remote_control": "Kaukosäätö",
           "sleeping": "Nukkuu",
-          "self_test": "Itsetesti",
+          "self_repair": "Itsetesti",
           "factory_test": "Tehdastesti",
           "standby": "Valmiustila",
           "room_cleaning": "Huonekohtainen siivous",
@@ -1634,6 +1643,8 @@
         "name": "Tehtävän tyyppi",
         "state": {
           "standard": "Vakiosiivous",
+          "unknown": "Tuntematon",
+          "idle": "Tyhjäkäynti",
           "standard_paused": "Vakiosiivous pysäytetty",
           "custom": "Mukautettu siivous",
           "custom_paused": "Mukautettu siivous pysäytetty",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Rullan kannen tila"
+      },
+      "problem": {
+        "name": "Ongelma",
+        "state_attributes": {
+          "type": {
+            "name": "Tyyppi",
+            "state": {
+              "error": "Virhe",
+              "warning": "Varoitus",
+              "low_water": "Vähän vettä",
+              "dock": "Asema"
+            }
+          },
+          "code": {
+            "name": "Koodi"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Huolto",
+        "state_attributes": {
+          "items": {
+            "name": "Kohteet"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Onko este sivuutettatu (ohitettu) vai ei."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Toiminnon kutsuminen epäonnistui: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "Robotti on jo valitussa koordinaatissa"
+    },
+    "authentication_failed": {
+      "message": "Todennus epäonnistui, todenna uudelleen"
+    },
+    "cloud_login_failed": {
+      "message": "Laitteeseen kirjautuminen pilven kautta epäonnistui"
+    },
+    "cloud_required": {
+      "message": "{feature} vaatii pilviyhteyden"
+    },
+    "cloud_unreachable": {
+      "message": "Laitetta ei löytynyt pilven kautta"
+    },
+    "command_failed": {
+      "message": "Komento epäonnistui tai sitä ei voitu lähettää laitteelle"
+    },
+    "coordinate_outside_map": {
+      "message": "Koordinaatti ({x}, {y}) ei ole kartan sisällä"
+    },
+    "coordinate_required": {
+      "message": "Vähintään yksi kelvollinen tai tallennettu koordinaatti vaaditaan"
+    },
+    "device_disconnected": {
+      "message": "Laite on irrotettu"
+    },
+    "device_unavailable": {
+      "message": "Laite ei ole käytettävissä tai sitä ei tavoiteta"
+    },
+    "entity_unavailable": {
+      "message": "Entiteetti ei ole käytettävissä"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Varmista, ettei moppia ole asennettu ennen pikakartoitusta"
+    },
+    "follow_path_requires_camera": {
+      "message": "Reitin seuranta toimii vain kameran reaaliaikaisella suoratoistolla"
+    },
+    "invalid_action": {
+      "message": "Virheellinen toiminto tai komento: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Virheelliset koordinaatit: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Virheellinen valinta kohteelle {parameter}: {value}. Kelvolliset valinnat: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Virheellinen palautuskartta {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Virheellinen arvo kohteelle {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "Akku on liian vähissä, lataa imuri ensin"
+    },
+    "map_backup_in_progress": {
+      "message": "Kartan varmuuskopiointi on jo käynnissä"
+    },
+    "map_recovery_failed": {
+      "message": "Kartan palautus epäonnistui: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Kartan palautus on jo käynnissä"
+    },
+    "map_select_failed": {
+      "message": "Kartan valinta epäonnistui"
+    },
+    "max_rooms_reached": {
+      "message": "Huoneiden enimmäismäärä on saavutettu"
+    },
+    "missing_parameter": {
+      "message": "Pakollinen parametri puuttuu: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} ei löytynyt: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} ei ole tuettu tässä laitteessa"
+    },
+    "property_not_updated": {
+      "message": "Ominaisuutta {parameter} ei päivitetty: {value}"
+    },
+    "start_failed": {
+      "message": "Toiminnon {operation} käynnistys epäonnistui"
+    },
+    "unavailable": {
+      "message": "{action} ei ole käytettävissä"
+    },
+    "unavailable_on_current_map": {
+      "message": "Tämä toiminto ei ole käytettävissä nykyisellä kartalla"
+    },
+    "unavailable_while_cruising": {
+      "message": "Tämä toiminto ei ole käytettävissä partioinnin aikana"
+    },
+    "unavailable_while_draining": {
+      "message": "Tämä toiminto ei ole käytettävissä tyhjennyksen tai itsekorjauksen/testauksen aikana"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Tämä toiminto ei ole käytettävissä pikakartoituksen aikana"
+    },
+    "unavailable_while_running": {
+      "message": "Tämä toiminto ei ole käytettävissä imurin ollessa käynnissä"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Tämä toiminto ei ole käytettävissä itsepesuaseman ollessa käynnissä"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Tämä toiminto ei ole käytettävissä, kun mukautettu puhdistus on käytössä"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Tämä toiminto ei ole käytettävissä ajastetun puhdistuksen tai pikakuvaketehtävän aikana"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Tämä toiminto ei ole käytettävissä, kun väliaikainen kartta on olemassa"
+    },
+    "unavailable_without_map": {
+      "message": "Tämä toiminto ei ole käytettävissä ilman karttatukea"
+    },
+    "unknown_action": {
+      "message": "Tuntematon toiminto: {action}"
+    },
+    "update_failed": {
+      "message": "Laitteen päivitys epäonnistui: {error}"
+    },
+    "zone_too_small": {
+      "message": "Alue {zone} on pienempi kuin alueen vähimmäiskoko ({width}, {height})"
     }
   }
 }

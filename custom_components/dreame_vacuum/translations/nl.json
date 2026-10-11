@@ -216,6 +216,14 @@
   "entity": {
     "vacuum": {
       "dreame_vacuum": {
+        "state": {
+          "cleaning": "Schoonmaken",
+          "docked": "Gedockt",
+          "error": "Fout",
+          "idle": "Inactief",
+          "paused": "Gepauzeerd",
+          "returning": "Terugkeren naar dock"
+        },
         "state_attributes": {
           "fan_speed": {
             "name": "Zuigkracht",
@@ -1210,6 +1218,7 @@
       "low_water_warning": {
         "name": "Waarschuwing laag waterniveau",
         "state": {
+          "unknown": "Onbekend",
           "no_warning": "Geen waarschuwing",
           "no_water_left": "Het water in de schoonwatertank is bijna op. Controleer en vul de schoonwatertank tijdig.",
           "no_water_left_after_clean": "De dweil is gereinigd. Geconstateerd dat het water in de schoonwatertank onvoldoende is, vul de schoonwatertank en leeg de vuilwatertank.",
@@ -1297,8 +1306,8 @@
           "pet": "Huisdier",
           "cleaning_tools": "Schoonmaakgereedschap",
           "detected_stain": "Vlek",
-          "blocked_room": "Meubilair waar de robot vaak vast komt te zitten",
-          "easy_to_stuck_furniture": "Meubilair waar de robot vaak vast komt te zitten",
+          "blocked_room": "Genegeerde kamer",
+          "easy_to_stuck_furniture": "Meubilair met vastloopkans",
           "uncleanable_stain": "Vlek",
           "leg": "Poot",
           "large_particles": "Grote deeltjes",
@@ -1513,7 +1522,7 @@
           "error": "Fout",
           "remote_control": "Afstandsbediening",
           "sleeping": "Slapen",
-          "self_test": "Zelftest",
+          "self_repair": "Zelftest",
           "factory_test": "Fabriekstest",
           "standby": "Slaapstand",
           "room_cleaning": "Kamerschoonmaak",
@@ -1634,6 +1643,8 @@
         "name": "Taaktype",
         "state": {
           "standard": "Standaard schoonmaak",
+          "unknown": "Onbekend",
+          "idle": "Inactief",
           "standard_paused": "Standaard schoonmaak gepauzeerd",
           "custom": "Aangepaste schoonmaak",
           "custom_paused": "Aangepaste schoonmaak gepauzeerd",
@@ -2075,6 +2086,31 @@
       },
       "roller_cover_status": {
         "name": "Status rolkap"
+      },
+      "problem": {
+        "name": "Probleem",
+        "state_attributes": {
+          "type": {
+            "name": "Type",
+            "state": {
+              "error": "Fout",
+              "warning": "Waarschuwing",
+              "low_water": "Laag water",
+              "dock": "Station"
+            }
+          },
+          "code": {
+            "name": "Code"
+          }
+        }
+      },
+      "maintenance": {
+        "name": "Onderhoud",
+        "state_attributes": {
+          "items": {
+            "name": "Items"
+          }
+        }
       }
     },
     "number": {
@@ -2951,6 +2987,140 @@
           "description": "Obstakel wordt genegeerd of niet."
         }
       }
+    }
+  },
+  "exceptions": {
+    "action_call_failed": {
+      "message": "Kan de actie niet aanroepen: {action}"
+    },
+    "already_at_coordinate": {
+      "message": "De robot bevindt zich al op de geselecteerde coördinaat"
+    },
+    "authentication_failed": {
+      "message": "Authenticatie mislukt, authenticeer opnieuw"
+    },
+    "cloud_login_failed": {
+      "message": "Kan niet inloggen op het apparaat via de cloud"
+    },
+    "cloud_required": {
+      "message": "{feature} vereist een cloudverbinding"
+    },
+    "cloud_unreachable": {
+      "message": "Kan het apparaat niet vinden via de cloud"
+    },
+    "command_failed": {
+      "message": "De opdracht is mislukt of kon niet naar het apparaat worden verzonden"
+    },
+    "coordinate_outside_map": {
+      "message": "Coördinaat ({x}, {y}) ligt niet binnen de kaart"
+    },
+    "coordinate_required": {
+      "message": "Minstens één geldige of opgeslagen coördinaat is vereist"
+    },
+    "device_disconnected": {
+      "message": "Het apparaat is losgekoppeld"
+    },
+    "device_unavailable": {
+      "message": "Het apparaat is niet beschikbaar of niet bereikbaar"
+    },
+    "entity_unavailable": {
+      "message": "De entiteit is niet beschikbaar"
+    },
+    "fast_mapping_mop_installed": {
+      "message": "Zorg ervoor dat het zwabberpad niet is geïnstalleerd vóór het snel in kaart brengen"
+    },
+    "follow_path_requires_camera": {
+      "message": "Pad volgen werkt alleen met live camerastreaming"
+    },
+    "invalid_action": {
+      "message": "Ongeldige actie of opdracht: {action}"
+    },
+    "invalid_coordinates": {
+      "message": "Ongeldige coördinaten: {coordinates}"
+    },
+    "invalid_option": {
+      "message": "Ongeldige optie voor {parameter}: {value}. Geldige opties: {options}"
+    },
+    "invalid_recovery_map": {
+      "message": "Ongeldige herstelkaart {parameter}: {value}"
+    },
+    "invalid_value": {
+      "message": "Ongeldige waarde voor {parameter}: {value}"
+    },
+    "low_battery": {
+      "message": "De accu is te zwak, laad de stofzuiger eerst op"
+    },
+    "map_backup_in_progress": {
+      "message": "Er is al een kaartback-up bezig"
+    },
+    "map_recovery_failed": {
+      "message": "Kaartherstel mislukt: {error}"
+    },
+    "map_recovery_in_progress": {
+      "message": "Er is al een kaartherstel bezig"
+    },
+    "map_select_failed": {
+      "message": "Kaart selecteren mislukt"
+    },
+    "max_rooms_reached": {
+      "message": "Het maximale aantal kamers is bereikt"
+    },
+    "missing_parameter": {
+      "message": "Een vereiste parameter ontbreekt: {parameter}"
+    },
+    "not_found": {
+      "message": "{item} niet gevonden: {id}"
+    },
+    "not_supported": {
+      "message": "{feature} wordt niet ondersteund op dit apparaat"
+    },
+    "property_not_updated": {
+      "message": "Eigenschap {parameter} niet bijgewerkt: {value}"
+    },
+    "start_failed": {
+      "message": "Starten van {operation} mislukt"
+    },
+    "unavailable": {
+      "message": "{action} is niet beschikbaar"
+    },
+    "unavailable_on_current_map": {
+      "message": "Deze actie is niet beschikbaar op de huidige kaart"
+    },
+    "unavailable_while_cruising": {
+      "message": "Deze actie is niet beschikbaar tijdens het patrouilleren"
+    },
+    "unavailable_while_draining": {
+      "message": "Deze actie is niet beschikbaar tijdens het legen of zelfherstel/testen"
+    },
+    "unavailable_while_fast_mapping": {
+      "message": "Deze actie is niet beschikbaar tijdens snel in kaart brengen"
+    },
+    "unavailable_while_running": {
+      "message": "Deze actie is niet beschikbaar terwijl de stofzuiger actief is"
+    },
+    "unavailable_while_self_wash": {
+      "message": "Deze actie is niet beschikbaar terwijl het zelfreinigende basisstation actief is"
+    },
+    "unavailable_with_customized_cleaning": {
+      "message": "Deze actie is niet beschikbaar terwijl aangepast schoonmaken is ingeschakeld"
+    },
+    "unavailable_with_scheduled_task": {
+      "message": "Deze actie is niet beschikbaar tijdens een geplande schoonmaakbeurt of snelkoppelingstaak"
+    },
+    "unavailable_with_temporary_map": {
+      "message": "Deze actie is niet beschikbaar terwijl er een tijdelijke kaart aanwezig is"
+    },
+    "unavailable_without_map": {
+      "message": "Deze actie is niet beschikbaar zonder kaartondersteuning"
+    },
+    "unknown_action": {
+      "message": "Onbekende actie: {action}"
+    },
+    "update_failed": {
+      "message": "Bijwerken van het apparaat mislukt: {error}"
+    },
+    "zone_too_small": {
+      "message": "Zone {zone} is kleiner dan de minimale zonegrootte ({width}, {height})"
     }
   }
 }
