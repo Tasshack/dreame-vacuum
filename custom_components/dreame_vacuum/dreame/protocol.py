@@ -1784,6 +1784,33 @@ class DreameVacuumMiHomeCloudProtocol:
             pass
         return False
 
+    @staticmethod
+    def _get_pass_token_cookie(cookies, url: str, account_only: bool = False) -> str:
+        parsed = urlparse(url)
+        host = parsed.hostname or ""
+        path = parsed.path or "/"
+        matching = []
+        for cookie in cookies:
+            domain = cookie.domain.lstrip(".").lower()
+            cookie_path = cookie.path or "/"
+            if cookie.name != "passToken" or cookie.is_expired():
+                continue
+            if account_only and domain != "account.xiaomi.com":
+                continue
+            if domain != host and not (cookie.domain_specified and host.endswith("." + domain)):
+                continue
+            if path != cookie_path and not (
+                path.startswith(cookie_path)
+                and (cookie_path.endswith("/") or path[len(cookie_path) :].startswith("/"))
+            ):
+                continue
+            if cookie.secure and parsed.scheme != "https":
+                continue
+            matching.append(cookie)
+        if matching:
+            return max(matching, key=lambda cookie: (len(cookie.path or "/"), len(cookie.domain))).value
+        return None
+
     def login_step_3(self) -> bool:
         try:
             response = self._get_session().get(
@@ -1797,7 +1824,11 @@ class DreameVacuumMiHomeCloudProtocol:
             if response is not None:
                 if response.status_code == 200 and "serviceToken" in response.cookies:
                     self._service_token = response.cookies.get("serviceToken")
-                    pass_token = self._get_session().cookies.get("passToken") or response.cookies.get("passToken")
+                    pass_token = self._get_pass_token_cookie(response.cookies, response.url) or self._get_pass_token_cookie(
+                        self._get_session().cookies,
+                        "https://account.xiaomi.com/pass/serviceLogin",
+                        account_only=True,
+                    )
                     if pass_token:
                         self._pass_token = pass_token
                     self._auth_key = f"{self._service_token} {self._ssecurity} {self._userId} {self._client_id}"
