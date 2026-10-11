@@ -1070,7 +1070,8 @@ class DreameVacuumDevice:
                 if (
                     not self.status.started
                     and self.status.cleaning_route
-                    and self.status.cleaning_route not in self.status.cleaning_route_list
+                    and self.get_auto_switch_property(DreameVacuumAutoSwitchProperty.CLEANING_ROUTE)
+                    not in self.status.cleaning_route_list.values()
                 ):
                     self.set_auto_switch_property(
                         DreameVacuumAutoSwitchProperty.CLEANING_ROUTE,
@@ -1227,7 +1228,8 @@ class DreameVacuumDevice:
                         self.capability.cleaning_route
                         and not self.capability.cleaning_route_v2
                         and self.status.cleaning_route
-                        and self.status.cleaning_route not in self.status.cleaning_route_list
+                        and self.get_auto_switch_property(DreameVacuumAutoSwitchProperty.CLEANING_ROUTE)
+                        not in self.status.cleaning_route_list.values()
                     ):
                         self.set_auto_switch_property(
                             DreameVacuumAutoSwitchProperty.CLEANING_ROUTE,
@@ -1386,7 +1388,8 @@ class DreameVacuumDevice:
                     self.capability.cleaning_route
                     and not self.capability.cleaning_route_v2
                     and self.status.cleaning_route
-                    and self.status.cleaning_route not in self.status.cleaning_route_list
+                    and self.get_auto_switch_property(DreameVacuumAutoSwitchProperty.CLEANING_ROUTE)
+                    not in self.status.cleaning_route_list.values()
                 ):
                     self.set_auto_switch_property(
                         DreameVacuumAutoSwitchProperty.CLEANING_ROUTE,
