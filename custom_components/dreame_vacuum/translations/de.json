@@ -1696,6 +1696,12 @@
       "voice_packet_id": {
         "name": "Sprachpaket"
       },
+      "washboard_cleaning_left": {
+        "name": "Waschbrettreinigung"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Waschbrettreinigung (Restzeit)"
+      },
       "water_outlet_filter_dirty_left": {
         "name": "Wasserauslass-Filterreinigung"
       },

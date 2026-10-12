@@ -487,6 +487,19 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         ),
     ),
     DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.WASHBOARD_CLEANING_LEFT,
+        icon="mdi:brush",
+        native_unit_of_measurement=UNIT_PERCENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.WASHBOARD_CLEANING_TIME_LEFT,
+        icon="mdi:brush",
+        native_unit_of_measurement=UNIT_HOURS,
+        device_class=SensorDeviceClass.DURATION,
+        entity_category=EntityCategory.DIAGNOSTIC,
+    ),
+    DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.FIRST_CLEANING_DATE,
         icon="mdi:calendar-start",
         device_class=SensorDeviceClass.TIMESTAMP,

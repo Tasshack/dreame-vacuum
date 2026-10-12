@@ -2430,6 +2430,8 @@ CONSUMABLE_PROPERTIES: Final = [
     DreameVacuumProperty.ROLLER_MOP_FILTER_DIRTY_LEFT,
     DreameVacuumProperty.WATER_OUTLET_FILTER_DIRTY_TIME_LEFT,
     DreameVacuumProperty.WATER_OUTLET_FILTER_DIRTY_LEFT,
+    DreameVacuumProperty.WASHBOARD_CLEANING_TIME_LEFT,
+    DreameVacuumProperty.WASHBOARD_CLEANING_LEFT,
 ]
 
 
