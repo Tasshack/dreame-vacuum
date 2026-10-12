@@ -13,7 +13,7 @@ import socket
 import struct
 import errno
 import gzip
-from threading import Thread, Lock
+from threading import Thread, Lock, RLock
 from time import sleep
 import time, locale
 import paho.mqtt
@@ -1519,6 +1519,9 @@ class DreameVacuumMiHomeCloudProtocol:
         self._country = country
         self._auth_key = auth_key
         self._session_obj = None
+        # Serializes logins: request() renews the token from the async api thread while the update
+        # thread may do the same, and login() replaces the session, serviceToken and ssecurity.
+        self._login_lock = RLock()
         self._queue = queue.Queue()
         self._thread = None
         self._sign = None
@@ -1841,6 +1844,10 @@ class DreameVacuumMiHomeCloudProtocol:
         return False
 
     def login(self) -> bool:
+        with self._login_lock:
+            return self._login()
+
+    def _login(self) -> bool:
         self.login_error = None
         self.verification_dest = None
         if self._session_obj is not None:
@@ -2378,7 +2385,7 @@ class DreameVacuumMiHomeCloudProtocol:
             return None
         return api_response["result"]
 
-    def request(self, url: str, params: Dict[str, str], retry_count=2, timeout=None) -> Any:
+    def request(self, url: str, params: Dict[str, str], retry_count=2, timeout=None, retried=False) -> Any:
         retries = 0
         if not retry_count or retry_count < 0:
             retry_count = 0
@@ -2402,7 +2409,10 @@ class DreameVacuumMiHomeCloudProtocol:
 
         nonce = self.generate_nonce()
         signed_nonce = self.signed_nonce(nonce)
-        fields = self.generate_enc_params(url, "POST", signed_nonce, nonce, params, self._ssecurity)
+        # generate_enc_params encrypts the dict it is given in place, so sign a copy: a retry has to
+        # sign the plain params again with the new ssecurity
+        fields = self.generate_enc_params(url, "POST", signed_nonce, nonce, dict(params), self._ssecurity)
+        service_token = self._service_token
 
         while retries < retry_count + 1:
             try:
@@ -2424,11 +2434,28 @@ class DreameVacuumMiHomeCloudProtocol:
                 return json.loads(decoded) if decoded else None
             _LOGGER.warning("Execute api call failed with response: %s", response.text)
 
+            # An expired serviceToken is renewed from the stored passToken and the request is sent
+            # once more, like the Dreame cloud request does on 401, instead of failing this update.
+            # When another thread has already renewed the token, only the retry is needed.
+            if not retried and self._token_rejected(response):
+                with self._login_lock:
+                    renewed = self._service_token != service_token or self.login()
+                if renewed:
+                    return self.request(url, params, retry_count, timeout, True)
+
         if self._fail_count == 5:
             self._connected = False
         else:
             self._fail_count = self._fail_count + 1
         return None
+
+    @staticmethod
+    def _token_rejected(response) -> bool:
+        """Same rejections check_login() treats as a lost session, read from a non 200 response."""
+        text = response.text or ""
+        return response.status_code in (401, 403) or any(
+            message in text for message in ("auth err", "invalid signature", "SERVICETOKEN_EXPIRED")
+        )
 
     def get_api_url(self) -> str:
         return f"https://{('' if self._country == 'cn' else (self._country + '.'))}api.io.mi.com/app"
