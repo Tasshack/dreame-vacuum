@@ -1696,6 +1696,12 @@
       "voice_packet_id": {
         "name": "Voice Pack"
       },
+      "washboard_cleaning_left": {
+        "name": "Washboard Cleaning"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Washboard Cleaning Time Left"
+      },
       "water_outlet_filter_dirty_left": {
         "name": "Water Outlet Filter Cleaning"
       },
