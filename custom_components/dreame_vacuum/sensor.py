@@ -140,6 +140,12 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.MESSAGE_PROMPT,
+        icon_fn=lambda value, device: (
+            "mdi:message-alert-outline" if device.status.message_prompt.value > 0 else "mdi:message-outline"
+        ),
+    ),
+    DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.DRAINAGE_STATUS,
         icon_fn=lambda value, device: "mdi:pump" if device.status.draining else "mdi:pump-off",
         exists_fn=lambda description, device: device.capability.water_check,

@@ -774,7 +774,8 @@
           "unknown": "Unknown",
           "idle": "Idle",
           "active": "Active",
-          "not_performed": "Not performed"
+          "not_performed": "Not performed",
+          "returning": "Returning to auto-empty"
         }
       },
       "battery_level": {
@@ -1239,6 +1240,18 @@
       "mapping_time": {
         "name": "Mapping Time"
       },
+      "message_prompt": {
+        "name": "Message",
+        "state": {
+          "unknown": "Unknown",
+          "no_message": "No message",
+          "insufficient_water": "The water in the clean water tank is insufficient for this cleaning task. The robot can continue with vacuuming only.",
+          "add_detergent": "Need to add detergent",
+          "return_to_charge_failed": "Failed to return to charge. Please check the base station.",
+          "move_to_target_floor": "Self-cleaning completed. You can move the robot to the target floor and continue.",
+          "new_room_detected": "A newly added room was recognized, please adjust the cleaning sequence."
+        }
+      },
       "model": {
         "name": "Model"
       },
@@ -1376,7 +1389,8 @@
           "paused": "Paused",
           "returning": "Returning to wash",
           "clean_add_water": "Cleaning and adding water",
-          "adding_water": "Adding water"
+          "adding_water": "Adding water",
+          "returning_for_dry_mop": "Mop pad is too dry, returning to self-clean"
         }
       },
       "sensor_dirty_left": {

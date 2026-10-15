@@ -74,6 +74,7 @@ from .types import (
     DreameVacuumAutoLDSCoverage,
     DreameVacuumDrainageStatus,
     DreameVacuumLowWaterWarning,
+    DreameVacuumMessagePrompt,
     DreameVacuumTaskType,
     DreameVacuumMapRecoveryStatus,
     DreameVacuumMapBackupStatus,
@@ -158,6 +159,7 @@ from .const import (
     FLOOR_MATERIAL_DIRECTION_CODE_TO_NAME,
     SEGMENT_VISIBILITY_CODE_TO_NAME,
     LOW_WATER_WARNING_TO_NAME,
+    MESSAGE_PROMPT_TO_NAME,
     PROBLEM_TYPE_ERROR,
     PROBLEM_TYPE_WARNING,
     PROBLEM_TYPE_LOW_WATER,
@@ -8733,6 +8735,32 @@ class DreameVacuumDeviceStatus:
     def low_water_warning_name(self) -> str:
         """Return low water warning as string for translation."""
         return LOW_WATER_WARNING_TO_NAME.get(self.low_water_warning, STATE_UNKNOWN)
+
+    @property
+    def message_prompt(self) -> DreameVacuumMessagePrompt:
+        """Return the most important message of the device (the app shows these as messages or dialogs)."""
+        value = self._get_property(DreameVacuumProperty.MESSAGE_PROMPT)
+        if value is None:
+            return DreameVacuumMessagePrompt.UNKNOWN
+        codes = [int(code) for code in str(value).split(",") if code.strip().isdigit()]
+        for prompt in (
+            DreameVacuumMessagePrompt.RETURN_TO_CHARGE_FAILED,
+            DreameVacuumMessagePrompt.INSUFFICIENT_WATER,
+            DreameVacuumMessagePrompt.ADD_DETERGENT,
+            DreameVacuumMessagePrompt.MOVE_TO_TARGET_FLOOR,
+            DreameVacuumMessagePrompt.NEW_ROOM_DETECTED,
+        ):
+            if prompt.value in codes:
+                return prompt
+        if any(codes):
+            _LOGGER.debug("MESSAGE_PROMPT not supported: %s", value)
+            return DreameVacuumMessagePrompt.UNKNOWN
+        return DreameVacuumMessagePrompt.NO_MESSAGE
+
+    @property
+    def message_prompt_name(self) -> str:
+        """Return message prompt as string for translation."""
+        return MESSAGE_PROMPT_TO_NAME.get(self.message_prompt, STATE_UNKNOWN)
 
     @property
     def voice_assistant_language(self) -> DreameVacuumVoiceAssistantLanguage:

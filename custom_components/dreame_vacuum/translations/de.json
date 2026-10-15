@@ -774,7 +774,8 @@
           "unknown": "Unbekannt",
           "idle": "Inaktiv",
           "active": "Aktiv",
-          "not_performed": "Nicht durchgeführt"
+          "not_performed": "Nicht durchgeführt",
+          "returning": "Rückkehr zum Entleeren"
         }
       },
       "battery_level": {
@@ -1239,6 +1240,18 @@
       "mapping_time": {
         "name": "Kartierungszeit"
       },
+      "message_prompt": {
+        "name": "Meldung",
+        "state": {
+          "unknown": "Unbekannt",
+          "no_message": "Keine Meldung",
+          "insufficient_water": "Das Wasser im Reinwassertank reicht für diese Reinigungsaufgabe nicht aus. Der Roboter kann nur saugend fortfahren.",
+          "add_detergent": "Reinigungsmittel nachfüllen",
+          "return_to_charge_failed": "Rückkehr zum Laden fehlgeschlagen. Bitte die Basisstation prüfen.",
+          "move_to_target_floor": "Selbstreinigung abgeschlossen. Sie können den Roboter auf die Zieletage bringen und fortsetzen.",
+          "new_room_detected": "Ein neu hinzugefügter Raum wurde erkannt, bitte passen Sie die Reinigungsreihenfolge an."
+        }
+      },
       "model": {
         "name": "Modell"
       },
@@ -1376,7 +1389,8 @@
           "paused": "Pausiert",
           "returning": "Zurückkehren zum Reinigen",
           "clean_add_water": "Reinigung und Wasser nachfüllen",
-          "adding_water": "Wasser nachfüllen"
+          "adding_water": "Wasser nachfüllen",
+          "returning_for_dry_mop": "Wischmopp zu trocken, Rückkehr zur Selbstreinigung"
         }
       },
       "sensor_dirty_left": {
