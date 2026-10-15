@@ -529,8 +529,8 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         property_key=DreameVacuumProperty.CLEAN_WATER_TANK_STATUS,
         icon="mdi:beer",
         entity_category=EntityCategory.DIAGNOSTIC,
+        # also on models without dock_status that report it (e.g. r2394j: 2 when empty, 3 when filled)
         exists_fn=lambda description, device: device.capability.self_wash_base
-        and device.capability.dock_status
         and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSensorEntityDescription(
