@@ -30,7 +30,7 @@ from cryptography.hazmat.primitives.asymmetric import x25519, ec, padding
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM, ChaCha20Poly1305
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 from cryptography.utils import CryptographyDeprecationWarning
-from cryptography.x509.verification import PolicyBuilder, Store
+from cryptography.x509.verification import Criticality, ExtensionPolicy, PolicyBuilder, Store
 from miio.miioprotocol import MiIOProtocol
 from urllib.parse import urlparse, parse_qs, quote, urlsplit
 import re
@@ -159,11 +159,35 @@ class DreameVacuumDreameHomeCloudProtocol:
             return out[:length]
 
         _store = None
+        _private_policy = None
         _store_lock = Lock()
 
+        @staticmethod
+        def _require_cert_sign(policy, cert, key_usage):
+            if key_usage is not None and not key_usage.key_cert_sign:
+                raise ValueError("CA certificate without keyCertSign")
+
         @classmethod
-        def _ca_store(cls):
+        def _policy(cls, private_ca):
+            """Policy for the public CA store (HTTP API) or for Dreame's private CA (MQTT), built once."""
             with cls._store_lock:
+                if private_ca:
+                    if cls._private_policy is None:
+                        # Dreame's private CA lacks some web PKI extensions; chain, signatures, validity and name are still checked
+                        ca_policy = (
+                            ExtensionPolicy.webpki_defaults_ca()
+                            .may_be_present(x509.KeyUsage, Criticality.AGNOSTIC, cls._require_cert_sign)
+                            .require_present(x509.BasicConstraints, Criticality.AGNOSTIC, None)
+                        )
+                        ee_policy = ExtensionPolicy.webpki_defaults_ee().may_be_present(
+                            x509.AuthorityKeyIdentifier, Criticality.AGNOSTIC, None
+                        )
+                        cls._private_policy = (
+                            PolicyBuilder()
+                            .store(Store([x509.load_pem_x509_certificate(DREAME_MQTT_ROOT_CA)]))
+                            .extension_policies(ca_policy=ca_policy, ee_policy=ee_policy)
+                        )
+                    return cls._private_policy
                 if cls._store is None:
                     certs = []
                     with warnings.catch_warnings():
@@ -175,7 +199,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                             except ValueError:
                                 pass
                     cls._store = Store(certs)
-                return cls._store
+                return PolicyBuilder().store(cls._store)
 
         def _verify_chain(self, body, tls13):
             """Verify the Certificate message against the CA store and the server name, return the leaf key."""
@@ -191,26 +215,8 @@ class DreameVacuumDreameHomeCloudProtocol:
                     i += 3 + n
                     if tls13:
                         i += 2 + int.from_bytes(body[i : i + 2], "big")
-                if self._private_ca:
-                    # Dreame's private CA lacks some web PKI extensions; chain, signatures, validity and name are still checked
-                    from cryptography.x509.verification import Criticality, ExtensionPolicy  # cryptography >= 45
-
-                    ca_policy = (
-                        ExtensionPolicy.webpki_defaults_ca()
-                        .may_be_present(x509.KeyUsage, Criticality.AGNOSTIC, None)
-                        .require_present(x509.BasicConstraints, Criticality.AGNOSTIC, None)
-                    )
-                    ee_policy = ExtensionPolicy.webpki_defaults_ee().may_be_present(
-                        x509.AuthorityKeyIdentifier, Criticality.AGNOSTIC, None
-                    )
-                    builder = (
-                        PolicyBuilder()
-                        .store(Store([x509.load_pem_x509_certificate(DREAME_MQTT_ROOT_CA)]))
-                        .extension_policies(ca_policy=ca_policy, ee_policy=ee_policy)
-                    )
-                else:
-                    builder = PolicyBuilder().store(self._ca_store())
-                builder.build_server_verifier(x509.DNSName(self._sni)).verify(chain[0], chain[1:])
+                verifier = self._policy(self._private_ca).build_server_verifier(x509.DNSName(self._sni))
+                verifier.verify(chain[0], chain[1:])
                 return chain[0].public_key()
             except Exception as ex:
                 raise ConnectionError(f"certificate verify failed: {ex}") from ex
@@ -274,6 +280,16 @@ class DreameVacuumDreameHomeCloudProtocol:
                         self._sock.setsockopt(socket.IPPROTO_TCP, getattr(socket, opt), val)
             except OSError:
                 pass
+            try:
+                return self._handshake()
+            except Exception as ex:
+                self._sock.close()
+                if isinstance(ex, OSError):
+                    raise
+                # malformed handshake data: callers (and paho's reconnect loop) only handle OSError
+                raise ConnectionError(f"TLS handshake failed: {ex!r}") from ex
+
+        def _handshake(self):
             priv = x25519.X25519PrivateKey.generate()
             pub = priv.public_key().public_bytes_raw()
             ext = b""
@@ -407,9 +423,12 @@ class DreameVacuumDreameHomeCloudProtocol:
                     if msg[0] == 11:
                         cert_key = self._verify_chain(msg[4:], True)
                     elif msg[0] == 15 and cert_key is not None:
+                        scheme = (msg[4] << 8) | msg[5]
+                        if scheme not in (0x0403, 0x0503, 0x0804, 0x0805, 0x0806):  # RFC 8446 4.4.3
+                            raise ConnectionError(f"signature scheme {scheme:#06x} not allowed in TLS 1.3")
                         sig = msg[8 : 8 + ((msg[6] << 8) | msg[7])]
                         content = b" " * 64 + b"TLS 1.3, server CertificateVerify\x00" + h(transcript).digest()
-                        self._verify_signature(cert_key, (msg[4] << 8) | msg[5], sig, content)
+                        self._verify_signature(cert_key, scheme, sig, content)
                         cert_verified = True
                     elif msg[0] == 20:
                         sfk = self._expand_label(s_hs, b"finished", b"", hlen, h)
@@ -447,6 +466,8 @@ class DreameVacuumDreameHomeCloudProtocol:
         def _handshake_tls12(self, transcript, sh):
             self._tls12 = True
             server_random = sh[6:38]
+            if server_random[-8:-1] == b"DOWNGRD":  # TLS 1.3 server forced down to 1.2 (RFC 8446 4.1.3)
+                raise ConnectionError("TLS downgrade detected")
             ske = None
             cert_key = None
             got_shd = False
