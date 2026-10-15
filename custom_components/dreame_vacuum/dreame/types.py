@@ -666,6 +666,7 @@ class DreameVacuumAutoEmptyStatus(IntEnum):
     IDLE = 0
     ACTIVE = 1
     NOT_PERFORMED = 2
+    RETURNING = 3
 
 
 class DreameVacuumSelfWashBaseStatus(IntEnum):
@@ -914,6 +915,18 @@ class DreameVacuumLowWaterWarning(IntEnum):
     NO_WATER_FOR_CLEAN = 4
     LOW_WATER = 5
     TANK_NOT_INSTALLED = 6
+
+
+class DreameVacuumMessagePrompt(IntEnum):
+    """Dreame Vacuum message prompt, MESSAGE_PROMPT is a comma separated list of these"""
+
+    UNKNOWN = -1
+    NO_MESSAGE = 0
+    INSUFFICIENT_WATER = 1
+    ADD_DETERGENT = 10
+    RETURN_TO_CHARGE_FAILED = 22
+    MOVE_TO_TARGET_FLOOR = 24
+    NEW_ROOM_DETECTED = 25
 
 
 class DreameVacuumDrainageStatus(IntEnum):

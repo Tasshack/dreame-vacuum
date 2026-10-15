@@ -140,6 +140,12 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.MESSAGE_PROMPT,
+        icon_fn=lambda value, device: (
+            "mdi:message-alert-outline" if device.status.message_prompt.value > 0 else "mdi:message-outline"
+        ),
+    ),
+    DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.DRAINAGE_STATUS,
         icon_fn=lambda value, device: "mdi:pump" if device.status.draining else "mdi:pump-off",
         exists_fn=lambda description, device: device.capability.water_check,
@@ -523,8 +529,8 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         property_key=DreameVacuumProperty.CLEAN_WATER_TANK_STATUS,
         icon="mdi:beer",
         entity_category=EntityCategory.DIAGNOSTIC,
+        # also on models without dock_status that report it (e.g. r2394j: 2 when empty, 3 when filled)
         exists_fn=lambda description, device: device.capability.self_wash_base
-        and device.capability.dock_status
         and DreameVacuumEntityDescription().exists_fn(description, device),
     ),
     DreameVacuumSensorEntityDescription(

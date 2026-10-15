@@ -46,6 +46,7 @@ from .types import (
     DreameVacuumSegmentVisibility,
     DreameVacuumDrainageStatus,
     DreameVacuumLowWaterWarning,
+    DreameVacuumMessagePrompt,
     DreameVacuumTaskType,
     DreameVacuumCleanWaterTankStatus,
     DreameVacuumDirtyWaterTankStatus,
@@ -231,9 +232,12 @@ CHARGING_STATUS_CHARGING_COMPLETED: Final = "charging_completed"
 
 DUST_COLLECTION_NOT_AVAILABLE: Final = "not_available"
 DUST_COLLECTION_AVAILABLE: Final = "available"
+DUST_COLLECTION_OVER_USE: Final = "over_use"
+DUST_COLLECTION_NEVER: Final = "never"
 
 AUTO_EMPTY_STATUS_ACTIVE: Final = "active"
 AUTO_EMPTY_STATUS_NOT_PERFORMED: Final = "not_performed"
+AUTO_EMPTY_STATUS_RETURNING: Final = "returning"
 
 MAP_RECOVERY_STATUS_RUNNING: Final = "running"
 MAP_RECOVERY_STATUS_SUCCESS: Final = "success"
@@ -249,6 +253,7 @@ SELF_WASH_BASE_STATUS_PAUSED: Final = "paused"
 SELF_WASH_BASE_STATUS_RETURNING: Final = "returning"
 SELF_WASH_BASE_STATUS_CLEAN_ADD_WATER: Final = "clean_add_water"
 SELF_WASH_BASE_STATUS_ADDING_WATER: Final = "adding_water"
+SELF_WASH_BASE_STATUS_RETURNING_FOR_DRY_MOP: Final = "returning_for_dry_mop"
 
 MOP_WASH_LEVEL_DEEP: Final = "deep"
 MOP_WASH_LEVEL_DAILY: Final = "daily"
@@ -367,6 +372,13 @@ LOW_WATER_WARNING_NO_WATER_LEFT_AFTER_CLEAN: Final = "no_water_left_after_clean"
 LOW_WATER_WARNING_NO_WATER_FOR_CLEAN: Final = "no_water_for_clean"
 LOW_WATER_WARNING_LOW_WATER: Final = "low_water"
 LOW_WATER_WARNING_TANK_NOT_INSTALLED: Final = "tank_not_installed"
+
+MESSAGE_PROMPT_NO_MESSAGE: Final = "no_message"
+MESSAGE_PROMPT_INSUFFICIENT_WATER: Final = "insufficient_water"
+MESSAGE_PROMPT_ADD_DETERGENT: Final = "add_detergent"
+MESSAGE_PROMPT_RETURN_TO_CHARGE_FAILED: Final = "return_to_charge_failed"
+MESSAGE_PROMPT_MOVE_TO_TARGET_FLOOR: Final = "move_to_target_floor"
+MESSAGE_PROMPT_NEW_ROOM_DETECTED: Final = "new_room_detected"
 
 TASK_TYPE_STANDARD: Final = "standard"
 TASK_TYPE_STANDARD_PAUSED: Final = "standard_paused"
@@ -1127,6 +1139,8 @@ DUST_COLLECTION_TO_NAME: Final = {
     DreameVacuumDustCollection.UNKNOWN: STATE_UNKNOWN,
     DreameVacuumDustCollection.NOT_AVAILABLE: DUST_COLLECTION_NOT_AVAILABLE,
     DreameVacuumDustCollection.AVAILABLE: DUST_COLLECTION_AVAILABLE,
+    DreameVacuumDustCollection.OVER_USE: DUST_COLLECTION_OVER_USE,
+    DreameVacuumDustCollection.NEVER: DUST_COLLECTION_NEVER,
 }
 
 AUTO_EMPTY_STATUS_TO_NAME: Final = {
@@ -1134,6 +1148,7 @@ AUTO_EMPTY_STATUS_TO_NAME: Final = {
     DreameVacuumAutoEmptyStatus.IDLE: STATE_IDLE,
     DreameVacuumAutoEmptyStatus.ACTIVE: AUTO_EMPTY_STATUS_ACTIVE,
     DreameVacuumAutoEmptyStatus.NOT_PERFORMED: AUTO_EMPTY_STATUS_NOT_PERFORMED,
+    DreameVacuumAutoEmptyStatus.RETURNING: AUTO_EMPTY_STATUS_RETURNING,
 }
 
 MAP_RECOVERY_STATUS_TO_NAME: Final = {
@@ -1162,6 +1177,7 @@ SELF_WASH_BASE_STATUS_TO_NAME: Final = {
     DreameVacuumSelfWashBaseStatus.RETURNING: SELF_WASH_BASE_STATUS_RETURNING,
     DreameVacuumSelfWashBaseStatus.CLEAN_ADD_WATER: SELF_WASH_BASE_STATUS_CLEAN_ADD_WATER,
     DreameVacuumSelfWashBaseStatus.ADDING_WATER: SELF_WASH_BASE_STATUS_ADDING_WATER,
+    DreameVacuumSelfWashBaseStatus.RETURNING_FOR_DRY_MOP: SELF_WASH_BASE_STATUS_RETURNING_FOR_DRY_MOP,
 }
 
 MOP_WASH_LEVEL_TO_NAME: Final = {
@@ -1331,6 +1347,16 @@ LOW_WATER_WARNING_TO_NAME: Final = {
     DreameVacuumLowWaterWarning.NO_WATER_FOR_CLEAN: LOW_WATER_WARNING_NO_WATER_FOR_CLEAN,
     DreameVacuumLowWaterWarning.LOW_WATER: LOW_WATER_WARNING_LOW_WATER,
     DreameVacuumLowWaterWarning.TANK_NOT_INSTALLED: LOW_WATER_WARNING_TANK_NOT_INSTALLED,
+}
+
+MESSAGE_PROMPT_TO_NAME: Final = {
+    DreameVacuumMessagePrompt.UNKNOWN: STATE_UNKNOWN,
+    DreameVacuumMessagePrompt.NO_MESSAGE: MESSAGE_PROMPT_NO_MESSAGE,
+    DreameVacuumMessagePrompt.INSUFFICIENT_WATER: MESSAGE_PROMPT_INSUFFICIENT_WATER,
+    DreameVacuumMessagePrompt.ADD_DETERGENT: MESSAGE_PROMPT_ADD_DETERGENT,
+    DreameVacuumMessagePrompt.RETURN_TO_CHARGE_FAILED: MESSAGE_PROMPT_RETURN_TO_CHARGE_FAILED,
+    DreameVacuumMessagePrompt.MOVE_TO_TARGET_FLOOR: MESSAGE_PROMPT_MOVE_TO_TARGET_FLOOR,
+    DreameVacuumMessagePrompt.NEW_ROOM_DETECTED: MESSAGE_PROMPT_NEW_ROOM_DETECTED,
 }
 
 TASK_TYPE_TO_NAME: Final = {

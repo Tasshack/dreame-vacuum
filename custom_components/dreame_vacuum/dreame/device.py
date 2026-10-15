@@ -74,6 +74,7 @@ from .types import (
     DreameVacuumAutoLDSCoverage,
     DreameVacuumDrainageStatus,
     DreameVacuumLowWaterWarning,
+    DreameVacuumMessagePrompt,
     DreameVacuumTaskType,
     DreameVacuumMapRecoveryStatus,
     DreameVacuumMapBackupStatus,
@@ -158,6 +159,7 @@ from .const import (
     FLOOR_MATERIAL_DIRECTION_CODE_TO_NAME,
     SEGMENT_VISIBILITY_CODE_TO_NAME,
     LOW_WATER_WARNING_TO_NAME,
+    MESSAGE_PROMPT_TO_NAME,
     PROBLEM_TYPE_ERROR,
     PROBLEM_TYPE_WARNING,
     PROBLEM_TYPE_LOW_WATER,
@@ -8735,6 +8737,32 @@ class DreameVacuumDeviceStatus:
         return LOW_WATER_WARNING_TO_NAME.get(self.low_water_warning, STATE_UNKNOWN)
 
     @property
+    def message_prompt(self) -> DreameVacuumMessagePrompt:
+        """Return the most important message of the device (the app shows these as messages or dialogs)."""
+        value = self._get_property(DreameVacuumProperty.MESSAGE_PROMPT)
+        if value is None:
+            return DreameVacuumMessagePrompt.UNKNOWN
+        codes = [int(code) for code in str(value).split(",") if code.strip().isdigit()]
+        for prompt in (
+            DreameVacuumMessagePrompt.RETURN_TO_CHARGE_FAILED,
+            DreameVacuumMessagePrompt.INSUFFICIENT_WATER,
+            DreameVacuumMessagePrompt.ADD_DETERGENT,
+            DreameVacuumMessagePrompt.MOVE_TO_TARGET_FLOOR,
+            DreameVacuumMessagePrompt.NEW_ROOM_DETECTED,
+        ):
+            if prompt.value in codes:
+                return prompt
+        if any(codes):
+            _LOGGER.debug("MESSAGE_PROMPT not supported: %s", value)
+            return DreameVacuumMessagePrompt.UNKNOWN
+        return DreameVacuumMessagePrompt.NO_MESSAGE
+
+    @property
+    def message_prompt_name(self) -> str:
+        """Return message prompt as string for translation."""
+        return MESSAGE_PROMPT_TO_NAME.get(self.message_prompt, STATE_UNKNOWN)
+
+    @property
     def voice_assistant_language(self) -> DreameVacuumVoiceAssistantLanguage:
         """Return voice assistant language of the device."""
         value = self._get_property(DreameVacuumProperty.VOICE_ASSISTANT_LANGUAGE)
@@ -8949,15 +8977,20 @@ class DreameVacuumDeviceStatus:
         if self.low_water and low_water_warning.value > DreameVacuumLowWaterWarning.NO_WATER_LEFT_DISMISS.value:
             return (PROBLEM_TYPE_LOW_WATER, self.low_water_warning_name)
 
+        # also on models without dock_status that report it (e.g. r2394j: 2 when empty, 3 when filled)
+        if self._capability.self_wash_base and (
+            self._capability.dock_status
+            or self._get_property(DreameVacuumProperty.CLEAN_WATER_TANK_STATUS) is not None
+        ):
+            clean_water_tank_status = self.clean_water_tank_status
+            if (
+                clean_water_tank_status is DreameVacuumCleanWaterTankStatus.NOT_INSTALLED
+                or clean_water_tank_status is DreameVacuumCleanWaterTankStatus.LOW_WATER
+            ):
+                return (PROBLEM_TYPE_DOCK, f"clean_water_tank_{self.clean_water_tank_status_name}")
+
         if self._capability.dock_status:
             if self._capability.self_wash_base:
-                clean_water_tank_status = self.clean_water_tank_status
-                if (
-                    clean_water_tank_status is DreameVacuumCleanWaterTankStatus.NOT_INSTALLED
-                    or clean_water_tank_status is DreameVacuumCleanWaterTankStatus.LOW_WATER
-                ):
-                    return (PROBLEM_TYPE_DOCK, f"clean_water_tank_{self.clean_water_tank_status_name}")
-
                 if self.dirty_water_tank_status is DreameVacuumDirtyWaterTankStatus.NOT_INSTALLED_OR_FULL:
                     return (PROBLEM_TYPE_DOCK, f"dirty_water_tank_{self.dirty_water_tank_status_name}")
 
@@ -10752,6 +10785,8 @@ class DreameVacuumDeviceStatus:
                         (DreameVacuumProperty.DIRTY_WATER_TANK_STATUS, False),
                     ]
                 )
+            elif self._get_property(DreameVacuumProperty.CLEAN_WATER_TANK_STATUS) is not None:
+                properties.append((DreameVacuumProperty.CLEAN_WATER_TANK_STATUS, False))
 
             if self._capability.mop_clean_frequency:
                 attributes[ATTR_MOP_CLEAN_FREQUENCY] = self.self_clean_value
