@@ -16,6 +16,7 @@ import gzip
 from threading import Thread, Lock
 from time import sleep
 import time, locale
+from functools import partial
 import paho.mqtt
 from paho.mqtt.client import Client
 from typing import Any, Dict, Final, Optional, Tuple
@@ -959,7 +960,10 @@ class DreameVacuumDreameHomeCloudProtocol:
             try:
                 response = json.loads(message.payload.decode("utf-8"))
                 if "data" in response and response["data"]:
-                    self._client_queue.put((self._message_callback, response["data"]))
+                    # Receive time, the queue can be held up (e.g. by a map download) before the message is handled
+                    self._client_queue.put(
+                        (partial(self._message_callback, received_time=time.monotonic()), response["data"])
+                    )
             except:
                 pass
 

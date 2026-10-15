@@ -379,6 +379,8 @@ class DreameVacuumDevice:
         self._dirty_data: dict[DreameVacuumProperty, DirtyData] = {}
         self._dirty_auto_switch_data: dict[DreameVacuumAutoSwitchProperty, DirtyData] = {}
         self._dirty_ai_data: dict[DreameVacuumStrAIProperty | DreameVacuumAIProperty, Any] = None
+        # Time of the last pushed value per property, polled values requested before that are older
+        self._pushed_time: dict[int, float] = {}
         self._discard_timeout = 5
         self._restore_timeout = 15
 
@@ -539,7 +541,7 @@ class DreameVacuumDevice:
         self.schedule_update(2, True)
         self._property_changed()
 
-    def _message_callback(self, message):
+    def _message_callback(self, message, received_time: float = None):
         if not self._ready:
             return
 
@@ -553,6 +555,7 @@ class DreameVacuumDevice:
             if method == "properties_changed":
                 properties = []
                 map_properties = []
+                pushed_time = received_time if received_time is not None else time.monotonic()
                 for param in params:
                     prop = DID(param["siid"], param["piid"])
                     if prop is not None:
@@ -560,6 +563,7 @@ class DreameVacuumDevice:
                             param["did"] = str(prop.value)
                             param["code"] = 0
                             properties.append(param)
+                            self._pushed_time[prop.value] = pushed_time
                             continue
 
                         if (
@@ -582,7 +586,7 @@ class DreameVacuumDevice:
                     if self._ready:
                         self._property_changed()
 
-    def _handle_properties(self, properties) -> bool:
+    def _handle_properties(self, properties, requested_time: float = None) -> bool:
         changed = False
         callbacks = []
         for prop in properties:
@@ -595,6 +599,12 @@ class DreameVacuumDevice:
                     continue
                 did = int(did.value)
             if did in UNUSED_PROPERTIES:
+                continue
+            if requested_time is not None and self._pushed_time.get(did, 0) > requested_time:
+                # Pushed while the request was in flight, the polled value is older
+                _LOGGER.debug(
+                    "Property %s Polled Value Ignored: %s", DreameVacuumProperty(did).name, prop.get("value")
+                )
                 continue
             if prop["code"] == 0 and "value" in prop:
                 value = prop["value"]
@@ -864,6 +874,7 @@ class DreameVacuumDevice:
             batches.append(standard[:max_properties])
             standard = standard[max_properties:]
 
+        requested_time = time.monotonic()
         results = []
         for batch in batches:
             result = self._protocol.get_properties(batch, timeout=(10 if len(batches) > 1 else None))
@@ -871,7 +882,7 @@ class DreameVacuumDevice:
                 raise DeviceException(key="device_unavailable") from None
             results.extend(result)
 
-        return self._handle_properties(results)
+        return self._handle_properties(results, requested_time)
 
     def _update_status(self, task_status: DreameVacuumTaskStatus, status: DreameVacuumStatus) -> None:
         """Update status properties on memory for map renderer to update the image before action is sent to the device."""
