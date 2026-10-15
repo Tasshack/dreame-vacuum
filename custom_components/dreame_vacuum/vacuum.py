@@ -1032,6 +1032,9 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             self._attr_fan_speed_list = []
 
         self._vacuum_state = STATE_CODE_TO_STATE.get(self.device.status.state, STATE_IDLE)
+        if self._vacuum_state == STATE_IDLE and self.device.status.docked:
+            # e.g. "waiting for task" after a job, while charging in the station
+            self._vacuum_state = STATE_DOCKED
         if self._activity_class is None:
             self._attr_state = self._vacuum_state
         attributes = self.device.status.attributes
