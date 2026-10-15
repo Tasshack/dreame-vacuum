@@ -25,8 +25,8 @@ warnings.filterwarnings(
     module="miio.miot_device",
 )
 
-# Suppress RuntimeWarning overflow encountered in scalar add
-warnings.filterwarnings("ignore", category=RuntimeWarning)
+# Suppress RuntimeWarning overflow encountered in scalar add, only for this integration
+warnings.filterwarnings("ignore", category=RuntimeWarning, module=r"custom_components\.dreame_vacuum\.")
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 
