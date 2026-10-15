@@ -8977,15 +8977,20 @@ class DreameVacuumDeviceStatus:
         if self.low_water and low_water_warning.value > DreameVacuumLowWaterWarning.NO_WATER_LEFT_DISMISS.value:
             return (PROBLEM_TYPE_LOW_WATER, self.low_water_warning_name)
 
+        # also on models without dock_status that report it (e.g. r2394j: 2 when empty, 3 when filled)
+        if self._capability.self_wash_base and (
+            self._capability.dock_status
+            or self._get_property(DreameVacuumProperty.CLEAN_WATER_TANK_STATUS) is not None
+        ):
+            clean_water_tank_status = self.clean_water_tank_status
+            if (
+                clean_water_tank_status is DreameVacuumCleanWaterTankStatus.NOT_INSTALLED
+                or clean_water_tank_status is DreameVacuumCleanWaterTankStatus.LOW_WATER
+            ):
+                return (PROBLEM_TYPE_DOCK, f"clean_water_tank_{self.clean_water_tank_status_name}")
+
         if self._capability.dock_status:
             if self._capability.self_wash_base:
-                clean_water_tank_status = self.clean_water_tank_status
-                if (
-                    clean_water_tank_status is DreameVacuumCleanWaterTankStatus.NOT_INSTALLED
-                    or clean_water_tank_status is DreameVacuumCleanWaterTankStatus.LOW_WATER
-                ):
-                    return (PROBLEM_TYPE_DOCK, f"clean_water_tank_{self.clean_water_tank_status_name}")
-
                 if self.dirty_water_tank_status is DreameVacuumDirtyWaterTankStatus.NOT_INSTALLED_OR_FULL:
                     return (PROBLEM_TYPE_DOCK, f"dirty_water_tank_{self.dirty_water_tank_status_name}")
 
@@ -10780,6 +10785,8 @@ class DreameVacuumDeviceStatus:
                         (DreameVacuumProperty.DIRTY_WATER_TANK_STATUS, False),
                     ]
                 )
+            elif self._get_property(DreameVacuumProperty.CLEAN_WATER_TANK_STATUS) is not None:
+                properties.append((DreameVacuumProperty.CLEAN_WATER_TANK_STATUS, False))
 
             if self._capability.mop_clean_frequency:
                 attributes[ATTR_MOP_CLEAN_FREQUENCY] = self.self_clean_value
