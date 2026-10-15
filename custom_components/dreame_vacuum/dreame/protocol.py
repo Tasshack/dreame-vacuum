@@ -725,9 +725,9 @@ class DreameVacuumDreameHomeCloudProtocol:
                     return status, content
                 except (ConnectionError, OSError) as ex:
                     self._close_conn(key)
-                    if isinstance(ex, TimeoutError):
-                        raise
-                    if fresh:
+                    # Retry once on a new connection, except for a read timeout (no errno).
+                    # ETIMEDOUT on a pooled connection means it was dropped while idle.
+                    if fresh or (isinstance(ex, TimeoutError) and ex.errno is None):
                         raise
             raise ConnectionError("request failed")
 
