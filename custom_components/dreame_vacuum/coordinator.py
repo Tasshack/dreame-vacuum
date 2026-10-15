@@ -599,6 +599,11 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
 
     async def _async_update_data(self) -> DreameVacuumDevice:
         """Handle device update. This function is only called once when the integration is added to Home Assistant."""
+        if self.data is not None and self._device is not None:
+            # Manual refresh (homeassistant.update_entity): update the running device instead of starting it again,
+            # the start-up path below disconnects the device on any error
+            self._device.schedule_update(0)
+            return self._device
         try:
             LOGGER.info("Integration starting...")
             await self.hass.async_add_executor_job(self._device.update)
