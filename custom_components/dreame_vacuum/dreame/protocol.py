@@ -161,6 +161,7 @@ class DreameVacuumDreameHomeCloudProtocol:
         _store = None
         _private_policy = None
         _store_lock = Lock()
+        _failures = {}  # (host, port) -> last logged handshake failure
 
         @staticmethod
         def _require_cert_sign(policy, cert, key_usage):
@@ -203,12 +204,12 @@ class DreameVacuumDreameHomeCloudProtocol:
 
         def _verify_chain(self, body, tls13):
             """Verify the Certificate message against the CA store and the server name, return the leaf key."""
+            chain = []
             try:
                 # TLS 1.3 adds a request context and per-entry extensions (RFC 8446 4.4.2)
                 i = 1 + body[0] if tls13 else 0
                 end = i + 3 + int.from_bytes(body[i : i + 3], "big")
                 i += 3
-                chain = []
                 while i < end:
                     n = int.from_bytes(body[i : i + 3], "big")
                     chain.append(x509.load_der_x509_certificate(body[i + 3 : i + 3 + n]))
@@ -219,7 +220,11 @@ class DreameVacuumDreameHomeCloudProtocol:
                 verifier.verify(chain[0], chain[1:])
                 return chain[0].public_key()
             except Exception as ex:
-                raise ConnectionError(f"certificate verify failed: {ex}") from ex
+                leaf = ""
+                if chain:
+                    subject, issuer = chain[0].subject.rfc4514_string(), chain[0].issuer.rfc4514_string()
+                    leaf = f" (server certificate {subject}, issuer {issuer})"
+                raise ConnectionError(f"certificate verify failed: {ex}{leaf}") from ex
 
         @staticmethod
         def _verify_signature(key, scheme, signature, data):
@@ -281,13 +286,32 @@ class DreameVacuumDreameHomeCloudProtocol:
             except OSError:
                 pass
             try:
-                return self._handshake()
+                result = self._handshake()
             except Exception as ex:
                 self._sock.close()
-                if isinstance(ex, OSError):
-                    raise
                 # malformed handshake data: callers (and paho's reconnect loop) only handle OSError
-                raise ConnectionError(f"TLS handshake failed: {ex!r}") from ex
+                error = ex if isinstance(ex, OSError) else ConnectionError(f"unexpected handshake data: {ex!r}")
+                self._report(f"TLS handshake with {self._host}:{self._port} failed: {error}")
+                if error is ex:
+                    raise
+                raise error from ex
+            self._report(None)
+            return result
+
+        def _report(self, message):
+            """Log a failed handshake with host and reason; repeats (e.g. MQTT reconnects) only at debug level."""
+            key = (self._host, self._port)
+            if message is None:
+                self._failures.pop(key, None)
+            elif self._failures.get(key) == message:
+                _LOGGER.debug("%s", message)
+            else:
+                self._failures[key] = message
+                _LOGGER.warning("%s", message)
+
+        @staticmethod
+        def _alert(body):
+            return ConnectionError(f"server sent alert {body[1]}" if len(body) >= 2 else "server sent alert")
 
         def _handshake(self):
             priv = x25519.X25519PrivateKey.generate()
@@ -349,6 +373,8 @@ class DreameVacuumDreameHomeCloudProtocol:
             typ, sh = self._read_record()
             while typ == 20:
                 typ, sh = self._read_record()
+            if typ == 21:
+                raise self._alert(sh)
             if typ != 22 or not sh or sh[0] != 2:
                 raise ConnectionError("expected ServerHello")
             i = 6 + 32
@@ -404,7 +430,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                 if typ == 20:
                     continue
                 if typ == 21:
-                    raise ConnectionError("alert during handshake")
+                    raise self._alert(body)
                 aad = bytes([typ]) + b"\x03\x03" + struct.pack("!H", len(body))
                 nonce = bytes(a ^ b for a, b in zip(s_hs_iv, b"\x00\x00\x00\x00" + struct.pack("!Q", sseq)))
                 cipher = ChaCha20Poly1305(s_hs_key) if self._cipher == 0x1303 else AESGCM(s_hs_key)
@@ -491,7 +517,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                     break
                 typ, body = self._read_record()
                 if typ == 21:
-                    raise ConnectionError("alert during handshake")
+                    raise self._alert(body)
                 if typ != 22:
                     continue
                 buf += body
