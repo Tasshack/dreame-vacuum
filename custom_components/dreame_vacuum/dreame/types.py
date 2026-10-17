@@ -2385,7 +2385,8 @@ ACTION_AVAILABILITY: Final = {
     and not device.status.drying,
     "base_station_cleaning": lambda device: device.status.docked
     and (not device.status.station_cleaning or device.capability.washboard_cleaning_status)
-    and device.status.water_tank_or_mop_installed
+    # Mijia stations clean the washboard without the mop pads, as the Xiaomi Home app allows
+    and (device.status.water_tank_or_mop_installed or device.capability.mijia)
     and not device.status.draining
     and not device.status.self_repairing
     and not device.status.started
