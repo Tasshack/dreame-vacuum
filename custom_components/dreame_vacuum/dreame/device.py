@@ -851,7 +851,7 @@ class DreameVacuumDevice:
             if self.capability.loaded
             else bool(self.info and "xiaomi.vacuum." in str(self.info.model))
         )
-        max_properties = 10 if (mijia and not self._protocol.dreame_cloud and not self._protocol.prefer_cloud) else 15
+        max_properties = 10 if (mijia and self._protocol.local_connection) else 15
 
         batches = []
         standard = property_list.copy()
