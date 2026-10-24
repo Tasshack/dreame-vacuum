@@ -2749,6 +2749,11 @@ class DreameVacuumProtocol:
         return False
 
     @property
+    def local_connection(self) -> bool:
+        """Returns true when device requests are sent over the local miIO connection instead of the cloud."""
+        return bool(self.device) and not (self.prefer_cloud and self.device_cloud)
+
+    @property
     def dreame_cloud(self) -> bool:
         if self.cloud:
             return self.cloud.dreame_cloud

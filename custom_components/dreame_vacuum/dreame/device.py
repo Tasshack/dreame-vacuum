@@ -851,14 +851,17 @@ class DreameVacuumDevice:
             if self.capability.loaded
             else bool(self.info and "xiaomi.vacuum." in str(self.info.model))
         )
-        max_properties = 10 if (mijia and not self._protocol.dreame_cloud and not self._protocol.prefer_cloud) else 15
+        local = self._protocol.local_connection
+        max_properties = 10 if (mijia and local) else 15
 
         batches = []
         standard = property_list.copy()
         for bulk in bulk_list:
             batch = [bulk]
-            batch.extend(standard[: max_properties - 1])
-            standard = standard[max_properties - 1 :]
+            # Devices drop local replies larger than about 1400 bytes, bulk properties are requested on their own
+            if not local:
+                batch.extend(standard[: max_properties - 1])
+                standard = standard[max_properties - 1 :]
             batches.append(batch)
         while standard:
             batches.append(standard[:max_properties])
