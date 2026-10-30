@@ -5127,6 +5127,44 @@ class ScheduledTask:
         return asdict(self)
 
 
+def schedule_with_task_enabled(schedule: str | None, schedule_id: Any, enabled: bool) -> str | None:
+    """Return the raw schedule list with only the state field of one task changed.
+
+    Tasks are separated by ";" and fields by "-". The second field is the state:
+    "1" or "2" is enabled, "3" is invalid and anything else is disabled.
+    An enabled task keeps its state value when it is enabled again, a disabled task gets "1"
+    when it is enabled and an enabled task gets "0" when it is disabled.
+    All other characters of the list stay unchanged.
+    Returns None when the list has no valid task with this id.
+    """
+    if not isinstance(schedule, str) or not schedule:
+        return None
+
+    try:
+        schedule_id = int(schedule_id)
+    except (TypeError, ValueError):
+        return None
+
+    found = False
+    tasks = schedule.split(";")
+    for index, task in enumerate(tasks):
+        props = task.split("-")
+        if len(props) < 9 or props[1] == "3":
+            continue
+        try:
+            if int(props[0]) != schedule_id:
+                continue
+        except ValueError:
+            continue
+
+        found = True
+        if (props[1] in ["1", "2"]) != bool(enabled):
+            props[1] = "1" if enabled else "0"
+            tasks[index] = "-".join(props)
+
+    return ";".join(tasks) if found else None
+
+
 @dataclass
 class GoToZoneSettings:
     x: int = None

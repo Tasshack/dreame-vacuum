@@ -896,6 +896,15 @@ async def async_setup_entry(
     )
 
     platform.async_register_entity_service(
+        "vacuum_set_schedule_enabled",
+        {
+            vol.Required("schedule_id"): cv.positive_int,
+            vol.Required("enabled"): cv.boolean,
+        },
+        DreameVacuum.async_set_schedule_enabled.__name__,
+    )
+
+    platform.async_register_entity_service(
         "vacuum_set_property",
         {
             vol.Required("key"): cv.string,
@@ -1627,3 +1636,12 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
         """Set walls and doors"""
         if (walls is not None and walls != "") or (doors is not None and doors != ""):
             await self._try_command("Unable to call set_walls: %s", self.device.set_walls, walls, doors, map_id)
+
+    async def async_set_schedule_enabled(self, schedule_id, enabled) -> None:
+        """Enable or disable a scheduled task"""
+        await self._try_command(
+            "Unable to call set_scheduled_task_enabled: %s",
+            self.device.set_scheduled_task_enabled,
+            schedule_id,
+            enabled,
+        )

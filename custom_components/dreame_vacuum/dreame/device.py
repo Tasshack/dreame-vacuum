@@ -102,6 +102,7 @@ from .types import (
     PathType,
     Coordinate,
     ScheduledTask,
+    schedule_with_task_enabled,
     DNDTask,
     ATTR_ACTIVE_AREAS,
     ATTR_ACTIVE_POINTS,
@@ -4375,6 +4376,36 @@ class DreameVacuumDevice:
             raise CommandFailedException()
 
         return response
+
+    def set_scheduled_task_enabled(self, schedule_id, enabled: bool) -> bool:
+        """Enable or disable a scheduled task without changing the other tasks of the schedule list."""
+        task = None
+        for schedule in self.status.schedule:
+            if str(schedule.id) == str(schedule_id):
+                task = schedule
+                break
+
+        if task is None:
+            raise NotFoundException(item="schedule", id=schedule_id)
+
+        if task.invalid:
+            raise InvalidActionException(key="invalid_value", parameter="schedule", value=schedule_id)
+
+        # Schedule list is not requested periodically on all connection types,
+        # get the latest list so changes made on the app are not overwritten
+        self._request_properties([DreameVacuumProperty.SCHEDULE])
+
+        schedule_list = self.get_property(DreameVacuumProperty.SCHEDULE)
+        schedule = schedule_with_task_enabled(schedule_list, schedule_id, enabled)
+        if schedule is None:
+            raise NotFoundException(item="schedule", id=schedule_id)
+
+        if schedule == schedule_list:
+            return True
+
+        if not self.set_property(DreameVacuumProperty.SCHEDULE, schedule):
+            raise CommandFailedException()
+        return True
 
     def delete_dnd_task(self, dnd_id) -> dict[str, Any] | None:
         """Delete a dnd task."""

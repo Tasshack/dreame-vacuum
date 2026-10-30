@@ -2987,6 +2987,20 @@
           "description": "Obstacle is ignored or not."
         }
       }
+    },
+    "vacuum_set_schedule_enabled": {
+      "name": "Set Schedule Enabled",
+      "description": "Enable or disable a scheduled task without changing the other scheduled tasks. (Only on supported devices)",
+      "fields": {
+        "schedule_id": {
+          "name": "Schedule ID",
+          "description": "ID of the scheduled task, as listed in the schedule attribute of the vacuum entity."
+        },
+        "enabled": {
+          "name": "Enabled",
+          "description": "Scheduled task is enabled or not."
+        }
+      }
     }
   },
   "exceptions": {

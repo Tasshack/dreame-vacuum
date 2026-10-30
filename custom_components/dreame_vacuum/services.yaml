@@ -485,3 +485,21 @@ vacuum_set_obstacle_ignore:
       selector:
         boolean:
 
+vacuum_set_schedule_enabled:
+  target:
+    entity:
+      integration: dreame_vacuum
+      domain: vacuum
+  fields:
+    schedule_id:
+      example: "1"
+      required: true
+      selector:
+        number:
+          mode: box
+    enabled:
+      example: "false"
+      required: true
+      selector:
+        boolean:
+
