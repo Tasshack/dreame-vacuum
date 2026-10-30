@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 from collections.abc import Callable
 from dataclasses import dataclass
+from functools import partial
 
 from homeassistant.components.switch import (
     ENTITY_ID_FORMAT,
@@ -14,8 +15,9 @@ from homeassistant.components.switch import (
 from homeassistant.config_entries import ConfigEntry
 
 from homeassistant.core import HomeAssistant, callback
-from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity import EntityCategory, async_generate_entity_id
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers import entity_registry
 from .const import DOMAIN
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
@@ -561,6 +563,106 @@ async def async_setup_entry(
         if description.exists_fn(description, coordinator.device)
     )
 
+    update_schedule_switches = partial(async_update_schedule_switches, coordinator, {}, async_add_entities)
+    coordinator.async_add_listener(update_schedule_switches)
+    update_schedule_switches()
+
+
+# Days of the week ordered as they are displayed, Monday first
+SCHEDULE_DAYS: tuple[str, ...] = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
+
+
+def format_schedule_days(repeats: str | None) -> str:
+    """Return the days of a scheduled task repeats mask as text, Monday first.
+
+    Repeats is a 7 character mask of "0" and "1" and the first character is Sunday.
+    Three or more consecutive days are shown as a range, e.g. "Mon-Fri".
+    """
+    days = sorted((index + 6) % 7 for index, value in enumerate(str(repeats or "")[:7]) if value == "1")
+    groups = []
+    for day in days:
+        if groups and day == groups[-1][-1] + 1:
+            groups[-1].append(day)
+        else:
+            groups.append([day])
+
+    return ", ".join(
+        (
+            f"{SCHEDULE_DAYS[group[0]]}-{SCHEDULE_DAYS[group[-1]]}"
+            if len(group) > 2
+            else ", ".join(SCHEDULE_DAYS[day] for day in group)
+        )
+        for group in groups
+    )
+
+
+@callback
+def async_update_schedule_switches(
+    coordinator: DreameVacuumDataUpdateCoordinator,
+    current: dict[int, list[DreameVacuumScheduleSwitchEntity]],
+    async_add_entities,
+) -> None:
+    device = coordinator.device
+    # Schedule list is empty until the property is received from the device
+    if not device or DreameVacuumProperty.SCHEDULE.value not in device.data:
+        return
+
+    if not isinstance(device.status.schedule, list):
+        return
+
+    new_ids = {task.id for task in device.status.schedule}
+    current_ids = {k for k in current if k != "init"}
+
+    async_remove_schedule_switches(coordinator, current, new_ids)
+
+    new_entities = []
+    for schedule_id in new_ids - current_ids:
+        current[schedule_id] = [
+            DreameVacuumScheduleSwitchEntity(
+                coordinator,
+                DreameVacuumSwitchEntityDescription(
+                    key="schedule",
+                    entity_category=EntityCategory.CONFIG,
+                ),
+                schedule_id,
+            )
+        ]
+        new_entities = new_entities + current[schedule_id]
+
+    if new_entities:
+        async_add_entities(new_entities)
+
+
+def async_remove_schedule_switches(
+    coordinator: DreameVacuumDataUpdateCoordinator,
+    current: dict[int, list[DreameVacuumScheduleSwitchEntity]],
+    new_ids: set,
+) -> None:
+    registry = entity_registry.async_get(coordinator.hass)
+
+    current_ids = {k for k in current if k != "init"}
+    for schedule_id in current_ids - new_ids:
+        for entity in current[schedule_id]:
+            if entity.entity_id in registry.entities:
+                registry.async_remove(entity.entity_id)
+        del current[schedule_id]
+
+    if "init" in current:
+        return
+
+    # Remove switches of the scheduled tasks that are deleted while integration was not running
+    entry_id = coordinator._entry.entry_id if hasattr(coordinator, "_entry") else coordinator.config_entry.entry_id
+    for entry in entity_registry.async_entries_for_config_entry(registry, entry_id):
+        if entry.domain == "switch" and f"{coordinator.device.mac}_schedule_" in entry.unique_id:
+            try:
+                schedule_id = int(entry.unique_id.split("_schedule_")[-1])
+                if schedule_id not in new_ids:
+                    registry.async_remove(entry.entity_id)
+            except ValueError:
+                pass
+
+    current["init"] = []
+
 
 class DreameVacuumSwitchEntity(DreameVacuumEntity, SwitchEntity):
     """Defines a Dreame Vacuum Switch entity."""
@@ -616,3 +718,96 @@ class DreameVacuumSwitchEntity(DreameVacuumEntity, SwitchEntity):
                 self.entity_description.property_key,
                 value,
             )
+
+
+class DreameVacuumScheduleSwitchEntity(DreameVacuumEntity, SwitchEntity):
+    """Defines a Dreame Vacuum scheduled task switch entity."""
+
+    entity_description: DreameVacuumSwitchEntityDescription
+
+    def __init__(
+        self,
+        coordinator: DreameVacuumDataUpdateCoordinator,
+        description: DreameVacuumSwitchEntityDescription,
+        schedule_id: int,
+    ) -> None:
+        """Initialize a Dreame Vacuum scheduled task switch entity."""
+        self.schedule_id = schedule_id
+        self.task = self._get_task(coordinator.device.status.schedule)
+
+        super().__init__(coordinator, description)
+        self._attr_unique_id = f"{self.device.mac}_schedule_{schedule_id}"
+        self.entity_id = async_generate_entity_id(
+            ENTITY_ID_FORMAT, f"{self.device.name}_schedule_{schedule_id}", hass=self.coordinator.hass
+        )
+        self._attr_is_on = bool(self.task and self.task.enabled)
+
+    def _get_task(self, schedule):
+        if schedule:
+            for task in schedule:
+                if task.id == self.schedule_id:
+                    return task
+        return None
+
+    def _set_id(self) -> None:
+        """Set name and icon of the entity"""
+        if self.task:
+            time = self.task.time
+            if self.task.once or "1" not in str(self.task.repeats):
+                days = self._localize_entity_state("select", "task_repeats", "once", "Once")
+            elif str(self.task.repeats)[:7] == "1111111":
+                days = self._localize_entity_state("select", "task_repeats", "daily", "Daily")
+            else:
+                days = format_schedule_days(self.task.repeats)
+        else:
+            time = str(self.schedule_id)
+            days = ""
+
+        if self._name_placeholder:
+            self._attr_translation_placeholders = {"time": time, "days": days}
+            self.__dict__.pop("name", None)
+        else:
+            self._attr_name = self._localized_name(
+                "switch", "schedule", f"Schedule {time} {days}".strip(), time=time, days=days
+            )
+
+        self._attr_icon = "mdi:calendar-clock" if self.task and self.task.enabled else "mdi:calendar-remove"
+
+    @callback
+    def _handle_coordinator_update(self) -> None:
+        task = self._get_task(self.device.status.schedule)
+        if task != self.task:
+            self.task = task
+            self._set_id()
+        self._attr_is_on = bool(self.task and self.task.enabled)
+        self.async_write_ha_state()
+
+    @property
+    def available(self) -> bool:
+        """Return True if entity is available."""
+        return bool(self.device.device_connected and self.task and not self.task.invalid)
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any] | None:
+        """Return the extra state attributes of the entity."""
+        return self.task.as_dict() if self.task else None
+
+    async def async_turn_off(self, **kwargs: Any) -> None:
+        """Disable the scheduled task."""
+        await self.async_set_state(False)
+
+    async def async_turn_on(self, **kwargs: Any) -> None:
+        """Enable the scheduled task."""
+        await self.async_set_state(True)
+
+    async def async_set_state(self, state: bool) -> None:
+        """Enable or disable the scheduled task."""
+        if not self.available:
+            self._raise_error(EntityUnavailableException())
+
+        await self._try_command(
+            "Unable to call: %s",
+            self.device.set_scheduled_task_enabled,
+            self.schedule_id,
+            state,
+        )

@@ -1915,6 +1915,9 @@
       "ring_light_always_on": {
         "name": "Ring Light Always On"
       },
+      "schedule": {
+        "name": "Schedule {time} {days}"
+      },
       "self_clean": {
         "name": "Self-Clean"
       },

@@ -43,6 +43,7 @@ def remove_entities(hass, entry, coordinator, domain, descriptions):
             and ("_map_" not in entity_id or domain == "button")
             and "_room_" not in entity_id
             and "_shortcut_" not in entity_id
+            and not (domain == "switch" and f"{coordinator.device.mac}_schedule_" in entry.unique_id)
         ):
             if entry.translation_key is not None:
                 found = False
