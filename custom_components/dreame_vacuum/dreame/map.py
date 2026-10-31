@@ -1609,9 +1609,11 @@ class DreameMapVacuumMapManager:
         if object_name and object_name != "":
             if self._map_list_object_name != object_name or self._map_list_md5 != md5:
                 self._map_list_object_name = object_name
-                if not self._device_running and self._map_list_md5 is not None:
+                if self._map_list_md5 is not None:
+                    # Map list is requested after the device stops if it changes while running
                     self.request_next_map_list()
-                    self.schedule_update(3)
+                    if not self._device_running:
+                        self.schedule_update(3)
                 self._map_list_md5 = md5
                 return True
         return False
@@ -1627,6 +1629,7 @@ class DreameMapVacuumMapManager:
     def request_map_list(self) -> None:
         if self._map_list_object_name and self._protocol.cloud.logged_in:
             _LOGGER.info("Get Map List: %s", self._map_list_object_name)
+            self._protocol.cloud.last_file_status = None
             try:
                 response = self._get_interim_file_data(self._map_list_object_name)
             except Exception as ex:
@@ -1759,6 +1762,11 @@ class DreameMapVacuumMapManager:
                     if self._map_data:
                         self._map_data_changed(True)
                     self.request_next_recovery_map_list()
+            elif self._map_list_md5 == "" and getattr(self._protocol.cloud, "last_file_status", None) == 404:
+                # Some devices (e.g. p2036) report a map list object with an empty md5 that was never uploaded to the cloud,
+                # stop requesting it until the map list property changes
+                _LOGGER.info("Map list not found on cloud and has no md5: %s", self._map_list_object_name)
+                self._need_map_list_request = False
 
     def request_recovery_map_list(self) -> None:
         if self._recovery_map_list_object_name:

@@ -1331,8 +1331,10 @@ class DreameVacuumDreameHomeCloudProtocol:
             self._strings[42]: self._strings[68],
         }
         while retries < retry_count + 1:
+            self.last_file_status = None
             try:
                 status, content = self._http("GET", url, headers, None, 6)
+                self.last_file_status = status
                 if status == 200:
                     return content
             except Exception as ex:
@@ -2169,12 +2171,14 @@ class DreameVacuumMiHomeCloudProtocol:
         retries = 0
         if not retry_count or retry_count < 0:
             retry_count = 0
+        self.last_file_status = None
         while retries < retry_count + 1:
             try:
                 response = self._get_session().get(url, timeout=6)
             except Exception as ex:
                 response = None
                 _LOGGER.warning("Unable to get file at %s: %s", url, ex)
+            self.last_file_status = response.status_code if response is not None else None
             if response is not None and response.status_code == 200:
                 return response.content
             retries = retries + 1
