@@ -343,6 +343,8 @@ SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
         value_int_fn=lambda value, entity: DreameVacuumWiderCornerCoverage[value.upper()].value,
         exists_fn=lambda description, device: DreameVacuumEntityDescription().exists_fn(description, device)
+        and device.capability.wider_corner_coverage
+        and device.capability.wider_corner_coverage_frequency
         and not device.capability.mop_pad_swing
         and not device.capability.mop_clean_frequency,
     ),
@@ -731,7 +733,6 @@ SEGMENT_SELECTS: tuple[DreameVacuumSelectEntityDescription, ...] = (
             and device.status.has_saved_map
             and not device.status.fast_mapping
             and device.status.auto_change_mop
-            and segment is not None
             and segment.mop_type
         ),
         value_fn=lambda value, entity: entity.segment.mop_type.lower() if entity.segment.mop_type else None,
@@ -910,7 +911,7 @@ def async_update_segment_selects(
     async_remove_segment_selects(coordinator, current, new_ids, visible_new_ids)
 
     new_entities = []
-    
+
     for segment_id in new_ids - current_ids:
         entities = []
         for description in SEGMENT_SELECTS:
@@ -918,7 +919,7 @@ def async_update_segment_selects(
                 if segment_id not in visible_new_ids and description.current_segments_only:
                     continue
                 entities.append(DreameVacuumSegmentSelectEntity(coordinator, description, segment_id))
-        
+
         if entities:
             current[segment_id] = entities
             new_entities.extend(entities)
@@ -943,9 +944,9 @@ def async_remove_segment_selects(
     visible_new_ids: set,
 ) -> None:
     registry = entity_registry.async_get(coordinator.hass)
-    
+
     current_ids = set(k for k in current if k != "init")
-    
+
     for segment_id in current_ids - new_ids:
         entities = current[segment_id]
         for entity in entities:
@@ -961,7 +962,7 @@ def async_remove_segment_selects(
                 description = entity.entity_description
                 if description.current_segments_only:
                     entities_to_remove.append(entity)
-                    
+
             for entity in entities_to_remove:
                 if entity.entity_id in registry.entities:
                     registry.async_remove(entity.entity_id)
@@ -983,7 +984,7 @@ def async_remove_segment_selects(
                     registry.async_remove(entry.entity_id)
             except ValueError:
                 pass
-                
+
     current["init"] = []
 
 

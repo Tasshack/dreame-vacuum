@@ -183,11 +183,21 @@ BUTTONS: tuple[ButtonEntityDescription, ...] = (
         ),
     ),
     DreameVacuumButtonEntityDescription(
+        action_key=DreameVacuumAction.RESET_WASHBOARD_CLEANING,
+        icon="mdi:waterfall",
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device)
+            and device.capability.washboard_cleaning
+            and device.status.washboard_cleaning_life is not None
+        ),
+    ),
+    DreameVacuumButtonEntityDescription(
         action_key=DreameVacuumAction.START_AUTO_EMPTY,
         icon_fn=lambda value, device: (
-            "mdi:delete-off"
-            if not device.status.dust_collection_available
-            else "mdi:delete-restore" if device.status.auto_emptying else "mdi:delete-empty"
+            "mdi:delete-restore"
+            if device.status.auto_emptying
+            else "mdi:delete-off" if not device.status.dust_collection_available else "mdi:delete-empty"
         ),
         exists_fn=lambda description, device: device.capability.auto_empty_base,
     ),
@@ -370,7 +380,7 @@ def async_remove_buttons(
     new_ids: set,
 ) -> None:
     registry = entity_registry.async_get(coordinator.hass)
-    
+
     current_ids = set(k for k in current if k != "init")
     for id in current_ids - new_ids:
         entities = current[id]
@@ -400,7 +410,7 @@ def async_remove_buttons(
                     registry.async_remove(entry.entity_id)
             except ValueError:
                 pass
-                
+
     current["init"] = []
 
 
@@ -480,9 +490,7 @@ class DreameVacuumShortcutButtonEntity(DreameVacuumEntity, ButtonEntity):
             self._attr_translation_placeholders = {"name": value}
             self.__dict__.pop("name", None)
         else:
-            self._attr_name = self._localized_name(
-                "button", key, name.replace("_", " ").title(), name=value
-            )
+            self._attr_name = self._localized_name("button", key, name.replace("_", " ").title(), name=value)
 
     @callback
     def _handle_coordinator_update(self) -> None:

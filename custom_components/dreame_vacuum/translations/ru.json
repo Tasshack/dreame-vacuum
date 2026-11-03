@@ -774,7 +774,8 @@
           "unknown": "Неизвестно",
           "idle": "Бездействие",
           "active": "Активировано",
-          "not_performed": "Не выполнено"
+          "not_performed": "Не выполнено",
+          "returning": "Возврат для автоочистки"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Неизвестно",
           "not_available": "Недоступно",
           "available": "Доступно",
-          "over_use": "Чрезмерное использование",
-          "never": "Никогда"
+          "over_use": "Чрезмерное использование"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Пауза",
           "returning": "Возвращение для полоскания",
           "clean_add_water": "Очистка и добавление воды",
-          "adding_water": "Пополнение воды"
+          "returning_to_drain": "Возвращение для слива",
+          "returning_for_dry_mop": "Возвращение для смачивания швабры"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Голосовой пакет"
+      },
+      "washboard_cleaning_left": {
+        "name": "Очистка моечной панели"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Оставшийся ресурс моечной панели"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Очистка фильтра воды"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Сбросить фильтр бака"
       },
+      "reset_washboard_cleaning": {
+        "name": "Сбросить моечную панель"
+      },
       "reset_water_outlet_filter": {
         "name": "Сбросить фильтр выхода воды"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Уведом. об уборке",
         "card_object_controls": "Управление",
         "card_object_cruising_history": "История маршрутов",
+        "card_object_dock_status_indicator": "Индикатор состояния док-станции",
         "card_object_fault_notification": "Ошибки",
         "card_object_information_notification": "Инфо-сообщения",
         "card_object_low_water_notification": "Мало воды",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Слева",
         "left_handed": "Для левшей",
-        "limit_height": "Вписать в экран",
+        "legacy_switches": "Старые переключатели",
         "locked": "Заблокировано",
         "locked_always": "Всегда",
         "locked_auto": "Автоматически",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Вирт. стены",
         "map_object_walls": "Стены",
         "map_object_zoom_point": "Точка зума",
+        "max_height_offset": "Отступ максимальной высоты",
         "object_opacity": "Проврачность объектов",
         "object_scale": "Масштаб объектов",
         "opacity": "Прозрачность",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Ролик для взбивания требует очистки\nПожалуйста, очистите ролик для взбивания и сбросьте счетчик.",
         "roller_mop_filter_dirty_left": "Фильтр роликовой швабры требует очистки\nПожалуйста, очистите фильтр роликовой швабры и сбросьте счетчик.",
         "water_outlet_filter_dirty_left": "Фильтр выпуска воды требует очистки\nПожалуйста, очистите фильтр выпуска воды и сбросьте счетчик.",
+        "washboard_cleaning_left": "Моечная панель требует очистки\nПожалуйста, очистите моечную панель и сбросьте счетчик.",
         "no_water_left": "Пожалуйста, наполните бак для чистой воды.\nВода в баке для чистой воды почти закончилась. Проверьте и немедленно наполните бак для чистой воды.",
         "no_water_left_after_clean": "Пожалуйста, наполните бак для чистой воды.\nНасадка для мытья полов очищена. Обнаружено, что воды в баке для чистой воды недостаточно, пожалуйста, наполните бак для чистой воды и опорожните бак для грязной воды.",
         "no_water_for_clean": "Низкий уровень воды в баке для чистой воды.\nРобот переключился в режим уборки пылесосом.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Это действие недоступно на текущей карте"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Выполняется смена швабры. Повторите попытку позже."
     },
     "unavailable_while_cruising": {
       "message": "Это действие недоступно во время патрулирования"

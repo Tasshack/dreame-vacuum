@@ -774,7 +774,8 @@
           "unknown": "Ismeretlen",
           "idle": "Tétlen",
           "active": "Aktív",
-          "not_performed": "Nem teljesített"
+          "not_performed": "Nem teljesített",
+          "returning": "Automatikus ürítéshez visszatérés"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Ismeretlen",
           "not_available": "Nem elérhető",
           "available": "Elérhető",
-          "over_use": "Túlzott használat",
-          "never": "Soha"
+          "over_use": "Túlzott használat"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Szüneteltetve",
           "returning": "Visszatérés a mosáshoz",
           "clean_add_water": "Tisztítás és víz hozzáadása",
-          "adding_water": "Víz hozzáadása"
+          "returning_to_drain": "Visszatérve a lefolyóba",
+          "returning_for_dry_mop": "Felmosó nedvesítésére visszatérés"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Hangcsomag"
+      },
+      "washboard_cleaning_left": {
+        "name": "Mosódeszka tisztítása"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Mosódeszka tisztításának hátralévő ideje"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Víznyílás szűrő tisztítása"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Tartályszűrő visszaállítása"
       },
+      "reset_washboard_cleaning": {
+        "name": "Mosódeszka visszaállítása"
+      },
       "reset_water_outlet_filter": {
         "name": "Vízkiömlő szűrőjének visszaállítása"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Takarítási értesítések",
         "card_object_controls": "Vezérlés",
         "card_object_cruising_history": "Útvonal előzmények",
+        "card_object_dock_status_indicator": "Dokkoló állapotjelző",
         "card_object_fault_notification": "Hibaértesítések",
         "card_object_information_notification": "Infó értesítések",
         "card_object_low_water_notification": "Vízszint értesítések",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Balra",
         "left_handed": "Balkezes mód",
-        "limit_height": "Magasság igazítása",
+        "legacy_switches": "Régi kapcsolók",
         "locked": "Zárolva",
         "locked_always": "Mindig",
         "locked_auto": "Automatikusan",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtuális falak",
         "map_object_walls": "Falak",
         "map_object_zoom_point": "Zoom pont",
+        "max_height_offset": "Maximális magasság eltolása",
         "object_opacity": "Objektumok áttetszősége",
         "object_scale": "Objektumok méretaránya",
         "opacity": "Áttetszőség",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "A pelyhesítő hengert meg kell tisztítani\nKérjük, tisztítsa meg a pelyhesítő hengert, és nullázza le a számlálót.",
         "roller_mop_filter_dirty_left": "A görgős felmosó szűrőjét meg kell tisztítani\nKérjük, tisztítsa meg a görgős felmosó szűrőjét, és nullázza le a számlálót.",
         "water_outlet_filter_dirty_left": "A vízkimeneti szűrőt meg kell tisztítani\nKérjük, tisztítsa meg a vízkimeneti szűrőt, és nullázza le a számlálót.",
+        "washboard_cleaning_left": "A mosódeszkát meg kell tisztítani\nKérjük, tisztítsa meg a mosódeszkát, és nullázza le a számlálót.",
         "no_water_left": "Kérjük, töltse fel a tisztatavíz-tartályt.\nA tisztatavíz-tartályban lévő víz kifogyóban van. Kérjük, azonnal ellenőrizze és töltse fel a tisztatavíz-tartályt.",
         "no_water_left_after_clean": "Kérjük, töltse fel a tisztatavíz-tartályt.\nA felmosópárna megtisztítva. A tisztatavíz-tartályban lévő víz nem elegendő, kérjük, töltse fel a tisztatavíz-tartályt, és ürítse ki a használt víztartályt.",
         "no_water_for_clean": "Alacsony vízszint a tisztatavíz-tartályban.\nA robot porszívózás módba váltott.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Ez a művelet nem érhető el az aktuális térképen"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Felmosó párna cseréje. Próbálja újra később."
     },
     "unavailable_while_cruising": {
       "message": "Ez a művelet nem érhető el őrjárat közben"

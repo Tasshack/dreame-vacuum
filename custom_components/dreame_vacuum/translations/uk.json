@@ -774,7 +774,8 @@
           "unknown": "Невідомо",
           "idle": "Бездіяльність",
           "active": "Активовано",
-          "not_performed": "Не виконано"
+          "not_performed": "Не виконано",
+          "returning": "Повернення для автоматичного спорожнення"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Невідомо",
           "not_available": "Не доступний",
           "available": "Доступний",
-          "over_use": "Надмірне використання",
-          "never": "Ніколи"
+          "over_use": "Надмірне використання"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Призупинено",
           "returning": "Повернення для миття",
           "clean_add_water": "Миття та доливання води",
-          "adding_water": "Доливання води"
+          "returning_to_drain": "Повернення до зливу",
+          "returning_for_dry_mop": "Повернення для зволоження швабри"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Голосовий пакет"
+      },
+      "washboard_cleaning_left": {
+        "name": "Очищення мийної платформи"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Залишок ресурсу мийної платформи"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Очищення фільтра води"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Скинути фільтр бака"
       },
+      "reset_washboard_cleaning": {
+        "name": "Скинути мийну платформу"
+      },
       "reset_water_outlet_filter": {
         "name": "Скинути фільтр виходу води"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Сповіщення прибирання",
         "card_object_controls": "Керування",
         "card_object_cruising_history": "Історія маршрутів",
+        "card_object_dock_status_indicator": "Індикатор стану док-станції",
         "card_object_fault_notification": "Помилки",
         "card_object_information_notification": "Інформація",
         "card_object_low_water_notification": "Мало води",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Зліва",
         "left_handed": "Для шульг",
-        "limit_height": "Вписати в екран",
+        "legacy_switches": "Старі перемикачі",
         "locked": "Заблоковано",
         "locked_always": "Завжди",
         "locked_auto": "Автоматично",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Віртуальні стіни",
         "map_object_walls": "Стіни",
         "map_object_zoom_point": "Точка зуму",
+        "max_height_offset": "Відступ максимальної висоти",
         "object_opacity": "Прозорість об'єктів",
         "object_scale": "Масштаб об'єктів",
         "opacity": "Прозорість",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Ролик для збивання потребує очищення\nБудь ласка, очистіть ролик для збивання та скиньте лічильник.",
         "roller_mop_filter_dirty_left": "Фільтр роликової швабри потребує очищення\nБудь ласка, очистіть фільтр роликової швабри та скиньте лічильник.",
         "water_outlet_filter_dirty_left": "Фільтр випуску води потребує очищення\nБудь ласка, очистіть фільтр випуску води та скиньте лічильник.",
+        "washboard_cleaning_left": "Мийна платформа потребує очищення\nБудь ласка, очистіть мийну платформу та скиньте лічильник.",
         "no_water_left": "Будь ласка, наповніть бак для чистої води.\nВода в баку для чистої води майже закінчилася. Перевірте та негайно наповніть бак для чистої води.",
         "no_water_left_after_clean": "Будь ласка, наповніть бак для чистої води.\nНасадку для швабри очищено. Виявлено, що води в баку для чистої води недостатньо, будь ласка, наповніть бак для чистої води та спорожніть бак для брудної води.",
         "no_water_for_clean": "Низький рівень води в баку для чистої води.\nРобот перейшов у режим прибирання пилососом.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Ця дія недоступна на поточній карті"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Зміна швабри. Повторіть спробу пізніше."
     },
     "unavailable_while_cruising": {
       "message": "Ця дія недоступна під час патрулювання"

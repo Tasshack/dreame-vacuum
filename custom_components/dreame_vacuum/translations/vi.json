@@ -774,7 +774,8 @@
           "unknown": "Không rõ",
           "idle": "Đang chờ",
           "active": "Đang hoạt động",
-          "not_performed": "Không thực hiện"
+          "not_performed": "Không thực hiện",
+          "returning": "Đang về để đổ rác"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Không rõ",
           "not_available": "Không khả dụng",
           "available": "Khả dụng",
-          "over_use": "Dùng quá mức",
-          "never": "Không bao giờ"
+          "over_use": "Dùng quá mức"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Đã tạm dừng",
           "returning": "Đang về để giặt",
           "clean_add_water": "Đang làm sạch và thêm nước",
-          "adding_water": "Đang thêm nước"
+          "returning_to_drain": "Đang về để xả nước",
+          "returning_for_dry_mop": "Đang về để làm ướt giẻ lau"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Gói giọng nói"
+      },
+      "washboard_cleaning_left": {
+        "name": "Vệ sinh khay giặt"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Thời gian còn lại vệ sinh khay giặt"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Vệ sinh bộ lọc đầu ra nước"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Đặt lại lọc bình nước"
       },
+      "reset_washboard_cleaning": {
+        "name": "Đặt lại khay giặt"
+      },
       "reset_water_outlet_filter": {
         "name": "Đặt lại lọc cửa thoát nước"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Thông báo làm sạch",
         "card_object_controls": "Điều khiển",
         "card_object_cruising_history": "Lịch sử đi tuần",
+        "card_object_dock_status_indicator": "Chỉ báo trạng thái đế sạc",
         "card_object_fault_notification": "Thông báo lỗi",
         "card_object_information_notification": "Thông báo thông tin",
         "card_object_low_water_notification": "Thông báo nước thấp",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Trái",
         "left_handed": "Chế độ thuận tay trái",
-        "limit_height": "Giới hạn chiều cao theo màn hình",
+        "legacy_switches": "Công tắc cũ",
         "locked": "Đã khóa",
         "locked_always": "Luôn luôn",
         "locked_auto": "Tự động",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Tường ảo",
         "map_object_walls": "Tường",
         "map_object_zoom_point": "Điểm phóng to",
+        "max_height_offset": "Độ lệch chiều cao tối đa",
         "object_opacity": "Độ mờ đối tượng",
         "object_scale": "Tỷ lệ đối tượng",
         "opacity": "Độ mờ",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Con lăn đánh bông cần được làm sạch\nVui lòng làm sạch con lăn đánh bông và đặt lại bộ đếm.",
         "roller_mop_filter_dirty_left": "Bộ lọc cây lau nhà dạng con lăn cần được làm sạch\nVui lòng làm sạch bộ lọc cây lau nhà dạng con lăn và đặt lại bộ đếm.",
         "water_outlet_filter_dirty_left": "Bộ lọc đầu ra nước cần được làm sạch\nVui lòng làm sạch bộ lọc đầu ra nước và đặt lại bộ đếm.",
+        "washboard_cleaning_left": "Khay giặt cần được làm sạch\nVui lòng làm sạch khay giặt và đặt lại bộ đếm.",
         "no_water_left": "Vui lòng đổ đầy bình chứa nước sạch.\nNước trong bình chứa nước sạch sắp cạn kiệt. Kiểm tra và đổ đầy bình chứa nước sạch ngay lập tức.",
         "no_water_left_after_clean": "Vui lòng đổ đầy bình chứa nước sạch.\nMiếng lau nhà đã được làm sạch. Phát hiện thấy nước trong bình chứa nước sạch không đủ, vui lòng đổ đầy bình chứa nước sạch và làm rỗng bình chứa nước đã qua sử dụng.",
         "no_water_for_clean": "Mực nước thấp trong bình chứa nước sạch.\nRobot đã chuyển sang Chế độ hút bụi.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Hành động này không khả dụng trên bản đồ hiện tại"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Đang thay đổi giẻ lau. Hãy thử lại sau."
     },
     "unavailable_while_cruising": {
       "message": "Hành động này không khả dụng khi đang tuần tra"

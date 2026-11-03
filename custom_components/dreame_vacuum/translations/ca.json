@@ -774,7 +774,8 @@
           "unknown": "Desconeguda",
           "idle": "Inactiu",
           "active": "Actiu",
-          "not_performed": "No realitzat"
+          "not_performed": "No realitzat",
+          "returning": "Tornant per al buidatge automàtic"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Desconeguda",
           "not_available": "No disponible",
           "available": "Disponibles",
-          "over_use": "Ús excessiu",
-          "never": "Mai"
+          "over_use": "Ús excessiu"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Pausada",
           "returning": "Retornant per rentar",
           "clean_add_water": "Netejant i afegint aigua",
-          "adding_water": "Afegint aigua"
+          "returning_to_drain": "Tornant a buidar",
+          "returning_for_dry_mop": "Tornant a humitejar la mopa"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Paquet de veu"
+      },
+      "washboard_cleaning_left": {
+        "name": "Neteja de la base de rentat"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Temps restant neteja base de rentat"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Neteja del filtre de sortida d'aigua"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Restablir filtre del dipòsit"
       },
+      "reset_washboard_cleaning": {
+        "name": "Restablir base de rentat"
+      },
       "reset_water_outlet_filter": {
         "name": "Restablir filtre de sortida d'aigua"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Notif. neteja",
         "card_object_controls": "Comandaments",
         "card_object_cruising_history": "Historial ruta",
+        "card_object_dock_status_indicator": "Indicador d'estat de la base",
         "card_object_fault_notification": "Notif. errors",
         "card_object_information_notification": "Notif. info.",
         "card_object_low_water_notification": "Notif. aigua baixa",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Esquerra",
         "left_handed": "Mode zurdo",
-        "limit_height": "Ajustar altura",
+        "legacy_switches": "Interruptors antics",
         "locked": "Bloquejat",
         "locked_always": "Sempre",
         "locked_auto": "Automàtic",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Parets virtuals",
         "map_object_walls": "Parets",
         "map_object_zoom_point": "Punt zoom",
+        "max_height_offset": "Desplaçament d'altura màxima",
         "object_opacity": "Opacitat objectes",
         "object_scale": "Escala objectes",
         "opacity": "Opacitat",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "S'ha de netejar el corró de esponjament\nSi us plau, netegeu el corró de esponjament i restabliu el comptador.",
         "roller_mop_filter_dirty_left": "S'ha de netejar el filtre del corró de la mopa\nSi us plau, netegeu el filtre del corró de la mopa i restabliu el comptador.",
         "water_outlet_filter_dirty_left": "S'ha de netejar el filtre de sortida d'aigua\nSi us plau, netegeu el filtre de sortida d'aigua i restabliu el comptador.",
+        "washboard_cleaning_left": "S'ha de netejar la base de rentat\nSi us plau, netegeu la base de rentat i restabliu el comptador.",
         "no_water_left": "Si us plau, ompliu el dipòsit d'aigua neta.\nL'aigua del dipòsit d'aigua neta està a punt d'esgotar-se. Comproveu-ho i ompliu el dipòsit d'aigua neta ràpidament.",
         "no_water_left_after_clean": "Si us plau, ompliu el dipòsit d'aigua neta.\nS'ha netejat el drap. S'ha detectat que l'aigua del dipòsit d'aigua neta és insuficient, si us plau, ompliu el dipòsit d'aigua neta i buideu el dipòsit d'aigua usada.",
         "no_water_for_clean": "Nivell d'aigua baix al dipòsit d'aigua neta.\nEl robot ha canviat al mode d'aspiració.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Aquesta acció no està disponible al mapa actual"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Canviant la mopa. Torna-ho a provar més tard."
     },
     "unavailable_while_cruising": {
       "message": "Aquesta acció no està disponible durant la ronda"

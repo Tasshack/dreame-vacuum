@@ -774,7 +774,8 @@
           "unknown": "לא ידוע",
           "idle": "בהמתנה",
           "active": "פעיל",
-          "not_performed": "לא בוצע"
+          "not_performed": "לא בוצע",
+          "returning": "חוזר לריקון אוטומטי"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "לא ידוע",
           "not_available": "לא זמין",
           "available": "זמין",
-          "over_use": "שימוש יתר",
-          "never": "לעולם לא"
+          "over_use": "שימוש יתר"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "מושהה",
           "returning": "חוזר לשטיפה",
           "clean_add_water": "מנקה ומוסיף מים",
-          "adding_water": "מוסיף מים"
+          "returning_to_drain": "חוזר לניקוז",
+          "returning_for_dry_mop": "חוזר להרטבת המגב"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "חבילת קול"
+      },
+      "washboard_cleaning_left": {
+        "name": "ניקוי קרש השטיפה"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "זמן שנותר לניקוי קרש השטיפה"
       },
       "water_outlet_filter_dirty_left": {
         "name": "ניקוי מסנן יציאת מים"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "איפוס מסנן מכל"
       },
+      "reset_washboard_cleaning": {
+        "name": "איפוס קרש השטיפה"
+      },
       "reset_water_outlet_filter": {
         "name": "איפוס מסנן יציאת מים"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "התראת ניקוי",
         "card_object_controls": "בקרות",
         "card_object_cruising_history": "היסטוריית שיוטים",
+        "card_object_dock_status_indicator": "מחוון מצב תחנת העגינה",
         "card_object_fault_notification": "התראת שגיאה",
         "card_object_information_notification": "התראת מידע",
         "card_object_low_water_notification": "התראת מים נמוכים",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "שמאל",
         "left_handed": "מצב לשמאליים",
-        "limit_height": "הגבלת גובה למסך",
+        "legacy_switches": "מפסקים ישנים",
         "locked": "נעול",
         "locked_always": "תמיד",
         "locked_auto": "אוטומטי",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "קירות וירטואליים",
         "map_object_walls": "קירות",
         "map_object_zoom_point": "נקודת זום",
+        "max_height_offset": "היסט גובה מקסימלי",
         "object_opacity": "אטימות (Opacity) אובייקט",
         "object_scale": "היקף (Scale) אובייקט",
         "opacity": "אטימות (Opacity)",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "רולר הקצפה זקוק לניקוי\nאנא נקה רולר הקצפה ואפס את המונה.",
         "roller_mop_filter_dirty_left": "מסנן מגב רולר זקוק לניקוי\nאנא נקה מסנן מגב רולר ואפס את המונה.",
         "water_outlet_filter_dirty_left": "מסנן יציאת מים זקוק לניקוי\nאנא נקה מסנן יציאת מים ואפס את המונה.",
+        "washboard_cleaning_left": "קרש השטיפה זקוק לניקוי\nאנא נקה את קרש השטיפה ואפס את המונה.",
         "no_water_left": "אנא מלא את מיכל המים הנקיים.\nהמים במיכל המים הנקיים עומדים לאזול. בדוק ומלא את מיכל המים הנקיים בהקדם.",
         "no_water_left_after_clean": "אנא מלא את מיכל המים הנקיים.\nרפידת המגב נוקתה. זוהה שהמים במיכל המים הנקיים אינם מספיקים, אנא מלא את מיכל המים הנקיים ורוקן את מיכל המים המשומשים.",
         "no_water_for_clean": "מפלס מים נמוך במיכל המים הנקיים.\nהרובוט עבר למצב שאיבה.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "פעולה זו אינה זמינה במפה הנוכחית"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "החלפת מגב נא לנסות שוב מאוחר יותר."
     },
     "unavailable_while_cruising": {
       "message": "פעולה זו אינה זמינה בזמן סיור"

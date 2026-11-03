@@ -774,7 +774,8 @@
           "unknown": "Tidak diketahui",
           "idle": "Melahu",
           "active": "Aktif",
-          "not_performed": "Tidak dilaksanakan"
+          "not_performed": "Tidak dilaksanakan",
+          "returning": "Kembali untuk Auto-Kosong"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Tidak diketahui",
           "not_available": "Tidak tersedia",
           "available": "Tersedia",
-          "over_use": "Penggunaan berlebihan",
-          "never": "Tidak pernah"
+          "over_use": "Penggunaan berlebihan"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Dijeda",
           "returning": "Kembali untuk membasuh",
           "clean_add_water": "Mencuci dan menambah air",
-          "adding_water": "Menambah air"
+          "returning_to_drain": "Kembali untuk mengalirkan air",
+          "returning_for_dry_mop": "Kembali untuk membasahkan mop"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Pek Suara"
+      },
+      "washboard_cleaning_left": {
+        "name": "Pembersihan Papan Cuci"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Masa tinggal pembersihan papan cuci"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Pembersihan Penapis Saluran Air Keluar"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Tetapkan semula penapis tangki"
       },
+      "reset_washboard_cleaning": {
+        "name": "Tetapkan semula papan cuci"
+      },
       "reset_water_outlet_filter": {
         "name": "Tetapkan semula penapis saluran keluar air"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Pemberitahuan pembersihan",
         "card_object_controls": "Kawalan",
         "card_object_cruising_history": "Sejarah meluncur",
+        "card_object_dock_status_indicator": "Penunjuk status dok",
         "card_object_fault_notification": "Pemberitahuan ralat",
         "card_object_information_notification": "Pemberitahuan maklumat",
         "card_object_low_water_notification": "Pemberitahuan air rendah",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Kiri",
         "left_handed": "Mod kidal",
-        "limit_height": "Hadkan ketinggian pada skrin",
+        "legacy_switches": "Suis lama",
         "locked": "Terkunci",
         "locked_always": "Sentiasa",
         "locked_auto": "Automatik",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Dinding maya",
         "map_object_walls": "Dinding",
         "map_object_zoom_point": "Titik zum",
+        "max_height_offset": "Ofset ketinggian maksimum",
         "object_opacity": "Kelegapan objek",
         "object_scale": "Skala objek",
         "opacity": "Kelegapan",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Penggelek penuam perlu dibersihkan\nSila bersihkan penggelek penuam dan tetapkan semula pembilang.",
         "roller_mop_filter_dirty_left": "Penapis mop penggelek perlu dibersihkan\nSila bersihkan penapis mop penggelek dan tetapkan semula pembilang.",
         "water_outlet_filter_dirty_left": "Penapis saluran keluar air perlu dibersihkan\nSila bersihkan penapis saluran keluar air dan tetapkan semula pembilang.",
+        "washboard_cleaning_left": "Papan cuci perlu dibersihkan\nSila bersihkan papan cuci dan tetapkan semula pembilang.",
         "no_water_left": "Sila isi tangki air bersih.\nAir di dalam tangki air bersih hampir habis. Periksa dan isi tangki air bersih dengan segera.",
         "no_water_left_after_clean": "Sila isi tangki air bersih.\nPad mop telah dibersihkan. Dikesan bahawa air di dalam tangki air bersih tidak mencukupi, sila isi tangki air bersih dan kosongkan tangki air terpakai.",
         "no_water_for_clean": "Paras air rendah di dalam tangki air bersih.\nRobot telah bertukar ke Mod Pemvakuman.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Tindakan ini tidak tersedia pada peta semasa"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Menukar mop. Cuba lagi kemudian."
     },
     "unavailable_while_cruising": {
       "message": "Tindakan ini tidak tersedia semasa rondaan"

@@ -774,7 +774,8 @@
           "unknown": "Tidak diketahui",
           "idle": "Diam",
           "active": "Aktif",
-          "not_performed": "Tidak dilakukan"
+          "not_performed": "Tidak dilakukan",
+          "returning": "Kembali ke Pengosongan Otomatis"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Tidak diketahui",
           "not_available": "Tidak tersedia",
           "available": "Tersedia",
-          "over_use": "Penggunaan berlebihan",
-          "never": "Tidak pernah"
+          "over_use": "Penggunaan berlebihan"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Jeda",
           "returning": "Kembali untuk mencuci",
           "clean_add_water": "Membersihkan dan menambahkan air",
-          "adding_water": "Menambahkan air"
+          "returning_to_drain": "Kembali ke saluran air",
+          "returning_for_dry_mop": "Kembali untuk membasahi pel"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Paket Suara"
+      },
+      "washboard_cleaning_left": {
+        "name": "Pembersihan Papan Pencucian"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Sisa waktu pembersihan papan pencucian"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Pembersihan Filter Outlet Air"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Reset filter tangki"
       },
+      "reset_washboard_cleaning": {
+        "name": "Reset papan pencucian"
+      },
       "reset_water_outlet_filter": {
         "name": "Reset filter saluran keluar air"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Pemberitahuan pembersihan",
         "card_object_controls": "Kontrol",
         "card_object_cruising_history": "Riwayat pelayaran",
+        "card_object_dock_status_indicator": "Indikator status dok",
         "card_object_fault_notification": "Pemberitahuan kesalahan",
         "card_object_information_notification": "Pemberitahuan informasi",
         "card_object_low_water_notification": "Pemberitahuan air rendah",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Kiri",
         "left_handed": "Mode tangan kiri",
-        "limit_height": "Sesuaikan tinggi dengan layar",
+        "legacy_switches": "Sakelar lama",
         "locked": "Terkunci",
         "locked_always": "Selalu",
         "locked_auto": "Otomatis",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Dinding Virtual",
         "map_object_walls": "Dinding",
         "map_object_zoom_point": "Titik Zoom",
+        "max_height_offset": "Offset tinggi maksimum",
         "object_opacity": "Transparansi Objek",
         "object_scale": "Skala Objek",
         "opacity": "Transparansi",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Rol pelembut perlu dibersihkan\nHarap bersihkan rol pelembut dan atur ulang penghitung.",
         "roller_mop_filter_dirty_left": "Filter pel rol perlu dibersihkan\nHarap bersihkan filter pel rol dan atur ulang penghitung.",
         "water_outlet_filter_dirty_left": "Filter saluran keluar air perlu dibersihkan\nHarap bersihkan filter saluran keluar air dan atur ulang penghitung.",
+        "washboard_cleaning_left": "Papan pencucian perlu dibersihkan\nHarap bersihkan papan pencucian dan atur ulang penghitung.",
         "no_water_left": "Harap isi tangki air bersih.\nAir di tangki air bersih hampir habis. Periksa dan isi tangki air bersih segera.",
         "no_water_left_after_clean": "Harap isi tangki air bersih.\nBantalan pel telah dibersihkan. Terdeteksi bahwa air di tangki air bersih tidak cukup, harap isi tangki air bersih dan kosongkan tangki air bekas.",
         "no_water_for_clean": "Level air rendah di tangki air bersih.\nRobot telah beralih ke Mode Penyedot Debu.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Aksi ini tidak tersedia pada peta saat ini"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Mengganti pel. Coba lagi nanti."
     },
     "unavailable_while_cruising": {
       "message": "Aksi ini tidak tersedia saat patroli"

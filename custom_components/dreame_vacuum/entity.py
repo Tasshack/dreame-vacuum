@@ -165,7 +165,7 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
         self._set_id()
         self.async_write_ha_state()
 
-    def _localize_entity(self, domain: str, name: str, default: str) -> str:
+    def _localize_entity(self, domain: str, name: str, default: str = None) -> str:
         return self._localize(f"entity.{domain}.{name}.name", default)
 
     def _localized_name(self, domain: str, key: str, default: str, **placeholders) -> str:
@@ -174,13 +174,13 @@ class DreameVacuumEntity(CoordinatorEntity[DreameVacuumDataUpdateCoordinator]):
             name = name.replace("{" + item + "}", str(value))
         return name
 
-    def _localize_entity_state(self, domain: str, name: str, key: str, default: str) -> str:
+    def _localize_entity_state(self, domain: str, name: str, key: str, default: str = None) -> str:
         return self._localize(f"entity.{domain}.{name}.state.{key}", default)
 
-    def _localize_entity_component(self, name: str, default: str) -> str:
+    def _localize_entity_component(self, name: str, default: str = None) -> str:
         return self._localize(f"entity_component.frontend_title.state.{name}", default)
 
-    def _localize(self, path: str, default: str) -> str:
+    def _localize(self, path: str, default: str = None) -> str:
         return self.coordinator.localize(path, default)
 
     def _localize_segment_name(self, segment, segment_id) -> str:

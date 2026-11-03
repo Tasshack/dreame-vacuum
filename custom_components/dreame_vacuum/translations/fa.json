@@ -774,7 +774,8 @@
           "unknown": "نامشخص",
           "idle": "بی‌کار",
           "active": "فعال",
-          "not_performed": "انجام نشده"
+          "not_performed": "انجام نشده",
+          "returning": "بازگشت برای تخلیه خودکار"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "نامشخص",
           "not_available": "در دسترس نیست",
           "available": "در دسترس",
-          "over_use": "استفاده بیش از حد",
-          "never": "هرگز"
+          "over_use": "استفاده بیش از حد"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "متوقف شده",
           "returning": "بازگشت برای شستشو",
           "clean_add_water": "تمیزکاری و افزودن آب",
-          "adding_water": "افزودن آب"
+          "returning_to_drain": "بازگشت برای تخلیه آب",
+          "returning_for_dry_mop": "بازگشت برای مرطوب کردن طی"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "بسته صوتی"
+      },
+      "washboard_cleaning_left": {
+        "name": "تمیزی تخته شستشو"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "زمان باقی‌مانده تمیزکردن تخته شستشو"
       },
       "water_outlet_filter_dirty_left": {
         "name": "تمیزی فیلتر خروجی آب"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "بازنشانی فیلتر مخزن"
       },
+      "reset_washboard_cleaning": {
+        "name": "بازنشانی تخته شستشو"
+      },
       "reset_water_outlet_filter": {
         "name": "بازنشانی فیلتر خروجی آب"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "اعلان تمیزکاری",
         "card_object_controls": "کنترل‌ها",
         "card_object_cruising_history": "تاریخچه حرکت",
+        "card_object_dock_status_indicator": "نشانگر وضعیت داک",
         "card_object_fault_notification": "اعلان خطا",
         "card_object_information_notification": "اعلان اطلاعات",
         "card_object_low_water_notification": "اعلان کمبود آب",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "چپ",
         "left_handed": "حالت چپ‌دست",
-        "limit_height": "محدود کردن ارتفاع در صفحه",
+        "legacy_switches": "کلیدهای قدیمی",
         "locked": "قفل شده",
         "locked_always": "همیشه",
         "locked_auto": "خودکار",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "دیوار مجازی",
         "map_object_walls": "دیوارها",
         "map_object_zoom_point": "نقطه بزرگ‌نمایی",
+        "max_height_offset": "آفست حداکثر ارتفاع",
         "object_opacity": "شفافیت شیء",
         "object_scale": "مقیاس شیء",
         "opacity": "شفافیت",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "غلتک پف کننده نیاز به تمیز کردن دارد\nلطفاً غلتک پف کننده را تمیز کرده و شمارنده را بازنشانی کنید.",
         "roller_mop_filter_dirty_left": "فیلتر تی غلتکی نیاز به تمیز کردن دارد\nلطفاً فیلتر تی غلتکی را تمیز کرده و شمارنده را بازنشانی کنید.",
         "water_outlet_filter_dirty_left": "فیلتر خروجی آب نیاز به تمیز کردن دارد\nلطفاً فیلتر خروجی آب را تمیز کرده و شمارنده را بازنشانی کنید.",
+        "washboard_cleaning_left": "تخته شستشو نیاز به تمیز کردن دارد\nلطفاً تخته شستشو را تمیز کرده و شمارنده را بازنشانی کنید.",
         "no_water_left": "لطفاً مخزن آب تمیز را پر کنید.\nآب مخزن آب تمیز در حال اتمام است. لطفاً سریعاً مخزن آب تمیز را بررسی و پر کنید.",
         "no_water_left_after_clean": "لطفاً مخزن آب تمیز را پر کنید.\nپد تی کشی تمیز شده است. تشخیص داده شد که آب مخزن آب تمیز کافی نیست، لطفاً مخزن آب تمیز را پر کرده و مخزن آب استفاده شده را خالی کنید.",
         "no_water_for_clean": "سطح آب مخزن آب تمیز پایین است.\nربات به حالت جاروکشی تغییر حالت داده است.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "این عملیات در نقشه فعلی در دسترس نیست"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "تعویض طی. لطفاً بعداً دوباره تلاش کنید."
     },
     "unavailable_while_cruising": {
       "message": "این عملیات در حین گشت‌زنی در دسترس نیست"

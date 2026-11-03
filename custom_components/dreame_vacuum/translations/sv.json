@@ -774,7 +774,8 @@
           "unknown": "Okänd",
           "idle": "Vilar",
           "active": "Aktiv",
-          "not_performed": "Ej utförd"
+          "not_performed": "Ej utförd",
+          "returning": "Återgår för automatisk tömning"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Okänd",
           "not_available": "Ej tillgänglig",
           "available": "Tillgänglig",
-          "over_use": "Överanvändning",
-          "never": "Aldrig"
+          "over_use": "Överanvändning"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Pausad",
           "returning": "Återgår för att tvätta",
           "clean_add_water": "Tvättar och fyller på vatten",
-          "adding_water": "Fyller på vatten"
+          "returning_to_drain": "Återgår för att dränera",
+          "returning_for_dry_mop": "Återgår för att fukta moppen"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Röstpaket"
+      },
+      "washboard_cleaning_left": {
+        "name": "Tvättbrädsrengöring"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Återstående tid tvättbrädsrengöring"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Vattenutloppsfilter"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Återställ tankfilter"
       },
+      "reset_washboard_cleaning": {
+        "name": "Återställ tvättbräda"
+      },
       "reset_water_outlet_filter": {
         "name": "Återställ vattenutloppsfilter"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Städnotiser",
         "card_object_controls": "Kontroller",
         "card_object_cruising_history": "Ruttstatistik",
+        "card_object_dock_status_indicator": "Dockstatusindikator",
         "card_object_fault_notification": "Felnotiser",
         "card_object_information_notification": "Infonotiser",
         "card_object_low_water_notification": "Vattennotiser",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Vänster",
         "left_handed": "Vänsterhänt läge",
-        "limit_height": "Anpassa höjd",
+        "legacy_switches": "Gamla brytare",
         "locked": "Låst",
         "locked_always": "Alltid",
         "locked_auto": "Automatiskt",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtuella väggar",
         "map_object_walls": "Väggar",
         "map_object_zoom_point": "Zoompunkt",
+        "max_height_offset": "Max. höjdförskjutning",
         "object_opacity": "Objektgenomskinlighet",
         "object_scale": "Objektskala",
         "opacity": "Genomskinlighet",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Fluffrulle behöver rengöras\nRengör fluffrullen och återställ mätaren.",
         "roller_mop_filter_dirty_left": "Rullmoppfilter behöver rengöras\nRengör rullmoppfiltret och återställ mätaren.",
         "water_outlet_filter_dirty_left": "Vattenutloppsfilter behöver rengöras\nRengör vattenutloppsfiltret och återställ mätaren.",
+        "washboard_cleaning_left": "Tvättbrädan behöver rengöras\nRengör tvättbrädan och återställ mätaren.",
         "no_water_left": "Fyll på renvattentanken.\nVattnet i renvattentanken håller på att ta slut. Kontrollera och fyll på renvattentanken omedelbart.",
         "no_water_left_after_clean": "Fyll på renvattentanken.\nMoppdynan har rengjorts. Upptäckte att vattnet i renvattentanken är otillräckligt, fyll på renvattentanken och töm smutsvattentanken.",
         "no_water_for_clean": "Låg vattennivå i renvattentanken.\nRobot har bytt till dammsugningsläge.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Den här åtgärden är inte tillgänglig på den aktuella kartan"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Byter mopp. Försök igen senare."
     },
     "unavailable_while_cruising": {
       "message": "Den här åtgärden är inte tillgänglig under patrullering"

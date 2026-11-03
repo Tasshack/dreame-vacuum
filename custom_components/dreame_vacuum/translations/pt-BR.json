@@ -774,7 +774,8 @@
           "unknown": "Desconhecido",
           "idle": "Inativo",
           "active": "Ativo",
-          "not_performed": "Não realizado"
+          "not_performed": "Não realizado",
+          "returning": "Retornando ao esvaziamento automático"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Desconhecido",
           "not_available": "Não disponível",
           "available": "Disponível",
-          "over_use": "Uso excessivo",
-          "never": "Nunca"
+          "over_use": "Uso excessivo"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Pausado",
           "returning": "A retornar para lavar",
           "clean_add_water": "Limpeza e adição de água",
-          "adding_water": "A adicionar água"
+          "returning_to_drain": "Voltando para drenar",
+          "returning_for_dry_mop": "Retornando para umedecer o pano"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Pacote de voz"
+      },
+      "washboard_cleaning_left": {
+        "name": "Limpeza da bandeja de lavagem"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Tempo restante limpeza bandeja de lavagem"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Limpeza do filtro de saída"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Redefinir filtro do tanque"
       },
+      "reset_washboard_cleaning": {
+        "name": "Redefinir bandeja de lavagem"
+      },
       "reset_water_outlet_filter": {
         "name": "Redefinir filtro de saída de água"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Notif. de limpeza",
         "card_object_controls": "Controles",
         "card_object_cruising_history": "Histórico do trajeto",
+        "card_object_dock_status_indicator": "Indicador de status da base",
         "card_object_fault_notification": "Notif. de erro",
         "card_object_information_notification": "Notif. de info.",
         "card_object_low_water_notification": "Notif. de pouca água",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Esquerda",
         "left_handed": "Modo canhoto",
-        "limit_height": "Ajustar à tela",
+        "legacy_switches": "Interruptores antigos",
         "locked": "Bloqueado",
         "locked_always": "Sempre",
         "locked_auto": "Automático",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Paredes virtuais",
         "map_object_walls": "Paredes",
         "map_object_zoom_point": "Ponto de zoom",
+        "max_height_offset": "Deslocamento de altura máxima",
         "object_opacity": "Opacidade objetos",
         "object_scale": "Escala objetos",
         "opacity": "Opacidade",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "O rolo de afofamento precisa ser limpo\nLimpe o rolo de afofamento e reinicie o contador.",
         "roller_mop_filter_dirty_left": "O filtro do esfregão de rolo precisa de limpeza\nLimpe o filtro do esfregão de rolo e reinicie o contador.",
         "water_outlet_filter_dirty_left": "O filtro de saída de água precisa de limpeza\nLimpe o filtro de saída de água e reinicie o contador.",
+        "washboard_cleaning_left": "A bandeja de lavagem precisa de limpeza\nLimpe a bandeja de lavagem e reinicie o contador.",
         "no_water_left": "Por favor, encha o tanque de água limpa.\nA água no tanque de água limpa está quase acabando. Verifique e encha o tanque de água limpa imediatamente.",
         "no_water_left_after_clean": "Por favor, encha o tanque de água limpa.\nA almofada do esfregão foi limpa. Foi detectado que a água no tanque de água limpa é insuficiente, por favor, encha o tanque de água limpa e esvazie o tanque de água usada.",
         "no_water_for_clean": "Nível de água baixo no tanque de água limpa.\nO robô mudou para o Modo de Aspiração.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Esta ação não está disponível no mapa atual"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Trocando o esfregão. Tente novamente mais tarde."
     },
     "unavailable_while_cruising": {
       "message": "Esta ação não está disponível durante a patrulha"

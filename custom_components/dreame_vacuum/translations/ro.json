@@ -774,7 +774,8 @@
           "unknown": "Necunoscut",
           "idle": "Inactiv",
           "active": "Activ",
-          "not_performed": "Nefectuat"
+          "not_performed": "Nefectuat",
+          "returning": "Întoarcere la Golire Automată"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Necunoscut",
           "not_available": "Indisponibil",
           "available": "Disponibil",
-          "over_use": "Utilizare excesivă",
-          "never": "Niciodată"
+          "over_use": "Utilizare excesivă"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Pauză",
           "returning": "Întoarcere la spălare",
           "clean_add_water": "Curățare și adăugare apă",
-          "adding_water": "Adăugare apă"
+          "returning_to_drain": "Întoarcere la scurgere",
+          "returning_for_dry_mop": "Întoarcere pentru a umezi mopul"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Pachet voce"
+      },
+      "washboard_cleaning_left": {
+        "name": "Curățare placă de spălare"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Timp rămas curățare placă de spălare"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Curățare filtru evacuare"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Resetează filtrul rezervorului"
       },
+      "reset_washboard_cleaning": {
+        "name": "Resetează placa de spălare"
+      },
       "reset_water_outlet_filter": {
         "name": "Resetează filtrul evacuării apei"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Notif. curățare",
         "card_object_controls": "Control",
         "card_object_cruising_history": "Istoric traseu",
+        "card_object_dock_status_indicator": "Indicator de stare a bazei",
         "card_object_fault_notification": "Notif. erori",
         "card_object_information_notification": "Notif. info",
         "card_object_low_water_notification": "Notif. nivel apă scăzut",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Stânga",
         "left_handed": "Mod stângaci",
-        "limit_height": "Ajustează la ecran",
+        "legacy_switches": "Comutatoare vechi",
         "locked": "Blocat",
         "locked_always": "Întotdeauna",
         "locked_auto": "Automat",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Pereți virtuali",
         "map_object_walls": "Pereți",
         "map_object_zoom_point": "Punct zoom",
+        "max_height_offset": "Decalaj înălțime maximă",
         "object_opacity": "Opacitate obiecte",
         "object_scale": "Scară obiecte",
         "opacity": "Opacitate",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Rola de puf necesită curățare\nVă rugăm să curățați rola de puf și să resetați contorul.",
         "roller_mop_filter_dirty_left": "Filtrul mopului cu rolă necesită curățare\nVă rugăm să curățați filtrul mopului cu rolă și să resetați contorul.",
         "water_outlet_filter_dirty_left": "Filtrul de ieșire a apei necesită curățare\nVă rugăm să curățați filtrul de ieșire a apei și să resetați contorul.",
+        "washboard_cleaning_left": "Placa de spălare necesită curățare\nVă rugăm să curățați placa de spălare și să resetați contorul.",
         "no_water_left": "Vă rugăm să umpleți rezervorul de apă curată.\nApa din rezervorul de apă curată este pe cale să se epuizeze. Verificați și umpleți imediat rezervorul de apă curată.",
         "no_water_left_after_clean": "Vă rugăm să umpleți rezervorul de apă curată.\nLaveta mopului a fost curățată. S-a detectat că apa din rezervorul de apă curată este insuficientă, vă rugăm să umpleți rezervorul de apă curată și să goliți rezervorul de apă uzată.",
         "no_water_for_clean": "Nivel scăzut al apei în rezervorul de apă curată.\nRobotul a trecut în modul de aspirare.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Această acțiune nu este disponibilă pe harta curentă"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Se schimbă mopul. Încercați din nou mai târziu."
     },
     "unavailable_while_cruising": {
       "message": "Această acțiune nu este disponibilă în timpul patrulării"

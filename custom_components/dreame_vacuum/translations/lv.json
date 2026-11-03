@@ -774,7 +774,8 @@
           "unknown": "Nezināms",
           "idle": "Dīkstāvē",
           "active": "Aktīvs",
-          "not_performed": "Nav veikta"
+          "not_performed": "Nav veikta",
+          "returning": "Atgriežas uz automātisko iztukšošanu"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Nezināms",
           "not_available": "Nav pieejama",
           "available": "Pieejama",
-          "over_use": "Pārmērīga lietošana",
-          "never": "Nekad"
+          "over_use": "Pārmērīga lietošana"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Pauzēts",
           "returning": "Atgriežas mazgāt mopu",
           "clean_add_water": "Tīra un papildina ūdeni",
-          "adding_water": "Papildina ūdeni"
+          "returning_to_drain": "Atgriežas iztukšot ūdeni",
+          "returning_for_dry_mop": "Atgriežas samitrināt mopu"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Balss pakotne"
+      },
+      "washboard_cleaning_left": {
+        "name": "Mazgāšanas dēļa tīrīšana"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Atlikušais mazgāšanas dēļa tīrīšanas laiks"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Ūdens izplūdes filtra tīrīšana"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Atiestatīt tvertnes filtru"
       },
+      "reset_washboard_cleaning": {
+        "name": "Atiestatīt mazgāšanas dēli"
+      },
       "reset_water_outlet_filter": {
         "name": "Atiestatīt ūdens izplūdes filtru"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Paziņojums par tīrīšanu",
         "card_object_controls": "Vadības elementi",
         "card_object_cruising_history": "Pārvietošanās vēsture",
+        "card_object_dock_status_indicator": "Bāzes statusa indikators",
         "card_object_fault_notification": "Paziņojums par kļūdu",
         "card_object_information_notification": "Informācijas paziņojums",
         "card_object_low_water_notification": "Paziņojums par zemu ūdens līmeni",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Kreisā",
         "left_handed": "Kreisās rokas režīms",
-        "limit_height": "Ierobežot augstumu līdz ekrānam",
+        "legacy_switches": "Vecie slēdži",
         "locked": "Bloķēts",
         "locked_always": "Vienmēr",
         "locked_auto": "Automātiski",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtuālās sienas",
         "map_object_walls": "Sienas",
         "map_object_zoom_point": "Tālummaiņas punkts",
+        "max_height_offset": "Maksimālā augstuma nobīde",
         "object_opacity": "Objekta necaurredzamība",
         "object_scale": "Objekta mērogs",
         "opacity": "Necaurredzamība",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Pūku rullītis ir jātīra\nLūdzu, notīriet pūku rullīti un atiestatiet skaitītāju.",
         "roller_mop_filter_dirty_left": "Ruļļa mopa filtrs ir jātīra\nLūdzu, iztīriet ruļļa mopa filtru un atiestatiet skaitītāju.",
         "water_outlet_filter_dirty_left": "Ūdens izplūdes filtrs ir jātīra\nLūdzu, iztīriet ūdens izplūdes filtru un atiestatiet skaitītāju.",
+        "washboard_cleaning_left": "Mazgāšanas dēlis ir jātīra\nLūdzu, notīriet mazgāšanas dēli un atiestatiet skaitītāju.",
         "no_water_left": "Lūdzu, piepildiet tīrā ūdens tvertni.\nŪdens tīrā ūdens tvertnē drīz beigsies. Pārbaudiet un nekavējoties piepildiet tīrā ūdens tvertni.",
         "no_water_left_after_clean": "Lūdzu, piepildiet tīrā ūdens tvertni.\nMopa paliktnis ir iztīrīts. Konstatēts, ka ūdens tīrā ūdens tvertnē ir nepietiekams, lūdzu, piepildiet tīrā ūdens tvertni un iztukšojiet lietotā ūdens tvertni.",
         "no_water_for_clean": "Zems ūdens līmenis tīrā ūdens tvertnē.\nRobots ir pārslēdzies uz putekļsūcēja režīmu.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Šī darbība nav pieejama pašreizējā kartē"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Notiek slotas pārslēgšana. Vēlāk mēģiniet vēlreiz."
     },
     "unavailable_while_cruising": {
       "message": "Šī darbība nav pieejama patrulēšanas laikā"

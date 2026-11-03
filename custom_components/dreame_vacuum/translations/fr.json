@@ -774,7 +774,8 @@
           "unknown": "Inconnu",
           "idle": "Inactif",
           "active": "Actif",
-          "not_performed": "Non effectué"
+          "not_performed": "Non effectué",
+          "returning": "Retour à Vider automatiquement"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Inconnu",
           "not_available": "Non disponible",
           "available": "Disponible",
-          "over_use": "Utilisation excessive",
-          "never": "Jamais"
+          "over_use": "Utilisation excessive"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "En pause",
           "returning": "Retour à la station",
           "clean_add_water": "Nettoyage et ajout d'eau",
-          "adding_water": "Ajout d'eau"
+          "returning_to_drain": "Retour à l'égout",
+          "returning_for_dry_mop": "Retour à l'humidification de la serpillière"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Pack voix"
+      },
+      "washboard_cleaning_left": {
+        "name": "Nettoyage planche à laver"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Temps restant nettoyage planche à laver"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Nettoyage filtre sortie d'eau"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Réinitialiser le filtre du réservoir"
       },
+      "reset_washboard_cleaning": {
+        "name": "Réinitialiser la planche à laver"
+      },
       "reset_water_outlet_filter": {
         "name": "Réinitialiser le filtre de sortie d'eau"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Notif. nettoyage",
         "card_object_controls": "Contrôles",
         "card_object_cruising_history": "Historique parcours",
+        "card_object_dock_status_indicator": "Indicateur d'état de la base",
         "card_object_fault_notification": "Notif. erreur",
         "card_object_information_notification": "Notif. info",
         "card_object_low_water_notification": "Notif. manque d'eau",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Gauche",
         "left_handed": "Mode gaucher",
-        "limit_height": "Adapter hauteur écran",
+        "legacy_switches": "Anciens interrupteurs",
         "locked": "Verrouillé",
         "locked_always": "Toujours",
         "locked_auto": "Automatique",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Murs virtuels",
         "map_object_walls": "Murs",
         "map_object_zoom_point": "Point zoom",
+        "max_height_offset": "Décalage de hauteur max.",
         "object_opacity": "Opacité objets",
         "object_scale": "Échelle objets",
         "opacity": "Opacité",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Le rouleau de peluchage doit être nettoyé\nVeuillez nettoyer le rouleau de peluchage et réinitialiser le compteur.",
         "roller_mop_filter_dirty_left": "Le filtre de la serpillère à rouleau doit être nettoyé\nVeuillez nettoyer le filtre de la serpillère à rouleau et réinitialiser le compteur.",
         "water_outlet_filter_dirty_left": "Le filtre de sortie d'eau doit être nettoyé\nVeuillez nettoyer le filtre de sortie d'eau et réinitialiser le compteur.",
+        "washboard_cleaning_left": "La planche à laver doit être nettoyée\nVeuillez nettoyer la planche à laver et réinitialiser le compteur.",
         "no_water_left": "Veuillez remplir le réservoir d'eau propre.\nL'eau du réservoir d'eau propre est sur le point de s'épuiser. Vérifiez et remplissez rapidement le réservoir d'eau propre.",
         "no_water_left_after_clean": "Veuillez remplir le réservoir d'eau propre.\nLa serpillère a été nettoyée. Il a été détecté que l'eau dans le réservoir d'eau propre est insuffisante, veuillez remplir le réservoir d'eau propre et vider le réservoir d'eau sale.",
         "no_water_for_clean": "Niveau d'eau bas dans le réservoir d'eau propre.\nLe robot est passé en mode aspiration.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Cette action n'est pas disponible sur la carte actuelle"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Changement de serpillière en cours. Réessayez ultérieurement."
     },
     "unavailable_while_cruising": {
       "message": "Cette action n'est pas disponible pendant la patrouille"

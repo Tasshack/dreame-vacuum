@@ -774,7 +774,8 @@
           "unknown": "Nežinoma",
           "idle": "Laukia",
           "active": "Aktyvi",
-          "not_performed": "Neįvykdyta"
+          "not_performed": "Neįvykdyta",
+          "returning": "Grįžta automatiniam tuštinimui"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Nežinoma",
           "not_available": "Nepasiekiama",
           "available": "Pasiekiamas",
-          "over_use": "Per didelis naudojimas",
-          "never": "Niekada"
+          "over_use": "Per didelis naudojimas"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Pristabdyta",
           "returning": "Grįžtama plauti",
           "clean_add_water": "Valoma ir pilamas vanduo",
-          "adding_water": "Pilamas vanduo"
+          "returning_to_drain": "Grįžta ištuštinti",
+          "returning_for_dry_mop": "Grįžta sudrėkinti šluostės"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Balso paketas"
+      },
+      "washboard_cleaning_left": {
+        "name": "Plovimo lentos valymas"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Likęs plovimo lentos valymo laikas"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Vandens išleidimo filtro valymas"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Atstatyti bako filtrą"
       },
+      "reset_washboard_cleaning": {
+        "name": "Atstatyti plovimo lentą"
+      },
       "reset_water_outlet_filter": {
         "name": "Atstatyti vandens išleidimo filtrą"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Valymo pranešimas",
         "card_object_controls": "Valdikliai",
         "card_object_cruising_history": "Kelionių istorija",
+        "card_object_dock_status_indicator": "Stotelės būsenos indikatorius",
         "card_object_fault_notification": "Klaidų pranešimai",
         "card_object_information_notification": "Informaciniai pranešimai",
         "card_object_low_water_notification": "Pranešimas apie mažą vandens kiekį",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Kairė",
         "left_handed": "Kairiarankių režimas",
-        "limit_height": "Apriboti aukštį pagal ekraną",
+        "legacy_switches": "Senieji jungtukai",
         "locked": "Užrakinta",
         "locked_always": "Visada",
         "locked_auto": "Automatinis",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtualios sienos",
         "map_object_walls": "Sienos",
         "map_object_zoom_point": "Priartinimo taškas",
+        "max_height_offset": "Maksimalaus aukščio poslinkis",
         "object_opacity": "Objekto nepermatomumas",
         "object_scale": "Objekto mastelis",
         "opacity": "Nepermatomumas",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Pūkinimo volelį reikia išvalyti\nPrašome išvalyti pūkinimo volelį ir iš naujo nustatyti skaitiklį.",
         "roller_mop_filter_dirty_left": "Volelio šluostės filtrą reikia išvalyti\nPrašome išvalyti volelio šluostės filtrą ir iš naujo nustatyti skaitiklį.",
         "water_outlet_filter_dirty_left": "Vandens išleidimo filtrą reikia išvalyti\nPrašome išvalyti vandens išleidimo filtrą ir iš naujo nustatyti skaitiklį.",
+        "washboard_cleaning_left": "Plovimo lentą reikia išvalyti\nPrašome išvalyti plovimo lentą ir iš naujo nustatyti skaitiklį.",
         "no_water_left": "Prašome pripildyti švaraus vandens baką.\nVanduo švaraus vandens bake baigiasi. Patikrinkite ir nedelsiant pripildykite švaraus vandens baką.",
         "no_water_left_after_clean": "Prašome pripildyti švaraus vandens baką.\nŠluostės padas buvo išvalytas. Aptikta, kad švaraus vandens bake nepakanka vandens, prašome pripildyti švaraus vandens baką ir ištuštinti naudoto vandens baką.",
         "no_water_for_clean": "Žemas vandens lygis švaraus vandens bake.\nRobotas perjungtas į siurbimo režimą.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Šis veiksmas nepasiekiamas dabartiniame žemėlapyje"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Šluostės perjungimas. Bandykite dar kartą vėliau."
     },
     "unavailable_while_cruising": {
       "message": "Šis veiksmas nepasiekiamas patruliavimo metu"

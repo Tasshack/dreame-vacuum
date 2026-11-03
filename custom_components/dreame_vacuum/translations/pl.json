@@ -774,7 +774,8 @@
           "unknown": "Nieznany",
           "idle": "Bezczynny",
           "active": "Aktywny",
-          "not_performed": "Nie wykonano"
+          "not_performed": "Nie wykonano",
+          "returning": "Powrót do automatycznego opróżniania"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Nieznany",
           "not_available": "Niedostępny",
           "available": "Dostępny",
-          "over_use": "Nadmierne użycie",
-          "never": "Nigdy"
+          "over_use": "Nadmierne użycie"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Wstrzymany",
           "returning": "Powrót do prania",
           "clean_add_water": "Czyszczenie i dodawanie wody",
-          "adding_water": "Dodawanie wody"
+          "returning_to_drain": "Wracając do drenażu",
+          "returning_for_dry_mop": "Wracając do zwilżenia mopa"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Pakiet głosowy"
+      },
+      "washboard_cleaning_left": {
+        "name": "Czyszczenie deski do prania"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Pozostały czas czyszczenia deski do prania"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Filtr wylotu wody"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Zresetuj filtr zbiornika"
       },
+      "reset_washboard_cleaning": {
+        "name": "Zresetuj deskę do prania"
+      },
       "reset_water_outlet_filter": {
         "name": "Zresetuj filtr wylotu wody"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Powiad. o sprzątaniu",
         "card_object_controls": "Sterowanie",
         "card_object_cruising_history": "Historia przejazdów",
+        "card_object_dock_status_indicator": "Wskaźnik stanu bazy",
         "card_object_fault_notification": "Powiad. o błędach",
         "card_object_information_notification": "Powiad. info",
         "card_object_low_water_notification": "Powiad. o braku wody",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Lewo",
         "left_handed": "Tryb leworęczny",
-        "limit_height": "Dopasuj do wys. ekranu",
+        "legacy_switches": "Stare przełączniki",
         "locked": "Zablokowane",
         "locked_always": "Zawsze",
         "locked_auto": "Automatycznie",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Wirtualne ściany",
         "map_object_walls": "Ściany",
         "map_object_zoom_point": "Punkt powiększenia",
+        "max_height_offset": "Przesunięcie maks. wysokości",
         "object_opacity": "Przezr. obiektów",
         "object_scale": "Skala obiektów",
         "opacity": "Przezroczystość",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Wałek spulchniający wymaga czyszczenia\nWyczyść wałek spulchniający i zresetuj licznik.",
         "roller_mop_filter_dirty_left": "Filtr mopa rolkowego wymaga czyszczenia\nWyczyść filtr mopa rolkowego i zresetuj licznik.",
         "water_outlet_filter_dirty_left": "Filtr wylotu wody wymaga czyszczenia\nWyczyść filtr wylotu wody i zresetuj licznik.",
+        "washboard_cleaning_left": "Deska do prania wymaga czyszczenia\nWyczyść deskę do prania i zresetuj licznik.",
         "no_water_left": "Proszę napełnić zbiornik na czystą wodę.\nWoda w zbiorniku na czystą wodę się kończy. Natychmiast sprawdź i napełnij zbiornik na czystą wodę.",
         "no_water_left_after_clean": "Proszę napełnić zbiornik na czystą wodę.\nNakładka mopująca została wyczyszczona. Wykryto niewystarczającą ilość wody w zbiorniku na czystą wodę, napełnij zbiornik na czystą wodę i opróżnij zbiornik na zużytą wodę.",
         "no_water_for_clean": "Niski poziom wody w zbiorniku na czystą wodę.\nRobot przełączył się w tryb odkurzania.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Ta akcja jest niedostępna na bieżącej mapie"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Trwa wymiana mopa. Spróbuj ponownie później."
     },
     "unavailable_while_cruising": {
       "message": "Ta akcja jest niedostępna podczas patrolu"

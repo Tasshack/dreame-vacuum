@@ -774,7 +774,8 @@
           "unknown": "Unknown",
           "idle": "Idle",
           "active": "Active",
-          "not_performed": "Not performed"
+          "not_performed": "Not performed",
+          "returning": "Returning to Auto-Empty"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Unknown",
           "not_available": "Not available",
           "available": "Available",
-          "over_use": "Over use",
-          "never": "Never"
+          "over_use": "Over use"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Paused",
           "returning": "Returning to wash",
           "clean_add_water": "Cleaning and adding water",
-          "adding_water": "Adding water"
+          "returning_to_drain": "Returning to drain",
+          "returning_for_dry_mop": "Returning to wet mop"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Voice Pack"
+      },
+      "washboard_cleaning_left": {
+        "name": "Washboard Cleaning"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Washboard Cleaning Time Left"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Water Outlet Filter Cleaning"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Reset Tank Filter"
       },
+      "reset_washboard_cleaning": {
+        "name": "Reset Washboard"
+      },
       "reset_water_outlet_filter": {
         "name": "Reset Water Outlet Filter"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Cleanup notification",
         "card_object_controls": "Controls",
         "card_object_cruising_history": "Cruising history",
+        "card_object_dock_status_indicator": "Dock status indicator",
         "card_object_fault_notification": "Error notification",
         "card_object_information_notification": "Information notification",
         "card_object_low_water_notification": "Low water notification",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Left",
         "left_handed": "Left handed mode",
-        "limit_height": "Limit height to screen",
+        "legacy_switches": "Legacy switches",
         "locked": "Locked",
         "locked_always": "Always",
         "locked_auto": "Automatic",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtual walls",
         "map_object_walls": "Walls",
         "map_object_zoom_point": "Zoom point",
+        "max_height_offset": "Max height offset",
         "object_opacity": "Object opacity",
         "object_scale": "Object scale",
         "opacity": "Opacity",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Fluffing roller needs to be cleaned\nPlease clean fluffing roller and reset the counter.",
         "roller_mop_filter_dirty_left": "Roller mop filter needs to be cleaned\nPlease clean roller mop filter and reset the counter.",
         "water_outlet_filter_dirty_left": "Water outlet filter needs to be cleaned\nPlease clean water outlet filter and reset the counter.",
+        "washboard_cleaning_left": "Washboard needs to be cleaned\nPlease clean washboard and reset the counter.",
         "no_water_left": "Please fill the clean water tank.\nThe water in the clean water tank is about to be used up. Check and fill the clean water tank promptly.",
         "no_water_left_after_clean": "Please fill the clean water tank.\nMop pad has been cleaned. Detected that the water in the clean water tank is insufficient, please fill the clean water tank and empty the used water tank.",
         "no_water_for_clean": "Low water level in the clean water tank.\nRobot has switched to Vacuuming Mode.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "This action is unavailable on the current map"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Switching mop. Try again later."
     },
     "unavailable_while_cruising": {
       "message": "This action is unavailable while cruising"

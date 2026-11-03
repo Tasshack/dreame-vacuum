@@ -165,16 +165,11 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         attrs_fn=lambda entity: {
             ATTR_VALUE: entity.device.status.error,
             "faults": entity.device.status.faults,
-            "description": (
-                description.split("\n", 1)[1]
-                if "\n"
-                in (
-                    description := entity.coordinator.localize(
-                        f"entity.sensor.error.state_attributes.description.state.{entity.device.status.error_name}",
-                        entity.device.status.error_name,
-                    )
-                )
-                else description
+            "description": " ".join(
+                entity.coordinator.localize(
+                    f"entity.sensor.error.state_attributes.description.state.{entity.device.status.error_name}",
+                    entity.device.status.error_name,
+                ).split()
             ),
         },
     ),
@@ -403,7 +398,7 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
     DreameVacuumSensorEntityDescription(
         property_key=DreameVacuumProperty.WHEEL_DIRTY_TIME_LEFT,
         icon="mdi:tire",
-        native_unit_of_measurement=UNIT_DAYS,
+        native_unit_of_measurement=UNIT_HOURS,
         device_class=SensorDeviceClass.DURATION,
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
@@ -484,6 +479,25 @@ SENSORS: tuple[DreameVacuumSensorEntityDescription, ...] = (
         entity_category=EntityCategory.DIAGNOSTIC,
         exists_fn=lambda description, device: bool(
             DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.water_outlet_filter
+        ),
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.WASHBOARD_CLEANING_LEFT,
+        icon="mdi:waterfall",
+        native_unit_of_measurement=UNIT_PERCENT,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.washboard_cleaning
+        ),
+    ),
+    DreameVacuumSensorEntityDescription(
+        property_key=DreameVacuumProperty.WASHBOARD_CLEANING_TIME_LEFT,
+        icon="mdi:waterfall",
+        native_unit_of_measurement=UNIT_DAYS,
+        device_class=SensorDeviceClass.DURATION,
+        entity_category=EntityCategory.DIAGNOSTIC,
+        exists_fn=lambda description, device: bool(
+            DreameVacuumEntityDescription().exists_fn(description, device) and device.capability.washboard_cleaning
         ),
     ),
     DreameVacuumSensorEntityDescription(

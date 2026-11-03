@@ -774,7 +774,8 @@
           "unknown": "Onbekend",
           "idle": "Inactief",
           "active": "Actief",
-          "not_performed": "Niet uitgevoerd"
+          "not_performed": "Niet uitgevoerd",
+          "returning": "Terugkeren voor automatisch legen"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Onbekend",
           "not_available": "Niet beschikbaar",
           "available": "Beschikbaar",
-          "over_use": "Overmatig gebruik",
-          "never": "Nooit"
+          "over_use": "Overmatig gebruik"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Gepauzeerd",
           "returning": "Terugkeren om te wassen",
           "clean_add_water": "Schoonmaken en water toevoegen",
-          "adding_water": "Water toevoegen"
+          "returning_to_drain": "Terugkeren om te legen",
+          "returning_for_dry_mop": "Terugkeren om dweil te bevochtigen"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Spraakpakket"
+      },
+      "washboard_cleaning_left": {
+        "name": "Wasplank reinigen"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Resterende tijd wasplank"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Wateruitlaat filter reinigen"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Tankfilter resetten"
       },
+      "reset_washboard_cleaning": {
+        "name": "Wasplank resetten"
+      },
       "reset_water_outlet_filter": {
         "name": "Wateruitlaatfilter resetten"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Schoonmaaknotif.",
         "card_object_controls": "Bediening",
         "card_object_cruising_history": "Routegeschiedenis",
+        "card_object_dock_status_indicator": "Dockstatusindicator",
         "card_object_fault_notification": "Foutmeldingen",
         "card_object_information_notification": "Infofoutmeldingen",
         "card_object_low_water_notification": "Watermeldingen",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Links",
         "left_handed": "Linkshandige modus",
-        "limit_height": "Hoogte aanpassen",
+        "legacy_switches": "Oude schakelaars",
         "locked": "Vergrendeld",
         "locked_always": "Altijd",
         "locked_auto": "Automatisch",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtuele muren",
         "map_object_walls": "Muren",
         "map_object_zoom_point": "Zoompunt",
+        "max_height_offset": "Max. hoogteverschuiving",
         "object_opacity": "Objecttransparantie",
         "object_scale": "Objectgrootte",
         "opacity": "Transparantie",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Pluisrol moet worden gereinigd\nReinig de pluisrol en reset de teller.",
         "roller_mop_filter_dirty_left": "Rolmopfilter moet worden gereinigd\nReinig het rolmopfilter en reset de teller.",
         "water_outlet_filter_dirty_left": "Wateruitlaatfilter moet worden gereinigd\nReinig het wateruitlaatfilter en reset de teller.",
+        "washboard_cleaning_left": "Wasplank moet worden gereinigd\nReinig de wasplank en reset de teller.",
         "no_water_left": "Vul de schoonwatertank.\nHet water in de schoonwatertank is bijna op. Controleer en vul de schoonwatertank onmiddellijk.",
         "no_water_left_after_clean": "Vul de schoonwatertank.\nDe dweilpad is gereinigd. Er is gedetecteerd dat het water in de schoonwatertank onvoldoende is, vul de schoonwatertank en leeg de vuilwatertank.",
         "no_water_for_clean": "Laag waterpeil in de schoonwatertank.\nRobot is overgeschakeld naar de stofzuigmodus.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Deze actie is niet beschikbaar op de huidige kaart"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Dweil wisselen. Probeer het later opnieuw."
     },
     "unavailable_while_cruising": {
       "message": "Deze actie is niet beschikbaar tijdens het patrouilleren"

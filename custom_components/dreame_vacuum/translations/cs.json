@@ -774,7 +774,8 @@
           "unknown": "Neznámý",
           "idle": "Nečinný",
           "active": "Aktivní",
-          "not_performed": "Nevykonáno"
+          "not_performed": "Nevykonáno",
+          "returning": "Vrací se k automatickému vyprazdňování"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Neznámý",
           "not_available": "Není dostupné",
           "available": "Dostupné",
-          "over_use": "Nadměrné použití",
-          "never": "Nikdy"
+          "over_use": "Nadměrné použití"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Pozastaveno",
           "returning": "Vrací se k mytí",
           "clean_add_water": "Čištění a přidávání vody",
-          "adding_water": "Přidávání vody"
+          "returning_to_drain": "Vrací se k vypouštění",
+          "returning_for_dry_mop": "Vrací se pro navlhčení mopu"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Hlasový balíček"
+      },
+      "washboard_cleaning_left": {
+        "name": "Čištění mycí desky"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Zbývající čas čištění mycí desky"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Čištění filtru výstupu vody"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Resetovat filtr nádrže"
       },
+      "reset_washboard_cleaning": {
+        "name": "Resetovat mycí desku"
+      },
       "reset_water_outlet_filter": {
         "name": "Resetovat filtr výpusti vody"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Oznámení úklidu",
         "card_object_controls": "Ovládání",
         "card_object_cruising_history": "Historie tras",
+        "card_object_dock_status_indicator": "Indikátor stavu základny",
         "card_object_fault_notification": "Chybová oznámení",
         "card_object_information_notification": "Info oznámení",
         "card_object_low_water_notification": "Oznámení vody",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Vlevo",
         "left_handed": "Režim pro leváky",
-        "limit_height": "Přizpůsobit výšku",
+        "legacy_switches": "Starší přepínače",
         "locked": "Zamčeno",
         "locked_always": "Vždy",
         "locked_auto": "Automaticky",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtuální zdi",
         "map_object_walls": "Zdi",
         "map_object_zoom_point": "Bod zoomu",
+        "max_height_offset": "Odsazení maximální výšky",
         "object_opacity": "Průhlednost objektů",
         "object_scale": "Měřítko objektů",
         "opacity": "Průhlednost",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Nafukovací váleček potřebuje vyčistit\nVyčistěte nafukovací váleček a resetujte počítadlo.",
         "roller_mop_filter_dirty_left": "Filtr válečkového mopu potřebuje vyčistit\nVyčistěte filtr válečkového mopu a resetujte počítadlo.",
         "water_outlet_filter_dirty_left": "Filtr výstupu vody potřebuje vyčistit\nVyčistěte filtr výstupu vody a resetujte počítadlo.",
+        "washboard_cleaning_left": "Mycí deska potřebuje vyčistit\nVyčistěte mycí desku a resetujte počítadlo.",
         "no_water_left": "Naplňte nádržku na čistou vodu.\nVoda v nádržce na čistou vodu bude brzy spotřebována. Okamžitě zkontrolujte a naplňte nádržku na čistou vodu.",
         "no_water_left_after_clean": "Naplňte nádržku na čistou vodu.\nMopovací hadřík byl vyčištěn. Bylo zjištěno, že voda v nádržce na čistou vodu je nedostatečná, naplňte nádržku na čistou vodu a vyprázdněte nádržku na použitou vodu.",
         "no_water_for_clean": "Nízká hladina vody v nádržce na čistou vodu.\nRobot se přepnul do režimu vysávání.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Tato akce není na aktuální mapě dostupná"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Přepínání mopu. Zkuste to znovu později."
     },
     "unavailable_while_cruising": {
       "message": "Tato akce není dostupná během obhlídky"

@@ -64,6 +64,7 @@ from .const import (
     NOTIFICATION_ID_CLEAN_FLUFFING_ROLLER,
     NOTIFICATION_ID_CLEAN_ROLLER_MOP_FILTER,
     NOTIFICATION_ID_CLEAN_WATER_OUTLET_FILTER,
+    NOTIFICATION_ID_CLEAN_WASHBOARD,
     NOTIFICATION_ID_CLEANUP_COMPLETED,
     NOTIFICATION_ID_WARNING,
     NOTIFICATION_ID_ERROR,
@@ -89,6 +90,7 @@ from .const import (
     CONSUMABLE_FLUFFING_ROLLER,
     CONSUMABLE_ROLLER_MOP_FILTER,
     CONSUMABLE_WATER_OUTLET_FILTER,
+    CONSUMABLE_WASHBOARD_CLEANING,
 )
 
 _locale_cache: dict[str, dict] = {}
@@ -272,6 +274,12 @@ class DreameVacuumDataUpdateCoordinator(DataUpdateCoordinator[DreameVacuumDevice
                 NOTIFICATION_ID_CLEAN_WATER_OUTLET_FILTER,
                 DreameVacuumProperty.WATER_OUTLET_FILTER_DIRTY_LEFT,
                 "water_outlet_filter_dirty_life",
+            ),
+            (
+                CONSUMABLE_WASHBOARD_CLEANING,
+                NOTIFICATION_ID_CLEAN_WASHBOARD,
+                DreameVacuumProperty.WASHBOARD_CLEANING_LEFT,
+                "washboard_cleaning_life",
             ),
         ):
             self._consumables[consumable] = life

@@ -774,7 +774,8 @@
           "unknown": "ไม่ทราบ",
           "idle": "ว่าง",
           "active": "กำลังทำงาน",
-          "not_performed": "ไม่ได้ดำเนินการ"
+          "not_performed": "ไม่ได้ดำเนินการ",
+          "returning": "กำลังกลับไปทิ้งฝุ่นอัตโนมัติ"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "ไม่ทราบ",
           "not_available": "ไม่พร้อมใช้งาน",
           "available": "พร้อมใช้งาน",
-          "over_use": "ใช้งานเกินกำหนด",
-          "never": "ไม่เคย"
+          "over_use": "ใช้งานเกินกำหนด"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "หยุดชั่วคราว",
           "returning": "กำลังกลับไปซัก",
           "clean_add_water": "ทำความสะอาดและเติมน้ำ",
-          "adding_water": "กำลังเติมน้ำ"
+          "returning_to_drain": "กำลังกลับไประบายน้ำ",
+          "returning_for_dry_mop": "กำลังกลับไปทำให้แผ่นถูเปียก"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "แพ็กเกจเสียง"
+      },
+      "washboard_cleaning_left": {
+        "name": "การทำความสะอาดกระดานซัก"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "เวลาที่เหลือของการทำความสะอาดกระดานซัก"
       },
       "water_outlet_filter_dirty_left": {
         "name": "การทำความสะอาดแผ่นกรองน้ำออก"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "รีเซ็ตแผ่นกรองถังน้ำ"
       },
+      "reset_washboard_cleaning": {
+        "name": "รีเซ็ตกระดานซัก"
+      },
       "reset_water_outlet_filter": {
         "name": "รีเซ็ตแผ่นกรองทางน้ำออก"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "การแจ้งเตือนการทำความสะอาด",
         "card_object_controls": "การควบคุม",
         "card_object_cruising_history": "ประวัติการเคลื่อนที่",
+        "card_object_dock_status_indicator": "ตัวบ่งชี้สถานะแท่นชาร์จ",
         "card_object_fault_notification": "การแจ้งเตือนข้อผิดพลาด",
         "card_object_information_notification": "การแจ้งเตือนข้อมูล",
         "card_object_low_water_notification": "การแจ้งเตือนน้ำต่ำ",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "ซ้าย",
         "left_handed": "โหมดคนถนัดซ้าย",
-        "limit_height": "จำกัดความสูงตามหน้าจอ",
+        "legacy_switches": "สวิตช์แบบเดิม",
         "locked": "ถูกล็อก",
         "locked_always": "เสมอ",
         "locked_auto": "อัตโนมัติ",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "กำแพงเสมือน",
         "map_object_walls": "กำแพง",
         "map_object_zoom_point": "จุดซูม",
+        "max_height_offset": "ออฟเซ็ตความสูงสูงสุด",
         "object_opacity": "ความทึบของวัตถุ",
         "object_scale": "ขนาดของวัตถุ",
         "opacity": "ความทึบ",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "ลูกกลิ้งทำให้ฟูต้องทำความสะอาด\nโปรดทำความสะอาดลูกกลิ้งทำให้ฟูและรีเซ็ตตัวนับ",
         "roller_mop_filter_dirty_left": "ตัวกรองม็อบลูกกลิ้งต้องทำความสะอาด\nโปรดทำความสะอาดตัวกรองม็อบลูกกลิ้งและรีเซ็ตตัวนับ",
         "water_outlet_filter_dirty_left": "ตัวกรองทางออกน้ำต้องทำความสะอาด\nโปรดทำความสะอาดตัวกรองทางออกน้ำและรีเซ็ตตัวนับ",
+        "washboard_cleaning_left": "กระดานซักต้องทำความสะอาด\nโปรดทำความสะอาดกระดานซักและรีเซ็ตตัวนับ",
         "no_water_left": "โปรดเติมถังน้ำสะอาด\nน้ำในถังน้ำสะอาดกำลังจะหมด โปรดตรวจสอบและเติมถังน้ำสะอาดโดยทันที",
         "no_water_left_after_clean": "โปรดเติมถังน้ำสะอาด\nทำความสะอาดแผ่นถูพื้นแล้ว ตรวจพบว่าน้ำในถังน้ำสะอาดไม่เพียงพอ โปรดเติมถังน้ำสะอาดและล้างถังน้ำใช้แล้ว",
         "no_water_for_clean": "ระดับน้ำในถังน้ำสะอาดต่ำ\nหุ่นยนต์ได้สลับไปที่โหมดดูดฝุ่น",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "การทำงานนี้ไม่พร้อมใช้งานบนแผนที่ปัจจุบัน"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "กำลังสลับที่ถูพื้น ลองอีกครั้งในภายหลัง"
     },
     "unavailable_while_cruising": {
       "message": "การทำงานนี้ไม่พร้อมใช้งานขณะลาดตระเวน"

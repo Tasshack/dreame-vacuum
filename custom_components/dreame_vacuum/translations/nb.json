@@ -774,7 +774,8 @@
           "unknown": "Ukjent",
           "idle": "Venter",
           "active": "Aktiv",
-          "not_performed": "Ikke utført"
+          "not_performed": "Ikke utført",
+          "returning": "Returnerer for automatisk tømming"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Ukjent",
           "not_available": "Ikke tilgjengelig",
           "available": "Tilgjengelig",
-          "over_use": "Overforbruk",
-          "never": "Aldri"
+          "over_use": "Overforbruk"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Pauset",
           "returning": "Returnerer for vask",
           "clean_add_water": "Rengjør og fyller vann",
-          "adding_water": "Fyller vann"
+          "returning_to_drain": "Returnerer for å tømme",
+          "returning_for_dry_mop": "Returnerer for å fukte moppen"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Talepakke"
+      },
+      "washboard_cleaning_left": {
+        "name": "Rengjøring av vaskebrett"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Gjenværende tid for vaskebrettrengjøring"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Rengjøring av vannutløpsfilter"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Tilbakestill tankfilter"
       },
+      "reset_washboard_cleaning": {
+        "name": "Tilbakestill vaskebrett"
+      },
       "reset_water_outlet_filter": {
         "name": "Tilbakestill vannutløpsfilter"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Varsel om rengjøring",
         "card_object_controls": "Kontroller",
         "card_object_cruising_history": "Cruising-historikk",
+        "card_object_dock_status_indicator": "Dokkstatusindikator",
         "card_object_fault_notification": "Varsel om feil",
         "card_object_information_notification": "Varsel om informasjon",
         "card_object_low_water_notification": "Varsel om lavt vann",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Venstre",
         "left_handed": "Venstrehendt-modus",
-        "limit_height": "Begrens høyde til skjermen",
+        "legacy_switches": "Gamle brytere",
         "locked": "Låst",
         "locked_always": "Alltid",
         "locked_auto": "Auto",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtuell vegg",
         "map_object_walls": "Vegger",
         "map_object_zoom_point": "Zoom-punkt",
+        "max_height_offset": "Maks. høydeforskyvning",
         "object_opacity": "Objektets opasitet",
         "object_scale": "Objektskala",
         "opacity": "Gjennomsiktighet",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Lofjernerrull trenger rengjøring\nRengjør lofjernerrullen og tilbakestill telleren.",
         "roller_mop_filter_dirty_left": "Rullemoppefilter trenger rengjøring\nRengjør rullemoppefilteret og tilbakestill telleren.",
         "water_outlet_filter_dirty_left": "Vannutløpsfilter trenger rengjøring\nRengjør vannutløpsfilteret og tilbakestill telleren.",
+        "washboard_cleaning_left": "Vaskebrettet trenger rengjøring\nRengjør vaskebrettet og tilbakestill telleren.",
         "no_water_left": "Vennligst fyll rentvannstanken.\nVannet i rentvannstanken er i ferd med å ta slutt. Sjekk og fyll rentvannstanken umiddelbart.",
         "no_water_left_after_clean": "Vennligst fyll rentvannstanken.\nMoppeputen er rengjort. Oppdaget at vannet i rentvannstanken er utilstrekkelig, vennligst fyll rentvannstanken og tøm bruktvannstanken.",
         "no_water_for_clean": "Lav vannstand i rentvannstanken.\nRoboten har byttet til støvsugingsmodus.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Denne handlingen er ikke tilgjengelig på gjeldende kart"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Bytter mopp. Prøv igjen senere."
     },
     "unavailable_while_cruising": {
       "message": "Denne handlingen er ikke tilgjengelig under patruljering"

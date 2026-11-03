@@ -774,7 +774,8 @@
           "unknown": "Tundmatu",
           "idle": "Ootel",
           "active": "Aktiivne",
-          "not_performed": "Teostamata"
+          "not_performed": "Teostamata",
+          "returning": "Naaseb automaatsele tühjendusele"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Tundmatu",
           "not_available": "Pole saadaval",
           "available": "Saadaval",
-          "over_use": "Liigkasutus",
-          "never": "Mitte kunagi"
+          "over_use": "Liigkasutus"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Peatatud",
           "returning": "Naaseb pesema",
           "clean_add_water": "Puhastamine ja vee lisamine",
-          "adding_water": "Vee lisamine"
+          "returning_to_drain": "Naaseb tühjendamisele",
+          "returning_for_dry_mop": "Naaseb moppi niisutama"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Hällepakk"
+      },
+      "washboard_cleaning_left": {
+        "name": "Pesulaua puhastamine"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Pesulaua puhastuse järelejäänud aeg"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Vee väljalaskefiltri puhastus"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Lähtesta paagifilter"
       },
+      "reset_washboard_cleaning": {
+        "name": "Lähtesta pesulaud"
+      },
       "reset_water_outlet_filter": {
         "name": "Lähtesta veeväljalaske filter"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Puhastamise teade",
         "card_object_controls": "Kontrollid",
         "card_object_cruising_history": "Liikumiste ajalugu",
+        "card_object_dock_status_indicator": "Doki oleku näidik",
         "card_object_fault_notification": "Vea teavitus",
         "card_object_information_notification": "Informatsiooni teavitus",
         "card_object_low_water_notification": "Madala veetaseme teavitus",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Vasak",
         "left_handed": "Vasakukäeliste režiim",
-        "limit_height": "Piira kõrgust ekraanini",
+        "legacy_switches": "Vanad lülitid",
         "locked": "Lukus",
         "locked_always": "Alati",
         "locked_auto": "Automaatne",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtuaalsed seinad",
         "map_object_walls": "Seinad",
         "map_object_zoom_point": "Suumi punkt",
+        "max_height_offset": "Maksimaalse kõrguse nihe",
         "object_opacity": "Objekti läbipaistmatus",
         "object_scale": "Objekti skaala",
         "opacity": "Läbipaistmatus",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Kohevusrull vajab puhastamist\nPalun puhastage kohevusrull ja lähtestage loendur.",
         "roller_mop_filter_dirty_left": "Rullmopi filter vajab puhastamist\nPalun puhastage rullmopi filter ja lähtestage loendur.",
         "water_outlet_filter_dirty_left": "Vee väljalaskefilter vajab puhastamist\nPalun puhastage vee väljalaskefilter ja lähtestage loendur.",
+        "washboard_cleaning_left": "Pesulaud vajab puhastamist\nPalun puhastage pesulaud ja lähtestage loendur.",
         "no_water_left": "Palun täitke puhta vee paak.\nVesi puhta vee paagis on kohe otsa saamas. Kontrollige ja täitke puhta vee paak viivitamatult.",
         "no_water_left_after_clean": "Palun täitke puhta vee paak.\nMopipadi on puhastatud. Tuvastati, et puhta vee paagis pole piisavalt vett, palun täitke puhta vee paak ja tühjendage kasutatud veepaak.",
         "no_water_for_clean": "Puhta vee paagis on madal veetase.\nRobot on lülitunud tolmuimeja režiimi.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "See toiming pole praegusel kaardil saadaval"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Mopi vahetamine. Proovige hiljem uuesti."
     },
     "unavailable_while_cruising": {
       "message": "See toiming pole patrullimise ajal saadaval"

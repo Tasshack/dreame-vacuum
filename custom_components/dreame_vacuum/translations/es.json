@@ -774,7 +774,8 @@
           "unknown": "Desconocido",
           "idle": "Inactivo",
           "active": "Activo",
-          "not_performed": "No realizado"
+          "not_performed": "No realizado",
+          "returning": "Regresando para vaciado automático"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Desconocido",
           "not_available": "No disponible",
           "available": "Disponible",
-          "over_use": "Uso excesivo",
-          "never": "Nunca"
+          "over_use": "Uso excesivo"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Pausado",
           "returning": "Regresando a lavar",
           "clean_add_water": "Limpiando y añadiendo agua",
-          "adding_water": "Añadiendo agua"
+          "returning_to_drain": "Regresando para vaciado",
+          "returning_for_dry_mop": "Regresando para humedecer la mopa"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Paquete de voz"
+      },
+      "washboard_cleaning_left": {
+        "name": "Limpieza de la tabla de lavado"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Tiempo restante limpieza tabla de lavado"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Limpieza del filtro de salida de agua"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Restablecer filtro del depósito"
       },
+      "reset_washboard_cleaning": {
+        "name": "Restablecer tabla de lavado"
+      },
       "reset_water_outlet_filter": {
         "name": "Restablecer filtro de salida de agua"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Notif. limpieza",
         "card_object_controls": "Controles",
         "card_object_cruising_history": "Historial recorrido",
+        "card_object_dock_status_indicator": "Indicador de estado de la base",
         "card_object_fault_notification": "Notif. errores",
         "card_object_information_notification": "Notif. información",
         "card_object_low_water_notification": "Notif. nivel agua",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Izquierda",
         "left_handed": "Modo zurdo",
-        "limit_height": "Ajustar altura",
+        "legacy_switches": "Interruptores antiguos",
         "locked": "Bloqueado",
         "locked_always": "Siempre",
         "locked_auto": "Automático",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Paredes virtuales",
         "map_object_walls": "Paredes",
         "map_object_zoom_point": "Punto zoom",
+        "max_height_offset": "Desplazamiento de altura máxima",
         "object_opacity": "Opacidad objetos",
         "object_scale": "Escala objetos",
         "opacity": "Opacidad",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "El rodillo de pelusa necesita limpieza\nLimpie el rodillo de pelusa y reinicie el contador.",
         "roller_mop_filter_dirty_left": "El filtro de la fregona de rodillo necesita limpieza\nLimpie el filtro de la fregona de rodillo y reinicie el contador.",
         "water_outlet_filter_dirty_left": "El filtro de salida de agua necesita limpieza\nLimpie el filtro de salida de agua y reinicie el contador.",
+        "washboard_cleaning_left": "La tabla de lavado necesita limpieza\nLimpie la tabla de lavado y reinicie el contador.",
         "no_water_left": "Llene el depósito de agua limpia.\nEl agua en el depósito de agua limpia está a punto de agotarse. Compruebe y llene el depósito de agua limpia rápidamente.",
         "no_water_left_after_clean": "Llene el depósito de agua limpia.\nSe ha limpiado la almohadilla de fregado. Se ha detectado que el agua en el depósito de agua limpia es insuficiente, llene el depósito de agua limpia y vacíe el depósito de agua usada.",
         "no_water_for_clean": "Bajo nivel de agua en el depósito de agua limpia.\nEl robot ha cambiado al modo de aspiración.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Esta acción no está disponible en el mapa actual"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Cambio de mopa en curso. Vuelve a intentarlo más tarde."
     },
     "unavailable_while_cruising": {
       "message": "Esta acción no está disponible durante la ronda"

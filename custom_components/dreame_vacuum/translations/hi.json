@@ -774,7 +774,8 @@
           "unknown": "अज्ञात",
           "idle": "निष्क्रिय",
           "active": "सक्रिय",
-          "not_performed": "निष्पादित नहीं किया गया"
+          "not_performed": "निष्पादित नहीं किया गया",
+          "returning": "ऑटो-एम्प्टी के लिए लौट रहा है"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "अज्ञात",
           "not_available": "उपलब्ध नहीं",
           "available": "उपलब्ध",
-          "over_use": "अत्यधिक उपयोग",
-          "never": "कभी नहीं"
+          "over_use": "अत्यधिक उपयोग"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "रोका गया",
           "returning": "धोने के लिए लौट रहा है",
           "clean_add_water": "सफाई और पानी डालना",
-          "adding_water": "पानी डाल रहा है"
+          "returning_to_drain": "निकालने के लिए लौट रहा है",
+          "returning_for_dry_mop": "मॉप गीला करने के लिए लौट रहा है"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "वॉयस पैक"
+      },
+      "washboard_cleaning_left": {
+        "name": "वॉशबोर्ड सफाई"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "वॉशबोर्ड सफाई का शेष समय"
       },
       "water_outlet_filter_dirty_left": {
         "name": "वाटर आउटलेट फ़िल्टर सफाई"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "टैंक फ़िल्टर रीसेट करें"
       },
+      "reset_washboard_cleaning": {
+        "name": "वॉशबोर्ड को रीसेट करें"
+      },
       "reset_water_outlet_filter": {
         "name": "पानी के निकास फ़िल्टर को रीसेट करें"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "सफाई अधिसूचना",
         "card_object_controls": "नियंत्रण",
         "card_object_cruising_history": "क्रूजिंग इतिहास",
+        "card_object_dock_status_indicator": "डॉक स्थिति संकेतक",
         "card_object_fault_notification": "त्रुटि अधिसूचना",
         "card_object_information_notification": "सूचना अधिसूचना",
         "card_object_low_water_notification": "कम पानी की अधिसूचना",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "बाएं",
         "left_handed": "लेफ्ट हैंडेड मोड",
-        "limit_height": "स्क्रीन पर ऊंचाई सीमित करें",
+        "legacy_switches": "पुराने स्विच",
         "locked": "लॉक किया गया",
         "locked_always": "हमेशा",
         "locked_auto": "स्वचालित",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "आभासी दीवार",
         "map_object_walls": "दीवारें",
         "map_object_zoom_point": "ज़ूम बिंदु",
+        "max_height_offset": "अधिकतम ऊंचाई ऑफसेट",
         "object_opacity": "ऑब्जेक्ट अस्पष्टता",
         "object_scale": "ऑब्जेक्ट स्केल",
         "opacity": "अस्पष्टता",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "फ्लफिंग रोलर को साफ करने की जरूरत है\nकृपया फ्लफिंग रोलर साफ करें और काउंटर रीसेट करें।",
         "roller_mop_filter_dirty_left": "रोलर मॉप फ़िल्टर को साफ करने की जरूरत है\nकृपया रोलर मॉप फ़िल्टर साफ करें और काउंटर रीसेट करें।",
         "water_outlet_filter_dirty_left": "पानी के आउटलेट फ़िल्टर को साफ करने की जरूरत है\nकृपया पानी का आउटलेट फ़िल्टर साफ करें और काउंटर रीसेट करें।",
+        "washboard_cleaning_left": "वॉशबोर्ड को साफ करने की जरूरत है\nकृपया वॉशबोर्ड साफ करें और काउंटर रीसेट करें।",
         "no_water_left": "कृपया साफ पानी का टैंक भरें।\nसाफ पानी के टैंक में पानी खत्म होने वाला है। कृपया जांचें और साफ पानी का टैंक तुरंत भरें।",
         "no_water_left_after_clean": "कृपया साफ पानी का टैंक भरें।\nमॉप पैड साफ कर दिया गया है। पता चला है कि साफ पानी के टैंक में पानी अपर्याप्त है, कृपया साफ पानी का टैंक भरें और इस्तेमाल किए गए पानी के टैंक को खाली करें।",
         "no_water_for_clean": "साफ पानी के टैंक में पानी का स्तर कम है।\nरोबोट वैक्यूमिंग मोड पर स्विच हो गया है।",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "यह कार्रवाई वर्तमान मैप पर उपलब्ध नहीं है"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "मॉप बदला जा रहा है। कृपया बाद में पुनः प्रयास करें।"
     },
     "unavailable_while_cruising": {
       "message": "गश्त के दौरान यह कार्रवाई उपलब्ध नहीं है"

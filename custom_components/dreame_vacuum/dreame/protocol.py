@@ -30,7 +30,8 @@ from cryptography.hazmat.primitives.asymmetric import x25519, ec, padding
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM, ChaCha20Poly1305
 from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 from cryptography.utils import CryptographyDeprecationWarning
-from cryptography.x509.verification import Criticality, ExtensionPolicy, PolicyBuilder, Store
+from cryptography.x509.verification import PolicyBuilder, Store
+from OpenSSL.crypto import X509, X509Store, X509StoreContext
 from miio.miioprotocol import MiIOProtocol
 from urllib.parse import urlparse, parse_qs, quote, urljoin, urlsplit
 import re
@@ -42,10 +43,7 @@ DREAME_STRINGS: Final = (
     "H4sIAAAAAAAC/41U23LiOBD9FSpVQ81uLcYy4eJN8UDCMDCzCRtuAbamKCEJW4ksOZaAwNevWjYJzFN4MH36pu6jbv135XFlPJoxnDDPMBJf/XWFakGjaf9HnYNY3H3ZJOOfafPL5NWqus5xNU5wZmKVsGrgIS8sfeX/xkqymxIfjkuo5V176KY0Jliwas3z/T9s5C3WnJSW/R9i8YTEPOjtSX/xNnzpPc6TUfDYTztT1FvOZDwcdqO2DfDdzwraYLPVVkiwNiybcmrlNZe0qxLMpQVpplKWmYMVbTcDsJdTrPVeZRRSVfP+Knhr4qpyX6NeGIRiQpjWqxPM2CZjOn7H7C3lVrHiuTHiCgTDJJZm5QopUm81yyr28LwEQFBhjt4bKCwUGwyRbMcJs4Lg2swCsMuNyg3Dyd0gB8qQQkpxhhNd+DscQXSiKBOuOmLb1R8l2dMqRCXAIJP0TiUJPlW04QJC4U9a14JCiDWHFGBsj1AZEBox03WFdvOq9W/4jFqLpkBDJ2ISCgSdyvgRm3PaKo42oqSFplKch9NUcOIcq8/aeaer4nS1l0JhOs1Erhhqjeil1g1xona4AiPs5V3fW3w2qcgLvOvPTKpLZjK13dlezvJNctVFSv9zw18FpivrjNOIVWEEqo5WDjz28rv49m3yrI/bP+eD+lH29QB65dGbSF73y19N9bSc9qCne+oHz4fR63G7QY+3448LSJi7DrJr49WHNhPkA6QamJdsD9fII3clPGF2PJMU1t4P/IZfczuHrFSv13LRquo1mE/1EhuTVm2DgQemriXC9oj80ldqxb+5gmbXT2GwmIUx6Xcas2f6z9p/UJMeuaYv8e1jrddfRG1YyhuC5Q7rPtaxg3u2jsQ72nHN7QQO6EkTZbByMC7t02qXNbF738ZClFOBzUZlSbvz0B0NB92yc7TLrbbSlIFxmHPIU3aq7OBkgWX0W/KLF+DTJ1xEQUba/7Gj86UgIifiYX7r33+fNai/R5PjqH//PWzgvSOiYDG8ILFQNi6U9dOTiNw3Vu4dOK2S3eXILaGx3eiNHV4miaJcRmdOlyrJSLGb8A6ml+ZNgDBtXrN6iBsIoTVDtEX8ALFGfd0KEQlwYNWNJl6vW6TO/GbI/JAFpIVbtVoIc5e8GnP163+JjsKlZAYAAA=="
 )
 
-# Root of Dreame's private CA used by the MQTT brokers (shipped with the Dreamehome app, assets/cert/cacert.pem).
-# Despite its name it is not the public GlobalSign root.
-# SHA-256 6db9ea84c7e4c9aec692cd540ff52381f5e37dae47df8ebeb948a4461aeae425
-DREAME_MQTT_ROOT_CA: Final = b"""-----BEGIN CERTIFICATE-----
+DREAME_CLIENT_ROOT_CA: Final = b"""-----BEGIN CERTIFICATE-----
 MIIDDzCCAfegAwIBAgIJAPvMK3fFXUEgMA0GCSqGSIb3DQEBCwUAMB0xGzAZBgNV
 BAMMEkdsb2JhbFNpZ24gUm9vdCBDQTAgFw02OTEyMzExNjAwMDBaGA8yOTY5MDUw
 MjE2MDAwMFowHTEbMBkGA1UEAwwSR2xvYmFsU2lnbiBSb290IENBMIIBIjANBgkq
@@ -159,54 +157,11 @@ class DreameVacuumDreameHomeCloudProtocol:
             return out[:length]
 
         _store = None
-        _private_policy = None
         _store_lock = Lock()
-        _failures = {}  # (host, port) -> last logged handshake failure
-
-        @staticmethod
-        def _require_cert_sign(policy, cert, key_usage):
-            if key_usage is not None and not key_usage.key_cert_sign:
-                raise ValueError("CA certificate without keyCertSign")
-
-        @classmethod
-        def _policy(cls, private_ca):
-            """Policy for the public CA store (HTTP API) or for Dreame's private CA (MQTT), built once."""
-            with cls._store_lock:
-                if private_ca:
-                    if cls._private_policy is None:
-                        # Dreame's private CA lacks some web PKI extensions; chain, signatures, validity and name are still checked
-                        ca_policy = (
-                            ExtensionPolicy.webpki_defaults_ca()
-                            .may_be_present(x509.KeyUsage, Criticality.AGNOSTIC, cls._require_cert_sign)
-                            .require_present(x509.BasicConstraints, Criticality.AGNOSTIC, None)
-                        )
-                        ee_policy = ExtensionPolicy.webpki_defaults_ee().may_be_present(
-                            x509.AuthorityKeyIdentifier, Criticality.AGNOSTIC, None
-                        )
-                        cls._private_policy = (
-                            PolicyBuilder()
-                            .store(Store([x509.load_pem_x509_certificate(DREAME_MQTT_ROOT_CA)]))
-                            .extension_policies(ca_policy=ca_policy, ee_policy=ee_policy)
-                        )
-                    return cls._private_policy
-                if cls._store is None:
-                    certs = []
-                    with warnings.catch_warnings():
-                        # Some roots have a zero serial number: deprecated in cryptography, rejected in the future
-                        warnings.simplefilter("ignore", CryptographyDeprecationWarning)
-                        for der in ssl.create_default_context(cafile=certifi.where()).get_ca_certs(True):
-                            try:
-                                certs.append(x509.load_der_x509_certificate(der))
-                            except ValueError:
-                                pass
-                    cls._store = Store(certs)
-                return PolicyBuilder().store(cls._store)
 
         def _verify_chain(self, body, tls13):
-            """Verify the Certificate message against the CA store and the server name, return the leaf key."""
             chain = []
             try:
-                # TLS 1.3 adds a request context and per-entry extensions (RFC 8446 4.4.2)
                 i = 1 + body[0] if tls13 else 0
                 end = i + 3 + int.from_bytes(body[i : i + 3], "big")
                 i += 3
@@ -216,8 +171,32 @@ class DreameVacuumDreameHomeCloudProtocol:
                     i += 3 + n
                     if tls13:
                         i += 2 + int.from_bytes(body[i : i + 2], "big")
-                verifier = self._policy(self._private_ca).build_server_verifier(x509.DNSName(self._sni))
-                verifier.verify(chain[0], chain[1:])
+                if self._private_ca:
+                    store = X509Store()
+                    store.add_cert(X509.from_cryptography(x509.load_pem_x509_certificate(DREAME_CLIENT_ROOT_CA)))
+                    try:
+                        X509StoreContext(
+                            store,
+                            X509.from_cryptography(chain[0]),
+                            [X509.from_cryptography(c) for c in chain[1:]],
+                        ).verify_certificate()
+                        return chain[0].public_key()
+                    except Exception:
+                        pass
+                cls = type(self)
+                with cls._store_lock:
+                    if cls._store is None:
+                        certs = []
+                        with warnings.catch_warnings():
+                            warnings.simplefilter("ignore", CryptographyDeprecationWarning)
+                            for der in ssl.create_default_context(cafile=certifi.where()).get_ca_certs(True):
+                                try:
+                                    certs.append(x509.load_der_x509_certificate(der))
+                                except ValueError:
+                                    pass
+                        cls._store = Store(certs)
+                policy = PolicyBuilder().store(cls._store)
+                policy.build_server_verifier(x509.DNSName(self._sni)).verify(chain[0], chain[1:])
                 return chain[0].public_key()
             except Exception as ex:
                 leaf = ""
@@ -228,15 +207,14 @@ class DreameVacuumDreameHomeCloudProtocol:
 
         @staticmethod
         def _verify_signature(key, scheme, signature, data):
-            """Verify a handshake signature for one of the schemes offered in the ClientHello."""
             try:
-                if scheme in (0x0804, 0x0805, 0x0806):  # rsa_pss_rsae_*
+                if scheme in (0x0804, 0x0805, 0x0806):
                     h = {0x0804: hashes.SHA256, 0x0805: hashes.SHA384, 0x0806: hashes.SHA512}[scheme]()
                     key.verify(signature, data, padding.PSS(padding.MGF1(h), h.digest_size), h)
-                elif scheme in (0x0201, 0x0401, 0x0501, 0x0601):  # rsa_pkcs1_*
+                elif scheme in (0x0201, 0x0401, 0x0501, 0x0601):
                     h = {2: hashes.SHA1, 4: hashes.SHA256, 5: hashes.SHA384, 6: hashes.SHA512}[scheme >> 8]()
                     key.verify(signature, data, padding.PKCS1v15(), h)
-                elif scheme in (0x0403, 0x0503):  # ecdsa_*_sha256 / sha384
+                elif scheme in (0x0403, 0x0503):
                     key.verify(signature, data, ec.ECDSA(hashes.SHA256() if scheme == 0x0403 else hashes.SHA384()))
                 else:
                     raise ValueError(f"unexpected signature scheme {scheme:#06x}")
@@ -285,35 +263,6 @@ class DreameVacuumDreameHomeCloudProtocol:
                         self._sock.setsockopt(socket.IPPROTO_TCP, getattr(socket, opt), val)
             except OSError:
                 pass
-            try:
-                result = self._handshake()
-            except Exception as ex:
-                self._sock.close()
-                # malformed handshake data: callers (and paho's reconnect loop) only handle OSError
-                error = ex if isinstance(ex, OSError) else ConnectionError(f"unexpected handshake data: {ex!r}")
-                self._report(f"TLS handshake with {self._host}:{self._port} failed: {error}")
-                if error is ex:
-                    raise
-                raise error from ex
-            self._report(None)
-            return result
-
-        def _report(self, message):
-            """Log a failed handshake with host and reason; repeats (e.g. MQTT reconnects) only at debug level."""
-            key = (self._host, self._port)
-            if message is None:
-                self._failures.pop(key, None)
-            elif self._failures.get(key) == message:
-                _LOGGER.debug("%s", message)
-            else:
-                self._failures[key] = message
-                _LOGGER.warning("%s", message)
-
-        @staticmethod
-        def _alert(body):
-            return ConnectionError(f"server sent alert {body[1]}" if len(body) >= 2 else "server sent alert")
-
-        def _handshake(self):
             priv = x25519.X25519PrivateKey.generate()
             pub = priv.public_key().public_bytes_raw()
             ext = b""
@@ -374,7 +323,7 @@ class DreameVacuumDreameHomeCloudProtocol:
             while typ == 20:
                 typ, sh = self._read_record()
             if typ == 21:
-                raise self._alert(sh)
+                raise ConnectionError(f"server sent alert {sh[1]}" if len(sh) >= 2 else "server sent alert")
             if typ != 22 or not sh or sh[0] != 2:
                 raise ConnectionError("expected ServerHello")
             i = 6 + 32
@@ -430,7 +379,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                 if typ == 20:
                     continue
                 if typ == 21:
-                    raise self._alert(body)
+                    raise ConnectionError(f"server sent alert {body[1]}" if len(body) >= 2 else "server sent alert")
                 aad = bytes([typ]) + b"\x03\x03" + struct.pack("!H", len(body))
                 nonce = bytes(a ^ b for a, b in zip(s_hs_iv, b"\x00\x00\x00\x00" + struct.pack("!Q", sseq)))
                 cipher = ChaCha20Poly1305(s_hs_key) if self._cipher == 0x1303 else AESGCM(s_hs_key)
@@ -450,7 +399,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                         cert_key = self._verify_chain(msg[4:], True)
                     elif msg[0] == 15 and cert_key is not None:
                         scheme = (msg[4] << 8) | msg[5]
-                        if scheme not in (0x0403, 0x0503, 0x0804, 0x0805, 0x0806):  # RFC 8446 4.4.3
+                        if scheme not in (0x0403, 0x0503, 0x0804, 0x0805, 0x0806):
                             raise ConnectionError(f"signature scheme {scheme:#06x} not allowed in TLS 1.3")
                         sig = msg[8 : 8 + ((msg[6] << 8) | msg[7])]
                         content = b" " * 64 + b"TLS 1.3, server CertificateVerify\x00" + h(transcript).digest()
@@ -492,7 +441,7 @@ class DreameVacuumDreameHomeCloudProtocol:
         def _handshake_tls12(self, transcript, sh):
             self._tls12 = True
             server_random = sh[6:38]
-            if server_random[-8:-1] == b"DOWNGRD":  # TLS 1.3 server forced down to 1.2 (RFC 8446 4.1.3)
+            if server_random[-8:-1] == b"DOWNGRD":
                 raise ConnectionError("TLS downgrade detected")
             ske = None
             cert_key = None
@@ -517,7 +466,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                     break
                 typ, body = self._read_record()
                 if typ == 21:
-                    raise self._alert(body)
+                    raise ConnectionError(f"server sent alert {body[1]}" if len(body) >= 2 else "server sent alert")
                 if typ != 22:
                     continue
                 buf += body
@@ -585,7 +534,7 @@ class DreameVacuumDreameHomeCloudProtocol:
                         if not hmac.compare_digest(self._decrypt12(22, body), b"\x14\x00\x00\x0c" + svd):
                             raise ConnectionError("server Finished verify failed")
                         break
-                    transcript += body  # NewSessionTicket is part of the Finished hash (RFC 5077 3.3)
+                    transcript += body
                     continue
             return self
 
@@ -824,9 +773,14 @@ class DreameVacuumDreameHomeCloudProtocol:
         with self._http_lock:
             for attempt in range(2):
                 sock = self._conns.get(key)
+                if sock is not None and time.monotonic() - sock.last_used > sock.keep_alive:
+                    self._close_conn(key)
+                    sock = None
                 fresh = sock is None
                 if fresh:
                     sock = self.DreameTLSSocket(host, port, host, timeout, s).connect()
+                    sock.keep_alive = 8
+                    sock.last_used = time.monotonic()
                     self._conns[key] = sock
                 try:
                     sock.settimeout(timeout)
@@ -904,6 +858,14 @@ class DreameVacuumDreameHomeCloudProtocol:
                         content = zlib.decompress(content)
                     if hdrs.get(s[87], "").lower() == "close":
                         self._close_conn(key)
+                    else:
+                        ka = hdrs.get("keep-alive")
+                        if ka:
+                            for part in ka.split(","):
+                                pk, _, pv = part.strip().partition("=")
+                                if pk.lower() == "timeout" and pv.strip().isdigit():
+                                    sock.keep_alive = max(int(pv) - 2, 2)
+                        sock.last_used = time.monotonic()
                     return status, content
                 except (ConnectionError, OSError) as ex:
                     self._close_conn(key)
@@ -1714,7 +1676,7 @@ class DreameVacuumMiHomeCloudProtocol:
         self._auth_failed = False
         self._uid = None
         self._did = device_id
-        self._client_id = DreameVacuumMiHomeCloudProtocol.generate_client_id()
+        self._client_id = "".join((chr(random.randint(97, 122)) for _ in range(16)))
 
         if self._auth_key:
             data = self._auth_key.split(" ")
@@ -2162,44 +2124,6 @@ class DreameVacuumMiHomeCloudProtocol:
                     _LOGGER.warning("Failed to send 2FA code: %s", ex)
         return False
 
-    def _follow_phone_confirmation(self, response, session, headers):
-        """Follow the optional phone confirmation page Xiaomi adds after 2FA."""
-        if response is None or response.status_code != 200:
-            return response
-
-        # Only handle the phone verification page Xiaomi redirects to after 2FA.
-        url = urlsplit(response.url)
-        if (
-            url.scheme != "https"
-            or url.hostname != "account.xiaomi.com"
-            or url.path != "/fe/service/verifyPhone"
-        ):
-            return response
-
-        # Xiaomi treats this page as optional, its skipUrl continues the login.
-        skip_url = parse_qs(url.query).get("skipUrl", [""])[0]
-        if not skip_url:
-            return response
-
-        # Only follow the skipUrl when it points back to Xiaomi's own server.
-        target = urlsplit(urljoin("https://account.xiaomi.com/", skip_url))
-        if (
-            target.scheme != "https"
-            or target.hostname != "account.xiaomi.com"
-            or target.username
-            or target.password
-            or target.port not in (None, 443)
-        ):
-            _LOGGER.warning("2FA: Ignoring unexpected phone confirmation redirect.")
-            return response
-
-        _LOGGER.debug("2FA: Following optional phone confirmation step.")
-        try:
-            return session.get(target.geturl(), headers=headers, allow_redirects=True, timeout=10)
-        except Exception as ex:
-            _LOGGER.warning("2FA: Could not follow phone confirmation step. Error: %s", ex)
-            return response
-
     def verify_code(self, code) -> bool:
         verification_url = self.verification_url
         session = self._get_session()
@@ -2282,7 +2206,31 @@ class DreameVacuumMiHomeCloudProtocol:
 
             if location_url:
                 response = session.get(location_url, headers=headers, allow_redirects=True, timeout=10)
-                response = self._follow_phone_confirmation(response, session, headers)
+                if response is not None and response.status_code == 200:
+                    url = urlsplit(response.url)
+                    if (
+                        url.scheme == "https"
+                        and url.hostname == "account.xiaomi.com"
+                        and url.path == "/fe/service/verifyPhone"
+                        and (skip_url := parse_qs(url.query).get("skipUrl", [""])[0])
+                    ):
+                        try:
+                            target = urlsplit(urljoin("https://account.xiaomi.com/", skip_url))
+                            if (
+                                target.scheme == "https"
+                                and target.hostname == "account.xiaomi.com"
+                                and not target.username
+                                and not target.password
+                                and target.port in (None, 443)
+                            ):
+                                response = session.get(
+                                    target.geturl(), headers=headers, allow_redirects=True, timeout=10
+                                )
+                            else:
+                                _LOGGER.warning("2FA: Ignoring unexpected phone confirmation redirect.")
+                        except Exception as ex:
+                            _LOGGER.warning("2FA: Could not follow phone confirmation step. Error: %s", ex)
+
                 if response is not None and response.status_code == 200:
                     for c in session.cookies:
                         if c.name in ("userId", "cUserId") and c.value:
@@ -2675,10 +2623,6 @@ class DreameVacuumMiHomeCloudProtocol:
         return base64.b64encode(b).decode("utf-8")
 
     @staticmethod
-    def generate_client_id() -> str:
-        return "".join((chr(random.randint(97, 122)) for _ in range(16)))
-
-    @staticmethod
     def generate_signature(url, signed_nonce: str, nonce: str, params: Dict[str, str]) -> str:
         signature_params = [url.split("com")[1], signed_nonce, nonce]
         for k, v in params.items():
@@ -2716,7 +2660,9 @@ class DreameVacuumMiHomeCloudProtocol:
             url, method, signed_nonce, params
         )
         for k, v in params.items():
-            params[k] = DreameVacuumMiHomeCloudProtocol.encrypt_rc4(signed_nonce, v)
+            r = ARC4.new(base64.b64decode(signed_nonce))
+            r.encrypt(bytes(1024))
+            params[k] = base64.b64encode(r.encrypt(v.encode())).decode()
         params.update(
             {
                 "signature": DreameVacuumMiHomeCloudProtocol.generate_enc_signature(url, method, signed_nonce, params),
@@ -2729,12 +2675,6 @@ class DreameVacuumMiHomeCloudProtocol:
     @staticmethod
     def to_json(response_text: str) -> Any:
         return json.loads(response_text.replace("&&&START&&&", ""))
-
-    @staticmethod
-    def encrypt_rc4(password: str, payload: str) -> str:
-        r = ARC4.new(base64.b64decode(password))
-        r.encrypt(bytes(1024))
-        return base64.b64encode(r.encrypt(payload.encode())).decode()
 
     @staticmethod
     def decrypt_rc4(password: str, payload: str) -> bytes:

@@ -774,7 +774,8 @@
           "unknown": "غير معروف",
           "idle": "قيد الانتظار",
           "active": "نشط",
-          "not_performed": "لم يُنفذ"
+          "not_performed": "لم يُنفذ",
+          "returning": "العودة للتفريغ التلقائي"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "غير معروف",
           "not_available": "غير متوفر",
           "available": "متوفر",
-          "over_use": "استخدام مفرط",
-          "never": "أبدًا"
+          "over_use": "استخدام مفرط"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "متوقف مؤقتاً",
           "returning": "يعود للغسيل",
           "clean_add_water": "تنظيف وإضافة ماء",
-          "adding_water": "يضيف ماء"
+          "returning_to_drain": "العودة للتصريف",
+          "returning_for_dry_mop": "العودة لترطيب الممسحة"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "حزمة الصوت"
+      },
+      "washboard_cleaning_left": {
+        "name": "تنظيف لوح الغسيل"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "الوقت المتبقي لتنظيف لوح الغسيل"
       },
       "water_outlet_filter_dirty_left": {
         "name": "تنظيف فلتر مخرج الماء"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "إعادة ضبط فلتر الخزان"
       },
+      "reset_washboard_cleaning": {
+        "name": "إعادة ضبط لوح الغسيل"
+      },
       "reset_water_outlet_filter": {
         "name": "إعادة ضبط فلتر مخرج المياه"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "إشعار التنظيف",
         "card_object_controls": "عناصر التحكم",
         "card_object_cruising_history": "سجل الجولات التجوالية",
+        "card_object_dock_status_indicator": "مؤشر حالة المحطة",
         "card_object_fault_notification": "إشعار بالخطأ",
         "card_object_information_notification": "إشعار المعلومات",
         "card_object_low_water_notification": "إشعار انخفاض مستوى الماء",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "يسار",
         "left_handed": "وضع استخدام اليد اليسرى",
-        "limit_height": "تقييد الارتفاع ليتناسب مع الشاشة",
+        "legacy_switches": "المفاتيح القديمة",
         "locked": "مغلق",
         "locked_always": "دائماً",
         "locked_auto": "تلقائي",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "الجدران الافتراضية",
         "map_object_walls": "الجدران",
         "map_object_zoom_point": "نقطة التكبير",
+        "max_height_offset": "إزاحة الارتفاع الأقصى",
         "object_opacity": "شفافية العناصر",
         "object_scale": "حجم العناصر",
         "opacity": "الشفافية",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "تحتاج الأسطوانة الزغبية إلى التنظيف\nيرجى تنظيف الأسطوانة الزغبية وإعادة تعيين العداد.",
         "roller_mop_filter_dirty_left": "يحتاج فلتر ممسحة الأسطوانة إلى التنظيف\nيرجى تنظيف فلتر ممسحة الأسطوانة وإعادة تعيين العداد.",
         "water_outlet_filter_dirty_left": "يحتاج فلتر مخرج المياه إلى التنظيف\nيرجى تنظيف فلتر مخرج المياه وإعادة تعيين العداد.",
+        "washboard_cleaning_left": "يحتاج لوح الغسيل إلى التنظيف\nيرجى تنظيف لوح الغسيل وإعادة تعيين العداد.",
         "no_water_left": "يرجى ملء خزان المياه النظيفة.\nالمياه في خزان المياه النظيفة على وشك النفاد. تحقق من خزان المياه النظيفة واملأه على الفور.",
         "no_water_left_after_clean": "يرجى ملء خزان المياه النظيفة.\nتم تنظيف الممسحة. تم اكتشاف أن المياه في خزان المياه النظيفة غير كافية، يرجى ملء خزان المياه النظيفة وتفريغ خزان المياه المتسخة.",
         "no_water_for_clean": "انخفاض مستوى الماء في خزان المياه النظيفة.\nلقد تحول الروبوت إلى وضع الكنس.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "هذا الإجراء غير متاح على الخريطة الحالية"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "تبديل الممسحة. حاول مرة أخرى لاحقًا."
     },
     "unavailable_while_cruising": {
       "message": "هذا الإجراء غير متاح أثناء الجولة"

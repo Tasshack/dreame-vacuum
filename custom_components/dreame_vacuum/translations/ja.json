@@ -774,7 +774,8 @@
           "unknown": "不明",
           "idle": "待機中",
           "active": "アクティブ",
-          "not_performed": "未実行"
+          "not_performed": "未実行",
+          "returning": "自動収集に戻る"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "不明",
           "not_available": "利用不可",
           "available": "利用可能",
-          "over_use": "使用過剰",
-          "never": "しない"
+          "over_use": "使用過剰"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "一時停止",
           "returning": "洗浄に戻る",
           "clean_add_water": "洗浄および給水",
-          "adding_water": "給水中"
+          "returning_to_drain": "排水に戻る",
+          "returning_for_dry_mop": "モップを濡らしに戻る"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "音声パック"
+      },
+      "washboard_cleaning_left": {
+        "name": "ウォッシュボード清掃"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "ウォッシュボード清掃残り時間"
       },
       "water_outlet_filter_dirty_left": {
         "name": "排水口フィルター清掃"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "タンクフィルターリセット"
       },
+      "reset_washboard_cleaning": {
+        "name": "ウォッシュボードリセット"
+      },
       "reset_water_outlet_filter": {
         "name": "排水フィルターリセット"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "清掃通知",
         "card_object_controls": "コントロール",
         "card_object_cruising_history": "巡回履歴",
+        "card_object_dock_status_indicator": "ドック状態インジケーター",
         "card_object_fault_notification": "エラー通知",
         "card_object_information_notification": "情報通知",
         "card_object_low_water_notification": "低水位通知",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "左",
         "left_handed": "左利きモード",
-        "limit_height": "画面の高さに制限",
+        "legacy_switches": "従来のスイッチ",
         "locked": "ロック",
         "locked_always": "常に",
         "locked_auto": "自動",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "仮想壁",
         "map_object_walls": "壁",
         "map_object_zoom_point": "ズームポイント",
+        "max_height_offset": "最大高さのオフセット",
         "object_opacity": "オブジェクトの不透明度",
         "object_scale": "オブジェクトの縮尺",
         "opacity": "不透明度",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "フラッフィングローラーを清掃する必要があります\nフラッフィングローラーを清掃してカウンターをリセットしてください。",
         "roller_mop_filter_dirty_left": "ローラーモップフィルターを清掃する必要があります\nローラーモップフィルターを清掃してカウンターをリセットしてください。",
         "water_outlet_filter_dirty_left": "水出口フィルターを清掃する必要があります\n水出口フィルターを清掃してカウンターをリセットしてください。",
+        "washboard_cleaning_left": "ウォッシュボードを清掃する必要があります\nウォッシュボードを清掃してカウンターをリセットしてください。",
         "no_water_left": "浄水タンクに水を入れてください。\n浄水タンクの水がなくなりそうです。確認してすぐに浄水タンクに水を入れてください。",
         "no_water_left_after_clean": "浄水タンクに水を入れてください。\nモップパッドが清掃されました。浄水タンクの水が不十分であることが検出されました。浄水タンクに水を入れて、使用済み水タンクを空にしてください。",
         "no_water_for_clean": "浄水タンクの水位が低いです。\nロボットは吸引モードに切り替わりました。",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "このアクションは現在のマップでは利用できません"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "モップを切り替えています。後ほど再度お試しください。"
     },
     "unavailable_while_cruising": {
       "message": "このアクションは巡回中は利用できません"

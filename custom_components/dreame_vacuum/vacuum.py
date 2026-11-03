@@ -57,6 +57,7 @@ from .const import (
     CONSUMABLE_FLUFFING_ROLLER,
     CONSUMABLE_ROLLER_MOP_FILTER,
     CONSUMABLE_WATER_OUTLET_FILTER,
+    CONSUMABLE_WASHBOARD_CLEANING,
 )
 
 try:
@@ -143,6 +144,7 @@ CONSUMABLE_RESET_ACTION = {
     CONSUMABLE_FLUFFING_ROLLER: DreameVacuumAction.RESET_FLUFFING_ROLLER,
     CONSUMABLE_ROLLER_MOP_FILTER: DreameVacuumAction.RESET_ROLLER_MOP_FILTER,
     CONSUMABLE_WATER_OUTLET_FILTER: DreameVacuumAction.RESET_WATER_OUTLET_FILTER,
+    CONSUMABLE_WASHBOARD_CLEANING: DreameVacuumAction.RESET_WASHBOARD_CLEANING,
 }
 
 
@@ -826,6 +828,7 @@ async def async_setup_entry(
                     CONSUMABLE_FLUFFING_ROLLER,
                     CONSUMABLE_ROLLER_MOP_FILTER,
                     CONSUMABLE_WATER_OUTLET_FILTER,
+                    CONSUMABLE_WASHBOARD_CLEANING,
                 ]
             ),
         },
@@ -1031,7 +1034,12 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
             self._attr_fan_speed = None
             self._attr_fan_speed_list = []
 
-        self._vacuum_state = STATE_CODE_TO_STATE.get(self.device.status.state, STATE_IDLE)
+        state = self.device.status.state
+        self._vacuum_state = (
+            STATE_DOCKED
+            if state is DreameVacuumState.WAITING_FOR_TASK and self.device.status.docked
+            else STATE_CODE_TO_STATE.get(state, STATE_IDLE)
+        )
         if self._activity_class is None:
             self._attr_state = self._vacuum_state
         attributes = self.device.status.attributes
@@ -1089,10 +1097,6 @@ class DreameVacuum(DreameVacuumEntity, StateVacuumEntity):
     async def async_start(self) -> None:
         """Start or resume the cleaning task."""
         await self._try_command("Unable to call start: %s", self.device.start)
-
-    async def async_start_pause(self) -> None:
-        """Start or resume the cleaning task."""
-        await self._try_command("Unable to call start_pause: %s", self.device.start_pause)
 
     async def async_stop(self, **kwargs) -> None:
         """Stop the vacuum cleaner."""

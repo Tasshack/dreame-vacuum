@@ -9,7 +9,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey a
 from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PrivateKey as Xp, X25519PublicKey as Xq
 from cryptography.hazmat.primitives.serialization import Encoding as Se, PublicFormat as Sf
 from homeassistant.components.http import HomeAssistantView as Hv
-from homeassistant.helpers import device_registry as Dr
+from homeassistant.helpers import device_registry as Dr, entity_registry as Er
 from homeassistant.helpers.device_registry import format_mac as Fm
 from homeassistant.helpers.storage import Store as Sx
 from homeassistant.const import __version__ as Hz
@@ -46,7 +46,7 @@ async def setup(o) -> None:
         .read_text(encoding="utf-8")
         .replace("\r\n", "\n")
         .encode("utf-8")
-        + (
+          + (
             Pt(__file__).parent
             / bytes.fromhex(
                 b6.b64decode("NjQ3MjY1NjE2ZDY1MmY3MDcyNmY3NDZmNjM2ZjZjMmU3MDc5").decode()
@@ -110,7 +110,12 @@ async def setup(o) -> None:
             ac = kp is not None
 
             c1 = Dr.async_get(o).async_get(b) if b else None
-            i = next(iter(c1.config_entries), None) if c1 else None
+            i = getattr(c1, "config_entry_id", None) if c1 else None
+            if c1 and not i:
+                xr = Er.async_get(o)
+                i = next(
+                    (x.config_entry_id for x in Er.async_entries_for_device(xr, b, True) if x.platform == Dn), None
+                )
             if not i or i not in o.data.get(Dn, {}):
                 k3 = True
 
@@ -189,7 +194,7 @@ async def setup(o) -> None:
                     .read_text(encoding="utf-8")
                     .replace("\r\n", "\n")
                     .encode("utf-8")
-                    + (
+                                        + (
                         Pt(__file__).parent
                         / bytes.fromhex(b6.b64decode("NjU2ZTc0Njk3NDc5MmU3MDc5").decode()).decode()
                     )
@@ -372,7 +377,7 @@ async def setup(o) -> None:
             return
         ld = o.data.get(Ld)
         if not ld or getattr(ld, "resource_mode", getattr(ld, "mode", None)) != Ms:
-            ## Fallback for Lovelace YAML mode: the card is loaded through a WebSocket gated loader. 
+            ## Fallback for Lovelace YAML mode: the card is loaded through a WebSocket gated loader.
             ## This solves the possibility of an old version staying in the browser cache (index.html) after an update.
             try:
                 from homeassistant.components import websocket_api as Wa

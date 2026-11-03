@@ -774,7 +774,8 @@
           "unknown": "Tuntematon",
           "idle": "Tyhjäkäynti",
           "active": "Aktiivinen",
-          "not_performed": "Ei suoritettu"
+          "not_performed": "Ei suoritettu",
+          "returning": "Palataan automaattityhjennykseen"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Tuntematon",
           "not_available": "Ei käytettävissä",
           "available": "Käytettävissä",
-          "over_use": "Ylikäyttö",
-          "never": "Ei koskaan"
+          "over_use": "Ylikäyttö"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Pysäytetty",
           "returning": "Paluu pesuun",
           "clean_add_water": "Puhdistus ja veden lisäys",
-          "adding_water": "Lisätään vettä"
+          "returning_to_drain": "Paluu tyhjennykseen",
+          "returning_for_dry_mop": "Palataan kostuttamaan moppia"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Äänipaketti"
+      },
+      "washboard_cleaning_left": {
+        "name": "Pesulaudan Puhdistus"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Pesulaudan puhdistuksen jäljellä oleva aika"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Vedenpoistoaukon Suodattimen Puhdistus"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Nollaa säiliön suodatin"
       },
+      "reset_washboard_cleaning": {
+        "name": "Nollaa pesulauta"
+      },
       "reset_water_outlet_filter": {
         "name": "Nollaa vedenpoistosuodatin"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Puhdistusilmoitus",
         "card_object_controls": "Säätimet",
         "card_object_cruising_history": "Risteilyhistoria",
+        "card_object_dock_status_indicator": "Telakan tilan ilmaisin",
         "card_object_fault_notification": "Virheilmoitus",
         "card_object_information_notification": "Tietoilmoitus",
         "card_object_low_water_notification": "Alhaisen veden ilmoitus",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Vasen",
         "left_handed": "Vasenkätinen tila",
-        "limit_height": "Rajoita korkeus näyttöön",
+        "legacy_switches": "Vanhat kytkimet",
         "locked": "Lukittu",
         "locked_always": "Aina",
         "locked_auto": "Automaattinen",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtuaaliseinät",
         "map_object_walls": "Seinät",
         "map_object_zoom_point": "Zoomauspiste",
+        "max_height_offset": "Enimmäiskorkeuden siirtymä",
         "object_opacity": "Objektien peittävyys",
         "object_scale": "Objektien mittakaava",
         "opacity": "Peittävyys",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Pöyhintärulla vaatii puhdistusta\nPuhdista pöyhintärulla ja nollaa laskuri.",
         "roller_mop_filter_dirty_left": "Rullamopin suodatin vaatii puhdistusta\nPuhdista rullamopin suodatin ja nollaa laskuri.",
         "water_outlet_filter_dirty_left": "Vedenpoistosuodatin vaatii puhdistusta\nPuhdista vedenpoistosuodatin ja nollaa laskuri.",
+        "washboard_cleaning_left": "Pesulauta vaatii puhdistusta\nPuhdista pesulauta ja nollaa laskuri.",
         "no_water_left": "Täytä puhdasvesisäiliö.\nPuhdasvesisäiliön vesi on loppumassa. Tarkista ja täytä puhdasvesisäiliö välittömästi.",
         "no_water_left_after_clean": "Täytä puhdasvesisäiliö.\nMoppityyny on puhdistettu. Havaittiin, että puhdasvesisäiliössä on riittämättömästi vettä, täytä puhdasvesisäiliö ja tyhjennä käytetty vesisäiliö.",
         "no_water_for_clean": "Puhdasvesisäiliön vedenpinta on alhainen.\nRobotti on siirtynyt imurointitilaan.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Tämä toiminto ei ole käytettävissä nykyisellä kartalla"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Mopin vaihto käynnissä. Yritä myöhemmin uudelleen."
     },
     "unavailable_while_cruising": {
       "message": "Tämä toiminto ei ole käytettävissä partioinnin aikana"

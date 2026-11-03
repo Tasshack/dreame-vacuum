@@ -30,6 +30,9 @@ except ImportError:
 EXCLUDED_KEYS = [
     "SERIAL_NUMBER",
     "WIFI_MAP",
+    "MATTER_QR_CODE",
+    "CLEANING_PROGRESS_INFO",
+    "STREAM_STATUS",
     "ap",
     "auth_key",
     "did",
@@ -37,8 +40,6 @@ EXCLUDED_KEYS = [
     "host",
     "last_updated_time",
     "mac",
-    "MATTER_QR_CODE",
-    "matter_qr_code",
     "object_name",
     "password",
     "token",
@@ -76,9 +77,7 @@ def _sanitize(value: Any, seen: set[int] | None = None) -> Any:
     seen.add(marker)
     try:
         if isinstance(value, dict):
-            return {
-                str(k): _sanitize(v, seen) for k, v in value.items() if str(k) not in EXCLUDED_KEYS
-            }
+            return {str(k): _sanitize(v, seen) for k, v in value.items() if str(k) not in EXCLUDED_KEYS}
         if isinstance(value, (list, tuple, set, frozenset)):
             return [_sanitize(v, seen) for v in value]
         as_dict = getattr(value, "as_dict", None)
@@ -98,9 +97,7 @@ def _sanitize(value: Any, seen: set[int] | None = None) -> Any:
     return repr(value)
 
 
-def _entities(
-    hass: HomeAssistant, entry: ConfigEntry, device: Any, device_id: str | None = None
-) -> dict[str, Any]:
+def _entities(hass: HomeAssistant, entry: ConfigEntry, device: Any, device_id: str | None = None) -> dict[str, Any]:
     mirrors: dict[str, Any] = {}
     data = _get(device, "data")
     if isinstance(data, dict):
@@ -184,9 +181,7 @@ def _capabilities(device: Any) -> list[str] | None:
     if capability is None:
         return None
     return sorted(
-        name.upper()
-        for name in dir(capability)
-        if not name.startswith("_") and _get(capability, name) is True
+        name.upper() for name in dir(capability) if not name.startswith("_") and _get(capability, name) is True
     )
 
 
@@ -217,9 +212,7 @@ def _properties(device: Any) -> dict[str, Any] | None:
         did_value = did.value if isinstance(did, Enum) else did
         if did_value not in requested:
             continue
-        if isinstance(value, str) and any(
-            key in value for key in ('"object_name"', '"mapobj"', *packed)
-        ):
+        if isinstance(value, str) and any(key in value for key in ('"object_name"', '"mapobj"', *packed)):
             continue
         if isinstance(did_value, int):
             properties[names.get(did_value, f"UNKNOWN_{did_value}")] = value
@@ -335,9 +328,7 @@ def _section(builder: Any, *args: Any) -> Any:
         return _failure(ex)
 
 
-async def _async_diagnostics(
-    hass: HomeAssistant, entry: ConfigEntry, device_id: str | None = None
-) -> dict[str, Any]:
+async def _async_diagnostics(hass: HomeAssistant, entry: ConfigEntry, device_id: str | None = None) -> dict[str, Any]:
     coordinator = (hass.data.get(DOMAIN) or {}).get(entry.entry_id)
     device = _get(coordinator, "device")
     try:
@@ -360,8 +351,6 @@ async def async_get_config_entry_diagnostics(hass: HomeAssistant, entry: ConfigE
     return await _async_diagnostics(hass, entry)
 
 
-async def async_get_device_diagnostics(
-    hass: HomeAssistant, entry: ConfigEntry, device: DeviceEntry
-) -> dict[str, Any]:
+async def async_get_device_diagnostics(hass: HomeAssistant, entry: ConfigEntry, device: DeviceEntry) -> dict[str, Any]:
     """Return diagnostics for a device."""
     return await _async_diagnostics(hass, entry, device.id)

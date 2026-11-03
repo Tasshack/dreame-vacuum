@@ -774,7 +774,8 @@
           "unknown": "Unbekannt",
           "idle": "Inaktiv",
           "active": "Aktiv",
-          "not_performed": "Nicht durchgeführt"
+          "not_performed": "Nicht durchgeführt",
+          "returning": "Rückkehr zur automatischen Entleerung"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Unbekannt",
           "not_available": "Nicht verfügbar",
           "available": "Verfügbar",
-          "over_use": "Übermäßige Nutzung",
-          "never": "Nie"
+          "over_use": "Übermäßige Nutzung"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Pausiert",
           "returning": "Zurückkehren zum Reinigen",
           "clean_add_water": "Reinigung und Wasser nachfüllen",
-          "adding_water": "Wasser nachfüllen"
+          "returning_to_drain": "Rückkehr zum Abfluss",
+          "returning_for_dry_mop": "Zurück zum Befeuchten des Wischpads"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Sprachpaket"
+      },
+      "washboard_cleaning_left": {
+        "name": "Waschbrettreinigung"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Waschbrettreinigung (Restzeit)"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Wasserauslass-Filterreinigung"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Tankfilter zurücksetzen"
       },
+      "reset_washboard_cleaning": {
+        "name": "Waschbrettreinigung zurücksetzen"
+      },
       "reset_water_outlet_filter": {
         "name": "Wasserauslass-Filter zurücksetzen"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Reinig.-Benachricht.",
         "card_object_controls": "Steuerung",
         "card_object_cruising_history": "Fahrtverlauf",
+        "card_object_dock_status_indicator": "Dock-Statusanzeige",
         "card_object_fault_notification": "Fehlerbenachricht.",
         "card_object_information_notification": "Info-Benachricht.",
         "card_object_low_water_notification": "Wassermangel-Benachricht.",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Links",
         "left_handed": "Linkshänder-Modus",
-        "limit_height": "Höhe an Bildschirm anp.",
+        "legacy_switches": "Alte Schalter",
         "locked": "Gesperrt",
         "locked_always": "Immer",
         "locked_auto": "Automatisch",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtuelle Wände",
         "map_object_walls": "Wände",
         "map_object_zoom_point": "Zoombereich",
+        "max_height_offset": "Max. Höhenabstand",
         "object_opacity": "Objekt-Deckkraft",
         "object_scale": "Objekt-Skalierung",
         "opacity": "Deckkraft",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Aufschüttelwalze muss gereinigt werden\nBitte reinigen Sie die Aufschüttelwalze und setzen Sie den Zähler zurück.",
         "roller_mop_filter_dirty_left": "Walzenmoppfilter muss gereinigt werden\nBitte reinigen Sie den Walzenmoppfilter und setzen Sie den Zähler zurück.",
         "water_outlet_filter_dirty_left": "Wasserauslassfilter muss gereinigt werden\nBitte reinigen Sie den Wasserauslassfilter und setzen Sie den Zähler zurück.",
+        "washboard_cleaning_left": "Waschbrett muss gereinigt werden\nBitte reinigen Sie das Waschbrett und setzen Sie den Zähler zurück.",
         "no_water_left": "Bitte füllen Sie den Frischwassertank auf.\nDas Wasser im Frischwassertank ist fast aufgebraucht. Überprüfen und füllen Sie den Frischwassertank umgehend auf.",
         "no_water_left_after_clean": "Bitte füllen Sie den Frischwassertank auf.\nDas Wischpad wurde gereinigt. Es wurde festgestellt, dass das Wasser im Frischwassertank unzureichend ist. Bitte füllen Sie den Frischwassertank auf und leeren Sie den Schmutzwassertank.",
         "no_water_for_clean": "Niedriger Wasserstand im Frischwassertank.\nDer Roboter ist in den Saugmodus gewechselt.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Diese Aktion ist auf der aktuellen Karte nicht verfügbar"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Wischmopp wird gewechselt. Versuchen Sie es später erneut."
     },
     "unavailable_while_cruising": {
       "message": "Diese Aktion ist während der Patrouillenfahrt nicht verfügbar"

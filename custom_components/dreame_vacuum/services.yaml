@@ -429,6 +429,7 @@ vacuum_reset_consumable:
             - "fluffing_roller"
             - "roller_mop_filter"
             - "water_outlet_filter"
+            - "washboard_cleaning"
 
 vacuum_rename_shortcut:
   target:

@@ -774,7 +774,8 @@
           "unknown": "Ukendt",
           "idle": "Inaktiv",
           "active": "Aktiv",
-          "not_performed": "Ikke udført"
+          "not_performed": "Ikke udført",
+          "returning": "Vender tilbage til autotømning"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Ukendt",
           "not_available": "Ikke tilgængelig",
           "available": "Tilgængelig",
-          "over_use": "Overbrug",
-          "never": "Aldrig"
+          "over_use": "Overbrug"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Sati pause",
           "returning": "Vender tilbage for at vaske",
           "clean_add_water": "Rengør og tilføjer vand",
-          "adding_water": "Tilføjer vand"
+          "returning_to_drain": "Vender tilbage for at dræne",
+          "returning_for_dry_mop": "Vender tilbage for at fugte moppen"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Stemmepakke"
+      },
+      "washboard_cleaning_left": {
+        "name": "Rengøring af vaskebræt"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Resterende tid for vaskebrætrengøring"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Rengøring af vandudløbsfilter"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Nulstil tankfilter"
       },
+      "reset_washboard_cleaning": {
+        "name": "Nulstil vaskebræt"
+      },
       "reset_water_outlet_filter": {
         "name": "Nulstil vandudløbsfilter"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Advarsel om rengøring",
         "card_object_controls": "Kontrolelementer",
         "card_object_cruising_history": "Patruljeringshistorik",
+        "card_object_dock_status_indicator": "Dockstatusindikator",
         "card_object_fault_notification": "Fejlmeddelelse",
         "card_object_information_notification": "Informationsbesked",
         "card_object_low_water_notification": "Advarsel om lavt vand",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Venstre",
         "left_handed": "Venstrehåndstilstand",
-        "limit_height": "Begrænser højde til skærm",
+        "legacy_switches": "Ældre kontakter",
         "locked": "Låst",
         "locked_always": "Altid",
         "locked_auto": "Automatisk",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtuelle vægge",
         "map_object_walls": "Vægge",
         "map_object_zoom_point": "Zoompunkt",
+        "max_height_offset": "Maks. højdeforskydning",
         "object_opacity": "Objektopacitet",
         "object_scale": "Objektskala",
         "opacity": "Opacitet",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Fnugrulle trænger til rengøring\nRengør fnugrullen og nulstil tælleren.",
         "roller_mop_filter_dirty_left": "Rullemoppefilter trænger til rengøring\nRengør rullemoppefilteret og nulstil tælleren.",
         "water_outlet_filter_dirty_left": "Vandudløbsfilter trænger til rengøring\nRengør vandudløbsfilteret og nulstil tælleren.",
+        "washboard_cleaning_left": "Vaskebrættet trænger til rengøring\nRengør vaskebrættet og nulstil tælleren.",
         "no_water_left": "Fyld rentvandstanken.\nVandet i rentvandstanken er ved at være brugt op. Tjek og fyld rentvandstanken omgående.",
         "no_water_left_after_clean": "Fyld rentvandstanken.\nMoppepuden er blevet rengjort. Registrerede, at vandet i rentvandstanken er utilstrækkeligt, fyld rentvandstanken og tøm brugtvandstanken.",
         "no_water_for_clean": "Lav vandstand i rentvandstanken.\nRobotten har skiftet til støvsugningstilstand.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Denne handling er ikke tilgængelig på det aktuelle kort"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Skift af moppe. Prøv igen senere."
     },
     "unavailable_while_cruising": {
       "message": "Denne handling er ikke tilgængelig under patrulje"

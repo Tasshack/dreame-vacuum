@@ -774,7 +774,8 @@
           "unknown": "未知",
           "idle": "待機",
           "active": "運行中",
-          "not_performed": "未執行"
+          "not_performed": "未執行",
+          "returning": "返回自動集塵"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "未知",
           "not_available": "不可用",
           "available": "可用",
-          "over_use": "過度使用",
-          "never": "從不"
+          "over_use": "過度使用"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "已暫停",
           "returning": "返回清洗中",
           "clean_add_water": "清潔加水",
-          "adding_water": "加水中"
+          "returning_to_drain": "返回排水中",
+          "returning_for_dry_mop": "返回潤濕拖布"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "語音包"
+      },
+      "washboard_cleaning_left": {
+        "name": "清洗盤清潔"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "清洗盤清潔剩餘時間"
       },
       "water_outlet_filter_dirty_left": {
         "name": "出水口濾網清潔"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "重置水箱濾網"
       },
+      "reset_washboard_cleaning": {
+        "name": "重置清洗盤"
+      },
       "reset_water_outlet_filter": {
         "name": "重置出水口濾網"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "清掃通知",
         "card_object_controls": "控制按鈕",
         "card_object_cruising_history": "巡航記錄",
+        "card_object_dock_status_indicator": "基站狀態指示",
         "card_object_fault_notification": "錯誤通知",
         "card_object_information_notification": "資訊通知",
         "card_object_low_water_notification": "缺水通知",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "米家",
         "left": "左側",
         "left_handed": "左手模式",
-        "limit_height": "自適應高度",
+        "legacy_switches": "舊版開關",
         "locked": "已鎖定",
         "locked_always": "始終",
         "locked_auto": "自動",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "虛擬牆",
         "map_object_walls": "牆壁",
         "map_object_zoom_point": "縮放點",
+        "max_height_offset": "最大高度偏移",
         "object_opacity": "對象透明度",
         "object_scale": "對象比例",
         "opacity": "透明度",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "起毛輥需要清潔\n請清潔起毛輥並重置計數器。",
         "roller_mop_filter_dirty_left": "滾筒拖布濾網需要清潔\n請清潔滾筒拖布濾網並重置計數器。",
         "water_outlet_filter_dirty_left": "出水口濾網需要清潔\n請清潔出水口濾網並重置計數器。",
+        "washboard_cleaning_left": "清洗盤需要清潔\n請清潔清洗盤並重置計數器。",
         "no_water_left": "請加滿清水箱。\n清水箱中的水即將用完。請立即檢查並加滿清水箱。",
         "no_water_left_after_clean": "請加滿清水箱。\n拖布已清潔。檢測到清水箱中的水不足，請加滿清水箱並清空污水箱。",
         "no_water_for_clean": "清水箱水位低。\n機器人已切換到吸塵模式。",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "此動作在目前地圖上無法使用"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "拖布更換中，請稍後再試"
     },
     "unavailable_while_cruising": {
       "message": "巡航期間此動作無法使用"

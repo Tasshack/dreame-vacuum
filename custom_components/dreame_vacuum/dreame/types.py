@@ -666,6 +666,7 @@ class DreameVacuumAutoEmptyStatus(IntEnum):
     IDLE = 0
     ACTIVE = 1
     NOT_PERFORMED = 2
+    RETURNING = 3
 
 
 class DreameVacuumSelfWashBaseStatus(IntEnum):
@@ -678,7 +679,7 @@ class DreameVacuumSelfWashBaseStatus(IntEnum):
     RETURNING = 3
     PAUSED = 4
     CLEAN_ADD_WATER = 5
-    ADDING_WATER = 6
+    RETURNING_TO_DRAIN = 6
     RETURNING_FOR_DRY_MOP = 7
 
 
@@ -2339,6 +2340,8 @@ ACTION_AVAILABILITY: Final = {
     DreameVacuumAction.RESET_WATER_OUTLET_FILTER.name: lambda device: device.status.water_outlet_filter_dirty_life
     is not None
     and bool(device.status.water_outlet_filter_dirty_life < 100),
+    DreameVacuumAction.RESET_WASHBOARD_CLEANING.name: lambda device: device.status.washboard_cleaning_life is not None
+    and bool(device.status.washboard_cleaning_life < 100),
     DreameVacuumAction.START_AUTO_EMPTY.name: lambda device: device.status.dust_collection_available,
     DreameVacuumAction.START.name: lambda device: not (
         device.status.started or device.status.draining or device.status.self_repairing
@@ -2385,8 +2388,6 @@ ACTION_AVAILABILITY: Final = {
     and not device.status.drying,
     "base_station_cleaning": lambda device: device.status.docked
     and (not device.status.station_cleaning or device.capability.washboard_cleaning_status)
-    # Mijia stations clean the washboard without the mop pads, as the Xiaomi Home app allows
-    and (device.status.water_tank_or_mop_installed or device.capability.mijia)
     and not device.status.draining
     and not device.status.self_repairing
     and not device.status.started
@@ -2431,6 +2432,8 @@ CONSUMABLE_PROPERTIES: Final = [
     DreameVacuumProperty.ROLLER_MOP_FILTER_DIRTY_LEFT,
     DreameVacuumProperty.WATER_OUTLET_FILTER_DIRTY_TIME_LEFT,
     DreameVacuumProperty.WATER_OUTLET_FILTER_DIRTY_LEFT,
+    DreameVacuumProperty.WASHBOARD_CLEANING_TIME_LEFT,
+    DreameVacuumProperty.WASHBOARD_CLEANING_LEFT,
 ]
 
 
@@ -2665,6 +2668,10 @@ BULK_PROPERTIES: Final = [
     DreameVacuumProperty.SHORTCUTS,
     DreameVacuumProperty.DND_TASK,
     DreameVacuumProperty.AI_OBSTACLE_DETECTION,
+    DreameVacuumProperty.MATTER_QR_CODE,
+    DreameVacuumProperty.OFF_PEAK_CHARGING,
+    DreameVacuumProperty.CUSTOM_WAKE_UP_WORD_STATUS,
+    DreameVacuumProperty.STREAM_STATUS,
 ]
 
 
@@ -3042,6 +3049,12 @@ class DeviceCapability(IntEnum):
     DOCK_STATUS = 167
     SKIP_AREA = 168
     UNSUPPORTED_DYNAMIC_CLEAN = 169
+    IGNORED_WARNINGS = 170
+    LEGACY_WARNINGS = 171
+    WIDER_CORNER_COVERAGE_FREQUENCY = 172
+    WIDER_CORNER_COVERAGE = 173
+    WASHBOARD_CLEANING = 174
+    EXTENDED_ENDURANCE = 175
 
 
 class DreameVacuumDeviceCapability:
@@ -3247,6 +3260,13 @@ class DreameVacuumDeviceCapability:
         self.sweep_with_mop = False
         self.skip_area = False
         self.unsupported_dynamic_clean = False
+        self.ignored_warnings = []
+        self.legacy_warnings = False
+        self.wider_corner_coverage_frequency = False
+        self.wider_corner_coverage = False
+        self.washboard_cleaning = False
+        self.extended_endurance = False
+        self.min_battery = 15
         self._loaded = False
         self._custom_cleaning_mode = False
         self._capability = None
@@ -3313,6 +3333,14 @@ class DreameVacuumDeviceCapability:
                                 else int(v[1]) if v[1].isnumeric() else v[1]
                             ),
                         )
+
+        self.ignored_warnings = (
+            [int(warning) for warning in str(self.ignored_warnings).split(",") if warning.isnumeric()]
+            if self.ignored_warnings
+            else []
+        )
+
+        self.min_battery = 10 if self.extended_endurance else 15
 
         if not self.gen5 and (
             "mova.vacuum." in self._device.info.model or "trouver.vacuum." in self._device.info.model

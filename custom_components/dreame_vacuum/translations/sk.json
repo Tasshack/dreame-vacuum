@@ -774,7 +774,8 @@
           "unknown": "Neznámy",
           "idle": "Nečinný",
           "active": "Aktívny",
-          "not_performed": "Nevykonané"
+          "not_performed": "Nevykonané",
+          "returning": "Návrat na automatické vyprázdnenie"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Neznáme",
           "not_available": "Nedostupné",
           "available": "Dostupné",
-          "over_use": "Nadmerné používanie",
-          "never": "Nikdy"
+          "over_use": "Nadmerné používanie"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Pozastavené",
           "returning": "Návrat na umytie",
           "clean_add_water": "Čistenie a pridávanie vody",
-          "adding_water": "Pridávanie vody"
+          "returning_to_drain": "Návrat na vypustenie",
+          "returning_for_dry_mop": "Návrat na navlhčenie mopu"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Hlas balík"
+      },
+      "washboard_cleaning_left": {
+        "name": "Čistenie umývacej dosky"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Zostávajúci čas čistenia umývacej dosky"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Čistenie filtra na výstupe vody"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Resetovať filter nádrže"
       },
+      "reset_washboard_cleaning": {
+        "name": "Resetovať umývaciu dosku"
+      },
       "reset_water_outlet_filter": {
         "name": "Resetovať filter výpustu vody"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Oznámenie o čistení",
         "card_object_controls": "Ovládacie prvky",
         "card_object_cruising_history": "História plavby",
+        "card_object_dock_status_indicator": "Indikátor stavu stanice",
         "card_object_fault_notification": "Oznámenie o chybe",
         "card_object_information_notification": "Informačné oznámenie",
         "card_object_low_water_notification": "Oznámenie o nedostatku vody",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Vľavo",
         "left_handed": "Režim pre ľavákov",
-        "limit_height": "Obmedziť výšku na obrazovku",
+        "legacy_switches": "Staršie prepínače",
         "locked": "Zamknuté",
         "locked_always": "Vždy",
         "locked_auto": "Automaticky",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtuálne steny",
         "map_object_walls": "Steny",
         "map_object_zoom_point": "Bod priblíženia",
+        "max_height_offset": "Odsadenie maximálnej výšky",
         "object_opacity": "Priehľadnosť objektu",
         "object_scale": "Mierka objektu",
         "opacity": "Priehľadnosť",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Načuchorený valec je potrebné vyčistiť\nVyčistite načuchorený valec a resetujte počítadlo.",
         "roller_mop_filter_dirty_left": "Filter valčekového mopu je potrebné vyčistiť\nVyčistite filter valčekového mopu a resetujte počítadlo.",
         "water_outlet_filter_dirty_left": "Filter na výstupe vody je potrebné vyčistiť\nVyčistite filter na výstupe vody a resetujte počítadlo.",
+        "washboard_cleaning_left": "Umývaciu dosku je potrebné vyčistiť\nVyčistite umývaciu dosku a resetujte počítadlo.",
         "no_water_left": "Naplňte nádržku na čistú vodu.\nVoda v nádržke na čistú vodu sa čoskoro minie. Okamžite skontrolujte a naplňte nádržku na čistú vodu.",
         "no_water_left_after_clean": "Naplňte nádržku na čistú vodu.\nMopovacia podložka bola vyčistená. Zistilo sa, že voda v nádržke na čistú vodu nie je dostatočná, naplňte nádržku na čistú vodu a vyprázdnite nádržku na použitú vodu.",
         "no_water_for_clean": "Nízka hladina vody v nádržke na čistú vodu.\nRobot sa prepol do režimu vysávania.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Táto akcia nie je dostupná na aktuálnej mape"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Mop sa prepína. Skúste to znova neskôr."
     },
     "unavailable_while_cruising": {
       "message": "Táto akcia nie je dostupná počas obhliadky"

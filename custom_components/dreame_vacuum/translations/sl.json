@@ -774,7 +774,8 @@
           "unknown": "Neznano",
           "idle": "V mirovanju",
           "active": "Aktivno",
-          "not_performed": "Ni izvedeno"
+          "not_performed": "Ni izvedeno",
+          "returning": "Vračanje za samodejno praznjenje"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Neznano",
           "not_available": "Ni na voljo",
           "available": "Na voljo",
-          "over_use": "Prekomerna uporaba",
-          "never": "Nikoli"
+          "over_use": "Prekomerna uporaba"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Zaustavljeno",
           "returning": "Vračanje na pranje",
           "clean_add_water": "Čiščenje in dodajanje vode",
-          "adding_water": "Dodajanje vode"
+          "returning_to_drain": "Vračanje za odvajanje",
+          "returning_for_dry_mop": "Vračanje za vlaženje mopa"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Glasovni paket"
+      },
+      "washboard_cleaning_left": {
+        "name": "Čiščenje pralne deske"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Preostali čas čiščenja pralne deske"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Čiščenje iztočnega filtra"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Ponastavi filter rezervoarja"
       },
+      "reset_washboard_cleaning": {
+        "name": "Ponastavi pralno desko"
+      },
       "reset_water_outlet_filter": {
         "name": "Ponastavi filter iztoka vode"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Obvestila o čiščenju",
         "card_object_controls": "Kontrole",
         "card_object_cruising_history": "Zgodovina poti",
+        "card_object_dock_status_indicator": "Indikator stanja postaje",
         "card_object_fault_notification": "Obvestila o napakah",
         "card_object_information_notification": "Info obvestila",
         "card_object_low_water_notification": "Obvestila o vodi",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Levo",
         "left_handed": "Levoročni način",
-        "limit_height": "Višina omejitve",
+        "legacy_switches": "Stara stikala",
         "locked": "Zaklenjeno",
         "locked_always": "Vedno",
         "locked_auto": "Samodejno",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Navidezni zidovi",
         "map_object_walls": "Zidovi",
         "map_object_zoom_point": "Točka povečave",
+        "max_height_offset": "Odmik največje višine",
         "object_opacity": "Prosojnost objektov",
         "object_scale": "Merilo objektov",
         "opacity": "Prosojnost",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Valjček za razprševanje potrebuje čiščenje\nOčistite valjček za razprševanje in ponastavite števec.",
         "roller_mop_filter_dirty_left": "Filter valjčnega mopa potrebuje čiščenje\nOčistite filter valjčnega mopa in ponastavite števec.",
         "water_outlet_filter_dirty_left": "Filter za odvod vode potrebuje čiščenje\nOčistite filter za odvod vode in ponastavite števec.",
+        "washboard_cleaning_left": "Pralna deska potrebuje čiščenje\nOčistite pralno desko in ponastavite števec.",
         "no_water_left": "Napolnite rezervoar za čisto vodo.\nVode v rezervoarju za čisto vodo bo kmalu zmanjkalo. Takoj preverite in napolnite rezervoar za čisto vodo.",
         "no_water_left_after_clean": "Napolnite rezervoar za čisto vodo.\nKrpa za brisanje je bila očiščena. Zaznano je bilo, da je vode v rezervoarju za čisto vodo premalo, napolnite rezervoar za čisto vodo in izpraznite rezervoar za uporabljeno vodo.",
         "no_water_for_clean": "Nizek nivo vode v rezervoarju za čisto vodo.\nRobot je preklopil v način sesanja.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "To dejanje ni na voljo na trenutnem zemljevidu"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "V teku je zamenjava blazinice za pomivanje. Poskusite znova pozneje."
     },
     "unavailable_while_cruising": {
       "message": "To dejanje ni na voljo med patruljiranjem"

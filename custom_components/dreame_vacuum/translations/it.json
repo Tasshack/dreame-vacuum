@@ -774,7 +774,8 @@
           "unknown": "Sconosciuto",
           "idle": "Inattivo",
           "active": "Attivo",
-          "not_performed": "Non eseguito"
+          "not_performed": "Non eseguito",
+          "returning": "Ritorno alla base per svuotamento"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Sconosciuto",
           "not_available": "Non disponibile",
           "available": "Disponibile",
-          "over_use": "Uso eccessivo",
-          "never": "Mai"
+          "over_use": "Uso eccessivo"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "In pausa",
           "returning": "Ritorno al lavaggio panni",
           "clean_add_water": "Pulizia e riempimento acqua",
-          "adding_water": "Aggiunta acqua in corso"
+          "returning_to_drain": "Ritorno per scarico acqua",
+          "returning_for_dry_mop": "Ritorno per inumidire i panni"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Pacchetto voce"
+      },
+      "washboard_cleaning_left": {
+        "name": "Pulizia piastra di lavaggio"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Tempo residuo pulizia piastra di lavaggio"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Pulizia filtro uscita acqua"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Ripristina filtro serbatoio"
       },
+      "reset_washboard_cleaning": {
+        "name": "Ripristina piastra di lavaggio"
+      },
       "reset_water_outlet_filter": {
         "name": "Ripristina filtro uscita acqua"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Notif. pulizia",
         "card_object_controls": "Controlli",
         "card_object_cruising_history": "Cronologia percorso",
+        "card_object_dock_status_indicator": "Indicatore di stato della base",
         "card_object_fault_notification": "Notif. errore",
         "card_object_information_notification": "Notif. info",
         "card_object_low_water_notification": "Notif. acqua bassa",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Sinistra",
         "left_handed": "Modalità mancino",
-        "limit_height": "Adatta altezza schermo",
+        "legacy_switches": "Interruttori precedenti",
         "locked": "Bloccato",
         "locked_always": "Sempre",
         "locked_auto": "Automatico",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Muri virtuali",
         "map_object_walls": "Muri",
         "map_object_zoom_point": "Punto zoom",
+        "max_height_offset": "Offset altezza massima",
         "object_opacity": "Opacità oggetti",
         "object_scale": "Scala oggetti",
         "opacity": "Opacità",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Il rullo spiumatore necessita di pulizia\nSi prega di pulire il rullo spiumatore e ripristinare il contatore.",
         "roller_mop_filter_dirty_left": "Il filtro del mocio a rullo necessita di pulizia\nSi prega di pulire il filtro del mocio a rullo e ripristinare il contatore.",
         "water_outlet_filter_dirty_left": "Il filtro di uscita dell'acqua necessita di pulizia\nSi prega di pulire il filtro di uscita dell'acqua e ripristinare il contatore.",
+        "washboard_cleaning_left": "La piastra di lavaggio necessita di pulizia\nSi prega di pulire la piastra di lavaggio e ripristinare il contatore.",
         "no_water_left": "Si prega di riempire il serbatoio dell'acqua pulita.\nL'acqua nel serbatoio dell'acqua pulita sta per esaurirsi. Controllare e riempire tempestivamente il serbatoio dell'acqua pulita.",
         "no_water_left_after_clean": "Si prega di riempire il serbatoio dell'acqua pulita.\nIl panno mocio è stato pulito. È stato rilevato che l'acqua nel serbatoio dell'acqua pulita è insufficiente, si prega di riempire il serbatoio dell'acqua pulita e svuotare il serbatoio dell'acqua usata.",
         "no_water_for_clean": "Basso livello dell'acqua nel serbatoio dell'acqua pulita.\nIl robot è passato alla modalità di aspirazione.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Questa azione non è disponibile sulla mappa corrente"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Cambio mocio. Riprova più tardi."
     },
     "unavailable_while_cruising": {
       "message": "Questa azione non è disponibile durante il pattugliamento"

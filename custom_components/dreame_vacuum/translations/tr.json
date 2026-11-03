@@ -774,7 +774,8 @@
           "unknown": "Bilinmiyor",
           "idle": "Boşta",
           "active": "Aktif",
-          "not_performed": "Gerçekleştirilmedi"
+          "not_performed": "Gerçekleştirilmedi",
+          "returning": "Otomatik Boşaltma için dönüyor"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Bilinmiyor",
           "not_available": "Kullanılamıyor",
           "available": "Mevcut",
-          "over_use": "Aşırı kullanım",
-          "never": "Asla"
+          "over_use": "Aşırı kullanım"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Duraklatıldı",
           "returning": "Yıkama için dönüyor",
           "clean_add_water": "Temizlik ve su ekleme",
-          "adding_water": "Su ekleniyor"
+          "returning_to_drain": "Tahliye için dönüyor",
+          "returning_for_dry_mop": "Mop ıslatmak için dönüyor"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Ses Paketi"
+      },
+      "washboard_cleaning_left": {
+        "name": "Yıkama Tahtası Temizliği"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Yıkama Tahtası Kalan Süresi"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Su Çıkış Filtresi Temizliği"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Tank Filtresini Sıfırla"
       },
+      "reset_washboard_cleaning": {
+        "name": "Yıkama Tahtasını Sıfırla"
+      },
       "reset_water_outlet_filter": {
         "name": "Su Çıkış Filtresini Sıfırla"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Temizlik bildirimi",
         "card_object_controls": "Kontroller",
         "card_object_cruising_history": "Dolaşım geçmişi",
+        "card_object_dock_status_indicator": "İstasyon durum göstergesi",
         "card_object_fault_notification": "Hata bildirimi",
         "card_object_information_notification": "Bilgilendirme bildirimi",
         "card_object_low_water_notification": "Az su bildirimi",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Sol",
         "left_handed": "Sol el modu",
-        "limit_height": "Yüksekliği ekrana limitle",
+        "legacy_switches": "Eski anahtarlar",
         "locked": "Kilitli",
         "locked_always": "Her zaman",
         "locked_auto": "Otomatik",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Sanal duvarlar",
         "map_object_walls": "Duvarlar",
         "map_object_zoom_point": "Yakınlaştırma noktası",
+        "max_height_offset": "Maksimum yükseklik ofseti",
         "object_opacity": "Nesne opaklığı",
         "object_scale": "Nesne ölçeği",
         "opacity": "Opaklık",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Kabarık rulo fırçanın temizlenmesi gerekiyor\nLütfen kabarık rulo fırçayı temizleyin ve sayacı sıfırlayın.",
         "roller_mop_filter_dirty_left": "Rulo paspas filtresinin temizlenmesi gerekiyor\nLütfen rulo paspas filtresini temizleyin ve sayacı sıfırlayın.",
         "water_outlet_filter_dirty_left": "Su çıkış filtresinin temizlenmesi gerekiyor\nLütfen su çıkış filtresini temizleyin ve sayacı sıfırlayın.",
+        "washboard_cleaning_left": "Yıkama tahtasının temizlenmesi gerekiyor\nLütfen yıkama tahtasını temizleyin ve sayacı sıfırlayın.",
         "no_water_left": "Lütfen temiz su tankını doldurun.\nTemiz su tankındaki su bitmek üzere. Lütfen temiz su tankını kontrol edip doldurun.",
         "no_water_left_after_clean": "Lütfen temiz su tankını doldurun.\nPaspas temizlendi. Temiz su tankındaki suyun yetersiz olduğu tespit edildi, lütfen temiz su tankını doldurun ve kirli su tankını boşaltın.",
         "no_water_for_clean": "Temiz su tankında su seviyesi düşük.\nRobot Süpürme Moduna geçti.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Bu eylem geçerli haritada kullanılamıyor"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Paspas değiştiriliyor. Lütfen daha sonra tekrar deneyin."
     },
     "unavailable_while_cruising": {
       "message": "Bu eylem devriye sırasında kullanılamıyor"

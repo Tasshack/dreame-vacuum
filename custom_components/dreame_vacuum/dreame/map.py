@@ -895,6 +895,8 @@ class DreameMapVacuumMapManager:
             DreameVacuumMapDecoder.set_floor_material(map_data, self._capability, saved_map_data)
             DreameVacuumMapDecoder.set_segment_cleanset(map_data, map_data.cleanset, self._capability)
             DreameVacuumMapDecoder.set_carpet_cleanset(map_data, map_data.carpet_cleanset, self._capability)
+            if not map_data.mop_type and not map_data.saved_map and map_data.saved_map_id in self._saved_map_data:
+                map_data.mop_type = self._saved_map_data[map_data.saved_map_id].mop_type
 
             if not map_data.saved_map:
                 if map_data.saved_map_id and map_data.saved_map_id in self._saved_map_data:
@@ -3349,101 +3351,98 @@ class DreameMapVacuumMapEditor:
                     if self.map_manager._capability.walls_v3
                     else {
                         "wallInfoV2": {
-                            "walls_info": {
-                                "fixVersion": 1,
-                                "version_flag": map_data.walls_version,
-                                "storeys": [
-                                    {
-                                        "r": [
-                                            {
-                                                "i": segment_id,
-                                                "f": (
-                                                    map_data.segments[segment_id].floor_material
-                                                    if map_data.segments[segment_id].floor_material != 1
-                                                    or map_data.segments[segment_id].floor_material_direction is None
-                                                    else (
-                                                        (
-                                                            3
-                                                            if map_data.segments[segment_id].floor_material_direction
-                                                            == 90
-                                                            else 4
-                                                        )
-                                                        if map_data.segments and segment_id in map_data.segments
-                                                        else 0
-                                                    )
-                                                ),
-                                                "w": [
+                            "fixVersion": 1,
+                            "version_flag": map_data.walls_version,
+                            "storeys": [
+                                {
+                                    "r": [
+                                        {
+                                            "i": segment_id,
+                                            "f": (
+                                                map_data.segments[segment_id].floor_material
+                                                if map_data.segments[segment_id].floor_material != 1
+                                                or map_data.segments[segment_id].floor_material_direction is None
+                                                else (
                                                     (
-                                                        [
-                                                            w.type,
-                                                            w.initial_x0,
-                                                            w.initial_y0,
-                                                            w.initial_x1,
-                                                            w.initial_y1,
-                                                            float(w.x),
-                                                            float(w.y),
-                                                            w.x0,
-                                                            w.y0,
-                                                            w.x1,
-                                                            w.y1,
-                                                        ]
-                                                        if (
-                                                            w.x0 != w.initial_x0
-                                                            or w.y0 != w.initial_y0
-                                                            or w.x1 != w.initial_x1
-                                                            or w.y1 != w.initial_y1
-                                                        )
-                                                        else [
-                                                            w.type,
-                                                            w.initial_x0,
-                                                            w.initial_y0,
-                                                            w.initial_x1,
-                                                            w.initial_y1,
-                                                            float(w.x),
-                                                            float(w.y),
-                                                        ]
+                                                        3
+                                                        if map_data.segments[segment_id].floor_material_direction == 90
+                                                        else 4
                                                     )
-                                                    for w in segment_walls
-                                                ],
-                                            }
-                                            for segment_id, segment_walls in new_wall.items()
-                                        ],
-                                        "d": [
-                                            (
-                                                [
-                                                    d.type,
-                                                    d.id,
-                                                    d.status,
-                                                    d.initial_x0,
-                                                    d.initial_y0,
-                                                    d.initial_x1,
-                                                    d.initial_y1,
-                                                    d.x0,
-                                                    d.y0,
-                                                    d.x1,
-                                                    d.y1,
-                                                ]
-                                                if (
-                                                    d.x0 != d.initial_x0
-                                                    or d.y0 != d.initial_y0
-                                                    or d.x1 != d.initial_x1
-                                                    or d.y1 != d.initial_y1
+                                                    if map_data.segments and segment_id in map_data.segments
+                                                    else 0
                                                 )
-                                                else [
-                                                    d.type,
-                                                    d.id,
-                                                    d.status,
-                                                    d.initial_x0,
-                                                    d.initial_y0,
-                                                    d.initial_x1,
-                                                    d.initial_y1,
-                                                ]
+                                            ),
+                                            "w": [
+                                                (
+                                                    [
+                                                        w.type,
+                                                        w.initial_x0,
+                                                        w.initial_y0,
+                                                        w.initial_x1,
+                                                        w.initial_y1,
+                                                        float(w.x),
+                                                        float(w.y),
+                                                        w.x0,
+                                                        w.y0,
+                                                        w.x1,
+                                                        w.y1,
+                                                    ]
+                                                    if (
+                                                        w.x0 != w.initial_x0
+                                                        or w.y0 != w.initial_y0
+                                                        or w.x1 != w.initial_x1
+                                                        or w.y1 != w.initial_y1
+                                                    )
+                                                    else [
+                                                        w.type,
+                                                        w.initial_x0,
+                                                        w.initial_y0,
+                                                        w.initial_x1,
+                                                        w.initial_y1,
+                                                        float(w.x),
+                                                        float(w.y),
+                                                    ]
+                                                )
+                                                for w in segment_walls
+                                            ],
+                                        }
+                                        for segment_id, segment_walls in new_wall.items()
+                                    ],
+                                    "d": [
+                                        (
+                                            [
+                                                d.type,
+                                                d.id,
+                                                d.status,
+                                                d.initial_x0,
+                                                d.initial_y0,
+                                                d.initial_x1,
+                                                d.initial_y1,
+                                                d.x0,
+                                                d.y0,
+                                                d.x1,
+                                                d.y1,
+                                            ]
+                                            if (
+                                                d.x0 != d.initial_x0
+                                                or d.y0 != d.initial_y0
+                                                or d.x1 != d.initial_x1
+                                                or d.y1 != d.initial_y1
                                             )
-                                            for d in new_doors
-                                        ],
-                                    }
-                                ],
-                            }
+                                            else [
+                                                d.type,
+                                                d.id,
+                                                d.status,
+                                                d.initial_x0,
+                                                d.initial_y0,
+                                                d.initial_x1,
+                                                d.initial_y1,
+                                            ]
+                                        )
+                                        for d in new_doors
+                                    ],
+                                }
+                            ],
                         }
                     }
                 )
@@ -3762,9 +3761,7 @@ class DreameMapVacuumMapEditor:
                     self._set_updated_frame_id(map_data.frame_id)
                     self.refresh_map()
 
-                material, roomcpt = self.floor_material(
-                    self._saved_map_data[self._selected_map_id], carpet_type
-                )
+                material, roomcpt = self.floor_material(self._saved_map_data[self._selected_map_id], carpet_type)
                 key = str(segment_id)
                 return ({key: material[key]} if key in material else {}), roomcpt
         return {}, None
@@ -3824,10 +3821,7 @@ class DreameMapVacuumMapEditor:
                 if segment_id in map_data.segments:
                     map_data.segments[segment_id].mop_type = mop_type
 
-                mop_types = {
-                    str(k): (1 if v.mop_type == "C" else 2 if v.mop_type == "B" else 3)
-                    for k, v in dict(sorted(map_data.segments.items())).items()
-                }
+                mop_types = {str(k): v.mop_type for k, v in dict(sorted(map_data.segments.items())).items()}
                 map_data.mop_type = mop_types
                 self.refresh_map(self._selected_map_id)
 
@@ -3839,7 +3833,7 @@ class DreameMapVacuumMapEditor:
 
                     self._set_updated_frame_id(map_data.frame_id)
                     self.refresh_map()
-            return mop_types
+                return {k: (1 if v == "C" else 2 if v == "B" else 3) for k, v in mop_types.items()}
         return {}
 
     def set_segment_name(self, segment_id: int, segment_type: int, custom_name: str = None) -> dict[str, Any] | None:
@@ -4213,9 +4207,7 @@ class DreameVacuumMapDecoder:
 
         raw_map = base64.decodebytes(raw_map.encode("utf8"))
 
-        if key is not None:
-            if iv is None:
-                iv = ""
+        if key is not None and iv:
             try:
                 cipher = Cipher(
                     algorithms.AES(hashlib.sha256(key.encode()).hexdigest()[0:32].encode("utf8")),
@@ -4225,9 +4217,7 @@ class DreameVacuumMapDecoder:
                 decryptor = cipher.decryptor()
                 raw_map = decryptor.update(raw_map) + decryptor.finalize()
             except Exception as ex:
-                _LOGGER.error(
-                    f"Map data decryption failed: {ex}. Private key might be missing, please report this issue with your device model https://github.com/Tasshack/dreame-vacuum/issues/new?assignees=Tasshack&labels=bug&template=bug_report.md&title=Map%20data%20decryption%20failed"
-                )
+                _LOGGER.error("Map data decryption failed: %s", ex)
                 return None
 
         try:
@@ -4236,7 +4226,12 @@ class DreameVacuumMapDecoder:
                 _LOGGER.error("Wrong header size for map")
                 return None
         except Exception as ex:
-            _LOGGER.error("Map data decompression failed: %s\n%s", ex, raw_data)
+            if key is not None and not iv:
+                _LOGGER.error(
+                    f"Map data decryption failed: {ex}. Private key might be missing, please report this issue with your device model https://github.com/Tasshack/dreame-vacuum/issues/new?assignees=Tasshack&labels=bug&template=bug_report.md&title=Map%20data%20decryption%20failed"
+                )
+            else:
+                _LOGGER.error("Map data decompression failed: %s\n%s", ex, raw_data)
             return None
 
         partial_map = MapDataPartial()
@@ -4803,7 +4798,7 @@ class DreameVacuumMapDecoder:
                     ):
                         map_data.segments = copy.deepcopy(saved_map_data.segments)
                         map_data.cleaning_sequence = saved_map_data.cleaning_sequence
-                        map_data.mop_type = saved_map_data.mop_type
+                        map_data.mop_type = saved_map_data.mop_type or map_data.mop_type
                         if saved_map_data.floor_material is not None:
                             map_data.floor_material = copy.deepcopy(saved_map_data.floor_material)
                         if map_data.hidden_segments is None and saved_map_data.hidden_segments is not None:
@@ -4924,7 +4919,7 @@ class DreameVacuumMapDecoder:
                                 map_data.segments = {}
 
                             map_data.cleaning_sequence = saved_map_data.cleaning_sequence
-                            map_data.mop_type = saved_map_data.mop_type
+                            map_data.mop_type = saved_map_data.mop_type or map_data.mop_type
 
                             for k, v in saved_map_data.segments.items():
                                 if map_data.segments and k in map_data.segments:
@@ -4989,7 +4984,7 @@ class DreameVacuumMapDecoder:
                         map_data.cleaning_sequence = saved_map_data.cleaning_sequence
                         if map_data.cleaning_sequence is not None and map_data.version == 1:
                             map_data.version = 2
-                        map_data.mop_type = saved_map_data.mop_type
+                        map_data.mop_type = saved_map_data.mop_type or map_data.mop_type
                         if saved_map_data.saved_furnitures is not None:
                             map_data.furnitures = saved_map_data.saved_furnitures
                             map_data.furniture_version = saved_map_data.furniture_version
@@ -5037,6 +5032,9 @@ class DreameVacuumMapDecoder:
                 map_data.robot_position = copy.deepcopy(map_data.charger_position)
 
             walls_info = data_json.get("walls_info")
+            if walls_info and "walls_info" in walls_info:
+                walls_info = walls_info["walls_info"]
+
             if map_data.segments:
                 DreameVacuumMapDecoder.set_station_segment(map_data)
 
@@ -5787,7 +5785,7 @@ class DreameVacuumMapDecoder:
             current_map_data.line_to_robot = map_data.line_to_robot
             current_map_data.temporary_map = map_data.temporary_map
             current_map_data.small_path = map_data.small_path
-            current_map_data.mop_type = map_data.mop_type
+            current_map_data.mop_type = map_data.mop_type or current_map_data.mop_type
             current_map_data.laser_obstacles = map_data.laser_obstacles
             current_map_data.skipped_segments = map_data.skipped_segments
             current_map_data.skipped_areas = map_data.skipped_areas
@@ -7381,9 +7379,7 @@ class DreameVacuumMapDataJsonRenderer:
 
 class DreameVacuumMapRenderer:
     MAP_FONT_UNPACKED = None
-    # Every loaded font keeps its own copy of the font file (~13 MB for the regular map font),
-    # so loaded fonts are shared by all renderers and only a few of them are kept
-    FONT_CACHE_SIZE = 8
+    FONT_CACHE_SIZE = {False: 8, True: 32}
     _font_lock = threading.Lock()
     _font_files: dict[bool, bytes] = {}
     _font_cache: dict[tuple[bool, int], ImageFont.FreeTypeFont] = {}
@@ -7398,10 +7394,14 @@ class DreameVacuumMapRenderer:
         square: bool = False,
         cache: bool = True,
         segment_names: dict[int, str] = None,
+        locale: dict[str, str] = None,
+        imperial: bool = False,
     ) -> None:
         self.color_scheme: MapRendererColorScheme = MAP_COLOR_SCHEME_LIST.get(color_scheme, MapRendererColorScheme())
         self.icon_set: int = icon_set
         self._segment_names: dict[int, str] = segment_names
+        self._locale: dict[str, str] = locale
+        self._imperial: bool = imperial
         self.config: MapRendererConfig = MapRendererConfig()
         if hidden_map_objects is not None:
             for attr in self.config.__dict__.keys():
@@ -7411,6 +7411,7 @@ class DreameVacuumMapRenderer:
         self._map_data: MapData = None
         self.render_complete: bool = True
         self._layers: dict[MapRendererLayer, Any] = {}
+        self._layer_size = None
         self._robot_status: int = None
         self._station_status: int = None
         self._robot_type: int = robot_type
@@ -7541,9 +7542,19 @@ class DreameVacuumMapRenderer:
                 for icon in MAP_ICON_CUSTOM_MOPPING_ROUTE_DREAME
             ]
 
+    def _text(self, key: str) -> str:
+        return (self._locale.get(key) if self._locale else None) or key
+
+    @staticmethod
+    def _fit_text(draw, text: str, font, max_width: float) -> str:
+        if not text or max_width <= 0 or draw.textlength(text, font=font) <= max_width:
+            return text
+        while text and draw.textlength(f"{text}...", font=font) > max_width:
+            text = text[:-1]
+        return f"{text.rstrip()}..."
+
     @staticmethod
     def _get_font(light: bool, size: int) -> ImageFont.FreeTypeFont:
-        # Parsing the font file is expensive, reuse loaded fonts for the same size
         key = (light, size)
         cache = DreameVacuumMapRenderer._font_cache
         with DreameVacuumMapRenderer._font_lock:
@@ -7556,8 +7567,9 @@ class DreameVacuumMapRenderer:
                     )
                     DreameVacuumMapRenderer._font_files[light] = font_file
                 font = ImageFont.truetype(BytesIO(font_file), size)
-                if len(cache) >= DreameVacuumMapRenderer.FONT_CACHE_SIZE:
-                    del cache[next(iter(cache))]
+                keys = [k for k in cache if k[0] == light]
+                if len(keys) >= DreameVacuumMapRenderer.FONT_CACHE_SIZE[light]:
+                    del cache[keys[0]]
             cache[key] = font
         return font
 
@@ -7934,10 +7946,6 @@ class DreameVacuumMapRenderer:
 
     @staticmethod
     def _crop_layer(layer):
-        # Object layers are drawn at the full (doubled) map size, though most hold only an icon, a label or a
-        # few lines. Keep only the drawn part and its position: a map with ten rooms otherwise kept about
-        # 400 MB of mostly empty layers. An empty layer becomes (None, (0, 0)), so the cache still treats it
-        # as rendered.
         if layer is None:
             return None
         box = layer.getbbox()
@@ -7950,16 +7958,8 @@ class DreameVacuumMapRenderer:
         combined = Image.new("RGBA", layer_size, (255, 255, 255, 0))
         if sub in cached_layers:
             for k, v in sorted(cached_layers[sub].items()):
-                if v is not None:
-                    try:
-                        if isinstance(v, tuple):
-                            # cropped by _crop_layer: draw it in place instead of compositing full-size copies
-                            if v[0] is not None:
-                                combined.alpha_composite(v[0], v[1])
-                        else:
-                            combined = Image.alpha_composite(combined, v)
-                    except:
-                        pass
+                if v is not None and v[0] is not None:
+                    combined.alpha_composite(v[0], v[1])
         cached_layers[parent] = DreameVacuumMapRenderer._crop_layer(combined)
 
     @staticmethod
@@ -9562,14 +9562,17 @@ class DreameVacuumMapRenderer:
                 if map_data.history_map:
                     if map_data.task_cruise_points is None:
                         if map_data.startup_method is not None:
-                            header_text = f"{header_text} | {map_data.startup_method.name.replace('_', ' ').title().replace('App', 'APP')}"
+                            text = self._text(f"startup_method_{map_data.startup_method.name.lower()}")
+                            header_text = f"{header_text} | {text}"
 
                         if map_data.second_cleaning:
-                            header_text = f"{header_text} | Second Cleaning"
+                            header_text = f"{header_text} | {self._text('second_cleaning')}"
                         elif map_data.cleanup_method is not None:
-                            header_text = f"{header_text} | {map_data.cleanup_method.name.replace('_', ' ').title()}"
+                            text = self._text(f"cleanup_method_{map_data.cleanup_method.name.lower()}")
+                            header_text = f"{header_text} | {text}"
                 elif map_data.recovery_map and map_data.recovery_map_type is not RecoveryMapType.UNKNOWN:
-                    header_text = f"{header_text} | {map_data.recovery_map_type.name.replace('_', ' ').title()}"
+                    text = self._text(f"recovery_map_type_{map_data.recovery_map_type.name.lower()}")
+                    header_text = f"{header_text} | {text}"
 
                 image_width = image.size[0]
                 min_width = base_width  # int(160 * scale)
@@ -9578,28 +9581,33 @@ class DreameVacuumMapRenderer:
 
                 text_draw = ImageDraw.Draw(image, "RGBA")
                 text_size = int(image_width * 0.035)
-                text_font = self._get_font(True, text_size)
+                light = not self._locale or not any(
+                    ord(char) > 0x2E80 for text in self._locale.values() for char in text
+                )
+                text_font = self._get_font(light, text_size)
                 if map_data.history_map:
-                    value_font = self._get_font(True, int(text_size * 1.8))
-                    name_font = self._get_font(True, int(text_size * 0.8))
+                    value_size = int(text_size * 1.8)
+                    value_font = self._get_font(light, value_size)
+                    value_ascent = value_font.getmetrics()[0]
+                    name_font = self._get_font(light, int(text_size * 0.8))
                 left, top, width, height = text_draw.textbbox((0, 0), header_text, font=text_font)
-                max_width = image_width * 0.9
-                if width > max_width:
-                    lines = textwrap.wrap(header_text, width=int(max_width / (text_size / 2)))
+                line_width = image_width * 0.9
+                if width > line_width:
+                    lines = textwrap.wrap(header_text, width=int(line_width / (text_size / 2)))
                 else:
                     lines = [header_text]
 
                 if map_data.history_map and not map_data.task_cruise_points:
                     header_text = ""
                     if map_data.mop_wash_count:
-                        header_text = f"Self-Cleaned"
+                        header_text = self._text("self_clean")
                         if map_data.mop_wash_count > 1:
                             header_text = f"{header_text} {map_data.mop_wash_count}x"
 
                     if map_data.dust_collection_count:
                         if len(header_text):
                             header_text = f"{header_text} | "
-                        header_text = f"{header_text}Auto-Emptied"
+                        header_text = f"{header_text}{self._text('auto_empty')}"
                         if map_data.dust_collection_count > 1:
                             header_text = f"{header_text} {map_data.dust_collection_count}x"
 
@@ -9608,11 +9616,12 @@ class DreameVacuumMapRenderer:
 
                 max_width = 0
                 header_height = int(text_size * 5) if map_data.history_map else text_size
-                total_height = header_height
+                total_height = header_height + int(text_size / 2)
 
                 line_sizes = []
-                for line in lines:
-                    left, top, width, height = text_draw.textbbox((0, 0), line, font=text_font)
+                for i in range(len(lines)):
+                    lines[i] = self._fit_text(text_draw, lines[i], text_font, line_width)
+                    left, top, width, height = text_draw.textbbox((0, 0), lines[i], font=text_font)
                     line_sizes.append((width, height))
                     max_width = max(max_width, width)
                     total_height = total_height + height
@@ -9641,27 +9650,42 @@ class DreameVacuumMapRenderer:
 
                 if map_data.history_map:
                     cruising_map = bool(map_data.task_cruise_points is not None)
-                    map_type = "Cruising" if cruising_map else "Cleaning"
                     header_lines = [
-                        (str(map_data.cleaning_time), f"{map_type} Time", "min"),
+                        (str(map_data.cleaning_time), self._text("cleaning_time"), "min"),
                         (
-                            "Interrupted" if map_data.completed == False else "Completed",
-                            f"{map_type} Status",
+                            self._text("interrupted" if map_data.completed == False else "completed"),
+                            self._text("cruising" if cruising_map else "cleaning_status"),
                             "",
                         ),
                     ]
 
                     if not cruising_map:
-                        header_lines.append((str(map_data.cleaned_area), f"{map_type} Area", "m²"))
+                        area = map_data.cleaned_area
+                        header_lines.append(
+                            (
+                                str(round(area * 10.8) if self._imperial else area) if area is not None else "--",
+                                self._text("cleaned_area"),
+                                "ft²" if self._imperial else "m²",
+                            )
+                        )
 
+                    column_width = (image_width / len(header_lines)) - text_size
                     for i in range(len(header_lines)):
-                        value = header_lines[i][0]
-                        name = header_lines[i][1]
                         unit = header_lines[i][2]
-                        left, top, value_width, value_height = text_draw.textbbox((0, 0), value, font=value_font)
                         left, top, unit_width, unit_height = text_draw.textbbox((0, 0), unit, font=name_font)
+                        size = value_size
+                        while size > int(text_size * 1.2) and (
+                            text_draw.textlength(header_lines[i][0], font=self._get_font(light, size))
+                            > column_width - unit_width
+                        ):
+                            size = size - 1
+                        value_font = self._get_font(light, size)
+                        value = self._fit_text(text_draw, header_lines[i][0], value_font, column_width - unit_width)
+                        name = self._fit_text(text_draw, header_lines[i][1], name_font, column_width)
+                        header_lines[i] = (value, name, unit)
+                        left, top, value_width, value_height = text_draw.textbbox((0, 0), value, font=value_font)
                         left, top, name_width, name_height = text_draw.textbbox((0, 0), name, font=name_font)
-                        y = text_size
+                        y = text_size + value_ascent - value_font.getmetrics()[0]
                         x = int(image_width * 0.06)
                         pos = []
                         if len(header_lines) == 3:
@@ -9673,7 +9697,7 @@ class DreameVacuumMapRenderer:
                                 pos.extend(
                                     [
                                         (value_x - t1 - t2 - t3, y),
-                                        (x, y + (text_size * 2)),
+                                        (x, text_size * 3),
                                         (
                                             value_x - t2 + t1 + t3,
                                             y + value_height - unit_height,
@@ -9683,10 +9707,10 @@ class DreameVacuumMapRenderer:
                             elif i == 1:
                                 pos.extend(
                                     [
-                                        (image_width - x - value_width, text_size),
+                                        (image_width - x - value_width, y),
                                         (
                                             image_width - x - name_width - ((value_width - name_width) / 2),
-                                            y + (text_size * 2),
+                                            text_size * 3,
                                         ),
                                     ]
                                 )
@@ -9700,7 +9724,7 @@ class DreameVacuumMapRenderer:
                                         ),
                                         (
                                             (image_width - name_width) / 2,
-                                            y + (text_size * 2),
+                                            text_size * 3,
                                         ),
                                         (
                                             ((image_width - unit_width + value_width + t1) / 2),
@@ -9719,7 +9743,7 @@ class DreameVacuumMapRenderer:
                                         ),
                                         (
                                             ((image_width - name_width) / 2) - (image_width / 4),
-                                            y + (text_size * 2),
+                                            text_size * 3,
                                         ),
                                         (
                                             ((image_width - unit_width + value_width + t1) / 2) - (image_width / 4),
@@ -9736,7 +9760,7 @@ class DreameVacuumMapRenderer:
                                         ),
                                         (
                                             ((image_width - name_width) / 2) + (image_width / 4),
-                                            y + (text_size * 2),
+                                            text_size * 3,
                                         ),
                                     ]
                                 )
@@ -9772,6 +9796,11 @@ class DreameVacuumMapRenderer:
 
     def render_objects(self, cached_layers, map_data, robot_status, station_status, map_image, scale):
         layer_size = (int(map_image.size[0] * scale), int(map_image.size[1] * scale))
+        if self._layer_size != layer_size:
+            self._layer_size = layer_size
+            for l in list(cached_layers.keys()):
+                if l not in (MapRendererLayer.IMAGE, MapRendererLayer.PATH, MapRendererLayer.PATH_MASK):
+                    del cached_layers[l]
         line_width = 3 if map_data.dimensions.scale > 2 else 1
         border_width = 2 if map_data.dimensions.scale > 2 else 1
         changes = []
@@ -9826,15 +9855,17 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_areas(
-                    map_data.no_mopping_areas,
-                    self.color_scheme.no_mop_outline,
-                    self.color_scheme.no_mop,
-                    layer_size,
-                    map_data.dimensions,
-                    border_width,
-                    scale,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_areas(
+                        map_data.no_mopping_areas,
+                        self.color_scheme.no_mop_outline,
+                        self.color_scheme.no_mop,
+                        layer_size,
+                        map_data.dimensions,
+                        border_width,
+                        scale,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9849,15 +9880,17 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_areas(
-                    map_data.no_go_areas,
-                    self.color_scheme.no_go_outline,
-                    self.color_scheme.no_go,
-                    layer_size,
-                    map_data.dimensions,
-                    border_width,
-                    scale,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_areas(
+                        map_data.no_go_areas,
+                        self.color_scheme.no_go_outline,
+                        self.color_scheme.no_go,
+                        layer_size,
+                        map_data.dimensions,
+                        border_width,
+                        scale,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9872,14 +9905,16 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_walls(
-                    map_data.virtual_walls,
-                    self.color_scheme.virtual_wall,
-                    layer_size,
-                    map_data.dimensions,
-                    line_width,
-                    scale,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_walls(
+                        map_data.virtual_walls,
+                        self.color_scheme.virtual_wall,
+                        layer_size,
+                        map_data.dimensions,
+                        line_width,
+                        scale,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9894,14 +9929,16 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_walls(
-                    map_data.virtual_thresholds,
-                    self.color_scheme.virtual_threshold,
-                    layer_size,
-                    map_data.dimensions,
-                    line_width,
-                    scale,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_walls(
+                        map_data.virtual_thresholds,
+                        self.color_scheme.virtual_threshold,
+                        layer_size,
+                        map_data.dimensions,
+                        line_width,
+                        scale,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9916,15 +9953,17 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_thresholds(
-                    map_data.passable_thresholds,
-                    self.color_scheme.passable_threshold_outline,
-                    self.color_scheme.passable_threshold,
-                    layer_size,
-                    map_data.dimensions,
-                    line_width,
-                    scale,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_thresholds(
+                        map_data.passable_thresholds,
+                        self.color_scheme.passable_threshold_outline,
+                        self.color_scheme.passable_threshold,
+                        layer_size,
+                        map_data.dimensions,
+                        line_width,
+                        scale,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9939,15 +9978,17 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_thresholds(
-                    map_data.impassable_thresholds,
-                    self.color_scheme.impassable_threshold_outline,
-                    self.color_scheme.impassable_threshold,
-                    layer_size,
-                    map_data.dimensions,
-                    line_width,
-                    scale,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_thresholds(
+                        map_data.impassable_thresholds,
+                        self.color_scheme.impassable_threshold_outline,
+                        self.color_scheme.impassable_threshold,
+                        layer_size,
+                        map_data.dimensions,
+                        line_width,
+                        scale,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9963,16 +10004,18 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_ramps(
-                    map_data.ramps,
-                    self.color_scheme.ramp_outline,
-                    self.color_scheme.ramp,
-                    layer_size,
-                    map_data.dimensions,
-                    line_width,
-                    scale,
-                    map_data.rotation,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_ramps(
+                        map_data.ramps,
+                        self.color_scheme.ramp_outline,
+                        self.color_scheme.ramp,
+                        layer_size,
+                        map_data.dimensions,
+                        line_width,
+                        scale,
+                        map_data.rotation,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9987,14 +10030,16 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_curtains(
-                    map_data.curtains,
-                    self.color_scheme.curtain,
-                    layer_size,
-                    map_data.dimensions,
-                    line_width,
-                    scale,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_curtains(
+                        map_data.curtains,
+                        self.color_scheme.curtain,
+                        layer_size,
+                        map_data.dimensions,
+                        line_width,
+                        scale,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -10009,13 +10054,15 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_low_lying_areas(
-                    map_data.low_lying_areas,
-                    layer_size,
-                    map_data.dimensions,
-                    line_width,
-                    scale,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_low_lying_areas(
+                        map_data.low_lying_areas,
+                        layer_size,
+                        map_data.dimensions,
+                        line_width,
+                        scale,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -10082,15 +10129,17 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_areas(
-                    map_data.active_areas,
-                    self.color_scheme.active_area_outline,
-                    self.color_scheme.active_area,
-                    layer_size,
-                    map_data.dimensions,
-                    border_width,
-                    scale,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_areas(
+                        map_data.active_areas,
+                        self.color_scheme.active_area_outline,
+                        self.color_scheme.active_area,
+                        layer_size,
+                        map_data.dimensions,
+                        border_width,
+                        scale,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -10105,15 +10154,17 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_points(
-                    map_data.active_points,
-                    self.color_scheme.active_point_outline,
-                    self.color_scheme.active_point,
-                    layer_size,
-                    map_data.dimensions,
-                    border_width,
-                    scale,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_points(
+                        map_data.active_points,
+                        self.color_scheme.active_point_outline,
+                        self.color_scheme.active_point,
+                        layer_size,
+                        map_data.dimensions,
+                        border_width,
+                        scale,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -10197,23 +10248,29 @@ class DreameVacuumMapRenderer:
                         ),
                     ):
                         changed = True
-                        cached_layers[MapRendererLayer.SEGMENT][k] = self._crop_layer(self.render_segment(
-                            v,
-                            bool((not map_data.saved_map or map_data.recovery_map) and map_data.cleanset),
-                            bool((not map_data.saved_map or map_data.recovery_map) and map_data.sequence),
-                            layer_size,
-                            map_data.dimensions,
-                            int(segment_icon_size * map_data.dimensions.scale),
-                            map_data.rotation,
-                            scale,
-                            (
-                                (not map_data.active_segments or k in map_data.active_segments)
-                                and (not map_data.hidden_segments or k not in map_data.hidden_segments)
-                                and not map_data.cleaning_map
-                            ),
-                            (map_data.cleaning_map and map_data.blocked_segments and k in map_data.blocked_segments),
-                            cleaning_sequence,
-                        ))
+                        cached_layers[MapRendererLayer.SEGMENT][k] = self._crop_layer(
+                            self.render_segment(
+                                v,
+                                bool((not map_data.saved_map or map_data.recovery_map) and map_data.cleanset),
+                                bool((not map_data.saved_map or map_data.recovery_map) and map_data.sequence),
+                                layer_size,
+                                map_data.dimensions,
+                                int(segment_icon_size * map_data.dimensions.scale),
+                                map_data.rotation,
+                                scale,
+                                (
+                                    (not map_data.active_segments or k in map_data.active_segments)
+                                    and (not map_data.hidden_segments or k not in map_data.hidden_segments)
+                                    and not map_data.cleaning_map
+                                ),
+                                (
+                                    map_data.cleaning_map
+                                    and map_data.blocked_segments
+                                    and k in map_data.blocked_segments
+                                ),
+                                cleaning_sequence,
+                            )
+                        )
 
                 if changed:
                     changes.append(layer)
@@ -10366,15 +10423,20 @@ class DreameVacuumMapRenderer:
                     )
 
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_charger(
-                    charger_position,
-                    station_status,
-                    layer_size,
-                    map_data.dimensions,
-                    int((robot_icon_size * (map_data.dimensions.scale if map_data.dimensions.scale > 2 else 3)) * 1.2),
-                    map_data.rotation,
-                    scale,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_charger(
+                        charger_position,
+                        station_status,
+                        layer_size,
+                        map_data.dimensions,
+                        int(
+                            (robot_icon_size * (map_data.dimensions.scale if map_data.dimensions.scale > 2 else 3))
+                            * 1.2
+                        ),
+                        map_data.rotation,
+                        scale,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -10449,15 +10511,17 @@ class DreameVacuumMapRenderer:
                     )
 
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_vacuum(
-                    robot_position,
-                    robot_status,
-                    layer_size,
-                    map_data.dimensions,
-                    int(robot_icon_size * (map_data.dimensions.scale if map_data.dimensions.scale > 2 else 3)),
-                    map_data.rotation,
-                    scale,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_vacuum(
+                        robot_position,
+                        robot_status,
+                        layer_size,
+                        map_data.dimensions,
+                        int(robot_icon_size * (map_data.dimensions.scale if map_data.dimensions.scale > 2 else 3)),
+                        map_data.rotation,
+                        scale,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -10473,14 +10537,16 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self._crop_layer(self.render_router(
-                    map_data.router_position,
-                    layer_size,
-                    map_data.dimensions,
-                    int((robot_icon_size * 1.25) * map_data.dimensions.scale),
-                    map_data.rotation,
-                    scale,
-                ))
+                cached_layers[layer] = self._crop_layer(
+                    self.render_router(
+                        map_data.router_position,
+                        layer_size,
+                        map_data.dimensions,
+                        int((robot_icon_size * 1.25) * map_data.dimensions.scale),
+                        map_data.rotation,
+                        scale,
+                    )
+                )
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -10638,14 +10704,8 @@ class DreameVacuumMapRenderer:
                 if cached_layers.get(l):
                     if l in changes:
                         _LOGGER.debug("Render %s", l.name)
-                    if isinstance(cached_layers[l], tuple):
-                        # cropped by _crop_layer: draw it in place at its position
-                        if cached_layers[l][0] is not None:
-                            cached_layers[MapRendererLayer.OBJECTS].alpha_composite(*cached_layers[l])
-                    else:
-                        cached_layers[MapRendererLayer.OBJECTS] = Image.alpha_composite(
-                            cached_layers[MapRendererLayer.OBJECTS], cached_layers[l]
-                        )
+                    if cached_layers[l][0] is not None:
+                        cached_layers[MapRendererLayer.OBJECTS].alpha_composite(*cached_layers[l])
 
             if layer_size != map_image.size:
                 cached_layers[MapRendererLayer.OBJECTS].thumbnail(

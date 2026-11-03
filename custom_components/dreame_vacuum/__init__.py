@@ -6,6 +6,7 @@ from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.typing import ConfigType
+import logging
 import warnings
 from importlib import import_module
 from .const import DOMAIN
@@ -18,15 +19,17 @@ except ModuleNotFoundError as ex:
         raise
     frontend = None
 
-# Suppress python-miio FutureWarning on Python 3.13
-warnings.filterwarnings(
-    "ignore",
-    category=FutureWarning,
-    module="miio.miot_device",
-)
+warnings.filterwarnings("ignore", category=Warning, module="miio")
 
-# Suppress RuntimeWarning overflow encountered in scalar add
-warnings.filterwarnings("ignore", category=RuntimeWarning)
+## Info logs during init are needed for debugging, suppress the HA warning instead of logging less
+logging.getLogger("homeassistant.util.logging").addFilter(
+    lambda record: not (
+        isinstance(record.args, tuple)
+        and record.args
+        and "logging too frequently" in str(record.msg)
+        and str(record.args[0]).startswith(__package__)
+    )
+)
 
 from .coordinator import DreameVacuumDataUpdateCoordinator
 

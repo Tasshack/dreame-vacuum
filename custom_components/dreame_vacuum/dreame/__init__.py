@@ -1,4 +1,4 @@
-VERSION = "v2.0.2"
+VERSION = "v2.0.3"
 
 from .types import (
     DreameVacuumProperty,
@@ -141,6 +141,8 @@ from .const import (
     ATTR_SHORTCUT_TASK,
     ATTR_TIMING_CLEAN,
     ATTR_CURRENT_MOP_TYPE,
+    ATTR_RETURNING_TO_EMPTY,
+    ATTR_RETURNING_TO_EMPTY_PAUSED,
     STATE_UNKNOWN,
     STATE_NOT_SET,
     STATE_CLEANING,

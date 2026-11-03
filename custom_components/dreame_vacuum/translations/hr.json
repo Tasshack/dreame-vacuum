@@ -774,7 +774,8 @@
           "unknown": "Nepoznato",
           "idle": "U mirovanju",
           "active": "Aktivno",
-          "not_performed": "Nije izvedeno"
+          "not_performed": "Nije izvedeno",
+          "returning": "Povratak na automatsko pražnjenje"
         }
       },
       "battery_level": {
@@ -930,8 +931,7 @@
           "unknown": "Nepoznato",
           "not_available": "Nije dostupno",
           "available": "Dostupno",
-          "over_use": "Prekomjerna upotreba",
-          "never": "Nikada"
+          "over_use": "Prekomjerna upotreba"
         }
       },
       "error": {
@@ -1376,7 +1376,8 @@
           "paused": "Pauzirano",
           "returning": "Povratak na pranje",
           "clean_add_water": "Čišćenje i dodavanje vode",
-          "adding_water": "Dodavanje vode"
+          "returning_to_drain": "Povratak na ispuštanje vode",
+          "returning_for_dry_mop": "Povratak za vlaženje krpe"
         }
       },
       "sensor_dirty_left": {
@@ -1695,6 +1696,12 @@
       },
       "voice_packet_id": {
         "name": "Glasovni paket (Voice Pack)"
+      },
+      "washboard_cleaning_left": {
+        "name": "Čišćenje ploče za pranje"
+      },
+      "washboard_cleaning_time_left": {
+        "name": "Preostalo vrijeme čišćenja ploče za pranje"
       },
       "water_outlet_filter_dirty_left": {
         "name": "Čišćenje filtera odvoda vode"
@@ -2031,6 +2038,9 @@
       "reset_tank_filter": {
         "name": "Poništi filter spremnika"
       },
+      "reset_washboard_cleaning": {
+        "name": "Poništi ploču za pranje"
+      },
       "reset_water_outlet_filter": {
         "name": "Poništi filter izlaza vode"
       },
@@ -2275,6 +2285,7 @@
         "card_object_cleanup_notification": "Obavijest o čišćenju",
         "card_object_controls": "Kontrole",
         "card_object_cruising_history": "Putanja krstarenja",
+        "card_object_dock_status_indicator": "Indikator stanja postaje",
         "card_object_fault_notification": "Obavijest o grešci",
         "card_object_information_notification": "Obavijest s informacijama",
         "card_object_low_water_notification": "Obavijest o nedostatku vode",
@@ -2317,7 +2328,7 @@
         "icon_set_mijia": "Mijia",
         "left": "Lijevo",
         "left_handed": "Način za ljevake",
-        "limit_height": "Ograniči visinu na zaslon",
+        "legacy_switches": "Stari prekidači",
         "locked": "Zaključano",
         "locked_always": "Uvijek",
         "locked_auto": "Automatski",
@@ -2423,6 +2434,7 @@
         "map_object_virtual_wall": "Virtualni zidovi",
         "map_object_walls": "Zidovi",
         "map_object_zoom_point": "Točka zumiranja",
+        "max_height_offset": "Odmak maksimalne visine",
         "object_opacity": "Prozirnost objekta",
         "object_scale": "Mjerilo objekta",
         "opacity": "Prozirnost",
@@ -2635,6 +2647,7 @@
         "fluffing_roller_dirty_left": "Valjak za raspršivanje treba očistiti\nMolimo očistite valjak za raspršivanje i resetirajte brojač.",
         "roller_mop_filter_dirty_left": "Filtar valjkastog mopa treba očistiti\nMolimo očistite filtar valjkastog mopa i resetirajte brojač.",
         "water_outlet_filter_dirty_left": "Filtar izlaza vode treba očistiti\nMolimo očistite filtar izlaza vode i resetirajte brojač.",
+        "washboard_cleaning_left": "Ploču za pranje treba očistiti\nMolimo očistite ploču za pranje i resetirajte brojač.",
         "no_water_left": "Molimo napunite spremnik čiste vode.\nVoda u spremniku čiste vode je pri kraju. Odmah provjerite i napunite spremnik čiste vode.",
         "no_water_left_after_clean": "Molimo napunite spremnik čiste vode.\nJastučić za brisanje je očišćen. Otkriveno je da voda u spremniku čiste vode nije dovoljna, molimo napunite spremnik čiste vode i ispraznite spremnik iskorištene vode.",
         "no_water_for_clean": "Niska razina vode u spremniku čiste vode.\nRobot je prešao u način usisavanja.",
@@ -3085,6 +3098,9 @@
     },
     "unavailable_on_current_map": {
       "message": "Ova radnja nije dostupna na trenutnoj karti"
+    },
+    "unavailable_while_changing_mop": {
+      "message": "Zamjena krpe. Pokušajte ponovno kasnije."
     },
     "unavailable_while_cruising": {
       "message": "Ova radnja nije dostupna tijekom obilaska"

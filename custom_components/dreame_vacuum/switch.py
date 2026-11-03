@@ -374,6 +374,17 @@ SWITCHES: tuple[DreameVacuumSwitchEntityDescription, ...] = (
         entity_category=EntityCategory.CONFIG,
     ),
     DreameVacuumSwitchEntityDescription(
+        property_key=DreameVacuumAutoSwitchProperty.WIDER_CORNER_COVERAGE,
+        icon="mdi:rounded-corner",
+        value_fn=lambda value, entity: value is not None and value > 0,
+        exists_fn=lambda description, device: DreameVacuumEntityDescription().exists_fn(description, device)
+        and device.capability.wider_corner_coverage
+        and not device.capability.wider_corner_coverage_frequency
+        and not device.capability.mop_pad_swing
+        and not device.capability.mop_clean_frequency,
+        entity_category=EntityCategory.CONFIG,
+    ),
+    DreameVacuumSwitchEntityDescription(
         property_key=DreameVacuumAutoSwitchProperty.GAP_CLEANING_EXTENSION,
         icon="mdi:plus-circle-multiple",
         exists_fn=lambda description, device: device.capability.mop_pad_swing_plus,

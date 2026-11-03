@@ -589,6 +589,8 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             else:
                 objects = hidden_map_objects
 
+            locale = self._locale
+
             self._renderer = DreameVacuumMapRenderer(
                 color_scheme,
                 icon_set,
@@ -597,6 +599,8 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 low_resolution,
                 square,
                 segment_names=self._segment_names,
+                locale=locale,
+                imperial=self._imperial,
             )
             if not self.wifi_map:
                 self._proxy_renderer = DreameVacuumMapRenderer(
@@ -608,6 +612,8 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                     square,
                     False,
                     segment_names=self._segment_names,
+                    locale=locale,
+                    imperial=self._imperial,
                 )
         self._image = None
         self._default_map = None
@@ -653,11 +659,29 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
         if self.map_data_json:
             return
         segment_names = self._segment_names
+        locale = self._locale
+        imperial = self._imperial
         self._renderer._segment_names = segment_names
+        self._renderer._locale = locale
+        self._renderer._imperial = imperial
         if self._proxy_renderer:
             self._proxy_renderer._segment_names = segment_names
-        ## TODO: Invalidate renderer cache
+            self._proxy_renderer._locale = locale
+            self._proxy_renderer._imperial = imperial
+        self._renderer._map_data = None
+        self._last_rendered = -1
+        self._proxy_images.clear()
         self.async_write_ha_state()
+
+    async def async_added_to_hass(self) -> None:
+        await super().async_added_to_hass()
+
+        @callback
+        def on_config_update(event) -> None:
+            if not self.map_data_json and self._imperial != self._renderer._imperial:
+                self._on_locale_changed()
+
+        self.async_on_remove(self.hass.bus.async_listen("core_config_updated", on_config_update))
 
     async def _try_call(self, func, *args, **kwargs):
         try:
@@ -814,10 +838,6 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     def update(self) -> None:
         map_data = self._map_data
         if map_data and self.device.cloud_connected and (self.map_index > 0 or self.device.status.located):
-            # No render here: _default_map stays True, so async_camera_image renders on the first request.
-            # Rendering every map camera as soon as the cloud is back made all of them render at once,
-            # whether anyone looked at them or not.
-
             self._device_active = self.device.status.active
             if map_data.last_updated:
                 self._state = datetime.fromtimestamp(int(map_data.last_updated))
@@ -936,9 +956,7 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
                 map_data = map_data.wifi_map_data
                 if map_data:
                     if data:
-                        return await self.hass.async_add_executor_job(
-                            self._map_data_json, map_data, include_resources
-                        )
+                        return await self.hass.async_add_executor_job(self._map_data_json, map_data, include_resources)
                     else:
                         map_data = await self._try_call(self.device.get_map_for_render, map_data)
                         return await self._get_proxy_image(
@@ -1117,6 +1135,39 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
             )
             for type_code, name in SEGMENT_TYPE_CODE_TO_NAME.items()
         }
+
+    @property
+    def _locale(self) -> dict[str, str]:
+        return {
+            "startup_method_by_button": self._localize_entity_state("sensor", "startup_method", "button"),
+            "startup_method_through_app": self._localize_entity_state("sensor", "startup_method", "app"),
+            "startup_method_scheduled_activation": self._localize_entity_state("sensor", "startup_method", "scheduled"),
+            "startup_method_through_voice": self._localize_entity_state("sensor", "startup_method", "voice"),
+            "startup_method_other": self._localize_entity_state("sensor", "startup_method", "unknown"),
+            "second_cleaning": self._localize_entity_state("sensor", "startup_method", "second_cleaning"),
+            "cleanup_method_default_mode": self._localize_entity_state("sensor", "cleanup_method", "default"),
+            "cleanup_method_customized_cleaning": self._localize_entity_state("sensor", "cleanup_method", "customized"),
+            "cleanup_method_cleangenius": self._localize_entity_state("sensor", "cleanup_method", "cleangenius"),
+            "cleanup_method_water_stain_cleaning": self._localize_entity_state(
+                "sensor", "cleanup_method", "water_stain"
+            ),
+            "cleanup_method_other": self._localize_entity_state("sensor", "cleanup_method", "other"),
+            "recovery_map_type_original": self._localize_entity_state("sensor", "recovery_map_type", "original"),
+            "recovery_map_type_edited": self._localize_entity_state("sensor", "recovery_map_type", "edited"),
+            "recovery_map_type_backup": self._localize_entity_state("sensor", "recovery_map_type", "backup"),
+            "self_clean": self._localize_entity("switch", "self_clean"),
+            "auto_empty": self._localize_entity("switch", "auto_dust_collecting"),
+            "cleaning_time": self._localize_entity("sensor", "cleaning_time"),
+            "cleaning_status": self._localize_entity("sensor", "cleaning_status"),
+            "cleaned_area": self._localize_entity("sensor", "cleaned_area"),
+            "cruising": self._localize_entity_component("cruising"),
+            "interrupted": self._localize_entity_state("sensor", "cleaning_status", "interrupted"),
+            "completed": self._localize_entity_state("sensor", "cleaning_status", "completed"),
+        }
+
+    @property
+    def _imperial(self) -> bool:
+        return getattr(self.coordinator.hass.config.units, "length_unit", None) == "mi"
 
     @property
     def frame_interval(self) -> float:
