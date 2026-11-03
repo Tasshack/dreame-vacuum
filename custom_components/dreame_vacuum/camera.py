@@ -814,16 +814,9 @@ class DreameVacuumCameraEntity(DreameVacuumEntity, Camera):
     def update(self) -> None:
         map_data = self._map_data
         if map_data and self.device.cloud_connected and (self.map_index > 0 or self.device.status.located):
-            if self._default_map == True:
-                self._default_map = False
-                self._last_rendered = map_data.last_updated
-                self.coordinator.hass.async_create_task(
-                    self._update_image(
-                        map_data,
-                        self.device.status.robot_status,
-                        self.device.status.station_status,
-                    )
-                )
+            # No render here: _default_map stays True, so async_camera_image renders on the first request.
+            # Rendering every map camera as soon as the cloud is back made all of them render at once,
+            # whether anyone looked at them or not.
 
             self._device_active = self.device.status.active
             if map_data.last_updated:
