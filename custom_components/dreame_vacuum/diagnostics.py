@@ -37,6 +37,8 @@ EXCLUDED_KEYS = [
     "host",
     "last_updated_time",
     "mac",
+    "MATTER_QR_CODE",
+    "matter_qr_code",
     "object_name",
     "password",
     "token",
