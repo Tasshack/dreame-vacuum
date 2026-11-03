@@ -7381,6 +7381,12 @@ class DreameVacuumMapDataJsonRenderer:
 
 class DreameVacuumMapRenderer:
     MAP_FONT_UNPACKED = None
+    # Every loaded font keeps its own copy of the font file (~13 MB for the regular map font),
+    # so loaded fonts are shared by all renderers and only a few of them are kept
+    FONT_CACHE_SIZE = 8
+    _font_lock = threading.Lock()
+    _font_files: dict[bool, bytes] = {}
+    _font_cache: dict[tuple[bool, int], ImageFont.FreeTypeFont] = {}
 
     def __init__(
         self,
@@ -7467,9 +7473,6 @@ class DreameVacuumMapRenderer:
         self._cruise_point_background = None
         self._furniture_background = None
         self._wifi_icon = None
-        self._font_file = None
-        self._light_font_file = None
-        self._font_cache = {}
         self._default_map_image = None
         self._obstacle_bottom_left_icon = None
         self._obstacle_top_left_icon = None
@@ -7538,15 +7541,24 @@ class DreameVacuumMapRenderer:
                 for icon in MAP_ICON_CUSTOM_MOPPING_ROUTE_DREAME
             ]
 
-    def _get_font(self, light: bool, size: int) -> ImageFont.FreeTypeFont:
+    @staticmethod
+    def _get_font(light: bool, size: int) -> ImageFont.FreeTypeFont:
         # Parsing the font file is expensive, reuse loaded fonts for the same size
         key = (light, size)
-        font = self._font_cache.get(key)
-        if font is None:
-            if len(self._font_cache) >= 32:
-                self._font_cache.clear()
-            font = ImageFont.truetype(BytesIO(self._light_font_file if light else self._font_file), size)
-            self._font_cache[key] = font
+        cache = DreameVacuumMapRenderer._font_cache
+        with DreameVacuumMapRenderer._font_lock:
+            font = cache.pop(key, None)
+            if font is None:
+                font_file = DreameVacuumMapRenderer._font_files.get(light)
+                if font_file is None:
+                    font_file = zlib.decompress(
+                        base64.b64decode(MAP_FONT_LIGHT if light else MAP_FONT), zlib.MAX_WBITS | 32
+                    )
+                    DreameVacuumMapRenderer._font_files[light] = font_file
+                font = ImageFont.truetype(BytesIO(font_file), size)
+                if len(cache) >= DreameVacuumMapRenderer.FONT_CACHE_SIZE:
+                    del cache[next(iter(cache))]
+            cache[key] = font
         return font
 
     @staticmethod
@@ -9547,9 +9559,6 @@ class DreameVacuumMapRenderer:
 
                 text_draw = ImageDraw.Draw(image, "RGBA")
                 text_size = int(image_width * 0.035)
-                if self._light_font_file is None:
-                    self._light_font_file = zlib.decompress(base64.b64decode(MAP_FONT_LIGHT), zlib.MAX_WBITS | 32)
-
                 text_font = self._get_font(True, text_size)
                 if map_data.history_map:
                     value_font = self._get_font(True, int(text_size * 1.8))
@@ -11371,12 +11380,7 @@ class DreameVacuumMapRenderer:
             text_font = None
             order_font = None
             render_font = text and (self.config.name or segment.type == 0 or segment.index > 0)
-            if self._font_file is None and (
-                render_font or (cleaning_sequence[segment.id] and self.config.order and sequence)
-            ):
-                self._font_file = zlib.decompress(base64.b64decode(MAP_FONT), zlib.MAX_WBITS | 32)
-
-            if render_font and self._font_file:
+            if render_font:
                 text_font = self._get_font(
                     False,
                     int((size * 1.9)) if segment.index or icon is None else int((size * 1.7)),
@@ -12081,10 +12085,6 @@ class DreameVacuumMapRenderer:
         if cruise_point.type == 1:
             text_box = Image.new("RGBA", (bg_size * 2 * scale, bg_size * 2 * scale), (255, 255, 255, 0))
             text_box_draw = ImageDraw.Draw(text_box, "RGBA")
-
-            if self._font_file is None:
-                self._font_file = zlib.decompress(base64.b64decode(MAP_FONT), zlib.MAX_WBITS | 32)
-
             font = self._get_font(False, int((bg_size * 1.5 * scale)))
 
             text = str(index)
