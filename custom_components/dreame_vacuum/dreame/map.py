@@ -7933,15 +7933,34 @@ class DreameVacuumMapRenderer:
         return source
 
     @staticmethod
+    def _crop_layer(layer):
+        # Object layers are drawn at the full (doubled) map size, though most hold only an icon, a label or a
+        # few lines. Keep only the drawn part and its position: a map with ten rooms otherwise kept about
+        # 400 MB of mostly empty layers. An empty layer becomes (None, (0, 0)), so the cache still treats it
+        # as rendered.
+        if layer is None:
+            return None
+        box = layer.getbbox()
+        if box is None:
+            return (None, (0, 0))
+        return (layer.crop(box), (box[0], box[1]))
+
+    @staticmethod
     def _combine_layers(cached_layers, layer_size, parent, sub):
-        cached_layers[parent] = Image.new("RGBA", layer_size, (255, 255, 255, 0))
+        combined = Image.new("RGBA", layer_size, (255, 255, 255, 0))
         if sub in cached_layers:
             for k, v in sorted(cached_layers[sub].items()):
                 if v is not None:
                     try:
-                        cached_layers[parent] = Image.alpha_composite(cached_layers[parent], v)
+                        if isinstance(v, tuple):
+                            # cropped by _crop_layer: draw it in place instead of compositing full-size copies
+                            if v[0] is not None:
+                                combined.alpha_composite(v[0], v[1])
+                        else:
+                            combined = Image.alpha_composite(combined, v)
                     except:
                         pass
+        cached_layers[parent] = DreameVacuumMapRenderer._crop_layer(combined)
 
     @staticmethod
     def _coords_on_line(x0, y0, x1, y1, spacing, size=None):
@@ -9807,7 +9826,7 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self.render_areas(
+                cached_layers[layer] = self._crop_layer(self.render_areas(
                     map_data.no_mopping_areas,
                     self.color_scheme.no_mop_outline,
                     self.color_scheme.no_mop,
@@ -9815,7 +9834,7 @@ class DreameVacuumMapRenderer:
                     map_data.dimensions,
                     border_width,
                     scale,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9830,7 +9849,7 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self.render_areas(
+                cached_layers[layer] = self._crop_layer(self.render_areas(
                     map_data.no_go_areas,
                     self.color_scheme.no_go_outline,
                     self.color_scheme.no_go,
@@ -9838,7 +9857,7 @@ class DreameVacuumMapRenderer:
                     map_data.dimensions,
                     border_width,
                     scale,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9853,14 +9872,14 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self.render_walls(
+                cached_layers[layer] = self._crop_layer(self.render_walls(
                     map_data.virtual_walls,
                     self.color_scheme.virtual_wall,
                     layer_size,
                     map_data.dimensions,
                     line_width,
                     scale,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9875,14 +9894,14 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self.render_walls(
+                cached_layers[layer] = self._crop_layer(self.render_walls(
                     map_data.virtual_thresholds,
                     self.color_scheme.virtual_threshold,
                     layer_size,
                     map_data.dimensions,
                     line_width,
                     scale,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9897,7 +9916,7 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self.render_thresholds(
+                cached_layers[layer] = self._crop_layer(self.render_thresholds(
                     map_data.passable_thresholds,
                     self.color_scheme.passable_threshold_outline,
                     self.color_scheme.passable_threshold,
@@ -9905,7 +9924,7 @@ class DreameVacuumMapRenderer:
                     map_data.dimensions,
                     line_width,
                     scale,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9920,7 +9939,7 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self.render_thresholds(
+                cached_layers[layer] = self._crop_layer(self.render_thresholds(
                     map_data.impassable_thresholds,
                     self.color_scheme.impassable_threshold_outline,
                     self.color_scheme.impassable_threshold,
@@ -9928,7 +9947,7 @@ class DreameVacuumMapRenderer:
                     map_data.dimensions,
                     line_width,
                     scale,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9944,7 +9963,7 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self.render_ramps(
+                cached_layers[layer] = self._crop_layer(self.render_ramps(
                     map_data.ramps,
                     self.color_scheme.ramp_outline,
                     self.color_scheme.ramp,
@@ -9953,7 +9972,7 @@ class DreameVacuumMapRenderer:
                     line_width,
                     scale,
                     map_data.rotation,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9968,14 +9987,14 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self.render_curtains(
+                cached_layers[layer] = self._crop_layer(self.render_curtains(
                     map_data.curtains,
                     self.color_scheme.curtain,
                     layer_size,
                     map_data.dimensions,
                     line_width,
                     scale,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -9990,13 +10009,13 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self.render_low_lying_areas(
+                cached_layers[layer] = self._crop_layer(self.render_low_lying_areas(
                     map_data.low_lying_areas,
                     layer_size,
                     map_data.dimensions,
                     line_width,
                     scale,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -10031,15 +10050,17 @@ class DreameVacuumMapRenderer:
                         or self._map_data.hidden_segments != map_data.hidden_segments
                     ):
                         changed = True
-                        cached_layers[MapRendererLayer.FURNITURE][k] = self.render_furniture(
-                            v,
-                            map_data.furniture_version,
-                            map_data.hidden_segments,
-                            layer_size,
-                            map_data.dimensions,
-                            int((icon_size * 1.2) * map_data.dimensions.scale),
-                            map_data.rotation,
-                            scale,
+                        cached_layers[MapRendererLayer.FURNITURE][k] = self._crop_layer(
+                            self.render_furniture(
+                                v,
+                                map_data.furniture_version,
+                                map_data.hidden_segments,
+                                layer_size,
+                                map_data.dimensions,
+                                int((icon_size * 1.2) * map_data.dimensions.scale),
+                                map_data.rotation,
+                                scale,
+                            )
                         )
 
                 if changed:
@@ -10061,7 +10082,7 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self.render_areas(
+                cached_layers[layer] = self._crop_layer(self.render_areas(
                     map_data.active_areas,
                     self.color_scheme.active_area_outline,
                     self.color_scheme.active_area,
@@ -10069,7 +10090,7 @@ class DreameVacuumMapRenderer:
                     map_data.dimensions,
                     border_width,
                     scale,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -10084,7 +10105,7 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self.render_points(
+                cached_layers[layer] = self._crop_layer(self.render_points(
                     map_data.active_points,
                     self.color_scheme.active_point_outline,
                     self.color_scheme.active_point,
@@ -10092,7 +10113,7 @@ class DreameVacuumMapRenderer:
                     map_data.dimensions,
                     border_width,
                     scale,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -10176,7 +10197,7 @@ class DreameVacuumMapRenderer:
                         ),
                     ):
                         changed = True
-                        cached_layers[MapRendererLayer.SEGMENT][k] = self.render_segment(
+                        cached_layers[MapRendererLayer.SEGMENT][k] = self._crop_layer(self.render_segment(
                             v,
                             bool((not map_data.saved_map or map_data.recovery_map) and map_data.cleanset),
                             bool((not map_data.saved_map or map_data.recovery_map) and map_data.sequence),
@@ -10192,7 +10213,7 @@ class DreameVacuumMapRenderer:
                             ),
                             (map_data.cleaning_map and map_data.blocked_segments and k in map_data.blocked_segments),
                             cleaning_sequence,
-                        )
+                        ))
 
                 if changed:
                     changes.append(layer)
@@ -10345,7 +10366,7 @@ class DreameVacuumMapRenderer:
                     )
 
                 changes.append(layer)
-                cached_layers[layer] = self.render_charger(
+                cached_layers[layer] = self._crop_layer(self.render_charger(
                     charger_position,
                     station_status,
                     layer_size,
@@ -10353,7 +10374,7 @@ class DreameVacuumMapRenderer:
                     int((robot_icon_size * (map_data.dimensions.scale if map_data.dimensions.scale > 2 else 3)) * 1.2),
                     map_data.rotation,
                     scale,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -10428,7 +10449,7 @@ class DreameVacuumMapRenderer:
                     )
 
                 changes.append(layer)
-                cached_layers[layer] = self.render_vacuum(
+                cached_layers[layer] = self._crop_layer(self.render_vacuum(
                     robot_position,
                     robot_status,
                     layer_size,
@@ -10436,7 +10457,7 @@ class DreameVacuumMapRenderer:
                     int(robot_icon_size * (map_data.dimensions.scale if map_data.dimensions.scale > 2 else 3)),
                     map_data.rotation,
                     scale,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -10452,14 +10473,14 @@ class DreameVacuumMapRenderer:
                 or not cached_layers.get(layer)
             ):
                 changes.append(layer)
-                cached_layers[layer] = self.render_router(
+                cached_layers[layer] = self._crop_layer(self.render_router(
                     map_data.router_position,
                     layer_size,
                     map_data.dimensions,
                     int((robot_icon_size * 1.25) * map_data.dimensions.scale),
                     map_data.rotation,
                     scale,
-                )
+                ))
         elif self._cache and cached_layers.get(layer):
             changes.append(layer)
             del cached_layers[layer]
@@ -10532,14 +10553,16 @@ class DreameVacuumMapRenderer:
                         or self._map_data.obstacles[k] != v
                         or self._map_data.rotation != map_data.rotation
                     ):
-                        obstacle_image = self.render_obstacle(
-                            v,
-                            map_data.segments,
-                            layer_size,
-                            map_data.dimensions,
-                            int((icon_size * 1.2) * map_data.dimensions.scale),
-                            map_data.rotation,
-                            scale,
+                        obstacle_image = self._crop_layer(
+                            self.render_obstacle(
+                                v,
+                                map_data.segments,
+                                layer_size,
+                                map_data.dimensions,
+                                int((icon_size * 1.2) * map_data.dimensions.scale),
+                                map_data.rotation,
+                                scale,
+                            )
                         )
                         if obstacle_image:
                             changed = True
@@ -10584,14 +10607,16 @@ class DreameVacuumMapRenderer:
                         or self._map_data.rotation != map_data.rotation
                     ):
                         changed = True
-                        cached_layers[MapRendererLayer.CRUISE_POINT][k] = self.render_cruise_point(
-                            k,
-                            v,
-                            layer_size,
-                            map_data.dimensions,
-                            int(round(icon_size * 1.25 * map_data.dimensions.scale)),
-                            map_data.rotation,
-                            scale,
+                        cached_layers[MapRendererLayer.CRUISE_POINT][k] = self._crop_layer(
+                            self.render_cruise_point(
+                                k,
+                                v,
+                                layer_size,
+                                map_data.dimensions,
+                                int(round(icon_size * 1.25 * map_data.dimensions.scale)),
+                                map_data.rotation,
+                                scale,
+                            )
                         )
 
                 if changed:
@@ -10613,9 +10638,14 @@ class DreameVacuumMapRenderer:
                 if cached_layers.get(l):
                     if l in changes:
                         _LOGGER.debug("Render %s", l.name)
-                    cached_layers[MapRendererLayer.OBJECTS] = Image.alpha_composite(
-                        cached_layers[MapRendererLayer.OBJECTS], cached_layers[l]
-                    )
+                    if isinstance(cached_layers[l], tuple):
+                        # cropped by _crop_layer: draw it in place at its position
+                        if cached_layers[l][0] is not None:
+                            cached_layers[MapRendererLayer.OBJECTS].alpha_composite(*cached_layers[l])
+                    else:
+                        cached_layers[MapRendererLayer.OBJECTS] = Image.alpha_composite(
+                            cached_layers[MapRendererLayer.OBJECTS], cached_layers[l]
+                        )
 
             if layer_size != map_image.size:
                 cached_layers[MapRendererLayer.OBJECTS].thumbnail(
