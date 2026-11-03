@@ -384,7 +384,7 @@
       "cleaning_route": {
         "name": "Маршрут",
         "state": {
-          "quick": "швидко",
+          "quick": "Швидкий",
           "standard": "Стандартний",
           "intensive": "Інтенсивний",
           "deep": "Глибокий"
